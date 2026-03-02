@@ -309,6 +309,16 @@ export default function ContractorProfile() {
           </div>
         </div>
       </div>
+
+      <DisclaimerModal
+        open={showDisclaimer}
+        onClose={() => setShowDisclaimer(false)}
+        onAccepted={(record) => {
+          setDisclaimerSigned(true);
+          setSignerName(record.customer_name);
+          setShowDisclaimer(false);
+        }}
+      />
     </div>
   );
 }
