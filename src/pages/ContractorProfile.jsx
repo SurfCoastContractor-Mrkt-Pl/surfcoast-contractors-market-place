@@ -320,6 +320,12 @@ export default function ContractorProfile() {
         </div>
       </div>
 
+      <ScopeOfWorkForm
+        open={showScopeForm}
+        onClose={() => setShowScopeForm(false)}
+        contractor={contractor}
+      />
+
       <DisclaimerModal
         open={showDisclaimer}
         onClose={() => setShowDisclaimer(false)}
