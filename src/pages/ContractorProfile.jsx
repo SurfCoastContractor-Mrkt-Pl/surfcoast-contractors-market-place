@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
@@ -8,8 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { 
   ArrowLeft, Star, MapPin, Clock, Phone, Mail, 
-  CheckCircle2, Calendar, DollarSign, ExternalLink
+  CheckCircle2, Calendar, DollarSign, ExternalLink, ShieldAlert, AlertCircle
 } from 'lucide-react';
+import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 
 const tradeLabels = {
   electrician: 'Electrician',
