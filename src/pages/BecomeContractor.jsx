@@ -330,6 +330,34 @@ export default function BecomeContractor() {
                   onCheckedChange={(v) => handleChange('available', v)}
                 />
               </div>
+
+              {/* Single-Person Policy */}
+              <div className="p-5 rounded-xl border-2 border-red-200 bg-red-50 space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
+                    <HardHat className="w-5 h-5 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-red-900">Single-Person Freelancer Policy</h3>
+                    <p className="text-sm text-red-700 mt-1 leading-relaxed">
+                      By registering on ContractorHub, you confirm that you are a single individual freelancer. 
+                      Companies, businesses, partnerships, crews, or any group of two or more persons are <strong>strictly prohibited</strong>. 
+                      Any contractor found operating with workers, subcontractors, or associates will be <strong>permanently banned</strong> from the platform without notice.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-white border border-red-200 rounded-lg p-3">
+                  <input
+                    type="checkbox"
+                    id="solo_confirm"
+                    required
+                    className="mt-0.5 w-4 h-4 accent-red-600"
+                  />
+                  <label htmlFor="solo_confirm" className="text-sm text-red-800 cursor-pointer leading-relaxed">
+                    I confirm that I am a single individual and not a company, crew, partnership, or multi-person entity. I understand that violation of this policy will result in a permanent ban from ContractorHub.
+                  </label>
+                </div>
+              </div>
             </div>
           </Card>
 
