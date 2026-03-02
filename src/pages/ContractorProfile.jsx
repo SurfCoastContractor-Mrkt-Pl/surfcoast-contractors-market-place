@@ -238,10 +238,44 @@ export default function ContractorProfile() {
                   </a>
                 )}
               </div>
-              <Button className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900">
-                <Mail className="w-4 h-4 mr-2" />
-                Send Message
-              </Button>
+              {disclaimerSigned ? (
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
+                    <p className="text-xs text-green-700">
+                      Disclaimer signed by <strong>{signerName}</strong>
+                    </p>
+                  </div>
+                  <a href={`mailto:${contractor.email}`}>
+                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Send Message
+                    </Button>
+                  </a>
+                </div>
+              ) : (
+                <Button
+                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
+                  onClick={() => setShowDisclaimer(true)}
+                >
+                  <ShieldAlert className="w-4 h-4 mr-2" />
+                  Sign Disclaimer & Contact
+                </Button>
+              )}
+            </Card>
+
+            {/* Disclaimer Notice */}
+            <Card className="p-5 bg-red-50 border-red-200">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-red-800 mb-1">Required Notice</h4>
+                  <p className="text-xs text-red-700 leading-relaxed">
+                    Before contacting this contractor, you must acknowledge that damages after work begins are your responsibility. 
+                    You are required to vet all contractors independently before accepting any work.
+                  </p>
+                </div>
+              </div>
             </Card>
 
             {/* Quick Stats */}
