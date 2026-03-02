@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
@@ -9,8 +9,9 @@ import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { 
   ArrowLeft, MapPin, Calendar, DollarSign, Clock, 
-  Phone, Mail, User, AlertCircle
+  Phone, Mail, User, AlertCircle, ShieldAlert
 } from 'lucide-react';
+import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 
 const urgencyColors = {
   low: 'bg-slate-100 text-slate-600',
