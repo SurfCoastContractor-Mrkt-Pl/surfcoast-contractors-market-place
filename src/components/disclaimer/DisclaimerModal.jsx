@@ -107,6 +107,10 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
             <strong>6. Indemnification.</strong> By accepting this disclaimer, the customer agrees to indemnify and hold harmless ContractorHub, its officers, employees, and affiliates from any claims, damages, or expenses arising from the customer's use of the platform or engagement with any contractor.
           </p>
 
+          <p>
+            <strong>7. Single-Person Contractor Policy.</strong> All contractors registered on ContractorHub are individual freelancers only. A "contractor" or "freelancer" on this platform is defined strictly as one (1) individual person. No company, business entity, partnership, crew, or group of two or more persons may register or operate as a contractor on this platform. Any contractor found to be operating with additional workers, employees, subcontractors, or associates working on their behalf will be immediately and permanently banned from ContractorHub without notice.
+          </p>
+
           <p className="text-xs text-slate-500">
             Last updated: March 2026. This disclaimer is subject to change. Customers are encouraged to review this disclaimer before each engagement.
           </p>
@@ -120,6 +124,7 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
             { key: 'damages', label: 'I understand that once work has started, any damages are my responsibility as the customer, not the contractor\'s or ContractorHub\'s.' },
             { key: 'vetting', label: 'I understand it is my sole responsibility to vet, verify, and research any contractor before accepting or awarding work.' },
             { key: 'responsibility', label: 'I understand ContractorHub is a platform only and does not endorse, employ, or guarantee any contractor\'s work or qualifications.' },
+            { key: 'solo', label: 'I understand that all contractors on ContractorHub are individual freelancers only. Companies, crews, or multi-person entities are strictly prohibited and will be banned.' },
             { key: 'legal', label: 'I understand this disclaimer is a legally binding acknowledgment and I agree to all terms stated above.' },
           ].map(item => (
             <div key={item.key} className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
