@@ -29,6 +29,9 @@ const tradeLabels = {
 export default function ContractorProfile() {
   const urlParams = new URLSearchParams(window.location.search);
   const contractorId = urlParams.get('id');
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [disclaimerSigned, setDisclaimerSigned] = useState(false);
+  const [signerName, setSignerName] = useState('');
 
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
