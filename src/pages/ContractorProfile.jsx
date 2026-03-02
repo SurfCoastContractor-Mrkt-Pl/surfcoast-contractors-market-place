@@ -33,6 +33,7 @@ export default function ContractorProfile() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
+  const [showScopeForm, setShowScopeForm] = useState(false);
 
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
