@@ -11,6 +11,7 @@ import {
   CheckCircle2, Calendar, DollarSign, ExternalLink, ShieldAlert, AlertCircle
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
+import ScopeOfWorkForm from '@/components/scopeofwork/ScopeOfWorkForm';
 
 const tradeLabels = {
   electrician: 'Electrician',
