@@ -1,0 +1,198 @@
+import React, { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Search, Filter, Users, X } from 'lucide-react';
+import ContractorCard from '@/components/contractors/ContractorCard';
+
+const trades = [
+  { id: 'electrician', name: 'Electrician' },
+  { id: 'plumber', name: 'Plumber' },
+  { id: 'carpenter', name: 'Carpenter' },
+  { id: 'hvac', name: 'HVAC Technician' },
+  { id: 'mason', name: 'Mason' },
+  { id: 'roofer', name: 'Roofer' },
+  { id: 'painter', name: 'Painter' },
+  { id: 'welder', name: 'Welder' },
+  { id: 'tiler', name: 'Tiler' },
+  { id: 'landscaper', name: 'Landscaper' },
+  { id: 'other', name: 'Other' },
+];
+
+export default function Contractors() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialTrade = urlParams.get('trade') || '';
+  const initialType = urlParams.get('type') || '';
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState(initialType);
+  const [tradeFilter, setTradeFilter] = useState(initialTrade);
+  const [availableOnly, setAvailableOnly] = useState(false);
+
+  const { data: contractors, isLoading } = useQuery({
+    queryKey: ['contractors'],
+    queryFn: () => base44.entities.Contractor.list('-rating'),
+  });
+
+  const filteredContractors = useMemo(() => {
+    if (!contractors) return [];
+    
+    return contractors.filter(c => {
+      const matchesSearch = !searchQuery || 
+        c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.bio?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesType = !typeFilter || 
+        (typeFilter === 'general' && c.contractor_type === 'general') ||
+        (typeFilter === 'trade_specific' && c.contractor_type === 'trade_specific');
+      
+      const matchesTrade = !tradeFilter || c.trade_specialty === tradeFilter;
+      
+      const matchesAvailable = !availableOnly || c.available;
+      
+      return matchesSearch && matchesType && matchesTrade && matchesAvailable;
+    });
+  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly]);
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setTypeFilter('');
+    setTradeFilter('');
+    setAvailableOnly(false);
+  };
+
+  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || availableOnly;
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">Find Contractors</h1>
+          <p className="text-lg text-slate-300 max-w-2xl">
+            Browse skilled professionals for your construction project
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Filters */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Filter className="w-5 h-5 text-slate-500" />
+            <span className="font-medium text-slate-700">Filters</span>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                placeholder="Search by name or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Contractor Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="trade_specific">Trade Specific</SelectItem>
+                <SelectItem value="general">General Contractor</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={tradeFilter} onValueChange={setTradeFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Trade Specialty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Trades</SelectItem>
+                {trades.map(trade => (
+                  <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Button 
+              variant={availableOnly ? "default" : "outline"}
+              className={availableOnly ? "bg-green-600 hover:bg-green-700" : ""}
+              onClick={() => setAvailableOnly(!availableOnly)}
+            >
+              {availableOnly ? '✓ Available Now' : 'Available Now'}
+            </Button>
+          </div>
+          
+          {hasActiveFilters && (
+            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100">
+              <span className="text-sm text-slate-500">Active filters:</span>
+              {searchQuery && (
+                <Badge variant="secondary" className="gap-1">
+                  Search: {searchQuery}
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchQuery('')} />
+                </Badge>
+              )}
+              {typeFilter && typeFilter !== 'all' && (
+                <Badge variant="secondary" className="gap-1">
+                  {typeFilter === 'general' ? 'General' : 'Trade Specific'}
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setTypeFilter('')} />
+                </Badge>
+              )}
+              {tradeFilter && tradeFilter !== 'all' && (
+                <Badge variant="secondary" className="gap-1">
+                  {trades.find(t => t.id === tradeFilter)?.name}
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setTradeFilter('')} />
+                </Badge>
+              )}
+              {availableOnly && (
+                <Badge variant="secondary" className="gap-1">
+                  Available
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setAvailableOnly(false)} />
+                </Badge>
+              )}
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-amber-600">
+                Clear all
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Results */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2 text-slate-600">
+            <Users className="w-5 h-5" />
+            <span>{filteredContractors.length} contractors found</span>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <div key={i} className="h-64 bg-white rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : filteredContractors.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredContractors.map(contractor => (
+              <ContractorCard key={contractor.id} contractor={contractor} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 bg-white rounded-2xl">
+            <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-slate-900 mb-2">No contractors found</h3>
+            <p className="text-slate-600 mb-4">Try adjusting your filters or search query</p>
+            <Button variant="outline" onClick={clearFilters}>Clear Filters</Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
