@@ -227,10 +227,45 @@ export default function JobDetails() {
                 )}
               </div>
 
-              <Button className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900">
-                <Mail className="w-4 h-4 mr-2" />
-                Apply for this Job
-              </Button>
+              {disclaimerSigned ? (
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
+                    <p className="text-xs text-green-700">
+                      Disclaimer signed by <strong>{signerName}</strong>
+                    </p>
+                  </div>
+                  <a href={`mailto:${job.poster_email}?subject=Interest in: ${job.title}`}>
+                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Apply for this Job
+                    </Button>
+                  </a>
+                </div>
+              ) : (
+                <Button
+                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
+                  onClick={() => setShowDisclaimer(true)}
+                >
+                  <ShieldAlert className="w-4 h-4 mr-2" />
+                  Sign Disclaimer & Apply
+                </Button>
+              )}
+            </Card>
+
+            {/* Disclaimer Notice */}
+            <Card className="p-5 bg-red-50 border-red-200">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-red-800 mb-1">Important Notice</h4>
+                  <p className="text-xs text-red-700 leading-relaxed">
+                    You must read and sign the customer liability disclaimer before contacting a contractor. 
+                    All damages after work commences are the customer's responsibility. 
+                    It is your duty to vet all contractors prior to accepting any work.
+                  </p>
+                </div>
+              </div>
             </Card>
 
             {/* Tips */}
@@ -248,6 +283,16 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
+
+      <DisclaimerModal
+        open={showDisclaimer}
+        onClose={() => setShowDisclaimer(false)}
+        onAccepted={(record) => {
+          setDisclaimerSigned(true);
+          setSignerName(record.customer_name);
+          setShowDisclaimer(false);
+        }}
+      />
     </div>
   );
 }
