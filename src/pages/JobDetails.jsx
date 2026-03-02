@@ -37,6 +37,9 @@ const tradeLabels = {
 export default function JobDetails() {
   const urlParams = new URLSearchParams(window.location.search);
   const jobId = urlParams.get('id');
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [disclaimerSigned, setDisclaimerSigned] = useState(false);
+  const [signerName, setSignerName] = useState('');
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job', jobId],
