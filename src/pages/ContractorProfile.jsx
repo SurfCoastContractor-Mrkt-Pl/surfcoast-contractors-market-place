@@ -254,6 +254,14 @@ export default function ContractorProfile() {
                       Send Message
                     </Button>
                   </a>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => setShowScopeForm(true)}
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    Request Scope of Work
+                  </Button>
                 </div>
               ) : (
                 <Button
