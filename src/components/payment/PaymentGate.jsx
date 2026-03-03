@@ -101,8 +101,27 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5 mt-2">
-            {/* California SB 478 Compliant Fee Disclosure */}
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 space-y-2">
+
+           {/* Payment & Cost Responsibility Notice — shown to customers only */}
+           {payerType === 'customer' && (
+             <div className="p-4 bg-amber-50 border-2 border-amber-300 rounded-xl text-sm text-amber-900 space-y-2">
+               <div className="flex items-start gap-2">
+                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
+                 <strong className="text-amber-900">Important — Please Read Before Proceeding</strong>
+               </div>
+               <p className="leading-relaxed">
+                 Any amounts, totals, costs, or prices agreed upon with the contractor for the scope of work or services to be performed are 
+                 <strong> solely between you and the contractor</strong>. ContractorHub is not a party to any payment arrangement between you and the contractor.
+               </p>
+               <p className="leading-relaxed">
+                 By proceeding, you acknowledge and agree that <strong>full payment to the contractor is due immediately upon completion of the agreed work</strong>. 
+                 ContractorHub does not process, hold, or mediate payments between customers and contractors.
+               </p>
+             </div>
+           )}
+
+           {/* California SB 478 Compliant Fee Disclosure */}
+           <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 space-y-2">
               <div className="flex items-start gap-2">
                 <Shield className="w-4 h-4 shrink-0 mt-0.5 text-slate-500" />
                 <div>
