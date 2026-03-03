@@ -108,7 +108,18 @@ This is an official copy of the agreement submitted through ContractorHub.
           </DialogTitle>
         </DialogHeader>
 
-        {submitted ? (
+        {!paymentRecord ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+              <DollarSign className="w-8 h-8 text-amber-600" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Payment Required</h3>
+            <p className="text-slate-600 text-sm mb-6">
+              You must pay the $1.50 platform access fee before submitting a scope of work.
+            </p>
+            <Button onClick={onClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back & Pay Fee</Button>
+          </div>
+        ) : submitted ? (
           <div className="text-center py-8">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
