@@ -31,6 +31,7 @@ export default function BecomeContractor() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [newCert, setNewCert] = useState('');
+  const [newSkill, setNewSkill] = useState('');
   const [uploadingId, setUploadingId] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -45,6 +46,7 @@ export default function BecomeContractor() {
     hourly_rate: '',
     location: '',
     bio: '',
+    skills: [],
     certifications: [],
     available: true,
     rating: null,
@@ -97,6 +99,23 @@ export default function BecomeContractor() {
     setFormData(prev => ({
       ...prev,
       certifications: prev.certifications.filter((_, i) => i !== idx)
+    }));
+  };
+
+  const addSkill = () => {
+    if (newSkill.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        skills: [...prev.skills, newSkill.trim()]
+      }));
+      setNewSkill('');
+    }
+  };
+
+  const removeSkill = (idx) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== idx)
     }));
   };
 
@@ -275,6 +294,35 @@ export default function BecomeContractor() {
                   rows={4}
                   className="mt-1.5"
                 />
+                <p className="text-xs text-slate-500 mt-1">Optional</p>
+              </div>
+
+              <div>
+                <Label>Skills & Types of Work You Can Do</Label>
+                <div className="flex gap-2 mt-1.5">
+                  <Input
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    placeholder="e.g., Kitchen Remodeling, Tile Work"
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+                  />
+                  <Button type="button" onClick={addSkill} variant="outline">
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+                {formData.skills.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {formData.skills.map((skill, idx) => (
+                      <span key={idx} className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg text-sm">
+                        {skill}
+                        <button type="button" onClick={() => removeSkill(idx)} className="hover:text-red-500">
+                          <X className="w-4 h-4" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-slate-500 mt-1">Optional</p>
               </div>
 
               <div>
