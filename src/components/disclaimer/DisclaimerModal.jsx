@@ -68,19 +68,20 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
-              <ShieldAlert className="w-6 h-6 text-red-600" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl font-bold text-slate-900">
-                Customer Liability Disclaimer
-              </DialogTitle>
-              <p className="text-sm text-slate-500">You must read and sign before proceeding</p>
-            </div>
-          </div>
-        </DialogHeader>
+         <DialogHeader>
+           <div className="flex items-center gap-3 mb-2">
+             <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+               <ShieldAlert className="w-6 h-6 text-red-600" />
+             </div>
+             <div>
+               <DialogTitle className="text-xl font-bold text-slate-900">
+                 Customer Liability Disclaimer
+               </DialogTitle>
+               <p className="text-sm text-slate-500">You must read and sign before proceeding</p>
+             </div>
+           </div>
+           <p className="sr-only">Customer liability disclaimer that must be signed before proceeding</p>
+         </DialogHeader>
 
         {/* Warning Banner */}
         <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 flex gap-3">
