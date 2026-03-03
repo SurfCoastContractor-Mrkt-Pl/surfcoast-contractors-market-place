@@ -31,6 +31,13 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
         ? `Fixed Total Cost: $${data.cost_amount.toFixed(2)}`
         : `Hourly Rate: $${data.cost_amount.toFixed(2)}/hr${data.estimated_hours ? ` (Est. ${data.estimated_hours} hours = $${(data.cost_amount * data.estimated_hours).toFixed(2)} total)` : ''}`;
 
+      const workDateLine = data.agreed_work_date
+        ? `Agreed Work Date: ${new Date(data.agreed_work_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+        : '';
+      const afterPhotoDeadline = data.agreed_work_date
+        ? `After Photo Deadline: ${new Date(new Date(data.agreed_work_date).getTime() + 72 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (72 hours after work date)`
+        : '';
+
       const emailBody = `
 Dear ${data.customer_name},
 
@@ -41,13 +48,13 @@ A Scope of Work has been submitted by contractor ${data.contractor_name} for you
 Job Title: ${data.job_title}
 Contractor: ${data.contractor_name}
 Customer: ${data.customer_name}
-
+${workDateLine ? workDateLine + '\n' : ''}
 SCOPE SUMMARY:
 ${data.scope_summary}
 
 AGREED COST:
 ${costLine}
-
+${afterPhotoDeadline ? '\nAFTER PHOTOS:\n' + afterPhotoDeadline + '\nThe contractor is required to upload after photos within 72 hours of the agreed work date as a completion record.\n' : ''}
 --- IMPORTANT ---
 All agreed costs, totals, and pricing described above must be approved by you before any work commences.
 No work may begin and no payment is due until you have reviewed and approved this scope in full.
