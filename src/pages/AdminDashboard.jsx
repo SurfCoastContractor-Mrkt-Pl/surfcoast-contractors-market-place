@@ -348,6 +348,55 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* Suggestions Tab */}
+          <TabsContent value="suggestions">
+            <Card className="p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-1">User Suggestions</h2>
+              <p className="text-sm text-slate-500 mb-4">Feedback and ideas from contractors and customers. All suggestions are kept on file.</p>
+              {suggestionsLoading ? (
+                <div className="space-y-3">
+                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
+                </div>
+              ) : suggestions.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">No suggestions yet.</div>
+              ) : (
+                <div className="space-y-3">
+                  {suggestions.map(s => (
+                    <div key={s.id} className={`p-4 rounded-xl border ${s.admin_read ? 'bg-slate-50 border-slate-200' : 'bg-amber-50 border-amber-200'}`}>
+                      <div className="flex items-start justify-between gap-3 flex-wrap">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <span className="font-medium text-slate-900 text-sm">{s.submitter_name}</span>
+                            <Badge className={s.submitter_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'}>
+                              {s.submitter_type}
+                            </Badge>
+                            <Badge className="bg-slate-100 text-slate-600 capitalize">
+                              {s.category?.replace('_', ' ')}
+                            </Badge>
+                            {!s.admin_read && <Badge className="bg-amber-500 text-white text-xs">New</Badge>}
+                          </div>
+                          <div className="text-xs text-slate-500 mb-2">{s.submitter_email} · {new Date(s.created_date).toLocaleDateString()}</div>
+                          <p className="text-sm text-slate-700 whitespace-pre-wrap">{s.suggestion}</p>
+                        </div>
+                        {!s.admin_read && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs shrink-0"
+                            onClick={() => markReadMutation.mutate(s.id)}
+                            disabled={markReadMutation.isPending}
+                          >
+                            Mark as Read
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+
           {/* Identity Verification Tab */}
           <TabsContent value="verification">
             <Card className="p-6">
