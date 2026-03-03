@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Users, X, MapPin } from 'lucide-react';
 import ContractorCard from '@/components/contractors/ContractorCard';
 import LocationSelector from '@/components/location/LocationSelector';
-import { calculateDistance } from '@/components/location/geolocationUtils';
+import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -36,6 +36,8 @@ export default function Contractors() {
   const [statusFilter, setStatusFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
+  const [searchRadius, setSearchRadius] = useState(35);
+  const [searchRadius, setSearchRadius] = useState(35);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['contractors'],
@@ -43,17 +45,28 @@ export default function Contractors() {
   });
 
   // Calculate distances when location changes
-  const handleLocationChange = (location) => {
+  const handleLocationChange = async (location) => {
     setUserLocation(location);
     if (contractors) {
       const distances = {};
-      contractors.forEach(c => {
+      for (const c of contractors) {
         if (c.location) {
-          // Parse contractor location to approximate coords (simplified - uses Nominatim)
-          // For production, you'd want to store actual lat/lon on contractors
-          distances[c.id] = { distance: null, loading: true };
+          try {
+            const contractorCoords = await geocodeLocation(c.location);
+            if (contractorCoords) {
+              const dist = calculateDistance(
+                location.lat,
+                location.lon,
+                contractorCoords.lat,
+                contractorCoords.lon
+              );
+              distances[c.id] = dist;
+            }
+          } catch (error) {
+            console.error('Distance calc error:', error);
+          }
         }
-      });
+      }
       setContractorDistances(distances);
     }
   };
@@ -76,20 +89,24 @@ export default function Contractors() {
       const matchesAvailable = !availableOnly || c.available;
 
       const matchesStatus = !statusFilter || c.availability_status === statusFilter;
+
+      // Filter by radius if user location is set
+      const distance = contractorDistances[c.id];
+      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
       
-      return matchesSearch && matchesType && matchesTrade && matchesAvailable && matchesStatus;
+      return matchesSearch && matchesType && matchesTrade && matchesAvailable && matchesStatus && matchesRadius;
     });
 
     // Add distance info if user location is set
     if (userLocation) {
       results = results.map(c => ({
         ...c,
-        distance: contractorDistances[c.id]?.distance
+        distance: contractorDistances[c.id]
       }));
     }
 
     return results;
-  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, statusFilter, userLocation, contractorDistances]);
+  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, statusFilter, userLocation, contractorDistances, searchRadius]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -121,6 +138,30 @@ export default function Contractors() {
             <span className="font-medium text-slate-700">Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
+          
+          {userLocation && (
+            <div className="mt-6 p-4 bg-slate-50 rounded-xl">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <Slider className="w-4 h-4" />
+                  Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
+                </label>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="100"
+                step="5"
+                value={searchRadius}
+                onChange={(e) => setSearchRadius(Number(e.target.value))}
+                className="w-full accent-amber-500"
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-2">
+                <span>5 mi</span>
+                <span>100 mi</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
@@ -248,11 +289,6 @@ export default function Contractors() {
                 {userLocation && contractor.distance !== undefined && contractor.distance !== null && (
                   <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
                     {contractor.distance.toFixed(1)} mi
-                  </div>
-                )}
-                {userLocation && contractor.distance === undefined && (
-                  <div className="absolute top-3 right-3 z-10 bg-slate-300 text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold">
-                    ? mi
                   </div>
                 )}
                 <ContractorCard contractor={contractor} />
