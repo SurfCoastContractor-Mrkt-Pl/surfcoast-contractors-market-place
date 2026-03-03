@@ -56,6 +56,7 @@ import Jobs from './pages/Jobs';
 import PostJob from './pages/PostJob';
 import ContractorAccount from './pages/ContractorAccount';
 import CustomerAccount from './pages/CustomerAccount';
+import AdminDashboard from './pages/AdminDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +70,7 @@ export const PAGES = {
     "PostJob": PostJob,
     "ContractorAccount": ContractorAccount,
     "CustomerAccount": CustomerAccount,
+    "AdminDashboard": AdminDashboard,
 }
 
 export const pagesConfig = {
