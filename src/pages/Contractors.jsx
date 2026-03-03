@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -64,6 +66,7 @@ export default function Contractors() {
     checkUserType();
   }, []);
 
+  // Set initial filters from URL params
   useEffect(() => {
     if (initialType) setTypeFilter(initialType);
     if (initialTrade) setTradeFilter(initialTrade);
