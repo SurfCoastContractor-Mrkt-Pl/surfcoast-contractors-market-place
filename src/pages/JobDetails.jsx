@@ -288,6 +288,27 @@ export default function JobDetails() {
           setShowDisclaimer(false);
         }}
       />
+
+      <PaymentGate
+        open={showPaymentGate}
+        onClose={() => setShowPaymentGate(false)}
+        onPaid={(record) => { setContractorPaid(true); setPaymentRecord(record); setShowPaymentGate(false); }}
+        payerType="contractor"
+        contractorId={job?.id}
+        contractorEmail={job?.poster_email}
+        contractorName={job?.poster_name}
+      />
+
+      <InAppMessageForm
+        open={showMessageForm}
+        onClose={() => setShowMessageForm(false)}
+        paymentRecord={paymentRecord}
+        senderType="contractor"
+        recipientId={job?.id}
+        recipientName={job?.poster_name}
+        recipientEmail={job?.poster_email}
+        subject={`Interest in: ${job?.title}`}
+      />
     </div>
   );
 }
