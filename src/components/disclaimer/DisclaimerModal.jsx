@@ -28,10 +28,21 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
   const allChecked = Object.values(checks).every(Boolean);
   const formValid = formData.customer_name && formData.customer_email && formData.signature && allChecked;
 
+  const resetForm = () => {
+    setFormData({ customer_name: '', customer_email: '', signature: '' });
+    setChecks({ damages: false, vetting: false, responsibility: false, solo: false, legal: false });
+    setSignatureError('');
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
 
   const mutation = useMutation({
     mutationFn: (data) => base44.entities.DisclaimerAcceptance.create(data),
     onSuccess: (record) => {
+      resetForm();
       onAccepted(record);
     },
   });
