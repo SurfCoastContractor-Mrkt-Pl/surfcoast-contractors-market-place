@@ -10,11 +10,14 @@ Deno.serve(async (req) => {
     }
 
     // Fetch the closed scope
-    const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ id: scopeId });
-    const scope = scopes[0];
-
-    if (!scope) {
-      return Response.json({ error: 'Scope not found' }, { status: 404 });
+    let scope;
+    try {
+      scope = await base44.asServiceRole.entities.ScopeOfWork.get(scopeId);
+    } catch (error) {
+      if (error.message && error.message.includes('not found')) {
+        return Response.json({ error: 'Scope not found' }, { status: 404 });
+      }
+      throw error;
     }
 
     if (scope.status !== 'closed') {
@@ -52,8 +55,12 @@ Deno.serve(async (req) => {
     });
 
     return Response.json({ success: true, reviewId: review.id });
-  } catch (error) {
+    } catch (error) {
     console.error('Review creation error:', error.message);
+    // Return 404 if scope not found, otherwise 500
+    if (error.message && error.message.includes('not found')) {
+      return Response.json({ error: 'Scope not found' }, { status: 404 });
+    }
     return Response.json({ error: error.message }, { status: 500 });
-  }
+    }
 });

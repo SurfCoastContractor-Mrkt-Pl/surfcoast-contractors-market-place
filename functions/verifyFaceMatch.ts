@@ -62,7 +62,12 @@ Respond with valid JSON only:
     });
 
     return Response.json(result);
-  } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+    } catch (error) {
+     console.error('Face match verification error:', error.message);
+     // Handle file upload errors specifically
+     if (error.message && error.message.includes('file')) {
+       return Response.json({ error: 'Failed to process images. Ensure images are valid and accessible.' }, { status: 400 });
+     }
+     return Response.json({ error: error.message }, { status: 500 });
+    }
 });

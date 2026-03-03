@@ -8,9 +8,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY 
-  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
-  : (console.warn('VITE_STRIPE_PUBLISHABLE_KEY environment variable is not set'), null);
+// Try multiple environment variable names for Stripe publishable key
+const stripePubKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
+                     import.meta.env.STRIPE_PUBLISHABLE_KEY ||
+                     (typeof window !== 'undefined' && window.__STRIPE_PUB_KEY__);
+
+const stripePromise = stripePubKey 
+  ? loadStripe(stripePubKey)
+  : null;
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -46,6 +51,12 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
       if (!response.data?.url) {
         throw new Error('Failed to create checkout session');
+      }
+
+      // Check if Stripe is properly configured
+      if (!stripePromise) {
+        console.error('Stripe publishable key is not configured');
+        throw new Error('Payment processing is not available. Please contact support.');
       }
 
       // Check if running in iframe (not published)

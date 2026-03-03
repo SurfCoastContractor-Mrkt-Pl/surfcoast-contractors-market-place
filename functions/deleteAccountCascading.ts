@@ -19,8 +19,17 @@ Deno.serve(async (req) => {
     // If contractor, get the ID first
     if (accountType === 'contractor') {
       const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: accountEmail });
-      if (contractors.length > 0) {
-        contractorId = contractors[0].id;
+      if (contractors.length === 0) {
+        return Response.json({ success: true, message: 'Contractor account not found', deletedRecords: 0 });
+      }
+      contractorId = contractors[0].id;
+    }
+
+    // Check if customer exists (for customer deletion)
+    if (accountType === 'customer') {
+      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email: accountEmail });
+      if (customers.length === 0) {
+        return Response.json({ success: true, message: 'Customer account not found', deletedRecords: 0 });
       }
     }
 

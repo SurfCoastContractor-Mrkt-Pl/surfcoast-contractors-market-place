@@ -10,12 +10,15 @@ Deno.serve(async (req) => {
     }
 
     // Fetch payment
-    const payments = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
-    if (payments.length === 0) {
-      return Response.json({ error: 'Payment not found' }, { status: 404 });
+    let payment;
+    try {
+      payment = await base44.asServiceRole.entities.Payment.get(paymentId);
+    } catch (error) {
+      if (error.message && error.message.includes('not found')) {
+        return Response.json({ error: 'Payment not found' }, { status: 404 });
+      }
+      throw error;
     }
-
-    const payment = payments[0];
     const invoiceDate = new Date(payment.created_date);
     const invoiceNumber = `INV-${payment.id.substring(0, 8).toUpperCase()}-${invoiceDate.getFullYear()}`;
 
@@ -147,6 +150,10 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('Invoice generation error:', error.message);
+    // Return 404 if payment not found, otherwise 500
+    if (error.message && error.message.includes('not found')) {
+      return Response.json({ error: 'Payment not found' }, { status: 404 });
+    }
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
