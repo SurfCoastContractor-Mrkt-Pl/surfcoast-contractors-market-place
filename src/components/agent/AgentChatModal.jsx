@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Send, X, Loader2 } from 'lucide-react';
 
-const GREETING_MESSAGE = `👋 Welcome to ContractorHub!
+const GREETING_MESSAGE = `👋 Welcome to SurfCoast Market Place!
 
 I'm your AI Assistant, here to help you get started. Let me tell you what we do:
 
-**ContractorHub connects skilled construction contractors with customers who need quality work done.**
+**SurfCoast Market Place connects skilled construction contractors with customers who need quality work done.**
 
 Whether you're a contractor looking for jobs or a customer seeking trusted professionals, we make it easy to find, communicate, and complete projects.
 
@@ -75,7 +75,7 @@ export default function AgentChatModal({ open, onClose }) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl h-[600px] flex flex-col p-0" aria-describedby="agent-chat-description">
         <DialogHeader className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-lg p-4 border-0">
-          <DialogTitle className="text-white">ContractorHub Assistant</DialogTitle>
+          <DialogTitle className="text-white">SurfCoast Assistant</DialogTitle>
           <p id="agent-chat-description" className="sr-only">AI assistant chat for getting help with the platform</p>
         </DialogHeader>
 
