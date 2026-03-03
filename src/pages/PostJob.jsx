@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Briefcase, Loader2, CheckCircle } from 'lucide-react';
+import BeforePhotosUpload from '@/components/photos/BeforePhotosUpload';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
