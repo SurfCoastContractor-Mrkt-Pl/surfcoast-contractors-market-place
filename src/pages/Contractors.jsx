@@ -1,14 +1,17 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Users, X, MapPin } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 import ContractorCard from '@/components/contractors/ContractorCard';
 import LocationSelector from '@/components/location/LocationSelector';
 import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
+import { createPageUrl } from '@/utils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -25,6 +28,44 @@ const trades = [
 ];
 
 export default function Contractors() {
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState(null);
+  const [isContractor, setIsContractor] = useState(false);
+
+  // Check if user is a contractor
+  useEffect(() => {
+    const checkUserType = async () => {
+      const user = await base44.auth.me();
+      if (user) {
+        setUserEmail(user.email);
+        // Check if this user is a contractor
+        const contractors = await base44.entities.Contractor.filter({ email: user.email });
+        if (contractors && contractors.length > 0) {
+          setIsContractor(true);
+        }
+      }
+    };
+    checkUserType();
+  }, []);
+
+  // Redirect contractors away
+  if (isContractor) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Users className="w-8 h-8 text-amber-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Contractors Only</h2>
+          <p className="text-slate-600 mb-6">This section is for customers only. As a contractor, you can view jobs posted by customers.</p>
+          <Button onClick={() => navigate(createPageUrl('Jobs'))} className="bg-amber-500 hover:bg-amber-600">
+            Browse Jobs for Contractors
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
   const urlParams = new URLSearchParams(window.location.search);
   const initialTrade = urlParams.get('trade') || '';
   const initialType = urlParams.get('type') || '';
