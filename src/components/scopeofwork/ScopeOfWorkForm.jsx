@@ -121,7 +121,7 @@ This is an official copy of the agreement submitted through ContractorHub.
           </DialogTitle>
         </DialogHeader>
 
-        {!paymentRecord ? (
+        {!paymentRecord || paymentRecord.status !== 'confirmed' ? (
           <div className="text-center py-8">
             <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
               <DollarSign className="w-8 h-8 text-amber-600" />
