@@ -97,11 +97,28 @@ export default function BecomeContractor() {
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
     setUploadingPhoto(true);
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     handleChange('photo_url', file_url);
     setUploadingPhoto(false);
+  };
+
+  const handleIdUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingId(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    handleChange('id_document_url', file_url);
+    setUploadingId(false);
+  };
+
+  const handleFaceUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingFace(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    handleChange('face_photo_url', file_url);
+    setUploadingFace(false);
   };
 
   if (success) {
