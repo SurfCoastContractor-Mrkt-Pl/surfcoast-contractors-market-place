@@ -6,19 +6,25 @@ import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-re
 
 const GREETING_MESSAGE = `👋 Welcome to ContractorHub!
 
-I'm your AI Assistant, here to help you get started. Let me tell you what we do:
+I'm your AI Assistant, here to help you get started.
 
 **ContractorHub connects skilled construction contractors with customers who need quality work done.**
 
-Whether you're a contractor looking for jobs or a customer seeking trusted professionals, we make it easy to find, communicate, and complete projects.
+**How would you like to access contractors?**
 
-**Important: Platform Communication Fee**
-There's a simple $1.50 fee per project to unlock messaging and communication with contractors or customers. The fee applies each time you communicate on a new project — no hidden costs, no subscriptions.
+**💬 Single Message Session** — $1.50
+Unlock one contractor's contact details & unlimited messaging until work is scheduled.
+
+**📋 Quick Quote Request** — $0.75
+Get a written estimate without back-and-forth conversation.
+
+**⭐ Unlimited Monthly** — $20/month
+Message unlimited contractors for 30 days. Best for multiple projects.
 
 How can I help you today?
 • 🔧 Sign up as a Contractor
 • 👤 Sign up as a Customer
-• ❓ Ask me anything about the platform`;
+• ❓ Ask about pricing`;
 
 export default function FloatingAgentWidget({ open, onClose }) {
   const [messages, setMessages] = useState([
@@ -87,28 +93,37 @@ export default function FloatingAgentWidget({ open, onClose }) {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 w-96 max-w-[calc(100vw-2rem)] h-[600px] flex flex-col bg-white rounded-lg shadow-2xl border border-slate-200">
+    <div className="fixed bottom-6 right-6 z-40 w-80 max-w-[calc(100vw-2rem)] h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-lg p-4 flex items-center justify-between gap-2 shrink-0">
-        <h3 className="font-semibold">ContractorHub Assistant</h3>
-        <button
-          onClick={() => setMinimized(true)}
-          className="p-1.5 hover:bg-amber-700 rounded transition-colors"
-          title="Minimize"
-        >
-          <Minimize2 className="w-4 h-4" />
-        </button>
+      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
+        <h3 className="font-semibold text-sm">ContractorHub Assistant</h3>
+        <div className="flex gap-1">
+          <button
+            onClick={() => setMinimized(true)}
+            className="p-1 hover:bg-amber-700 rounded transition-colors"
+            title="Minimize"
+          >
+            <span className="text-lg font-light">−</span>
+          </button>
+          <button
+            onClick={() => onClose()}
+            className="p-1 hover:bg-amber-700 rounded transition-colors"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+      <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50">
         {messages.map((msg, idx) => (
           <div
             key={idx}
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-xs px-4 py-3 rounded-lg whitespace-pre-wrap text-sm leading-relaxed ${
+              className={`max-w-[85%] px-3 py-2 rounded-lg whitespace-pre-wrap text-xs leading-relaxed ${
                 msg.role === 'user'
                   ? 'bg-amber-500 text-white rounded-br-none'
                   : 'bg-white text-slate-900 rounded-bl-none border border-slate-200'
@@ -129,22 +144,22 @@ export default function FloatingAgentWidget({ open, onClose }) {
       </div>
 
       {/* Input */}
-      <div className="border-t border-slate-200 p-4 bg-white rounded-b-lg flex gap-2 shrink-0">
+      <div className="border-t border-slate-200 p-3 bg-white rounded-b-xl flex gap-2 shrink-0">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Ask a question..."
           disabled={loading}
-          className="flex-1 text-sm"
+          className="flex-1 text-xs"
         />
         <Button
           onClick={handleSend}
           disabled={loading || !input.trim()}
-          className="bg-amber-500 hover:bg-amber-600 text-white px-3"
+          className="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1"
           size="sm"
         >
-          <Send className="w-4 h-4" />
+          <Send className="w-3 h-3" />
         </Button>
       </div>
     </div>
