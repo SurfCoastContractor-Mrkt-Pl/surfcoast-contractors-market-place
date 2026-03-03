@@ -133,6 +133,25 @@ export default function JobDetails() {
               </div>
             </Card>
 
+            {/* Before Photos */}
+            {job.before_photo_urls?.length > 0 && (
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Camera className="w-5 h-5 text-amber-500" />
+                  <h3 className="text-lg font-semibold text-slate-900">Before Photos</h3>
+                  <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{job.before_photo_urls.length} photos</span>
+                </div>
+                <p className="text-xs text-slate-500 mb-3">Taken by the customer to document pre-work area conditions.</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {job.before_photo_urls.map((url, idx) => (
+                    <a key={idx} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden bg-slate-100 block hover:opacity-90 transition-opacity">
+                      <img src={url} alt={`Before ${idx + 1}`} className="w-full h-full object-cover" />
+                    </a>
+                  ))}
+                </div>
+              </Card>
+            )}
+
             {/* Details Grid */}
             <Card className="p-6">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">Job Details</h3>
