@@ -37,8 +37,8 @@ export default function Layout({ children, currentPageName }) {
                 alt="SurfCoast Logo"
                 className="w-10 h-10 object-contain"
               />
-              <span className={`font-bold text-xl ${isHome ? 'text-white' : 'text-slate-900'}`}>
-                SurfCoast
+              <span className={`font-bold text-lg ${isHome ? 'text-white' : 'text-slate-900'}`}>
+                SurfCoast<br/><span className="text-sm font-semibold">Contractor Market Place</span>
               </span>
             </Link>
 
@@ -168,7 +168,10 @@ export default function Layout({ children, currentPageName }) {
                   alt="SurfCoast Logo"
                   className="w-10 h-10 object-contain"
                 />
-                <span className="font-bold text-xl">SurfCoast</span>
+                <div>
+                  <span className="font-bold text-xl">SurfCoast</span><br/>
+                  <span className="text-xs font-semibold text-slate-300">Contractor Market Place</span>
+                </div>
               </div>
               <p className="text-slate-400 max-w-sm">
                 Connecting skilled construction professionals with clients who need quality work done right.
