@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Briefcase, X, Plus, MapPin } from 'lucide-react';
 import JobCard from '@/components/jobs/JobCard';
 import LocationSelector from '@/components/location/LocationSelector';
-import { calculateDistance } from '@/components/location/geolocationUtils';
+import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -33,6 +33,7 @@ export default function Jobs() {
   const [urgencyFilter, setUrgencyFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [jobDistances, setJobDistances] = useState({});
+  const [searchRadius, setSearchRadius] = useState(35);
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs'],
@@ -73,20 +74,37 @@ export default function Jobs() {
       const matchesUrgency = !urgencyFilter || 
         urgencyFilter === 'all' ||
         job.urgency === urgencyFilter;
-      
-      return matchesSearch && matchesType && matchesTrade && matchesUrgency;
-    });
-  }, [jobs, scheduledJobIds, searchQuery, typeFilter, tradeFilter, urgencyFilter]);
 
-  const handleLocationChange = (location) => {
+      // Filter by radius if user location is set
+      const distance = jobDistances[job.id];
+      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
+      
+      return matchesSearch && matchesType && matchesTrade && matchesUrgency && matchesRadius;
+    });
+  }, [jobs, scheduledJobIds, searchQuery, typeFilter, tradeFilter, urgencyFilter, userLocation, jobDistances, searchRadius]);
+
+  const handleLocationChange = async (location) => {
     setUserLocation(location);
     if (jobs) {
       const distances = {};
-      jobs.forEach(j => {
+      for (const j of jobs) {
         if (j.location) {
-          distances[j.id] = { distance: null, loading: true };
+          try {
+            const jobCoords = await geocodeLocation(j.location);
+            if (jobCoords) {
+              const dist = calculateDistance(
+                location.lat,
+                location.lon,
+                jobCoords.lat,
+                jobCoords.lon
+              );
+              distances[j.id] = dist;
+            }
+          } catch (error) {
+            console.error('Distance calc error:', error);
+          }
         }
-      });
+      }
       setJobDistances(distances);
     }
   };
@@ -130,6 +148,29 @@ export default function Jobs() {
             <span className="font-medium text-slate-700">Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
+          
+          {userLocation && (
+            <div className="mt-6 p-4 bg-slate-50 rounded-xl">
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-medium text-slate-700">
+                  Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
+                </label>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="100"
+                step="5"
+                value={searchRadius}
+                onChange={(e) => setSearchRadius(Number(e.target.value))}
+                className="w-full accent-amber-500"
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-2">
+                <span>5 mi</span>
+                <span>100 mi</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
@@ -240,14 +281,9 @@ export default function Jobs() {
           <div className="grid md:grid-cols-2 gap-6">
             {filteredJobs.map(job => (
               <div key={job.id} className="relative">
-                {userLocation && jobDistances[job.id]?.distance !== undefined && jobDistances[job.id]?.distance !== null && (
+                {userLocation && jobDistances[job.id] !== undefined && (
                   <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                    {jobDistances[job.id].distance.toFixed(1)} mi
-                  </div>
-                )}
-                {userLocation && (jobDistances[job.id]?.distance === undefined || jobDistances[job.id]?.distance === null) && (
-                  <div className="absolute top-3 right-3 z-10 bg-slate-300 text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold">
-                    ? mi
+                    {jobDistances[job.id].toFixed(1)} mi
                   </div>
                 )}
                 <JobCard job={job} />
