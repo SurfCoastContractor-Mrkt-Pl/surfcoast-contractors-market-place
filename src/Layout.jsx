@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle } from 'lucide-react';
+import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 'lucide-react';
+import SuggestionForm from './components/suggestions/SuggestionForm';
 
 const navLinks = [
   { name: 'Home', page: 'Home', icon: Home },
