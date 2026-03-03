@@ -415,11 +415,17 @@ export default function BecomeContractor() {
             </div>
           </Card>
 
+          {!faceVerified && formData.id_document_url && (
+            <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 mb-3">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              Face verification is required before you can submit. Your profile photo must be scanned and confirmed to match your ID.
+            </div>
+          )}
           <Button 
             type="submit" 
             size="lg" 
-            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            disabled={mutation.isPending}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold disabled:opacity-50"
+            disabled={mutation.isPending || !faceVerified}
           >
             {mutation.isPending ? (
               <>
