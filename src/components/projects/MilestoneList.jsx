@@ -32,6 +32,12 @@ export default function MilestoneList({ milestones, scopeId, isContractor }) {
     updateMutation.mutate({ id: milestone.id, data });
   };
 
+  const handleDelete = (id) => {
+    if (confirm('Are you sure you want to delete this milestone?')) {
+      deleteMutation.mutate(id);
+    }
+  };
+
   if (!milestones || milestones.length === 0) {
     return (
       <div className="text-center py-8 text-slate-500">
@@ -94,7 +100,7 @@ export default function MilestoneList({ milestones, scopeId, isContractor }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => deleteMutation.mutate(milestone.id)}
+                  onClick={() => handleDelete(milestone.id)}
                   className="text-red-500 hover:text-red-700"
                 >
                   <Trash2 className="w-4 h-4" />

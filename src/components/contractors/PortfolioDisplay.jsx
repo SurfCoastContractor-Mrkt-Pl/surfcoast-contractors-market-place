@@ -38,6 +38,23 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
     const images = selectedProject.images || [];
     const currentImage = images[currentImageIndex];
 
+    if (!currentImage && images.length === 0) {
+      return (
+        <div className="space-y-4">
+          <button
+            onClick={() => setSelectedProject(null)}
+            className="text-amber-600 hover:text-amber-700 font-semibold text-sm"
+          >
+            ← Back to Portfolio
+          </button>
+          <div className="bg-white rounded-lg border border-slate-200 p-6">
+            <h2 className="text-2xl font-bold mb-2">{selectedProject.project_title}</h2>
+            <p className="text-slate-700 whitespace-pre-wrap">{selectedProject.description}</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-4">
         <button

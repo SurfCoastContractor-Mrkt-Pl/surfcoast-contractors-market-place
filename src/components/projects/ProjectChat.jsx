@@ -30,7 +30,7 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
   }, [messages]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !scopeId || !userEmail) return;
     
     sendMutation.mutate({
       scope_id: scopeId,

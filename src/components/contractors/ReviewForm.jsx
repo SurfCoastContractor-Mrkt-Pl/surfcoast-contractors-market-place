@@ -29,24 +29,29 @@ export default function ReviewForm({ contractorId, contractorName, scopeId, open
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!reviewerName || !reviewerEmail || !comment) {
+    if (!reviewerName || !reviewerEmail || !comment || !contractorId || !scopeId) {
       alert('Please fill in all required fields');
       return;
     }
 
-    const scopeData = await base44.entities.ScopeOfWork.get(scopeId);
+    try {
+      const scopeData = await base44.entities.ScopeOfWork.get(scopeId);
 
-    await createMutation.mutateAsync({
-      contractor_id: contractorId,
-      contractor_name: contractorName,
-      reviewer_name: reviewerName,
-      reviewer_email: reviewerEmail,
-      job_title: scopeData.job_title,
-      rating,
-      comment,
-      verified: true,
-      work_date: scopeData.agreed_work_date
-    });
+      await createMutation.mutateAsync({
+        contractor_id: contractorId,
+        contractor_name: contractorName,
+        reviewer_name: reviewerName,
+        reviewer_email: reviewerEmail,
+        job_title: scopeData?.job_title || 'Project',
+        rating,
+        comment,
+        verified: true,
+        work_date: scopeData?.agreed_work_date || new Date().toISOString().split('T')[0]
+      });
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. Please try again.');
+    }
   };
 
   return (
