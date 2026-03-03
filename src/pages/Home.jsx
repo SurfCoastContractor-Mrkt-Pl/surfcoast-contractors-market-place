@@ -22,10 +22,10 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <CTASection />
       <TradeCategories />
       <FeaturedContractors contractors={contractors} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
-      <CTASection />
     </div>
   );
 }
