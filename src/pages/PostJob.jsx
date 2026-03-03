@@ -46,6 +46,7 @@ export default function PostJob() {
     urgency: 'medium',
     status: 'open'
   });
+  const [beforePhotos, setBeforePhotos] = useState([]);
 
   const mutation = useMutation({
     mutationFn: (data) => base44.entities.Job.create(data),
