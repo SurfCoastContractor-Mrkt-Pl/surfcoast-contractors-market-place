@@ -290,8 +290,9 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Tabs */}
-        <Tabs defaultValue="payments">
+        <Tabs defaultValue="signups">
           <TabsList className="mb-4">
+            <TabsTrigger value="signups">Signups & Growth</TabsTrigger>
             <TabsTrigger value="payments">Fee Transactions</TabsTrigger>
             <TabsTrigger value="messages">
               Messages {messages.filter(m => !m.read).length > 0 && (
