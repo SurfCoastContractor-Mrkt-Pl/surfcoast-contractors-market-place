@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck } from 'lucide-react';
+import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 
 export default function ContractorAccount() {
   const [searchEmail, setSearchEmail] = useState('');
