@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
+import { Button } from '@/components/ui/button';
+import { RotateCw } from 'lucide-react';
 
 import HeroSection from '@/components/home/HeroSection';
 import TradeCategories from '@/components/home/TradeCategories';
@@ -12,6 +14,7 @@ import CTASection from '@/components/home/CTASection';
 
 export default function Home() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Redirect authenticated users to their dashboard if they're new
   useEffect(() => {
@@ -46,13 +49,33 @@ export default function Home() {
     queryFn: () => base44.entities.Contractor.filter({ available: true }, '-rating', 6),
   });
 
-  const { data: jobs, isLoading: jobsLoading } = useQuery({
+  const { data: jobs, isLoading: jobsLoading, refetch: refetchJobs } = useQuery({
     queryKey: ['jobs-recent'],
     queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date', 4),
   });
 
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['contractors-featured'] });
+    await queryClient.invalidateQueries({ queryKey: ['jobs-recent'] });
+    await refetchJobs();
+  };
+
   return (
     <div className="min-h-screen">
+      {/* Refresh Button */}
+      <div className="fixed top-20 right-4 z-40 sm:top-auto sm:bottom-6 sm:right-6">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={handleRefresh}
+          className="gap-2 rounded-full shadow-lg hover:shadow-xl"
+          title="Refresh homepage data"
+        >
+          <RotateCw className="w-4 h-4" />
+          <span className="hidden sm:inline">Refresh</span>
+        </Button>
+      </div>
+
       <HeroSection />
       <CTASection />
       <TradeCategories />
