@@ -230,13 +230,18 @@ export default function Layout({ children, currentPageName }) {
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
             <span>© {new Date().getFullYear()} ContractorHub. All rights reserved.</span>
-            <button
-              onClick={() => setSuggestionOpen(true)}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-amber-400 transition-colors text-sm"
-            >
-              <Lightbulb className="w-4 h-4" />
-              Share a Suggestion
-            </button>
+            <div className="flex items-center gap-4">
+              <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors">
+                Terms & Policies
+              </Link>
+              <button
+                onClick={() => setSuggestionOpen(true)}
+                className="flex items-center gap-1.5 text-slate-400 hover:text-amber-400 transition-colors"
+              >
+                <Lightbulb className="w-4 h-4" />
+                Share a Suggestion
+              </button>
+            </div>
           </div>
         </div>
       </footer>
