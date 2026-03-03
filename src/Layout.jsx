@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { HardHat, Menu, X, Briefcase, Users, Home } from 'lucide-react';
+import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle } from 'lucide-react';
 
 const navLinks = [
   { name: 'Home', page: 'Home', icon: Home },
