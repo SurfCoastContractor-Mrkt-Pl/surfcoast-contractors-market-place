@@ -45,6 +45,12 @@ export default function Contractors() {
   const initialTrade = urlParams.get('trade') || '';
   const initialType = urlParams.get('type') || '';
 
+  // Always call hooks at the top level (before any conditionals)
+  const { data: contractors, isLoading } = useQuery({
+    queryKey: ['contractors'],
+    queryFn: () => base44.entities.Contractor.list('-rating'),
+  });
+
   // Check if user is authenticated and contractor type
   useEffect(() => {
     const checkUserType = async () => {
@@ -71,38 +77,6 @@ export default function Contractors() {
     if (initialType) setTypeFilter(initialType);
     if (initialTrade) setTradeFilter(initialTrade);
   }, [initialType, initialTrade]);
-
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-slate-500">Loading...</div>
-      </div>
-    );
-  }
-
-  // Redirect contractors away
-  if (isContractor) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full p-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-amber-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Contractors Only</h2>
-          <p className="text-slate-600 mb-6">This section is for customers only. As a contractor, you can view jobs posted by customers.</p>
-          <Button onClick={() => navigate(createPageUrl('Jobs'))} className="bg-amber-500 hover:bg-amber-600">
-            Browse Jobs for Contractors
-          </Button>
-        </Card>
-      </div>
-    );
-  }
-
-  const { data: contractors, isLoading } = useQuery({
-    queryKey: ['contractors'],
-    queryFn: () => base44.entities.Contractor.list('-rating'),
-  });
 
   // Calculate distances when location changes
   const handleLocationChange = async (location) => {
@@ -177,6 +151,33 @@ export default function Contractors() {
   };
 
   const hasActiveFilters = searchQuery || typeFilter || tradeFilter || availableOnly || statusFilter;
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500">Loading...</div>
+      </div>
+    );
+  }
+
+  // Redirect contractors away
+  if (isContractor) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Users className="w-8 h-8 text-amber-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Contractors Only</h2>
+          <p className="text-slate-600 mb-6">This section is for customers only. As a contractor, you can view jobs posted by customers.</p>
+          <Button onClick={() => navigate(createPageUrl('Jobs'))} className="bg-amber-500 hover:bg-amber-600">
+            Browse Jobs for Contractors
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
