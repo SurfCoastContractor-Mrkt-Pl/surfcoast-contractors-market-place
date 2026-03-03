@@ -19,6 +19,7 @@ import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay
 import CustomerWelcomeModal from '@/components/customer/CustomerWelcomeModal';
 import CustomerProfileEditor from '@/components/customer/CustomerProfileEditor';
 import FloatingAgentWidget from '@/components/agent/FloatingAgentWidget';
+import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
