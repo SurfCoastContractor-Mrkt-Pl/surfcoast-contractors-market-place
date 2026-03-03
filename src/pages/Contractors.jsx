@@ -37,7 +37,6 @@ export default function Contractors() {
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
-  const [searchRadius, setSearchRadius] = useState(35);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['contractors'],
@@ -142,8 +141,7 @@ export default function Contractors() {
           {userLocation && (
             <div className="mt-6 p-4 bg-slate-50 rounded-xl">
               <div className="flex items-center justify-between mb-3">
-                <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                  <Slider className="w-4 h-4" />
+                <label className="text-sm font-medium text-slate-700">
                   Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
                 </label>
               </div>
@@ -286,7 +284,7 @@ export default function Contractors() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredContractors.map(contractor => (
               <div key={contractor.id} className="relative">
-                {userLocation && contractor.distance !== undefined && contractor.distance !== null && (
+                {userLocation && contractor.distance !== undefined && (
                   <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
                     {contractor.distance.toFixed(1)} mi
                   </div>
