@@ -358,35 +358,17 @@ export default function BecomeContractor() {
                   </div>
                 </div>
 
-                {/* Face Photo Upload */}
-                <div className="bg-white rounded-xl border border-blue-200 p-4 space-y-3">
-                  <Label className="font-semibold text-slate-800">Clear Face Photo *</Label>
-                  <p className="text-xs text-slate-500">Upload a photo showing your full face, unobstructed. No sunglasses, hats, or masks.</p>
-                  <div className="relative">
-                    {formData.face_photo_url ? (
-                      <div className="relative group w-40 mx-auto">
-                        <img src={formData.face_photo_url} alt="Face Photo" className="w-full aspect-square object-cover rounded-xl border border-slate-200" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">Click to replace</span>
-                        </div>
-                        <input type="file" accept="image/*" onChange={handleFaceUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
-                      </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-blue-300 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
-                        {uploadingFace ? (
-                          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-                        ) : (
-                          <>
-                            <Upload className="w-6 h-6 text-blue-400 mb-2" />
-                            <span className="text-sm text-blue-600 font-medium">Upload Face Photo</span>
-                            <span className="text-xs text-blue-400 mt-1">Must be clear and unobstructed</span>
-                          </>
-                        )}
-                        <input type="file" accept="image/*" onChange={handleFaceUpload} className="hidden" required={!formData.face_photo_url} />
-                      </label>
-                    )}
-                  </div>
-                </div>
+                {/* Face Photo + AI Scan Verification */}
+                <FaceScanVerification
+                  idDocumentUrl={formData.id_document_url}
+                  profilePhotoUrl={formData.photo_url}
+                  onProfilePhotoChange={(url) => {
+                    handleChange('photo_url', url);
+                    handleChange('face_photo_url', url);
+                    setFaceVerified(false);
+                  }}
+                  onVerified={(verified) => setFaceVerified(verified)}
+                />
               </div>
 
               {/* Credential Documents */}
