@@ -8,7 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
+if (!import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY) {
+  console.warn('VITE_STRIPE_PUBLISHABLE_KEY environment variable is not set');
+}
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
