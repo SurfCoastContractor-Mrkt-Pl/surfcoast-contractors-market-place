@@ -239,6 +239,13 @@ export default function AdminDashboard() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="suggestions">
+              Suggestions {suggestions.filter(s => !s.admin_read).length > 0 && (
+                <span className="ml-1.5 bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {suggestions.filter(s => !s.admin_read).length}
+                </span>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="verification">
               ID Verification {unverifiedContractors.length > 0 && (
                 <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
