@@ -66,6 +66,10 @@ export default function BecomeContractor() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!faceVerified) {
+      alert('You must complete face verification before submitting. Your profile photo must match your ID.');
+      return;
+    }
     const data = {
       ...formData,
       years_experience: formData.years_experience ? Number(formData.years_experience) : null,
