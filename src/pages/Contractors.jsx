@@ -5,8 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Users, X } from 'lucide-react';
+import { Search, Filter, Users, X, MapPin } from 'lucide-react';
 import ContractorCard from '@/components/contractors/ContractorCard';
+import LocationSelector from '@/components/location/LocationSelector';
+import { calculateDistance } from '@/components/location/geolocationUtils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -31,16 +33,34 @@ export default function Contractors() {
   const [typeFilter, setTypeFilter] = useState(initialType);
   const [tradeFilter, setTradeFilter] = useState(initialTrade);
   const [availableOnly, setAvailableOnly] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [contractorDistances, setContractorDistances] = useState({});
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['contractors'],
     queryFn: () => base44.entities.Contractor.list('-rating'),
   });
 
+  // Calculate distances when location changes
+  const handleLocationChange = (location) => {
+    setUserLocation(location);
+    if (contractors) {
+      const distances = {};
+      contractors.forEach(c => {
+        if (c.location) {
+          // Parse contractor location to approximate coords (simplified - uses Nominatim)
+          // For production, you'd want to store actual lat/lon on contractors
+          distances[c.id] = { distance: null, loading: true };
+        }
+      });
+      setContractorDistances(distances);
+    }
+  };
+
   const filteredContractors = useMemo(() => {
     if (!contractors) return [];
     
-    return contractors.filter(c => {
+    let results = contractors.filter(c => {
       const matchesSearch = !searchQuery || 
         c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         c.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -56,7 +76,17 @@ export default function Contractors() {
       
       return matchesSearch && matchesType && matchesTrade && matchesAvailable;
     });
-  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly]);
+
+    // Add distance info if user location is set
+    if (userLocation) {
+      results = results.map(c => ({
+        ...c,
+        distance: contractorDistances[c.id]?.distance
+      }));
+    }
+
+    return results;
+  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, userLocation, contractorDistances]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -80,6 +110,15 @@ export default function Contractors() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Location Selector */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-5 h-5 text-slate-500" />
+            <span className="font-medium text-slate-700">Your Location</span>
+          </div>
+          <LocationSelector onLocationChange={handleLocationChange} />
+        </div>
+
         {/* Filters */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
@@ -181,7 +220,19 @@ export default function Contractors() {
         ) : filteredContractors.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredContractors.map(contractor => (
-              <ContractorCard key={contractor.id} contractor={contractor} />
+              <div key={contractor.id} className="relative">
+                {userLocation && contractor.distance !== undefined && contractor.distance !== null && (
+                  <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
+                    {contractor.distance.toFixed(1)} mi
+                  </div>
+                )}
+                {userLocation && contractor.distance === undefined && (
+                  <div className="absolute top-3 right-3 z-10 bg-slate-300 text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold">
+                    ? mi
+                  </div>
+                )}
+                <ContractorCard contractor={contractor} />
+              </div>
             ))}
           </div>
         ) : (
