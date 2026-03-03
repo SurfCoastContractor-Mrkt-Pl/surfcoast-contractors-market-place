@@ -88,7 +88,7 @@ export default function CustomerAccount() {
   });
 
   const isLoading = loadingPayments || loadingDisclaimers || loadingScopes;
-  const hasData = searched && !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0);
+  const hasData = !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0);
 
   const handleDeleteAll = async () => {
     try {
@@ -240,7 +240,7 @@ export default function CustomerAccount() {
                       <Mail className="w-5 h-5 text-slate-600 mt-0.5" />
                       <div>
                         <h3 className="font-semibold text-slate-900">Contact Email</h3>
-                        <p className="text-sm text-slate-500">{searchEmail}</p>
+                        <p className="text-sm text-slate-500">{userEmail}</p>
                       </div>
                     </div>
                     <p className="text-xs text-slate-500 mb-3">All notifications and account communications are sent to this email address. To change it, you'll need to contact support.</p>
@@ -304,7 +304,7 @@ export default function CustomerAccount() {
                                       subject: `✅ Scope Approved: "${s.job_title}"`,
                                       body: `Dear ${s.contractor_name},\n\nThe customer ${s.customer_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
                                     });
-                                    queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] });
+                                    queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] });
                                   }}
                                 >
                                   Approve
@@ -313,7 +313,7 @@ export default function CustomerAccount() {
                                   size="sm" 
                                   variant="outline" 
                                   className="flex-1 border-red-300 text-red-700 hover:bg-red-50 text-xs h-7"
-                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by customer' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }))}
+                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by customer' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }))}
                                 >
                                   Reject
                                 </Button>
@@ -380,7 +380,7 @@ export default function CustomerAccount() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete All Account Data?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will permanently delete all records associated with <strong>{searchEmail}</strong>, including signed disclaimers and payment records. This cannot be undone.
+                      This will permanently delete all records associated with <strong>{userEmail}</strong>, including signed disclaimers and payment records. This cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
