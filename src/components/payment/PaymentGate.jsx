@@ -10,9 +10,23 @@ import { DollarSign, Loader2, CheckCircle, Shield, CreditCard } from 'lucide-rea
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [paid, setPaid] = useState(false);
+  const [alreadyPaid, setAlreadyPaid] = useState(false);
+  const [checkingDuplicate, setCheckingDuplicate] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      // Check for duplicate payment before creating a new one
+      const existing = await base44.entities.Payment.filter({
+        payer_email: data.email,
+        contractor_id: contractorId || '',
+        status: 'confirmed',
+      });
+      if (existing && existing.length > 0) {
+        setAlreadyPaid(true);
+        onPaid(existing[0]);
+        return existing[0];
+      }
+
       const purpose = payerType === 'contractor'
         ? 'Contractor platform access fee'
         : `Customer access to contact contractor ${contractorName}`;
