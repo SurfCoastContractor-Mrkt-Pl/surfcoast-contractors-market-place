@@ -11,7 +11,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut } from 'lucide-react';
+import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail } from 'lucide-react';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
 
 export default function CustomerAccount() {
@@ -119,6 +119,7 @@ export default function CustomerAccount() {
               <TabsList className="w-full">
                 <TabsTrigger value="payments" className="flex-1">Payments</TabsTrigger>
                 <TabsTrigger value="scopes" className="flex-1">Scope of Work</TabsTrigger>
+                <TabsTrigger value="settings" className="flex-1 flex items-center gap-1.5"><Settings className="w-4 h-4 mr-1" /> Settings</TabsTrigger>
                 <TabsTrigger value="old-postings" className="flex-1 flex items-center gap-1.5">
                   <CalendarCheck className="w-4 h-4" /> Old Postings
                   {oldPostings?.length > 0 && (
@@ -155,6 +156,58 @@ export default function CustomerAccount() {
                     <p className="text-sm text-slate-500">No active payments found.</p>
                   )}
                 </Card>
+              </TabsContent>
+
+              <TabsContent value="settings">
+                <div className="space-y-4">
+                  {/* Account Security */}
+                  <Card className="p-6">
+                    <div className="flex items-start gap-3 mb-4">
+                      <Lock className="w-5 h-5 text-slate-600 mt-0.5" />
+                      <div>
+                        <h3 className="font-semibold text-slate-900">Account Security</h3>
+                        <p className="text-sm text-slate-500">Your login credentials are managed by ContractorHub's secure authentication system.</p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline"
+                      onClick={() => base44.auth.redirectToLogin()}
+                      className="w-full"
+                    >
+                      Change Password
+                    </Button>
+                    <p className="text-xs text-slate-400 mt-2">You'll be securely logged out and directed to reset your password.</p>
+                  </Card>
+
+                  {/* Email Preferences */}
+                  <Card className="p-6">
+                    <div className="flex items-start gap-3 mb-4">
+                      <Mail className="w-5 h-5 text-slate-600 mt-0.5" />
+                      <div>
+                        <h3 className="font-semibold text-slate-900">Contact Email</h3>
+                        <p className="text-sm text-slate-500">{searchEmail}</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 mb-3">All notifications and account communications are sent to this email address. To change it, you'll need to contact support.</p>
+                    <Button variant="outline" disabled className="w-full opacity-50">
+                      Update Email (Coming Soon)
+                    </Button>
+                  </Card>
+
+                  {/* Logout */}
+                  <Card className="p-6 bg-slate-50">
+                    <h3 className="font-semibold text-slate-900 mb-2">Session</h3>
+                    <p className="text-sm text-slate-500 mb-4">Log out from your account on this device.</p>
+                    <Button 
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => base44.auth.logout()}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </Card>
+                </div>
               </TabsContent>
 
               <TabsContent value="scopes">
