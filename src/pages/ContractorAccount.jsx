@@ -19,23 +19,41 @@ import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 
 export default function ContractorAccount() {
-  const [searchEmail, setSearchEmail] = useState('');
-  const [searched, setSearched] = useState(false);
   const [closeoutScope, setCloseoutScope] = useState(null);
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState(null);
+
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) {
+          base44.auth.redirectToLogin();
+          return;
+        }
+        setUserEmail(user.email);
+      } catch (error) {
+        base44.auth.redirectToLogin();
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const { data: contractors, isLoading } = useQuery({
-    queryKey: ['my-contractor', searchEmail],
-    queryFn: () => base44.entities.Contractor.filter({ email: searchEmail }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['my-contractor', userEmail],
+    queryFn: () => base44.entities.Contractor.filter({ email: userEmail }),
+    enabled: !!userEmail,
   });
 
   const contractor = contractors?.[0];
 
   const { data: payments } = useQuery({
-    queryKey: ['contractor-payments', searchEmail],
-    queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'contractor' }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['contractor-payments', userEmail],
+    queryFn: () => base44.entities.Payment.filter({ payer_email: userEmail, payer_type: 'contractor' }),
+    enabled: !!userEmail,
   });
 
   const { data: lockedScope } = useQuery({
@@ -67,11 +85,22 @@ export default function ContractorAccount() {
       });
     },
     onSuccess: () => {
-      setSearchEmail('');
-      setSearched(false);
-      queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
+      base44.auth.logout();
     },
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
+            <HardHat className="w-6 h-6 text-slate-900 animate-spin" />
+          </div>
+          <p className="text-slate-600">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -92,50 +121,18 @@ export default function ContractorAccount() {
       <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Auth Buttons */}
-        <div className="flex gap-3">
-          <Button
-            onClick={() => base44.auth.redirectToLogin()}
-            className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-          >
-            Login
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => base44.auth.logout()}
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
-        </div>
+         {/* Auth Button */}
+         <div className="flex gap-3">
+           <Button
+             variant="outline"
+             onClick={() => base44.auth.logout()}
+           >
+             <LogOut className="w-4 h-4 mr-2" />
+             Logout
+           </Button>
+         </div>
 
-        {/* Email Lookup */}
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Look Up Your Profile</h2>
-          <div className="flex gap-3">
-            <Input
-              type="email"
-              placeholder="Enter your registered email"
-              value={searchEmail}
-              onChange={(e) => { setSearchEmail(e.target.value); setSearched(false); }}
-              className="flex-1"
-            />
-            <Button
-              onClick={() => setSearched(true)}
-              disabled={!searchEmail}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              Find
-            </Button>
-          </div>
-        </Card>
-
-        {searched && !isLoading && !contractor && (
-          <Card className="p-6 text-center text-slate-500">No contractor profile found for that email.</Card>
-        )}
-
-        {contractor && (
+         {contractor && (
           <>
             {/* Locked Account Banner */}
             {contractor.account_locked && (
@@ -373,8 +370,13 @@ export default function ContractorAccount() {
               )}
             </Card>
           </>
-        )}
-      </div>
-    </div>
-  );
-}
+          )}
+          {!contractor && (
+          <Card className="p-6 text-center text-slate-500">
+            <p>No contractor profile found. Please contact support if you believe this is an error.</p>
+          </Card>
+          )}
+          </div>
+          </div>
+          );
+          }
