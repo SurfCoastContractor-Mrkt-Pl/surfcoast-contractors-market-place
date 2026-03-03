@@ -62,6 +62,7 @@ import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
 import Success from './pages/Success';
 import ContractorProfile from './pages/ContractorProfile';
+import MyJobs from './pages/MyJobs';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +82,7 @@ export const PAGES = {
     "ProjectManagement": ProjectManagement,
     "Success": Success,
     "ContractorProfile": ContractorProfile,
+    "MyJobs": MyJobs,
 }
 
 export const pagesConfig = {
