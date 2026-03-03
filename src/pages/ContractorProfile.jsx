@@ -284,6 +284,22 @@ export default function ContractorProfile() {
               )}
             </Card>
 
+            {/* Identity Verification Status */}
+            {!contractor.identity_verified && (
+              <Card className="p-5 bg-orange-50 border-orange-200">
+                <div className="flex items-start gap-3">
+                  <ShieldAlert className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-orange-800 mb-1">Identity Not Yet Verified</h4>
+                    <p className="text-xs text-orange-700 leading-relaxed">
+                      This contractor's identity documents have not yet been reviewed by ContractorHub. 
+                      Exercise caution and conduct your own due diligence before engaging.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
+
             {/* Disclaimer Notice */}
             <Card className="p-5 bg-red-50 border-red-200">
               <div className="flex items-start gap-3">
