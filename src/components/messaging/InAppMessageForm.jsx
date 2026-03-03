@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-// Simple rate limiting for message spam prevention
-import { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+// Simple rate limiting for message spam prevention
 const createRateLimiter = (intervalMs) => {
-   let lastTime = 0;
-   return () => {
-     const now = Date.now();
-     if (now - lastTime < intervalMs) {
-       return false;
-     }
-     lastTime = now;
-     return true;
-   };
- };
+  let lastTime = 0;
+  return () => {
+    const now = Date.now();
+    if (now - lastTime < intervalMs) {
+      return false;
+    }
+    lastTime = now;
+    return true;
+  };
+};
+
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
