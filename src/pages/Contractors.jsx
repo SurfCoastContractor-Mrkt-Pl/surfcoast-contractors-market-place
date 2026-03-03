@@ -41,6 +41,10 @@ export default function Contractors() {
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialTrade = urlParams.get('trade') || '';
+  const initialType = urlParams.get('type') || '';
+
   // Check if user is authenticated and contractor type
   useEffect(() => {
     const checkUserType = async () => {
@@ -62,6 +66,11 @@ export default function Contractors() {
     checkUserType();
   }, []);
 
+  useEffect(() => {
+    if (initialType) setTypeFilter(initialType);
+    if (initialTrade) setTradeFilter(initialTrade);
+  }, [initialType, initialTrade]);
+
   // Show loading state
   if (loading) {
     return (
@@ -70,15 +79,6 @@ export default function Contractors() {
       </div>
     );
   }
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const initialTrade = urlParams.get('trade') || '';
-  const initialType = urlParams.get('type') || '';
-
-  useEffect(() => {
-    if (initialType) setTypeFilter(initialType);
-    if (initialTrade) setTradeFilter(initialTrade);
-  }, [initialType, initialTrade]);
 
   // Redirect contractors away
   if (isContractor) {
