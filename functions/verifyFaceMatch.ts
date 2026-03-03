@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
+async function fetchAndReupload(base44, imageUrl) {
+  const res = await fetch(imageUrl);
+  const contentType = res.headers.get('content-type') || 'image/jpeg';
+  const arrayBuffer = await res.arrayBuffer();
+  const blob = new Blob([arrayBuffer], { type: contentType });
+  const result = await base44.asServiceRole.integrations.Core.UploadFile({ file: blob });
+  return result.file_url;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -9,6 +18,12 @@ Deno.serve(async (req) => {
     if (!profile_photo_url || !id_document_url) {
       return Response.json({ error: 'Both profile_photo_url and id_document_url are required.' }, { status: 400 });
     }
+
+    // Re-upload both images through Base44's UploadFile so the LLM can process them
+    const [reuploaded_id_url, reuploaded_profile_url] = await Promise.all([
+      fetchAndReupload(base44, id_document_url),
+      fetchAndReupload(base44, profile_photo_url),
+    ]);
 
     const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
       prompt: `You are a strict identity verification system.
@@ -26,14 +41,14 @@ Rules:
 - The profile photo must be a clear, unobstructed face photo (no sunglasses, masks, heavy filters, etc.)
 - Be strict — a mismatch or unclear comparison means the match should be false
 
-Respond ONLY with valid JSON in this exact format:
+Respond with valid JSON only:
 {
   "match": true or false,
   "confidence": "high" or "medium" or "low",
   "reason": "One brief sentence explaining the decision",
   "issues": []
 }`,
-      file_urls: [id_document_url, profile_photo_url],
+      file_urls: [reuploaded_id_url, reuploaded_profile_url],
       response_json_schema: {
         type: "object",
         properties: {
