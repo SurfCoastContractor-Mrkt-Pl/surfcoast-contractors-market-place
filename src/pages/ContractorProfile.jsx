@@ -325,6 +325,7 @@ export default function ContractorProfile() {
         open={showScopeForm}
         onClose={() => setShowScopeForm(false)}
         contractor={contractor}
+        paymentRecord={paymentRecord}
       />
 
       <PaymentGate
