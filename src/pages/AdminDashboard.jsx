@@ -5,9 +5,11 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   DollarSign, Users, CheckCircle2, Clock, 
-  CreditCard, TrendingUp, ShieldCheck, Download
+  CreditCard, TrendingUp, ShieldCheck, Download,
+  MessageSquare, ShieldAlert, Eye, EyeOff
 } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'contractorhub2024';
