@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // Simple rate limiting for message spam prevention
-const createRateLimiter = (intervalMs) => {
-  let lastTime = 0;
-  return () => {
-    const now = Date.now();
-    if (now - lastTime < intervalMs) {
-      return false;
-    }
-    lastTime = now;
-    return true;
-  };
-};
+import { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+const createRateLimiter = (intervalMs) => {
+   let lastTime = 0;
+   return () => {
+     const now = Date.now();
+     if (now - lastTime < intervalMs) {
+       return false;
+     }
+     lastTime = now;
+     return true;
+   };
+ };
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,43 +51,46 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   }, [thread]);
 
   const sendMutation = useMutation({
-    mutationFn: async () => {
-      // Rate limiting check
-      if (!rateLimiter()) {
-        throw new Error('Please wait before sending another message');
-      }
+     mutationFn: async () => {
+       // Rate limiting check
+       if (!rateLimiter()) {
+         throw new Error('Please wait before sending another message');
+       }
 
-      // Validate email before sending
-      if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        throw new Error('Please provide a valid email address');
-      }
+       // Validate email before sending
+       if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+         throw new Error('Please provide a valid email address');
+       }
 
-      const msg = await base44.entities.Message.create({
-        sender_name: formData.name,
-        sender_email: formData.email,
-        sender_type: senderType,
-        recipient_id: recipientId,
-        recipient_name: recipientName,
-        recipient_email: recipientEmail,
-        subject: formData.subject,
-        body,
-        payment_id: paymentId,
-        read: false,
-      });
+       const msg = await base44.entities.Message.create({
+         sender_name: formData.name,
+         sender_email: formData.email,
+         sender_type: senderType,
+         recipient_id: recipientId,
+         recipient_name: recipientName,
+         recipient_email: recipientEmail,
+         subject: formData.subject,
+         body,
+         payment_id: paymentId,
+         read: false,
+       });
 
-      await base44.integrations.Core.SendEmail({
-        to: recipientEmail,
-        subject: `📬 New Message on ContractorHub${formData.subject ? ': ' + formData.subject : ''}`,
-        body: `Hello ${recipientName},\n\nYou have a new message on ContractorHub.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n\nLog in to ContractorHub to reply. Your contact details remain protected within the platform.\n\nContractorHub\n(Do not reply to this automated email)`,
-      });
+       // Mark sent message as read
+       await base44.entities.Message.update(msg.id, { read: true });
 
-      return msg;
-    },
-    onSuccess: () => {
-      setBody('');
-      queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
-    },
-  });
+       await base44.integrations.Core.SendEmail({
+         to: recipientEmail,
+         subject: `📬 New Message on ContractorHub${formData.subject ? ': ' + formData.subject : ''}`,
+         body: `Hello ${recipientName},\n\nYou have a new message on ContractorHub.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n\nLog in to ContractorHub to reply. Your contact details remain protected within the platform.\n\nContractorHub\n(Do not reply to this automated email)`,
+       });
+
+       return msg;
+     },
+     onSuccess: () => {
+       setBody('');
+       queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
+     },
+   });
 
   const scheduleMutation = useMutation({
     mutationFn: () => base44.entities.Payment.update(paymentId, { status: 'work_scheduled' }),

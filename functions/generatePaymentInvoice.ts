@@ -138,11 +138,12 @@ Deno.serve(async (req) => {
     });
 
     console.log(`Invoice generated: ${invoiceNumber} for payment ${paymentId}`);
+    // Return both HTML and email notification
     return Response.json({ 
       success: true, 
       invoiceNumber, 
       invoiceHTML,
-      pdfUrl: null // PDF generation can be added later if needed
+      message: 'Invoice emailed to ' + payment.payer_email
     });
   } catch (error) {
     console.error('Invoice generation error:', error.message);

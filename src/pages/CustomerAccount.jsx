@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -73,18 +74,23 @@ export default function CustomerAccount() {
   const hasData = searched && !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0);
 
   const handleDeleteAll = async () => {
-    // Use cascading delete function
-    const response = await base44.functions.invoke('deleteAccountCascading', {
-      accountType: 'customer',
-      accountEmail: searchEmail,
-    });
-    
-    if (response.data?.success) {
-      queryClient.invalidateQueries({ queryKey: ['customer-payments'] });
-      queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] });
-      queryClient.invalidateQueries({ queryKey: ['customer-scopes'] });
-      setSearched(false);
-      setSearchEmail('');
+    try {
+      // Use cascading delete function
+      const response = await base44.functions.invoke('deleteAccountCascading', {
+        accountType: 'customer',
+        accountEmail: searchEmail,
+      });
+      
+      if (response.data?.success) {
+        queryClient.invalidateQueries({ queryKey: ['customer-payments'] });
+        queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] });
+        queryClient.invalidateQueries({ queryKey: ['customer-scopes'] });
+        alert(`Successfully deleted ${response.data.deletedRecords} records for ${searchEmail}`);
+        setSearched(false);
+        setSearchEmail('');
+      }
+    } catch (error) {
+      alert(`Error deleting account: ${error.message}`);
     }
   };
 
@@ -280,7 +286,16 @@ export default function CustomerAccount() {
                                 <Button 
                                   size="sm" 
                                   className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs h-7"
-                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'approved' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }))}
+                                  onClick={async () => {
+                                    await base44.entities.ScopeOfWork.update(s.id, { status: 'approved' });
+                                    // Notify contractor of approval
+                                    await base44.integrations.Core.SendEmail({
+                                      to: s.contractor_email,
+                                      subject: `✅ Scope Approved: "${s.job_title}"`,
+                                      body: `Dear ${s.contractor_name},\n\nThe customer ${s.customer_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
+                                    });
+                                    queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] });
+                                  }}
                                 >
                                   Approve
                                 </Button>

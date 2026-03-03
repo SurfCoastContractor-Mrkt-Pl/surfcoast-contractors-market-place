@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,8 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
         ? `After Photo Deadline: ${new Date(new Date(data.agreed_work_date).getTime() + 72 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (72 hours after work date)`
         : '';
 
+      // Notify contractor when customer approves (will be handled separately)
+      
       const emailBody = `
 Dear ${data.customer_name},
 
@@ -262,7 +265,7 @@ This is an official copy of the agreement submitted through ContractorHub.
                 <Input
                   id="cost_amount"
                   type="number"
-                  min="0"
+                  min="0.01"
                   step="0.01"
                   value={formData.cost_amount}
                   onChange={(e) => handleChange('cost_amount', e.target.value)}
@@ -270,6 +273,9 @@ This is an official copy of the agreement submitted through ContractorHub.
                   required
                   className="mt-1.5"
                 />
+                {formData.cost_amount && Number(formData.cost_amount) <= 0 && (
+                  <p className="text-xs text-red-600 mt-1">Cost must be greater than $0</p>
+                )}
               </div>
               {costType === 'hourly' && (
                 <div>
