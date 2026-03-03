@@ -57,7 +57,7 @@ export default function Layout({ children, currentPageName }) {
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <Link to={createPageUrl('PostJob')}>
-                <Button variant={isHome ? "outline" : "outline"} className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
+                <Button variant="outline" className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
                   Post a Job
                 </Button>
               </Link>
@@ -66,6 +66,21 @@ export default function Layout({ children, currentPageName }) {
                   Join as Contractor
                 </Button>
               </Link>
+              <div className="relative group">
+                <Button variant="ghost" className={isHome ? 'text-slate-200 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
+                  <UserCircle className="w-5 h-5 mr-1" />
+                  My Account
+                </Button>
+                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
+                  {accountLinks.map(link => (
+                    <Link key={link.page} to={createPageUrl(link.page)}>
+                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
+                        {link.name}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
