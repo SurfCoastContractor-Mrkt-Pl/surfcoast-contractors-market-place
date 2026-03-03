@@ -16,47 +16,65 @@ import JobCloseout from '@/components/scopeofwork/JobCloseout';
 import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay';
 
 export default function CustomerAccount() {
-  const [searchEmail, setSearchEmail] = useState('');
-  const [searched, setSearched] = useState(false);
   const [closeoutScope, setCloseoutScope] = useState(null);
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState(null);
+
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) {
+          base44.auth.redirectToLogin();
+          return;
+        }
+        setUserEmail(user.email);
+      } catch (error) {
+        base44.auth.redirectToLogin();
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
-    queryKey: ['customer-payments', searchEmail],
-    queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'customer' }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-payments', userEmail],
+    queryFn: () => base44.entities.Payment.filter({ payer_email: userEmail, payer_type: 'customer' }),
+    enabled: !!userEmail,
   });
 
   const { data: disclaimers, isLoading: loadingDisclaimers } = useQuery({
-    queryKey: ['customer-disclaimers', searchEmail],
-    queryFn: () => base44.entities.DisclaimerAcceptance.filter({ customer_email: searchEmail }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-disclaimers', userEmail],
+    queryFn: () => base44.entities.DisclaimerAcceptance.filter({ customer_email: userEmail }),
+    enabled: !!userEmail,
   });
 
   const { data: scopes, isLoading: loadingScopes } = useQuery({
-    queryKey: ['customer-scopes', searchEmail],
-    queryFn: () => base44.entities.ScopeOfWork.filter({ customer_email: searchEmail }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-scopes', userEmail],
+    queryFn: () => base44.entities.ScopeOfWork.filter({ customer_email: userEmail }),
+    enabled: !!userEmail,
   });
 
   // Old postings = payments the customer made that are now work_scheduled
   const { data: oldPostings } = useQuery({
-    queryKey: ['customer-old-postings', searchEmail],
-    queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'customer', status: 'work_scheduled' }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-old-postings', userEmail],
+    queryFn: () => base44.entities.Payment.filter({ payer_email: userEmail, payer_type: 'customer', status: 'work_scheduled' }),
+    enabled: !!userEmail,
   });
 
   const { data: customerProfile } = useQuery({
-    queryKey: ['customer-profile', searchEmail],
-    queryFn: () => base44.entities.CustomerProfile.filter({ email: searchEmail }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-profile', userEmail],
+    queryFn: () => base44.entities.CustomerProfile.filter({ email: userEmail }),
+    enabled: !!userEmail,
     select: (data) => data[0],
   });
 
   const { data: postedJobs } = useQuery({
-    queryKey: ['customer-jobs', searchEmail],
-    queryFn: () => base44.entities.Job.filter({ poster_email: searchEmail }),
-    enabled: searched && !!searchEmail,
+    queryKey: ['customer-jobs', userEmail],
+    queryFn: () => base44.entities.Job.filter({ poster_email: userEmail }),
+    enabled: !!userEmail,
   });
 
   const deleteDisclaimerMutation = useMutation({
@@ -77,21 +95,29 @@ export default function CustomerAccount() {
       // Use cascading delete function
       const response = await base44.functions.invoke('deleteAccountCascading', {
         accountType: 'customer',
-        accountEmail: searchEmail,
+        accountEmail: userEmail,
       });
       
       if (response.data?.success) {
-        queryClient.invalidateQueries({ queryKey: ['customer-payments'] });
-        queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] });
-        queryClient.invalidateQueries({ queryKey: ['customer-scopes'] });
-        alert(`Successfully deleted ${response.data.deletedRecords} records for ${searchEmail}`);
-        setSearched(false);
-        setSearchEmail('');
+        base44.auth.logout();
       }
     } catch (error) {
       alert(`Error deleting account: ${error.message}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
+            <User className="w-6 h-6 text-slate-900 animate-spin" />
+          </div>
+          <p className="text-slate-600">Loading your account...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -109,17 +135,11 @@ export default function CustomerAccount() {
         </div>
       </div>
 
-      <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }); }} />
+      <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-         {/* Auth Buttons */}
+         {/* Auth Button */}
          <div className="flex gap-3">
-           <Button
-             onClick={() => base44.auth.redirectToLogin()}
-             className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-           >
-             Login
-           </Button>
            <Button
              variant="outline"
              onClick={() => base44.auth.logout()}
@@ -129,33 +149,7 @@ export default function CustomerAccount() {
            </Button>
          </div>
 
-         {/* Email Lookup */}
-         <Card className="p-6">
-           <h2 className="text-lg font-semibold text-slate-900 mb-4">Look Up Your Account</h2>
-          <div className="flex gap-3">
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              value={searchEmail}
-              onChange={(e) => { setSearchEmail(e.target.value); setSearched(false); }}
-              className="flex-1"
-            />
-            <Button
-              onClick={() => setSearched(true)}
-              disabled={!searchEmail}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              Find
-            </Button>
-          </div>
-        </Card>
-
-        {searched && !isLoading && !hasData && (
-          <Card className="p-6 text-center text-slate-500">No account data found for that email.</Card>
-        )}
-
-        {hasData && (
+         {hasData && (
           <>
             {/* Customer Profile */}
             {customerProfile && (
@@ -399,8 +393,13 @@ export default function CustomerAccount() {
               </AlertDialog>
             </Card>
           </>
-        )}
-      </div>
-    </div>
-  );
-}
+          )}
+          {!hasData && (
+          <Card className="p-6 text-center text-slate-500">
+            <p>No account data found. Please contact support if you believe this is an error.</p>
+          </Card>
+          )}
+          </div>
+          </div>
+          );
+          }
