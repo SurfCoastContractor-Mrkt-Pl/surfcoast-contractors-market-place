@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import ScopeOfWorkForm from '@/components/scopeofwork/ScopeOfWorkForm';
+import PaymentGate from '@/components/payment/PaymentGate';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -34,6 +35,8 @@ export default function ContractorProfile() {
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
   const [showScopeForm, setShowScopeForm] = useState(false);
+  const [showPaymentGate, setShowPaymentGate] = useState(false);
+  const [customerPaid, setCustomerPaid] = useState(false);
 
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
