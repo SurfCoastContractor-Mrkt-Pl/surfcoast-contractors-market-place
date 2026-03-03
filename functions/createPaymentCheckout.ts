@@ -33,6 +33,7 @@ Deno.serve(async (req) => {
     });
 
     // Use Stripe test mode price for $1.50 one-time payment
+    const origin = req.headers.get('origin') || 'https://localhost:3000';
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -50,8 +51,8 @@ Deno.serve(async (req) => {
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.get('origin')}/success?payment_id=${paymentRecord.id}`,
-      cancel_url: `${req.headers.get('origin')}/cancel`,
+      success_url: `${origin}/success?payment_id=${paymentRecord.id}`,
+      cancel_url: `${origin}/cancel`,
       metadata: {
         base44_app_id: Deno.env.get("BASE44_APP_ID"),
         payment_id: paymentRecord.id,
