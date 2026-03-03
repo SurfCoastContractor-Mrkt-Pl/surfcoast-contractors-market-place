@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail } from 'lucide-react';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
+import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
+import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 
 export default function ContractorAccount() {
   const [searchEmail, setSearchEmail] = useState('');
@@ -145,23 +147,31 @@ export default function ContractorAccount() {
               </div>
             </Card>
 
-            <Tabs defaultValue="fees">
-              <TabsList className="w-full">
-                <TabsTrigger value="fees" className="flex-1">Platform Fees</TabsTrigger>
-                <TabsTrigger value="scopes" className="flex-1 flex items-center gap-1.5">
-                  <FileText className="w-4 h-4" /> Scopes
+            <Tabs defaultValue="profile">
+              <TabsList className="w-full grid-cols-5">
+                <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
+                <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
+                <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
+                  <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
                   {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
-                    <span className="ml-1 bg-amber-100 text-amber-700 text-xs rounded-full px-1.5">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
+                    <span className="ml-0.5 bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
                   )}
                 </TabsTrigger>
-                <TabsTrigger value="settings" className="flex-1 flex items-center gap-1.5"><Settings className="w-4 h-4 mr-1" /> Settings</TabsTrigger>
-                <TabsTrigger value="past-work" className="flex-1 flex items-center gap-1.5">
-                  <CalendarCheck className="w-4 h-4" /> Past Work
+                <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
+                <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5">
+                  <CalendarCheck className="w-3 h-3 sm:w-4 sm:h-4" />Work
                   {pastWorkPayments?.length > 0 && (
-                    <span className="ml-1 bg-green-100 text-green-700 text-xs rounded-full px-1.5">{pastWorkPayments.length}</span>
+                    <span className="ml-0.5 bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
                   )}
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="profile">
+                <div className="space-y-4">
+                  <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
+                  <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
+                </div>
+              </TabsContent>
 
               <TabsContent value="scopes">
                 <Card className="p-6">
