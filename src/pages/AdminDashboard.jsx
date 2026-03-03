@@ -26,6 +26,25 @@ export default function AdminDashboard() {
     enabled: authed,
   });
 
+  const { data: messages = [], isLoading: messagesLoading } = useQuery({
+    queryKey: ['all-messages'],
+    queryFn: () => base44.entities.Message.list('-created_date'),
+    enabled: authed,
+  });
+
+  const { data: contractors = [] } = useQuery({
+    queryKey: ['admin-contractors'],
+    queryFn: () => base44.entities.Contractor.list('-created_date'),
+    enabled: authed,
+  });
+
+  const unverifiedContractors = contractors.filter(c => !c.identity_verified);
+
+  const verifyMutation = useMutation({
+    mutationFn: (id) => base44.entities.Contractor.update(id, { identity_verified: true }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-contractors'] }),
+  });
+
   const confirmMutation = useMutation({
     mutationFn: (id) => base44.entities.Payment.update(id, { status: 'confirmed' }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all-payments'] }),
