@@ -343,6 +343,16 @@ export default function ContractorProfile() {
         contractor={contractor}
       />
 
+      <PaymentGate
+        open={showPaymentGate}
+        onClose={() => setShowPaymentGate(false)}
+        onPaid={() => { setCustomerPaid(true); setShowPaymentGate(false); }}
+        payerType="customer"
+        contractorId={contractor?.id}
+        contractorEmail={contractor?.email}
+        contractorName={contractor?.name}
+      />
+
       <DisclaimerModal
         open={showDisclaimer}
         onClose={() => setShowDisclaimer(false)}
