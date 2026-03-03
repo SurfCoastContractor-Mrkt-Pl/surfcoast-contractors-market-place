@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -32,7 +32,7 @@ export default function Layout({ children, currentPageName }) {
 
   const isHome = currentPageName === 'Home';
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checkUserType = async () => {
       try {
         const user = await base44.auth.me();
