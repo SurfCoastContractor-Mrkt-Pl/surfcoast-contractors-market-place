@@ -7,8 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Briefcase, X, Plus } from 'lucide-react';
+import { Search, Filter, Briefcase, X, Plus, MapPin } from 'lucide-react';
 import JobCard from '@/components/jobs/JobCard';
+import LocationSelector from '@/components/location/LocationSelector';
+import { calculateDistance } from '@/components/location/geolocationUtils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -29,6 +31,8 @@ export default function Jobs() {
   const [typeFilter, setTypeFilter] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
   const [urgencyFilter, setUrgencyFilter] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [jobDistances, setJobDistances] = useState({});
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs'],
@@ -74,6 +78,19 @@ export default function Jobs() {
     });
   }, [jobs, scheduledJobIds, searchQuery, typeFilter, tradeFilter, urgencyFilter]);
 
+  const handleLocationChange = (location) => {
+    setUserLocation(location);
+    if (jobs) {
+      const distances = {};
+      jobs.forEach(j => {
+        if (j.location) {
+          distances[j.id] = { distance: null, loading: true };
+        }
+      });
+      setJobDistances(distances);
+    }
+  };
+
   const clearFilters = () => {
     setSearchQuery('');
     setTypeFilter('');
@@ -106,6 +123,15 @@ export default function Jobs() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Location Selector */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-5 h-5 text-slate-500" />
+            <span className="font-medium text-slate-700">Your Location</span>
+          </div>
+          <LocationSelector onLocationChange={handleLocationChange} />
+        </div>
+
         {/* Filters */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
@@ -213,7 +239,19 @@ export default function Jobs() {
         ) : filteredJobs.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-6">
             {filteredJobs.map(job => (
-              <JobCard key={job.id} job={job} />
+              <div key={job.id} className="relative">
+                {userLocation && jobDistances[job.id]?.distance !== undefined && jobDistances[job.id]?.distance !== null && (
+                  <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
+                    {jobDistances[job.id].distance.toFixed(1)} mi
+                  </div>
+                )}
+                {userLocation && (jobDistances[job.id]?.distance === undefined || jobDistances[job.id]?.distance === null) && (
+                  <div className="absolute top-3 right-3 z-10 bg-slate-300 text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold">
+                    ? mi
+                  </div>
+                )}
+                <JobCard job={job} />
+              </div>
             ))}
           </div>
         ) : (
