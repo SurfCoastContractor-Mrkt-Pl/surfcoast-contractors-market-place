@@ -52,7 +52,6 @@ import AgentDemo from './pages/AgentDemo';
 import BecomeContractor from './pages/BecomeContractor';
 import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
-import ContractorProfile from './pages/ContractorProfile';
 import Contractors from './pages/Contractors';
 import CustomerAccount from './pages/CustomerAccount';
 import Home from './pages/Home';
@@ -71,7 +70,6 @@ export const PAGES = {
     "BecomeContractor": BecomeContractor,
     "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
-    "ContractorProfile": ContractorProfile,
     "Contractors": Contractors,
     "CustomerAccount": CustomerAccount,
     "Home": Home,
