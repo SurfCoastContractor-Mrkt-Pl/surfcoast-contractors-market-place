@@ -13,8 +13,8 @@ I'm your AI Assistant, here to help you get started. Let me tell you what we do:
 
 Whether you're a contractor looking for jobs or a customer seeking trusted professionals, we make it easy to find, communicate, and complete projects.
 
-**Important: One-Time Platform Fee**
-There's a simple $1.50 one-time platform access fee to unlock messaging and communication. That's it — no hidden costs, no additional fees, no subscription charges.
+**Important: Platform Communication Fee**
+There's a simple $1.50 fee per project to unlock messaging and communication with contractors or customers. The fee applies each time you communicate on a new project — no hidden costs, no subscriptions.
 
 How can I help you today?
 • 🔧 Sign up as a Contractor
