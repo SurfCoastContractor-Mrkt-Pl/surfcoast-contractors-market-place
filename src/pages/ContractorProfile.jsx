@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { 
   ArrowLeft, Star, MapPin, Clock, Phone, Mail, 
-  CheckCircle2, Calendar, DollarSign, ExternalLink, ShieldAlert, AlertCircle, FileText
+  CheckCircle2, DollarSign, ShieldAlert, AlertCircle, FileText
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import ScopeOfWorkForm from '@/components/scopeofwork/ScopeOfWorkForm';
