@@ -108,14 +108,7 @@ export default function BecomeContractor() {
     setUploadingId(false);
   };
 
-  const handleFaceUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploadingFace(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    handleChange('face_photo_url', file_url);
-    setUploadingFace(false);
-  };
+
 
   if (success) {
     return (
