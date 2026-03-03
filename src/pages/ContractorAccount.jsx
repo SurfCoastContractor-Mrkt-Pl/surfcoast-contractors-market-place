@@ -152,6 +152,12 @@ export default function ContractorAccount() {
             <Tabs defaultValue="fees">
               <TabsList className="w-full">
                 <TabsTrigger value="fees" className="flex-1">Platform Fees</TabsTrigger>
+                <TabsTrigger value="scopes" className="flex-1 flex items-center gap-1.5">
+                  <FileText className="w-4 h-4" /> Scopes
+                  {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
+                    <span className="ml-1 bg-amber-100 text-amber-700 text-xs rounded-full px-1.5">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
+                  )}
+                </TabsTrigger>
                 <TabsTrigger value="past-work" className="flex-1 flex items-center gap-1.5">
                   <CalendarCheck className="w-4 h-4" /> Past Work
                   {pastWorkPayments?.length > 0 && (
