@@ -59,18 +59,50 @@ export default function Terms() {
             </div>
           </section>
 
+          {/* Platform Disclaimer */}
+          <section>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Platform Disclaimer</h2>
+            <div className="space-y-4 text-slate-700">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="font-semibold text-slate-900 mb-2">Important Notice:</p>
+                <p>
+                  SurfCoast Contractor Marketplace is a platform that connects contractors with customers. We are not responsible for the quality, safety, legality, or outcome of any work performed through this platform. All work is conducted between independent parties at their own risk.
+                </p>
+              </div>
+              <h3 className="font-semibold text-slate-900 mt-6">Contractors:</h3>
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li>You are solely responsible for the work you perform and its quality</li>
+                <li>You must comply with all applicable laws, building codes, and safety regulations</li>
+                <li>You are responsible for obtaining necessary licenses, permits, and insurance</li>
+                <li>You warrant that you have the authority and qualifications to perform advertised services</li>
+                <li>You agree to complete work professionally and on time</li>
+              </ul>
+              <h3 className="font-semibold text-slate-900 mt-4">Customers:</h3>
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li>You are responsible for vetting contractors before hiring</li>
+                <li>You should request proof of licensing, insurance, and references</li>
+                <li>You agree to communicate clearly about project scope and expectations</li>
+                <li>Disputes over work quality or payment are between you and the contractor</li>
+              </ul>
+            </div>
+          </section>
+
           {/* Liability Disclaimer */}
           <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Liability Disclaimer</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Limitation of Liability</h2>
             <div className="space-y-4 text-slate-700">
               <p>
-                SurfCoast provides this platform as-is. We do not guarantee the quality, safety, or legality of work performed by contractors, nor do we guarantee customer payment or job completion.
+                SurfCoast is not liable for:
               </p>
-              <p>
-                We are not liable for disputes between users, injuries, property damage, breach of contract, or any other claims arising from your use of the platform. Contractors and customers use this service at their own risk and should conduct due diligence.
-              </p>
-              <p>
-                By accepting our disclaimer, you agree to hold SurfCoast harmless from any claims or damages.
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li>Injuries, property damage, or accidents related to work performed</li>
+                <li>Disputes, payment disagreements, or contract breaches between users</li>
+                <li>Non-completion or poor quality of work</li>
+                <li>Fraudulent, deceptive, or illegal conduct by users</li>
+                <li>Loss of data, account access, or platform downtime</li>
+              </ul>
+              <p className="mt-4 font-semibold">
+                By using SurfCoast, you accept full responsibility for your actions and agree to hold the platform harmless from all claims and damages.
               </p>
             </div>
           </section>
