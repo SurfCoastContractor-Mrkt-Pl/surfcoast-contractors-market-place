@@ -111,61 +111,104 @@ export default function CustomerAccount() {
 
         {hasData && (
           <>
-            {/* Payment History */}
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Payments</h2>
-              {payments?.length > 0 ? (
-                <div className="space-y-3">
-                  {payments.map(p => (
-                    <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        {p.status === 'confirmed' ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-600" />
-                        ) : (
-                          <Clock className="w-5 h-5 text-amber-500" />
-                        )}
-                        <div>
-                          <div className="text-sm font-medium text-slate-800">${p.amount?.toFixed(2)} — {p.purpose}</div>
-                          <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
-                        </div>
-                      </div>
-                      <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
-                        {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-slate-500">No payments found.</p>
-              )}
-            </Card>
+            <Tabs defaultValue="payments">
+              <TabsList className="w-full">
+                <TabsTrigger value="payments" className="flex-1">Payments</TabsTrigger>
+                <TabsTrigger value="scopes" className="flex-1">Scope of Work</TabsTrigger>
+                <TabsTrigger value="old-postings" className="flex-1 flex items-center gap-1.5">
+                  <CalendarCheck className="w-4 h-4" /> Old Postings
+                  {oldPostings?.length > 0 && (
+                    <span className="ml-1 bg-green-100 text-green-700 text-xs rounded-full px-1.5">{oldPostings.length}</span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Scope of Work History */}
-            {scopes?.length > 0 && (
-              <Card className="p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">Scope of Work Agreements</h2>
-                <div className="space-y-3">
-                  {scopes.map(s => (
-                    <div key={s.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-amber-500" />
-                        <div>
-                          <div className="text-sm font-medium text-slate-800">{s.job_title}</div>
-                          <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : `$${s.cost_amount}/hr`}</div>
+              <TabsContent value="payments">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Payments</h2>
+                  {payments?.filter(p => p.status !== 'work_scheduled').length > 0 ? (
+                    <div className="space-y-3">
+                      {payments.filter(p => p.status !== 'work_scheduled').map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            {p.status === 'confirmed' ? (
+                              <CheckCircle2 className="w-5 h-5 text-green-600" />
+                            ) : (
+                              <Clock className="w-5 h-5 text-amber-500" />
+                            )}
+                            <div>
+                              <div className="text-sm font-medium text-slate-800">${p.amount?.toFixed(2)} — {p.purpose}</div>
+                              <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
+                            </div>
+                          </div>
+                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
+                            {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                          </Badge>
                         </div>
-                      </div>
-                      <Badge className={
-                        s.status === 'approved' ? 'bg-green-100 text-green-700' :
-                        s.status === 'rejected' ? 'bg-red-100 text-red-700' :
-                        'bg-amber-100 text-amber-700'
-                      }>
-                        {s.status === 'pending_approval' ? 'Pending' : s.status}
-                      </Badge>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </Card>
-            )}
+                  ) : (
+                    <p className="text-sm text-slate-500">No active payments found.</p>
+                  )}
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="scopes">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Scope of Work Agreements</h2>
+                  {scopes?.length > 0 ? (
+                    <div className="space-y-3">
+                      {scopes.map(s => (
+                        <div key={s.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            <FileText className="w-5 h-5 text-amber-500" />
+                            <div>
+                              <div className="text-sm font-medium text-slate-800">{s.job_title}</div>
+                              <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : `$${s.cost_amount}/hr`}</div>
+                            </div>
+                          </div>
+                          <Badge className={
+                            s.status === 'approved' ? 'bg-green-100 text-green-700' :
+                            s.status === 'rejected' ? 'bg-red-100 text-red-700' :
+                            'bg-amber-100 text-amber-700'
+                          }>
+                            {s.status === 'pending_approval' ? 'Pending' : s.status}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500">No scope of work agreements found.</p>
+                  )}
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="old-postings">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-1">Old Postings</h2>
+                  <p className="text-xs text-slate-500 mb-4">Contractor engagements that have been marked as "Work Scheduled" — these jobs are no longer publicly listed.</p>
+                  {oldPostings?.length > 0 ? (
+                    <div className="space-y-3">
+                      {oldPostings.map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            <CalendarCheck className="w-5 h-5 text-green-600 shrink-0" />
+                            <div>
+                              <div className="text-sm font-medium text-slate-800">{p.purpose || 'Contractor engagement'}</div>
+                              <div className="text-xs text-slate-500">Contractor email: {p.contractor_email || 'N/A'}</div>
+                              <div className="text-xs text-slate-400">{new Date(p.updated_date || p.created_date).toLocaleDateString()}</div>
+                            </div>
+                          </div>
+                          <Badge className="bg-green-100 text-green-700">Work Scheduled</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500">No old postings yet.</p>
+                  )}
+                </Card>
+              </TabsContent>
+            </Tabs>
 
             {/* Delete Profile */}
             <Card className="p-6 border-red-200 bg-red-50">
