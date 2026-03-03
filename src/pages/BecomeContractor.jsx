@@ -415,10 +415,38 @@ export default function BecomeContractor() {
                   </div>
                 </div>
 
+                {/* Face Photo Upload */}
+                <div className="bg-white rounded-xl border border-blue-200 p-4 space-y-3">
+                  <Label className="font-semibold text-slate-800">Clear Face Photo *</Label>
+                  <p className="text-xs text-slate-500">Upload an unobstructed photo of your face for identity verification.</p>
+                  <div className="relative">
+                    {formData.face_photo_url ? (
+                      <div className="relative group">
+                        <img src={formData.face_photo_url} alt="Face Photo" className="w-full max-h-48 object-contain rounded-lg border border-slate-200 bg-slate-50" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <span className="text-white text-sm font-medium">Click to replace</span>
+                        </div>
+                        <input type="file" accept="image/*" onChange={handleFaceUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-blue-300 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
+                        {uploadingFace ? (
+                          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+                        ) : (
+                          <>
+                            <Upload className="w-6 h-6 text-blue-400 mb-2" />
+                            <span className="text-sm text-blue-600 font-medium">Upload Face Photo</span>
+                            <span className="text-xs text-blue-400 mt-1">JPG, PNG accepted</span>
+                          </>
+                        )}
+                        <input type="file" accept="image/*" onChange={handleFaceUpload} className="hidden" required={!formData.face_photo_url} />
+                      </label>
+                    )}
+                  </div>
+                </div>
+                </div>
 
-              </div>
-
-              {/* Credential Documents */}
+                {/* Credential Documents */}
               <div>
                 <Label className="text-base font-semibold text-slate-900 block mb-1">Credential Documents</Label>
                 <p className="text-sm text-slate-500 mb-3">
