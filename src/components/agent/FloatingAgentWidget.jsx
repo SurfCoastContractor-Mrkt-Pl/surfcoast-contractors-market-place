@@ -6,25 +6,25 @@ import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-re
 
 const GREETING_MESSAGE = `👋 Welcome to ContractorHub!
 
-I'm your AI Assistant, here to help you get started.
+I'm your AI Assistant. Let me help you complete your profile setup.
 
-**ContractorHub connects skilled construction contractors with customers who need quality work done.**
+**Here's what we'll do:**
+✓ Help you fill in your customer profile
+✓ Explain how to browse contractors or post a job
+✓ Answer any questions about platform fees
 
-**How would you like to access contractors?**
+**Platform Fees:**
+💬 $1.50 per contractor (unlimited messaging until work starts)
+📋 $0.75 for a quick quote request
+⭐ $20/month unlimited messaging
 
-**💬 Single Message Session** — $1.50
-Unlock one contractor's contact details & unlimited messaging until work is scheduled.
+Ready to get started? What would you like help with first?`;
 
-**📋 Quick Quote Request** — $0.75
-Get a written estimate without back-and-forth conversation.
-
-**⭐ Unlimited Monthly** — $20/month
-Message unlimited contractors for 30 days. Best for multiple projects.
-
-How can I help you today?
-• 🔧 Sign up as a Contractor
-• 👤 Sign up as a Customer
-• ❓ Ask about pricing`;
+const SETUP_GUIDANCE = {
+  setupProfile: "I can help you complete your customer profile. Let's start with your location so we can find contractors near you. What city or area are you in?",
+  browseContractors: "Great! To find contractors, I'll need to know: 1) What type of work do you need? 2) What's your location? 3) What's your budget range?",
+  postJob: "To post a job, you'll need: 1) Job title and description 2) Your location 3) Budget (hourly or fixed) 4) Timeline 5) 5+ before photos\n\nWhich would you like help with?",
+};
 
 export default function FloatingAgentWidget({ open, onClose }) {
   const [messages, setMessages] = useState([
