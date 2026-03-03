@@ -10,6 +10,11 @@ const navLinks = [
   { name: 'Browse Jobs', page: 'Jobs', icon: Briefcase },
 ];
 
+const accountLinks = [
+  { name: 'My Account (Customer)', page: 'CustomerAccount' },
+  { name: 'My Account (Contractor)', page: 'ContractorAccount' },
+];
+
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
