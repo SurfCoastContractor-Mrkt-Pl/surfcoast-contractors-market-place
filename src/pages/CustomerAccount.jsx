@@ -97,7 +97,7 @@ export default function CustomerAccount() {
   });
 
   const isLoading = loadingPayments || loadingDisclaimers || loadingScopes;
-  const hasData = !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0);
+  const hasData = !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0 || customerProfile);
 
   const handleDeleteAll = async () => {
     try {
@@ -152,6 +152,10 @@ export default function CustomerAccount() {
           setAgentOpen(true);
         }}
       />
+
+      {agentOpen && (
+        <div className="fixed inset-0 z-30" />
+      )}
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
