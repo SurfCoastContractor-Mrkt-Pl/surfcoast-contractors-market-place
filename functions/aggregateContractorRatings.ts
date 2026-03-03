@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
         if (!ratingsByContractor[review.contractor_id]) {
           ratingsByContractor[review.contractor_id] = { ratings: [], count: 0 };
         }
-        ratingsByContractor[review.contractor_id].ratings.push(review.rating);
+        ratingsByContractor[review.contractor_id].ratings.push(review.overall_rating);
         ratingsByContractor[review.contractor_id].count += 1;
       }
     });

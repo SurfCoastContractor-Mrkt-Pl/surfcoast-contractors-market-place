@@ -40,8 +40,14 @@ Deno.serve(async (req) => {
       contractor_name: scope.contractor_name,
       reviewer_name: scope.customer_name,
       reviewer_email: scope.customer_email,
+      reviewer_type: 'customer',
+      scope_id: scopeId,
       job_title: scope.job_title,
-      rating: 5, // Default to 5, customer can update
+      overall_rating: 5, // Default to 5, customer can update
+      quality_rating: 5,
+      punctuality_rating: 5,
+      communication_rating: 5,
+      professionalism_rating: 5,
       comment: 'Pending review completion',
       verified: false, // Will be true once customer confirms
       work_date: scope.agreed_work_date || new Date().toISOString().split('T')[0],
