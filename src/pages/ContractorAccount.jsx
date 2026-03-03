@@ -32,6 +32,15 @@ export default function ContractorAccount() {
     enabled: searched && !!searchEmail,
   });
 
+  const { data: lockedScope } = useQuery({
+    queryKey: ['locked-scope', contractor?.locked_scope_id],
+    queryFn: async () => {
+      const results = await base44.entities.ScopeOfWork.filter({ id: contractor.locked_scope_id });
+      return results[0];
+    },
+    enabled: !!contractor?.locked_scope_id && !!contractor?.account_locked,
+  });
+
   // Fetch work_scheduled payments where this contractor was involved (as recipient)
   const { data: pastWorkPayments } = useQuery({
     queryKey: ['contractor-past-work', contractor?.id],
