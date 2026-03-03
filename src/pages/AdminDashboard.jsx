@@ -38,6 +38,17 @@ export default function AdminDashboard() {
     enabled: authed,
   });
 
+  const { data: suggestions = [], isLoading: suggestionsLoading } = useQuery({
+    queryKey: ['admin-suggestions'],
+    queryFn: () => base44.entities.Suggestion.list('-created_date'),
+    enabled: authed,
+  });
+
+  const markReadMutation = useMutation({
+    mutationFn: (id) => base44.entities.Suggestion.update(id, { admin_read: true }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-suggestions'] }),
+  });
+
   const unverifiedContractors = contractors.filter(c => !c.identity_verified);
 
   const verifyMutation = useMutation({
