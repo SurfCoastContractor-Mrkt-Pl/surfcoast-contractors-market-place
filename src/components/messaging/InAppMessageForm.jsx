@@ -1,4 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+// Simple rate limiting for message spam prevention
+const createRateLimiter = (intervalMs) => {
+  let lastTime = 0;
+  return () => {
+    const now = Date.now();
+    if (now - lastTime < intervalMs) {
+      return false;
+    }
+    lastTime = now;
+    return true;
+  };
+};
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -10,10 +23,11 @@ import { MessageSquare, Loader2, Lock, Send, CalendarCheck, AlertTriangle } from
 
 export default function InAppMessageForm({ open, onClose, paymentRecord, senderType, recipientId, recipientName, recipientEmail }) {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '' });
-  const [body, setBody] = useState('');
-  const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
-  const queryClient = useQueryClient();
-  const bottomRef = useRef(null);
+   const [body, setBody] = useState('');
+   const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
+   const queryClient = useQueryClient();
+   const bottomRef = useRef(null);
+   const rateLimiter = useRef(createRateLimiter(1000)).current; // 1 second between messages
 
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
@@ -34,18 +48,12 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [thread]);
 
-  // Rate limiting: prevent spam by tracking last message time
-  const lastMessageTime = useRef(0);
-  const RATE_LIMIT_MS = 1000; // 1 second between messages
-
   const sendMutation = useMutation({
     mutationFn: async () => {
       // Rate limiting check
-      const now = Date.now();
-      if (now - lastMessageTime.current < RATE_LIMIT_MS) {
+      if (!rateLimiter()) {
         throw new Error('Please wait before sending another message');
       }
-      lastMessageTime.current = now;
 
       // Validate email before sending
       if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {

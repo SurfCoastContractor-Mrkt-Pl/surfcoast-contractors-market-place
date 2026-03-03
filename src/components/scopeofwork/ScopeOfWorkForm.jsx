@@ -212,41 +212,53 @@ This is an official copy of the agreement submitted through ContractorHub.
             </div>
 
             {/* Cost Type */}
-            <div>
-              <Label>Cost Type *</Label>
-              <div className="flex gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={() => setCostType('fixed')}
-                  className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                    costType === 'fixed'
-                      ? 'border-amber-500 bg-amber-50 text-amber-800'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                  }`}
-                >
-                  <DollarSign className="w-4 h-4" />
-                  Fixed Total Cost
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCostType('hourly')}
-                  className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                    costType === 'hourly'
-                      ? 'border-amber-500 bg-amber-50 text-amber-800'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                  }`}
-                >
-                  <DollarSign className="w-4 h-4" />
-                  Hourly Rate
-                </button>
-              </div>
-            </div>
+             <div>
+               <Label>Cost Type *</Label>
+               <div className="flex gap-3 mt-2 flex-wrap">
+                 <button
+                   type="button"
+                   onClick={() => setCostType('fixed')}
+                   className={`flex-1 min-w-[140px] flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                     costType === 'fixed'
+                       ? 'border-amber-500 bg-amber-50 text-amber-800'
+                       : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                   }`}
+                 >
+                   <DollarSign className="w-4 h-4" />
+                   Fixed Total
+                 </button>
+                 <button
+                   type="button"
+                   onClick={() => setCostType('hourly')}
+                   className={`flex-1 min-w-[140px] flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                     costType === 'hourly'
+                       ? 'border-amber-500 bg-amber-50 text-amber-800'
+                       : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                   }`}
+                 >
+                   <DollarSign className="w-4 h-4" />
+                   Hourly Rate
+                 </button>
+                 <button
+                   type="button"
+                   onClick={() => setCostType('quote')}
+                   className={`flex-1 min-w-[140px] flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                     costType === 'quote'
+                       ? 'border-amber-500 bg-amber-50 text-amber-800'
+                       : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                   }`}
+                 >
+                   <DollarSign className="w-4 h-4" />
+                   Quote
+                 </button>
+               </div>
+             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="cost_amount">
-                  {costType === 'fixed' ? 'Fixed Total Cost ($) *' : 'Hourly Rate ($/hr) *'}
-                </Label>
+                    {costType === 'fixed' ? 'Fixed Total Cost ($) *' : costType === 'hourly' ? 'Hourly Rate ($/hr) *' : 'Estimated Quote ($) *'}
+                  </Label>
                 <Input
                   id="cost_amount"
                   type="number"
