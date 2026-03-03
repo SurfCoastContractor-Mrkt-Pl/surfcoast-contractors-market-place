@@ -73,9 +73,10 @@ export default function AgentChatModal({ open, onClose }) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[600px] flex flex-col p-0">
+      <DialogContent className="max-w-2xl h-[600px] flex flex-col p-0" aria-describedby="agent-chat-description">
         <DialogHeader className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-lg p-4 border-0">
-          <DialogTitle className="text-white">ContractorHub Assistant</DialogTitle>
+          <DialogTitle className="text-white">SurfCoast Assistant</DialogTitle>
+          <p id="agent-chat-description" className="sr-only">AI assistant chat for getting help with the platform</p>
         </DialogHeader>
 
         {/* Messages */}
