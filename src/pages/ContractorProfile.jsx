@@ -41,6 +41,18 @@ export default function ContractorProfile() {
   const [paymentRecord, setPaymentRecord] = useState(null);
   const [showMessageForm, setShowMessageForm] = useState(false);
 
+  // Re-fetch payment record to get latest status (e.g. work_scheduled)
+  const { data: latestPayment } = useQuery({
+    queryKey: ['payment-status', paymentRecord?.id],
+    queryFn: () => base44.entities.Payment.filter({ id: paymentRecord.id }),
+    enabled: !!paymentRecord?.id,
+    select: (data) => data[0],
+    refetchInterval: showMessageForm ? 10000 : false,
+  });
+
+  const activePayment = latestPayment || paymentRecord;
+  const isWorkScheduled = activePayment?.status === 'work_scheduled';
+
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
     queryFn: async () => {
