@@ -59,6 +59,7 @@ import Jobs from './pages/Jobs';
 import PostJob from './pages/PostJob';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
+import PaymentHistory from './pages/PaymentHistory';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +76,7 @@ export const PAGES = {
     "PostJob": PostJob,
     "Success": Success,
     "Cancel": Cancel,
+    "PaymentHistory": PaymentHistory,
 }
 
 export const pagesConfig = {
