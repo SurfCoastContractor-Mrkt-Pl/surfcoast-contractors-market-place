@@ -19,9 +19,13 @@ const getNavLinks = (isContractor) => {
   return baseLinks;
 };
 
-const accountLinks = [
-  { name: 'My Account (Customer)', page: 'CustomerAccount' },
-  { name: 'My Account (Contractor)', page: 'ContractorAccount' },
+const customerLinks = [
+  { name: 'My Account', page: 'CustomerAccount' },
+  { name: 'My Job Postings', page: 'MyJobs' },
+];
+
+const contractorLinks = [
+  { name: 'My Account', page: 'ContractorAccount' },
 ];
 
 export default function Layout({ children, currentPageName }) {
@@ -100,19 +104,19 @@ export default function Layout({ children, currentPageName }) {
                 </Button>
               </Link>
               <div className="relative group">
-                <Button variant="ghost" className={isHome ? 'text-slate-200 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
-                  <UserCircle className="w-5 h-5 mr-1" />
-                  My Account
-                </Button>
-                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
-                  {accountLinks.map(link => (
-                    <Link key={link.page} to={createPageUrl(link.page)}>
-                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
-                        {link.name}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+               <Button variant="ghost" className={isHome ? 'text-slate-200 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
+                 <UserCircle className="w-5 h-5 mr-1" />
+                 My Account
+               </Button>
+               <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
+                 {(isContractor ? contractorLinks : customerLinks).map(link => (
+                   <Link key={link.page} to={createPageUrl(link.page)}>
+                     <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
+                       {link.name}
+                     </div>
+                   </Link>
+                 ))}
+               </div>
               </div>
             </div>
 
@@ -163,7 +167,7 @@ export default function Layout({ children, currentPageName }) {
                   </Button>
                 </Link>
                 <div className="border-t border-slate-100 pt-2 space-y-1">
-                  {accountLinks.map(link => (
+                  {(isContractor ? contractorLinks : customerLinks).map(link => (
                     <Link key={link.page} to={createPageUrl(link.page)} onClick={() => setMobileMenuOpen(false)}>
                       <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                         <UserCircle className="w-5 h-5" />
@@ -214,13 +218,14 @@ export default function Layout({ children, currentPageName }) {
               </ul>
             </div>
             {isContractor === false && (
-              <div>
-                <h4 className="font-semibold mb-4">For Clients</h4>
-                <ul className="space-y-2 text-slate-400">
-                  <li><Link to={createPageUrl('Contractors')} className="hover:text-white">Find Contractors</Link></li>
-                  <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
-                </ul>
-              </div>
+             <div>
+               <h4 className="font-semibold mb-4">For Clients</h4>
+               <ul className="space-y-2 text-slate-400">
+                 <li><Link to={createPageUrl('Contractors')} className="hover:text-white">Find Contractors</Link></li>
+                 <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
+                 <li><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
+               </ul>
+             </div>
             )}
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
