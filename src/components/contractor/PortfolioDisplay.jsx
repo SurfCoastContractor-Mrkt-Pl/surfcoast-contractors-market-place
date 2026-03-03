@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, ImageIcon, Calendar } from 'lucide-react';
-import PortfolioManager from './PortfolioManager';
+import PortfolioManager from '../contractors/PortfolioManager';
 
 const TRADE_LABELS = {
   electrician: 'Electrician', plumber: 'Plumber', carpenter: 'Carpenter',
