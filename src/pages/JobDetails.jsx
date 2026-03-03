@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { 
   ArrowLeft, MapPin, Calendar, DollarSign, Clock, 
-  User, AlertCircle, ShieldAlert, MessageSquare
+  User, AlertCircle, ShieldAlert, MessageSquare, Camera
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import PaymentGate from '@/components/payment/PaymentGate';
