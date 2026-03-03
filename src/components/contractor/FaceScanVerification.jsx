@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Upload, Loader2, CheckCircle2, XCircle, ScanFace, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export default function FaceScanVerification({ idDocumentUrl, onVerified, profilePhotoUrl, onProfilePhotoChange }) {
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [scanning, setScanning] = useState(false);
-  const [result, setResult] = useState(null); // { match, confidence, reason, issues }
-  const [localPhotoUrl, setLocalPhotoUrl] = useState(profilePhotoUrl || '');
+   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+   const [scanning, setScanning] = useState(false);
+   const [result, setResult] = useState(null); // { match, confidence, reason, issues }
+   const [localPhotoUrl, setLocalPhotoUrl] = useState(profilePhotoUrl || '');
+
+   // Persist verification result to localStorage to survive refresh
+   useEffect(() => {
+     if (result?.match && result?.confidence !== 'low') {
+       localStorage.setItem('faceVerificationResult', JSON.stringify(result));
+     }
+   }, [result]);
+
+   // Load verification result from localStorage on mount
+   useEffect(() => {
+     const savedResult = localStorage.getItem('faceVerificationResult');
+     if (savedResult) {
+       const parsed = JSON.parse(savedResult);
+       setResult(parsed);
+       onVerified(true);
+     }
+   }, []);
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];

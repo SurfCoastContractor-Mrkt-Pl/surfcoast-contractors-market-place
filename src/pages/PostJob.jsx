@@ -70,6 +70,11 @@ export default function PostJob() {
         return;
       }
     }
+    // Validate email
+    if (!formData.poster_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.poster_email)) {
+      alert('Please provide a valid email address.');
+      return;
+    }
     const data = {
       ...formData,
       budget_min: formData.budget_min ? Number(formData.budget_min) : null,

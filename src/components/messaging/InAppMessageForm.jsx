@@ -32,6 +32,11 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
 
   const sendMutation = useMutation({
     mutationFn: async () => {
+      // Validate email before sending
+      if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        throw new Error('Please provide a valid email address');
+      }
+
       const msg = await base44.entities.Message.create({
         sender_name: formData.name,
         sender_email: formData.email,
@@ -86,28 +91,28 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     onClose();
   };
 
-  if (!paymentRecord) {
-    return (
-      <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-amber-500" />
-              Message {recipientName}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-8 h-8 text-amber-600" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Payment Required</h3>
-            <p className="text-slate-600 text-sm mb-6">You must complete the $1.50 platform access fee before messaging.</p>
-            <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  if (!paymentRecord || paymentRecord.status !== 'confirmed') {
+     return (
+       <Dialog open={open} onOpenChange={handleClose}>
+         <DialogContent className="max-w-lg">
+           <DialogHeader>
+             <DialogTitle className="flex items-center gap-2">
+               <MessageSquare className="w-5 h-5 text-amber-500" />
+               Message {recipientName}
+             </DialogTitle>
+           </DialogHeader>
+           <div className="text-center py-8">
+             <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+               <Lock className="w-8 h-8 text-amber-600" />
+             </div>
+             <h3 className="text-lg font-bold text-slate-900 mb-2">Payment Required</h3>
+             <p className="text-slate-600 text-sm mb-6">You must complete the $1.50 platform access fee before messaging.</p>
+             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
+           </div>
+         </DialogContent>
+       </Dialog>
+     );
+   }
 
   // First message setup (no thread yet and no name saved)
   const needsSetup = thread.length === 0 && !formData.name;

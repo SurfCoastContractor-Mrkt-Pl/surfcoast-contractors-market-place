@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
@@ -37,9 +37,19 @@ const tradeLabels = {
 };
 
 export default function JobDetails() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const jobId = urlParams.get('id');
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
+   const urlParams = new URLSearchParams(window.location.search);
+   const jobId = urlParams.get('id');
+   const [userAuth, setUserAuth] = useState(null);
+   const [authLoading, setAuthLoading] = useState(true);
+   const [showDisclaimer, setShowDisclaimer] = useState(false);
+
+   // Check user authentication
+   useEffect(() => {
+     base44.auth.me()
+       .then(user => setUserAuth(user))
+       .catch(() => setUserAuth(null))
+       .finally(() => setAuthLoading(false));
+   }, []);
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
   const [showPaymentGate, setShowPaymentGate] = useState(false);
@@ -56,10 +66,25 @@ export default function JobDetails() {
     enabled: !!jobId,
   });
 
-  if (isLoading) {
+  if (isLoading || authLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (!userAuth) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center">
+          <AlertCircle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">Login Required</h1>
+          <p className="text-slate-600 mb-6">You must be logged in to apply for jobs.</p>
+          <Button onClick={() => base44.auth.redirectToLogin(window.location.href)} className="bg-amber-500 hover:bg-amber-600 text-slate-900 w-full">
+            Log In
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -313,7 +338,7 @@ export default function JobDetails() {
         onClose={() => setShowPaymentGate(false)}
         onPaid={(record) => { setContractorPaid(true); setPaymentRecord(record); setShowPaymentGate(false); }}
         payerType="contractor"
-        contractorId={job?.id}
+        contractorId=""
         contractorEmail={job?.poster_email}
         contractorName={job?.poster_name}
       />

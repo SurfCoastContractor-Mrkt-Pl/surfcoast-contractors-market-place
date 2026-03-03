@@ -184,9 +184,13 @@ This is an official copy of the agreement submitted through ContractorHub.
                 value={formData.job_title}
                 onChange={(e) => handleChange('job_title', e.target.value)}
                 placeholder="e.g., Kitchen Electrical Rewiring"
+                minLength="5"
                 required
                 className="mt-1.5"
               />
+              {formData.job_title && formData.job_title.length < 5 && (
+                <p className="text-xs text-red-600 mt-1">Job title must be at least 5 characters</p>
+              )}
             </div>
 
             <div>
@@ -197,9 +201,13 @@ This is an official copy of the agreement submitted through ContractorHub.
                 onChange={(e) => handleChange('scope_summary', e.target.value)}
                 placeholder="Describe in detail all work to be performed, materials needed, tasks included, and any relevant conditions or limitations..."
                 required
+                minLength="20"
                 rows={6}
                 className="mt-1.5"
               />
+              {formData.scope_summary && formData.scope_summary.length < 20 && (
+                <p className="text-xs text-red-600 mt-1">Scope must be at least 20 characters</p>
+              )}
               <p className="text-xs text-slate-500 mt-1">Be thorough — this is a binding description of the work you will perform.</p>
             </div>
 

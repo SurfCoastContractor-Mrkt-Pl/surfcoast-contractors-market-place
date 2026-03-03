@@ -30,12 +30,10 @@ export default function JobCloseout({ scope, role, open, onClose }) {
       await base44.entities.ScopeOfWork.update(scope.id, update);
 
       // Fetch fresh to check if both confirmed
-      const fresh = await base44.entities.ScopeOfWork.filter({ id: scope.id });
-      const updated = fresh[0];
+       const fresh = await base44.entities.ScopeOfWork.filter({ id: scope.id });
+       const updated = fresh[0];
 
-      const bothConfirmed = role === 'contractor'
-        ? (updated.customer_closeout_confirmed && true)
-        : (updated.contractor_closeout_confirmed && true);
+       const bothConfirmed = updated.contractor_closeout_confirmed && updated.customer_closeout_confirmed;
 
       if (bothConfirmed) {
         await base44.entities.ScopeOfWork.update(scope.id, {
