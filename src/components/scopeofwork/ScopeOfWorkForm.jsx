@@ -21,7 +21,54 @@ export default function ScopeOfWorkForm({ open, onClose, contractor }) {
   });
 
   const mutation = useMutation({
-    mutationFn: (data) => base44.entities.ScopeOfWork.create(data),
+    mutationFn: async (data) => {
+      const record = await base44.entities.ScopeOfWork.create(data);
+
+      const costLine = data.cost_type === 'fixed'
+        ? `Fixed Total Cost: $${data.cost_amount.toFixed(2)}`
+        : `Hourly Rate: $${data.cost_amount.toFixed(2)}/hr${data.estimated_hours ? ` (Est. ${data.estimated_hours} hours = $${(data.cost_amount * data.estimated_hours).toFixed(2)} total)` : ''}`;
+
+      const emailBody = `
+Dear ${data.customer_name},
+
+A Scope of Work has been submitted by contractor ${data.contractor_name} for your review and approval.
+
+--- SCOPE OF WORK AGREEMENT ---
+
+Job Title: ${data.job_title}
+Contractor: ${data.contractor_name}
+Customer: ${data.customer_name}
+
+SCOPE SUMMARY:
+${data.scope_summary}
+
+AGREED COST:
+${costLine}
+
+--- IMPORTANT ---
+All agreed costs, totals, and pricing described above must be approved by you before any work commences.
+No work may begin and no payment is due until you have reviewed and approved this scope in full.
+
+Please reply to confirm your approval or rejection of this scope of work.
+
+This is an official copy of the agreement submitted through ContractorHub.
+      `.trim();
+
+      await Promise.all([
+        base44.integrations.Core.SendEmail({
+          to: data.customer_email,
+          subject: `[Action Required] Scope of Work for "${data.job_title}" — Please Approve`,
+          body: emailBody,
+        }),
+        base44.integrations.Core.SendEmail({
+          to: data.contractor_email,
+          subject: `[Copy] Scope of Work Submitted for "${data.job_title}"`,
+          body: `Dear ${data.contractor_name},\n\nA copy of the scope of work you submitted to ${data.customer_name} is below.\n\n` + emailBody,
+        }),
+      ]);
+
+      return record;
+    },
     onSuccess: () => setSubmitted(true),
   });
 
