@@ -243,12 +243,12 @@ export default function ContractorProfile() {
                   </a>
                 )}
               </div>
-              {disclaimerSigned ? (
+              {disclaimerSigned && customerPaid ? (
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
                     <p className="text-xs text-green-700">
-                      Disclaimer signed by <strong>{signerName}</strong>
+                      Disclaimer signed by <strong>{signerName}</strong> · Fee paid
                     </p>
                   </div>
                   <a href={`mailto:${contractor.email}`}>
@@ -264,6 +264,20 @@ export default function ContractorProfile() {
                   >
                     <FileText className="w-4 h-4 mr-2" />
                     Request Scope of Work
+                  </Button>
+                </div>
+              ) : disclaimerSigned && !customerPaid ? (
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
+                    <p className="text-xs text-green-700">Disclaimer signed by <strong>{signerName}</strong></p>
+                  </div>
+                  <Button
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    onClick={() => setShowPaymentGate(true)}
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Pay $1.50 to Communicate
                   </Button>
                 </div>
               ) : (
