@@ -3,10 +3,44 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 async function fetchAndReupload(base44, imageUrl) {
   const res = await fetch(imageUrl);
   const contentType = res.headers.get('content-type') || 'image/jpeg';
+  const ext = contentType.includes('png') ? 'png' : contentType.includes('gif') ? 'gif' : contentType.includes('webp') ? 'webp' : 'jpg';
   const arrayBuffer = await res.arrayBuffer();
-  const blob = new Blob([arrayBuffer], { type: contentType });
-  const result = await base44.asServiceRole.integrations.Core.UploadFile({ file: blob });
-  return result.file_url;
+
+  // Build multipart form data manually
+  const boundary = '----Base44Boundary' + Math.random().toString(36).slice(2);
+  const filename = `upload.${ext}`;
+
+  const preamble = `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="${filename}"\r\nContent-Type: ${contentType}\r\n\r\n`;
+  const epilogue = `\r\n--${boundary}--\r\n`;
+
+  const preambleBytes = new TextEncoder().encode(preamble);
+  const epilogueBytes = new TextEncoder().encode(epilogue);
+  const bodyBytes = new Uint8Array(arrayBuffer);
+
+  const combined = new Uint8Array(preambleBytes.length + bodyBytes.length + epilogueBytes.length);
+  combined.set(preambleBytes, 0);
+  combined.set(bodyBytes, preambleBytes.length);
+  combined.set(epilogueBytes, preambleBytes.length + bodyBytes.length);
+
+  // Get the app token from the SDK to make the raw upload call
+  const appId = Deno.env.get('BASE44_APP_ID');
+  const uploadRes = await fetch(`https://api.base44.com/api/apps/${appId}/integrations/Core/UploadFile`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': `multipart/form-data; boundary=${boundary}`,
+      // Use service role by adding service-role header
+      'X-Service-Role': 'true',
+    },
+    body: combined,
+  });
+
+  if (!uploadRes.ok) {
+    const text = await uploadRes.text();
+    throw new Error(`Upload failed: ${uploadRes.status} ${text}`);
+  }
+
+  const data = await uploadRes.json();
+  return data.file_url;
 }
 
 Deno.serve(async (req) => {
@@ -19,7 +53,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Both profile_photo_url and id_document_url are required.' }, { status: 400 });
     }
 
-    // Re-upload both images through Base44's UploadFile so the LLM can process them
+    // Re-upload both images so Base44 can serve them to the LLM
     const [reuploaded_id_url, reuploaded_profile_url] = await Promise.all([
       fetchAndReupload(base44, id_document_url),
       fetchAndReupload(base44, profile_photo_url),
@@ -39,7 +73,7 @@ Rules:
 - The faces must clearly match (same person)
 - The ID must look like a legitimate government-issued document
 - The profile photo must be a clear, unobstructed face photo (no sunglasses, masks, heavy filters, etc.)
-- Be strict — a mismatch or unclear comparison means the match should be false
+- Be strict — a mismatch or unclear comparison should result in match: false
 
 Respond with valid JSON only:
 {
