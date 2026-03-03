@@ -140,7 +140,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
             <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700">
               <CreditCard className="w-4 h-4 shrink-0" />
-              <span>Stripe secure card payment launching soon. Your fee record is saved now.</span>
+              <span>Secure Stripe card payment is ready. Your payment will be processed when you click "Confirm".</span>
             </div>
 
             <div>
@@ -149,9 +149,15 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 id="pay_name"
                 value={formData.name}
                 onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
+                placeholder="John Doe"
+                minLength="2"
+                maxLength="100"
                 required
                 className="mt-1.5"
               />
+              {formData.name && formData.name.length < 2 && (
+                <p className="text-xs text-red-600 mt-1">Name must be at least 2 characters</p>
+              )}
             </div>
             <div>
               <Label htmlFor="pay_email">Your Email *</Label>
@@ -160,9 +166,13 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData(p => ({ ...p, email: e.target.value }))}
+                placeholder="you@example.com"
                 required
                 className="mt-1.5"
               />
+              {formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+                <p className="text-xs text-red-600 mt-1">Please enter a valid email address</p>
+              )}
             </div>
 
             <div className="flex gap-3">
@@ -170,7 +180,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               <Button
                 type="submit"
                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                disabled={mutation.isPending}
+                disabled={mutation.isPending || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
               >
                 {mutation.isPending ? (
                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
@@ -178,6 +188,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   'Confirm & Pay $1.50'
                 )}
               </Button>
+              {mutation.isError && (
+                <p className="text-xs text-red-600 text-center">{mutation.error?.message || 'Payment failed. Please try again.'}</p>
+              )}
             </div>
 
             <p className="text-center text-xs text-slate-400">

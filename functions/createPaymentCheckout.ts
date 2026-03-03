@@ -32,14 +32,21 @@ Deno.serve(async (req) => {
         : `Customer access to contact contractor ${contractorName}`,
     });
 
-    // Create Stripe checkout session
+    // Use Stripe test mode price for $1.50 one-time payment
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       customer_email: payerEmail,
       line_items: [
         {
-          price: 'price_1T6jRwDvR0SdwJT30vCXw7ua', // Platform Access Fee price
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'ContractorHub Platform Access Fee',
+              description: 'One-time platform access fee for ContractorHub',
+            },
+            unit_amount: 150, // $1.50 in cents
+          },
           quantity: 1,
         },
       ],
