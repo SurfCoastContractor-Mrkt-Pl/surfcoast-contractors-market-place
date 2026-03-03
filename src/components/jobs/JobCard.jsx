@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Calendar, DollarSign, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MapPin, Calendar, DollarSign, Clock, FileText } from 'lucide-react';
+import BidForm from './BidForm';
 import { format } from 'date-fns';
 
 const urgencyColors = {
@@ -27,7 +30,38 @@ const tradeLabels = {
   other: 'Other'
 };
 
-export default function JobCard({ job }) {
+export default function JobCard({ job, showBidButton = false }) {
+  const [bidFormOpen, setBidFormOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [contractor, setContractor] = useState(null);
+  const [customer, setCustomer] = useState(null);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const user = await base44.auth.me();
+        setCurrentUser(user);
+        if (showBidButton && user) {
+          const contractors = await base44.entities.Contractor.filter({ email: user.email });
+          if (contractors && contractors.length > 0) {
+            setContractor(contractors[0]);
+          }
+          const customers = await base44.entities.CustomerProfile.filter({ email: user.email });
+          if (customers && customers.length > 0) {
+            setCustomer(customers[0]);
+          } else {
+            setCustomer({ email: user.email, full_name: user.full_name });
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    };
+    if (showBidButton) {
+      loadUserData();
+    }
+  }, [showBidButton]);
+
   const formatBudget = () => {
     if (!job.budget_min && !job.budget_max) return 'Negotiable';
     if (job.budget_min && job.budget_max) {
@@ -38,21 +72,22 @@ export default function JobCard({ job }) {
   };
 
   return (
-    <Link to={createPageUrl(`JobDetails?id=${job.id}`)}>
-      <Card className="group p-6 hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-amber-400">
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg text-slate-900 group-hover:text-amber-600 transition-colors">
-              {job.title}
-            </h3>
-            <p className="text-sm text-slate-500 mt-1">
-              Posted by {job.poster_name}
-            </p>
+    <>
+      <Card className="group p-6 hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-amber-400 h-full flex flex-col">
+        <Link to={createPageUrl(`JobDetails?id=${job.id}`)} className="flex-1">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-lg text-slate-900 group-hover:text-amber-600 transition-colors">
+                {job.title}
+              </h3>
+              <p className="text-sm text-slate-500 mt-1">
+                Posted by {job.poster_name}
+              </p>
+            </div>
+            <Badge className={urgencyColors[job.urgency]}>
+              {job.urgency === 'urgent' ? '🔥 Urgent' : job.urgency}
+            </Badge>
           </div>
-          <Badge className={urgencyColors[job.urgency]}>
-            {job.urgency === 'urgent' ? '🔥 Urgent' : job.urgency}
-          </Badge>
-        </div>
         
         <p className="text-slate-600 text-sm line-clamp-2 mb-4">
           {job.description}
