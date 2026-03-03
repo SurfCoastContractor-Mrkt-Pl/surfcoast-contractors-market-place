@@ -6,12 +6,14 @@ const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
     const signature = req.headers.get('stripe-signature');
     const body = await req.text();
 
     // Validate webhook signature
     const event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+    
+    // Create base44 client after auth (webhook may not have auth context)
+    const base44 = createClientFromRequest(req);
 
     // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {
@@ -21,6 +23,12 @@ Deno.serve(async (req) => {
       if (!paymentId) {
         console.error('No payment_id in metadata');
         return Response.json({ error: 'No payment ID' }, { status: 400 });
+      }
+
+      // Verify paymentId format
+      if (!paymentId || typeof paymentId !== 'string') {
+        console.error('Invalid payment_id format:', paymentId);
+        return Response.json({ error: 'Invalid payment ID' }, { status: 400 });
       }
 
       // Update payment status to confirmed
