@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { MapPin, Calendar, DollarSign, Clock, FileText } from 'lucide-react';
-import BidForm from './BidForm';
+import { MapPin, Calendar, DollarSign, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 
 const urgencyColors = {
