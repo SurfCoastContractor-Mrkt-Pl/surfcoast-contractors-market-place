@@ -84,6 +84,8 @@ export default function CustomerAccount() {
         </div>
       </div>
 
+      <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }); }} />
+
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Email Lookup */}
         <Card className="p-6">
