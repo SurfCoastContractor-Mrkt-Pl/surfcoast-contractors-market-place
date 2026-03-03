@@ -13,6 +13,7 @@ import {
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import ScopeOfWorkForm from '@/components/scopeofwork/ScopeOfWorkForm';
 import PaymentGate from '@/components/payment/PaymentGate';
+import InAppMessageForm from '@/components/messaging/InAppMessageForm';
 
 const tradeLabels = {
   electrician: 'Electrician',
