@@ -430,6 +430,20 @@ export default function BecomeContractor() {
                 </div>
               </div>
 
+              {/* Credential Documents */}
+              <div>
+                <Label className="text-base font-semibold text-slate-900 block mb-1">Credential Documents</Label>
+                <p className="text-sm text-slate-500 mb-3">
+                  Upload any certificates, academic degrees, diplomas, trade licenses, or contractor licenses. 
+                  Contractor licenses must be registered as a sole proprietor. Degrees and diplomas must show the same legal name as your ID on file.
+                </p>
+                <CredentialDocumentsUpload
+                  credentials={formData.credential_documents}
+                  onChange={(docs) => handleChange('credential_documents', docs)}
+                  legalName={formData.name}
+                />
+              </div>
+
               {/* Single-Person Policy */}
               <div className="p-5 rounded-xl border-2 border-red-200 bg-red-50 space-y-4">
                 <div className="flex items-start gap-3">
