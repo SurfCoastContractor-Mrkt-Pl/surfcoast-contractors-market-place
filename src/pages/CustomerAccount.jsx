@@ -36,6 +36,13 @@ export default function CustomerAccount() {
     enabled: searched && !!searchEmail,
   });
 
+  // Old postings = payments the customer made that are now work_scheduled
+  const { data: oldPostings } = useQuery({
+    queryKey: ['customer-old-postings', searchEmail],
+    queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'customer', status: 'work_scheduled' }),
+    enabled: searched && !!searchEmail,
+  });
+
   const deleteDisclaimerMutation = useMutation({
     mutationFn: (id) => base44.entities.DisclaimerAcceptance.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] }),
