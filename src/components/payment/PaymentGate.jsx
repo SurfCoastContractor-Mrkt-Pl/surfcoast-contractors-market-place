@@ -182,6 +182,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
             <p className="text-center text-xs text-slate-400">
               By proceeding, you authorize a $1.50 USD platform access fee. All fees are non-refundable.
+              {payerType === 'customer' && ' You also acknowledge that contractor payment terms are agreed directly between you and the contractor, and payment is due upon job completion.'}
             </p>
           </form>
         )}
