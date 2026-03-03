@@ -60,6 +60,36 @@ export default function AdminDashboard() {
 
   const unverifiedContractors = contractors.filter(c => !c.identity_verified);
 
+  // Growth chart data
+  const getGrowthData = () => {
+    const contractorsByDate = {};
+    const customersByDate = {};
+
+    contractors.forEach(c => {
+      const date = new Date(c.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      contractorsByDate[date] = (contractorsByDate[date] || 0) + 1;
+    });
+
+    customers.forEach(c => {
+      const date = new Date(c.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      customersByDate[date] = (customersByDate[date] || 0) + 1;
+    });
+
+    const allDates = [...new Set([...Object.keys(contractorsByDate), ...Object.keys(customersByDate)])].sort();
+    let cumulativeContractors = 0;
+    let cumulativeCustomers = 0;
+
+    return allDates.slice(-14).map(date => {
+      cumulativeContractors += contractorsByDate[date] || 0;
+      cumulativeCustomers += customersByDate[date] || 0;
+      return {
+        date,
+        contractors: cumulativeContractors,
+        customers: cumulativeCustomers,
+      };
+    });
+  };
+
   const verifyMutation = useMutation({
     mutationFn: (id) => base44.entities.Contractor.update(id, { identity_verified: true }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-contractors'] }),
