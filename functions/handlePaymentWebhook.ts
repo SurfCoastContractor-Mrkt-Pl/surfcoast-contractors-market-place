@@ -22,6 +22,7 @@ Deno.serve(async (req) => {
 
       if (!paymentId) {
         console.error('No payment_id in metadata for session:', session.id);
+        console.error('Session metadata:', session.metadata);
         return Response.json({ received: true }); // Don't fail, Stripe will retry
       }
 
@@ -50,7 +51,8 @@ Deno.serve(async (req) => {
 
         console.log(`Payment ${paymentId} confirmed successfully`);
       } catch (updateError) {
-        console.error('Error confirming payment:', updateError.message);
+        console.error('Error confirming payment for session', session.id, ':', updateError.message);
+        console.error('Error details:', updateError);
         // Still return received: true to prevent Stripe retrying indefinitely
       }
     }
@@ -65,10 +67,13 @@ Deno.serve(async (req) => {
           await base44.asServiceRole.entities.Payment.update(paymentId, {
             status: 'refunded',
           });
-          console.log(`Payment ${paymentId} refunded`);
+          console.log(`Payment ${paymentId} refunded successfully`);
         } catch (refundError) {
-          console.error('Error updating refund status:', refundError.message);
+          console.error('Error updating refund status for payment', paymentId, ':', refundError.message);
+          console.error('Error details:', refundError);
         }
+      } else {
+        console.warn('Refund event received but no payment_id in metadata:', charge.metadata);
       }
     }
 
@@ -82,10 +87,13 @@ Deno.serve(async (req) => {
           await base44.asServiceRole.entities.Payment.update(paymentId, {
             status: 'disputed',
           });
-          console.log(`Payment ${paymentId} disputed`);
+          console.log(`Payment ${paymentId} disputed successfully`);
         } catch (disputeError) {
-          console.error('Error updating dispute status:', disputeError.message);
+          console.error('Error updating dispute status for payment', paymentId, ':', disputeError.message);
+          console.error('Error details:', disputeError);
         }
+      } else {
+        console.warn('Dispute event received but no payment_id in metadata:', dispute.metadata);
       }
     }
 

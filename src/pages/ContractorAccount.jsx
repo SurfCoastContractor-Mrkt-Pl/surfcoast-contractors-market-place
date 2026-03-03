@@ -28,6 +28,8 @@ export default function ContractorAccount() {
     enabled: searched && !!searchEmail,
   });
 
+  const contractor = contractors?.[0];
+
   const { data: payments } = useQuery({
     queryKey: ['contractor-payments', searchEmail],
     queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'contractor' }),
@@ -43,39 +45,31 @@ export default function ContractorAccount() {
     enabled: !!contractor?.locked_scope_id && !!contractor?.account_locked,
   });
 
-  // Fetch work_scheduled payments where this contractor was involved (as recipient)
-  const { data: pastWorkPayments } = useQuery({
-    queryKey: ['contractor-past-work', contractor?.id],
-    queryFn: () => base44.entities.Payment.filter({ contractor_id: contractor?.id, status: 'work_scheduled' }),
-    enabled: !!contractor?.id,
-  });
-
-  // Fetch job details for past work
-  const { data: pastJobs } = useQuery({
-    queryKey: ['contractor-past-jobs', contractor?.id],
-    queryFn: async () => {
-      const jobIds = [...new Set((pastWorkPayments || []).map(p => p.contractor_id).filter(Boolean))];
-      // contractor_id on customer payments = contractor's id; but for job-based payments, contractor_id = job id
-      // We need to load the related payments and find messages/jobs
-      return pastWorkPayments || [];
-    },
-    enabled: !!pastWorkPayments,
-  });
-
   const { data: contractorScopes } = useQuery({
     queryKey: ['contractor-scopes', contractor?.id],
     queryFn: () => base44.entities.ScopeOfWork.filter({ contractor_id: contractor?.id }),
     enabled: !!contractor?.id,
   });
 
+  const { data: pastWorkPayments } = useQuery({
+    queryKey: ['contractor-past-work', contractor?.id],
+    queryFn: () => base44.entities.Payment.filter({ contractor_id: contractor?.id, status: 'work_scheduled' }),
+    enabled: !!contractor?.id,
+  });
+
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Contractor.delete(id),
+    mutationFn: async (email) => {
+      await base44.functions.invoke('deleteAccountCascading', {
+        accountType: 'contractor',
+        accountEmail: email,
+      });
+    },
     onSuccess: () => {
+      setSearchEmail('');
+      setSearched(false);
       queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
     },
   });
-
-  const contractor = contractors?.[0];
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -340,7 +334,7 @@ export default function ContractorAccount() {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-red-600 hover:bg-red-700"
-                      onClick={() => deleteMutation.mutate(contractor.id)}
+                      onClick={() => deleteMutation.mutate(contractor.email)}
                     >
                       Yes, Delete Permanently
                     </AlertDialogAction>

@@ -5,8 +5,8 @@ async function fetchAndReupload(base44, imageUrl) {
   const contentType = res.headers.get('content-type') || 'image/jpeg';
   const ext = contentType.includes('png') ? 'png' : contentType.includes('gif') ? 'gif' : contentType.includes('webp') ? 'webp' : 'jpg';
   const arrayBuffer = await res.arrayBuffer();
-  const file = new File([arrayBuffer], `upload.${ext}`, { type: contentType });
-  const result = await base44.asServiceRole.integrations.Core.UploadFile({ file });
+  const blob = new Blob([arrayBuffer], { type: contentType });
+  const result = await base44.asServiceRole.integrations.Core.UploadFile({ file: blob });
   return result.file_url;
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Loader2 } from 'lucide-react';
@@ -19,12 +20,25 @@ export default function Success() {
       return;
     }
 
-    // Payment will be confirmed by webhook, just show success message
-    const timer = setTimeout(() => {
-      setIsVerifying(false);
-    }, 2000);
+    // Verify payment status from database
+    const verifyPayment = async () => {
+      try {
+        const payments = await base44.entities.Payment.filter({ id: paymentId });
+        if (payments.length === 0) {
+          setError('Payment not found. Please contact support.');
+        } else if (payments[0].status !== 'confirmed') {
+          setError('Payment not confirmed. Please try again or contact support.');
+        }
+        // If confirmed, success is shown
+      } catch (err) {
+        console.error('Payment verification error:', err);
+        setError('Failed to verify payment. Please check your email for confirmation.');
+      } finally {
+        setIsVerifying(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    verifyPayment();
   }, []);
 
   return (

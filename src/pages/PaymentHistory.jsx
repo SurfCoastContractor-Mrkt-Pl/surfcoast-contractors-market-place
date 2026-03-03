@@ -15,6 +15,8 @@ export default function PaymentHistory() {
   const [currentUser, setCurrentUser] = useState(null);
 
   // Fetch current user
+  const [userError, setUserError] = React.useState(null);
+  
   React.useEffect(() => {
     const getUser = async () => {
       try {
@@ -22,14 +24,15 @@ export default function PaymentHistory() {
         setCurrentUser(user);
       } catch (error) {
         console.error('Failed to fetch user:', error);
+        setUserError('Failed to load user data');
       }
     };
     getUser();
   }, []);
 
-  // Fetch all payments (or filtered by email if searching)
+  // Fetch payments with server-side filtering
   const { data: payments = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['payment-history', searchEmail, statusFilter],
+    queryKey: ['payment-history', searchEmail, statusFilter, sortBy],
     queryFn: async () => {
       const query = {};
       
@@ -41,31 +44,15 @@ export default function PaymentHistory() {
         query.payer_email = currentUser.email;
       }
 
-      const allPayments = await base44.entities.Payment.list('-created_date', 1000);
-      
-      // Apply filters
-      let filtered = allPayments;
-      
-      if (Object.keys(query).length > 0) {
-        filtered = allPayments.filter(p => {
-          if (query.payer_email && p.payer_email !== query.payer_email) return false;
-          return true;
-        });
-      }
-
+      // Apply status filter
       if (statusFilter !== 'all') {
-        filtered = filtered.filter(p => p.status === statusFilter);
+        query.status = statusFilter;
       }
 
-      // Sort
-      if (sortBy === 'amount-high') {
-        filtered.sort((a, b) => (b.amount || 0) - (a.amount || 0));
-      } else if (sortBy === 'amount-low') {
-        filtered.sort((a, b) => (a.amount || 0) - (b.amount || 0));
-      }
-      // recent is default (already sorted by -created_date)
-
-      return filtered;
+      // Fetch with server-side filter
+      const filtered = await base44.entities.Payment.filter(query, sortBy === 'recent' ? '-created_date' : sortBy === 'amount-high' ? '-amount' : 'amount', 1000);
+      
+      return filtered || [];
     },
     enabled: !!currentUser,
   });
@@ -107,6 +94,19 @@ export default function PaymentHistory() {
       minute: '2-digit',
     });
   };
+
+  if (userError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+        <Card className="max-w-md">
+          <CardContent className="pt-6 text-center">
+            <p className="text-red-700 font-medium mb-4">{userError}</p>
+            <Button onClick={() => window.location.reload()}>Reload Page</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!currentUser) {
     return (

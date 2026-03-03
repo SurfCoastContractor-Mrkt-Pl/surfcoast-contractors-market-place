@@ -49,6 +49,7 @@
  */
 import AdminDashboard from './pages/AdminDashboard';
 import BecomeContractor from './pages/BecomeContractor';
+import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
 import ContractorProfile from './pages/ContractorProfile';
 import Contractors from './pages/Contractors';
@@ -56,16 +57,16 @@ import CustomerAccount from './pages/CustomerAccount';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
+import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
 import Success from './pages/Success';
-import Cancel from './pages/Cancel';
-import PaymentHistory from './pages/PaymentHistory';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminDashboard": AdminDashboard,
     "BecomeContractor": BecomeContractor,
+    "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
     "ContractorProfile": ContractorProfile,
     "Contractors": Contractors,
@@ -73,10 +74,9 @@ export const PAGES = {
     "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
+    "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
     "Success": Success,
-    "Cancel": Cancel,
-    "PaymentHistory": PaymentHistory,
 }
 
 export const pagesConfig = {

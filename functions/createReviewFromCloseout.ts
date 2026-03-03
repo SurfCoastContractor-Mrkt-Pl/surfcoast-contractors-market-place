@@ -21,10 +21,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Scope must be closed before creating review' }, { status: 400 });
     }
 
-    // Check if review already exists
+    // Check if review already exists for this contractor from this customer
     const existing = await base44.asServiceRole.entities.Review.filter({ 
-      job_id: scopeId,
-      verified: true 
+      contractor_id: scope.contractor_id,
+      reviewer_email: scope.customer_email
     });
 
     if (existing && existing.length > 0) {
