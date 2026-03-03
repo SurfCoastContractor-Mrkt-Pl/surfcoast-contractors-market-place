@@ -51,6 +51,8 @@ export default function Jobs() {
     // Exclude jobs that have been marked as work scheduled
     
     return jobs.filter(job => {
+      if (scheduledJobIds.has(job.id)) return false;
+
       const matchesSearch = !searchQuery || 
         job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
