@@ -21,33 +21,38 @@ Deno.serve(async (req) => {
       const paymentId = session.metadata?.payment_id;
 
       if (!paymentId) {
-        console.error('No payment_id in metadata');
-        return Response.json({ error: 'No payment ID' }, { status: 400 });
+        console.error('No payment_id in metadata for session:', session.id);
+        return Response.json({ received: true }); // Don't fail, Stripe will retry
       }
 
-      // Verify paymentId format
-      if (!paymentId || typeof paymentId !== 'string') {
-        console.error('Invalid payment_id format:', paymentId);
-        return Response.json({ error: 'Invalid payment ID' }, { status: 400 });
-      }
+      try {
+        // Verify paymentId is a string
+        if (typeof paymentId !== 'string') {
+          console.error('Invalid payment_id format:', paymentId);
+          return Response.json({ received: true });
+        }
 
-      // Update payment status to confirmed
-      await base44.asServiceRole.entities.Payment.update(paymentId, {
-        status: 'confirmed',
-      });
-
-      // Send confirmation email
-      const payment = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
-      if (payment.length > 0) {
-        const p = payment[0];
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: p.payer_email,
-          subject: 'Payment Confirmed — ContractorHub',
-          body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using ContractorHub!\n\n(Do not reply to this automated email)`,
+        // Update payment status to confirmed
+        await base44.asServiceRole.entities.Payment.update(paymentId, {
+          status: 'confirmed',
         });
-      }
 
-      console.log(`Payment ${paymentId} confirmed`);
+        // Send confirmation email
+        const payment = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
+        if (payment && payment.length > 0) {
+          const p = payment[0];
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: p.payer_email,
+            subject: 'Payment Confirmed — ContractorHub',
+            body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using ContractorHub!\n\n(Do not reply to this automated email)`,
+          });
+        }
+
+        console.log(`Payment ${paymentId} confirmed successfully`);
+      } catch (updateError) {
+        console.error('Error confirming payment:', updateError.message);
+        // Still return received: true to prevent Stripe retrying indefinitely
+      }
     }
 
     // Handle charge.refunded
@@ -56,10 +61,14 @@ Deno.serve(async (req) => {
       const paymentId = charge.metadata?.payment_id;
 
       if (paymentId) {
-        await base44.asServiceRole.entities.Payment.update(paymentId, {
-          status: 'refunded',
-        });
-        console.log(`Payment ${paymentId} refunded`);
+        try {
+          await base44.asServiceRole.entities.Payment.update(paymentId, {
+            status: 'refunded',
+          });
+          console.log(`Payment ${paymentId} refunded`);
+        } catch (refundError) {
+          console.error('Error updating refund status:', refundError.message);
+        }
       }
     }
 
@@ -69,10 +78,14 @@ Deno.serve(async (req) => {
       const paymentId = dispute.metadata?.payment_id;
 
       if (paymentId) {
-        await base44.asServiceRole.entities.Payment.update(paymentId, {
-          status: 'disputed',
-        });
-        console.log(`Payment ${paymentId} disputed`);
+        try {
+          await base44.asServiceRole.entities.Payment.update(paymentId, {
+            status: 'disputed',
+          });
+          console.log(`Payment ${paymentId} disputed`);
+        } catch (disputeError) {
+          console.error('Error updating dispute status:', disputeError.message);
+        }
       }
     }
 
