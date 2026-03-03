@@ -14,12 +14,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail } from 'lucide-react';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
 import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay';
+import CustomerWelcomeModal from '@/components/customer/CustomerWelcomeModal';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [agentOpen, setAgentOpen] = useState(false);
 
   React.useEffect(() => {
     const checkAuth = async () => {
@@ -30,6 +33,12 @@ export default function CustomerAccount() {
           return;
         }
         setUserEmail(user.email);
+        
+        // Check if this is a new customer (no profile yet)
+        const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
+        if (!profiles || profiles.length === 0) {
+          setShowWelcome(true);
+        }
       } catch (error) {
         base44.auth.redirectToLogin();
       } finally {
@@ -134,6 +143,15 @@ export default function CustomerAccount() {
           </div>
         </div>
       </div>
+
+      <CustomerWelcomeModal 
+        open={showWelcome} 
+        onClose={() => setShowWelcome(false)}
+        onStartWithAgent={() => {
+          setShowWelcome(false);
+          setAgentOpen(true);
+        }}
+      />
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
