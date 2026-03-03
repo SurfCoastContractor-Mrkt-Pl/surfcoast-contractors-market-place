@@ -1,0 +1,58 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+
+    // This runs as a scheduled job, use service role
+    const scopes = await base44.asServiceRole.entities.ScopeOfWork.list();
+
+    const now = new Date();
+    let locked = 0;
+    let unlocked = 0;
+
+    for (const scope of scopes) {
+      if (!scope.agreed_work_date || !scope.contractor_id) continue;
+
+      const deadline = new Date(new Date(scope.agreed_work_date).getTime() + 72 * 60 * 60 * 1000);
+      const photosCount = (scope.after_photo_urls || []).length;
+      const pastDeadline = now > deadline;
+      const hasEnoughPhotos = photosCount >= 5;
+
+      // Fetch contractor
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: scope.contractor_id });
+      const contractor = contractors[0];
+      if (!contractor) continue;
+
+      if (pastDeadline && !hasEnoughPhotos) {
+        // Lock if not already locked
+        if (!contractor.account_locked) {
+          await base44.asServiceRole.entities.Contractor.update(contractor.id, {
+            account_locked: true,
+            locked_scope_id: scope.id,
+          });
+
+          // Notify contractor
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: contractor.email,
+            subject: '⚠️ Account Locked — After Photos Required | ContractorHub',
+            body: `Dear ${contractor.name},\n\nYour ContractorHub account has been temporarily locked because after photos were not uploaded within 72 hours of the agreed work date for job: "${scope.job_title}".\n\nTo restore full access, you must upload a minimum of 5 after photos for this job.\n\nLog in to your Contractor Account on ContractorHub and upload the required after photos to unlock your account immediately.\n\nContractorHub`,
+          });
+
+          locked++;
+        }
+      } else if (hasEnoughPhotos && contractor.account_locked && contractor.locked_scope_id === scope.id) {
+        // Unlock if photos are now sufficient
+        await base44.asServiceRole.entities.Contractor.update(contractor.id, {
+          account_locked: false,
+          locked_scope_id: null,
+        });
+        unlocked++;
+      }
+    }
+
+    return Response.json({ success: true, locked, unlocked, checked: scopes.length });
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+});
