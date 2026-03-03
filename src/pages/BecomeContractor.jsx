@@ -152,34 +152,7 @@ export default function BecomeContractor() {
           <Card className="p-6 md:p-8 mb-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-6">Basic Information</h2>
             
-            <div className="flex flex-col sm:flex-row gap-6 mb-6">
-              <div className="shrink-0">
-                <Label className="block mb-2">Profile Photo</Label>
-                <div className="relative">
-                  <div className="w-24 h-24 rounded-xl overflow-hidden bg-slate-100 border-2 border-dashed border-slate-300">
-                    {formData.photo_url ? (
-                      <img src={formData.photo_url} alt="Profile" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400">
-                        <Upload className="w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoUpload}
-                    className="absolute inset-0 opacity-0 cursor-pointer"
-                    disabled={uploadingPhoto}
-                  />
-                  {uploadingPhoto && (
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-xl">
-                      <Loader2 className="w-6 h-6 animate-spin text-amber-500" />
-                    </div>
-                  )}
-                </div>
-              </div>
-              
+            <div className="space-y-4 mb-6">
               <div className="flex-1 space-y-4">
                 <div>
                   <Label htmlFor="name">Full Name *</Label>
