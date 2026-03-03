@@ -58,11 +58,11 @@ import CustomerAccount from './pages/CustomerAccount';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
+import MyJobs from './pages/MyJobs';
 import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
 import Success from './pages/Success';
-import MyJobs from './pages/MyJobs';
 import Terms from './pages/Terms';
 import __Layout from './Layout.jsx';
 
@@ -79,11 +79,11 @@ export const PAGES = {
     "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
+    "MyJobs": MyJobs,
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
     "ProjectManagement": ProjectManagement,
     "Success": Success,
-    "MyJobs": MyJobs,
     "Terms": Terms,
 }
 

@@ -40,6 +40,7 @@ export default function Contractors() {
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
+  const [sortBy, setSortBy] = useState('rating'); // rating, distance, experience, hourly_rate
 
   const urlParams = new URLSearchParams(window.location.search);
   const initialTrade = urlParams.get('trade') || '';
@@ -139,8 +140,27 @@ export default function Contractors() {
       }));
     }
 
+    // Apply sorting
+    results.sort((a, b) => {
+      switch (sortBy) {
+        case 'rating':
+          return (b.rating || 0) - (a.rating || 0);
+        case 'distance':
+          if (!userLocation) return 0;
+          return (a.distance || Infinity) - (b.distance || Infinity);
+        case 'experience':
+          return (b.years_experience || 0) - (a.years_experience || 0);
+        case 'hourly_rate':
+          return (a.hourly_rate || Infinity) - (b.hourly_rate || Infinity);
+        case 'reviews':
+          return (b.reviews_count || 0) - (a.reviews_count || 0);
+        default:
+          return 0;
+      }
+    });
+
     return results;
-  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, statusFilter, userLocation, contractorDistances, searchRadius]);
+  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, statusFilter, userLocation, contractorDistances, searchRadius, sortBy]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -224,14 +244,16 @@ export default function Contractors() {
           )}
         </div>
 
-        {/* Filters */}
+        {/* Filters & Sorting */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-5 h-5 text-slate-500" />
-            <span className="font-medium text-slate-700">Filters</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Filter className="w-5 h-5 text-slate-500" />
+              <span className="font-medium text-slate-700">Filters & Sort</span>
+            </div>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
@@ -274,6 +296,19 @@ export default function Contractors() {
                 <SelectItem value="available">Available</SelectItem>
                 <SelectItem value="booked">Booked</SelectItem>
                 <SelectItem value="on_vacation">On Vacation</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="rating">Highest Rated</SelectItem>
+                <SelectItem value="reviews">Most Reviews</SelectItem>
+                <SelectItem value="experience">Most Experience</SelectItem>
+                <SelectItem value="hourly_rate">Lowest Rate</SelectItem>
+                {userLocation && <SelectItem value="distance">Closest Distance</SelectItem>}
               </SelectContent>
             </Select>
             
