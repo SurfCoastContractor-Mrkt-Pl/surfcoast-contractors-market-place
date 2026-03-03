@@ -12,8 +12,9 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck } from 'lucide-react';
+import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut } from 'lucide-react';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
+import JobCloseout from '@/components/scopeofwork/JobCloseout';
 
 export default function ContractorAccount() {
   const [searchEmail, setSearchEmail] = useState('');

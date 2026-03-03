@@ -11,7 +11,8 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck } from 'lucide-react';
+import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut } from 'lucide-react';
+import JobCloseout from '@/components/scopeofwork/JobCloseout';
 
 export default function CustomerAccount() {
   const [searchEmail, setSearchEmail] = useState('');
