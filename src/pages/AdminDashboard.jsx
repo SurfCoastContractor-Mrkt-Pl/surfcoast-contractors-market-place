@@ -317,6 +317,60 @@ export default function AdminDashboard() {
             </TabsTrigger>
           </TabsList>
 
+          {/* Signups & Growth Tab */}
+          <TabsContent value="signups">
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                <Card className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                      <Users className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Contractors</span>
+                  </div>
+                  <div className="text-3xl font-bold text-slate-900">{contractors.length}</div>
+                  <div className="text-xs text-slate-400 mt-1">total signups</div>
+                </Card>
+
+                <Card className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                      <Users className="w-4 h-4 text-indigo-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Customers</span>
+                  </div>
+                  <div className="text-3xl font-bold text-slate-900">{customers.length}</div>
+                  <div className="text-xs text-slate-400 mt-1">total signups</div>
+                </Card>
+
+                <Card className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Verified</span>
+                  </div>
+                  <div className="text-3xl font-bold text-slate-900">{contractors.filter(c => c.identity_verified).length}</div>
+                  <div className="text-xs text-slate-400 mt-1">contractors verified</div>
+                </Card>
+              </div>
+
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-slate-900 mb-6">Growth Trend (Last 14 Days)</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={getGrowthData()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="contractors" stroke="#a855f7" strokeWidth={2} name="Contractors" />
+                    <Line type="monotone" dataKey="customers" stroke="#6366f1" strokeWidth={2} name="Customers" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Card>
+            </div>
+          </TabsContent>
+
           {/* Payments Tab */}
           <TabsContent value="payments">
             <Card className="p-6">
