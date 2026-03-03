@@ -42,6 +42,10 @@ export default function JobDetails() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
+  const [showPaymentGate, setShowPaymentGate] = useState(false);
+  const [contractorPaid, setContractorPaid] = useState(false);
+  const [paymentRecord, setPaymentRecord] = useState(null);
+  const [showMessageForm, setShowMessageForm] = useState(false);
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job', jobId],
