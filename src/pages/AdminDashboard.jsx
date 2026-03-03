@@ -217,55 +217,185 @@ export default function AdminDashboard() {
           </div>
         </Card>
 
-        {/* Payments Table */}
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">All Fee Transactions</h2>
-          {isLoading ? (
-            <div className="space-y-3">
-              {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
-            </div>
-          ) : payments.length === 0 ? (
-            <div className="text-center py-10 text-slate-400">No fee transactions yet.</div>
-          ) : (
-            <div className="space-y-3">
-              {payments.map(p => (
-                <div key={p.id} className="flex items-center justify-between gap-4 p-4 bg-slate-50 rounded-xl flex-wrap">
-                  <div className="flex items-center gap-3 min-w-0">
-                    {p.status === 'confirmed' ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-                    ) : (
-                      <Clock className="w-5 h-5 text-amber-500 shrink-0" />
-                    )}
-                    <div className="min-w-0">
-                      <div className="font-medium text-slate-900 text-sm truncate">{p.payer_name}</div>
-                      <div className="text-xs text-slate-500 truncate">{p.payer_email}</div>
-                      <div className="text-xs text-slate-400 mt-0.5 truncate">{p.purpose}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                    <Badge className={p.payer_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'}>
-                      {p.payer_type}
-                    </Badge>
-                    <span className="font-bold text-slate-900">${(p.amount || 0).toFixed(2)}</span>
-                    <span className="text-xs text-slate-400">{new Date(p.created_date).toLocaleDateString()}</span>
-                    {p.status === 'pending' ? (
-                      <Button
-                        size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white text-xs"
-                        onClick={() => confirmMutation.mutate(p.id)}
-                        disabled={confirmMutation.isPending}
-                      >
-                        Mark Confirmed
-                      </Button>
-                    ) : (
-                      <Badge className="bg-green-100 text-green-700">Confirmed</Badge>
-                    )}
-                  </div>
+        {/* Tabs */}
+        <Tabs defaultValue="payments">
+          <TabsList className="mb-4">
+            <TabsTrigger value="payments">Fee Transactions</TabsTrigger>
+            <TabsTrigger value="messages">
+              Messages {messages.filter(m => !m.read).length > 0 && (
+                <span className="ml-1.5 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {messages.filter(m => !m.read).length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="verification">
+              ID Verification {unverifiedContractors.length > 0 && (
+                <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {unverifiedContractors.length}
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Payments Tab */}
+          <TabsContent value="payments">
+            <Card className="p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">All Fee Transactions</h2>
+              {isLoading ? (
+                <div className="space-y-3">
+                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
                 </div>
-              ))}
-            </div>
-          )}
-        </Card>
+              ) : payments.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">No fee transactions yet.</div>
+              ) : (
+                <div className="space-y-3">
+                  {payments.map(p => (
+                    <div key={p.id} className="flex items-center justify-between gap-4 p-4 bg-slate-50 rounded-xl flex-wrap">
+                      <div className="flex items-center gap-3 min-w-0">
+                        {p.status === 'confirmed' ? (
+                          <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                        ) : (
+                          <Clock className="w-5 h-5 text-amber-500 shrink-0" />
+                        )}
+                        <div className="min-w-0">
+                          <div className="font-medium text-slate-900 text-sm truncate">{p.payer_name}</div>
+                          <div className="text-xs text-slate-500 truncate">{p.payer_email}</div>
+                          <div className="text-xs text-slate-400 mt-0.5 truncate">{p.purpose}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0 flex-wrap">
+                        <Badge className={p.payer_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'}>
+                          {p.payer_type}
+                        </Badge>
+                        <span className="font-bold text-slate-900">${(p.amount || 0).toFixed(2)}</span>
+                        <span className="text-xs text-slate-400">{new Date(p.created_date).toLocaleDateString()}</span>
+                        {p.status === 'pending' ? (
+                          <Button
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                            onClick={() => confirmMutation.mutate(p.id)}
+                            disabled={confirmMutation.isPending}
+                          >
+                            Mark Confirmed
+                          </Button>
+                        ) : (
+                          <Badge className="bg-green-100 text-green-700">Confirmed</Badge>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+
+          {/* Messages Tab */}
+          <TabsContent value="messages">
+            <Card className="p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">All In-App Messages</h2>
+              {messagesLoading ? (
+                <div className="space-y-3">
+                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
+                </div>
+              ) : messages.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">No messages yet.</div>
+              ) : (
+                <div className="space-y-3">
+                  {messages.map(m => (
+                    <div key={m.id} className={`p-4 rounded-xl border ${m.read ? 'bg-slate-50 border-slate-200' : 'bg-blue-50 border-blue-200'}`}>
+                      <div className="flex items-start justify-between gap-3 flex-wrap">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <span className="font-medium text-slate-900 text-sm">{m.sender_name}</span>
+                            <span className="text-slate-400 text-xs">→</span>
+                            <span className="font-medium text-slate-700 text-sm">{m.recipient_name}</span>
+                            <Badge className={m.sender_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'} size="sm">
+                              {m.sender_type}
+                            </Badge>
+                            {!m.read && <Badge className="bg-blue-500 text-white text-xs">New</Badge>}
+                          </div>
+                          {m.subject && <div className="text-xs text-slate-500 mb-1">Subject: {m.subject}</div>}
+                          <div className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{m.body}</div>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-slate-400">
+                            <span>{m.sender_email}</span>
+                            <span>·</span>
+                            <span>{new Date(m.created_date).toLocaleString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+
+          {/* Identity Verification Tab */}
+          <TabsContent value="verification">
+            <Card className="p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-1">Contractor Identity Verification</h2>
+              <p className="text-sm text-slate-500 mb-4">Review uploaded ID documents and face photos, then approve or leave pending.</p>
+              {contractors.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">No contractors registered yet.</div>
+              ) : (
+                <div className="space-y-4">
+                  {contractors.map(c => (
+                    <div key={c.id} className={`p-4 rounded-xl border ${c.identity_verified ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
+                      <div className="flex items-start justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-200 shrink-0">
+                            {c.photo_url ? (
+                              <img src={c.photo_url} alt={c.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-slate-500 text-lg font-bold">
+                                {c.name?.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-medium text-slate-900">{c.name}</div>
+                            <div className="text-xs text-slate-500">{c.email}</div>
+                            <div className="text-xs text-slate-400">{c.location} · Joined {new Date(c.created_date).toLocaleDateString()}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap shrink-0">
+                          {c.id_document_url && (
+                            <a href={c.id_document_url} target="_blank" rel="noopener noreferrer">
+                              <Button size="sm" variant="outline" className="text-xs">
+                                <Eye className="w-3 h-3 mr-1" /> View ID
+                              </Button>
+                            </a>
+                          )}
+                          {c.face_photo_url && (
+                            <a href={c.face_photo_url} target="_blank" rel="noopener noreferrer">
+                              <Button size="sm" variant="outline" className="text-xs">
+                                <Eye className="w-3 h-3 mr-1" /> Face Photo
+                              </Button>
+                            </a>
+                          )}
+                          {c.identity_verified ? (
+                            <Badge className="bg-green-100 text-green-700 flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3" /> Verified
+                            </Badge>
+                          ) : (
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                              onClick={() => verifyMutation.mutate(c.id)}
+                              disabled={verifyMutation.isPending}
+                            >
+                              <ShieldAlert className="w-3 h-3 mr-1" /> Mark Verified
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         <p className="text-center text-xs text-slate-400 pb-4">
           All fees are $1.50 USD per transaction. Disclosed upfront per California SB 478 (Honest Pricing Law). 
