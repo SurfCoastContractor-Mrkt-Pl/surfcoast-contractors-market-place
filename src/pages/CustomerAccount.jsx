@@ -73,13 +73,19 @@ export default function CustomerAccount() {
   const hasData = searched && !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0);
 
   const handleDeleteAll = async () => {
-    await Promise.all([
-      ...(disclaimers || []).map(d => base44.entities.DisclaimerAcceptance.delete(d.id)),
-      ...(payments || []).map(p => base44.entities.Payment.delete(p.id)),
-    ]);
-    queryClient.invalidateQueries({ queryKey: ['customer-payments'] });
-    queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] });
-    queryClient.invalidateQueries({ queryKey: ['customer-scopes'] });
+    // Use cascading delete function
+    const response = await base44.functions.invoke('deleteAccountCascading', {
+      accountType: 'customer',
+      accountEmail: searchEmail,
+    });
+    
+    if (response.data?.success) {
+      queryClient.invalidateQueries({ queryKey: ['customer-payments'] });
+      queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] });
+      queryClient.invalidateQueries({ queryKey: ['customer-scopes'] });
+      setSearched(false);
+      setSearchEmail('');
+    }
   };
 
   return (
@@ -153,29 +159,41 @@ export default function CustomerAccount() {
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Payments</h2>
                   {payments?.filter(p => p.status !== 'work_scheduled').length > 0 ? (
-                    <div className="space-y-3">
-                      {payments.filter(p => p.status !== 'work_scheduled').map(p => (
-                        <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                          <div className="flex items-center gap-3">
-                            {p.status === 'confirmed' ? (
-                              <CheckCircle2 className="w-5 h-5 text-green-600" />
-                            ) : (
-                              <Clock className="w-5 h-5 text-amber-500" />
-                            )}
-                            <div>
-                              <div className="text-sm font-medium text-slate-800">${p.amount?.toFixed(2)} — {p.purpose}</div>
-                              <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
-                            </div>
-                          </div>
-                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
-                            {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-slate-500">No active payments found.</p>
-                  )}
+                     <div className="space-y-3">
+                       {payments.filter(p => p.status !== 'work_scheduled').map(p => (
+                         <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl gap-3">
+                           <div className="flex items-center gap-3 flex-1 min-w-0">
+                             {p.status === 'confirmed' ? (
+                               <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                             ) : (
+                               <Clock className="w-5 h-5 text-amber-500 shrink-0" />
+                             )}
+                             <div className="min-w-0">
+                               <div className="text-sm font-medium text-slate-800">${p.amount?.toFixed(2)} — {p.purpose}</div>
+                               <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-2 shrink-0">
+                             {p.status === 'confirmed' && (
+                               <Button 
+                                 size="sm" 
+                                 variant="outline" 
+                                 className="text-xs h-7 px-2"
+                                 onClick={() => base44.functions.invoke('generatePaymentInvoice', { paymentId: p.id })}
+                               >
+                                 📄 Invoice
+                               </Button>
+                             )}
+                             <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
+                               {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                             </Badge>
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+                   ) : (
+                     <p className="text-sm text-slate-500">No active payments found.</p>
+                   )}
                 </Card>
               </TabsContent>
 
