@@ -18,6 +18,8 @@ import InAppMessageForm from '@/components/messaging/InAppMessageForm';
 import ContractorServices from '@/components/contractor/ContractorServices';
 import AvailabilityCalendar from '@/components/contractor/AvailabilityCalendar';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
+import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
+import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -304,19 +306,11 @@ export default function ContractorProfile() {
             {/* Reviews */}
             <ReviewsSection reviews={reviews} averageRating={contractor?.rating} totalReviews={contractor?.reviews_count} />
 
-            {/* Portfolio */}
-            {contractor.portfolio_images?.length > 0 && (
-              <Card className="p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">Portfolio</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {contractor.portfolio_images.map((img, idx) => (
-                    <div key={idx} className="aspect-square rounded-xl overflow-hidden bg-slate-100">
-                      <img src={img} alt={`Portfolio ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform" />
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
+            {/* Portfolio Projects */}
+            <PortfolioDisplay contractorId={contractorId} isOwner={false} />
+
+            {/* Equipment & Tools */}
+            <EquipmentDisplay contractorId={contractorId} isOwner={false} />
           </div>
 
           {/* Sidebar */}
