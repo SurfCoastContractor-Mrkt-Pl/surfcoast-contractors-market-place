@@ -54,7 +54,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
   };
 
   const handleSend = async () => {
-    if (!input.trim() || !conversation) return;
+    if (!input.trim()) return;
 
     const userMessage = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
@@ -62,14 +62,24 @@ export default function FloatingAgentWidget({ open, onClose }) {
     setLoading(true);
 
     try {
-      await base44.agents.addMessage(conversation, userMessage);
-
-      const unsubscribe = base44.agents.subscribeToConversation(conversation.id, (data) => {
-        setMessages(data.messages);
-        setLoading(false);
-      });
-
-      return () => unsubscribe();
+      // AI agent responds with setup guidance
+      let response = GREETING_MESSAGE;
+      
+      const lowerInput = input.toLowerCase();
+      if (lowerInput.includes('profile') || lowerInput.includes('location')) {
+        response = SETUP_GUIDANCE.setupProfile;
+      } else if (lowerInput.includes('browse') || lowerInput.includes('find')) {
+        response = SETUP_GUIDANCE.browseContractors;
+      } else if (lowerInput.includes('post') || lowerInput.includes('job')) {
+        response = SETUP_GUIDANCE.postJob;
+      } else if (lowerInput.includes('fee') || lowerInput.includes('price') || lowerInput.includes('cost')) {
+        response = "Our fees are simple:\n\n💬 $1.50 per contractor session — unlock contact details & unlimited messaging until work is scheduled\n\n📋 $0.75 per quote request — get a written estimate without back-and-forth\n\n⭐ $20/month — unlimited messaging with all contractors\n\nEach engagement closes when work is scheduled.";
+      } else {
+        response = "I can help you with:\n• Completing your profile\n• Browsing or posting jobs\n• Understanding platform fees\n• Questions about how ContractorHub works\n\nWhat would you like to know?";
+      }
+      
+      setMessages(prev => [...prev, { role: 'agent', content: response }]);
+      setLoading(false);
     } catch (error) {
       console.error('Failed to send message:', error);
       setLoading(false);
