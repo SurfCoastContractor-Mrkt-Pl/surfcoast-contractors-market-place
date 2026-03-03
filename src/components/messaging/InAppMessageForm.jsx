@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { hasActiveSubscription } from '@/components/subscription/subscriptionUtils';
 
 // Simple rate limiting for message spam prevention
 const createRateLimiter = (intervalMs) => {
@@ -30,6 +31,8 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     const [attachments, setAttachments] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
+    const [hasSubscription, setHasSubscription] = useState(false);
+    const [checkingSubscription, setCheckingSubscription] = useState(true);
     const queryClient = useQueryClient();
     const bottomRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -37,6 +40,24 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
 
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
+
+  // Check for active subscription when dialog opens
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (!open || !formData.email) {
+        setCheckingSubscription(false);
+        return;
+      }
+      try {
+        const has = await hasActiveSubscription(formData.email);
+        setHasSubscription(has);
+      } finally {
+        setCheckingSubscription(false);
+      }
+    };
+    
+    checkSubscription();
+  }, [open, formData.email]);
 
   // Load the thread — all messages tied to this payment (with pagination)
    const [pageSize] = useState(50);
@@ -173,28 +194,29 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     onClose();
   };
 
-  if (!paymentRecord || paymentRecord.status !== 'confirmed') {
-     return (
-       <Dialog open={open} onOpenChange={handleClose}>
-         <DialogContent className="max-w-lg">
-           <DialogHeader>
-             <DialogTitle className="flex items-center gap-2">
-               <MessageSquare className="w-5 h-5 text-amber-500" />
-               Message {recipientName}
-             </DialogTitle>
-           </DialogHeader>
-           <div className="text-center py-8">
-             <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-               <Lock className="w-8 h-8 text-amber-600" />
-             </div>
-             <h3 className="text-lg font-bold text-slate-900 mb-2">Payment Required</h3>
-             <p className="text-slate-600 text-sm mb-6">You must complete the $1.50 platform access fee before messaging.</p>
-             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
-           </div>
-         </DialogContent>
-       </Dialog>
-     );
-   }
+  // Show payment gate only if no subscription and no confirmed payment
+  if ((!paymentRecord || paymentRecord.status !== 'confirmed') && !hasSubscription) {
+      return (
+        <Dialog open={open} onOpenChange={handleClose}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-amber-500" />
+                Message {recipientName}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="text-center py-8">
+              <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Access Required</h3>
+              <p className="text-slate-600 text-sm mb-6">Pay $1.50 for one session or $20/month for unlimited messaging.</p>
+              <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      );
+    }
 
   // First message setup (no thread yet and no name saved)
   const needsSetup = thread.length === 0 && !formData.name;
@@ -405,7 +427,10 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                 )}
 
                 <p className="text-xs text-slate-400">
-                  Unlimited messages included with your $1.50 fee until work is scheduled. Contact details shared at your discretion.
+                 {hasSubscription 
+                   ? '✓ Unlimited messages with your monthly subscription until work is scheduled.'
+                   : 'Unlimited messages included with your $1.50 fee until work is scheduled. Contact details shared at your discretion.'
+                 }
                 </p>
               </div>
             )}
