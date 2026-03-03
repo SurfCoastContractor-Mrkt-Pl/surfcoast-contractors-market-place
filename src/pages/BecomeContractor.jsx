@@ -51,7 +51,8 @@ export default function BecomeContractor() {
     certifications: [],
     available: true,
     rating: null,
-    reviews_count: 0
+    reviews_count: 0,
+    credential_documents: [],
   });
 
   const mutation = useMutation({
