@@ -93,6 +93,8 @@ export default function ContractorAccount() {
         </div>
       </div>
 
+      <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
+
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Email Lookup */}
         <Card className="p-6">
