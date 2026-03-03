@@ -126,34 +126,73 @@ export default function ContractorAccount() {
               </div>
             </Card>
 
-            {/* Payment History */}
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Status</h2>
-              {payments?.length > 0 ? (
-                <div className="space-y-3">
-                  {payments.map(p => (
-                    <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        {p.status === 'confirmed' ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-600" />
-                        ) : (
-                          <Clock className="w-5 h-5 text-amber-500" />
-                        )}
-                        <div>
-                          <div className="text-sm font-medium text-slate-800">${p.amount.toFixed(2)} — {p.purpose}</div>
-                          <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
+            <Tabs defaultValue="fees">
+              <TabsList className="w-full">
+                <TabsTrigger value="fees" className="flex-1">Platform Fees</TabsTrigger>
+                <TabsTrigger value="past-work" className="flex-1 flex items-center gap-1.5">
+                  <CalendarCheck className="w-4 h-4" /> Past Work
+                  {pastWorkPayments?.length > 0 && (
+                    <span className="ml-1 bg-green-100 text-green-700 text-xs rounded-full px-1.5">{pastWorkPayments.length}</span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="fees">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Status</h2>
+                  {payments?.length > 0 ? (
+                    <div className="space-y-3">
+                      {payments.map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            {p.status === 'confirmed' ? (
+                              <CheckCircle2 className="w-5 h-5 text-green-600" />
+                            ) : (
+                              <Clock className="w-5 h-5 text-amber-500" />
+                            )}
+                            <div>
+                              <div className="text-sm font-medium text-slate-800">${p.amount.toFixed(2)} — {p.purpose}</div>
+                              <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
+                            </div>
+                          </div>
+                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
+                            {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                          </Badge>
                         </div>
-                      </div>
-                      <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
-                        {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                      </Badge>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-slate-500">No platform fee payments found.</p>
-              )}
-            </Card>
+                  ) : (
+                    <p className="text-sm text-slate-500">No platform fee payments found.</p>
+                  )}
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="past-work">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-1">Past Work</h2>
+                  <p className="text-xs text-slate-500 mb-4">Jobs that were marked as "Work Scheduled" — completed engagements.</p>
+                  {pastWorkPayments?.length > 0 ? (
+                    <div className="space-y-3">
+                      {pastWorkPayments.map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            <CalendarCheck className="w-5 h-5 text-green-600 shrink-0" />
+                            <div>
+                              <div className="text-sm font-medium text-slate-800">{p.purpose || 'Job engagement'}</div>
+                              <div className="text-xs text-slate-500">Customer: {p.payer_name} · {p.payer_email}</div>
+                              <div className="text-xs text-slate-400">{new Date(p.updated_date || p.created_date).toLocaleDateString()}</div>
+                            </div>
+                          </div>
+                          <Badge className="bg-green-100 text-green-700">Completed</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500">No completed work yet.</p>
+                  )}
+                </Card>
+              </TabsContent>
+            </Tabs>
 
             {/* Delete Profile */}
             <Card className="p-6 border-red-200 bg-red-50">
