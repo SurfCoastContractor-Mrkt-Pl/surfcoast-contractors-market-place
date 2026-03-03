@@ -10,7 +10,8 @@ import {
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import { User, Trash2, Search, CheckCircle2, Clock, FileText } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck } from 'lucide-react';
 
 export default function CustomerAccount() {
   const [searchEmail, setSearchEmail] = useState('');
