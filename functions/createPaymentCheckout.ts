@@ -23,8 +23,8 @@ Deno.serve(async (req) => {
       payer_email: payerEmail,
       payer_name: payerName,
       payer_type: payerType,
-      contractor_id: contractorId || '',
-      contractor_email: contractorEmail || '',
+      contractor_id: contractorId || null,
+      contractor_email: contractorEmail || null,
       amount: 1.50,
       status: 'pending',
       purpose: payerType === 'contractor'
@@ -68,6 +68,15 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('Checkout error:', error.message);
+    console.error('Full error:', error);
+    // Delete orphaned payment record if checkout fails
+    if (error.message && paymentRecord?.id) {
+      try {
+        await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
+      } catch (deleteError) {
+        console.error('Failed to clean up payment record:', deleteError.message);
+      }
+    }
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
