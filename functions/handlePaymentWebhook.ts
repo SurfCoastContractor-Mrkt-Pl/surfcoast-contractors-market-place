@@ -100,6 +100,11 @@ Deno.serve(async (req) => {
     return Response.json({ received: true });
   } catch (error) {
     console.error('Webhook error:', error.message);
-    return Response.json({ error: error.message }, { status: 400 });
+    console.error('Error type:', error.type);
+    // Return 400 for signature validation errors, but still acknowledge receipt to prevent retries
+    if (error.type === 'StripeSignatureVerificationError') {
+      console.error('Signature verification failed - webhook may be fraudulent or secret is incorrect');
+    }
+    return Response.json({ received: true }, { status: 200 });
   }
 });

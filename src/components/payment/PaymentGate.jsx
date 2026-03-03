@@ -65,8 +65,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       onPaid(record);
       setCheckingout(false);
     },
-    onError: () => {
+    onError: (error) => {
       setCheckingout(false);
+      console.error('Payment checkout error:', error.message);
     },
   });
 
