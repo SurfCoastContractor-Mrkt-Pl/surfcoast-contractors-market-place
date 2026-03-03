@@ -190,67 +190,56 @@ export default function JobDetails() {
           <div className="space-y-6">
             {/* Contact Card */}
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">Contact</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-                  <div className="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
-                    <User className="w-5 h-5 text-slate-600" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-slate-500">Posted by</div>
-                    <div className="font-medium text-slate-900">{job.poster_name}</div>
-                  </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Apply for this Job</h3>
+
+              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl mb-4">
+                <div className="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
+                  <User className="w-5 h-5 text-slate-600" />
                 </div>
-
-                {job.poster_email && (
-                  <a 
-                    href={`mailto:${job.poster_email}?subject=Interest in: ${job.title}`}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-amber-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-slate-500">Email</div>
-                      <div className="font-medium text-slate-900">{job.poster_email}</div>
-                    </div>
-                  </a>
-                )}
-
-                {job.poster_phone && (
-                  <a 
-                    href={`tel:${job.poster_phone}`}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-slate-500">Phone</div>
-                      <div className="font-medium text-slate-900">{job.poster_phone}</div>
-                    </div>
-                  </a>
-                )}
+                <div>
+                  <div className="text-sm text-slate-500">Posted by</div>
+                  <div className="font-medium text-slate-900">{job.poster_name}</div>
+                </div>
               </div>
 
-              {disclaimerSigned ? (
-                <div className="mt-4 space-y-3">
+              {/* Contact details always hidden */}
+              <div className="p-3 bg-slate-100 rounded-xl text-sm text-slate-500 text-center mb-4">
+                🔒 Client contact details are hidden — messaging is only available after disclaimer + fee
+              </div>
+
+              {disclaimerSigned && contractorPaid ? (
+                <div className="space-y-3">
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
                     <p className="text-xs text-green-700">
-                      Disclaimer signed by <strong>{signerName}</strong>
+                      Verified · Messaging unlocked
                     </p>
                   </div>
-                  <a href={`mailto:${job.poster_email}?subject=Interest in: ${job.title}`}>
-                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
-                      <Mail className="w-4 h-4 mr-2" />
-                      Apply for this Job
-                    </Button>
-                  </a>
+                  <Button
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    onClick={() => setShowMessageForm(true)}
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Send In-App Message
+                  </Button>
+                </div>
+              ) : disclaimerSigned && !contractorPaid ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
+                    <p className="text-xs text-green-700">Disclaimer signed by <strong>{signerName}</strong></p>
+                  </div>
+                  <Button
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    onClick={() => setShowPaymentGate(true)}
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Pay $1.50 to Unlock Messaging
+                  </Button>
                 </div>
               ) : (
                 <Button
-                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
+                  className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
                   onClick={() => setShowDisclaimer(true)}
                 >
                   <ShieldAlert className="w-4 h-4 mr-2" />
