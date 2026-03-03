@@ -127,6 +127,16 @@ export default function Layout({ children, currentPageName }) {
                     Join as Contractor
                   </Button>
                 </Link>
+                <div className="border-t border-slate-100 pt-2 space-y-1">
+                  {accountLinks.map(link => (
+                    <Link key={link.page} to={createPageUrl(link.page)} onClick={() => setMobileMenuOpen(false)}>
+                      <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                        <UserCircle className="w-5 h-5" />
+                        {link.name}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
