@@ -64,6 +64,12 @@ export default function PostJob() {
       alert('Please upload at least 5 before photos of the work area before submitting.');
       return;
     }
+    if (formData.budget_type === 'fixed' || formData.budget_type === 'hourly') {
+      if (!formData.budget_min && !formData.budget_max) {
+        alert('Please provide at least a minimum or maximum budget.');
+        return;
+      }
+    }
     const data = {
       ...formData,
       budget_min: formData.budget_min ? Number(formData.budget_min) : null,

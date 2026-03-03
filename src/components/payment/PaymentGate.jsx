@@ -18,6 +18,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       // Check for duplicate payment before creating a new one
       const existing = await base44.entities.Payment.filter({
         payer_email: data.email,
+        payer_type: payerType,
         contractor_id: contractorId || '',
         status: 'confirmed',
       });

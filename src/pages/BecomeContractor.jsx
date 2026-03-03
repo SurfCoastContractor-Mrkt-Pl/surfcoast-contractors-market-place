@@ -55,7 +55,14 @@ export default function BecomeContractor() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data) => base44.entities.Contractor.create(data),
+    mutationFn: async (data) => {
+      // Check if contractor with this email already exists
+      const existing = await base44.entities.Contractor.filter({ email: data.email });
+      if (existing && existing.length > 0) {
+        throw new Error('A contractor profile with this email already exists. Please use a different email or log in to your existing profile.');
+      }
+      return base44.entities.Contractor.create(data);
+    },
     onSuccess: () => {
       setSuccess(true);
       setTimeout(() => {
