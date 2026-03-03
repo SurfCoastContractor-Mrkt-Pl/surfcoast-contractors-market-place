@@ -88,6 +88,8 @@ This is an official copy of the agreement submitted through ContractorHub.
       cost_type: costType,
       cost_amount: Number(formData.cost_amount),
       estimated_hours: formData.estimated_hours ? Number(formData.estimated_hours) : null,
+      agreed_work_date: formData.agreed_work_date || null,
+      after_photo_urls: afterPhotos,
       status: 'pending_approval',
     });
   };
