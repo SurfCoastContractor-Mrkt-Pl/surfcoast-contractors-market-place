@@ -145,6 +145,8 @@ export default function Layout({ children, currentPageName }) {
         )}
       </nav>
 
+      <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
+
       {/* Main Content */}
       <main className="flex-1">
         {children}
