@@ -114,6 +114,11 @@ export default function ContractorAccount() {
 
         {contractor && (
           <>
+            {/* Locked Account Banner */}
+            {contractor.account_locked && (
+              <AccountLockedBanner contractor={contractor} lockedScope={lockedScope} />
+            )}
+
             {/* Profile Summary */}
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">Your Profile</h2>
