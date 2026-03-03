@@ -9,9 +9,11 @@ import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { 
   ArrowLeft, MapPin, Calendar, DollarSign, Clock, 
-  Phone, Mail, User, AlertCircle, ShieldAlert
+  User, AlertCircle, ShieldAlert, MessageSquare
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
+import PaymentGate from '@/components/payment/PaymentGate';
+import InAppMessageForm from '@/components/messaging/InAppMessageForm';
 
 const urgencyColors = {
   low: 'bg-slate-100 text-slate-600',
