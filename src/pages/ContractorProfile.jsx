@@ -22,6 +22,7 @@ import ReviewsSection from '@/components/contractor/ReviewsSection';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
+import QuoteFeeDisclosure from '@/components/quote/QuoteFeeDisclosure';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -44,6 +45,7 @@ export default function ContractorProfile() {
    const [authLoading, setAuthLoading] = useState(true);
    const [showDisclaimer, setShowDisclaimer] = useState(false);
    const [showQuoteForm, setShowQuoteForm] = useState(false);
+   const [showQuoteFeeDisclosure, setShowQuoteFeeDisclosure] = useState(false);
 
    // Check user authentication
    useEffect(() => {
@@ -350,7 +352,7 @@ export default function ContractorProfile() {
                   </div>
                   <Button
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                    onClick={() => setShowQuoteForm(true)}
+                    onClick={() => setShowQuoteFeeDisclosure(true)}
                   >
                     Request Quick Quote
                   </Button>
@@ -529,6 +531,16 @@ export default function ContractorProfile() {
           setSignerName(record.customer_name);
           setShowDisclaimer(false);
         }}
+      />
+
+      <QuoteFeeDisclosure
+        open={showQuoteFeeDisclosure}
+        onClose={() => setShowQuoteFeeDisclosure(false)}
+        onConfirm={() => {
+          setShowQuoteFeeDisclosure(false);
+          setShowQuoteForm(true);
+        }}
+        contractorName={contractor?.name}
       />
 
       <QuoteRequestForm
