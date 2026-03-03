@@ -19,7 +19,9 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
     scope_summary: '',
     cost_amount: '',
     estimated_hours: '',
+    agreed_work_date: '',
   });
+  const [afterPhotos, setAfterPhotos] = useState([]);
 
   const mutation = useMutation({
     mutationFn: async (data) => {
