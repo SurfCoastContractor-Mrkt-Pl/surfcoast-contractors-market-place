@@ -330,7 +330,7 @@ export default function ContractorProfile() {
       <PaymentGate
         open={showPaymentGate}
         onClose={() => setShowPaymentGate(false)}
-        onPaid={() => { setCustomerPaid(true); setShowPaymentGate(false); }}
+        onPaid={(record) => { setCustomerPaid(true); setPaymentRecord(record); setShowPaymentGate(false); }}
         payerType="customer"
         contractorId={contractor?.id}
         contractorEmail={contractor?.email}
