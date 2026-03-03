@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { createPageUrl } from '@/utils';
 
 import HeroSection from '@/components/home/HeroSection';
 import TradeCategories from '@/components/home/TradeCategories';
@@ -9,6 +11,36 @@ import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  // Redirect authenticated users to their dashboard if they're new
+  useEffect(() => {
+    const checkAndRedirect = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) return; // Not logged in
+
+        // Check if contractor
+        const contractors = await base44.entities.Contractor.filter({ email: user.email });
+        if (contractors && contractors.length > 0) {
+          navigate(createPageUrl('ContractorAccount'));
+          return;
+        }
+
+        // Check if customer profile exists
+        const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
+        if (!profiles || profiles.length === 0) {
+          navigate(createPageUrl('CustomerAccount'));
+          return;
+        }
+      } catch (error) {
+        console.error('Redirect check failed:', error);
+      }
+    };
+
+    checkAndRedirect();
+  }, [navigate]);
+
   const { data: contractors, isLoading: contractorsLoading } = useQuery({
     queryKey: ['contractors-featured'],
     queryFn: () => base44.entities.Contractor.filter({ available: true }, '-rating', 6),
