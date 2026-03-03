@@ -10,10 +10,11 @@ import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 const getNavLinks = (isContractor) => {
   const baseLinks = [
     { name: 'Home', page: 'Home', icon: Home },
-    { name: 'Browse Jobs', page: 'Jobs', icon: Briefcase },
   ];
-  if (isContractor === false) {
-    baseLinks.splice(1, 0, { name: 'Find Contractors', page: 'Contractors', icon: Users });
+  if (isContractor === true) {
+    baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
+  } else if (isContractor === false) {
+    baseLinks.push({ name: 'Find Contractors', page: 'Contractors', icon: Users });
   }
   return baseLinks;
 };
