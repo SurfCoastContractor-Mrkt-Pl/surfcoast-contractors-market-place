@@ -65,6 +65,10 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
     onSuccess: (record) => {
       setPaid(true);
       onPaid(record);
+      setCheckingout(false);
+    },
+    onError: () => {
+      setCheckingout(false);
     },
   });
 
