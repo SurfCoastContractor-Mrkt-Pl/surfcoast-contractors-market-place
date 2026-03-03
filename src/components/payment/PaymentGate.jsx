@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DollarSign, Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { DollarSign, Loader2, CheckCircle, Shield, CreditCard } from 'lucide-react';
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -13,6 +13,10 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      const purpose = payerType === 'contractor'
+        ? 'Contractor platform access fee'
+        : `Customer access to contact contractor ${contractorName}`;
+
       const record = await base44.entities.Payment.create({
         payer_email: data.email,
         payer_name: data.name,
@@ -21,15 +25,13 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         contractor_email: contractorEmail || '',
         amount: 1.50,
         status: 'pending',
-        purpose: payerType === 'contractor'
-          ? 'Contractor app access fee'
-          : `Customer access to contact contractor ${contractorName}`,
+        purpose,
       });
 
       await base44.integrations.Core.SendEmail({
         to: data.email,
-        subject: 'ContractorHub — $1.50 Platform Fee Acknowledgment',
-        body: `Dear ${data.name},\n\nThank you for acknowledging the ContractorHub platform fee of $1.50.\n\nPayment Reference ID: ${record.id}\nAmount: $1.50\nPurpose: ${record.purpose}\n\nPlease arrange payment of $1.50 to the platform administrator. Your access will be confirmed once payment is received.\n\nThank you,\nContractorHub`,
+        subject: 'ContractorHub — Platform Access Fee Receipt',
+        body: `Dear ${data.name},\n\nThank you for using ContractorHub.\n\nA platform access fee of $1.50 has been recorded for your account.\n\nPayment Reference: ${record.id}\nAmount: $1.50 USD\nPurpose: ${purpose}\nDate: ${new Date().toLocaleDateString()}\n\nAs required by California SB 478 (Honest Pricing Law), this fee is disclosed upfront and covers: secure identity-verified contractor access on the ContractorHub platform.\n\nSecure card payment processing is coming soon. Your access has been noted.\n\nContractorHub\n(This is an automated receipt — do not reply to this email)`,
       });
 
       return record;
