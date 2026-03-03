@@ -34,7 +34,7 @@ export default function Layout({ children, currentPageName }) {
                 <HardHat className={`w-5 h-5 ${isHome ? 'text-slate-900' : 'text-amber-400'}`} />
               </div>
               <span className={`font-bold text-xl ${isHome ? 'text-white' : 'text-slate-900'}`}>
-                SurfCoast
+                ContractorHub
               </span>
             </Link>
 
@@ -164,7 +164,7 @@ export default function Layout({ children, currentPageName }) {
                 <span className="font-bold text-xl">ContractorHub</span>
               </div>
               <p className="text-slate-400 max-w-sm">
-                Connecting skilled coastal construction professionals with clients who need quality work done right.
+                Connecting skilled construction professionals with clients who need quality work done right.
               </p>
             </div>
             <div>
@@ -183,7 +183,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
-            <span>© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ContractorHub. All rights reserved.</span>
             <button
               onClick={() => setSuggestionOpen(true)}
               className="flex items-center gap-1.5 text-slate-400 hover:text-amber-400 transition-colors text-sm"
