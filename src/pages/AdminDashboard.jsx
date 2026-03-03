@@ -41,6 +41,12 @@ export default function AdminDashboard() {
     enabled: authed,
   });
 
+  const { data: customers = [] } = useQuery({
+    queryKey: ['admin-customers'],
+    queryFn: () => base44.entities.CustomerProfile.list('-created_date'),
+    enabled: authed,
+  });
+
   const { data: suggestions = [], isLoading: suggestionsLoading } = useQuery({
     queryKey: ['admin-suggestions'],
     queryFn: () => base44.entities.Suggestion.list('-created_date'),
