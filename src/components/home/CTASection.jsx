@@ -71,39 +71,7 @@ export default function CTASection() {
             </div>
           </div>
           
-          {/* For Clients */}
-          <div className="text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Looking to Hire?
-            </h3>
-            <p className="text-slate-300 mb-6">
-              Post your project and receive quotes from qualified contractors in your area. 
-              It's free and takes just minutes.
-            </p>
-            <div className="space-y-4 mb-8">
-              {[
-                { title: 'Post Your Project', desc: 'Describe your needs and set your budget' },
-                { title: 'Get Matched', desc: 'Receive interest from qualified contractors' },
-                { title: 'Hire with Confidence', desc: 'Review profiles and choose the best fit' },
-              ].map((step, idx) => (
-                <div key={idx} className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold shrink-0">
-                    {idx + 1}
-                  </div>
-                  <div>
-                    <div className="font-medium">{step.title}</div>
-                    <div className="text-sm text-slate-400">{step.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Link to={createPageUrl('PostJob')}>
-              <Button size="lg" variant="outline" className="border-slate-500 text-white hover:bg-slate-700">
-                Post Your Job
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
-          </div>
+
         </div>
       </div>
     </section>
