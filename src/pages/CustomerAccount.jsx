@@ -11,10 +11,14 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail } from 'lucide-react';
+import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, HelpCircle, Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
 import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay';
 import CustomerWelcomeModal from '@/components/customer/CustomerWelcomeModal';
+import CustomerProfileEditor from '@/components/customer/CustomerProfileEditor';
+import FloatingAgentWidget from '@/components/agent/FloatingAgentWidget';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -153,9 +157,10 @@ export default function CustomerAccount() {
         }}
       />
 
-      {agentOpen && (
-        <div className="fixed inset-0 z-30" />
-      )}
+      <FloatingAgentWidget 
+        open={agentOpen} 
+        onClose={() => setAgentOpen(false)}
+      />
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
@@ -180,18 +185,39 @@ export default function CustomerAccount() {
               </div>
             )}
 
-            <Tabs defaultValue="payments">
-              <TabsList className="w-full">
-                <TabsTrigger value="payments" className="flex-1">Payments</TabsTrigger>
-                <TabsTrigger value="scopes" className="flex-1">Scope of Work</TabsTrigger>
-                <TabsTrigger value="settings" className="flex-1 flex items-center gap-1.5"><Settings className="w-4 h-4 mr-1" /> Settings</TabsTrigger>
-                <TabsTrigger value="old-postings" className="flex-1 flex items-center gap-1.5">
-                  <CalendarCheck className="w-4 h-4" /> Old Postings
-                  {oldPostings?.length > 0 && (
-                    <span className="ml-1 bg-green-100 text-green-700 text-xs rounded-full px-1.5">{oldPostings.length}</span>
-                  )}
+            <Tabs defaultValue="profile">
+              <TabsList className="w-full grid-cols-5">
+                <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
+                <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
+                  <Plus className="w-3 h-3 sm:w-4 sm:h-4" />Post Job
                 </TabsTrigger>
+                <TabsTrigger value="scopes" className="text-xs sm:text-sm">Scopes</TabsTrigger>
+                <TabsTrigger value="payments" className="text-xs sm:text-sm">Payments</TabsTrigger>
+                <TabsTrigger value="settings" className="text-xs sm:text-sm"><Settings className="w-3 h-3 sm:w-4 sm:h-4" /></TabsTrigger>
               </TabsList>
+
+              <TabsContent value="profile">
+                <CustomerProfileEditor
+                  profile={customerProfile}
+                  userEmail={userEmail}
+                  onAskAgent={() => setAgentOpen(true)}
+                />
+              </TabsContent>
+
+              <TabsContent value="post-job">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Post a New Job</h2>
+                  <p className="text-slate-600 mb-6">
+                    Post a job to find qualified contractors. You'll need to provide a detailed description and upload at least 5 before photos.
+                  </p>
+                  <Link to={createPageUrl('PostJob')}>
+                    <Button className="bg-amber-500 hover:bg-amber-600">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Go to Job Posting Form
+                    </Button>
+                  </Link>
+                </Card>
+              </TabsContent>
 
               <TabsContent value="payments">
                 <Card className="p-6">
