@@ -20,8 +20,11 @@ export default function Home() {
   useEffect(() => {
     const checkAndRedirect = async () => {
       try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (!isAuth) return; // Not logged in, show homepage
+
         const user = await base44.auth.me();
-        if (!user) return; // Not logged in
+        if (!user) return;
 
         // Check if contractor
         const contractors = await base44.entities.Contractor.filter({ email: user.email });
@@ -37,7 +40,8 @@ export default function Home() {
           return;
         }
       } catch (error) {
-        console.error('Redirect check failed:', error);
+        // User not authenticated, allow homepage to display
+        return;
       }
     };
 
