@@ -11,7 +11,8 @@ import {
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import { HardHat, Trash2, Search, CheckCircle2, Clock } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck } from 'lucide-react';
 
 export default function ContractorAccount() {
   const [searchEmail, setSearchEmail] = useState('');
