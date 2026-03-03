@@ -68,27 +68,35 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Fee Acknowledged</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Access Granted</h3>
             <p className="text-slate-600 text-sm mb-4">
-              A confirmation has been sent to your email. You now have access to communicate with this {payerType === 'customer' ? 'contractor' : 'customer'}.
+              A receipt has been sent to your email. You now have access to communicate with this {payerType === 'customer' ? 'contractor' : 'customer'}.
             </p>
             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Continue</Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5 mt-2">
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 space-y-2">
+            {/* California SB 478 Compliant Fee Disclosure */}
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 space-y-2">
               <div className="flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                <Shield className="w-4 h-4 shrink-0 mt-0.5 text-slate-500" />
                 <div>
-                  <strong>A one-time platform fee of $1.50 is required.</strong>
-                  <p className="mt-1 text-amber-700">
+                  <strong className="text-slate-900">Platform Access Fee: $1.50 (USD)</strong>
+                  <p className="mt-1">
                     {payerType === 'customer'
-                      ? `This fee grants you access to communicate with ${contractorName}. Each contractor requires a separate $1.50 fee.`
-                      : 'This fee grants you access to communicate with customers on ContractorHub.'}
+                      ? `This one-time fee unlocks communication with ${contractorName}. A separate $1.50 fee applies per contractor.`
+                      : 'This one-time fee activates your ability to receive and respond to customer inquiries on ContractorHub.'}
                   </p>
-                  <p className="mt-1 text-amber-700">Payment instructions will be sent to your email.</p>
+                  <p className="mt-2 text-xs text-slate-500">
+                    Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe is coming soon — your fee is logged and a receipt will be emailed to you.
+                  </p>
                 </div>
               </div>
+            </div>
+
+            <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700">
+              <CreditCard className="w-4 h-4 shrink-0" />
+              <span>Stripe secure card payment launching soon. Your fee record is saved now.</span>
             </div>
 
             <div>
@@ -123,10 +131,14 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 {mutation.isPending ? (
                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
                 ) : (
-                  'Acknowledge & Pay $1.50'
+                  'Confirm & Pay $1.50'
                 )}
               </Button>
             </div>
+
+            <p className="text-center text-xs text-slate-400">
+              By proceeding, you authorize a $1.50 USD platform access fee. All fees are non-refundable.
+            </p>
           </form>
         )}
       </DialogContent>
