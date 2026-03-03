@@ -37,7 +37,7 @@ export default function Layout({ children, currentPageName }) {
                 alt="SurfCoast Logo"
                 className="w-10 h-10 object-contain"
               />
-              <span className="font-bold text-lg text-slate-900">
+              <span className="font-bold text-lg text-amber-600">
                 SurfCoast<br/><span className="text-sm font-semibold">Contractor Market Place</span>
               </span>
             </Link>
@@ -169,8 +169,8 @@ export default function Layout({ children, currentPageName }) {
                   className="w-10 h-10 object-contain"
                 />
                 <div>
-                  <span className="font-bold text-xl text-slate-900">SurfCoast</span><br/>
-                  <span className="text-xs font-semibold text-slate-900">Contractor Market Place</span>
+                  <span className="font-bold text-xl text-amber-400">SurfCoast</span><br/>
+                  <span className="text-xs font-semibold text-amber-400">Contractor Market Place</span>
                 </div>
               </div>
               <p className="text-slate-400 max-w-sm">
