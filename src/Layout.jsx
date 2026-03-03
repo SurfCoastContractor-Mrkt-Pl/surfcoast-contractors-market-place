@@ -18,6 +18,7 @@ const accountLinks = [
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [suggestionOpen, setSuggestionOpen] = useState(false);
 
   const isHome = currentPageName === 'Home';
 
