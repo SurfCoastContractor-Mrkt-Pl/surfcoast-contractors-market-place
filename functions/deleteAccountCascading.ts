@@ -35,6 +35,13 @@ Deno.serve(async (req) => {
 
     // Delete related records based on account type
     if (accountType === 'contractor') {
+      // Delete all contractor scope proposals
+      const proposals = await base44.asServiceRole.entities.ContractorScopeProposal.filter({ contractor_id: contractorId });
+      for (const proposal of proposals) {
+        await base44.asServiceRole.entities.ContractorScopeProposal.delete(proposal.id);
+        deletedCount++;
+      }
+
       // Delete all scopes where this contractor is involved
       const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ contractor_id: contractorId });
       for (const scope of scopes) {
@@ -68,6 +75,13 @@ Deno.serve(async (req) => {
       deletedCount++;
     } else {
       // Customer account deletion
+      // Delete all customer scope requests
+      const scopeRequests = await base44.asServiceRole.entities.CustomerScopeRequest.filter({ customer_email: accountEmail });
+      for (const req of scopeRequests) {
+        await base44.asServiceRole.entities.CustomerScopeRequest.delete(req.id);
+        deletedCount++;
+      }
+
       // Delete all scopes where this customer is involved
       const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ customer_email: accountEmail });
       for (const scope of scopes) {
