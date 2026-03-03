@@ -9,11 +9,14 @@ import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { 
   ArrowLeft, MapPin, Calendar, DollarSign, Clock, 
-  User, AlertCircle, ShieldAlert, MessageSquare, Camera
+  User, AlertCircle, ShieldAlert, MessageSquare, Camera, Eye
 } from 'lucide-react';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import PaymentGate from '@/components/payment/PaymentGate';
 import InAppMessageForm from '@/components/messaging/InAppMessageForm';
+import CustomerScopeEditor from '@/components/customer/CustomerScopeEditor';
+import ContractorProposalForm from '@/components/contractor/ContractorProposalForm';
+import ScopeComparison from '@/components/contractor/ScopeComparison';
 
 const urgencyColors = {
   low: 'bg-slate-100 text-slate-600',
@@ -56,6 +59,7 @@ export default function JobDetails() {
   const [contractorPaid, setContractorPaid] = useState(false);
   const [paymentRecord, setPaymentRecord] = useState(null);
   const [showMessageForm, setShowMessageForm] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(null);
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job', jobId],
@@ -65,6 +69,34 @@ export default function JobDetails() {
     },
     enabled: !!jobId,
   });
+
+  const { data: customerScope } = useQuery({
+    queryKey: ['customer-scope-request', jobId],
+    queryFn: () => base44.entities.CustomerScopeRequest.filter({ job_id: jobId }),
+    enabled: !!jobId,
+    select: (data) => data?.[0],
+  });
+
+  const { data: contractorProposals } = useQuery({
+    queryKey: ['contractor-proposals', jobId],
+    queryFn: () => base44.entities.ContractorScopeProposal.filter({ job_id: jobId }),
+    enabled: !!jobId,
+  });
+
+  useEffect(() => {
+    const checkUserType = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (user) {
+          const contractors = await base44.entities.Contractor.filter({ email: user.email });
+          setIsCustomer(!(contractors && contractors.length > 0));
+        }
+      } catch {
+        setIsCustomer(null);
+      }
+    };
+    checkUserType();
+  }, []);
 
   if (isLoading || authLoading) {
     return (
@@ -158,6 +190,15 @@ export default function JobDetails() {
               </div>
             </Card>
 
+            {/* Customer Scope Request */}
+            {isCustomer && (
+              <CustomerScopeEditor 
+                job={job}
+                userEmail={userAuth?.email}
+                userName={userAuth?.full_name}
+              />
+            )}
+
             {/* Before Photos */}
             {job.before_photo_urls?.length > 0 && (
               <Card className="p-6">
@@ -174,6 +215,29 @@ export default function JobDetails() {
                     </a>
                   ))}
                 </div>
+              </Card>
+            )}
+
+            {/* Contractor sees scope after paying */}
+            {!isCustomer && contractorPaid && customerScope && (
+              <Card className="p-6 border-blue-200 bg-blue-50">
+                <div className="flex items-center gap-2 mb-4">
+                  <Eye className="w-5 h-5 text-blue-600" />
+                  <h3 className="text-lg font-semibold text-slate-900">Customer's Scope Request</h3>
+                </div>
+                <p className="text-sm text-slate-600 whitespace-pre-wrap mb-4">{customerScope.scope_details}</p>
+                {customerScope.scope_photo_urls?.length > 0 && (
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-2">Photos:</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {customerScope.scope_photo_urls.map((url, idx) => (
+                        <a key={idx} href={url} target="_blank" rel="noopener noreferrer" className="aspect-square rounded-lg overflow-hidden bg-slate-200 hover:opacity-90 transition">
+                          <img src={url} alt={`Scope ${idx + 1}`} className="w-full h-full object-cover" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </Card>
             )}
 
@@ -256,9 +320,17 @@ export default function JobDetails() {
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
                     <p className="text-xs text-green-700">
-                      Verified · Messaging unlocked
+                      Verified · Full access unlocked
                     </p>
                   </div>
+                  {!isCustomer && (
+                    <Button
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => document.getElementById('proposal-form')?.scrollIntoView({ behavior: 'smooth' })}
+                    >
+                      Submit Proposal
+                    </Button>
+                  )}
                   <Button
                     className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
                     onClick={() => setShowMessageForm(true)}
