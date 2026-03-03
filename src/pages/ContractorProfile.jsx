@@ -20,6 +20,8 @@ import AvailabilityCalendar from '@/components/contractor/AvailabilityCalendar';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
+import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -41,6 +43,7 @@ export default function ContractorProfile() {
    const [userAuth, setUserAuth] = useState(null);
    const [authLoading, setAuthLoading] = useState(true);
    const [showDisclaimer, setShowDisclaimer] = useState(false);
+   const [showQuoteForm, setShowQuoteForm] = useState(false);
 
    // Check user authentication
    useEffect(() => {
@@ -331,10 +334,31 @@ export default function ContractorProfile() {
           <div className="space-y-6">
             {/* Contact Card */}
             <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact</h2>
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact Options</h2>
 
-              {/* Contact info hidden until fee paid */}
-              {disclaimerSigned && customerPaid ? (
+              <Tabs defaultValue="message" className="space-y-4">
+                <TabsList className="w-full">
+                  <TabsTrigger value="quote" className="flex-1">Quick Quote</TabsTrigger>
+                  <TabsTrigger value="message" className="flex-1">Message</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="quote" className="space-y-3">
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-700">
+                      <strong>$0.75 per quote</strong> — Get a written estimate without back-and-forth conversation
+                    </p>
+                  </div>
+                  <Button
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => setShowQuoteForm(true)}
+                  >
+                    Request Quick Quote
+                  </Button>
+                </TabsContent>
+
+                <TabsContent value="message" className="space-y-3">
+                  {/* Contact info hidden until fee paid */}
+                  {disclaimerSigned && customerPaid ? (
                 <div className="space-y-3">
                   {isWorkScheduled ? (
                     <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
@@ -371,8 +395,7 @@ export default function ContractorProfile() {
                       To message again, pay a new $1.50 access fee.
                     </p>
                   )}
-                </div>
-              ) : disclaimerSigned && !customerPaid ? (
+                  ) : disclaimerSigned && !customerPaid ? (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
@@ -401,9 +424,23 @@ export default function ContractorProfile() {
                     <ShieldAlert className="w-4 h-4 mr-2" />
                     Sign Disclaimer & Contact
                   </Button>
-                </div>
-              )}
-            </Card>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="p-3 bg-slate-100 rounded-xl text-sm text-slate-500 text-center">
+                        🔒 Contact details hidden — sign disclaimer & pay fee to message
+                      </div>
+                      <Button
+                        className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                        onClick={() => setShowDisclaimer(true)}
+                      >
+                        <ShieldAlert className="w-4 h-4 mr-2" />
+                        Sign Disclaimer & Contact
+                      </Button>
+                    </div>
+                  )}
+                  </TabsContent>
+                  </Tabs>
+                  </Card>
 
             {/* Identity Verification Status */}
             {!contractor.identity_verified && (
@@ -502,6 +539,13 @@ export default function ContractorProfile() {
           setSignerName(record.customer_name);
           setShowDisclaimer(false);
         }}
+      />
+
+      <QuoteRequestForm
+        open={showQuoteForm}
+        onClose={() => setShowQuoteForm(false)}
+        contractor={contractor}
+        customer={userAuth}
       />
     </div>
   );
