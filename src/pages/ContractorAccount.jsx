@@ -19,6 +19,7 @@ import JobCloseout from '@/components/scopeofwork/JobCloseout';
 export default function ContractorAccount() {
   const [searchEmail, setSearchEmail] = useState('');
   const [searched, setSearched] = useState(false);
+  const [closeoutScope, setCloseoutScope] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: contractors, isLoading } = useQuery({
@@ -59,6 +60,12 @@ export default function ContractorAccount() {
       return pastWorkPayments || [];
     },
     enabled: !!pastWorkPayments,
+  });
+
+  const { data: contractorScopes } = useQuery({
+    queryKey: ['contractor-scopes', contractor?.id],
+    queryFn: () => base44.entities.ScopeOfWork.filter({ contractor_id: contractor?.id }),
+    enabled: !!contractor?.id,
   });
 
   const deleteMutation = useMutation({
