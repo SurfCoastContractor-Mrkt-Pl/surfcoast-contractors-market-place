@@ -12,7 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle } from 'lucide-react';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
-import FaceScanVerification from '@/components/contractor/FaceScanVerification';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -33,7 +32,6 @@ export default function BecomeContractor() {
   const [success, setSuccess] = useState(false);
   const [newCert, setNewCert] = useState('');
   const [uploadingId, setUploadingId] = useState(false);
-  const [faceVerified, setFaceVerified] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -73,10 +71,6 @@ export default function BecomeContractor() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!faceVerified) {
-      alert('You must complete face verification before submitting. Your profile photo must match your ID.');
-      return;
-    }
     const data = {
       ...formData,
       years_experience: formData.years_experience ? Number(formData.years_experience) : null,
@@ -366,17 +360,7 @@ export default function BecomeContractor() {
                   </div>
                 </div>
 
-                {/* Face Photo + AI Scan Verification */}
-                <FaceScanVerification
-                  idDocumentUrl={formData.id_document_url}
-                  profilePhotoUrl={formData.photo_url}
-                  onProfilePhotoChange={(url) => {
-                    handleChange('photo_url', url);
-                    handleChange('face_photo_url', url);
-                    setFaceVerified(false);
-                  }}
-                  onVerified={(verified) => setFaceVerified(verified)}
-                />
+
               </div>
 
               {/* Credential Documents */}
@@ -423,17 +407,11 @@ export default function BecomeContractor() {
             </div>
           </Card>
 
-          {!faceVerified && formData.id_document_url && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 mb-3">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
-              Face verification is required before you can submit. Your profile photo must be scanned and confirmed to match your ID.
-            </div>
-          )}
           <Button 
             type="submit" 
             size="lg" 
             className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold disabled:opacity-50"
-            disabled={mutation.isPending || !faceVerified}
+            disabled={mutation.isPending}
           >
             {mutation.isPending ? (
               <>
