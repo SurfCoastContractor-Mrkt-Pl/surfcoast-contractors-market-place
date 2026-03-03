@@ -13,18 +13,23 @@ export default function ProjectManagement() {
   const [userType, setUserType] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
 
+  const { data: user } = useQuery({
+    queryKey: ['current-user'],
+    queryFn: () => base44.auth.me(),
+  });
+
   const { data: projects, isLoading } = useQuery({
-    queryKey: ['user-projects', userType],
+    queryKey: ['user-projects', userType, user?.email],
     queryFn: async () => {
-      if (!userType) return [];
+      if (!userType || !user?.email) return [];
       
       if (userType === 'contractor') {
-        return base44.entities.ScopeOfWork.filter({ status: 'approved' }, '-created_date');
+        return base44.entities.ScopeOfWork.filter({ contractor_email: user.email, status: 'approved' }, '-created_date');
       } else {
-        return base44.entities.ScopeOfWork.filter({ status: 'approved' }, '-created_date');
+        return base44.entities.ScopeOfWork.filter({ customer_email: user.email, status: 'approved' }, '-created_date');
       }
     },
-    enabled: !!userType
+    enabled: !!userType && !!user?.email
   });
 
   const getStatusColor = (status) => {
