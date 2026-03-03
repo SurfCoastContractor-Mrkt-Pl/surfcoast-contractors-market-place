@@ -32,10 +32,8 @@ export default function BecomeContractor() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [newCert, setNewCert] = useState('');
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  
   const [uploadingId, setUploadingId] = useState(false);
-  const [uploadingFace, setUploadingFace] = useState(false);
+  const [faceVerified, setFaceVerified] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
