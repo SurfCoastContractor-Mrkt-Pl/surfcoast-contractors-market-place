@@ -33,6 +33,7 @@ export default function Contractors() {
   const [typeFilter, setTypeFilter] = useState(initialType);
   const [tradeFilter, setTradeFilter] = useState(initialTrade);
   const [availableOnly, setAvailableOnly] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
 
@@ -73,8 +74,10 @@ export default function Contractors() {
       const matchesTrade = !tradeFilter || c.trade_specialty === tradeFilter;
       
       const matchesAvailable = !availableOnly || c.available;
+
+      const matchesStatus = !statusFilter || c.availability_status === statusFilter;
       
-      return matchesSearch && matchesType && matchesTrade && matchesAvailable;
+      return matchesSearch && matchesType && matchesTrade && matchesAvailable && matchesStatus;
     });
 
     // Add distance info if user location is set
@@ -86,16 +89,17 @@ export default function Contractors() {
     }
 
     return results;
-  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, userLocation, contractorDistances]);
+  }, [contractors, searchQuery, typeFilter, tradeFilter, availableOnly, statusFilter, userLocation, contractorDistances]);
 
   const clearFilters = () => {
     setSearchQuery('');
     setTypeFilter('');
     setTradeFilter('');
     setAvailableOnly(false);
+    setStatusFilter('');
   };
 
-  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || availableOnly;
+  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || availableOnly || statusFilter;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -160,6 +164,18 @@ export default function Contractors() {
               </SelectContent>
             </Select>
             
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Availability Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={null}>All Statuses</SelectItem>
+                <SelectItem value="available">Available</SelectItem>
+                <SelectItem value="booked">Booked</SelectItem>
+                <SelectItem value="on_vacation">On Vacation</SelectItem>
+              </SelectContent>
+            </Select>
+            
             <Button 
               variant={availableOnly ? "default" : "outline"}
               className={availableOnly ? "bg-green-600 hover:bg-green-700" : ""}
@@ -188,6 +204,14 @@ export default function Contractors() {
                 <Badge variant="secondary" className="gap-1">
                   {trades.find(t => t.id === tradeFilter)?.name}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setTradeFilter('')} />
+                </Badge>
+              )}
+              {statusFilter && (
+                <Badge variant="secondary" className="gap-1">
+                  {statusFilter === 'available' && 'Available'}
+                  {statusFilter === 'booked' && 'Booked'}
+                  {statusFilter === 'on_vacation' && 'On Vacation'}
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setStatusFilter('')} />
                 </Badge>
               )}
               {availableOnly && (
