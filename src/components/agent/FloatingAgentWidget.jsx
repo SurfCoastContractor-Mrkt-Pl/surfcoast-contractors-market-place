@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-react';
 
-const GREETING_MESSAGE = `👋 Welcome to ContractorHub!
+const GREETING_MESSAGE = `👋 Welcome to SurfCoast Contractors Market Place!
 
 I'm your AI Assistant. Let me help you complete your profile setup.
 
@@ -75,7 +75,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
       } else if (lowerInput.includes('fee') || lowerInput.includes('price') || lowerInput.includes('cost')) {
         response = "Our fees are simple:\n\n💬 $1.50 per contractor session — unlock contact details & unlimited messaging until work is scheduled\n\n📋 $0.75 per quote request — get a written estimate without back-and-forth\n\n⭐ $20/month — unlimited messaging with all contractors\n\nEach engagement closes when work is scheduled.";
       } else {
-        response = "I can help you with:\n• Completing your profile\n• Browsing or posting jobs\n• Understanding platform fees\n• Questions about how ContractorHub works\n\nWhat would you like to know?";
+        response = "I can help you with:\n• Completing your profile\n• Browsing or posting jobs\n• Understanding platform fees\n• Questions about how SurfCoast Contractors Market Place works\n\nWhat would you like to know?";
       }
       
       setMessages(prev => [...prev, { role: 'agent', content: response }]);
@@ -106,7 +106,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
     <div className="fixed bottom-6 right-6 z-40 w-80 max-w-[calc(100vw-2rem)] h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
-        <h3 className="font-semibold text-sm">ContractorHub Assistant</h3>
+        <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
         <div className="flex gap-1">
           <button
             onClick={() => setMinimized(true)}
