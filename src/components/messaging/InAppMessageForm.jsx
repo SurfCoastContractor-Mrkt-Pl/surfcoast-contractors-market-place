@@ -20,76 +20,131 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MessageSquare, Loader2, Lock, Send, CalendarCheck, AlertTriangle } from 'lucide-react';
+import { MessageSquare, Loader2, Lock, Send, CalendarCheck, AlertTriangle, Paperclip, Check } from 'lucide-react';
+import MessageAttachments from './MessageAttachments';
+import ReadReceipt from './ReadReceipt';
 
 export default function InAppMessageForm({ open, onClose, paymentRecord, senderType, recipientId, recipientName, recipientEmail }) {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '' });
-   const [body, setBody] = useState('');
-   const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
-   const queryClient = useQueryClient();
-   const bottomRef = useRef(null);
-   const rateLimiter = useRef(createRateLimiter(1000)).current; // 1 second between messages
+    const [body, setBody] = useState('');
+    const [attachments, setAttachments] = useState([]);
+    const [uploading, setUploading] = useState(false);
+    const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
+    const queryClient = useQueryClient();
+    const bottomRef = useRef(null);
+    const fileInputRef = useRef(null);
+    const rateLimiter = useRef(createRateLimiter(1000)).current; // 1 second between messages
 
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
 
   // Load the thread — all messages tied to this payment (with pagination)
-  const [pageSize] = useState(50);
-  const { data: thread = [] } = useQuery({
-    queryKey: ['message-thread', paymentId],
-    queryFn: async () => {
-      const messages = await base44.entities.Message.filter({ payment_id: paymentId }, '-created_date', pageSize);
-      return messages;
-    },
-    enabled: open && !!paymentId,
-    refetchInterval: open ? 8000 : false,
-  });
+   const [pageSize] = useState(50);
+   const { data: thread = [] } = useQuery({
+     queryKey: ['message-thread', paymentId],
+     queryFn: async () => {
+       const messages = await base44.entities.Message.filter({ payment_id: paymentId }, '-created_date', pageSize);
+       return messages;
+     },
+     enabled: open && !!paymentId,
+     refetchInterval: open ? 8000 : false,
+   });
+
+   // Mark unread messages as read when thread is viewed
+   const markAsReadMutation = useMutation({
+     mutationFn: async (messageId) => {
+       await base44.entities.Message.update(messageId, {
+         read: true,
+         read_at: new Date().toISOString()
+       });
+     },
+   });
+
+   // Auto-mark received messages as read
+   useEffect(() => {
+     if (!open || senderType === 'contractor') return; // Only customers auto-read
+     thread.forEach(msg => {
+       if (!msg.read && msg.sender_type !== senderType) {
+         markAsReadMutation.mutate(msg.id);
+       }
+     });
+   }, [thread, open, senderType]);
 
   useEffect(() => {
     if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [thread]);
 
+  const handleFileSelect = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    try {
+      const newAttachments = [];
+      for (const file of files) {
+        const url = await base44.integrations.Core.UploadFile({ file });
+        newAttachments.push({
+          url: url.file_url,
+          name: file.name,
+          type: file.type.startsWith('image/') ? 'image' : 'document'
+        });
+      }
+      setAttachments(prev => [...prev, ...newAttachments]);
+    } catch (error) {
+      console.error('File upload error:', error);
+      alert('Failed to upload file. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const sendMutation = useMutation({
-     mutationFn: async () => {
-       // Rate limiting check
-       if (!rateLimiter()) {
-         throw new Error('Please wait before sending another message');
-       }
+      mutationFn: async () => {
+        // Rate limiting check
+        if (!rateLimiter()) {
+          throw new Error('Please wait before sending another message');
+        }
 
-       // Validate email before sending
-       if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-         throw new Error('Please provide a valid email address');
-       }
+        // Validate email before sending
+        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          throw new Error('Please provide a valid email address');
+        }
 
-       const msg = await base44.entities.Message.create({
-         sender_name: formData.name,
-         sender_email: formData.email,
-         sender_type: senderType,
-         recipient_id: recipientId,
-         recipient_name: recipientName,
-         recipient_email: recipientEmail,
-         subject: formData.subject,
-         body,
-         payment_id: paymentId,
-         read: false,
-       });
+        const msg = await base44.entities.Message.create({
+          sender_name: formData.name,
+          sender_email: formData.email,
+          sender_type: senderType,
+          recipient_id: recipientId,
+          recipient_name: recipientName,
+          recipient_email: recipientEmail,
+          subject: formData.subject,
+          body,
+          file_urls: attachments,
+          payment_id: paymentId,
+          read: false,
+        });
 
-       // Mark sent message as read
-       await base44.entities.Message.update(msg.id, { read: true });
+        // Mark sent message as read
+        await base44.entities.Message.update(msg.id, {
+          read: true,
+          read_at: new Date().toISOString()
+        });
 
-       await base44.integrations.Core.SendEmail({
-         to: recipientEmail,
-         subject: `📬 New Message on ContractorHub${formData.subject ? ': ' + formData.subject : ''}`,
-         body: `Hello ${recipientName},\n\nYou have a new message on ContractorHub.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n\nLog in to ContractorHub to reply. Your contact details remain protected within the platform.\n\nContractorHub\n(Do not reply to this automated email)`,
-       });
+        await base44.integrations.Core.SendEmail({
+          to: recipientEmail,
+          subject: `📬 New Message on ContractorHub${formData.subject ? ': ' + formData.subject : ''}`,
+          body: `Hello ${recipientName},\n\nYou have a new message on ContractorHub.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n${attachments.length > 0 ? `\nFiles attached: ${attachments.length}\n` : ''}Log in to ContractorHub to reply. Your contact details remain protected within the platform.\n\nContractorHub\n(Do not reply to this automated email)`,
+        });
 
-       return msg;
-     },
-     onSuccess: () => {
-       setBody('');
-       queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
-     },
-   });
+        return msg;
+      },
+      onSuccess: () => {
+        setBody('');
+        setAttachments([]);
+        queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
+      },
+    });
 
   const scheduleMutation = useMutation({
     mutationFn: () => base44.entities.Payment.update(paymentId, { status: 'work_scheduled' }),
@@ -172,17 +227,22 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
             <p className="text-xs text-slate-400 mb-6">To open a new communication session, a new $1.50 platform access fee will apply.</p>
             {/* Show past messages read-only */}
             {thread.length > 0 && (
-              <div className="text-left space-y-3 max-h-64 overflow-y-auto bg-slate-50 rounded-xl p-4 mb-4">
-                {thread.map(m => (
-                  <div key={m.id} className="border-b border-slate-200 pb-3 last:border-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-slate-800 text-sm">{m.sender_name}</span>
-                      <span className="text-xs text-slate-400">{new Date(m.created_date).toLocaleString()}</span>
-                    </div>
-                    <p className="text-sm text-slate-600 whitespace-pre-wrap">{m.body}</p>
+            <div className="text-left space-y-3 max-h-64 overflow-y-auto bg-slate-50 rounded-xl p-4 mb-4">
+            {thread.map(m => (
+              <div key={m.id} className="border-b border-slate-200 pb-3 last:border-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-medium text-slate-800 text-sm">{m.sender_name}</span>
+                  <span className="text-xs text-slate-400">{new Date(m.created_date).toLocaleString()}</span>
+                </div>
+                <p className="text-sm text-slate-600 whitespace-pre-wrap">{m.body}</p>
+                {m.file_urls?.length > 0 && (
+                  <div className="mt-2">
+                    <MessageAttachments files={m.file_urls} isReadOnly={true} />
                   </div>
-                ))}
+                )}
               </div>
+            ))}
+            </div>
             )}
             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Close</Button>
           </div>
@@ -213,12 +273,29 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                 ) : (
                   thread.map(m => (
                     <div key={m.id} className={`p-3 rounded-xl ${m.sender_type === senderType ? 'bg-amber-50 border border-amber-200 ml-8' : 'bg-slate-50 border border-slate-200 mr-8'}`}>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-slate-800 text-sm">{m.sender_name}</span>
-                        <span className="text-xs text-slate-400">{new Date(m.created_date).toLocaleString()}</span>
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-slate-800 text-sm">{m.sender_name}</span>
+                          <span className="text-xs text-slate-400">{new Date(m.created_date).toLocaleString()}</span>
+                        </div>
+                        {m.sender_type !== senderType && (
+                          <div className="flex items-center gap-1 text-xs">
+                            {m.read ? (
+                              <Check className="w-3 h-3 text-blue-600" />
+                            ) : (
+                              <Check className="w-3 h-3 text-slate-300" />
+                            )}
+                          </div>
+                        )}
                       </div>
                       {m.subject && <div className="text-xs text-slate-500 mb-1">Subject: {m.subject}</div>}
-                      <p className="text-sm text-slate-700 whitespace-pre-wrap">{m.body}</p>
+                      <p className="text-sm text-slate-700 whitespace-pre-wrap mb-2">{m.body}</p>
+                      {m.file_urls?.length > 0 && (
+                        <div className="mb-2">
+                          <MessageAttachments files={m.file_urls} isReadOnly={true} />
+                        </div>
+                      )}
+                      <ReadReceipt isRead={m.read} readAt={m.read_at} senderType={m.sender_type} currentUserType={senderType} />
                     </div>
                   ))
                 )}
@@ -242,35 +319,66 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                   </div>
                 )}
                 <div>
-                  <Textarea
-                    value={body}
-                    onChange={e => setBody(e.target.value)}
-                    placeholder="Write your message..."
-                    rows={3}
-                    className="resize-none"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => sendMutation.mutate()}
-                    className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                    disabled={sendMutation.isPending || !body.trim() || !formData.name || !formData.email}
-                  >
-                    {sendMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
-                    Send
-                  </Button>
+                   <Textarea
+                     value={body}
+                     onChange={e => setBody(e.target.value)}
+                     placeholder="Write your message..."
+                     rows={3}
+                     className="resize-none"
+                   />
+                 </div>
 
-                  {thread.length > 0 && !showScheduleConfirm && (
-                    <Button
-                      variant="outline"
-                      className="ml-auto border-green-300 text-green-700 hover:bg-green-50"
-                      onClick={() => setShowScheduleConfirm(true)}
-                    >
-                      <CalendarCheck className="w-4 h-4 mr-1.5" />
-                      Mark as Work Scheduled
-                    </Button>
-                  )}
-                </div>
+                 {attachments.length > 0 && (
+                   <div>
+                     <p className="text-xs font-medium text-slate-600 mb-2">Attachments ({attachments.length})</p>
+                     <MessageAttachments
+                       files={attachments}
+                       onRemove={(idx) => setAttachments(attachments.filter((_, i) => i !== idx))}
+                     />
+                   </div>
+                 )}
+
+                 <div className="flex items-center gap-2">
+                   <input
+                     ref={fileInputRef}
+                     type="file"
+                     multiple
+                     onChange={handleFileSelect}
+                     className="hidden"
+                     accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+                   />
+                   <Button
+                     type="button"
+                     size="icon"
+                     variant="outline"
+                     className="shrink-0"
+                     onClick={() => fileInputRef.current?.click()}
+                     disabled={uploading}
+                     title="Attach files (images, PDFs, documents)"
+                   >
+                     {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Paperclip className="w-4 h-4" />}
+                   </Button>
+
+                   <Button
+                     onClick={() => sendMutation.mutate()}
+                     className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                     disabled={sendMutation.isPending || !body.trim() || !formData.name || !formData.email || uploading}
+                   >
+                     {sendMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
+                     Send
+                   </Button>
+
+                   {thread.length > 0 && !showScheduleConfirm && (
+                     <Button
+                       variant="outline"
+                       className="ml-auto border-green-300 text-green-700 hover:bg-green-50"
+                       onClick={() => setShowScheduleConfirm(true)}
+                     >
+                       <CalendarCheck className="w-4 h-4 mr-1.5" />
+                       Mark as Work Scheduled
+                     </Button>
+                   )}
+                 </div>
 
                 {showScheduleConfirm && (
                   <div className="p-4 bg-green-50 border border-green-300 rounded-xl space-y-3">
