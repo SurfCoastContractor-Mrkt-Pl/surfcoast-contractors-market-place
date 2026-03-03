@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Send, X, Loader2 } from 'lucide-react';
 
-const GREETING_MESSAGE = `👋 Welcome to ContractorHub!
+const GREETING_MESSAGE = `👋 Welcome to SurfCoast Contractor Market Place!
 
 I'm your AI Assistant, here to help you get started. Let me tell you what we do:
 
-**ContractorHub connects skilled construction contractors with customers who need quality work done.**
+**SurfCoast connects skilled coastal construction contractors with customers who need quality work done.**
 
 Whether you're a contractor looking for jobs or a customer seeking trusted professionals, we make it easy to find, communicate, and complete projects.
 
