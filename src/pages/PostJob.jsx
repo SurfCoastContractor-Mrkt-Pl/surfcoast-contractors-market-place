@@ -307,11 +307,17 @@ export default function PostJob() {
             </div>
           </Card>
 
+          <Card className="p-6 md:p-8 mb-6">
+            <h2 className="text-lg font-semibold text-slate-900 mb-2">Before Photos <span className="text-red-500">*</span></h2>
+            <p className="text-sm text-slate-500 mb-4">Document the current state of the work area before any contractor begins. Minimum 5 photos required.</p>
+            <BeforePhotosUpload photos={beforePhotos} onChange={setBeforePhotos} />
+          </Card>
+
           <Button 
             type="submit" 
             size="lg" 
             className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || beforePhotos.length < 5}
           >
             {mutation.isPending ? (
               <>
