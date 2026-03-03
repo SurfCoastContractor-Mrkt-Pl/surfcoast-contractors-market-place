@@ -72,7 +72,7 @@ export default function Jobs() {
       
       return matchesSearch && matchesType && matchesTrade && matchesUrgency;
     });
-  }, [jobs, searchQuery, typeFilter, tradeFilter, urgencyFilter]);
+  }, [jobs, scheduledJobIds, searchQuery, typeFilter, tradeFilter, urgencyFilter]);
 
   const clearFilters = () => {
     setSearchQuery('');
