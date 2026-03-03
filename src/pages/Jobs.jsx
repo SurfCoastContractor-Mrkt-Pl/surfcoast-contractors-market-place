@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { Card } from '@/components/ui/card';
 import { createPageUrl } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -27,6 +28,9 @@ const trades = [
 ];
 
 export default function Jobs() {
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState(null);
+  const [isContractor, setIsContractor] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
@@ -34,6 +38,21 @@ export default function Jobs() {
   const [userLocation, setUserLocation] = useState(null);
   const [jobDistances, setJobDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
+
+  // Check if user is a contractor
+  useEffect(() => {
+    const checkUserType = async () => {
+      const user = await base44.auth.me();
+      if (user) {
+        setUserEmail(user.email);
+        const contractors = await base44.entities.Contractor.filter({ email: user.email });
+        setIsContractor(contractors && contractors.length > 0);
+      } else {
+        setIsContractor(false);
+      }
+    };
+    checkUserType();
+  }, []);
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs'],
@@ -117,6 +136,14 @@ export default function Jobs() {
   };
 
   const hasActiveFilters = searchQuery || typeFilter || tradeFilter || urgencyFilter;
+
+  if (isContractor === null) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
