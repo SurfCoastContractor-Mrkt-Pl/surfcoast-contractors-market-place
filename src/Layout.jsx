@@ -212,13 +212,15 @@ export default function Layout({ children, currentPageName }) {
                 <li><Link to={createPageUrl('Jobs')} className="hover:text-white">Browse Jobs</Link></li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4">For Clients</h4>
-              <ul className="space-y-2 text-slate-400">
-                <li><Link to={createPageUrl('Contractors')} className="hover:text-white">Find Contractors</Link></li>
-                <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
-              </ul>
-            </div>
+            {isContractor === false && (
+              <div>
+                <h4 className="font-semibold mb-4">For Clients</h4>
+                <ul className="space-y-2 text-slate-400">
+                  <li><Link to={createPageUrl('Contractors')} className="hover:text-white">Find Contractors</Link></li>
+                  <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
+                </ul>
+              </div>
+            )}
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
             <span>© {new Date().getFullYear()} ContractorHub. All rights reserved.</span>
