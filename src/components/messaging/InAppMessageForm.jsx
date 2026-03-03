@@ -27,11 +27,11 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
         read: false,
       });
 
-      // Notify recipient by email (no contact info of sender is exposed)
+      // Notify recipient by email — sender identity NOT revealed until both confirm
       await base44.integrations.Core.SendEmail({
         to: recipientEmail,
-        subject: `New message on ContractorHub: ${data.subject || '(no subject)'}`,
-        body: `Hello ${recipientName},\n\nYou have a new message from a ${senderType === 'contractor' ? 'customer' : 'contractor'} on ContractorHub.\n\n---\n${data.body}\n---\n\nLog in to ContractorHub to view and reply to this message. Contact details are only exchanged after both parties confirm.\n\nContractorHub`,
+        subject: `📬 New Message on ContractorHub: ${data.subject || '(no subject)'}`,
+        body: `Hello ${recipientName},\n\nYou have a new in-app message on ContractorHub from a verified ${senderType === 'contractor' ? 'contractor' : 'customer'}.\n\nMessage Preview:\n---\n${data.body}\n---\n\nTo reply, log in to ContractorHub. Contact details remain protected until both parties agree to exchange them.\n\nThis message was sent after the sender completed the required disclaimer and platform access fee.\n\nContractorHub Security Team\n(Do not reply to this automated email)`,
       });
 
       return msg;
