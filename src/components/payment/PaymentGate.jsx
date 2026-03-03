@@ -6,12 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY);
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [paid, setPaid] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
-  const [checkingDuplicate, setCheckingDuplicate] = useState(false);
+  const [checkingout, setCheckingout] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data) => {
@@ -19,7 +22,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       const existing = await base44.entities.Payment.filter({
         payer_email: data.email,
         payer_type: payerType,
-        contractor_id: contractorId || '',
+        contractor_id: contractorId ?? null,
         status: 'confirmed',
       });
       if (existing && existing.length > 0) {
@@ -28,28 +31,32 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         return existing[0];
       }
 
-      const purpose = payerType === 'contractor'
-        ? 'Contractor platform access fee'
-        : `Customer access to contact contractor ${contractorName}`;
-
-      const record = await base44.entities.Payment.create({
-        payer_email: data.email,
-        payer_name: data.name,
-        payer_type: payerType,
-        contractor_id: contractorId || '',
-        contractor_email: contractorEmail || '',
-        amount: 1.50,
-        status: 'pending',
-        purpose,
+      // Call backend to create Stripe checkout session
+      setCheckingout(true);
+      const response = await base44.functions.invoke('createPaymentCheckout', {
+        payerEmail: data.email,
+        payerName: data.name,
+        payerType: payerType,
+        contractorId: contractorId || null,
+        contractorEmail: contractorEmail || null,
+        contractorName: contractorName || null,
       });
 
-      await base44.integrations.Core.SendEmail({
-        to: data.email,
-        subject: 'ContractorHub — Platform Access Fee Receipt',
-        body: `Dear ${data.name},\n\nThank you for using ContractorHub.\n\nA platform access fee of $1.50 has been recorded for your account.\n\nPayment Reference: ${record.id}\nAmount: $1.50 USD\nPurpose: ${purpose}\nDate: ${new Date().toLocaleDateString()}\n\nAs required by California SB 478 (Honest Pricing Law), this fee is disclosed upfront and covers: secure identity-verified contractor access on the ContractorHub platform.\n\nSecure card payment processing is coming soon. Your access has been noted.\n\nContractorHub\n(This is an automated receipt — do not reply to this email)`,
-      });
+      if (!response.data?.url) {
+        throw new Error('Failed to create checkout session');
+      }
 
-      return record;
+      // Check if running in iframe (not published)
+      if (window.self !== window.top) {
+        alert('Stripe checkout is not available in preview mode. Please view this app from a published URL to complete payment.');
+        setCheckingout(false);
+        throw new Error('Checkout not available in iframe');
+      }
+
+      // Redirect to Stripe checkout
+      window.location.href = response.data.url;
+      
+      return response.data;
     },
     onSuccess: (record) => {
       setPaid(true);
@@ -177,22 +184,24 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             </div>
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" onClick={handleClose} className="flex-1">Cancel</Button>
+              <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={mutation.isPending || checkingout}>Cancel</Button>
               <Button
                 type="submit"
                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                disabled={mutation.isPending || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
+                disabled={mutation.isPending || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
               >
-                {mutation.isPending ? (
-                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+                {mutation.isPending || checkingout ? (
+                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{checkingout ? 'Redirecting...' : 'Processing...'}</>
                 ) : (
                   'Confirm & Pay $1.50'
                 )}
               </Button>
-              {mutation.isError && (
-                <p className="text-xs text-red-600 text-center">{mutation.error?.message || 'Payment failed. Please try again.'}</p>
-              )}
             </div>
+            {mutation.isError && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                <strong>Error:</strong> {mutation.error?.message || 'Payment failed. Please try again.'}
+              </div>
+            )}
 
             <p className="text-center text-xs text-slate-400">
               By proceeding, you authorize a $1.50 USD platform access fee. All fees are non-refundable.

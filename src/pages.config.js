@@ -57,6 +57,8 @@ import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
 import PostJob from './pages/PostJob';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +73,8 @@ export const PAGES = {
     "JobDetails": JobDetails,
     "Jobs": Jobs,
     "PostJob": PostJob,
+    "Success": Success,
+    "Cancel": Cancel,
 }
 
 export const pagesConfig = {
