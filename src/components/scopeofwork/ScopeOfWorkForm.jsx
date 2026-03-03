@@ -77,6 +77,7 @@ This is an official copy of the agreement submitted through ContractorHub.
     mutation.mutate({
       contractor_id: contractor.id,
       contractor_name: contractor.name,
+      contractor_email: contractor.email,
       customer_name: formData.customer_name,
       customer_email: formData.customer_email,
       job_title: formData.job_title,
