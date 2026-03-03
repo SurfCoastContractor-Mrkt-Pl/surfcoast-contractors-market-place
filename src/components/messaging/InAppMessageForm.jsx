@@ -18,10 +18,14 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
 
-  // Load the thread — all messages tied to this payment
+  // Load the thread — all messages tied to this payment (with pagination)
+  const [pageSize] = useState(50);
   const { data: thread = [] } = useQuery({
     queryKey: ['message-thread', paymentId],
-    queryFn: () => base44.entities.Message.filter({ payment_id: paymentId }),
+    queryFn: async () => {
+      const messages = await base44.entities.Message.filter({ payment_id: paymentId }, '-created_date', pageSize);
+      return messages;
+    },
     enabled: open && !!paymentId,
     refetchInterval: open ? 8000 : false,
   });
@@ -30,8 +34,19 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [thread]);
 
+  // Rate limiting: prevent spam by tracking last message time
+  const lastMessageTime = useRef(0);
+  const RATE_LIMIT_MS = 1000; // 1 second between messages
+
   const sendMutation = useMutation({
     mutationFn: async () => {
+      // Rate limiting check
+      const now = Date.now();
+      if (now - lastMessageTime.current < RATE_LIMIT_MS) {
+        throw new Error('Please wait before sending another message');
+      }
+      lastMessageTime.current = now;
+
       // Validate email before sending
       if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
         throw new Error('Please provide a valid email address');

@@ -237,15 +237,15 @@ export default function CustomerAccount() {
                   {scopes?.length > 0 ? (
                     <div className="space-y-3">
                       {scopes.map(s => (
-                        <div key={s.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl gap-3">
-                          <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <FileText className="w-5 h-5 text-amber-500 shrink-0" />
-                            <div className="min-w-0">
-                              <div className="text-sm font-medium text-slate-800 truncate">{s.job_title}</div>
-                              <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : `$${s.cost_amount}/hr`}</div>
+                        <div key={s.id} className="border border-slate-200 rounded-xl overflow-hidden">
+                          <div className="flex items-center justify-between p-3 bg-slate-50 gap-3">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              <FileText className="w-5 h-5 text-amber-500 shrink-0" />
+                              <div className="min-w-0">
+                                <div className="text-sm font-medium text-slate-800 truncate">{s.job_title}</div>
+                                <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`}</div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex items-center gap-2 shrink-0">
                             <Badge className={
                               s.status === 'closed' ? 'bg-slate-100 text-slate-600' :
                               s.status === 'approved' ? 'bg-green-100 text-green-700' :
@@ -254,12 +254,36 @@ export default function CustomerAccount() {
                             }>
                               {s.status === 'pending_approval' ? 'Pending' : s.status}
                             </Badge>
-                            {s.status !== 'closed' && s.status !== 'rejected' && (
-                              <Button size="sm" variant="outline" className="text-xs h-7 px-2 border-green-300 text-green-700 hover:bg-green-50" onClick={() => setCloseoutScope(s)}>
-                                <LogOut className="w-3 h-3 mr-1" /> Close Out
-                              </Button>
-                            )}
                           </div>
+                          {s.status === 'pending_approval' && (
+                            <div className="p-3 bg-amber-50 border-t border-slate-200 space-y-2">
+                              <p className="text-xs text-amber-800 font-medium">Action Required: Approve or Reject this scope</p>
+                              <div className="flex gap-2">
+                                <Button 
+                                  size="sm" 
+                                  className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs h-7"
+                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'approved' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }))}
+                                >
+                                  Approve
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="flex-1 border-red-300 text-red-700 hover:bg-red-50 text-xs h-7"
+                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by customer' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }))}
+                                >
+                                  Reject
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                          {s.status !== 'closed' && s.status !== 'rejected' && (
+                            <div className="p-3 bg-slate-50 border-t border-slate-200">
+                              <Button size="sm" variant="outline" className="w-full text-xs h-7 border-green-300 text-green-700 hover:bg-green-50" onClick={() => setCloseoutScope(s)}>
+                                <LogOut className="w-3 h-3 mr-1" /> Close Out Job
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

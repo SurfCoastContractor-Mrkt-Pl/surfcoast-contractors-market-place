@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Camera, Loader2, X, CheckCircle, AlertTriangle } from 'lucide-react';
@@ -11,6 +14,21 @@ export default function BeforePhotosUpload({ photos, onChange }) {
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
+    
+    // Validate files
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+        e.target.value = '';
+        return;
+      }
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        alert(`File "${file.name}" must be JPEG, PNG, or WebP.`);
+        e.target.value = '';
+        return;
+      }
+    }
+    
     setUploading(true);
     const uploaded = [];
     for (const file of files) {

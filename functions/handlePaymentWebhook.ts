@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     // Validate webhook signature
     const event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
 
-    // Only handle checkout.session.completed
+    // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const paymentId = session.metadata?.payment_id;
@@ -28,7 +28,44 @@ Deno.serve(async (req) => {
         status: 'confirmed',
       });
 
+      // Send confirmation email
+      const payment = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
+      if (payment.length > 0) {
+        const p = payment[0];
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: p.payer_email,
+          subject: 'Payment Confirmed — ContractorHub',
+          body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using ContractorHub!\n\n(Do not reply to this automated email)`,
+        });
+      }
+
       console.log(`Payment ${paymentId} confirmed`);
+    }
+
+    // Handle charge.refunded
+    if (event.type === 'charge.refunded') {
+      const charge = event.data.object;
+      const paymentId = charge.metadata?.payment_id;
+
+      if (paymentId) {
+        await base44.asServiceRole.entities.Payment.update(paymentId, {
+          status: 'refunded',
+        });
+        console.log(`Payment ${paymentId} refunded`);
+      }
+    }
+
+    // Handle charge.dispute.created
+    if (event.type === 'charge.dispute.created') {
+      const dispute = event.data.object;
+      const paymentId = dispute.metadata?.payment_id;
+
+      if (paymentId) {
+        await base44.asServiceRole.entities.Payment.update(paymentId, {
+          status: 'disputed',
+        });
+        console.log(`Payment ${paymentId} disputed`);
+      }
     }
 
     return Response.json({ received: true });
