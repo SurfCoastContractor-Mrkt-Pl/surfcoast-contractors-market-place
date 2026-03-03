@@ -31,6 +31,25 @@ export default function ContractorAccount() {
     enabled: searched && !!searchEmail,
   });
 
+  // Fetch work_scheduled payments where this contractor was involved (as recipient)
+  const { data: pastWorkPayments } = useQuery({
+    queryKey: ['contractor-past-work', contractor?.id],
+    queryFn: () => base44.entities.Payment.filter({ contractor_id: contractor?.id, status: 'work_scheduled' }),
+    enabled: !!contractor?.id,
+  });
+
+  // Fetch job details for past work
+  const { data: pastJobs } = useQuery({
+    queryKey: ['contractor-past-jobs', contractor?.id],
+    queryFn: async () => {
+      const jobIds = [...new Set((pastWorkPayments || []).map(p => p.contractor_id).filter(Boolean))];
+      // contractor_id on customer payments = contractor's id; but for job-based payments, contractor_id = job id
+      // We need to load the related payments and find messages/jobs
+      return pastWorkPayments || [];
+    },
+    enabled: !!pastWorkPayments,
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id) => base44.entities.Contractor.delete(id),
     onSuccess: () => {
