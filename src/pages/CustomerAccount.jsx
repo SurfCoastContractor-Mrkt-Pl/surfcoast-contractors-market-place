@@ -112,9 +112,26 @@ export default function CustomerAccount() {
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', searchEmail] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Email Lookup */}
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Look Up Your Account</h2>
+         {/* Auth Buttons */}
+         <div className="flex gap-3">
+           <Button
+             onClick={() => base44.auth.redirectToLogin()}
+             className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+           >
+             Login
+           </Button>
+           <Button
+             variant="outline"
+             onClick={() => base44.auth.logout()}
+           >
+             <LogOut className="w-4 h-4 mr-2" />
+             Logout
+           </Button>
+         </div>
+
+         {/* Email Lookup */}
+         <Card className="p-6">
+           <h2 className="text-lg font-semibold text-slate-900 mb-4">Look Up Your Account</h2>
           <div className="flex gap-3">
             <Input
               type="email"
