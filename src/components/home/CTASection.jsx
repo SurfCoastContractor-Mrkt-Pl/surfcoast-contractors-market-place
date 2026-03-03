@@ -28,13 +28,13 @@ export default function CTASection() {
           {/* For Customers - Post Jobs */}
           <div className="text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Post a Job
+              Join as a Customer
             </h3>
             <p className="text-slate-300 mb-6">
               Post your project and receive quotes from qualified contractors in your area. It's free and takes just minutes.
             </p>
             <Link to={createPageUrl('PostJob')}>
-              <Button size="lg" variant="outline" className="border-slate-500 text-white hover:bg-slate-700 w-full">
+              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white w-full">
                 Post Your Job
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
