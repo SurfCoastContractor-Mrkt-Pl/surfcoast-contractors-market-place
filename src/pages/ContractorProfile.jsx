@@ -392,7 +392,7 @@ export default function ContractorProfile() {
       <InAppMessageForm
         open={showMessageForm}
         onClose={() => setShowMessageForm(false)}
-        paymentRecord={paymentRecord}
+        paymentRecord={activePayment}
         senderType="customer"
         recipientId={contractor?.id}
         recipientName={contractor?.name}
