@@ -254,6 +254,9 @@ export default function CustomerAccount() {
 
               <TabsContent value="settings">
                 <div className="space-y-4">
+                  {/* Payment Methods */}
+                  {userEmail && <SavedPaymentMethods userEmail={userEmail} />}
+
                   {/* Account Security */}
                   <Card className="p-6">
                     <div className="flex items-start gap-3 mb-4">
