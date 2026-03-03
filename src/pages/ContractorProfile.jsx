@@ -216,50 +216,23 @@ export default function ContractorProfile() {
             {/* Contact Card */}
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact</h2>
-              <div className="space-y-4">
-                {contractor.email && (
-                  <a 
-                    href={`mailto:${contractor.email}`}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-amber-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-slate-500">Email</div>
-                      <div className="font-medium text-slate-900">{contractor.email}</div>
-                    </div>
-                  </a>
-                )}
-                {contractor.phone && (
-                  <a 
-                    href={`tel:${contractor.phone}`}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-slate-500">Phone</div>
-                      <div className="font-medium text-slate-900">{contractor.phone}</div>
-                    </div>
-                  </a>
-                )}
-              </div>
+
+              {/* Contact info hidden until fee paid */}
               {disclaimerSigned && customerPaid ? (
-                <div className="mt-4 space-y-3">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
                     <p className="text-xs text-green-700">
-                      Disclaimer signed by <strong>{signerName}</strong> · Fee paid
+                      Disclaimer signed by <strong>{signerName}</strong> · Fee paid · Messaging unlocked
                     </p>
                   </div>
-                  <a href={`mailto:${contractor.email}`}>
-                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
-                      <Mail className="w-4 h-4 mr-2" />
-                      Send Message
-                    </Button>
-                  </a>
+                  <Button
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    onClick={() => setShowMessageForm(true)}
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Send In-App Message
+                  </Button>
                   <Button
                     variant="outline"
                     className="w-full"
@@ -270,27 +243,35 @@ export default function ContractorProfile() {
                   </Button>
                 </div>
               ) : disclaimerSigned && !customerPaid ? (
-                <div className="mt-4 space-y-3">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
                     <p className="text-xs text-green-700">Disclaimer signed by <strong>{signerName}</strong></p>
+                  </div>
+                  <div className="p-3 bg-slate-100 rounded-xl text-sm text-slate-500 text-center">
+                    🔒 Contact details hidden until fee is paid
                   </div>
                   <Button
                     className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
                     onClick={() => setShowPaymentGate(true)}
                   >
                     <DollarSign className="w-4 h-4 mr-2" />
-                    Pay $1.50 to Communicate
+                    Pay $1.50 to Unlock Messaging
                   </Button>
                 </div>
               ) : (
-                <Button
-                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
-                  onClick={() => setShowDisclaimer(true)}
-                >
-                  <ShieldAlert className="w-4 h-4 mr-2" />
-                  Sign Disclaimer & Contact
-                </Button>
+                <div className="space-y-3">
+                  <div className="p-3 bg-slate-100 rounded-xl text-sm text-slate-500 text-center">
+                    🔒 Contact details hidden — sign disclaimer & pay fee to message
+                  </div>
+                  <Button
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    onClick={() => setShowDisclaimer(true)}
+                  >
+                    <ShieldAlert className="w-4 h-4 mr-2" />
+                    Sign Disclaimer & Contact
+                  </Button>
+                </div>
               )}
             </Card>
 
