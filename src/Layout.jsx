@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
+import { base44 } from '@/api/base44Client';
 import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 'lucide-react';
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
@@ -21,8 +22,26 @@ export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(true);
+  const [isContractor, setIsContractor] = useState(null);
 
   const isHome = currentPageName === 'Home';
+
+  React.useEffect(() => {
+    const checkUserType = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (user) {
+          const contractors = await base44.entities.Contractor.filter({ email: user.email });
+          setIsContractor(contractors && contractors.length > 0);
+        } else {
+          setIsContractor(false);
+        }
+      } catch {
+        setIsContractor(false);
+      }
+    };
+    checkUserType();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -62,11 +81,13 @@ export default function Layout({ children, currentPageName }) {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
-              <Link to={createPageUrl('PostJob')}>
-                <Button variant="outline" className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
-                  Post a Job
-                </Button>
-              </Link>
+              {isContractor === false && (
+                <Link to={createPageUrl('PostJob')}>
+                  <Button variant="outline" className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
+                    Post a Job
+                  </Button>
+                </Link>
+              )}
               <Link to={createPageUrl('BecomeContractor')}>
                 <Button className="bg-amber-500 hover:bg-amber-600 text-slate-900">
                   Join as Contractor
@@ -125,9 +146,11 @@ export default function Layout({ children, currentPageName }) {
                 );
               })}
               <div className="pt-4 border-t border-slate-100 space-y-2">
-                <Link to={createPageUrl('PostJob')} onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Post a Job</Button>
-                </Link>
+                {isContractor === false && (
+                  <Link to={createPageUrl('PostJob')} onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full">Post a Job</Button>
+                  </Link>
+                )}
                 <Link to={createPageUrl('BecomeContractor')} onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
                     Join as Contractor
