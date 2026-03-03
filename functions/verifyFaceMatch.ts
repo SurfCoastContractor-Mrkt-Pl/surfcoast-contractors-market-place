@@ -1,13 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
-async function fetchAsBase64DataUrl(url) {
-  const res = await fetch(url);
-  const contentType = res.headers.get('content-type') || 'image/jpeg';
-  const buffer = await res.arrayBuffer();
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
-  return `data:${contentType};base64,${base64}`;
-}
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -18,18 +10,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Both profile_photo_url and id_document_url are required.' }, { status: 400 });
     }
 
-    // Convert both images to base64 data URLs so the LLM can process them
-    const [idBase64, profileBase64] = await Promise.all([
-      fetchAsBase64DataUrl(id_document_url),
-      fetchAsBase64DataUrl(profile_photo_url),
-    ]);
-
     const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
       prompt: `You are a strict identity verification system.
 
 You are given two images:
-1. A government-issued ID or Driver's License
-2. A profile/selfie photo of a person
+1. A government-issued ID or Driver's License (first image)
+2. A profile/selfie photo of a person (second image)
 
 Your task: Determine if the face in the profile photo is CLEARLY the same person as the face on the ID/Driver's License.
 
@@ -38,16 +24,16 @@ Rules:
 - The faces must clearly match (same person)
 - The ID must look like a legitimate government-issued document
 - The profile photo must be a clear, unobstructed face photo (no sunglasses, masks, heavy filters, etc.)
-- Be strict — a mismatch or unclear comparison means NOT_MATCH
+- Be strict — a mismatch or unclear comparison means the match should be false
 
 Respond ONLY with valid JSON in this exact format:
 {
   "match": true or false,
-  "confidence": "high" | "medium" | "low",
+  "confidence": "high" or "medium" or "low",
   "reason": "One brief sentence explaining the decision",
-  "issues": [] 
+  "issues": []
 }`,
-      file_urls: [idBase64, profileBase64],
+      file_urls: [id_document_url, profile_photo_url],
       response_json_schema: {
         type: "object",
         properties: {
