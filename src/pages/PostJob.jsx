@@ -60,10 +60,15 @@ export default function PostJob() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (beforePhotos.length < 5) {
+      alert('Please upload at least 5 before photos of the work area before submitting.');
+      return;
+    }
     const data = {
       ...formData,
       budget_min: formData.budget_min ? Number(formData.budget_min) : null,
       budget_max: formData.budget_max ? Number(formData.budget_max) : null,
+      before_photo_urls: beforePhotos,
     };
     mutation.mutate(data);
   };
