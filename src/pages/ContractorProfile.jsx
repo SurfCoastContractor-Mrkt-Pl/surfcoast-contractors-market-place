@@ -38,6 +38,8 @@ export default function ContractorProfile() {
   const [showScopeForm, setShowScopeForm] = useState(false);
   const [showPaymentGate, setShowPaymentGate] = useState(false);
   const [customerPaid, setCustomerPaid] = useState(false);
+  const [paymentRecord, setPaymentRecord] = useState(null);
+  const [showMessageForm, setShowMessageForm] = useState(false);
 
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
