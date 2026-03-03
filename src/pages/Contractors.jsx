@@ -32,6 +32,14 @@ export default function Contractors() {
   const [userEmail, setUserEmail] = useState(null);
   const [isContractor, setIsContractor] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [tradeFilter, setTradeFilter] = useState('');
+  const [availableOnly, setAvailableOnly] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [contractorDistances, setContractorDistances] = useState({});
+  const [searchRadius, setSearchRadius] = useState(35);
 
   // Check if user is authenticated and contractor type
   useEffect(() => {
@@ -84,15 +92,6 @@ export default function Contractors() {
   const urlParams = new URLSearchParams(window.location.search);
   const initialTrade = urlParams.get('trade') || '';
   const initialType = urlParams.get('type') || '';
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState(initialType);
-  const [tradeFilter, setTradeFilter] = useState(initialTrade);
-  const [availableOnly, setAvailableOnly] = useState(false);
-  const [statusFilter, setStatusFilter] = useState('');
-  const [userLocation, setUserLocation] = useState(null);
-  const [contractorDistances, setContractorDistances] = useState({});
-  const [searchRadius, setSearchRadius] = useState(35);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['contractors'],
