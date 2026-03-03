@@ -241,27 +241,41 @@ export default function ContractorProfile() {
               {/* Contact info hidden until fee paid */}
               {disclaimerSigned && customerPaid ? (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
-                    <p className="text-xs text-green-700">
-                      Disclaimer signed by <strong>{signerName}</strong> · Fee paid · Messaging unlocked
-                    </p>
-                  </div>
+                  {isWorkScheduled ? (
+                    <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <CalendarCheck className="w-4 h-4 text-green-600 shrink-0" />
+                      <p className="text-xs text-green-700 font-medium">Work Scheduled — session closed</p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <ShieldAlert className="w-4 h-4 text-green-600 shrink-0" />
+                      <p className="text-xs text-green-700">
+                        Disclaimer signed by <strong>{signerName}</strong> · Fee paid · Messaging unlocked
+                      </p>
+                    </div>
+                  )}
                   <Button
                     className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
                     onClick={() => setShowMessageForm(true)}
                   >
                     <Mail className="w-4 h-4 mr-2" />
-                    Send In-App Message
+                    {isWorkScheduled ? 'View Past Messages' : 'Open Messages'}
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => setShowScopeForm(true)}
-                  >
-                    <FileText className="w-4 h-4 mr-2" />
-                    Request Scope of Work
-                  </Button>
+                  {!isWorkScheduled && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => setShowScopeForm(true)}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Request Scope of Work
+                    </Button>
+                  )}
+                  {isWorkScheduled && (
+                    <p className="text-xs text-slate-400 text-center">
+                      To message again, pay a new $1.50 access fee.
+                    </p>
+                  )}
                 </div>
               ) : disclaimerSigned && !customerPaid ? (
                 <div className="space-y-3">
