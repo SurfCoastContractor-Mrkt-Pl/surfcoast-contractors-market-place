@@ -101,7 +101,6 @@ export default function CustomerAccount() {
   });
 
   const isLoading = loadingPayments || loadingDisclaimers || loadingScopes;
-  const hasData = !isLoading && (payments?.length > 0 || disclaimers?.length > 0 || scopes?.length > 0 || customerProfile);
 
   const handleDeleteAll = async () => {
     try {
@@ -176,16 +175,8 @@ export default function CustomerAccount() {
            </Button>
          </div>
 
-         {hasData && (
-          <>
-            {/* Customer Profile */}
-            {customerProfile && (
-              <div className="mb-8">
-                <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
-              </div>
-            )}
-
-            <Tabs defaultValue="profile">
+         {/* Tabs - always visible */}
+         <Tabs defaultValue="profile">
               <TabsList className="w-full grid-cols-5">
                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
                 <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
@@ -411,42 +402,43 @@ export default function CustomerAccount() {
               </TabsContent>
             </Tabs>
 
+            {/* Customer Profile Summary - show if has profile */}
+            {customerProfile && (
+             <div className="mt-8">
+               <h3 className="text-lg font-semibold text-slate-900 mb-4">Profile Summary</h3>
+               <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
+             </div>
+            )}
+
             {/* Delete Profile */}
             <Card className="p-6 border-red-200 bg-red-50">
-              <h2 className="text-lg font-semibold text-red-800 mb-2">Delete My Account Data</h2>
-              <p className="text-sm text-red-700 mb-4">
-                Permanently delete all your account data including signed disclaimers, payment records, and activity. This cannot be undone.
-              </p>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete My Account Data
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete All Account Data?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will permanently delete all records associated with <strong>{userEmail}</strong>, including signed disclaimers and payment records. This cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={handleDeleteAll}>
-                      Yes, Delete Everything
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+             <h2 className="text-lg font-semibold text-red-800 mb-2">Delete My Account Data</h2>
+             <p className="text-sm text-red-700 mb-4">
+               Permanently delete all your account data including signed disclaimers, payment records, and activity. This cannot be undone.
+             </p>
+             <AlertDialog>
+               <AlertDialogTrigger asChild>
+                 <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
+                   <Trash2 className="w-4 h-4 mr-2" />
+                   Delete My Account Data
+                 </Button>
+               </AlertDialogTrigger>
+               <AlertDialogContent>
+                 <AlertDialogHeader>
+                   <AlertDialogTitle>Delete All Account Data?</AlertDialogTitle>
+                   <AlertDialogDescription>
+                     This will permanently delete all records associated with <strong>{userEmail}</strong>, including signed disclaimers and payment records. This cannot be undone.
+                   </AlertDialogDescription>
+                 </AlertDialogHeader>
+                 <AlertDialogFooter>
+                   <AlertDialogCancel>Cancel</AlertDialogCancel>
+                   <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={handleDeleteAll}>
+                     Yes, Delete Everything
+                   </AlertDialogAction>
+                 </AlertDialogFooter>
+               </AlertDialogContent>
+             </AlertDialog>
             </Card>
-          </>
-          )}
-          {!hasData && (
-          <Card className="p-6 text-center text-slate-500">
-            <p>No account data found. Please contact support if you believe this is an error.</p>
-          </Card>
-          )}
           </div>
           </div>
           );
