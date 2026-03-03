@@ -19,6 +19,7 @@ import InAppMessageForm from '@/components/messaging/InAppMessageForm';
 import ContractorServices from '@/components/contractor/ContractorServices';
 import AvailabilityCalendar from '@/components/contractor/AvailabilityCalendar';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
+import ReviewsDisplayDetailed from '@/components/reviews/ReviewsDisplayDetailed';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
@@ -323,7 +324,11 @@ export default function ContractorProfile() {
             <AvailabilityCalendar slots={availability} />
 
             {/* Reviews */}
-            <ReviewsSection reviews={reviews} averageRating={contractor?.rating} totalReviews={contractor?.reviews_count} />
+            <ReviewsDisplayDetailed 
+              revieweeId={contractorId} 
+              revieweeName={contractor?.name}
+              revieweeType="contractor"
+            />
 
             {/* Portfolio Projects */}
             <PortfolioDisplay contractorId={contractorId} isOwner={false} />
