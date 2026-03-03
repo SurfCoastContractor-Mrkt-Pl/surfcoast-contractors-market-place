@@ -66,7 +66,7 @@ export default function BecomeContractor() {
     onSuccess: () => {
       setSuccess(true);
       setTimeout(() => {
-        navigate(createPageUrl('Contractors'));
+        navigate(createPageUrl('ContractorAccount'));
       }, 2000);
     },
   });

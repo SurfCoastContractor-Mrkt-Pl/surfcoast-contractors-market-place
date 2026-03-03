@@ -96,11 +96,29 @@ export default function PostJob() {
   }
 
   const mutation = useMutation({
-    mutationFn: (data) => base44.entities.Job.create(data),
+    mutationFn: async (data) => {
+      // Ensure CustomerProfile exists before creating job
+      try {
+        const user = await base44.auth.me();
+        if (user) {
+          const existing = await base44.entities.CustomerProfile.filter({ email: user.email });
+          if (!existing || existing.length === 0) {
+            await base44.entities.CustomerProfile.create({
+              email: user.email,
+              full_name: user.full_name || data.poster_name,
+              phone: data.poster_phone || ''
+            });
+          }
+        }
+      } catch (err) {
+        console.error('CustomerProfile creation failed:', err);
+      }
+      return base44.entities.Job.create(data);
+    },
     onSuccess: () => {
       setSuccess(true);
       setTimeout(() => {
-        navigate(createPageUrl('Jobs'));
+        navigate(createPageUrl('MyJobs'));
       }, 2000);
     },
   });
