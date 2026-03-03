@@ -60,7 +60,18 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
           </DialogTitle>
         </DialogHeader>
 
-        {sent ? (
+        {!paymentRecord ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-8 h-8 text-amber-600" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Payment Required</h3>
+            <p className="text-slate-600 text-sm mb-6">
+              You must complete the $1.50 platform access fee before sending a message.
+            </p>
+            <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
+          </div>
+        ) : sent ? (
           <div className="text-center py-8">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
