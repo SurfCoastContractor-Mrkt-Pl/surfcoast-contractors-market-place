@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { UserPlus, ArrowRight } from 'lucide-react';
+import { UserPlus, ArrowRight, Search } from 'lucide-react';
 
 export default function CTASection() {
   return (
