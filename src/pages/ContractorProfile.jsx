@@ -218,6 +218,37 @@ export default function ContractorProfile() {
               </Card>
             )}
 
+            {/* Credentials */}
+            {contractor.credential_documents?.length > 0 && (
+              <Card className="p-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Credentials & Licenses</h2>
+                <div className="space-y-3">
+                  {contractor.credential_documents.map((cred, idx) => {
+                    const iconMap = { degree: GraduationCap, diploma: GraduationCap, contractor_license: Briefcase, trade_license: Briefcase };
+                    const Icon = iconMap[cred.type] || Award;
+                    const typeLabels = { certificate: 'Certificate', degree: 'Academic Degree', diploma: 'Diploma', contractor_license: "Contractor's License", trade_license: 'Trade License', other: 'Credential' };
+                    return (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
+                            <Icon className="w-4 h-4 text-green-700" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium text-slate-800">{cred.label}</div>
+                            <div className="text-xs text-slate-500">{typeLabels[cred.type] || 'Credential'}</div>
+                            {cred.sole_proprietor_confirmed && (
+                              <div className="text-xs text-green-600">✓ Sole proprietor registered</div>
+                            )}
+                          </div>
+                        </div>
+                        <a href={cred.file_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline shrink-0 ml-2">View Doc</a>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
+
             {/* Portfolio */}
             {contractor.portfolio_images?.length > 0 && (
               <Card className="p-6">
