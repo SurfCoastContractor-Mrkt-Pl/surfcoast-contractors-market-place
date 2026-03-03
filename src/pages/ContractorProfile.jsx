@@ -242,12 +242,26 @@ export default function ContractorProfile() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Bio */}
-            {contractor.bio && (
-              <Card className="p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">About</h2>
-                <p className="text-slate-600 whitespace-pre-wrap">{contractor.bio}</p>
-              </Card>
-            )}
+             {contractor.bio && (
+               <Card className="p-6">
+                 <h2 className="text-lg font-semibold text-slate-900 mb-4">About Me</h2>
+                 <p className="text-slate-600 whitespace-pre-wrap">{contractor.bio}</p>
+               </Card>
+             )}
+
+             {/* Skills */}
+             {contractor.skills?.length > 0 && (
+               <Card className="p-6">
+                 <h2 className="text-lg font-semibold text-slate-900 mb-4">Skills & Types of Work</h2>
+                 <div className="flex flex-wrap gap-2">
+                   {contractor.skills.map((skill, idx) => (
+                     <span key={idx} className="inline-flex items-center bg-amber-100 text-amber-800 px-4 py-2 rounded-lg text-sm font-medium">
+                       {skill}
+                     </span>
+                   ))}
+                 </div>
+               </Card>
+             )}
 
             {/* Certifications */}
             {contractor.certifications?.length > 0 && (
