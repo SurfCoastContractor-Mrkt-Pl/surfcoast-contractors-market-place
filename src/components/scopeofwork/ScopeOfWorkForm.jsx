@@ -94,7 +94,8 @@ This is an official copy of the agreement submitted through ContractorHub.
 
   const handleClose = () => {
     setSubmitted(false);
-    setFormData({ customer_name: '', customer_email: '', job_title: '', scope_summary: '', cost_amount: '', estimated_hours: '' });
+    setFormData({ customer_name: '', customer_email: '', job_title: '', scope_summary: '', cost_amount: '', estimated_hours: '', agreed_work_date: '' });
+    setAfterPhotos([]);
     setCostType('fixed');
     onClose();
   };
