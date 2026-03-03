@@ -91,22 +91,13 @@ export default function FloatingAgentWidget({ open, onClose }) {
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-lg p-4 flex items-center justify-between gap-2 shrink-0">
         <h3 className="font-semibold">ContractorHub Assistant</h3>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setMinimized(true)}
-            className="p-1.5 hover:bg-amber-700 rounded transition-colors"
-            title="Minimize"
-          >
-            <Minimize2 className="w-4 h-4" />
-          </button>
-          <button
-            onClick={onClose}
-            className="p-1.5 hover:bg-amber-700 rounded transition-colors"
-            title="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+        <button
+          onClick={() => setMinimized(true)}
+          className="p-1.5 hover:bg-amber-700 rounded transition-colors"
+          title="Minimize"
+        >
+          <Minimize2 className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Messages */}
