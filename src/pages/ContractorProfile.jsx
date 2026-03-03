@@ -104,10 +104,19 @@ export default function ContractorProfile() {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                 <div>
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-2 flex-wrap">
                     <h1 className="text-2xl md:text-3xl font-bold text-slate-900">{contractor.name}</h1>
                     {contractor.available && (
                       <Badge className="bg-green-100 text-green-700">Available</Badge>
+                    )}
+                    {contractor.identity_verified ? (
+                      <Badge className="bg-blue-100 text-blue-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> ID Verified
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-slate-100 text-slate-500 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> Unverified
+                      </Badge>
                     )}
                   </div>
                   
