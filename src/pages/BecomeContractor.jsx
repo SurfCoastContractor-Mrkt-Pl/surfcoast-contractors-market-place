@@ -177,20 +177,21 @@ export default function BecomeContractor() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleChange('phone', e.target.value)}
-                      className="mt-1.5"
-                    />
+                   <Label htmlFor="phone">Phone</Label>
+                   <Input
+                     id="phone"
+                     type="tel"
+                     value={formData.phone}
+                     onChange={(e) => handleChange('phone', e.target.value)}
+                     className="mt-1.5"
+                   />
                   </div>
-              </div>
-            </div>
+                  </div>
+                  </div>
+                  </div>
 
-            <div>
-              <Label htmlFor="location">Location *</Label>
+                  <div>
+                  <Label htmlFor="location">Location *</Label>
               <Input
                 id="location"
                 value={formData.location}
