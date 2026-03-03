@@ -81,11 +81,9 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
                 setShowPayment(false);
               }}
               payerType="customer"
-              amount={0.75}
               contractorId={contractor.id}
               contractorEmail={contractor.email}
               contractorName={contractor.name}
-              purpose="Quick Quote Request"
             />
           </div>
         </DialogContent>
