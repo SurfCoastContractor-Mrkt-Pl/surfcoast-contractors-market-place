@@ -32,11 +32,13 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-              <div className={`w-10 h-10 rounded-lg ${isHome ? 'bg-amber-500' : 'bg-slate-900'} flex items-center justify-center`}>
-                <HardHat className={`w-5 h-5 ${isHome ? 'text-slate-900' : 'text-amber-400'}`} />
-              </div>
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg" 
+                alt="SurfCoast Logo"
+                className="w-10 h-10 object-contain"
+              />
               <span className={`font-bold text-xl ${isHome ? 'text-white' : 'text-slate-900'}`}>
-                ContractorHub
+                SurfCoast
               </span>
             </Link>
 
@@ -161,10 +163,12 @@ export default function Layout({ children, currentPageName }) {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center">
-                  <HardHat className="w-5 h-5 text-slate-900" />
-                </div>
-                <span className="font-bold text-xl">ContractorHub</span>
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg" 
+                  alt="SurfCoast Logo"
+                  className="w-10 h-10 object-contain"
+                />
+                <span className="font-bold text-xl">SurfCoast</span>
               </div>
               <p className="text-slate-400 max-w-sm">
                 Connecting skilled construction professionals with clients who need quality work done right.

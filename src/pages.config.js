@@ -48,6 +48,7 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AdminDashboard from './pages/AdminDashboard';
+import AgentDemo from './pages/AgentDemo';
 import BecomeContractor from './pages/BecomeContractor';
 import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
@@ -59,14 +60,14 @@ import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
 import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
-import Success from './pages/Success';
-import AgentDemo from './pages/AgentDemo';
 import ProjectManagement from './pages/ProjectManagement';
+import Success from './pages/Success';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminDashboard": AdminDashboard,
+    "AgentDemo": AgentDemo,
     "BecomeContractor": BecomeContractor,
     "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
@@ -78,9 +79,8 @@ export const PAGES = {
     "Jobs": Jobs,
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
-    "Success": Success,
-    "AgentDemo": AgentDemo,
     "ProjectManagement": ProjectManagement,
+    "Success": Success,
 }
 
 export const pagesConfig = {
