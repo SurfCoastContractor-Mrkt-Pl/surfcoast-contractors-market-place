@@ -7,11 +7,16 @@ import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 
-const navLinks = [
-  { name: 'Home', page: 'Home', icon: Home },
-  { name: 'Find Contractors', page: 'Contractors', icon: Users },
-  { name: 'Browse Jobs', page: 'Jobs', icon: Briefcase },
-];
+const getNavLinks = (isContractor) => {
+  const baseLinks = [
+    { name: 'Home', page: 'Home', icon: Home },
+    { name: 'Browse Jobs', page: 'Jobs', icon: Briefcase },
+  ];
+  if (isContractor === false) {
+    baseLinks.splice(1, 0, { name: 'Find Contractors', page: 'Contractors', icon: Users });
+  }
+  return baseLinks;
+};
 
 const accountLinks = [
   { name: 'My Account (Customer)', page: 'CustomerAccount' },
@@ -63,7 +68,7 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map(link => (
+              {getNavLinks(isContractor).map(link => (
                 <Link key={link.page} to={createPageUrl(link.page)}>
                   <Button 
                     variant="ghost" 
@@ -128,7 +133,7 @@ export default function Layout({ children, currentPageName }) {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-b border-slate-200">
             <div className="px-4 py-4 space-y-2">
-              {navLinks.map(link => {
+              {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
                 return (
                   <Link 
