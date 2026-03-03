@@ -71,6 +71,15 @@ export default function Contractors() {
     );
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialTrade = urlParams.get('trade') || '';
+  const initialType = urlParams.get('type') || '';
+
+  useEffect(() => {
+    if (initialType) setTypeFilter(initialType);
+    if (initialTrade) setTradeFilter(initialTrade);
+  }, [initialType, initialTrade]);
+
   // Redirect contractors away
   if (isContractor) {
     return (
@@ -88,11 +97,6 @@ export default function Contractors() {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (initialType) setTypeFilter(initialType);
-    if (initialTrade) setTradeFilter(initialTrade);
-  }, []);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['contractors'],
