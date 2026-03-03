@@ -12,7 +12,8 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail } from 'lucide-react';
+import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
@@ -23,6 +24,8 @@ export default function ContractorAccount() {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState(null);
+  const [editingBio, setEditingBio] = useState(false);
+  const [bioText, setBioText] = useState('');
 
   React.useEffect(() => {
     const checkAuth = async () => {
@@ -77,6 +80,16 @@ export default function ContractorAccount() {
     enabled: !!contractor?.id,
   });
 
+  const updateBioMutation = useMutation({
+    mutationFn: async (bioData) => {
+      return base44.entities.Contractor.update(contractor.id, bioData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] });
+      setEditingBio(false);
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (email) => {
       await base44.functions.invoke('deleteAccountCascading', {
@@ -88,6 +101,15 @@ export default function ContractorAccount() {
       base44.auth.logout();
     },
   });
+
+  const handleBioEdit = () => {
+    setBioText(contractor?.bio || '');
+    setEditingBio(true);
+  };
+
+  const handleBioSave = () => {
+    updateBioMutation.mutate({ bio: bioText });
+  };
 
   if (loading) {
     return (
@@ -182,6 +204,63 @@ export default function ContractorAccount() {
 
               <TabsContent value="profile">
                 <div className="space-y-4">
+                  {/* About Me Section */}
+                  <Card className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-lg font-semibold text-slate-900">About Me</h2>
+                      {!editingBio && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleBioEdit}
+                          className="gap-1.5"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                          Edit
+                        </Button>
+                      )}
+                    </div>
+
+                    {editingBio ? (
+                      <div className="space-y-3">
+                        <Textarea
+                          value={bioText}
+                          onChange={(e) => setBioText(e.target.value)}
+                          placeholder="Tell potential customers about yourself, your experience, expertise, and what makes you stand out..."
+                          rows={6}
+                          className="resize-none"
+                        />
+                        <p className="text-xs text-slate-500">
+                          This section helps customers understand your background and decide if you're the right fit for their project.
+                        </p>
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={handleBioSave}
+                            className="bg-amber-500 hover:bg-amber-600"
+                            disabled={updateBioMutation.isPending}
+                          >
+                            {updateBioMutation.isPending ? 'Saving...' : 'Save'}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => setEditingBio(false)}
+                            disabled={updateBioMutation.isPending}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        {contractor?.bio ? (
+                          <p className="text-slate-600 whitespace-pre-wrap">{contractor.bio}</p>
+                        ) : (
+                          <p className="text-slate-400 italic">No bio added yet. Tell customers about yourself to help them choose you for their projects.</p>
+                        )}
+                      </div>
+                    )}
+                  </Card>
+
                   <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
                   <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
                 </div>
