@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CheckCircle, Loader2, FileText, DollarSign } from 'lucide-react';
 
-export default function ScopeOfWorkForm({ open, onClose, contractor }) {
+export default function ScopeOfWorkForm({ open, onClose, contractor, paymentRecord }) {
   const [submitted, setSubmitted] = useState(false);
   const [costType, setCostType] = useState('fixed');
   const [formData, setFormData] = useState({
