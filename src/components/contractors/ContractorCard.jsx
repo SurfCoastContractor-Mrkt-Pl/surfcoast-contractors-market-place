@@ -4,6 +4,7 @@ import { createPageUrl } from '@/utils';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, MapPin, Clock, CheckCircle2 } from 'lucide-react';
+import StatusBadge from './StatusBadge';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -77,6 +78,9 @@ export default function ContractorCard({ contractor }) {
                     : 'General Contractor'
                   }
                 </Badge>
+                {contractor.availability_status && (
+                  <StatusBadge status={contractor.availability_status} size="sm" />
+                )}
               </div>
             </div>
           </div>
