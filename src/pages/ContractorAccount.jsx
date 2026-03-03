@@ -18,6 +18,7 @@ import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
+import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -336,6 +337,9 @@ export default function ContractorAccount() {
 
               <TabsContent value="settings">
                 <div className="space-y-4">
+                  {/* Payment Methods */}
+                  {userEmail && <SavedPaymentMethods userEmail={userEmail} />}
+
                   {/* Account Security */}
                   <Card className="p-6">
                     <div className="flex items-start gap-3 mb-4">
