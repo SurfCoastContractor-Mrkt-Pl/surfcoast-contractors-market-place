@@ -32,11 +32,15 @@ export default function BecomeContractor() {
   const [newCert, setNewCert] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   
+  const [uploadingId, setUploadingId] = useState(false);
+  const [uploadingFace, setUploadingFace] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     photo_url: '',
+    id_document_url: '',
+    face_photo_url: '',
     contractor_type: '',
     trade_specialty: '',
     years_experience: '',
