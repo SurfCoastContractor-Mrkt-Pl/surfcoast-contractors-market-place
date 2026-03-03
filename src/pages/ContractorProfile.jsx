@@ -356,9 +356,10 @@ export default function ContractorProfile() {
                   </Button>
                 </TabsContent>
 
-                <TabsContent value="message" className="space-y-3">
-                  {disclaimerSigned && customerPaid ? (
-                    <div className="space-y-3">
+                <TabsContent value="message">
+                  <div className="space-y-3">
+                    {disclaimerSigned && customerPaid ? (
+                      <div className="space-y-3">
                       {isWorkScheduled ? (
                         <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
                           <CalendarCheck className="w-4 h-4 text-green-600 shrink-0" />
@@ -424,9 +425,10 @@ export default function ContractorProfile() {
                         <ShieldAlert className="w-4 h-4 mr-2" />
                         Sign Disclaimer & Contact
                       </Button>
-                    </div>
-                  )}
-                </TabsContent>
+                      </div>
+                      )}
+                      </div>
+                      </TabsContent>
               </Tabs>
             </Card>
 
