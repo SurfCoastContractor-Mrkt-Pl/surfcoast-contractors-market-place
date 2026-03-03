@@ -12,8 +12,9 @@ import {
   MessageSquare, ShieldAlert, Eye, EyeOff
 } from 'lucide-react';
 
-// Admin password should be set via environment variable
-const ADMIN_PASSWORD = Deno.env?.get('ADMIN_PASSWORD') || 'contractorhub2024';
+// Admin password is hardcoded for now (no environment variables available in browser)
+// TODO: Move to backend function to load from environment variables
+const ADMIN_PASSWORD = 'contractorhub2024';
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
