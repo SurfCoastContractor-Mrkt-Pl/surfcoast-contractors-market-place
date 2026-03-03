@@ -393,37 +393,38 @@ export default function JobDetails() {
             </Card>
           </div>
           </div>
+          </div>
 
           {/* Contractor Proposal Form */}
           {!isCustomer && disclaimerSigned && contractorPaid && customerScope && (
           <div id="proposal-form" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <ContractorProposalForm
-              scopeRequest={customerScope}
-              contractorId={userAuth?.id}
-              contractorName={userAuth?.full_name}
-              contractorEmail={userAuth?.email}
-            />
+          <ContractorProposalForm
+            scopeRequest={customerScope}
+            contractorId={userAuth?.id}
+            contractorName={userAuth?.full_name}
+            contractorEmail={userAuth?.email}
+          />
           </div>
           )}
 
           {/* Proposals Display */}
           {contractorProposals && contractorProposals.length > 0 && (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">
-                Contractor Proposals ({contractorProposals.length})
-              </h3>
-              <div className="space-y-4">
-                {contractorProposals.map(proposal => (
-                  <div key={proposal.id} className="border border-slate-200 rounded-lg p-4">
-                    <ScopeComparison
-                      customerScopeRequest={customerScope}
-                      contractorProposal={proposal}
-                    />
-                  </div>
-                ))}
-              </div>
-            </Card>
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">
+              Contractor Proposals ({contractorProposals.length})
+            </h3>
+            <div className="space-y-4">
+              {contractorProposals.map(proposal => (
+                <div key={proposal.id} className="border border-slate-200 rounded-lg p-4">
+                  <ScopeComparison
+                    customerScopeRequest={customerScope}
+                    contractorProposal={proposal}
+                  />
+                </div>
+              ))}
+            </div>
+          </Card>
           </div>
           )}
           </div>
