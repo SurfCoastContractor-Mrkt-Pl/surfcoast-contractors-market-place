@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Upload, X, Loader2, CheckCircle2 } from 'lucide-react';
+import { Upload, X, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function CustomerScopeEditor({ job, userEmail, userName }) {
   const [details, setDetails] = useState('');
   const [photoUrls, setPhotoUrls] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [isOwner, setIsOwner] = useState(true);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (job?.poster_email !== userEmail) {
+      setIsOwner(false);
+    }
+  }, [job, userEmail]);
+
+  if (!isOwner) {
+    return null;
+  }
 
   const uploadMutation = useMutation({
     mutationFn: async (files) => {
@@ -25,6 +37,11 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
     },
     onSuccess: (urls) => {
       setPhotoUrls(prev => [...prev, ...urls]);
+      setUploading(false);
+      setError('');
+    },
+    onError: (err) => {
+      setError(`Upload failed: ${err.message}`);
       setUploading(false);
     },
   });
@@ -42,33 +59,30 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
 
   const handleSave = async () => {
     if (!details.trim()) {
-      alert('Please describe what needs to be done');
+      setError('Please describe what needs to be done');
       return;
     }
 
     try {
-      setSuccess(false);
-      await base44.entities.ScopeOfWork.create({
+      setError('');
+      await base44.entities.CustomerScopeRequest.create({
         job_id: job.id,
         customer_name: userName,
         customer_email: userEmail,
         job_title: job.title,
-        customer_scope_details: details,
-        customer_scope_photo_urls: photoUrls,
-        scope_summary: '',
-        cost_type: 'fixed',
-        cost_amount: 0,
-        status: 'pending_approval',
+        scope_details: details,
+        scope_photo_urls: photoUrls,
+        status: 'published',
       });
 
       setSuccess(true);
       setDetails('');
       setPhotoUrls([]);
-      queryClient.invalidateQueries({ queryKey: ['job-customer-scope', job.id] });
+      queryClient.invalidateQueries({ queryKey: ['customer-scope-request', job.id] });
 
       setTimeout(() => setSuccess(false), 3000);
-    } catch (error) {
-      alert(`Error saving scope: ${error.message}`);
+    } catch (err) {
+      setError(`Error saving scope: ${err.message}`);
     }
   };
 
@@ -81,6 +95,13 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
         </div>
         {success && <CheckCircle2 className="w-5 h-5 text-green-600" />}
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
 
       <div className="space-y-4">
         <div>
