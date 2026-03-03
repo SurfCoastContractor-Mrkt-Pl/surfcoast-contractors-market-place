@@ -117,6 +117,7 @@ This is an official copy of the agreement submitted through ContractorHub.
             <p className="text-slate-600 mb-6">
               Your scope of work has been sent to <strong>{formData.customer_name}</strong> for approval. 
               Work cannot begin until the customer approves this scope.
+              Copies of this agreement have been emailed to both <strong>{formData.customer_email}</strong> and your listed email address.
             </p>
             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Done</Button>
           </div>
