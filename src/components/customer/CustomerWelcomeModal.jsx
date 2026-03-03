@@ -14,6 +14,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
             </div>
             Welcome to ContractorHub!
           </DialogTitle>
+          <div className="sr-only">New customer welcome dialog</div>
         </DialogHeader>
         
         <div className="space-y-6">

@@ -124,19 +124,31 @@ export default function BecomeContractor() {
   const handleIdUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploadingId(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    handleChange('id_document_url', file_url);
-    setUploadingId(false);
+    try {
+      setUploadingId(true);
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      handleChange('id_document_url', file_url);
+    } catch (error) {
+      alert('Failed to upload ID document. Please try again.');
+      console.error('ID upload error:', error);
+    } finally {
+      setUploadingId(false);
+    }
   };
 
   const handleFaceUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploadingFace(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    handleChange('face_photo_url', file_url);
-    setUploadingFace(false);
+    try {
+      setUploadingFace(true);
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      handleChange('face_photo_url', file_url);
+    } catch (error) {
+      alert('Failed to upload face photo. Please try again.');
+      console.error('Face photo upload error:', error);
+    } finally {
+      setUploadingFace(false);
+    }
   };
 
 
@@ -149,7 +161,7 @@ export default function BecomeContractor() {
           </div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Profile Created!</h2>
           <p className="text-slate-600 mb-4">Your contractor profile is now live. Clients can now find and contact you.</p>
-          <p className="text-sm text-slate-500">Redirecting to contractors...</p>
+          <p className="text-sm text-slate-500">Redirecting to your account...</p>
         </Card>
       </div>
     );
