@@ -13,6 +13,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail } from 'lucide-react';
 import JobCloseout from '@/components/scopeofwork/JobCloseout';
+import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay';
 
 export default function CustomerAccount() {
   const [searchEmail, setSearchEmail] = useState('');
@@ -42,6 +43,19 @@ export default function CustomerAccount() {
   const { data: oldPostings } = useQuery({
     queryKey: ['customer-old-postings', searchEmail],
     queryFn: () => base44.entities.Payment.filter({ payer_email: searchEmail, payer_type: 'customer', status: 'work_scheduled' }),
+    enabled: searched && !!searchEmail,
+  });
+
+  const { data: customerProfile } = useQuery({
+    queryKey: ['customer-profile', searchEmail],
+    queryFn: () => base44.entities.CustomerProfile.filter({ email: searchEmail }),
+    enabled: searched && !!searchEmail,
+    select: (data) => data[0],
+  });
+
+  const { data: postedJobs } = useQuery({
+    queryKey: ['customer-jobs', searchEmail],
+    queryFn: () => base44.entities.Job.filter({ poster_email: searchEmail }),
     enabled: searched && !!searchEmail,
   });
 
@@ -115,6 +129,13 @@ export default function CustomerAccount() {
 
         {hasData && (
           <>
+            {/* Customer Profile */}
+            {customerProfile && (
+              <div className="mb-8">
+                <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
+              </div>
+            )}
+
             <Tabs defaultValue="payments">
               <TabsList className="w-full">
                 <TabsTrigger value="payments" className="flex-1">Payments</TabsTrigger>
