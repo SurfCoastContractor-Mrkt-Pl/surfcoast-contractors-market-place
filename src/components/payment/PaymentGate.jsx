@@ -8,14 +8,32 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 
-// Try multiple environment variable names for Stripe publishable key
-const stripePubKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
-                     import.meta.env.STRIPE_PUBLISHABLE_KEY ||
-                     (typeof window !== 'undefined' && window.__STRIPE_PUB_KEY__);
+// Initialize Stripe with environment variable or fetch from backend
+let stripePromise = null;
+let stripeInitialized = false;
 
-const stripePromise = stripePubKey 
-  ? loadStripe(stripePubKey)
-  : null;
+const initStripe = async () => {
+  if (stripeInitialized) return stripePromise;
+  
+  let stripePubKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+  
+  // If not in env, fetch from backend
+  if (!stripePubKey) {
+    try {
+      const res = await fetch('/getStripePublicKey');
+      if (res.ok) {
+        const data = await res.json();
+        stripePubKey = data.publishableKey;
+      }
+    } catch (error) {
+      console.error('Failed to fetch Stripe key:', error);
+    }
+  }
+  
+  stripePromise = stripePubKey ? loadStripe(stripePubKey) : null;
+  stripeInitialized = true;
+  return stripePromise;
+};
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -53,8 +71,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         throw new Error('Failed to create checkout session');
       }
 
-      // Check if Stripe is properly configured
-      if (!stripePromise) {
+      // Initialize Stripe if not already done
+      const stripeInstance = await initStripe();
+      if (!stripeInstance) {
         console.error('Stripe publishable key is not configured');
         throw new Error('Payment processing is not available. Please contact support.');
       }
