@@ -47,11 +47,46 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AdminDashboard from './pages/AdminDashboard';
+import AgentDemo from './pages/AgentDemo';
+import BecomeContractor from './pages/BecomeContractor';
+import Cancel from './pages/Cancel';
+import ContractorAccount from './pages/ContractorAccount';
+import ContractorProfile from './pages/ContractorProfile';
+import Contractors from './pages/Contractors';
+import CustomerAccount from './pages/CustomerAccount';
+import Home from './pages/Home';
+import JobDetails from './pages/JobDetails';
+import Jobs from './pages/Jobs';
+import PaymentHistory from './pages/PaymentHistory';
+import PostJob from './pages/PostJob';
+import ProjectManagement from './pages/ProjectManagement';
+import Success from './pages/Success';
+import MyJobs from './pages/MyJobs';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AdminDashboard": AdminDashboard,
+    "AgentDemo": AgentDemo,
+    "BecomeContractor": BecomeContractor,
+    "Cancel": Cancel,
+    "ContractorAccount": ContractorAccount,
+    "ContractorProfile": ContractorProfile,
+    "Contractors": Contractors,
+    "CustomerAccount": CustomerAccount,
+    "Home": Home,
+    "JobDetails": JobDetails,
+    "Jobs": Jobs,
+    "PaymentHistory": PaymentHistory,
+    "PostJob": PostJob,
+    "ProjectManagement": ProjectManagement,
+    "Success": Success,
+    "MyJobs": MyJobs,
 }
 
 export const pagesConfig = {
+    mainPage: "Home",
     Pages: PAGES,
+    Layout: __Layout,
 };
