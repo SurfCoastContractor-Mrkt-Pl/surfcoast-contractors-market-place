@@ -261,6 +261,34 @@ This is an official copy of the agreement submitted through ContractorHub.
               )}
             </div>
 
+            {/* Agreed Work Date */}
+            <div>
+              <Label htmlFor="agreed_work_date">Agreed Work Date</Label>
+              <Input
+                id="agreed_work_date"
+                type="date"
+                value={formData.agreed_work_date}
+                onChange={(e) => handleChange('agreed_work_date', e.target.value)}
+                className="mt-1.5"
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                The date agreed between you and the customer for work to take place. After photos will be required 72 hours after this date.
+              </p>
+            </div>
+
+            {/* After Photos */}
+            <div>
+              <Label className="text-sm font-semibold text-slate-800 mb-2 block">After Photos (Mandatory from Contractor)</Label>
+              <AfterPhotosUpload
+                photos={afterPhotos}
+                onChange={setAfterPhotos}
+                agreedWorkDate={formData.agreed_work_date}
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                After photos can be added now or updated later. They are <strong>mandatory</strong> within 72 hours of the agreed work date.
+              </p>
+            </div>
+
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 space-y-1">
               <p><strong>No itemized breakdowns.</strong> Only a fixed total or hourly rate is permitted.</p>
               <p>The customer must approve all agreed costs and pricing before any work begins.</p>
