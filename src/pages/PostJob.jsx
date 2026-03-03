@@ -143,16 +143,17 @@ export default function PostJob() {
               </div>
 
               <div>
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description">Detailed Description of the Work *</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => handleChange('description', e.target.value)}
-                  placeholder="Describe your project in detail..."
+                  placeholder="Describe the job in detail. Include: What work needs to be done, specific issues you've noticed, what's visible in the photos, any damage or problem areas, desired outcome, and any materials or preferences you have."
                   required
-                  rows={5}
+                  rows={6}
                   className="mt-1.5"
                 />
+                <p className="text-xs text-slate-500 mt-2">The more detail you provide, the better contractors can assess the job and provide accurate quotes.</p>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -318,9 +319,18 @@ export default function PostJob() {
             </div>
           </Card>
 
-          <Card className="p-6 md:p-8 mb-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-2">Before Photos <span className="text-red-500">*</span></h2>
-            <p className="text-sm text-slate-500 mb-4">Document the current state of the work area before any contractor begins. Minimum 5 photos required.</p>
+          <Card className="p-6 md:p-8 mb-6 border-2 border-amber-200 bg-amber-50">
+            <h2 className="text-lg font-semibold text-slate-900 mb-1">Before Photos <span className="text-red-500">*</span></h2>
+            <p className="text-sm text-slate-600 mb-4 font-medium">Show contractors exactly what they're working with</p>
+            <p className="text-sm text-slate-600 mb-4">
+              Upload at least 5 photos showing different angles and areas of the work space. Include:
+              <ul className="mt-2 ml-4 space-y-1 text-slate-600">
+                <li>• Overview shots of the entire area</li>
+                <li>• Close-ups of problem areas or damage</li>
+                <li>• Different angles and lighting conditions</li>
+                <li>• Any specific issues you want contractors to see</li>
+              </ul>
+            </p>
             <BeforePhotosUpload photos={beforePhotos} onChange={setBeforePhotos} />
           </Card>
 
