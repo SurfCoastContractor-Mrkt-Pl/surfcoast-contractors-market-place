@@ -5,13 +5,27 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Upload, Loader2, X } from 'lucide-react';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter
+} from '@/components/ui/dialog';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '@/components/ui/select';
+import { Card } from '@/components/ui/card';
+import { Upload, X, Loader2, ImageIcon, Trash2 } from 'lucide-react';
 
-const TRADES = [
-  'electrician', 'plumber', 'carpenter', 'hvac', 'mason',
-  'roofer', 'painter', 'welder', 'tiler', 'landscaper', 'other'
+const TRADE_OPTIONS = [
+  { id: 'electrician', name: 'Electrician' },
+  { id: 'plumber', name: 'Plumber' },
+  { id: 'carpenter', name: 'Carpenter' },
+  { id: 'hvac', name: 'HVAC Technician' },
+  { id: 'mason', name: 'Mason' },
+  { id: 'roofer', name: 'Roofer' },
+  { id: 'painter', name: 'Painter' },
+  { id: 'welder', name: 'Welder' },
+  { id: 'tiler', name: 'Tiler' },
+  { id: 'landscaper', name: 'Landscaper' },
+  { id: 'other', name: 'Other' },
 ];
 
 export default function PortfolioManager({ contractorId, open, onClose }) {
@@ -21,91 +35,153 @@ export default function PortfolioManager({ contractorId, open, onClose }) {
     description: '',
     trade_category: '',
     completion_date: '',
-    images: []
+    images: [],
   });
-  const [uploadingImages, setUploadingImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.PortfolioProject.create({
-      ...data,
-      contractor_id: contractorId,
-      images: uploadingImages.map(img => ({ url: img.url, caption: img.caption || '' }))
-    }),
+    mutationFn: async (data) => {
+      return base44.entities.PortfolioProject.create({
+        contractor_id: contractorId,
+        ...data,
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolio', contractorId] });
-      setFormData({ project_title: '', description: '', trade_category: '', completion_date: '', images: [] });
-      setUploadingImages([]);
-      onClose();
-    }
+      handleClose();
+    },
   });
+
+  const handleClose = () => {
+    setFormData({
+      project_title: '',
+      description: '',
+      trade_category: '',
+      completion_date: '',
+      images: [],
+    });
+    onClose();
+  };
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    for (const file of files) {
-      try {
-        const res = await base44.integrations.Core.UploadFile({ file });
-        setUploadingImages(prev => [...prev, { url: res.file_url, caption: '' }]);
-      } catch (error) {
-        console.error('Image upload failed:', error);
+    if (files.length === 0) return;
+
+    try {
+      setUploading(true);
+      const uploadedImages = [];
+
+      for (const file of files) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        uploadedImages.push({
+          url: file_url,
+          caption: '',
+        });
       }
+
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, ...uploadedImages],
+      }));
+    } catch (error) {
+      alert('Failed to upload images. Please try again.');
+      console.error('Image upload error:', error);
+    } finally {
+      setUploading(false);
     }
   };
 
-  const handleRemoveImage = (index) => {
-    setUploadingImages(prev => prev.filter((_, i) => i !== index));
+  const removeImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const updateImageCaption = (index, caption) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.map((img, i) => i === index ? { ...img, caption } : img),
+    }));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.project_title || !formData.description || !formData.trade_category || !formData.completion_date) {
-      alert('Please fill in all required fields');
+    
+    if (!formData.project_title.trim()) {
+      alert('Please enter a project title');
       return;
     }
-    await createMutation.mutateAsync(formData);
+    if (!formData.description.trim()) {
+      alert('Please enter a project description');
+      return;
+    }
+    if (!formData.trade_category) {
+      alert('Please select a trade category');
+      return;
+    }
+    if (!formData.completion_date) {
+      alert('Please select a completion date');
+      return;
+    }
+    if (formData.images.length === 0) {
+      alert('Please upload at least one project image');
+      return;
+    }
+
+    createMutation.mutate(formData);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add Portfolio Project</DialogTitle>
+          <DialogDescription>
+            Showcase your completed work with images and detailed descriptions
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Project Title */}
           <div>
             <Label htmlFor="title">Project Title *</Label>
             <Input
               id="title"
+              placeholder="e.g., Kitchen Remodel, Electrical Upgrade"
               value={formData.project_title}
-              onChange={(e) => setFormData({ ...formData, project_title: e.target.value })}
-              placeholder="e.g., Kitchen Renovation"
+              onChange={(e) => setFormData(prev => ({ ...prev, project_title: e.target.value }))}
               className="mt-1.5"
             />
           </div>
 
+          {/* Description */}
           <div>
             <Label htmlFor="description">Project Description *</Label>
             <Textarea
               id="description"
+              placeholder="Describe the project scope, challenges overcome, materials used, and final results..."
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Describe the project, challenges, and results..."
-              className="mt-1.5 h-24"
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              rows={4}
+              className="mt-1.5"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* Trade Category & Date */}
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="trade">Trade Category *</Label>
-              <Select value={formData.trade_category} onValueChange={(value) => setFormData({ ...formData, trade_category: value })}>
+              <Label>Trade Category *</Label>
+              <Select 
+                value={formData.trade_category} 
+                onValueChange={(v) => setFormData(prev => ({ ...prev, trade_category: v }))}
+              >
                 <SelectTrigger className="mt-1.5">
                   <SelectValue placeholder="Select trade" />
                 </SelectTrigger>
                 <SelectContent>
-                  {TRADES.map(trade => (
-                    <SelectItem key={trade} value={trade} className="capitalize">
-                      {trade}
-                    </SelectItem>
+                  {TRADE_OPTIONS.map(trade => (
+                    <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -117,74 +193,107 @@ export default function PortfolioManager({ contractorId, open, onClose }) {
                 id="date"
                 type="date"
                 value={formData.completion_date}
-                onChange={(e) => setFormData({ ...formData, completion_date: e.target.value })}
+                onChange={(e) => setFormData(prev => ({ ...prev, completion_date: e.target.value }))}
                 className="mt-1.5"
               />
             </div>
           </div>
 
+          {/* Image Upload */}
           <div>
-            <Label className="block mb-2">Project Images</Label>
-            <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center cursor-pointer hover:border-slate-400 transition-colors">
+            <Label>Project Images *</Label>
+            <p className="text-xs text-slate-500 mb-3">Upload before and after photos, progress shots, and final results</p>
+            
+            <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-amber-400 transition-colors">
               <input
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={handleImageUpload}
+                disabled={uploading}
                 className="hidden"
-                id="image-input"
+                id="file-input"
               />
-              <label htmlFor="image-input" className="cursor-pointer flex flex-col items-center gap-2">
-                <Upload className="w-6 h-6 text-slate-400" />
-                <span className="text-sm text-slate-600">Click to upload or drag and drop</span>
-                <span className="text-xs text-slate-500">PNG, JPG, GIF up to 10MB each</span>
+              <label htmlFor="file-input" className="cursor-pointer block">
+                {uploading ? (
+                  <>
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500 mx-auto mb-2" />
+                    <p className="text-sm text-slate-600">Uploading...</p>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                    <p className="text-sm text-slate-600">
+                      Click to upload or drag and drop
+                    </p>
+                    <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 10MB each</p>
+                  </>
+                )}
               </label>
             </div>
 
-            {uploadingImages.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {uploadingImages.map((img, idx) => (
-                  <div key={idx} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                    <img src={img.url} alt={`Upload ${idx}`} className="h-16 w-16 object-cover rounded" />
-                    <div className="flex-1 min-w-0">
+            {/* Image Previews */}
+            {formData.images.length > 0 && (
+              <div className="mt-4 space-y-3">
+                <p className="text-sm font-medium text-slate-900">
+                  Uploaded Images ({formData.images.length})
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {formData.images.map((img, idx) => (
+                    <Card key={idx} className="relative overflow-hidden group">
+                      <img
+                        src={img.url}
+                        alt={`Upload ${idx + 1}`}
+                        className="w-full h-24 object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(idx)}
+                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Card>
+                  ))}
+                </div>
+                
+                {/* Image Captions */}
+                <div className="mt-4 space-y-2">
+                  <p className="text-xs text-slate-600 font-medium">Add captions (optional)</p>
+                  {formData.images.map((img, idx) => (
+                    <div key={idx}>
                       <Input
-                        placeholder="Image caption (optional)"
+                        placeholder={`Image ${idx + 1} caption (e.g., "Before the work")`}
                         value={img.caption}
-                        onChange={(e) => {
-                          setUploadingImages(prev => [
-                            ...prev.slice(0, idx),
-                            { ...prev[idx], caption: e.target.value },
-                            ...prev.slice(idx + 1)
-                          ]);
-                        }}
-                        className="text-sm"
+                        onChange={(e) => updateImageCaption(idx, e.target.value)}
+                        className="text-xs"
                       />
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(idx)}
-                      className="p-2 hover:bg-red-100 rounded"
-                    >
-                      <X className="w-4 h-4 text-red-600" />
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          <div className="flex gap-3">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <DialogFooter>
+            <Button variant="outline" onClick={handleClose} disabled={createMutation.isPending}>
               Cancel
             </Button>
-            <Button type="submit" disabled={createMutation.isPending} className="flex-1 bg-amber-500 hover:bg-amber-600">
+            <Button
+              type="submit"
+              className="bg-amber-500 hover:bg-amber-600"
+              disabled={createMutation.isPending}
+            >
               {createMutation.isPending ? (
-                <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</>
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Adding...
+                </>
               ) : (
-                <>Add to Portfolio</>
+                'Add Project'
               )}
             </Button>
-          </div>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
