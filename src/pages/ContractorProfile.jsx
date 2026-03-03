@@ -337,6 +337,16 @@ export default function ContractorProfile() {
         contractorName={contractor?.name}
       />
 
+      <InAppMessageForm
+        open={showMessageForm}
+        onClose={() => setShowMessageForm(false)}
+        paymentRecord={paymentRecord}
+        senderType="customer"
+        recipientId={contractor?.id}
+        recipientName={contractor?.name}
+        recipientEmail={contractor?.email}
+      />
+
       <DisclaimerModal
         open={showDisclaimer}
         onClose={() => setShowDisclaimer(false)}
