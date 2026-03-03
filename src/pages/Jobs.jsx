@@ -154,15 +154,17 @@ export default function Jobs() {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Job Listings</h1>
               <p className="text-lg text-slate-300">
-                Find your next construction project
+                {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
               </p>
             </div>
-            <Link to={createPageUrl('PostJob')}>
-              <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900">
-                <Plus className="w-5 h-5 mr-2" />
-                Post a Job
-              </Button>
-            </Link>
+            {!isContractor && (
+              <Link to={createPageUrl('PostJob')}>
+                <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Post a Job
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
