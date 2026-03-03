@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { useNavigate, Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Briefcase, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Briefcase, Loader2, CheckCircle, Users } from 'lucide-react';
 import BeforePhotosUpload from '@/components/photos/BeforePhotosUpload';
 
 const trades = [
@@ -29,6 +29,7 @@ const trades = [
 export default function PostJob() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
+  const [isContractor, setIsContractor] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -47,6 +48,52 @@ export default function PostJob() {
     status: 'open'
   });
   const [beforePhotos, setBeforePhotos] = useState([]);
+
+  useEffect(() => {
+    const checkUserType = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) {
+          base44.auth.redirectToLogin(window.location.pathname);
+          return;
+        }
+        const contractors = await base44.entities.Contractor.filter({ email: user.email });
+        if (contractors && contractors.length > 0) {
+          setIsContractor(true);
+        } else {
+          setIsContractor(false);
+        }
+      } catch {
+        base44.auth.redirectToLogin(window.location.pathname);
+      }
+    };
+    checkUserType();
+  }, []);
+
+  if (isContractor === true) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Users className="w-8 h-8 text-amber-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Customers Only</h2>
+          <p className="text-slate-600 mb-6">Only customers can post jobs. If you're a contractor, you can browse and respond to job postings instead.</p>
+          <Button onClick={() => navigate(createPageUrl('Jobs'))} className="bg-amber-500 hover:bg-amber-600">
+            Browse Jobs for Contractors
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isContractor === null) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500">Loading...</div>
+      </div>
+    );
+  }
 
   const mutation = useMutation({
     mutationFn: (data) => base44.entities.Job.create(data),
