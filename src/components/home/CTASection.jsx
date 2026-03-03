@@ -8,7 +8,39 @@ export default function CTASection() {
   return (
     <section className="py-20 bg-gradient-to-br from-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-3 gap-8 items-center">
+          {/* For Customers - Find Contractors */}
+          <div className="text-white">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              Find Contractors
+            </h3>
+            <p className="text-slate-300 mb-6">
+              Browse skilled professionals in your area. Compare profiles, reviews, and rates to find the right contractor for your project.
+            </p>
+            <Link to={createPageUrl('Contractors')}>
+              <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900 w-full">
+                <Search className="w-5 h-5 mr-2" />
+                Browse Contractors
+              </Button>
+            </Link>
+          </div>
+
+          {/* For Customers - Post Jobs */}
+          <div className="text-white">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              Post a Job
+            </h3>
+            <p className="text-slate-300 mb-6">
+              Post your project and receive quotes from qualified contractors in your area. It's free and takes just minutes.
+            </p>
+            <Link to={createPageUrl('PostJob')}>
+              <Button size="lg" variant="outline" className="border-slate-500 text-white hover:bg-slate-700 w-full">
+                Post Your Job
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </div>
+
           {/* For Contractors */}
           <div className="relative p-8 rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-900 overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2" />
