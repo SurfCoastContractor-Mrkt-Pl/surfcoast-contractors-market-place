@@ -21,12 +21,9 @@ export default function SubscriptionModal({ open, onClose, userEmail, userType }
     loadStripeKey();
   }, []);
 
-  // For now, you'll need to add the price ID manually from Stripe dashboard
-  // After creating the product, get the price ID and set it here
-  // This would typically be stored in a config or fetched from backend
   useEffect(() => {
-    // TODO: Set priceId from your Stripe price
-    // setPriceId('price_xxx');
+    // Set the price ID for the monthly subscription
+    setPriceId('price_1T6wNARUQju4EsXrHfMvUkNl');
   }, []);
 
   const checkoutMutation = useMutation({
