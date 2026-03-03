@@ -119,6 +119,8 @@ export default function BecomeContractor() {
     }));
   };
 
+  const [uploadingFace, setUploadingFace] = useState(false);
+
   const handleIdUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -128,6 +130,14 @@ export default function BecomeContractor() {
     setUploadingId(false);
   };
 
+  const handleFaceUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingFace(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    handleChange('face_photo_url', file_url);
+    setUploadingFace(false);
+  };
 
 
   if (success) {
@@ -172,56 +182,53 @@ export default function BecomeContractor() {
           <Card className="p-6 md:p-8 mb-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-6">Basic Information</h2>
             
-            <div className="space-y-4 mb-6">
-              <div className="flex-1 space-y-4">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="name">Full Name *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  required
+                  className="mt-1.5"
+                />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Full Name *</Label>
+                  <Label htmlFor="email">Email *</Label>
                   <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleChange('name', e.target.value)}
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange('email', e.target.value)}
                     required
                     className="mt-1.5"
                   />
                 </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleChange('email', e.target.value)}
-                      required
-                      className="mt-1.5"
-                    />
-                  </div>
-                  <div>
-                   <Label htmlFor="phone">Phone</Label>
-                   <Input
-                     id="phone"
-                     type="tel"
-                     value={formData.phone}
-                     onChange={(e) => handleChange('phone', e.target.value)}
-                     className="mt-1.5"
-                   />
-                  </div>
-                  </div>
-                  </div>
-                  </div>
-
-                  <div>
-                  <Label htmlFor="location">Location *</Label>
-              <Input
-                id="location"
-                value={formData.location}
-                onChange={(e) => handleChange('location', e.target.value)}
-                placeholder="City, State"
-                required
-                className="mt-1.5"
-              />
+                <div>
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleChange('phone', e.target.value)}
+                    className="mt-1.5"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="location">Location *</Label>
+                <Input
+                  id="location"
+                  value={formData.location}
+                  onChange={(e) => handleChange('location', e.target.value)}
+                  placeholder="City, State"
+                  required
+                  className="mt-1.5"
+                />
+              </div>
             </div>
-          </Card>
+            </Card>
 
           {/* Professional Info */}
           <Card className="p-6 md:p-8 mb-6">
