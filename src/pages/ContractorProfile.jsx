@@ -15,6 +15,9 @@ import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import ScopeOfWorkForm from '@/components/scopeofwork/ScopeOfWorkForm';
 import PaymentGate from '@/components/payment/PaymentGate';
 import InAppMessageForm from '@/components/messaging/InAppMessageForm';
+import ContractorServices from '@/components/contractor/ContractorServices';
+import AvailabilityCalendar from '@/components/contractor/AvailabilityCalendar';
+import ReviewsSection from '@/components/contractor/ReviewsSection';
 
 const tradeLabels = {
   electrician: 'Electrician',
@@ -60,6 +63,24 @@ export default function ContractorProfile() {
       const list = await base44.entities.Contractor.filter({ id: contractorId });
       return list[0];
     },
+    enabled: !!contractorId,
+  });
+
+  const { data: services } = useQuery({
+    queryKey: ['contractor-services', contractorId],
+    queryFn: () => base44.entities.ServiceOffering.filter({ contractor_id: contractorId }),
+    enabled: !!contractorId,
+  });
+
+  const { data: availability } = useQuery({
+    queryKey: ['contractor-availability', contractorId],
+    queryFn: () => base44.entities.AvailabilitySlot.filter({ contractor_id: contractorId }),
+    enabled: !!contractorId,
+  });
+
+  const { data: reviews } = useQuery({
+    queryKey: ['contractor-reviews', contractorId],
+    queryFn: () => base44.entities.Review.filter({ contractor_id: contractorId, verified: true }),
     enabled: !!contractorId,
   });
 
@@ -248,6 +269,15 @@ export default function ContractorProfile() {
                 </div>
               </Card>
             )}
+
+            {/* Services */}
+            <ContractorServices services={services} />
+
+            {/* Availability */}
+            <AvailabilityCalendar slots={availability} />
+
+            {/* Reviews */}
+            <ReviewsSection reviews={reviews} averageRating={contractor?.rating} totalReviews={contractor?.reviews_count} />
 
             {/* Portfolio */}
             {contractor.portfolio_images?.length > 0 && (
