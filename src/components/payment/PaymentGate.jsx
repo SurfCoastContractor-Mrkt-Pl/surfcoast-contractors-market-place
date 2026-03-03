@@ -77,7 +77,18 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
           </DialogTitle>
         </DialogHeader>
 
-        {paid ? (
+        {alreadyPaid ? (
+          <div className="text-center py-6">
+            <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-blue-600" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Already Verified</h3>
+            <p className="text-slate-600 text-sm mb-4">
+              A confirmed payment already exists for this account. Your access is active.
+            </p>
+            <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Continue</Button>
+          </div>
+        ) : paid ? (
           <div className="text-center py-6">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
