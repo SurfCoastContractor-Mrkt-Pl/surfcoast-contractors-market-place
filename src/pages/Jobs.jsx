@@ -35,8 +35,20 @@ export default function Jobs() {
     queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date'),
   });
 
+  // Fetch all work_scheduled payments to know which job IDs are closed
+  const { data: scheduledPayments } = useQuery({
+    queryKey: ['scheduled-payments'],
+    queryFn: () => base44.entities.Payment.filter({ status: 'work_scheduled' }),
+  });
+
+  const scheduledJobIds = useMemo(() => {
+    if (!scheduledPayments) return new Set();
+    return new Set(scheduledPayments.map(p => p.contractor_id).filter(Boolean));
+  }, [scheduledPayments]);
+
   const filteredJobs = useMemo(() => {
     if (!jobs) return [];
+    // Exclude jobs that have been marked as work scheduled
     
     return jobs.filter(job => {
       const matchesSearch = !searchQuery || 
