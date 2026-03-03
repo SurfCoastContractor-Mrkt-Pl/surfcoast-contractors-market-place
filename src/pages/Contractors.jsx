@@ -31,22 +31,37 @@ export default function Contractors() {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(null);
   const [isContractor, setIsContractor] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Check if user is a contractor
+  // Check if user is authenticated and contractor type
   useEffect(() => {
     const checkUserType = async () => {
-      const user = await base44.auth.me();
-      if (user) {
+      try {
+        const user = await base44.auth.me();
+        if (!user) {
+          base44.auth.redirectToLogin(window.location.pathname);
+          return;
+        }
         setUserEmail(user.email);
-        // Check if this user is a contractor
         const contractors = await base44.entities.Contractor.filter({ email: user.email });
         if (contractors && contractors.length > 0) {
           setIsContractor(true);
         }
+      } finally {
+        setLoading(false);
       }
     };
     checkUserType();
   }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500">Loading...</div>
+      </div>
+    );
+  }
 
   // Redirect contractors away
   if (isContractor) {
