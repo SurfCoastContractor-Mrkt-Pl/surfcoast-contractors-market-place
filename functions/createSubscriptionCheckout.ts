@@ -15,8 +15,9 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check if user already has active subscription
     const base44 = createClientFromRequest(req);
+
+    // Check if user already has active subscription
     const existingSubscriptions = await base44.asServiceRole.entities.Subscription.filter({
       user_email: email,
       status: 'active'

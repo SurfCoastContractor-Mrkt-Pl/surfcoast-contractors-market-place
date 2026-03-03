@@ -11,6 +11,16 @@ Deno.serve(async (req) => {
     let locked = 0;
     let unlocked = 0;
 
+    // Build map of contractor IDs to fetch
+    const contractorIds = [...new Set(scopes.filter(s => s.contractor_id).map(s => s.contractor_id))];
+    const contractorMap = new Map();
+    for (const id of contractorIds) {
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ id });
+      if (contractors.length > 0) {
+        contractorMap.set(id, contractors[0]);
+      }
+    }
+
     for (const scope of scopes) {
       if (!scope.agreed_work_date || !scope.contractor_id) continue;
 
@@ -19,9 +29,7 @@ Deno.serve(async (req) => {
       const pastDeadline = now > deadline;
       const hasEnoughPhotos = photosCount >= 5;
 
-      // Fetch contractor
-      const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: scope.contractor_id });
-      const contractor = contractors[0];
+      const contractor = contractorMap.get(scope.contractor_id);
       if (!contractor) continue;
 
       if (pastDeadline && !hasEnoughPhotos) {

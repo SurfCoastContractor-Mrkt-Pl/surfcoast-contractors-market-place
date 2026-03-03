@@ -41,16 +41,16 @@ Deno.serve(async (req) => {
       const status = subscription.status === 'active' ? 'active' : 
                      subscription.status === 'past_due' ? 'past_due' : 'cancelled';
 
-      await base44.asServiceRole.entities.Subscription.filter({
+      const subs = await base44.asServiceRole.entities.Subscription.filter({
         stripe_subscription_id: subscription.id,
-      }).then(subs => {
-        if (subs && subs.length > 0) {
-          return base44.asServiceRole.entities.Subscription.update(subs[0].id, {
-            status,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-          });
-        }
       });
+
+      if (subs && subs.length > 0) {
+        await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
+          status,
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        });
+      }
     }
 
     if (event.type === 'customer.subscription.deleted') {
