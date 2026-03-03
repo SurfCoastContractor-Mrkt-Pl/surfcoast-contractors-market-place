@@ -186,7 +186,6 @@ export default function BecomeContractor() {
                       className="mt-1.5"
                     />
                   </div>
-                </div>
               </div>
             </div>
 
