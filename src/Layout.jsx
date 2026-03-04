@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, Volume2, VolumeX, Volume1, Music } from 'lucide-react';
-import MusicPlayer from '@/components/audio/MusicPlayer';
+import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 'lucide-react';
+
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 
@@ -34,7 +34,7 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(true);
   const [isContractor, setIsContractor] = useState(null);
-  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+
 
   const isHome = currentPageName === 'Home';
 
@@ -57,7 +57,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <MusicPlayer open={showMusicPlayer} onClose={() => setShowMusicPlayer(false)} />
+
       {/* Navigation */}
       <nav className={`sticky top-0 z-50 ${isHome ? 'bg-transparent absolute w-full' : 'bg-white border-b border-slate-200'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,14 +94,7 @@ export default function Layout({ children, currentPageName }) {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
-              <button
-                onClick={() => setShowMusicPlayer(true)}
-                title="Music player"
-                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors text-slate-500 hover:text-amber-600 hover:bg-amber-50"
-              >
-                <Music className="w-4 h-4 text-amber-500" />
-                <span className="hidden lg:inline">Music</span>
-              </button>
+
               {isContractor === false && (
                 <Link to={createPageUrl('PostJob')}>
                   <Button variant="outline" className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
@@ -170,13 +163,7 @@ export default function Layout({ children, currentPageName }) {
                 );
               })}
               <div className="pt-4 border-t border-slate-100 space-y-2">
-                <button
-                  onClick={() => { setShowMusicPlayer(true); setMobileMenuOpen(false); }}
-                  className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-slate-200 text-sm text-slate-600"
-                >
-                  <Music className="w-4 h-4 text-amber-500" />
-                  Music Player
-                </button>
+
               {isContractor === false && (
                   <Link to={createPageUrl('PostJob')} onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full">Post a Job</Button>
