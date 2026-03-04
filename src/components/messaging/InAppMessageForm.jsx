@@ -308,6 +308,13 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
           </div>
         ) : (
           <div className="flex flex-col flex-1 overflow-hidden">
+            {/* Session timer banner */}
+            {sessionExpiry && !isSessionExpired && minutesLeft < 15 && (
+              <div className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-3 text-sm ${minutesLeft < 5 ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
+                <Clock className="w-4 h-4 shrink-0" />
+                <span>Session expires in <strong>{minutesLeft}m {secondsLeft}s</strong>. Mark as Work Scheduled before it ends to close this session properly.</span>
+              </div>
+            )}
             {/* Sender setup — only needed once */}
             {needsSetup && (
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-4 space-y-3">
