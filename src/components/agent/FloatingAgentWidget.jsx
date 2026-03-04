@@ -6,25 +6,9 @@ import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-re
 
 const GREETING_MESSAGE = `👋 Welcome to SurfCoast Contractors Market Place!
 
-I'm your AI Assistant. Let me help you complete your profile setup.
+I'm your AI Assistant. I can help you understand how the app works, our pricing, and how to get started — whether you're a customer or a contractor.
 
-**Here's what we'll do:**
-✓ Help you fill in your customer profile
-✓ Explain how to browse contractors or post a job
-✓ Answer any questions about platform fees
-
-**Platform Fees:**
-💬 $1.50 per contractor (unlimited messaging until work starts)
-📋 $0.75 for a quick quote request
-⭐ $20/month unlimited messaging
-
-Ready to get started? What would you like help with first?`;
-
-const SETUP_GUIDANCE = {
-  setupProfile: "I can help you complete your customer profile. Let's start with your location so we can find contractors near you. What city or area are you in?",
-  browseContractors: "Great! To find contractors, I'll need to know: 1) What type of work do you need? 2) What's your location? 3) What's your budget range?",
-  postJob: "To post a job, you'll need: 1) Job title and description 2) Your location 3) Budget (hourly or fixed) 4) Timeline 5) 5+ before photos\n\nWhich would you like help with?",
-};
+Ask me anything about the platform! 😊`;
 
 export default function FloatingAgentWidget({ open, onClose }) {
   const [messages, setMessages] = useState([
