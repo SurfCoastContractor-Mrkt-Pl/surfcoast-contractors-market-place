@@ -41,6 +41,17 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
 
+  // 1-hour session expiry logic
+  const sessionExpiry = paymentRecord?.session_expires_at ? new Date(paymentRecord.session_expires_at) : null;
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 10000); // update every 10s
+    return () => clearInterval(interval);
+  }, []);
+  const isSessionExpired = sessionExpiry && now > sessionExpiry && !isWorkScheduled;
+  const minutesLeft = sessionExpiry ? Math.max(0, Math.floor((sessionExpiry - now) / 60000)) : null;
+  const secondsLeft = sessionExpiry ? Math.max(0, Math.floor((sessionExpiry - now) / 1000) % 60) : null;
+
   // Check for active subscription when dialog opens
   useEffect(() => {
     const checkSubscription = async () => {
