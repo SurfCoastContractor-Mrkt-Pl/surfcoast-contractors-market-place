@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { HardHat, Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, Volume2, VolumeX } from 'lucide-react';
+import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, Volume2, VolumeX, Volume1, Music } from 'lucide-react';
+import MusicPlayer from './components/audio/MusicPlayer';
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 
