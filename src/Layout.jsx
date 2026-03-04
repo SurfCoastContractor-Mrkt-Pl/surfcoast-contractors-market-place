@@ -95,12 +95,12 @@ export default function Layout({ children, currentPageName }) {
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={toggleMusic}
-                title={musicPlaying ? 'Pause music' : 'Play music'}
+                onClick={() => setShowMusicPlayer(true)}
+                title="Music player"
                 className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors text-slate-500 hover:text-amber-600 hover:bg-amber-50"
               >
-                {musicPlaying ? <Volume2 className="w-4 h-4 text-amber-500" /> : <VolumeX className="w-4 h-4" />}
-                <span className="hidden lg:inline">{musicPlaying ? 'Music On' : 'Music Off'}</span>
+                <Music className="w-4 h-4 text-amber-500" />
+                <span className="hidden lg:inline">Music</span>
               </button>
               {isContractor === false && (
                 <Link to={createPageUrl('PostJob')}>
