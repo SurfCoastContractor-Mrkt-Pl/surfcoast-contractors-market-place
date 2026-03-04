@@ -37,8 +37,8 @@ export default function Layout({ children, currentPageName }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // "You Get What You Give" by The New Radicals
-    const audio = new Audio('https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3a/4b/2a/3a4b2a5b-4f1b-4b2a-8b2a-4b2a5b4f1b4b/mzaf_3a4b2a5b.aac');
+    // "You Get What You Give" by The New Radicals — iTunes 30s preview
+    const audio = new Audio('https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ed/89/6e/ed896e2b-27c4-b876-d8e6-3c8c5b4e2a7f/mzaf_5234907495340641816.plus.aac.ep.m4a');
     audio.volume = 0.20;
     audio.loop = true;
     audioRef.current = audio;
