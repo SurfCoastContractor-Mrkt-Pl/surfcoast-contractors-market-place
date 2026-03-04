@@ -2,18 +2,25 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Music } from 'lucide-react';
 
 export default function MusicPlayer({ open, onClose }) {
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3);
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current) {
       if (playing) {
-        audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
+        audioRef.current.play().catch(err => console.log('Play error:', err));
+      } else {
+        audioRef.current.pause();
       }
     }
-  }, [volume, playing]);
+  }, [playing]);
 
   const togglePlay = () => {
     if (audioRef.current) {
