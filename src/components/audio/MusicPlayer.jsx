@@ -30,7 +30,7 @@ export default function MusicPlayer({ open, onClose }) {
     <>
       <audio
         ref={audioRef}
-        src="https://commondatastorage.googleapis.com/codeskulptor-assets/Evilnessvan_-_01_-_Quotes.mp3"
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
         loop
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -41,7 +41,7 @@ export default function MusicPlayer({ open, onClose }) {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0">
             <Music className="w-4 h-4 flex-shrink-0" />
-            <span className="text-sm font-medium truncate">A Kind of Magic • Queen</span>
+            <span className="text-sm font-medium truncate">You Get What You Give • The New Radicals</span>
           </div>
 
           <div className="flex items-center gap-3 flex-shrink-0">
