@@ -12,6 +12,7 @@ import {
   CreditCard, TrendingUp, ShieldCheck, Download,
   MessageSquare, ShieldAlert, Eye, EyeOff
 } from 'lucide-react';
+import AdminProfileViewer from '../components/admin/AdminProfileViewer';
 
 // Admin password is hardcoded for now (no environment variables available in browser)
 // TODO: Move to backend function to load from environment variables
