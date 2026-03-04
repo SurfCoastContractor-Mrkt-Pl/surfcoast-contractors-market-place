@@ -40,7 +40,8 @@ export default function FloatingAgentWidget({ open, onClose }) {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMsg = input;
+    const userMessage = { role: 'user', content: userMsg };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setLoading(true);
