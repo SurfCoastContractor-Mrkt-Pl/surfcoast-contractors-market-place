@@ -66,7 +66,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
 
   if (minimized) {
     return (
-      <div className="fixed bottom-4 right-4 z-40">
+      <div className="fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setMinimized(false)}
           className="flex items-center justify-center w-14 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all"
@@ -79,7 +79,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-40 sm:left-auto sm:w-80 md:w-96 h-[calc(100vh-7rem)] sm:h-96 max-h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200">
+    <div className="fixed bottom-6 right-6 z-40 w-80 max-w-[calc(100vw-2rem)] h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
         <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
