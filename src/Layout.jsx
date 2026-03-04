@@ -33,39 +33,18 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(true);
   const [isContractor, setIsContractor] = useState(null);
-  const [musicPlaying, setMusicPlaying] = useState(false);
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    // "You Get What You Give" by The New Radicals
-    // Using YouTube embed as audio source via a public proxy isn't feasible;
-    // the song will auto-attempt to play and the toggle lets users control it.
-    const audio = new Audio();
-    audio.src = 'https://www.youtube.com/embed/6AL7cVAiPdg'; // placeholder — see note below
-    audio.volume = 0.20;
-    audio.loop = true;
-    audioRef.current = audio;
-
-    const tryPlay = () => {
-      audio.play().then(() => setMusicPlaying(true)).catch(() => {});
-    };
-
-    document.addEventListener('click', tryPlay, { once: true });
-
-    return () => {
-      audio.pause();
-      document.removeEventListener('click', tryPlay);
-    };
-  }, []);
+  const [musicPlaying, setMusicPlaying] = useState(true);
+  const iframeRef = useRef(null);
 
   const toggleMusic = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
     if (musicPlaying) {
-      audio.pause();
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
       setMusicPlaying(false);
     } else {
-      audio.play().then(() => setMusicPlaying(true)).catch(() => {});
+      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      setMusicPlaying(true);
     }
   };
 
