@@ -465,9 +465,15 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                 )}
 
                 <p className="text-xs text-slate-400">
-                 {hasSubscription 
+                 {hasSubscription
                    ? '✓ Unlimited messages with your monthly subscription until work is scheduled.'
-                   : 'Unlimited messages included with your $1.50 fee until work is scheduled. Contact details shared at your discretion.'
+                   : sessionExpiry
+                     ? (minutesLeft > 0 || secondsLeft > 0)
+                       ? <span className={`font-medium ${minutesLeft < 5 ? 'text-red-500' : 'text-slate-500'}`}>
+                           ⏱ Session expires in {minutesLeft}m {secondsLeft}s — messages included until then or until work is scheduled.
+                         </span>
+                       : 'Session time has elapsed.'
+                     : 'Unlimited messages included with your $1.50 fee until work is scheduled.'
                  }
                 </p>
               </div>
