@@ -64,6 +64,7 @@ import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
+import BadgeShowcase from './pages/BadgeShowcase';
 import __Layout from './Layout.jsx';
 
 
@@ -85,6 +86,7 @@ export const PAGES = {
     "ProjectManagement": ProjectManagement,
     "Success": Success,
     "Terms": Terms,
+    "BadgeShowcase": BadgeShowcase,
 }
 
 export const pagesConfig = {
