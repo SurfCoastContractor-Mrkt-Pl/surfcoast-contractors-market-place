@@ -171,11 +171,11 @@ export default function Layout({ children, currentPageName }) {
               })}
               <div className="pt-4 border-t border-slate-100 space-y-2">
                 <button
-                  onClick={toggleMusic}
+                  onClick={() => { setShowMusicPlayer(true); setMobileMenuOpen(false); }}
                   className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-slate-200 text-sm text-slate-600"
                 >
-                  {musicPlaying ? <Volume2 className="w-4 h-4 text-amber-500" /> : <VolumeX className="w-4 h-4" />}
-                  {musicPlaying ? 'Pause Music' : 'Play Music'}
+                  <Music className="w-4 h-4 text-amber-500" />
+                  Music Player
                 </button>
               {isContractor === false && (
                   <Link to={createPageUrl('PostJob')} onClick={() => setMobileMenuOpen(false)}>
