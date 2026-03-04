@@ -180,7 +180,7 @@ export default function CustomerAccount() {
 
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
-              <TabsList className="w-full grid-cols-7">
+              <TabsList className="w-full grid grid-cols-7">
                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
                 <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
                   <Plus className="w-3 h-3 sm:w-4 sm:h-4" />Post Job
