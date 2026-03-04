@@ -200,6 +200,10 @@ export default function CustomerAccount() {
                 />
               </TabsContent>
 
+              <TabsContent value="history">
+                <JobHistory userEmail={userEmail} />
+              </TabsContent>
+
               <TabsContent value="badges">
                 <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
               </TabsContent>
