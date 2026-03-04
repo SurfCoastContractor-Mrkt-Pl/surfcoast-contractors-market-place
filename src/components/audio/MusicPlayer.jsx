@@ -54,7 +54,7 @@ export default function MusicPlayer({ open, onClose }) {
     // Always render the iframe so music plays in background
     <iframe
       ref={iframeRef}
-      src="https://www.youtube.com/embed/6AL7cVAiPdg?autoplay=1&loop=1&playlist=6AL7cVAiPdg&enablejsapi=1&controls=0&mute=0"
+      src="https://www.youtube.com/embed/0p_1QSUsbsM?autoplay=1&loop=1&playlist=0p_1QSUsbsM&enablejsapi=1&controls=0&mute=0"
       allow="autoplay"
       style={{ position: 'fixed', width: 0, height: 0, border: 'none', opacity: 0, pointerEvents: 'none' }}
       title="background-music"
@@ -66,7 +66,7 @@ export default function MusicPlayer({ open, onClose }) {
       {/* Hidden iframe — always present */}
       <iframe
         ref={iframeRef}
-        src="https://www.youtube.com/embed/6AL7cVAiPdg?autoplay=1&loop=1&playlist=6AL7cVAiPdg&enablejsapi=1&controls=0&mute=0"
+        src="https://www.youtube.com/embed/0p_1QSUsbsM?autoplay=1&loop=1&playlist=0p_1QSUsbsM&enablejsapi=1&controls=0&mute=0"
         allow="autoplay"
         style={{ position: 'fixed', width: 0, height: 0, border: 'none', opacity: 0, pointerEvents: 'none' }}
         title="background-music"
