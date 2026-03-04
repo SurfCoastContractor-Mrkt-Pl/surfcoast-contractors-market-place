@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Heart } from 'lucide-react';
+import { Heart, Star, Users, CheckCircle, Repeat, Award, Gem, Building2, Crown, UserCheck } from 'lucide-react';
 
 export const CUSTOMER_BADGE_TIERS = [
   {
@@ -8,110 +8,131 @@ export const CUSTOMER_BADGE_TIERS = [
     name: 'First Timer',
     threshold: 1,
     description: 'First verified job closed out',
-    color: 'from-slate-500 to-slate-400',
-    border: 'border-slate-400',
-    bg: 'bg-slate-50',
-    text: 'text-slate-700',
-    emoji: '🌱',
+    iconColor: '#78716c',
+    metalGradient: ['#a8a29e', '#78716c', '#57534e'],
+    borderColor: '#a8a29e',
+    bgColor: '#fafaf9',
+    textColor: '#44403c',
+    labelColor: '#78716c',
+    icon: UserCheck,
   },
   {
     tier: 2,
     name: 'Loyal Customer',
     threshold: 3,
     description: '3 verified jobs closed out',
-    color: 'from-amber-600 to-amber-500',
-    border: 'border-amber-500',
-    bg: 'bg-amber-50',
-    text: 'text-amber-800',
-    emoji: '🤝',
+    iconColor: '#b45309',
+    metalGradient: ['#d97706', '#b45309', '#92400e'],
+    borderColor: '#d97706',
+    bgColor: '#fffbeb',
+    textColor: '#451a03',
+    labelColor: '#b45309',
+    icon: Heart,
   },
   {
     tier: 3,
     name: 'Trusted Client',
     threshold: 5,
     description: '5 verified jobs closed out',
-    color: 'from-orange-500 to-orange-400',
-    border: 'border-orange-400',
-    bg: 'bg-orange-50',
-    text: 'text-orange-800',
-    emoji: '⭐',
+    iconColor: '#b45309',
+    metalGradient: ['#f59e0b', '#d97706', '#b45309'],
+    borderColor: '#f59e0b',
+    bgColor: '#fffbeb',
+    textColor: '#451a03',
+    labelColor: '#d97706',
+    icon: Star,
   },
   {
     tier: 4,
     name: 'Verified Customer',
     threshold: 10,
     description: '10 verified jobs closed out',
-    color: 'from-green-600 to-green-500',
-    border: 'border-green-500',
-    bg: 'bg-green-50',
-    text: 'text-green-800',
-    emoji: '✅',
+    iconColor: '#15803d',
+    metalGradient: ['#22c55e', '#16a34a', '#15803d'],
+    borderColor: '#22c55e',
+    bgColor: '#f0fdf4',
+    textColor: '#14532d',
+    labelColor: '#16a34a',
+    icon: CheckCircle,
   },
   {
     tier: 5,
     name: 'Repeat Client',
     threshold: 20,
     description: '20 verified jobs closed out',
-    color: 'from-teal-600 to-teal-500',
-    border: 'border-teal-500',
-    bg: 'bg-teal-50',
-    text: 'text-teal-800',
-    emoji: '🔄',
+    iconColor: '#0f766e',
+    metalGradient: ['#14b8a6', '#0d9488', '#0f766e'],
+    borderColor: '#14b8a6',
+    bgColor: '#f0fdfa',
+    textColor: '#134e4a',
+    labelColor: '#0d9488',
+    icon: Repeat,
   },
   {
     tier: 6,
     name: 'Dedicated Customer',
     threshold: 50,
     description: '50 verified jobs closed out',
-    color: 'from-blue-600 to-blue-500',
-    border: 'border-blue-500',
-    bg: 'bg-blue-50',
-    text: 'text-blue-800',
-    emoji: '💙',
+    iconColor: '#1d4ed8',
+    metalGradient: ['#3b82f6', '#2563eb', '#1d4ed8'],
+    borderColor: '#3b82f6',
+    bgColor: '#eff6ff',
+    textColor: '#1e3a8a',
+    labelColor: '#2563eb',
+    icon: Award,
   },
   {
     tier: 7,
     name: 'Platinum Member',
     threshold: 100,
     description: '100 verified jobs closed out',
-    color: 'from-violet-600 to-violet-500',
-    border: 'border-violet-500',
-    bg: 'bg-violet-50',
-    text: 'text-violet-800',
-    emoji: '💎',
+    iconColor: '#6d28d9',
+    metalGradient: ['#8b5cf6', '#7c3aed', '#6d28d9'],
+    borderColor: '#8b5cf6',
+    bgColor: '#f5f3ff',
+    textColor: '#3b0764',
+    labelColor: '#7c3aed',
+    icon: Gem,
   },
   {
     tier: 8,
     name: 'Community Pillar',
     threshold: 150,
     description: '150 verified jobs closed out',
-    color: 'from-purple-700 to-purple-500',
-    border: 'border-purple-500',
-    bg: 'bg-purple-50',
-    text: 'text-purple-800',
-    emoji: '🏛️',
+    iconColor: '#7e22ce',
+    metalGradient: ['#a855f7', '#9333ea', '#7e22ce'],
+    borderColor: '#a855f7',
+    bgColor: '#faf5ff',
+    textColor: '#3b0764',
+    labelColor: '#9333ea',
+    icon: Building2,
   },
   {
     tier: 9,
     name: 'Elite Patron',
     threshold: 200,
     description: '200 verified jobs closed out',
-    color: 'from-rose-600 to-pink-500',
-    border: 'border-rose-500',
-    bg: 'bg-rose-50',
-    text: 'text-rose-800',
-    emoji: '👑',
+    iconColor: '#be123c',
+    metalGradient: ['#f43f5e', '#e11d48', '#be123c'],
+    borderColor: '#f43f5e',
+    bgColor: '#fff1f2',
+    textColor: '#4c0519',
+    labelColor: '#e11d48',
+    icon: Crown,
   },
   {
     tier: 10,
     name: 'SurfCoast Legend',
     threshold: 300,
     description: '300 verified jobs closed out on SurfCoast',
-    color: 'from-amber-500 via-yellow-400 to-amber-300',
-    border: 'border-yellow-400',
-    bg: 'bg-gradient-to-br from-yellow-50 to-amber-50',
-    text: 'text-amber-900',
-    emoji: '🌊',
+    iconColor: '#92400e',
+    metalGradient: ['#fbbf24', '#f59e0b', '#d97706', '#b45309'],
+    borderColor: '#f59e0b',
+    bgColor: '#fffbeb',
+    textColor: '#451a03',
+    labelColor: '#b45309',
+    icon: Crown,
+    isLegend: true,
   },
 ];
 
@@ -124,37 +145,114 @@ export function getHighestCustomerBadge(count = 0) {
   return earned.length > 0 ? earned[earned.length - 1] : null;
 }
 
+function BadgeIcon({ badge, size = 56, earned = true }) {
+  const Icon = badge.icon;
+  const [c1, c2, c3] = badge.metalGradient;
+  const gradId = `grad-k-${badge.tier}`;
+
+  if (badge.isLegend) {
+    return (
+      <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: 'conic-gradient(from 0deg, #fbbf24, #f59e0b, #d97706, #fbbf24)',
+            padding: 2,
+            borderRadius: '50%',
+            boxShadow: earned ? '0 0 16px 4px rgba(251,191,36,0.5)' : 'none',
+          }}
+        />
+        <div
+          className="relative z-10 rounded-full overflow-hidden flex items-center justify-center"
+          style={{
+            width: size - 6,
+            height: size - 6,
+            background: 'linear-gradient(145deg, #fef3c7, #fbbf24, #d97706)',
+          }}
+        >
+          <img
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg"
+            alt="SurfCoast Legend"
+            style={{ width: size - 12, height: size - 12, objectFit: 'contain', borderRadius: '50%' }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={c1} />
+          <stop offset="50%" stopColor={c2} />
+          <stop offset="100%" stopColor={c3} />
+        </linearGradient>
+      </defs>
+      <path
+        d="M28 4 L48 12 L48 28 C48 40 38 50 28 52 C18 50 8 40 8 28 L8 12 Z"
+        fill={`url(#${gradId})`}
+        opacity={earned ? 1 : 0.4}
+      />
+      <path
+        d="M28 9 L43 15.5 L43 28 C43 37.5 36.5 46 28 47.5 C19.5 46 13 37.5 13 28 L13 15.5 Z"
+        fill="rgba(255,255,255,0.15)"
+      />
+      <foreignObject x="16" y="16" width="24" height="24">
+        <div xmlns="http://www.w3.org/1999/xhtml" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+          <Icon size={20} color="rgba(255,255,255,0.95)" strokeWidth={2} />
+        </div>
+      </foreignObject>
+    </svg>
+  );
+}
+
 function BadgeItem({ badge, earned, completedJobsCount }) {
   const progress = !earned
     ? Math.min(100, Math.round((completedJobsCount / badge.threshold) * 100))
     : 100;
 
+  const isLegend = badge.isLegend;
+
   return (
-    <div className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
-      earned
-        ? `${badge.border} ${badge.bg} shadow-sm`
-        : 'border-slate-200 bg-slate-50 opacity-50 grayscale'
-    }`}>
+    <div
+      className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+        earned ? 'shadow-md' : 'opacity-45 grayscale'
+      } ${isLegend && earned ? 'ring-2 ring-yellow-400 ring-offset-1' : ''}`}
+      style={{
+        borderColor: earned ? badge.borderColor : '#e2e8f0',
+        backgroundColor: earned ? badge.bgColor : '#f8fafc',
+      }}
+    >
       {earned && (
-        <div className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-          <span className="text-white text-xs">✓</span>
+        <div
+          className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center shadow-sm"
+          style={{ background: '#16a34a' }}
+        >
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </div>
       )}
-      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${badge.color} flex items-center justify-center shadow-md`}>
-        <span className="text-2xl">{badge.emoji}</span>
-      </div>
+
+      <BadgeIcon badge={badge} size={52} earned={earned} />
+
       <div className="text-center">
-        <div className={`text-xs font-bold ${earned ? badge.text : 'text-slate-400'}`}>
-          Tier {badge.tier}
+        <div className="text-xs font-bold" style={{ color: earned ? badge.labelColor : '#94a3b8' }}>
+          TIER {badge.tier}
         </div>
-        <div className={`text-sm font-semibold ${earned ? 'text-slate-800' : 'text-slate-400'}`}>
+        <div className="text-xs font-semibold mt-0.5" style={{ color: earned ? '#1e293b' : '#94a3b8', lineHeight: '1.3' }}>
           {badge.name}
         </div>
-        <div className="text-xs text-slate-500 mt-0.5">{badge.description}</div>
+        <div className="text-xs mt-0.5" style={{ color: '#94a3b8', fontSize: '10px', lineHeight: '1.3' }}>
+          {badge.description}
+        </div>
       </div>
+
       {!earned && (
-        <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1">
-          <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: `${progress}%` }} />
+        <div className="w-full rounded-full h-1 mt-0.5" style={{ background: '#e2e8f0' }}>
+          <div
+            className="h-1 rounded-full"
+            style={{ width: `${progress}%`, background: badge.metalGradient[0] }}
+          />
         </div>
       )}
     </div>
@@ -174,7 +272,8 @@ export default function CustomerBadges({ completedJobsCount = 0 }) {
           <h2 className="text-lg font-semibold text-slate-900">Customer Loyalty Badges</h2>
         </div>
         <div className="text-sm text-slate-500">
-          <span className="font-semibold text-slate-700">{completedJobsCount}</span> verified jobs · <span className="font-semibold text-amber-600">{earned.length}</span>/10 badges
+          <span className="font-semibold text-slate-700">{completedJobsCount}</span> verified jobs ·{' '}
+          <span className="font-semibold text-amber-600">{earned.length}</span>/10 badges
         </div>
       </div>
 
@@ -187,10 +286,20 @@ export default function CustomerBadges({ completedJobsCount = 0 }) {
           No badges yet — close out your first verified job to earn your first badge!
         </div>
       ) : (
-        <div className="flex items-center gap-3 mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-          <span className="text-3xl">{highest.emoji}</span>
+        <div
+          className="flex items-center gap-3 mb-5 p-4 rounded-xl border"
+          style={{
+            borderColor: highest.borderColor,
+            background: highest.isLegend
+              ? 'linear-gradient(135deg, #fffbeb, #fef3c7)'
+              : highest.bgColor,
+          }}
+        >
+          <BadgeIcon badge={highest} size={48} earned={true} />
           <div>
-            <div className="text-xs text-amber-600 font-semibold uppercase tracking-wide">Highest Badge</div>
+            <div className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: highest.labelColor }}>
+              Highest Badge
+            </div>
             <div className="text-base font-bold text-slate-900">{highest.name}</div>
             <div className="text-xs text-slate-500">Tier {highest.tier} · {highest.description}</div>
           </div>
@@ -198,15 +307,20 @@ export default function CustomerBadges({ completedJobsCount = 0 }) {
       )}
 
       {next && (
-        <div className="mb-4 text-xs text-slate-500 flex items-center gap-2">
-          <span>Next badge: <strong>{next.name}</strong> at {next.threshold} jobs</span>
-          <div className="flex-1 bg-slate-200 rounded-full h-1.5">
+        <div className="mb-5 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+          <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+            <span>Next: <strong className="text-slate-700">{next.name}</strong></span>
+            <span className="font-medium">{completedJobsCount}/{next.threshold} jobs</span>
+          </div>
+          <div className="w-full bg-slate-200 rounded-full h-2">
             <div
-              className="bg-amber-400 h-1.5 rounded-full transition-all"
-              style={{ width: `${Math.min(100, Math.round((completedJobsCount / next.threshold) * 100))}%` }}
+              className="h-2 rounded-full transition-all"
+              style={{
+                width: `${Math.min(100, Math.round((completedJobsCount / next.threshold) * 100))}%`,
+                background: next.metalGradient[0],
+              }}
             />
           </div>
-          <span>{completedJobsCount}/{next.threshold}</span>
         </div>
       )}
 
