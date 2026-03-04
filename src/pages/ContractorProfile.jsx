@@ -340,8 +340,11 @@ export default function ContractorProfile() {
               revieweeType="contractor"
             />
 
+            {/* Badges */}
+             <ContractorBadges completedJobsCount={contractor.completed_jobs_count || 0} />
+
             {/* Portfolio Projects */}
-            <PortfolioDisplay contractorId={contractorId} isOwner={false} />
+             <PortfolioDisplay contractorId={contractorId} isOwner={false} />
 
             {/* Equipment & Tools */}
             <EquipmentDisplay contractorId={contractorId} isOwner={false} />
