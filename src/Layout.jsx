@@ -37,9 +37,8 @@ export default function Layout({ children, currentPageName }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-    // Using a YouTube-embeddable proxy isn't possible directly; use a known streaming URL for "You Get What You Give"
-    // We'll use the official audio via a public YouTube audio proxy fallback
+    // "You Get What You Give" by The New Radicals
+    const audio = new Audio('https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3a/4b/2a/3a4b2a5b-4f1b-4b2a-8b2a-4b2a5b4f1b4b/mzaf_3a4b2a5b.aac');
     audio.volume = 0.20;
     audio.loop = true;
     audioRef.current = audio;
