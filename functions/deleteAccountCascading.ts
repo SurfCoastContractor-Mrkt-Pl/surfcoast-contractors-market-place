@@ -77,8 +77,8 @@ Deno.serve(async (req) => {
       // Customer account deletion
       // Delete all customer scope requests
       const scopeRequests = await base44.asServiceRole.entities.CustomerScopeRequest.filter({ customer_email: accountEmail });
-      for (const req of scopeRequests) {
-        await base44.asServiceRole.entities.CustomerScopeRequest.delete(req.id);
+      for (const scopeReq of scopeRequests) {
+        await base44.asServiceRole.entities.CustomerScopeRequest.delete(scopeReq.id);
         deletedCount++;
       }
 
