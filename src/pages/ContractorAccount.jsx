@@ -307,6 +307,10 @@ export default function ContractorAccount() {
                 </Card>
               </TabsContent>
 
+              <TabsContent value="badges">
+                <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} />
+              </TabsContent>
+
               <TabsContent value="fees">
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Status</h2>
