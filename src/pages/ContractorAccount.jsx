@@ -186,8 +186,9 @@ export default function ContractorAccount() {
             </Card>
 
             <Tabs defaultValue="profile">
-              <TabsList className="w-full grid-cols-5">
+              <TabsList className="w-full grid-cols-6">
                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
+                <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
                 <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
                   <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
