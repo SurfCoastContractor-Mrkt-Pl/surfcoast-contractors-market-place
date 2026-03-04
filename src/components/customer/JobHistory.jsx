@@ -10,11 +10,11 @@ import { History, CheckCircle2, Clock, XCircle, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 
 const statusConfig = {
-  closed:           { label: 'Completed',  color: 'bg-green-100 text-green-700',  icon: CheckCircle2 },
-  approved:         { label: 'In Progress', color: 'bg-blue-100 text-blue-700',   icon: Clock },
-  pending_approval: { label: 'Pending',    color: 'bg-amber-100 text-amber-700', icon: Clock },
-  rejected:         { label: 'Rejected',   color: 'bg-red-100 text-red-700',      icon: XCircle },
-  cancelled:        { label: 'Cancelled',  color: 'bg-slate-100 text-slate-600',  icon: XCircle },
+  closed:           { label: 'Completed',   badgeColor: 'bg-green-100 text-green-700',  iconColor: 'text-green-600',  icon: CheckCircle2 },
+  approved:         { label: 'In Progress', badgeColor: 'bg-blue-100 text-blue-700',    iconColor: 'text-blue-500',   icon: Clock },
+  pending_approval: { label: 'Pending',     badgeColor: 'bg-amber-100 text-amber-700',  iconColor: 'text-amber-500',  icon: Clock },
+  rejected:         { label: 'Rejected',    badgeColor: 'bg-red-100 text-red-700',      iconColor: 'text-red-400',    icon: XCircle },
+  cancelled:        { label: 'Cancelled',   badgeColor: 'bg-slate-100 text-slate-600',  iconColor: 'text-slate-400',  icon: XCircle },
 };
 
 export default function JobHistory({ userEmail }) {
