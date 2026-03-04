@@ -34,20 +34,7 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(true);
   const [isContractor, setIsContractor] = useState(null);
-  const [musicPlaying, setMusicPlaying] = useState(true);
-  const iframeRef = useRef(null);
-
-  const toggleMusic = () => {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-    if (musicPlaying) {
-      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-      setMusicPlaying(false);
-    } else {
-      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-      setMusicPlaying(true);
-    }
-  };
+  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
   const isHome = currentPageName === 'Home';
 
