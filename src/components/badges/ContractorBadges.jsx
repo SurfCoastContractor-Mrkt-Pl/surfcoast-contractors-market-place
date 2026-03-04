@@ -12,7 +12,6 @@ export const BADGE_TIERS = [
     border: 'border-amber-600',
     bg: 'bg-amber-50',
     text: 'text-amber-800',
-    ring: 'ring-amber-500',
     emoji: '🔶',
   },
   {
@@ -24,7 +23,6 @@ export const BADGE_TIERS = [
     border: 'border-orange-400',
     bg: 'bg-orange-50',
     text: 'text-orange-800',
-    ring: 'ring-orange-400',
     emoji: '⭐',
   },
   {
@@ -36,7 +34,6 @@ export const BADGE_TIERS = [
     border: 'border-yellow-400',
     bg: 'bg-yellow-50',
     text: 'text-yellow-800',
-    ring: 'ring-yellow-400',
     emoji: '🌟',
   },
   {
@@ -48,7 +45,6 @@ export const BADGE_TIERS = [
     border: 'border-lime-500',
     bg: 'bg-lime-50',
     text: 'text-lime-800',
-    ring: 'ring-lime-500',
     emoji: '🏅',
   },
   {
@@ -60,7 +56,6 @@ export const BADGE_TIERS = [
     border: 'border-teal-500',
     bg: 'bg-teal-50',
     text: 'text-teal-800',
-    ring: 'ring-teal-500',
     emoji: '💎',
   },
   {
@@ -72,7 +67,6 @@ export const BADGE_TIERS = [
     border: 'border-blue-500',
     bg: 'bg-blue-50',
     text: 'text-blue-800',
-    ring: 'ring-blue-500',
     emoji: '🔵',
   },
   {
@@ -84,7 +78,6 @@ export const BADGE_TIERS = [
     border: 'border-violet-500',
     bg: 'bg-violet-50',
     text: 'text-violet-800',
-    ring: 'ring-violet-500',
     emoji: '🔮',
   },
   {
@@ -96,7 +89,6 @@ export const BADGE_TIERS = [
     border: 'border-purple-500',
     bg: 'bg-purple-50',
     text: 'text-purple-800',
-    ring: 'ring-purple-500',
     emoji: '👑',
   },
   {
@@ -108,19 +100,17 @@ export const BADGE_TIERS = [
     border: 'border-rose-500',
     bg: 'bg-rose-50',
     text: 'text-rose-800',
-    ring: 'ring-rose-400',
     emoji: '🏆',
   },
   {
     tier: 10,
     name: 'SurfCoast Legend',
     threshold: 150,
-    description: 'Completed 150 verified jobs',
+    description: 'Completed 150 verified jobs on SurfCoast',
     color: 'from-amber-500 via-yellow-400 to-amber-300',
     border: 'border-yellow-400',
     bg: 'bg-gradient-to-br from-yellow-50 to-amber-50',
     text: 'text-amber-900',
-    ring: 'ring-yellow-400',
     emoji: '🌊',
   },
 ];
@@ -135,8 +125,7 @@ export function getHighestBadge(completedJobsCount = 0) {
 }
 
 function BadgeItem({ badge, earned, completedJobsCount }) {
-  const next = BADGE_TIERS.find(b => b.threshold > completedJobsCount);
-  const progress = !earned && next
+  const progress = !earned
     ? Math.min(100, Math.round((completedJobsCount / badge.threshold) * 100))
     : 100;
 
@@ -175,6 +164,7 @@ function BadgeItem({ badge, earned, completedJobsCount }) {
 export default function ContractorBadges({ completedJobsCount = 0, compact = false }) {
   const earned = getEarnedBadges(completedJobsCount);
   const highest = getHighestBadge(completedJobsCount);
+  const next = BADGE_TIERS.find(b => b.threshold > completedJobsCount);
 
   if (compact) {
     if (!highest) return null;
@@ -192,15 +182,21 @@ export default function ContractorBadges({ completedJobsCount = 0, compact = fal
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-amber-500" />
-          <h2 className="text-lg font-semibold text-slate-900">SurfCoast Contractor Badges</h2>
+          <h2 className="text-lg font-semibold text-slate-900">Contractor Achievement Badges</h2>
         </div>
         <div className="text-sm text-slate-500">
           <span className="font-semibold text-slate-700">{completedJobsCount}</span> verified jobs · <span className="font-semibold text-amber-600">{earned.length}</span>/10 badges
         </div>
       </div>
 
+      <p className="text-xs text-slate-500 mb-4">
+        Badges are awarded when both you and the customer confirm job completion with a <strong>Satisfactory</strong> or higher rating during closeout.
+      </p>
+
       {earned.length === 0 ? (
-        <p className="text-sm text-slate-500 mb-4">No badges earned yet — badges are awarded after both parties verify job completion.</p>
+        <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl mb-4 text-sm text-slate-500">
+          No badges yet — close out your first verified job to earn your first badge!
+        </div>
       ) : (
         <div className="flex items-center gap-3 mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
           <span className="text-3xl">{highest.emoji}</span>
@@ -209,6 +205,19 @@ export default function ContractorBadges({ completedJobsCount = 0, compact = fal
             <div className="text-base font-bold text-slate-900">{highest.name}</div>
             <div className="text-xs text-slate-500">Tier {highest.tier} · {highest.description}</div>
           </div>
+        </div>
+      )}
+
+      {next && (
+        <div className="mb-4 text-xs text-slate-500 flex items-center gap-2">
+          <span>Next badge: <strong>{next.name}</strong> at {next.threshold} jobs</span>
+          <div className="flex-1 bg-slate-200 rounded-full h-1.5">
+            <div
+              className="bg-amber-400 h-1.5 rounded-full transition-all"
+              style={{ width: `${Math.min(100, Math.round((completedJobsCount / next.threshold) * 100))}%` }}
+            />
+          </div>
+          <span>{completedJobsCount}/{next.threshold}</span>
         </div>
       )}
 
