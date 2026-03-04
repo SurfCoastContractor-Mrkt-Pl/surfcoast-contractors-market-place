@@ -43,6 +43,17 @@ export default function JobCloseout({ scope, role, open, onClose }) {
           closed_date: new Date().toISOString(),
         });
 
+        // Increment contractor's completed jobs count for badge tracking
+        if (scope.contractor_id) {
+          const contractorList = await base44.entities.Contractor.filter({ id: scope.contractor_id });
+          if (contractorList.length > 0) {
+            const current = contractorList[0].completed_jobs_count || 0;
+            await base44.entities.Contractor.update(scope.contractor_id, {
+              completed_jobs_count: current + 1,
+            });
+          }
+        }
+
         // Notify both parties and prompt for reviews
         await Promise.all([
           base44.integrations.Core.SendEmail({
