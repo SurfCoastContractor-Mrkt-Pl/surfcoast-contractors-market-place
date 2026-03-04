@@ -88,8 +88,8 @@ export default function MusicPlayer({ open, onClose }) {
         <div className="px-4 py-4 space-y-4">
           {/* Song info */}
           <div className="text-center">
-            <p className="font-semibold text-slate-800 text-sm">You Get What You Give</p>
-            <p className="text-slate-500 text-xs">The New Radicals</p>
+            <p className="font-semibold text-slate-800 text-sm">A Kind of Magic</p>
+            <p className="text-slate-500 text-xs">Queen</p>
           </div>
 
           {/* Animated wave when playing */}
