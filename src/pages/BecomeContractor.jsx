@@ -369,6 +369,21 @@ export default function BecomeContractor() {
                     ))}
                   </div>
                 )}
+
+                {/* Trade license hold notice */}
+                {formData.certifications.some(c => /licen/i.test(c)) && (
+                  <div className="mt-3 p-4 rounded-xl border-2 border-amber-300 bg-amber-50 flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold text-amber-800">Trade License — Verification Hold</p>
+                      <p className="text-sm text-amber-700 mt-0.5 leading-relaxed">
+                        Because you've listed a trade license, your profile will be placed on a temporary hold pending admin review. 
+                        You may receive a phone call or email from our team to gather additional proof of licensing before your profile is approved. 
+                        This process typically takes 1–3 business days.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
