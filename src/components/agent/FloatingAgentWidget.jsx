@@ -46,26 +46,17 @@ export default function FloatingAgentWidget({ open, onClose }) {
     setLoading(true);
 
     try {
-      // AI agent responds with setup guidance
-      let response = GREETING_MESSAGE;
-      
-      const lowerInput = input.toLowerCase();
-      if (lowerInput.includes('profile') || lowerInput.includes('location')) {
-        response = SETUP_GUIDANCE.setupProfile;
-      } else if (lowerInput.includes('browse') || lowerInput.includes('find')) {
-        response = SETUP_GUIDANCE.browseContractors;
-      } else if (lowerInput.includes('post') || lowerInput.includes('job')) {
-        response = SETUP_GUIDANCE.postJob;
-      } else if (lowerInput.includes('fee') || lowerInput.includes('price') || lowerInput.includes('cost')) {
-        response = "Our fees are simple:\n\n💬 $1.50 per contractor session — unlock contact details & unlimited messaging until work is scheduled\n\n📋 $0.75 per quote request — get a written estimate without back-and-forth\n\n⭐ $20/month — unlimited messaging with all contractors\n\nEach engagement closes when work is scheduled.";
-      } else {
-        response = "I can help you with:\n• Completing your profile\n• Browsing or posting jobs\n• Understanding platform fees\n• Questions about how SurfCoast Contractors Market Place works\n\nWhat would you like to know?";
+      if (!conversation) throw new Error('No conversation');
+      const updatedConv = await base44.agents.addMessage(conversation, { role: 'user', content: userMsg });
+      setConversation(updatedConv);
+      const lastMsg = updatedConv?.messages?.slice().reverse().find(m => m.role === 'agent' || m.role === 'assistant');
+      if (lastMsg) {
+        setMessages(prev => [...prev, { role: 'agent', content: lastMsg.content }]);
       }
-      
-      setMessages(prev => [...prev, { role: 'agent', content: response }]);
       setLoading(false);
     } catch (error) {
       console.error('Failed to send message:', error);
+      setMessages(prev => [...prev, { role: 'agent', content: "Sorry, I couldn't process that. Please try again." }]);
       setLoading(false);
     }
   };
