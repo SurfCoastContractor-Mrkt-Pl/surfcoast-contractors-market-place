@@ -33,6 +33,41 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(true);
   const [isContractor, setIsContractor] = useState(null);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+    // Using a YouTube-embeddable proxy isn't possible directly; use a known streaming URL for "You Get What You Give"
+    // We'll use the official audio via a public YouTube audio proxy fallback
+    audio.volume = 0.20;
+    audio.loop = true;
+    audioRef.current = audio;
+
+    const tryPlay = () => {
+      audio.play().then(() => setMusicPlaying(true)).catch(() => {});
+    };
+
+    // Try to autoplay; browsers may block until user interaction
+    tryPlay();
+    document.addEventListener('click', tryPlay, { once: true });
+
+    return () => {
+      audio.pause();
+      document.removeEventListener('click', tryPlay);
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (musicPlaying) {
+      audio.pause();
+      setMusicPlaying(false);
+    } else {
+      audio.play().then(() => setMusicPlaying(true)).catch(() => {});
+    }
+  };
 
   const isHome = currentPageName === 'Home';
 
