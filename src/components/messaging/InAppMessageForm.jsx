@@ -249,7 +249,32 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
           <p className="sr-only">Conversation with {recipientName}</p>
         </DialogHeader>
 
-        {isWorkScheduled ? (
+        {isSessionExpired ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-red-600" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Session Expired</h3>
+            <p className="text-slate-600 text-sm mb-4">
+              Your 1-hour communication session has ended. Past messages are shown below for your records.
+            </p>
+            <p className="text-xs text-slate-400 mb-6">To continue communicating, a new $1.50 platform access fee is required.</p>
+            {thread.length > 0 && (
+              <div className="text-left space-y-3 max-h-64 overflow-y-auto bg-slate-50 rounded-xl p-4 mb-4">
+                {thread.map(m => (
+                  <div key={m.id} className="border-b border-slate-200 pb-3 last:border-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-slate-800 text-sm">{m.sender_name}</span>
+                      <span className="text-xs text-slate-400">{new Date(m.created_date).toLocaleString()}</span>
+                    </div>
+                    <p className="text-sm text-slate-600 whitespace-pre-wrap">{m.body}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Close</Button>
+          </div>
+        ) : isWorkScheduled ? (
           <div className="text-center py-8">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CalendarCheck className="w-8 h-8 text-green-600" />
