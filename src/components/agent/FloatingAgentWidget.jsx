@@ -79,7 +79,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200">
+    <div className="fixed bottom-4 right-4 z-40 w-72 sm:w-80 md:w-96 max-w-[calc(100vw-2rem)] h-96 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 box-border">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
         <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
