@@ -43,25 +43,41 @@ export default function JobCloseout({ scope, role, open, onClose }) {
       const satisfactoryRatings = ['satisfactory', 'good', 'excellent'];
 
       if (satisfactoryRatings.includes(contractorRating) && satisfactoryRatings.includes(customerRating)) {
-        if (scope.contractor_id) {
-          const contractors = await base44.entities.Contractor.filter({ id: scope.contractor_id });
-          const contractor = contractors?.[0];
-          if (contractor) {
-            await base44.entities.Contractor.update(contractor.id, {
-              completed_jobs_count: (contractor.completed_jobs_count || 0) + 1,
+      if (scope.contractor_id) {
+        const contractors = await base44.entities.Contractor.filter({ id: scope.contractor_id });
+        const contractor = contractors?.[0];
+        if (contractor) {
+          const newCount = (contractor.completed_jobs_count || 0) + 1;
+          await base44.entities.Contractor.update(contractor.id, {
+            completed_jobs_count: newCount,
+          });
+          if (newCount === 300) {
+            await base44.integrations.Core.SendEmail({
+              to: 'admin@surfcoastmarketplace.com.au',
+              subject: '🌊 SurfCoast Legend Achieved — Contractor',
+              body: `Contractor ${contractor.name} (${contractor.email}) has just reached 300 verified completed jobs and earned the SurfCoast Legend badge!\n\nConsider reaching out to congratulate them.`,
             });
           }
         }
+      }
 
-        if (scope.customer_email) {
-          const profiles = await base44.entities.CustomerProfile.filter({ email: scope.customer_email });
-          const profile = profiles?.[0];
-          if (profile) {
-            await base44.entities.CustomerProfile.update(profile.id, {
-              completed_jobs_count: (profile.completed_jobs_count || 0) + 1,
+      if (scope.customer_email) {
+        const profiles = await base44.entities.CustomerProfile.filter({ email: scope.customer_email });
+        const profile = profiles?.[0];
+        if (profile) {
+          const newCount = (profile.completed_jobs_count || 0) + 1;
+          await base44.entities.CustomerProfile.update(profile.id, {
+            completed_jobs_count: newCount,
+          });
+          if (newCount === 300) {
+            await base44.integrations.Core.SendEmail({
+              to: 'admin@surfcoastmarketplace.com.au',
+              subject: '🌊 SurfCoast Legend Achieved — Customer',
+              body: `Customer ${profile.full_name} (${profile.email}) has just reached 300 verified completed jobs and earned the SurfCoast Legend badge!\n\nConsider reaching out to congratulate them.`,
             });
           }
         }
+      }
       }
 
       await base44.functions.invoke('createReviewFromCloseout', { scopeId: scope.id });
