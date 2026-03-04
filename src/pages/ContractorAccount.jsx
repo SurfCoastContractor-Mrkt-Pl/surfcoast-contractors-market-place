@@ -418,8 +418,11 @@ export default function ContractorAccount() {
               </TabsContent>
             </Tabs>
 
+            {/* Contractor Badges */}
+             <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} />
+
             {/* Delete Profile */}
-            <Card className="p-6 border-red-200 bg-red-50">
+             <Card className="p-6 border-red-200 bg-red-50">
               <h2 className="text-lg font-semibold text-red-800 mb-2">Delete Profile</h2>
               <p className="text-sm text-red-700 mb-4">
                 Permanently delete your contractor profile. This cannot be undone. All your profile data will be removed from ContractorHub.
