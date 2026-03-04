@@ -580,6 +580,11 @@ export default function AdminDashboard() {
               )}
             </Card>
           </TabsContent>
+          {/* Profiles Tab */}
+          <TabsContent value="profiles">
+            <AdminProfileViewer contractors={contractors} customers={customers} />
+          </TabsContent>
+
         </Tabs>
 
         <p className="text-center text-xs text-slate-400 pb-4">
