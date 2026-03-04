@@ -198,6 +198,10 @@ export default function CustomerAccount() {
                 />
               </TabsContent>
 
+              <TabsContent value="badges">
+                <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
+              </TabsContent>
+
               <TabsContent value="post-job">
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Post a New Job</h2>
