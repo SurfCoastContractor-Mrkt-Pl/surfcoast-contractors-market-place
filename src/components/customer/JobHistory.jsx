@@ -61,9 +61,11 @@ export default function JobHistory({ userEmail }) {
         {sorted.map(scope => {
           const cfg = statusConfig[scope.status] || statusConfig.pending_approval;
           const Icon = cfg.icon;
-          const costLabel = scope.cost_type === 'fixed'
-            ? `$${scope.cost_amount?.toFixed(2)} fixed`
-            : `$${scope.cost_amount?.toFixed(2)}/hr`;
+          const costLabel = scope.cost_amount != null
+            ? scope.cost_type === 'fixed'
+              ? `$${Number(scope.cost_amount).toFixed(2)} fixed`
+              : `$${Number(scope.cost_amount).toFixed(2)}/hr`
+            : 'Cost TBD';
           const dateLabel = scope.closed_date
             ? format(new Date(scope.closed_date), 'MMM d, yyyy')
             : scope.agreed_work_date
@@ -74,7 +76,7 @@ export default function JobHistory({ userEmail }) {
             <div key={scope.id} className="border border-slate-200 rounded-xl p-4 hover:border-slate-300 transition-colors">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 flex-1 min-w-0">
-                  <Icon className={`w-5 h-5 mt-0.5 shrink-0 ${cfg.color.includes('green') ? 'text-green-600' : cfg.color.includes('blue') ? 'text-blue-500' : cfg.color.includes('amber') ? 'text-amber-500' : 'text-slate-400'}`} />
+                  <Icon className={`w-5 h-5 mt-0.5 shrink-0 ${cfg.iconColor}`} />
                   <div className="min-w-0">
                     <div className="font-medium text-slate-900 truncate">{scope.job_title}</div>
                     <div className="text-sm text-slate-500 mt-0.5">
@@ -90,7 +92,7 @@ export default function JobHistory({ userEmail }) {
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
-                  <Badge className={cfg.color}>{cfg.label}</Badge>
+                  <Badge className={cfg.badgeColor}>{cfg.label}</Badge>
                   {scope.status === 'closed' && scope.contractor_id && (
                     <Link to={createPageUrl(`ContractorProfile?id=${scope.contractor_id}`)}>
                       <Button size="sm" variant="outline" className="text-xs h-7 border-amber-300 text-amber-700 hover:bg-amber-50 gap-1">
