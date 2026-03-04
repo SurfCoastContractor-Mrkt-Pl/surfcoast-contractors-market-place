@@ -408,12 +408,13 @@ export default function CustomerAccount() {
             </Tabs>
 
             {/* Customer Profile Summary - show if has profile */}
-            {customerProfile && (
-             <div className="mt-8">
-               <h3 className="text-lg font-semibold text-slate-900 mb-4">Profile Summary</h3>
-               <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
-             </div>
-            )}
+             {customerProfile && (
+              <div className="mt-8 space-y-6">
+                <h3 className="text-lg font-semibold text-slate-900">Profile Summary</h3>
+                <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
+                <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
+              </div>
+             )}
 
             {/* Delete Profile */}
             <Card className="p-6 border-red-200 bg-red-50">
