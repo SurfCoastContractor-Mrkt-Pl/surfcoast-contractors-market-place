@@ -316,6 +316,7 @@ export default function AdminDashboard() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="profiles">Profiles</TabsTrigger>
           </TabsList>
 
           {/* Signups & Growth Tab */}
