@@ -57,14 +57,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hidden background music player — You Get What You Give by The New Radicals */}
-      <iframe
-        ref={iframeRef}
-        src="https://www.youtube.com/embed/6AL7cVAiPdg?autoplay=1&loop=1&playlist=6AL7cVAiPdg&enablejsapi=1&controls=0&mute=0&volume=20"
-        allow="autoplay"
-        style={{ position: 'fixed', width: 0, height: 0, border: 'none', opacity: 0, pointerEvents: 'none' }}
-        title="background-music"
-      />
+      <MusicPlayer open={showMusicPlayer} onClose={() => setShowMusicPlayer(false)} />
       {/* Navigation */}
       <nav className={`sticky top-0 z-50 ${isHome ? 'bg-transparent absolute w-full' : 'bg-white border-b border-slate-200'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
