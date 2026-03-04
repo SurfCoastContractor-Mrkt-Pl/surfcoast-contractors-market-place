@@ -49,6 +49,7 @@
  */
 import AdminDashboard from './pages/AdminDashboard';
 import AgentDemo from './pages/AgentDemo';
+import BadgeShowcase from './pages/BadgeShowcase';
 import BecomeContractor from './pages/BecomeContractor';
 import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
@@ -64,13 +65,13 @@ import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import BadgeShowcase from './pages/BadgeShowcase';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminDashboard": AdminDashboard,
     "AgentDemo": AgentDemo,
+    "BadgeShowcase": BadgeShowcase,
     "BecomeContractor": BecomeContractor,
     "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
@@ -86,7 +87,6 @@ export const PAGES = {
     "ProjectManagement": ProjectManagement,
     "Success": Success,
     "Terms": Terms,
-    "BadgeShowcase": BadgeShowcase,
 }
 
 export const pagesConfig = {
