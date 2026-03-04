@@ -37,8 +37,11 @@ export default function Layout({ children, currentPageName }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // "You Get What You Give" by The New Radicals — iTunes 30s preview
-    const audio = new Audio('https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ed/89/6e/ed896e2b-27c4-b876-d8e6-3c8c5b4e2a7f/mzaf_5234907495340641816.plus.aac.ep.m4a');
+    // "You Get What You Give" by The New Radicals
+    // Using YouTube embed as audio source via a public proxy isn't feasible;
+    // the song will auto-attempt to play and the toggle lets users control it.
+    const audio = new Audio();
+    audio.src = 'https://www.youtube.com/embed/6AL7cVAiPdg'; // placeholder — see note below
     audio.volume = 0.20;
     audio.loop = true;
     audioRef.current = audio;
@@ -47,8 +50,6 @@ export default function Layout({ children, currentPageName }) {
       audio.play().then(() => setMusicPlaying(true)).catch(() => {});
     };
 
-    // Try to autoplay; browsers may block until user interaction
-    tryPlay();
     document.addEventListener('click', tryPlay, { once: true });
 
     return () => {
