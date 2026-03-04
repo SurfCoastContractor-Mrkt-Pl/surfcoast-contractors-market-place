@@ -201,6 +201,15 @@ export default function ContractorProfile() {
                         : 'General Contractor'
                       }
                     </Badge>
+                    {/* Highest badge compact display */}
+                    {contractor.completed_jobs_count > 0 && (() => {
+                      const highest = getHighestBadge(contractor.completed_jobs_count);
+                      return highest ? (
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${highest.border} ${highest.bg} ${highest.text}`}>
+                          {highest.emoji} {highest.name}
+                        </span>
+                      ) : null;
+                    })()}
                   </div>
 
                   {contractor.rating && (
