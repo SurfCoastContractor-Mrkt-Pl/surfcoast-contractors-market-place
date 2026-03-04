@@ -21,7 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MessageSquare, Loader2, Lock, Send, CalendarCheck, AlertTriangle, Paperclip, Check } from 'lucide-react';
+import { MessageSquare, Loader2, Lock, Send, CalendarCheck, AlertTriangle, Paperclip, Check, Clock } from 'lucide-react';
 import MessageAttachments from './MessageAttachments';
 import ReadReceipt from './ReadReceipt';
 
@@ -422,7 +422,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                    <Button
                      onClick={() => sendMutation.mutate()}
                      className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                     disabled={sendMutation.isPending || !body.trim() || !formData.name || !formData.email || uploading}
+                     disabled={sendMutation.isPending || !body.trim() || !formData.name || !formData.email || uploading || isSessionExpired}
                    >
                      {sendMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
                      Send
