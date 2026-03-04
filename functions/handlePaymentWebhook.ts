@@ -38,9 +38,13 @@ Deno.serve(async (req) => {
           return Response.json({ received: true });
         }
 
-        // Update payment status to confirmed
+        // Update payment status to confirmed with 1-hour session expiry
+        const confirmedAt = new Date();
+        const sessionExpiresAt = new Date(confirmedAt.getTime() + 60 * 60 * 1000); // +1 hour
         await base44.asServiceRole.entities.Payment.update(paymentId, {
           status: 'confirmed',
+          confirmed_at: confirmedAt.toISOString(),
+          session_expires_at: sessionExpiresAt.toISOString(),
         });
 
         // Send confirmation email
