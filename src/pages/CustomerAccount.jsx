@@ -166,6 +166,7 @@ export default function CustomerAccount() {
       <FloatingAgentWidget 
         open={agentOpen} 
         onClose={() => setAgentOpen(false)}
+        onOpen={() => setAgentOpen(true)}
       />
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
