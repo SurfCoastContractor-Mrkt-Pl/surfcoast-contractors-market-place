@@ -124,8 +124,8 @@ export default function QuickJobPostForm({ userEmail, userName }) {
       duration: formData.duration || null,
       urgency: formData.urgency,
       status: 'open',
-      poster_name: userName,
-      poster_email: userEmail,
+        poster_name: displayName,
+        poster_email: userEmail,
       poster_phone: '',
       before_photo_urls: beforePhotos,
     };
