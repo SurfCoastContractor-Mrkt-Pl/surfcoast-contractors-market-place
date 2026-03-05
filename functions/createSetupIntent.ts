@@ -19,6 +19,8 @@ Deno.serve(async (req) => {
         user_email: userEmail,
         app_id: Deno.env.get('BASE44_APP_ID'),
       },
+      usage: 'off_session',
+      single_use_mandate: false,
     });
 
     return Response.json({
