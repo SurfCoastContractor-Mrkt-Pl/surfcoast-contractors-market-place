@@ -17,6 +17,7 @@ export default function JobCloseout({ scope, role, open, onClose }) {
   const [rating, setRating] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [togetherPhoto, setTogetherPhoto] = useState(scope?.job_together_photo_url || '');
   const queryClient = useQueryClient();
 
   const handleConfirm = async () => {
