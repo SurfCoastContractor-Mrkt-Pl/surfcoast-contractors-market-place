@@ -21,6 +21,15 @@ export default function ContractorProposalForm({ scopeRequest, contractorId, con
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      // Verify authenticated contractor
+      try {
+        const user = await base44.auth.me();
+        if (!user?.email) {
+          throw new Error('You must be logged in to submit a proposal');
+        }
+      } catch (err) {
+        throw err;
+      }
       return base44.entities.ContractorScopeProposal.create(data);
     },
     onSuccess: (result) => {

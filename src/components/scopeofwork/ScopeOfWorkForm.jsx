@@ -25,6 +25,15 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      // Verify authenticated contractor
+      try {
+        const user = await base44.auth.me();
+        if (!user?.email) {
+          throw new Error('You must be logged in to submit a scope of work');
+        }
+      } catch (err) {
+        throw err;
+      }
       const record = await base44.entities.ScopeOfWork.create(data);
 
       const costLine = data.cost_type === 'fixed'

@@ -72,10 +72,20 @@ export default function BecomeContractor() {
 
   const mutation = useMutation({
     mutationFn: async (data) => {
-      // Check if contractor with this email already exists
-      const existing = await base44.entities.Contractor.filter({ email: data.email });
-      if (existing && existing.length > 0) {
-        throw new Error('A contractor profile with this email already exists. Please use a different email or log in to your existing profile.');
+      // Verify authenticated user and link to their User account
+      try {
+        const user = await base44.auth.me();
+        if (!user?.email) {
+          throw new Error('You must be logged in to create a contractor profile');
+        }
+        
+        // Check if contractor already exists for this user
+        const existing = await base44.entities.Contractor.filter({ email: user.email });
+        if (existing && existing.length > 0) {
+          throw new Error('A contractor profile for your account already exists');
+        }
+      } catch (err) {
+        throw err;
       }
       return base44.entities.Contractor.create(data);
     },
@@ -87,7 +97,7 @@ export default function BecomeContractor() {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.date_of_birth) {
       setDobError('Date of birth is required');
@@ -109,6 +119,19 @@ export default function BecomeContractor() {
         return;
       }
     }
+    
+    // Verify user is authenticated before submitting
+    try {
+      const user = await base44.auth.me();
+      if (!user?.email) {
+        setDobError('You must be logged in to create a contractor profile');
+        return;
+      }
+    } catch (err) {
+      setDobError('Failed to verify your account');
+      return;
+    }
+    
     setDobError('');
     const data = {
       ...formData,
