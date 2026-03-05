@@ -119,7 +119,7 @@ export default function PostJob() {
       setSuccess(true);
       setTimeout(() => {
         navigate(createPageUrl('MyJobs'));
-      }, 2000);
+      }, 4000);
     },
   });
 
@@ -156,14 +156,17 @@ export default function PostJob() {
   if (success) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full p-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Job Posted!</h2>
-          <p className="text-slate-600 mb-4">Your job has been posted successfully. Contractors will be able to see it now.</p>
-          <p className="text-sm text-slate-500">Redirecting to jobs...</p>
-        </Card>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+          <Card className="max-w-md w-full p-12 text-center bg-white shadow-2xl border-2 border-green-500 animate-bounce">
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-10 h-10 text-green-600" />
+            </div>
+            <h2 className="text-4xl font-bold text-slate-900 mb-3">Job Posted! ✓</h2>
+            <p className="text-lg text-slate-700 mb-2">Your job has been successfully posted.</p>
+            <p className="text-slate-600 mb-6">Contractors can now see and respond to your job posting.</p>
+            <p className="text-sm text-slate-400 font-medium">Redirecting in 4 seconds...</p>
+          </Card>
+        </div>
       </div>
     );
   }
