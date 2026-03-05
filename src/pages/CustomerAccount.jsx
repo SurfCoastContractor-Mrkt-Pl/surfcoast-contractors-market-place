@@ -212,19 +212,8 @@ export default function CustomerAccount() {
                 <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count ?? 0} />
               </TabsContent>
 
-              <TabsContent value="post-job">
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Post a New Job</h2>
-                  <p className="text-slate-600 mb-6">
-                    Post a job to find qualified contractors. You'll need to provide a detailed description and upload at least 5 before photos.
-                  </p>
-                  <Link to={createPageUrl('PostJob')}>
-                    <Button className="bg-amber-500 hover:bg-amber-600">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Go to Job Posting Form
-                    </Button>
-                  </Link>
-                </Card>
+              <TabsContent value="post-job" className="w-full">
+                <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name} />
               </TabsContent>
 
               <TabsContent value="payments">
