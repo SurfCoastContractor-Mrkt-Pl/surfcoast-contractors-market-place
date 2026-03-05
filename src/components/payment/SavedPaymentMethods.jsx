@@ -177,57 +177,6 @@ export default function SavedPaymentMethods({ userEmail }) {
     },
   });
 
-  const handleAddPaymentMethod = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const setupResponse = await base44.functions.invoke('createSetupIntent', { userEmail });
-      const setupData = setupResponse?.data || setupResponse;
-      const clientSecret = setupData?.client_secret;
-      
-      if (!clientSecret) {
-        setError('Failed to initialize payment form');
-        setLoading(false);
-        return;
-      }
-
-      const keyResponse = await base44.functions.invoke('getStripePublicKey');
-      const keyData = keyResponse?.data || keyResponse;
-      const publishableKey = keyData?.publishableKey;
-      
-      if (!publishableKey) {
-        setError('Stripe configuration error');
-        setLoading(false);
-        return;
-      }
-
-      const { loadStripe } = await import('@stripe/stripe-js');
-      const stripe = await loadStripe(publishableKey);
-
-      if (!stripe) {
-        setError('Payment processing unavailable');
-        setLoading(false);
-        return;
-      }
-
-      // Redirect to Stripe's hosted payment page to collect card details
-      const { error } = await stripe.confirmCardSetup(clientSecret, {
-        return_url: `${window.location.origin}${window.location.pathname}?setupIntentSecret=${clientSecret}`,
-      });
-
-      if (error) {
-        setError(error.message);
-      }
-      // If successful, user will be redirected to Stripe hosted form
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div>
