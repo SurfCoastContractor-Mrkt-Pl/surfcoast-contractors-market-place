@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X } from 'lucide-react';
+import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Textarea } from '@/components/ui/textarea';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 import JobCloseout from '@/components/scopeofwork/JobCloseout.jsx';
