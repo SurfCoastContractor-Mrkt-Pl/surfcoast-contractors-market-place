@@ -152,7 +152,7 @@ export default function SavedPaymentMethods({ userEmail }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add Payment Method</DialogTitle>
-            <p className="sr-only">Add a new payment method to your account</p>
+            <DialogDescription>Add a new saved payment method to your account for quick access.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleAddPaymentMethod} className="space-y-4">
             <div>

@@ -121,6 +121,9 @@ This is an official copy of the agreement submitted through ContractorHub.
             <FileText className="w-5 h-5 text-amber-500" />
             Submit Scope of Work
           </DialogTitle>
+          <DialogDescription>
+            Submit a detailed scope of work for customer review and approval.
+          </DialogDescription>
         </DialogHeader>
 
         {!paymentRecord || paymentRecord.status !== 'confirmed' ? (

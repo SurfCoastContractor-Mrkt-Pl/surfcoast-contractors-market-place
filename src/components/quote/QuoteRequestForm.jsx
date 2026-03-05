@@ -48,6 +48,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Request Quick Quote</DialogTitle>
+            <DialogDescription>Pay a small fee to request a written estimate from this contractor.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex gap-3">
@@ -96,6 +97,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Request Quick Quote from {contractor.name}</DialogTitle>
+          <DialogDescription>Describe the work needed so the contractor can provide an accurate quote.</DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
