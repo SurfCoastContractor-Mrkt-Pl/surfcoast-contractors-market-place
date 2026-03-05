@@ -21,6 +21,18 @@ export default function SavedPaymentMethods({ userEmail }) {
     enabled: !!userEmail,
   });
 
+  const addPaymentMethodMutation = useMutation({
+    mutationFn: async (data) => {
+      return await base44.functions.invoke('setupPaymentMethod', data);
+    },
+    onSuccess: () => {
+      refetch();
+      setShowAddMethod(false);
+      setCardName('');
+      setError('');
+    },
+  });
+
   const deletePaymentMethodMutation = useMutation({
     mutationFn: (paymentMethodId) =>
       base44.functions.invoke('deletePaymentMethod', { paymentMethodId }),
@@ -28,6 +40,47 @@ export default function SavedPaymentMethods({ userEmail }) {
       refetch();
     },
   });
+
+  const handleAddPaymentMethod = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const setupData = await base44.functions.invoke('createSetupIntent', { userEmail });
+      const key = await base44.functions.invoke('getStripePublicKey');
+      const { loadStripe } = await import('@stripe/stripe-js');
+      const stripe = await loadStripe(key.publishableKey);
+
+      if (!stripe) {
+        setError('Payment processing unavailable');
+        setLoading(false);
+        return;
+      }
+
+      // Use Stripe hosted form instead of embedded elements
+      const { error: setupError, setupIntent } = await stripe.confirmCardSetup(
+        setupData.client_secret,
+        {
+          return_url: `${window.location.origin}${window.location.pathname}`,
+        }
+      );
+
+      if (setupError) {
+        setError(setupError.message);
+      } else if (setupIntent?.status === 'succeeded') {
+        await addPaymentMethodMutation.mutateAsync({
+          userEmail,
+          paymentMethodId: setupIntent.payment_method,
+          cardName: cardName || 'Unnamed Card',
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
