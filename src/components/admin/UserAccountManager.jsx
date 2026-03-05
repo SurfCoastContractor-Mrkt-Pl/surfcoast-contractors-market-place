@@ -266,11 +266,25 @@ export default function UserAccountManager({ user, userType, onClose }) {
 
       {/* Edit Profile Dialog */}
       <Dialog open={action === 'edit'} onOpenChange={(open) => !open && setAction(null)}>
-        <DialogContent>
+        <DialogContent className="max-h-screen overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium">Profile Picture</Label>
+              <div className="mt-2 flex items-center gap-4">
+                {editData.photo_url && (
+                  <img src={editData.photo_url} alt="Profile" className="w-16 h-16 rounded-lg object-cover" />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="text-sm"
+                />
+              </div>
+            </div>
             <div>
               <Label className="text-sm font-medium">{userType === 'contractor' ? 'Name' : 'Full Name'}</Label>
               <Input
