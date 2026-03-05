@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -397,31 +397,7 @@ export default function CustomerAccount() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="old-postings">
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-1">Old Postings</h2>
-                  <p className="text-xs text-slate-500 mb-4">Contractor engagements that have been marked as "Work Scheduled" — these jobs are no longer publicly listed.</p>
-                  {oldPostings?.length > 0 ? (
-                    <div className="space-y-3">
-                      {oldPostings.map(p => (
-                        <div key={p.id} className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
-                          <div className="flex items-center gap-3">
-                            <CalendarCheck className="w-5 h-5 text-green-600 shrink-0" />
-                            <div>
-                              <div className="text-sm font-medium text-slate-800">{p.purpose || 'Contractor engagement'}</div>
-                              <div className="text-xs text-slate-500">Contractor email: {p.contractor_email || 'N/A'}</div>
-                              <div className="text-xs text-slate-400">{new Date(p.updated_date || p.created_date).toLocaleDateString()}</div>
-                            </div>
-                          </div>
-                          <Badge className="bg-green-100 text-green-700">Work Scheduled</Badge>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-slate-500">No old postings yet.</p>
-                  )}
-                </Card>
-              </TabsContent>
+
             </Tabs>
 
             {/* Customer Profile Summary - show if has profile */}

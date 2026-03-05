@@ -429,9 +429,6 @@ export default function ContractorAccount() {
               </TabsContent>
             </Tabs>
 
-            {/* Contractor Badges */}
-             <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
-
             {/* Contact Admin */}
             <ContactAdminPanel userEmail={userEmail} userName={contractor?.name} />
 

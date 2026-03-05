@@ -292,7 +292,7 @@ export default function Contractors() {
                 <SelectValue placeholder="Availability Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="available">Available</SelectItem>
                 <SelectItem value="booked">Booked</SelectItem>
                 <SelectItem value="on_vacation">On Vacation</SelectItem>
