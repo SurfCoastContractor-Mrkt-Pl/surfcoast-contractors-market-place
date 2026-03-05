@@ -94,11 +94,11 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
         {/* Disclaimer Text */}
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm text-slate-700 space-y-4 leading-relaxed max-h-56 overflow-y-auto">
           <p className="font-bold text-slate-900 uppercase text-xs tracking-wider">
-            ContractorHub — Customer Liability & Vetting Disclaimer
+            SurfCoast Contractor Market Place — Customer Liability & Vetting Disclaimer
           </p>
 
           <p>
-            <strong>1. No Contractor Liability for Damages.</strong> Once work has commenced, ContractorHub and any contractor listed on this platform shall bear no responsibility or liability for any damages, losses, injuries, defects, or disputes arising from or related to the work performed. All risk associated with work performed after project commencement is assumed entirely by the customer.
+            <strong>1. No Contractor Liability for Damages.</strong> Once work has commenced, SurfCoast Contractor Market Place and any contractor listed on this platform shall bear no responsibility or liability for any damages, losses, injuries, defects, or disputes arising from or related to the work performed. All risk associated with work performed after project commencement is assumed entirely by the customer.
           </p>
 
           <p>
@@ -106,23 +106,23 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           </p>
 
           <p>
-            <strong>3. ContractorHub is a Platform Only.</strong> ContractorHub acts solely as a marketplace connecting contractors and customers. ContractorHub does not employ, endorse, warrant, or guarantee the work, qualifications, conduct, or identity of any contractor listed on the platform. ContractorHub assumes no liability whatsoever for any outcome of any engagement between a customer and contractor.
+            <strong>3. SurfCoast Contractor Market Place is a Platform Only.</strong> SurfCoast Contractor Market Place acts solely as a marketplace connecting contractors and customers. SurfCoast Contractor Market Place does not employ, endorse, warrant, or guarantee the work, qualifications, conduct, or identity of any contractor listed on the platform. SurfCoast Contractor Market Place assumes no liability whatsoever for any outcome of any engagement between a customer and contractor.
           </p>
 
           <p>
-            <strong>4. No Warranty of Workmanship.</strong> ContractorHub makes no representations or warranties, express or implied, regarding the quality, safety, legality, or suitability of any contractor's work. Customers engage contractors entirely at their own risk.
+            <strong>4. No Warranty of Workmanship.</strong> SurfCoast Contractor Market Place makes no representations or warranties, express or implied, regarding the quality, safety, legality, or suitability of any contractor's work. Customers engage contractors entirely at their own risk.
           </p>
 
           <p>
-            <strong>5. Dispute Resolution.</strong> Any disputes arising from a contractor-customer engagement are strictly between those parties. ContractorHub is not a party to any such dispute and shall not be involved in resolution, mediation, or arbitration.
+            <strong>5. Dispute Resolution.</strong> Any disputes arising from a contractor-customer engagement are strictly between those parties. SurfCoast Contractor Market Place is not a party to any such dispute and shall not be involved in resolution, mediation, or arbitration.
           </p>
 
           <p>
-            <strong>6. Indemnification.</strong> By accepting this disclaimer, the customer agrees to indemnify and hold harmless ContractorHub, its officers, employees, and affiliates from any claims, damages, or expenses arising from the customer's use of the platform or engagement with any contractor.
+            <strong>6. Indemnification.</strong> By accepting this disclaimer, the customer agrees to indemnify and hold harmless SurfCoast Contractor Market Place, its officers, employees, and affiliates from any claims, damages, or expenses arising from the customer's use of the platform or engagement with any contractor.
           </p>
 
           <p>
-            <strong>7. Single-Person Contractor Policy.</strong> All contractors registered on ContractorHub are individual freelancers only. A "contractor" or "freelancer" on this platform is defined strictly as one (1) individual person. No company, business entity, partnership, crew, or group of two or more persons may register or operate as a contractor on this platform. Any contractor found to be operating with additional workers, employees, subcontractors, or associates working on their behalf will be immediately and permanently banned from ContractorHub without notice.
+            <strong>7. Single-Person Contractor Policy.</strong> All contractors registered on SurfCoast Contractor Market Place are individual freelancers only. A "contractor" or "freelancer" on this platform is defined strictly as one (1) individual person. No company, business entity, partnership, crew, or group of two or more persons may register or operate as a contractor on this platform. Any contractor found to be operating with additional workers, employees, subcontractors, or associates working on their behalf will be immediately and permanently banned from SurfCoast Contractor Market Place without notice.
           </p>
 
           <p className="text-xs text-slate-500">
