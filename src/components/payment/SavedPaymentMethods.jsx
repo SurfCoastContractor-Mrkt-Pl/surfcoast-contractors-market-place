@@ -9,12 +9,128 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-export default function SavedPaymentMethods({ userEmail }) {
-  const [showAddMethod, setShowAddMethod] = useState(false);
+function AddPaymentMethodForm({ userEmail, onSuccess, onCancel }) {
+  const stripe = useStripe();
+  const elements = useElements();
   const [cardName, setCardName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [stripeElementsReady, setStripeElementsReady] = useState(false);
-  const [clientSecret, setClientSecret] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (!stripe || !elements) {
+      setError('Payment processing unavailable');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const setupData = await base44.functions.invoke('createSetupIntent', { userEmail });
+
+      const { setupIntent, error: setupError } = await stripe.confirmCardSetup(
+        setupData.client_secret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: { name: cardName || 'Unnamed Card' },
+          },
+        }
+      );
+
+      if (setupError) {
+        setError(setupError.message);
+      } else if (setupIntent) {
+        await base44.functions.invoke('setupPaymentMethod', {
+          userEmail,
+          paymentMethodId: setupIntent.payment_method,
+          cardName: cardName || 'Unnamed Card',
+        });
+        onSuccess();
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname</label>
+        <Input
+          placeholder="e.g., My Visa, Personal Card"
+          value={cardName}
+          onChange={(e) => setCardName(e.target.value)}
+          disabled={loading}
+        />
+      </div>
+
+      <div className="p-3 border border-slate-300 rounded-lg bg-white">
+        <CardElement options={{ style: { base: { fontSize: '16px' } } }} />
+      </div>
+
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          {error}
+        </div>
+      )}
+
+      <div className="p-4 bg-green-50 border border-green-200 rounded-lg space-y-2">
+        <div className="flex items-center gap-2">
+          <Shield className="w-4 h-4 text-green-600 shrink-0" />
+          <p className="text-sm font-semibold text-green-800">Stripe Secured — PCI DSS Compliant</p>
+        </div>
+        <ul className="text-xs text-green-700 space-y-1 ml-6 list-disc">
+          <li>Card numbers are <strong>never stored</strong> on our servers</li>
+          <li>All card data is handled directly by Stripe (PCI Level 1 certified)</li>
+          <li>We only save the last 4 digits and card brand for display</li>
+          <li>Transfers are encrypted end-to-end with TLS</li>
+        </ul>
+      </div>
+
+      <div className="flex gap-3 justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={loading}
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          className="bg-amber-500 hover:bg-amber-600"
+          disabled={loading || !stripe}
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Adding...
+            </>
+          ) : (
+            'Add Card'
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+export default function SavedPaymentMethods({ userEmail }) {
+  const [showAddMethod, setShowAddMethod] = useState(false);
+  const [stripePromise, setStripePromise] = useState(null);
+
+  useEffect(() => {
+    const initStripe = async () => {
+      const key = await base44.functions.invoke('getStripePublicKey');
+      setStripePromise(loadStripe(key.publishableKey));
+    };
+    initStripe();
+  }, []);
 
   const { data: paymentMethods, isLoading, refetch } = useQuery({
     queryKey: ['paymentMethods', userEmail],
