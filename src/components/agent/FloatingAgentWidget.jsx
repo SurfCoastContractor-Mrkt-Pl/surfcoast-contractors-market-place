@@ -18,6 +18,11 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [loading, setLoading] = useState(false);
   const [conversation, setConversation] = useState(null);
   const [minimized, setMinimized] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   useEffect(() => {
     if (open && !conversation) {
