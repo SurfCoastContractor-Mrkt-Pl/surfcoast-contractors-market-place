@@ -24,8 +24,9 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const [cardholderName, setCardholderName] = useState('');
 
   const sendVerificationCode = async () => {
-    if (!phone || phone.length < 10) {
-      setError('Please enter a valid phone number');
+    const normalizedPhone = phone.replace(/\D/g, '');
+    if (!normalizedPhone) {
+      setError('Please enter a phone number');
       return;
     }
 
