@@ -99,7 +99,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       const { setupIntent, error: setupError } = await stripe.confirmCardSetup(clientSecret, {
         payment_method: {
           card: cardElement,
-          billing_details: { name: cardName || 'Card' },
+          billing_details: { name: cardholderName || 'Card' },
         },
       });
 
