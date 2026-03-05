@@ -337,7 +337,7 @@ export default function SavedPaymentMethods({ userEmail }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => deletePaymentMethodMutation.mutate(method.id)}
+                  onClick={() => deletePaymentMethodMutation.mutate(method.stripe_payment_method_id)}
                   disabled={deletePaymentMethodMutation.isPending}
                   className="text-red-600 hover:text-red-700 hover:bg-red-50"
                 >
