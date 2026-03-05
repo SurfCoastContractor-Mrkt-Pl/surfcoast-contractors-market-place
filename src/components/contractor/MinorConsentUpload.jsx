@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Loader2, Upload, CheckCircle2, AlertTriangle, ShieldAlert, Camera, FileText, Home, User } from 'lucide-react';
+import MinorLaborLaws from './MinorLaborLaws';
 
 const DocUploadField = ({ label, description, fieldKey, value, onUploaded, isPhoto = false }) => {
   const [uploading, setUploading] = useState(false);
@@ -80,7 +81,7 @@ const SectionHeader = ({ icon: IconComp, title, subtitle }) => (
   </div>
 );
 
-export default function MinorConsentUpload({ data, onChange }) {
+export default function MinorConsentUpload({ data, onChange, location = '', age = null }) {
   const handleDoc = (field, url) => {
     onChange({ ...data, [field]: url });
   };
@@ -136,6 +137,9 @@ export default function MinorConsentUpload({ data, onChange }) {
         <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
         <span>All documents are kept strictly confidential and used only for identity and consent verification. They are never shared with customers.</span>
       </div>
+
+      {/* Location-specific labor laws */}
+      <MinorLaborLaws location={location} age={age} />
 
       {/* Section 1: Child Identity */}
       <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
