@@ -121,8 +121,8 @@ Deno.serve(async (req) => {
 
     <div class="footer">
       <p>
-        <strong>ContractorHub Platform Notice:</strong> This fee is disclosed as required by California SB 478 (Honest Pricing Law). 
-        It covers platform access and secure identity-verified contractor services. Thank you for using ContractorHub.
+      <strong>SurfCoast Platform Notice:</strong> This fee is disclosed as required by California SB 478 (Honest Pricing Law). 
+      It covers platform access and secure identity-verified contractor services. Thank you for using SurfCoast Contractor Market Place.
       </p>
       <p style="margin-top: 15px;">
         Payment Reference: ${payment.id} | Generated: ${new Date().toLocaleString('en-US')}
@@ -136,8 +136,9 @@ Deno.serve(async (req) => {
     // Send invoice via email
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: payment.payer_email,
-      subject: `Invoice ${invoiceNumber} — ContractorHub`,
-      body: `Hello ${payment.payer_name},\n\nPlease see the attached invoice for your ContractorHub platform access fee.\n\nInvoice Number: ${invoiceNumber}\nAmount: $${(payment.amount || 0).toFixed(2)}\nStatus: ${payment.status === 'confirmed' ? 'PAID' : 'PENDING'}\nDate: ${invoiceDate.toLocaleDateString('en-US')}\n\nThis invoice is for your records. Thank you for using ContractorHub!\n\n(This is an automated invoice — do not reply to this email)`,
+      from_name: 'SurfCoast Contractor Market Place',
+      subject: `Invoice ${invoiceNumber} — SurfCoast`,
+      body: `Hello ${payment.payer_name},\n\nPlease see the attached invoice for your SurfCoast platform access fee.\n\nInvoice Number: ${invoiceNumber}\nAmount: $${(payment.amount || 0).toFixed(2)}\nStatus: ${payment.status === 'confirmed' ? 'PAID' : 'PENDING'}\nDate: ${invoiceDate.toLocaleDateString('en-US')}\n\nThis invoice is for your records. Thank you for using SurfCoast Contractor Market Place!\n\n(This is an automated invoice — do not reply to this email)`,
     });
 
     console.log(`Invoice generated: ${invoiceNumber} for payment ${paymentId}`);

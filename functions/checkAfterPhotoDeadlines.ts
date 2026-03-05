@@ -43,8 +43,9 @@ Deno.serve(async (req) => {
           // Notify contractor
           await base44.asServiceRole.integrations.Core.SendEmail({
             to: contractor.email,
-            subject: '⚠️ Account Locked — After Photos Required | ContractorHub',
-            body: `Dear ${contractor.name},\n\nYour ContractorHub account has been temporarily locked because after photos were not uploaded within 72 hours of the agreed work date for job: "${scope.job_title}".\n\nTo restore full access, you must upload a minimum of 5 after photos for this job.\n\nLog in to your Contractor Account on ContractorHub and upload the required after photos to unlock your account immediately.\n\nContractorHub`,
+            from_name: 'SurfCoast Contractor Market Place',
+            subject: '⚠️ Account Locked — After Photos Required | SurfCoast',
+            body: `Dear ${contractor.name},\n\nYour SurfCoast account has been temporarily locked because after photos were not uploaded within 72 hours of the agreed work date for job: "${scope.job_title}".\n\nTo restore full access, you must upload a minimum of 5 after photos for this job.\n\nLog in to your Contractor Account on SurfCoast and upload the required after photos to unlock your account immediately.\n\nSurfCoast Contractor Market Place`,
           });
 
           locked++;
