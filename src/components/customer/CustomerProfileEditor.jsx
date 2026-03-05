@@ -38,6 +38,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       setFormData({
         full_name: profile.full_name || '',
         phone: profile.phone || '',
+        date_of_birth: profile.date_of_birth || '',
         location: profile.location || '',
         bio: profile.bio || '',
         preferred_contractor_types: profile.preferred_contractor_types || [],
@@ -62,6 +63,17 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     },
   });
 
+  const validateAge = (dob) => {
+    if (!dob) return 'Date of birth is required';
+    const today = new Date();
+    const birth = new Date(dob);
+    const age = today.getFullYear() - birth.getFullYear() - (
+      today < new Date(today.getFullYear(), birth.getMonth(), birth.getDate()) ? 1 : 0
+    );
+    if (age < 18) return 'You must be at least 18 years old to use this platform';
+    return '';
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.full_name.trim()) {
@@ -72,6 +84,12 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       alert('Please enter your location');
       return;
     }
+    const ageErr = validateAge(formData.date_of_birth);
+    if (ageErr) {
+      setDobError(ageErr);
+      return;
+    }
+    setDobError('');
     updateMutation.mutate(formData);
   };
 
