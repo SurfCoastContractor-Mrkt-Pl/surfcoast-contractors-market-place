@@ -1,8 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory storage for verification codes
-const verificationStore = new Map();
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -16,9 +13,15 @@ Deno.serve(async (req) => {
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // Store code with 5 minute expiry
-    const expiresAt = Date.now() + 5 * 60 * 1000;
-    verificationStore.set(userEmail, { code, expiresAt });
+    // Store code in database with 5 minute expiry
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    
+    await base44.asServiceRole.entities.EmailVerification.create({
+      email: userEmail,
+      code: code,
+      expires_at: expiresAt,
+      verified: false
+    });
 
     // Send email
     const emailResult = await base44.integrations.Core.SendEmail({
