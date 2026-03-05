@@ -25,11 +25,13 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
   const [formData, setFormData] = useState({
     full_name: '',
     phone: '',
+    date_of_birth: '',
     location: '',
     bio: '',
     preferred_contractor_types: [],
     preferred_trades: [],
   });
+  const [dobError, setDobError] = useState('');
 
   useEffect(() => {
     if (profile) {
