@@ -11,11 +11,142 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 
 
 
+function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+
+    setError('');
+    setLoading(true);
+
+    try {
+      const setupResponse = await base44.functions.invoke('createSetupIntent', { userEmail });
+      const setupData = setupResponse?.data || setupResponse;
+      const clientSecret = setupData?.client_secret;
+
+      if (!clientSecret) {
+        setError('Failed to initialize payment form');
+        setLoading(false);
+        return;
+      }
+
+      const cardElement = elements.getElement(CardElement);
+      const { setupIntent, error: setupError } = await stripe.confirmCardSetup(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: { name: cardName || 'Card' },
+        },
+      });
+
+      if (setupError) {
+        setError(setupError.message);
+      } else if (setupIntent?.status === 'succeeded') {
+        const paymentMethodId = setupIntent.payment_method;
+        await base44.functions.invoke('setupPaymentMethod', {
+          userEmail,
+          paymentMethodId,
+          cardName: cardName || 'Unnamed Card',
+        });
+        onSuccess();
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname</label>
+        <Input
+          placeholder="e.g., My Visa, Personal Card"
+          value={cardName}
+          onChange={(e) => setCardName(e.target.value)}
+          disabled={loading}
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Details</label>
+        <div className="p-3 border border-slate-300 rounded-md bg-white">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#1e293b',
+                  '::placeholder': {
+                    color: '#cbd5e1',
+                  },
+                },
+                invalid: {
+                  color: '#dc2626',
+                },
+              },
+            }}
+            disabled={loading}
+          />
+        </div>
+      </div>
+
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          {error}
+        </div>
+      )}
+
+      <div className="p-4 bg-green-50 border border-green-200 rounded-lg space-y-2">
+        <div className="flex items-center gap-2">
+          <Shield className="w-4 h-4 text-green-600 shrink-0" />
+          <p className="text-sm font-semibold text-green-800">Stripe Secured — PCI DSS Compliant</p>
+        </div>
+        <ul className="text-xs text-green-700 space-y-1 ml-6 list-disc">
+          <li>Card numbers are <strong>never stored</strong> on our servers</li>
+          <li>All card data is handled directly by Stripe (PCI Level 1 certified)</li>
+          <li>We only save the last 4 digits and card brand for display</li>
+          <li>Transfers are encrypted end-to-end with TLS</li>
+        </ul>
+      </div>
+
+      <div className="flex gap-3 justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={loading}
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          className="bg-amber-500 hover:bg-amber-600"
+          disabled={loading || !stripe || !elements}
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Adding...
+            </>
+          ) : (
+            'Add Card'
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 export default function SavedPaymentMethods({ userEmail }) {
   const [showAddMethod, setShowAddMethod] = useState(false);
   const [cardName, setCardName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [stripePromise, setStripePromise] = useState(null);
 
   const { data: paymentMethods, isLoading, refetch } = useQuery({
     queryKey: ['paymentMethods', userEmail],
