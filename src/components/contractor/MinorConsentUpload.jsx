@@ -83,6 +83,8 @@ const SectionHeader = ({ icon: IconComp, title, subtitle }) => (
 );
 
 export default function MinorConsentUpload({ data, onChange, location = '', age = null }) {
+  const [disclaimerAgreed, setDisclaimerAgreed] = React.useState(false);
+
   const handleDoc = (field, url) => {
     onChange({ ...data, [field]: url });
   };
