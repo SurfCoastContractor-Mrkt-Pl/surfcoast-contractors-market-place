@@ -162,12 +162,12 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         {emailVerified && <p className="text-green-600 text-sm font-medium">✓ Email verified</p>}
       </div>
 
-      {showVerification && !phoneVerified && (
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Verification Code</label>
+      {showVerification && !emailVerified && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <p className="text-sm text-amber-900 mb-3">Check your email ({userEmail}) for the 6-digit verification code.</p>
           <div className="flex gap-2">
             <Input
-              placeholder="Enter 4-digit code"
+              placeholder="Enter 6-digit code"
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value.slice(0, 6))}
               disabled={loading || verifying}
@@ -177,7 +177,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
               type="button"
               variant="outline"
               onClick={verifyCode}
-              disabled={loading || verifying || verificationCode.length < 4}
+              disabled={loading || verifying || verificationCode.length < 6}
             >
               {verifying ? 'Verifying...' : 'Verify'}
             </Button>
