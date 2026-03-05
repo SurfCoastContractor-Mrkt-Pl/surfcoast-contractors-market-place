@@ -6,7 +6,7 @@ const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { userEmail, paymentMethodId, cardName, phone } = await req.json();
+    const { userEmail, paymentMethodId, cardName, phone, cardholderName } = await req.json();
 
     if (!userEmail || !paymentMethodId) {
       return Response.json(
@@ -15,10 +15,35 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Verify user exists and get their full name
+    let userFullName = null;
+    try {
+      const user = await base44.auth.me();
+      if (user?.email === userEmail) {
+        userFullName = user.full_name;
+      }
+    } catch (err) {
+      console.warn('Could not verify user full name:', err.message);
+    }
+
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
 
-    // Verify phone matches profile (if phone was provided)
+    // Verify cardholder name matches (if provided)
+    if (cardholderName) {
+      const providedName = cardholderName.trim().toLowerCase();
+      const stripeName = paymentMethod.billing_details?.name?.trim().toLowerCase() || '';
+      
+      if (!stripeName || stripeName !== providedName) {
+        console.warn(`Cardholder name mismatch for ${userEmail}: provided="${cardholderName}", Stripe="${paymentMethod.billing_details?.name}"`);
+        return Response.json(
+          { error: 'Cardholder name does not match the card. Please verify and try again.' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Verify phone matches (if phone was provided)
     if (phone) {
       const normalizedProvidedPhone = phone.replace(/\D/g, '');
       const normalizedStripePhone = paymentMethod.billing_details?.phone?.replace(/\D/g, '') || '';
@@ -26,7 +51,7 @@ Deno.serve(async (req) => {
       if (normalizedProvidedPhone && normalizedStripePhone && normalizedProvidedPhone !== normalizedStripePhone) {
         console.warn(`Phone mismatch for ${userEmail}: provided=${normalizedProvidedPhone}, Stripe=${normalizedStripePhone}`);
         return Response.json(
-          { error: 'Phone number does not match your account. Payment method not saved.' },
+          { error: 'Phone number does not match your billing details. Payment method not saved.' },
           { status: 400 }
         );
       }
