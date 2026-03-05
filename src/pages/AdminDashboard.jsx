@@ -370,6 +370,50 @@ export default function AdminDashboard() {
                   </LineChart>
                 </ResponsiveContainer>
               </Card>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-6">Page Traffic</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={[
+                      { name: 'Mon', traffic: 320 },
+                      { name: 'Tue', traffic: 450 },
+                      { name: 'Wed', traffic: 380 },
+                      { name: 'Thu', traffic: 520 },
+                      { name: 'Fri', traffic: 610 },
+                      { name: 'Sat', traffic: 480 },
+                      { name: 'Sun', traffic: 350 }
+                    ]}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="traffic" fill="#8b5cf6" name="Visits" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </Card>
+
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-6">Duration on Page</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={[
+                      { name: 'Mon', duration: 2.4 },
+                      { name: 'Tue', duration: 3.2 },
+                      { name: 'Wed', duration: 2.8 },
+                      { name: 'Thu', duration: 3.5 },
+                      { name: 'Fri', duration: 4.1 },
+                      { name: 'Sat', duration: 3.6 },
+                      { name: 'Sun', duration: 2.9 }
+                    ]}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => `${value.toFixed(1)}m`} />
+                      <Line type="monotone" dataKey="duration" stroke="#06b6d4" strokeWidth={2} name="Minutes" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </Card>
+              </div>
             </div>
           </TabsContent>
 
