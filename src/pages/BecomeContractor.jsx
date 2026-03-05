@@ -540,6 +540,14 @@ export default function BecomeContractor() {
                 />
               </div>
 
+              {/* Minor Parental Consent Section */}
+              {isMinor && (
+                <MinorConsentUpload
+                  data={formData.parental_consent_docs}
+                  onChange={(docs) => handleChange('parental_consent_docs', docs)}
+                />
+              )}
+
               {/* Single-Person Policy */}
               <div className="p-5 rounded-xl border-2 border-red-200 bg-red-50 space-y-4">
                 <div className="flex items-start gap-3">
