@@ -22,9 +22,19 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Customer profile not found' }, { status: 404 });
     }
 
+    const profile = profiles[0];
+    const normalizedPhone = phone.replace(/\D/g, '');
+    const profilePhone = profile.phone ? profile.phone.replace(/\D/g, '') : '';
+
+    // Verify phone matches profile
+    if (normalizedPhone !== profilePhone) {
+      return Response.json({ 
+        error: 'This phone number is not associated with your account' 
+      }, { status: 400 });
+    }
+
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const normalizedPhone = phone.replace(/\D/g, '');
     
     // Store code with 5 minute expiry
     const expiresAt = Date.now() + 5 * 60 * 1000;
