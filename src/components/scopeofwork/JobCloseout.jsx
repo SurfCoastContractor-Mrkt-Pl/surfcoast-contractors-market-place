@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
+import JobTogetherPhoto from './JobTogetherPhoto';
 
 const RATINGS = [
   { value: 'unsatisfactory', label: 'Unsatisfactory', color: 'bg-red-100 text-red-700 border-red-200' },
