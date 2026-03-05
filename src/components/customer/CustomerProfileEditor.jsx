@@ -92,7 +92,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     return '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.full_name.trim()) {
       alert('Please enter your full name');
@@ -108,7 +108,19 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       return;
     }
     setDobError('');
-    updateMutation.mutate(formData);
+    
+    // Verify user is authenticated before saving
+    try {
+      const user = await base44.auth.me();
+      if (!user?.email) {
+        setSaveError('You must be logged in to save your profile');
+        return;
+      }
+      // Pass authenticated email to ensure proper linkage
+      updateMutation.mutate({ ...formData, email: user.email });
+    } catch (err) {
+      setSaveError('Failed to verify your account');
+    }
   };
 
   const toggleContractorType = (type) => {

@@ -49,17 +49,24 @@ export default function QuickJobPostForm({ userEmail, userName }) {
 
   const mutation = useMutation({
     mutationFn: async (data) => {
-      // Ensure CustomerProfile exists
+      // Verify authenticated user and link job to their User account
       try {
-        const existing = await base44.entities.CustomerProfile.filter({ email: userEmail });
+        const user = await base44.auth.me();
+        if (!user?.email) {
+          throw new Error('You must be logged in to post a job');
+        }
+        
+        // Ensure CustomerProfile exists and is linked to authenticated user
+        const existing = await base44.entities.CustomerProfile.filter({ email: user.email });
         if (!existing || existing.length === 0) {
           await base44.entities.CustomerProfile.create({
-            email: userEmail,
-            full_name: userName,
+            email: user.email,
+            full_name: user.full_name || userName,
           });
         }
       } catch (err) {
-        console.error('CustomerProfile check failed:', err);
+        console.error('CustomerProfile verification failed:', err);
+        throw err;
       }
       return base44.entities.Job.create(data);
     },
