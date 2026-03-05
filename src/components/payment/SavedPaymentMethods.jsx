@@ -22,9 +22,71 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const [phoneVerified, setPhoneVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
 
+  const sendVerificationCode = async () => {
+    if (!phone || phone.length < 10) {
+      setError('Please enter a valid phone number');
+      return;
+    }
+
+    setError('');
+    setVerifying(true);
+
+    try {
+      const response = await base44.functions.invoke('sendPhoneVerification', {
+        phone: phone.replace(/\D/g, ''),
+        userEmail,
+      });
+
+      if (response?.data?.success || response?.success) {
+        setShowVerification(true);
+      } else {
+        setError('Failed to send verification code');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const verifyCode = async () => {
+    if (!verificationCode || verificationCode.length < 4) {
+      setError('Please enter a valid verification code');
+      return;
+    }
+
+    setError('');
+    setVerifying(true);
+
+    try {
+      const response = await base44.functions.invoke('verifyPhoneCode', {
+        phone: phone.replace(/\D/g, ''),
+        code: verificationCode,
+        userEmail,
+      });
+
+      if (response?.data?.success || response?.success) {
+        setPhoneVerified(true);
+        setShowVerification(false);
+        setVerificationCode('');
+      } else {
+        setError('Invalid verification code');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setVerifying(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
+
+    if (!phoneVerified) {
+      setError('Please verify your phone number first');
+      return;
+    }
 
     setError('');
     setLoading(true);
@@ -44,7 +106,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       const { setupIntent, error: setupError } = await stripe.confirmCardSetup(clientSecret, {
         payment_method: {
           card: cardElement,
-          billing_details: { name: cardName || 'Card' },
+          billing_details: { name: cardName || 'Card', phone: phone.replace(/\D/g, '') },
         },
       });
 
@@ -56,6 +118,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           userEmail,
           paymentMethodId,
           cardName: cardName || 'Unnamed Card',
+          phone: phone.replace(/\D/g, ''),
         });
         onSuccess();
       }
