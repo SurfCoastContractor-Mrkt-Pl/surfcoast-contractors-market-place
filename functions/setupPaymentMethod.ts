@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
 
     // Save payment method info to database
     console.log(`Attempting to save payment method for email: ${userEmail}`);
-    const savedMethod = await base44.asServiceRole.entities.SavedPaymentMethod.create({
+    const savedMethod = await base44.entities.SavedPaymentMethod.create({
       user_email: userEmail,
       stripe_payment_method_id: paymentMethodId,
       card_name: cardName || 'Unnamed Card',
