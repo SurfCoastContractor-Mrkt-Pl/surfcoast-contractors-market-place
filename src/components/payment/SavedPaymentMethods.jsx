@@ -23,18 +23,11 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const [cardholderName, setCardholderName] = useState('');
 
   const sendVerificationCode = async () => {
-    const normalizedPhone = phone.replace(/\D/g, '');
-    if (!normalizedPhone) {
-      setError('Please enter a phone number');
-      return;
-    }
-
     setError('');
     setVerifying(true);
 
     try {
-      const response = await base44.functions.invoke('sendPhoneVerification', {
-        phone: normalizedPhone,
+      const response = await base44.functions.invoke('sendEmailVerification', {
         userEmail,
       });
 
