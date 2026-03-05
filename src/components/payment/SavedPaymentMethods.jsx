@@ -44,8 +44,8 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   };
 
   const verifyCode = async () => {
-    if (!verificationCode || verificationCode.length < 4) {
-      setError('Please enter a valid verification code');
+    if (!verificationCode || verificationCode.length < 6) {
+      setError('Please enter a valid 6-digit code');
       return;
     }
 
@@ -53,14 +53,13 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
     setVerifying(true);
 
     try {
-      const response = await base44.functions.invoke('verifyPhoneCode', {
-        phone: phone.replace(/\D/g, ''),
+      const response = await base44.functions.invoke('verifyEmailCode', {
         code: verificationCode,
         userEmail,
       });
 
       if (response?.data?.success || response?.success) {
-        setPhoneVerified(true);
+        setEmailVerified(true);
         setShowVerification(false);
         setVerificationCode('');
       } else {
