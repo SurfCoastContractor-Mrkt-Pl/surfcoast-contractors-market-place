@@ -299,6 +299,15 @@ export default function ContractorAccount() {
               <TabsContent value="scopes">
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Scope of Work Agreements</h2>
+                  {!allInvoicesDownloaded && (
+                    <div className="flex items-start gap-3 p-3 mb-4 bg-red-50 border border-red-200 rounded-xl">
+                      <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-red-800">Invoice Download Required</p>
+                        <p className="text-xs text-red-700 mt-0.5">You must download your invoices from the <strong>Fees</strong> tab before submitting or closing out new scopes of work.</p>
+                      </div>
+                    </div>
+                  )}
                   {contractorScopes?.length > 0 ? (
                     <div className="space-y-3">
                       {contractorScopes.map(s => (
