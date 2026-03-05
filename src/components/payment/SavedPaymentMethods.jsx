@@ -209,64 +209,18 @@ export default function SavedPaymentMethods({ userEmail }) {
             <DialogTitle>Add Payment Method</DialogTitle>
             <DialogDescription>Add a new saved payment method to your account for quick access.</DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleAddPaymentMethod} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Card Nickname
-              </label>
-              <Input
-                placeholder="e.g., My Visa, Personal Card"
-                value={cardName}
-                onChange={(e) => setCardName(e.target.value)}
-                disabled={loading}
+          {stripePromise && (
+            <Elements stripe={stripePromise}>
+              <AddPaymentMethodForm
+                userEmail={userEmail}
+                onSuccess={() => {
+                  setShowAddMethod(false);
+                  refetch();
+                }}
+                onCancel={() => setShowAddMethod(false)}
               />
-            </div>
-
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg space-y-2">
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-600 shrink-0" />
-                <p className="text-sm font-semibold text-green-800">Stripe Secured — PCI DSS Compliant</p>
-              </div>
-              <ul className="text-xs text-green-700 space-y-1 ml-6 list-disc">
-                <li>Card numbers are <strong>never stored</strong> on our servers</li>
-                <li>All card data is handled directly by Stripe (PCI Level 1 certified)</li>
-                <li>We only save the last 4 digits and card brand for display</li>
-                <li>Transfers are encrypted end-to-end with TLS</li>
-              </ul>
-            </div>
-
-            <div className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-              <Lock className="w-4 h-4 text-slate-500 shrink-0" />
-              <p className="text-xs text-slate-500">
-                You'll be securely redirected to Stripe's hosted payment page to enter your card details.
-              </p>
-            </div>
-
-            <div className="flex gap-3 justify-end">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowAddMethod(false)}
-                disabled={loading}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="bg-amber-500 hover:bg-amber-600"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Adding...
-                  </>
-                ) : (
-                  'Add Card'
-                )}
-              </Button>
-            </div>
-          </form>
+            </Elements>
+          )}
         </DialogContent>
       </Dialog>
     </div>
