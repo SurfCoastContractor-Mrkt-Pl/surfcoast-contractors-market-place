@@ -76,8 +76,8 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
     e.preventDefault();
     if (!stripe || !elements) return;
 
-    if (!phoneVerified) {
-      setError('Please verify your phone number first');
+    if (!emailVerified) {
+      setError('Please verify your email first');
       return;
     }
 
