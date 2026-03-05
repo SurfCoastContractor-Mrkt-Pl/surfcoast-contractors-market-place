@@ -133,6 +133,17 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Cardholder Full Name</label>
+        <Input
+          placeholder="Name as it appears on your card"
+          value={cardholderName}
+          onChange={(e) => setCardholderName(e.target.value)}
+          disabled={loading}
+        />
+        <p className="text-xs text-slate-500 mt-1">Must match the name on your card exactly</p>
+      </div>
+
+      <div>
         <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname</label>
         <Input
           placeholder="e.g., My Visa, Personal Card"
