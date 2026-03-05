@@ -155,7 +155,7 @@ export default function MinorConsentUpload({ data, onChange, location = '', age 
       )}
 
       {/* Document sections — locked until all disclaimers are agreed */}
-      <div className={!disclaimerAgreed ? 'opacity-40 pointer-events-none select-none' : ''}>
+      <div className={`space-y-4 ${!disclaimerAgreed ? 'opacity-40 pointer-events-none select-none' : ''}`}>
 
       {/* Section 1: Child Identity */}
       <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
