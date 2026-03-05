@@ -239,7 +239,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         <Button
           type="submit"
           className="bg-amber-500 hover:bg-amber-600"
-          disabled={loading || !stripe || !elements || !phoneVerified}
+          disabled={loading || !stripe || !elements || !emailVerified}
         >
           {loading ? (
             <>
