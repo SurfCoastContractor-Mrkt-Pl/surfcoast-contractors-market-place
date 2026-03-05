@@ -11,15 +11,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 
 export default function SavedPaymentMethods({ userEmail }) {
   const [showAddMethod, setShowAddMethod] = useState(false);
-  const [stripePromise, setStripePromise] = useState(null);
-
-  useEffect(() => {
-    const initStripe = async () => {
-      const key = await base44.functions.invoke('getStripePublicKey');
-      setStripePromise(loadStripe(key.publishableKey));
-    };
-    initStripe();
-  }, []);
+  const [cardName, setCardName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const { data: paymentMethods, isLoading, refetch } = useQuery({
     queryKey: ['paymentMethods', userEmail],
