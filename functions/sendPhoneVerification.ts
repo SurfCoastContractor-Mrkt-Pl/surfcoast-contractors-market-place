@@ -13,24 +13,24 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phone and email required' }, { status: 400 });
     }
 
-    // Verify customer profile exists for this email
+    const normalizedPhone = phone.replace(/\D/g, '');
+
+    // Check if customer profile exists and if phone matches (optional, not required for new users)
     const profiles = await base44.asServiceRole.entities.CustomerProfile.filter({
       email: userEmail
     });
 
-    if (!profiles || profiles.length === 0) {
-      return Response.json({ error: 'Customer profile not found' }, { status: 404 });
-    }
+    if (profiles && profiles.length > 0) {
+      const profile = profiles[0];
+      const profilePhone = profile.phone ? profile.phone.replace(/\D/g, '') : '';
 
-    const profile = profiles[0];
-    const normalizedPhone = phone.replace(/\D/g, '');
-    const profilePhone = profile.phone ? profile.phone.replace(/\D/g, '') : '';
-
-    // Verify phone matches profile
-    if (normalizedPhone !== profilePhone) {
-      return Response.json({ 
-        error: 'This phone number is not associated with your account' 
-      }, { status: 400 });
+      // If profile exists with phone, verify it matches
+      if (profilePhone && normalizedPhone !== profilePhone) {
+        console.warn(`Phone mismatch for ${userEmail}: provided=${normalizedPhone}, profile=${profilePhone}`);
+        return Response.json({ 
+          error: 'This phone number is not associated with your account' 
+        }, { status: 400 });
+      }
     }
 
     // Generate 6-digit code
