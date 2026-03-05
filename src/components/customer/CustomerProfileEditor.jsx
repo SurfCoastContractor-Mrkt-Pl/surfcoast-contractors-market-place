@@ -145,6 +145,22 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
               />
             </div>
 
+            <div>
+              <Label htmlFor="dob">Date of Birth * <span className="text-slate-400 font-normal">(must be 18+)</span></Label>
+              <Input
+                id="dob"
+                type="date"
+                value={formData.date_of_birth}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, date_of_birth: e.target.value }));
+                  setDobError('');
+                }}
+                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                className="mt-1.5"
+              />
+              {dobError && <p className="text-xs text-red-600 mt-1">{dobError}</p>}
+            </div>
+
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
