@@ -30,6 +30,8 @@ Deno.serve(async (req) => {
       );
     }
 
+    const origin = req.headers.get('origin') || 'https://localhost:3000';
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -41,8 +43,8 @@ Deno.serve(async (req) => {
           quantity: 1,
         },
       ],
-      success_url: `${new URL(req.url).origin}/Success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${new URL(req.url).origin}/Cancel`,
+      success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/Cancel`,
       metadata: {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),
         user_email: email,

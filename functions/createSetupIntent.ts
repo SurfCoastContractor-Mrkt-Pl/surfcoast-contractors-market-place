@@ -1,4 +1,7 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import Stripe from 'npm:stripe@17.5.0';
+
+const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
@@ -8,9 +11,6 @@ Deno.serve(async (req) => {
     if (!userEmail) {
       return Response.json({ error: 'userEmail required' }, { status: 400 });
     }
-
-    const stripe = await import('npm:stripe@17.0.0');
-    const stripeClient = new stripe.default(Deno.env.get('STRIPE_SECRET_KEY'));
 
     // Create a setup intent for saving the payment method
     const setupIntent = await stripeClient.setupIntents.create({
