@@ -19,6 +19,7 @@ import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
 import JobCloseout from '@/components/scopeofwork/JobCloseout.jsx';
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
+import ContractorProfileEditor from '@/components/contractor/ContractorProfileEditor';
 import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 import ContractorBadges from '@/components/badges/ContractorBadges';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
@@ -234,8 +235,11 @@ export default function ContractorAccount() {
 
               <TabsContent value="profile">
                 <div className="space-y-4">
-                  {/* About Me Section */}
-                  <Card className="p-6">
+                   {/* Profile Information Editor */}
+                   <ContractorProfileEditor contractor={contractor} />
+
+                   {/* About Me Section */}
+                   <Card className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h2 className="text-lg font-semibold text-slate-900">About Me</h2>
                       {!editingBio && (
