@@ -138,17 +138,6 @@ export default function SavedPaymentMethods({ userEmail }) {
     enabled: !!userEmail,
   });
 
-  const addPaymentMethodMutation = useMutation({
-    mutationFn: async (data) => {
-      return await base44.functions.invoke('setupPaymentMethod', data);
-    },
-    onSuccess: () => {
-      refetch();
-      setShowAddMethod(false);
-      setCardName('');
-    },
-  });
-
   const deletePaymentMethodMutation = useMutation({
     mutationFn: (paymentMethodId) =>
       base44.functions.invoke('deletePaymentMethod', { paymentMethodId }),
@@ -156,41 +145,6 @@ export default function SavedPaymentMethods({ userEmail }) {
       refetch();
     },
   });
-
-  const handleAddPaymentMethod = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Request setup intent from backend
-      const setupData = await base44.functions.invoke('createSetupIntent', { userEmail });
-
-      // Load Stripe
-      const { loadStripe } = await import('@stripe/stripe-js');
-      const stripePublishableKey = await base44.functions.invoke('getStripePublicKey');
-      const stripe = await loadStripe(stripePublishableKey.publishableKey);
-
-      if (!stripe) {
-        alert('Payment processing is not available');
-        setLoading(false);
-        return;
-      }
-
-      // Redirect to Stripe's hosted payment page for setup
-      const { error } = await stripe.confirmCardSetup(setupData.client_secret, {
-        return_url: window.location.origin,
-      });
-
-      if (error) {
-        alert('Error: ' + error.message);
-      }
-    } catch (error) {
-      console.error('Payment method error:', error);
-      alert('Error adding payment method: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
