@@ -332,7 +332,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         <Button
           type="submit"
           className={`w-full ${verifiedProfile ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-500 hover:bg-amber-600'}`}
-          disabled={updateMutation.isPending || !!verifiedProfile}
+          disabled={updateMutation.isPending}
         >
           {updateMutation.isPending ? (
             <>
@@ -342,7 +342,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           ) : verifiedProfile ? (
             <>
               <CheckCircle2 className="w-4 h-4 mr-2" />
-              Profile Complete & Verified
+              Save Changes
             </>
           ) : (
             <>
