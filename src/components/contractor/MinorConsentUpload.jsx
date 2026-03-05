@@ -305,6 +305,8 @@ export default function MinorConsentUpload({ data, onChange, location = '', age 
         </div>
       </div>
 
+      </div>{/* end locked section */}
+
       {allDocsUploaded ? (
         <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 font-medium">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
