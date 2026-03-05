@@ -40,9 +40,45 @@ Deno.serve(async (req) => {
     const expiresAt = Date.now() + 5 * 60 * 1000;
     verificationStore.set(`${userEmail}-${normalizedPhone}`, { code, expiresAt });
 
-    // In production, send SMS via Twilio or similar service
-    // For demo, log the code
-    console.log(`Verification code for ${userEmail} (${phone}): ${code}`);
+    // Send SMS via Twilio
+    const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
+    const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+    const fromPhone = Deno.env.get('TWILIO_PHONE_NUMBER');
+
+    if (!accountSid || !authToken || !fromPhone) {
+      console.error('Twilio credentials not configured');
+      return Response.json({ error: 'SMS service unavailable' }, { status: 500 });
+    }
+
+    // Format phone number to E.164 format
+    const toPhone = normalizedPhone.startsWith('1') 
+      ? `+${normalizedPhone}` 
+      : `+1${normalizedPhone}`;
+
+    const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+    const auth = btoa(`${accountSid}:${authToken}`);
+
+    const formData = new URLSearchParams();
+    formData.append('From', fromPhone);
+    formData.append('To', toPhone);
+    formData.append('Body', `Your verification code is: ${code}`);
+
+    const twilioResponse = await fetch(twilioUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
+    });
+
+    if (!twilioResponse.ok) {
+      const errorData = await twilioResponse.json();
+      console.error('Twilio error:', errorData);
+      return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
+    }
+
+    console.log(`Verification code sent to ${toPhone} for ${userEmail}`);
 
     return Response.json({ 
       success: true, 
