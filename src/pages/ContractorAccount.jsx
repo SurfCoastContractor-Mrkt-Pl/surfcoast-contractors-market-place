@@ -350,7 +350,7 @@ export default function ContractorAccount() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="badges">
+              <TabsContent value="badges" className="min-h-96 w-full">
                 <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
               </TabsContent>
 
