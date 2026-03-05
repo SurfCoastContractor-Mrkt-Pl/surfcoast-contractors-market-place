@@ -167,9 +167,23 @@ export default function SavedPaymentMethods({ userEmail }) {
               />
             </div>
 
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-              <p className="text-sm text-amber-900">
-                You'll be securely redirected to Stripe to enter your card details. Your payment information is never stored on our servers.
+            <div className="p-4 bg-green-50 border border-green-200 rounded-lg space-y-2">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-green-600 shrink-0" />
+                <p className="text-sm font-semibold text-green-800">Stripe Secured — PCI DSS Compliant</p>
+              </div>
+              <ul className="text-xs text-green-700 space-y-1 ml-6 list-disc">
+                <li>Card numbers are <strong>never stored</strong> on our servers</li>
+                <li>All card data is handled directly by Stripe (PCI Level 1 certified)</li>
+                <li>We only save the last 4 digits and card brand for display</li>
+                <li>Transfers are encrypted end-to-end with TLS</li>
+              </ul>
+            </div>
+
+            <div className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+              <Lock className="w-4 h-4 text-slate-500 shrink-0" />
+              <p className="text-xs text-slate-500">
+                You'll be securely redirected to Stripe's hosted payment page to enter your card details.
               </p>
             </div>
 
