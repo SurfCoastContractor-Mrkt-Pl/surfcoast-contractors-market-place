@@ -111,6 +111,26 @@ export default function ContractorAccount() {
     },
   });
 
+  const handleDownloadInvoice = async (paymentId) => {
+    setDownloadingId(paymentId);
+    const res = await base44.functions.invoke('generatePaymentInvoice', { paymentId });
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Invoice-${paymentId.substring(0, 8).toUpperCase()}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    const updated = [...new Set([...downloadedInvoices, paymentId])];
+    setDownloadedInvoices(updated);
+    localStorage.setItem('downloadedInvoices', JSON.stringify(updated));
+    setDownloadingId(null);
+  };
+
+  // A contractor can take a new scope only if they've downloaded invoices for all confirmed payments
+  const confirmedPayments = payments?.filter(p => p.status === 'confirmed') || [];
+  const allInvoicesDownloaded = confirmedPayments.length === 0 || confirmedPayments.every(p => downloadedInvoices.includes(p.id));
+
   const handleBioEdit = () => {
     setBioText(contractor?.bio || '');
     setEditingBio(true);
