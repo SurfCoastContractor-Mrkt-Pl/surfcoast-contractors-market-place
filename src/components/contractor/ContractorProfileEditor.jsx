@@ -72,17 +72,21 @@ export default function ContractorProfileEditor({ contractor }) {
         <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
           {/* Profile Photo */}
           <div>
-            <Label className="text-sm font-medium">Profile Photo</Label>
+            <Label className="text-sm font-medium mb-3 block">Profile Photo</Label>
             <div className="mt-2 flex items-center gap-4">
               {editData.photo_url && (
-                <img src={editData.photo_url} alt="Profile" className="w-16 h-16 rounded-lg object-cover" />
+                <img src={editData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
               )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoUpload}
-                className="text-sm"
-              />
+              <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors flex-1">
+                <span className="text-sm font-medium text-slate-700">Upload Photo</span>
+                <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+              </label>
             </div>
           </div>
 
