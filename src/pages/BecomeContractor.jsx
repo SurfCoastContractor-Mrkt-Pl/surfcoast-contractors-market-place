@@ -89,8 +89,30 @@ export default function BecomeContractor() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.date_of_birth) {
+      setDobError('Date of birth is required');
+      return;
+    }
+    if (age === null || age < 13) {
+      setDobError('You must be at least 13 years old to register as a contractor');
+      return;
+    }
+    if (isMinor) {
+      const pd = formData.parental_consent_docs;
+      if (!pd?.parent_name || !pd?.parent_email || !pd?.parent_phone) {
+        setDobError('Please fill in parent/guardian contact information');
+        return;
+      }
+      if (!pd?.parental_consent_form_url || !pd?.child_id_url || !pd?.parent_id_url ||
+          !pd?.proof_of_relationship_url || !pd?.child_proof_of_residence_url || !pd?.parent_proof_of_residence_url) {
+        setDobError('Please upload all required parental consent documents');
+        return;
+      }
+    }
+    setDobError('');
     const data = {
       ...formData,
+      is_minor: isMinor,
       years_experience: formData.years_experience ? Number(formData.years_experience) : null,
       hourly_rate: formData.hourly_rate ? Number(formData.hourly_rate) : null,
     };
