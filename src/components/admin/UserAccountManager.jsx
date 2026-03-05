@@ -255,6 +255,69 @@ export default function UserAccountManager({ user, userType, onClose }) {
         </DialogContent>
       </Dialog>
 
+      {/* Edit Profile Dialog */}
+      <Dialog open={action === 'edit'} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium">{userType === 'contractor' ? 'Name' : 'Full Name'}</Label>
+              <Input
+                value={editData.name || ''}
+                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium">Email</Label>
+              <Input
+                type="email"
+                value={editData.email || ''}
+                onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium">Phone</Label>
+              <Input
+                type="tel"
+                value={editData.phone || ''}
+                onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium">Location</Label>
+              <Input
+                value={editData.location || ''}
+                onChange={(e) => setEditData({ ...editData, location: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium">Bio</Label>
+              <Textarea
+                value={editData.bio || ''}
+                onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
+                rows={3}
+                className="mt-1"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>Cancel</Button>
+            <Button
+              onClick={() => editMutation.mutate()}
+              disabled={editMutation.isPending}
+            >
+              {editMutation.isPending ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Send Email Dialog */}
       <Dialog open={action === 'sendEmail'} onOpenChange={(open) => !open && setAction(null)}>
         <DialogContent>
