@@ -329,7 +329,14 @@ export default function ContractorAccount() {
                               {s.status === 'pending_approval' ? 'Pending' : s.status}
                             </Badge>
                             {s.status !== 'closed' && s.status !== 'rejected' && (
-                              <Button size="sm" variant="outline" className="text-xs h-7 px-2 border-green-300 text-green-700 hover:bg-green-50" onClick={() => setCloseoutScope(s)}>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-xs h-7 px-2 border-green-300 text-green-700 hover:bg-green-50 disabled:opacity-40"
+                                onClick={() => setCloseoutScope(s)}
+                                disabled={!allInvoicesDownloaded}
+                                title={!allInvoicesDownloaded ? 'Download your invoices first (Fees tab)' : undefined}
+                              >
                                 <LogOut className="w-3 h-3 mr-1" /> Close Out
                               </Button>
                             )}
