@@ -139,7 +139,7 @@ export default function MinorConsentUpload({ data, onChange }) {
 
       {/* Section 1: Child Identity */}
       <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
-        <SectionHeader icon={User} title="Minor's Identity Verification" subtitle="Selfie + government-issued ID to confirm identity" />
+        <SectionHeader icon={User} title="Minor's Identity Verification" subtitle="Selfie + government-issued ID to confirm identity"/>
 
         <DocUploadField
           label="Minor's Selfie / Face Photo"
