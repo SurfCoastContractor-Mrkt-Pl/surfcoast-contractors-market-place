@@ -147,6 +147,13 @@ export default function MinorConsentUpload({ data, onChange, location = '', age 
       {/* Location-specific labor laws */}
       <MinorLaborLaws location={location} age={age} />
 
+      {!disclaimerAgreed && (
+        <div className="flex items-center gap-2 p-3 bg-red-100 border border-red-300 rounded-xl text-sm text-red-800 font-medium">
+          <ShieldAlert className="w-4 h-4 shrink-0" />
+          You must acknowledge all disclaimers above before uploading documents.
+        </div>
+      )}
+
       {/* Section 1: Child Identity */}
       <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
         <SectionHeader icon={User} title="Minor's Identity Verification" subtitle="Selfie + government-issued ID to confirm identity"/>
