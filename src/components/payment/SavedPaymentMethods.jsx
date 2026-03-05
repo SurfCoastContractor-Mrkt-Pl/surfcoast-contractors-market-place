@@ -145,29 +145,21 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Phone Number {phoneVerified && <span className="text-green-600">✓ Verified</span>}
-        </label>
-        <div className="flex gap-2">
-          <Input
-            type="tel"
-            placeholder="(555) 123-4567"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            disabled={loading || verifying || phoneVerified}
-          />
-          {!phoneVerified && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={sendVerificationCode}
-              disabled={loading || verifying}
-            >
-              {verifying ? 'Sending...' : 'Send Code'}
-            </Button>
-          )}
-        </div>
+      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-sm text-blue-900 mb-3">
+          <strong>Email Verification Required:</strong> We'll send a verification code to <strong>{userEmail}</strong>
+        </p>
+        {!emailVerified && (
+          <Button
+            type="button"
+            className="w-full"
+            onClick={sendVerificationCode}
+            disabled={loading || verifying}
+          >
+            {verifying ? 'Sending...' : 'Send Verification Code'}
+          </Button>
+        )}
+        {emailVerified && <p className="text-green-600 text-sm font-medium">✓ Email verified</p>}
       </div>
 
       {showVerification && !phoneVerified && (
