@@ -31,6 +31,10 @@ export default function ContractorAccount() {
   const [userEmail, setUserEmail] = useState(null);
   const [editingBio, setEditingBio] = useState(false);
   const [bioText, setBioText] = useState('');
+  const [downloadedInvoices, setDownloadedInvoices] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('downloadedInvoices') || '[]'); } catch { return []; }
+  });
+  const [downloadingId, setDownloadingId] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
