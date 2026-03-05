@@ -123,6 +123,12 @@ export default function JobCloseout({ scope, role, open, onClose }) {
           </div>
         ) : (
           <div className="space-y-4">
+            <JobTogetherPhoto
+              scopeId={scope.id}
+              value={togetherPhoto}
+              onChange={setTogetherPhoto}
+            />
+
             <div className="p-3 bg-slate-50 rounded-lg text-sm text-slate-600">
               <p><span className="font-medium">Job:</span> {scope.job_title}</p>
               <p><span className="font-medium">{role === 'contractor' ? 'Customer' : 'Contractor'}:</span> {role === 'contractor' ? scope.customer_name : scope.contractor_name}</p>
