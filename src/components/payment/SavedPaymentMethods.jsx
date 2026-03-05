@@ -76,23 +76,15 @@ export default function SavedPaymentMethods({ userEmail }) {
         return;
       }
 
-      // Use Stripe hosted form instead of embedded elements
-      const { error: setupError, setupIntent } = await stripe.confirmCardSetup(
-        clientSecret,
-        {
-          return_url: `${window.location.origin}${window.location.pathname}`,
-        }
-      );
+      // Redirect to Stripe's hosted payment page to collect card details
+      const { error } = await stripe.confirmCardSetup(clientSecret, {
+        return_url: `${window.location.origin}${window.location.pathname}?setupIntentSecret=${clientSecret}`,
+      });
 
-      if (setupError) {
-        setError(setupError.message);
-      } else if (setupIntent?.status === 'succeeded') {
-        await addPaymentMethodMutation.mutateAsync({
-          userEmail,
-          paymentMethodId: setupIntent.payment_method,
-          cardName: cardName || 'Unnamed Card',
-        });
+      if (error) {
+        setError(error.message);
       }
+      // If successful, user will be redirected to Stripe hosted form
     } catch (err) {
       setError(err.message);
     } finally {
