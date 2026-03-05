@@ -23,9 +23,8 @@ Deno.serve(async (req) => {
     // Log for debugging
     console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card?.brand}, last4: ${paymentMethod.card?.last4}`);
 
-
-
     // Save payment method info to database
+    console.log(`Attempting to save payment method for email: ${userEmail}`);
     const savedMethod = await base44.asServiceRole.entities.SavedPaymentMethod.create({
       user_email: userEmail,
       stripe_payment_method_id: paymentMethodId,
@@ -36,7 +35,8 @@ Deno.serve(async (req) => {
       card_exp_year: paymentMethod.card.exp_year,
     });
 
-    return Response.json(savedMethod);
+    console.log(`Successfully saved payment method with ID: ${savedMethod.id}`);
+    return Response.json({ success: true, data: savedMethod });
   } catch (error) {
     console.error('Error saving payment method:', error);
     return Response.json({ error: error.message }, { status: 500 });
