@@ -200,7 +200,14 @@ function CustomerProfileView({ customer }) {
         </div>
       )}
 
-      <div className="text-xs text-slate-400">Joined: {new Date(customer.created_date).toLocaleDateString()} · ID: {customer.id}</div>
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="text-xs text-slate-400">Joined: {new Date(customer.created_date).toLocaleDateString()} · ID: {customer.id}</div>
+        <a href={createPageUrl(`CustomerAccount`)} target="_blank" rel="noopener noreferrer">
+          <Button size="sm" variant="outline" className="text-xs flex items-center gap-1">
+            <ExternalLink className="w-3 h-3" /> Preview Customer Profile
+          </Button>
+        </a>
+      </div>
     </div>
   );
 }
