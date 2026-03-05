@@ -18,6 +18,20 @@ Deno.serve(async (req) => {
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
 
+    // Verify phone matches profile (if phone was provided)
+    if (phone) {
+      const normalizedProvidedPhone = phone.replace(/\D/g, '');
+      const normalizedStripePhone = paymentMethod.billing_details?.phone?.replace(/\D/g, '') || '';
+      
+      if (normalizedProvidedPhone && normalizedStripePhone && normalizedProvidedPhone !== normalizedStripePhone) {
+        console.warn(`Phone mismatch for ${userEmail}: provided=${normalizedProvidedPhone}, Stripe=${normalizedStripePhone}`);
+        return Response.json(
+          { error: 'Phone number does not match your account. Payment method not saved.' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Save payment method info to database
     const savedMethod = await base44.asServiceRole.entities.SavedPaymentMethod.create({
       user_email: userEmail,
