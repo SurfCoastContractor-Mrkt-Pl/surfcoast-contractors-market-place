@@ -1,8 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory storage for verification codes
-const verificationStore = new Map();
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -13,25 +10,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Code and email required' }, { status: 400 });
     }
 
-    const storedData = verificationStore.get(userEmail);
+    // Get stored verification from database
+    const verifications = await base44.asServiceRole.entities.EmailVerification.filter({
+      email: userEmail,
+      verified: false
+    });
 
-    if (!storedData) {
+    if (!verifications || verifications.length === 0) {
       return Response.json({ error: 'No verification code found for this email' }, { status: 400 });
     }
 
+    const verification = verifications[0];
+
     // Check expiry
-    if (Date.now() > storedData.expiresAt) {
-      verificationStore.delete(userEmail);
+    if (new Date() > new Date(verification.expires_at)) {
+      await base44.asServiceRole.entities.EmailVerification.delete(verification.id);
       return Response.json({ error: 'Verification code has expired' }, { status: 400 });
     }
 
     // Check code
-    if (storedData.code !== code.toString()) {
+    if (verification.code !== code.toString()) {
       return Response.json({ error: 'Invalid verification code' }, { status: 400 });
     }
 
-    // Code is valid, delete it
-    verificationStore.delete(userEmail);
+    // Mark as verified
+    await base44.asServiceRole.entities.EmailVerification.update(verification.id, {
+      verified: true
+    });
 
     return Response.json({ 
       success: true, 
