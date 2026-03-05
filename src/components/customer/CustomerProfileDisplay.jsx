@@ -1,9 +1,18 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, DollarSign, Star, Users } from 'lucide-react';
+import { MapPin, Briefcase, DollarSign, Star, Users, Camera } from 'lucide-react';
 
 export default function CustomerProfileDisplay({ profile, jobCount }) {
+  const { data: closedScopes } = useQuery({
+    queryKey: ['customer-closed-scopes', profile?.email],
+    queryFn: () => base44.entities.ScopeOfWork.filter({ customer_email: profile.email, status: 'closed' }),
+    enabled: !!profile?.email,
+  });
+
+  const togetherPhotos = (closedScopes || []).filter(s => s.job_together_photo_url);
   const tradeLabels = {
     electrician: 'Electrician',
     plumber: 'Plumber',
