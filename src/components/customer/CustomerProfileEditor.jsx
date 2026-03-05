@@ -22,6 +22,7 @@ const TRADE_LABELS = {
 
 export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }) {
   const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
     phone: '',
@@ -71,6 +72,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     onSuccess: () => {
       setSaveSuccess(true);
       setSaveError('');
+      setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ['customer-profile', userEmail] });
       queryClient.invalidateQueries({ queryKey: ['verified-profile', userEmail] });
       setTimeout(() => setSaveSuccess(false), 5000);
@@ -158,15 +160,28 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
             {verifiedProfile ? '✓ Profile saved and verified in system' : 'Complete your profile to get started'}
           </p>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onAskAgent}
-          className="gap-1.5 text-amber-600 hover:bg-amber-50"
-        >
-          <HelpCircle className="w-4 h-4" />
-          Need Help?
-        </Button>
+        <div className="flex gap-2">
+          {!isEditing && verifiedProfile && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditing(true)}
+              className="gap-1.5"
+            >
+              <HelpCircle className="w-4 h-4" />
+              Edit
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onAskAgent}
+            className="gap-1.5 text-amber-600 hover:bg-amber-50"
+          >
+            <HelpCircle className="w-4 h-4" />
+            Need Help?
+          </Button>
+        </div>
       </div>
 
       {saveSuccess && (
@@ -189,6 +204,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         </div>
       )}
 
+      {!verifiedProfile || isEditing ? (
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
         <div>
@@ -336,6 +352,64 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           )}
         </Button>
       </form>
+      ) : (
+        <div className="space-y-6">
+          <div>
+            <h3 className="font-semibold text-slate-900 mb-4">Personal Information</h3>
+            <div className="space-y-3">
+              <div>
+                <div className="text-xs text-slate-500 font-medium">FULL NAME</div>
+                <div className="text-sm text-slate-900">{formData.full_name}</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500 font-medium">DATE OF BIRTH</div>
+                <div className="text-sm text-slate-900">{formData.date_of_birth ? new Date(formData.date_of_birth).toLocaleDateString() : '—'}</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500 font-medium">PHONE</div>
+                <div className="text-sm text-slate-900">{formData.phone || '—'}</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500 font-medium">LOCATION</div>
+                <div className="text-sm text-slate-900">{formData.location}</div>
+              </div>
+              {formData.bio && (
+                <div>
+                  <div className="text-xs text-slate-500 font-medium">ABOUT YOU</div>
+                  <div className="text-sm text-slate-900 whitespace-pre-wrap">{formData.bio}</div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900 mb-4">Contractor Preferences</h3>
+            <div className="space-y-2">
+              {formData.preferred_contractor_types.length > 0 && (
+                <div>
+                  <div className="text-xs text-slate-500 font-medium">CONTRACTOR TYPES</div>
+                  <div className="text-sm text-slate-900">
+                    {formData.preferred_contractor_types.map(t => t === 'general' ? 'General Contractors' : 'Trade Specialists').join(', ')}
+                  </div>
+                </div>
+              )}
+              {formData.preferred_trades.length > 0 && (
+                <div>
+                  <div className="text-xs text-slate-500 font-medium">PREFERRED TRADES</div>
+                  <div className="text-sm text-slate-900">
+                    {formData.preferred_trades.map(t => TRADE_LABELS[t]).join(', ')}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <Button
+            onClick={() => setIsEditing(true)}
+            className="bg-amber-500 hover:bg-amber-600 w-full"
+          >
+            Edit Profile
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }
