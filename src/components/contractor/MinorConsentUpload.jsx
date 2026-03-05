@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Loader2, Upload, CheckCircle2, AlertTriangle, ShieldAlert, Camera, FileText, Home, User } from 'lucide-react';
 import MinorLaborLaws from './MinorLaborLaws';
+import MinorGuardianDisclaimer from './MinorGuardianDisclaimer';
 
 const DocUploadField = ({ label, description, fieldKey, value, onUploaded, isPhoto = false }) => {
   const [uploading, setUploading] = useState(false);
