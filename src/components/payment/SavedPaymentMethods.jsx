@@ -21,6 +21,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const [showVerification, setShowVerification] = useState(false);
   const [phoneVerified, setPhoneVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
+  const [cardholderName, setCardholderName] = useState('');
 
   const sendVerificationCode = async () => {
     if (!phone || phone.length < 10) {
