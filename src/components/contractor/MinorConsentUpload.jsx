@@ -248,6 +248,43 @@ export default function MinorConsentUpload({ data, onChange }) {
         />
       </div>
 
+      {/* Parental Responsibility & Hours Policy */}
+      <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-3">
+        <h4 className="font-semibold text-slate-800 text-sm flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-orange-500" />
+          Parental / Guardian Responsibilities & Work Limits
+        </h4>
+        <ul className="space-y-2 text-sm text-slate-700">
+          <li className="flex items-start gap-2">
+            <span className="text-orange-500 font-bold shrink-0">•</span>
+            The parent or guardian is responsible for <strong>personally overseeing all work activities</strong> while the minor is on the job.
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-orange-500 font-bold shrink-0">•</span>
+            The parent or guardian must make all <strong>safety decisions</strong> and any other important decisions that arise during the engagement.
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-orange-500 font-bold shrink-0">•</span>
+            Minor contractors are <strong>limited to 20 hours of work per week</strong>. Once this limit is reached, the account will be locked automatically.
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-orange-500 font-bold shrink-0">•</span>
+            The account will remain locked for <strong>one full week after the last completed job</strong> before it is automatically unlocked.
+          </li>
+        </ul>
+        <div className="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-lg p-3 mt-2">
+          <input
+            type="checkbox"
+            id="minor_policy_confirm"
+            required
+            className="mt-0.5 w-4 h-4 accent-orange-600"
+          />
+          <label htmlFor="minor_policy_confirm" className="text-sm text-orange-900 cursor-pointer leading-relaxed">
+            I, the parent/guardian, confirm that I understand and accept responsibility for overseeing the minor's work, ensuring their safety, making necessary decisions on their behalf, and acknowledge the 20-hour weekly work limit.
+          </label>
+        </div>
+      </div>
+
       {allDocsUploaded ? (
         <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 font-medium">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
