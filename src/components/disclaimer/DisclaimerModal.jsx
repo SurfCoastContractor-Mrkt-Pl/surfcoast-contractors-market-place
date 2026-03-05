@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle 
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle 
 } from '@/components/ui/dialog';
 import { AlertTriangle, ShieldAlert, Loader2, CheckCircle } from 'lucide-react';
 
