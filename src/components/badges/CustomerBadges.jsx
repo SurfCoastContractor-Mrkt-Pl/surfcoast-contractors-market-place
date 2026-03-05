@@ -324,16 +324,16 @@ export default function CustomerBadges({ completedJobsCount = 0 }) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-        {CUSTOMER_BADGE_TIERS.map(badge => (
-          <BadgeItem
-            key={badge.tier}
-            badge={badge}
-            earned={completedJobsCount >= badge.threshold}
-            completedJobsCount={completedJobsCount}
-          />
-        ))}
-      </div>
-    </Card>
-  );
-}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 w-full">
+         {CUSTOMER_BADGE_TIERS.map(badge => (
+           <BadgeItem
+             key={badge.tier}
+             badge={badge}
+             earned={completedJobsCount >= badge.threshold}
+             completedJobsCount={completedJobsCount}
+           />
+         ))}
+       </div>
+      </Card>
+      );
+      }
