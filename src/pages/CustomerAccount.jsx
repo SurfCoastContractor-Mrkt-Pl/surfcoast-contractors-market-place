@@ -246,14 +246,23 @@ export default function CustomerAccount() {
                            </div>
                            <div className="flex items-center gap-2 shrink-0">
                              {p.status === 'confirmed' && (
-                               <Button 
-                                 size="sm" 
-                                 variant="outline" 
-                                 className="text-xs h-7 px-2"
-                                 onClick={() => base44.functions.invoke('generatePaymentInvoice', { paymentId: p.id })}
-                               >
-                                 📄 Invoice
-                               </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="text-xs h-7 px-2 gap-1"
+                                onClick={async () => {
+                                  const res = await base44.functions.invoke('generatePaymentInvoice', { paymentId: p.id });
+                                  const blob = new Blob([res.data], { type: 'application/pdf' });
+                                  const url = URL.createObjectURL(blob);
+                                  const a = document.createElement('a');
+                                  a.href = url;
+                                  a.download = `Invoice-${p.id.substring(0,8).toUpperCase()}.pdf`;
+                                  a.click();
+                                  URL.revokeObjectURL(url);
+                                }}
+                              >
+                                📄 Download Invoice
+                              </Button>
                              )}
                              <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
                                {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
