@@ -145,10 +145,11 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
         {loading && (
           <div className="flex justify-start">
             <div className="bg-white text-slate-900 px-4 py-3 rounded-lg rounded-bl-none border border-slate-200">
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin text-amber-500" />
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
