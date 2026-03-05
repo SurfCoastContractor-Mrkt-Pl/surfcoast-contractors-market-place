@@ -47,10 +47,19 @@ export default function SavedPaymentMethods({ userEmail }) {
     setLoading(true);
 
     try {
-      const setupData = await base44.functions.invoke('createSetupIntent', { userEmail });
+      const setupResponse = await base44.functions.invoke('createSetupIntent', { userEmail });
+      const setupData = setupResponse.data || setupResponse;
+      
+      if (!setupData.client_secret) {
+        setError('Failed to initialize payment form');
+        setLoading(false);
+        return;
+      }
+
       const key = await base44.functions.invoke('getStripePublicKey');
+      const keyData = key.data || key;
       const { loadStripe } = await import('@stripe/stripe-js');
-      const stripe = await loadStripe(key.publishableKey);
+      const stripe = await loadStripe(keyData.publishableKey);
 
       if (!stripe) {
         setError('Payment processing unavailable');
