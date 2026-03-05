@@ -116,17 +116,26 @@ export default function UserAccountManager({ user, userType, onClose }) {
         </div>
 
         <div className="border-t border-slate-200 pt-4 space-y-2">
-          {!user.identity_verified && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setAction('verify')}
-              className="w-full justify-start text-xs"
-            >
-              <CheckCircle2 className="w-3 h-3 mr-2" />
-              Verify Identity
-            </Button>
-          )}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={openEdit}
+            className="w-full justify-start text-xs"
+          >
+            Edit Profile
+          </Button>
+
+           {!user.identity_verified && (
+             <Button
+               size="sm"
+               variant="outline"
+               onClick={() => setAction('verify')}
+               className="w-full justify-start text-xs"
+             >
+               <CheckCircle2 className="w-3 h-3 mr-2" />
+               Verify Identity
+             </Button>
+           )}
 
           {user.account_locked ? (
             <Button
