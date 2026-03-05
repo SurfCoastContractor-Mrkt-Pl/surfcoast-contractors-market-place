@@ -120,6 +120,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             <DollarSign className="w-5 h-5 text-amber-500" />
             Platform Access Fee — $1.50
           </DialogTitle>
+          <DialogDescription>
+            Secure payment to unlock communication access on SurfCoast Contractor Market Place.
+          </DialogDescription>
         </DialogHeader>
 
         {alreadyPaid ? (

@@ -80,7 +80,7 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
                <p className="text-sm text-slate-500">You must read and sign before proceeding</p>
              </div>
            </div>
-           <p className="sr-only">Customer liability disclaimer that must be signed before proceeding</p>
+           <DialogDescription className="sr-only">Customer liability disclaimer that must be signed before proceeding</DialogDescription>
          </DialogHeader>
 
         {/* Warning Banner */}

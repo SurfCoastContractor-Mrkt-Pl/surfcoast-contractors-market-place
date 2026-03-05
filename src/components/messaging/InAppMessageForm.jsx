@@ -215,7 +215,9 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                 <MessageSquare className="w-5 h-5 text-amber-500" />
                 Message {recipientName}
               </DialogTitle>
-              <p className="sr-only">Payment required dialog for messaging</p>
+              <DialogDescription>
+                Payment required to unlock messaging with {recipientName}.
+              </DialogDescription>
             </DialogHeader>
             <div className="text-center py-8">
               <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
@@ -246,7 +248,9 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
               </span>
             )}
           </DialogTitle>
-          <p className="sr-only">Conversation with {recipientName}</p>
+          <DialogDescription>
+            In-app messaging session with {recipientName}.
+          </DialogDescription>
         </DialogHeader>
 
         {isSessionExpired ? (
