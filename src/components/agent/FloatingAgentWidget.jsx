@@ -10,7 +10,7 @@ I'm your AI Assistant. I can help you understand how the app works, our pricing,
 
 Ask me anything about the platform! 😊`;
 
-export default function FloatingAgentWidget({ open, onClose }) {
+export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [messages, setMessages] = useState([
     { role: 'agent', content: GREETING_MESSAGE }
   ]);
