@@ -1,7 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory storage for demo (use database in production)
-const verificationCodes = new Map();
+// Simple in-memory storage for verification codes (use database in production)
+const verificationStore = new Map();
 
 Deno.serve(async (req) => {
   try {
@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phone, code, and email required' }, { status: 400 });
     }
 
-    // Check if phone is associated with email
+    // Verify customer profile exists for this email
     const profiles = await base44.asServiceRole.entities.CustomerProfile.filter({
       email: userEmail
     });
@@ -22,23 +22,29 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Customer profile not found' }, { status: 404 });
     }
 
-    const profile = profiles[0];
     const normalizedPhone = phone.replace(/\D/g, '');
-    const profilePhone = profile.phone ? profile.phone.replace(/\D/g, '') : '';
+    const key = `${userEmail}-${normalizedPhone}`;
 
-    if (normalizedPhone !== profilePhone) {
-      return Response.json({ 
-        error: 'This phone number is not associated with this email' 
-      }, { status: 400 });
+    // Check stored verification code
+    const stored = verificationStore.get(key);
+    if (!stored) {
+      return Response.json({ error: 'Verification code expired or not sent' }, { status: 400 });
     }
 
-    // For now, accept any 6-digit code (in production, verify against stored code)
-    // This is a placeholder - implement proper verification with SMS provider
-    if (code.length === 6 && /^\d+$/.test(code)) {
-      return Response.json({ success: true, message: 'Phone verified' });
+    // Check if expired
+    if (Date.now() > stored.expiresAt) {
+      verificationStore.delete(key);
+      return Response.json({ error: 'Verification code expired' }, { status: 400 });
     }
 
-    return Response.json({ error: 'Invalid verification code' }, { status: 400 });
+    // Verify code matches
+    if (stored.code !== code) {
+      return Response.json({ error: 'Invalid verification code' }, { status: 400 });
+    }
+
+    // Code is valid, remove it from storage
+    verificationStore.delete(key);
+    return Response.json({ success: true, message: 'Phone verified successfully' });
   } catch (error) {
     console.error('Phone verification error:', error);
     return Response.json({ error: error.message }, { status: 500 });
