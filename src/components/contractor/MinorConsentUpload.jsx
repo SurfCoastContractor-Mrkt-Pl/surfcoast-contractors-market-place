@@ -68,10 +68,10 @@ const DocUploadField = ({ label, description, fieldKey, value, onUploaded, isPho
   );
 };
 
-const SectionHeader = ({ icon: Icon, title, subtitle, color = 'orange' }) => (
-  <div className={`flex items-center gap-2 pb-2 border-b border-${color}-200`}>
-    <div className={`w-7 h-7 rounded-lg bg-${color}-100 flex items-center justify-center shrink-0`}>
-      <Icon className={`w-4 h-4 text-${color}-600`} />
+const SectionHeader = ({ icon: IconComp, title, subtitle }) => (
+  <div className="flex items-center gap-2 pb-2 border-b border-orange-200">
+    <div className="w-7 h-7 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
+      <IconComp className="w-4 h-4 text-orange-600" />
     </div>
     <div>
       <h4 className="font-semibold text-slate-800 text-sm">{title}</h4>
