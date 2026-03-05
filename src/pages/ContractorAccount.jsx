@@ -347,13 +347,16 @@ export default function ContractorAccount() {
                   {/* Payment Methods */}
                   {userEmail && <SavedPaymentMethods userEmail={userEmail} />}
 
+                  {/* Privacy & Security Info */}
+                  <SecurityInfoPanel />
+
                   {/* Account Security */}
                   <Card className="p-6">
                     <div className="flex items-start gap-3 mb-4">
                       <Lock className="w-5 h-5 text-slate-600 mt-0.5" />
                       <div>
                         <h3 className="font-semibold text-slate-900">Account Security</h3>
-                        <p className="text-sm text-slate-500">Your login credentials are managed by ContractorHub's secure authentication system.</p>
+                        <p className="text-sm text-slate-500">Your login credentials are managed by SurfCoast's secure authentication system.</p>
                       </div>
                     </div>
                     <Button 
