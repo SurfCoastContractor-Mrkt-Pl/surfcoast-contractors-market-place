@@ -141,6 +141,9 @@ export default function MinorConsentUpload({ data, onChange, location = '', age 
         <span>All documents are kept strictly confidential and used only for identity and consent verification. They are never shared with customers.</span>
       </div>
 
+      {/* Guardian Disclaimer — must be acknowledged first */}
+      <MinorGuardianDisclaimer onAllAgreed={setDisclaimerAgreed} />
+
       {/* Location-specific labor laws */}
       <MinorLaborLaws location={location} age={age} />
 
