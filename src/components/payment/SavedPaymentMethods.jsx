@@ -199,6 +199,9 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         <div className="p-3 border border-slate-300 rounded-md bg-white">
           <CardElement
             options={{
+              wallets: {
+                link: 'never',
+              },
               style: {
                 base: {
                   fontSize: '16px',
