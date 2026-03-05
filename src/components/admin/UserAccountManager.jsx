@@ -89,8 +89,17 @@ export default function UserAccountManager({ user, userType, onClose }) {
       phone: user.phone || '',
       location: user.location || '',
       bio: user.bio || '',
+      photo_url: user.photo_url || '',
     });
     setAction('edit');
+  };
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const response = await base44.integrations.Core.UploadFile({ file });
+      setEditData({ ...editData, photo_url: response.file_url });
+    }
   };
 
   return (
