@@ -14,10 +14,11 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: email,
-      subject: 'Welcome to ContractorHub!',
+      from_name: 'SurfCoast Contractor Market Place',
+      subject: 'Welcome to SurfCoast Contractor Market Place!',
       body: `Hello ${full_name},
 
-Welcome to ContractorHub! We're excited to have you join our community of customers and contractors.
+Welcome to SurfCoast Contractor Market Place! We're excited to have you join our community of customers and contractors.
 
 Get started:
 • Browse skilled contractors in your area
@@ -28,7 +29,7 @@ If you have any questions, feel free to reach out.
 
 Happy hiring!
 
-ContractorHub Team`,
+SurfCoast Team`,
     });
 
     console.log(`Welcome email sent to ${email}`);

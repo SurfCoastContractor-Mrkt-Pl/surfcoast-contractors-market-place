@@ -56,8 +56,9 @@ Deno.serve(async (req) => {
     // Send email to customer requesting review
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: scope.customer_email,
+      from_name: 'SurfCoast Contractor Market Place',
       subject: `Review ${scope.contractor_name} for "${scope.job_title}"`,
-      body: `Hello ${scope.customer_name},\n\nThank you for completing your engagement with ${scope.contractor_name} on "${scope.job_title}".\n\nPlease take a moment to review the contractor's work on ContractorHub. Your feedback helps maintain quality on our platform.\n\nReview ID: ${review.id}\n\nContractorHub`,
+      body: `Hello ${scope.customer_name},\n\nThank you for completing your engagement with ${scope.contractor_name} on "${scope.job_title}".\n\nPlease take a moment to review the contractor's work on SurfCoast. Your feedback helps maintain quality on our platform.\n\nReview ID: ${review.id}\n\nSurfCoast Contractor Market Place`,
     });
 
     return Response.json({ success: true, reviewId: review.id });

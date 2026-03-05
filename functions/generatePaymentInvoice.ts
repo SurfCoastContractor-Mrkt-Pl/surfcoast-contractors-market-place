@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
 <body>
   <div class="container">
     <header>
-      <div class="logo">🏗️ ContractorHub</div>
+      <div class="logo">🏄 SurfCoast Contractor Market Place</div>
     </header>
 
     <h1 class="invoice-title">Invoice</h1>

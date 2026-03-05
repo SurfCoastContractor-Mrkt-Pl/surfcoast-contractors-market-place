@@ -53,8 +53,9 @@ Deno.serve(async (req) => {
           const p = payment[0];
           await base44.asServiceRole.integrations.Core.SendEmail({
             to: p.payer_email,
-            subject: 'Payment Confirmed — ContractorHub',
-            body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using ContractorHub!\n\n(Do not reply to this automated email)`,
+            from_name: 'SurfCoast Contractor Market Place',
+            subject: 'Payment Confirmed — SurfCoast',
+            body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using SurfCoast Contractor Market Place!\n\n(Do not reply to this automated email)`,
           });
         }
 
