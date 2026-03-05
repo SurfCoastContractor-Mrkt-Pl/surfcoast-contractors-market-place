@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload } from 'lucide-react';
+import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload, X } from 'lucide-react';
 
 const TRADES = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer',
@@ -221,12 +221,21 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           <h3 className="font-semibold text-slate-900 mb-4">Profile Photo</h3>
           <div className="flex items-center gap-4">
             {formData.photo_url && (
-              <img src={formData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+              <div className="relative">
+                <img src={formData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, photo_url: '' }))}
+                  className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
             )}
             <div className="flex-1">
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors">
                 <Upload className="w-5 h-5 text-slate-400 mb-2" />
-                <span className="text-sm font-medium text-slate-700">Upload Photo</span>
+                <span className="text-sm font-medium text-slate-700">{formData.photo_url ? 'Change' : 'Upload'} Photo</span>
                 <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
                 <input
                   type="file"

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Edit2, X } from 'lucide-react';
+import { Edit2, X, Upload } from 'lucide-react';
 
 export default function ContractorProfileEditor({ contractor }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -75,10 +75,20 @@ export default function ContractorProfileEditor({ contractor }) {
             <Label className="text-sm font-medium mb-3 block">Profile Photo</Label>
             <div className="mt-2 flex items-center gap-4">
               {editData.photo_url && (
-                <img src={editData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+                <div className="relative">
+                  <img src={editData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setEditData({ ...editData, photo_url: '' })}
+                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
               )}
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors flex-1">
-                <span className="text-sm font-medium text-slate-700">Upload Photo</span>
+                <Upload className="w-5 h-5 text-slate-400 mb-2" />
+                <span className="text-sm font-medium text-slate-700">{editData.photo_url ? 'Change' : 'Upload'} Photo</span>
                 <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
                 <input
                   type="file"
