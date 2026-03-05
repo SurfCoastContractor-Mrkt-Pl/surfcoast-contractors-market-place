@@ -16,10 +16,9 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [phone, setPhone] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [showVerification, setShowVerification] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [cardholderName, setCardholderName] = useState('');
 
