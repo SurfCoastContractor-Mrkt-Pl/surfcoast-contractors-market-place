@@ -156,11 +156,11 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                </div>
                <p className="leading-relaxed">
                  Any amounts, totals, costs, or prices agreed upon with the contractor for the scope of work or services to be performed are 
-                 <strong> solely between you and the contractor</strong>. ContractorHub is not a party to any payment arrangement between you and the contractor.
-               </p>
-               <p className="leading-relaxed">
-                 By proceeding, you acknowledge and agree that <strong>full payment to the contractor is due immediately upon completion of the agreed work</strong>. 
-                 ContractorHub does not process, hold, or mediate payments between customers and contractors.
+                 <strong> solely between you and the contractor</strong>. SurfCoast Contractor Market Place is not a party to any payment arrangement between you and the contractor.
+                 </p>
+                 <p className="leading-relaxed">
+                  By proceeding, you acknowledge and agree that <strong>full payment to the contractor is due immediately upon completion of the agreed work</strong>. 
+                  SurfCoast Contractor Market Place does not process, hold, or mediate payments between customers and contractors.
                </p>
              </div>
            )}
