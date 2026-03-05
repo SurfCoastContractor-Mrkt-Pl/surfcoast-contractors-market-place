@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, Save, HelpCircle } from 'lucide-react';
+import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const TRADES = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer',
@@ -32,6 +32,16 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     preferred_trades: [],
   });
   const [dobError, setDobError] = useState('');
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState('');
+
+  // Verify profile exists in database
+  const { data: verifiedProfile } = useQuery({
+    queryKey: ['verified-profile', userEmail],
+    queryFn: () => base44.entities.CustomerProfile.filter({ email: userEmail }),
+    enabled: !!userEmail,
+    select: (data) => data?.[0] || null,
+  });
 
   useEffect(() => {
     if (profile) {
@@ -59,7 +69,15 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       }
     },
     onSuccess: () => {
+      setSaveSuccess(true);
+      setSaveError('');
       queryClient.invalidateQueries({ queryKey: ['customer-profile', userEmail] });
+      queryClient.invalidateQueries({ queryKey: ['verified-profile', userEmail] });
+      setTimeout(() => setSaveSuccess(false), 5000);
+    },
+    onError: (error) => {
+      setSaveError(error.message || 'Failed to save profile');
+      setTimeout(() => setSaveError(''), 5000);
     },
   });
 
@@ -112,11 +130,21 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
   };
 
   return (
-    <Card className="p-6">
+    <Card className={`p-6 border-2 transition-colors ${verifiedProfile ? 'border-green-200 bg-green-50' : 'border-slate-200'}`}>
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Profile Setup</h2>
-          <p className="text-sm text-slate-500 mt-1">Complete your profile to get started</p>
+          <div className="flex items-center gap-2 mb-1">
+            <h2 className="text-lg font-semibold text-slate-900">Profile Setup</h2>
+            {verifiedProfile && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-100">
+                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                <span className="text-xs font-semibold text-green-700">VERIFIED</span>
+              </div>
+            )}
+          </div>
+          <p className="text-sm text-slate-500 mt-1">
+            {verifiedProfile ? '✓ Profile saved and verified in system' : 'Complete your profile to get started'}
+          </p>
         </div>
         <Button
           variant="ghost"
@@ -128,6 +156,26 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           Need Help?
         </Button>
       </div>
+
+      {saveSuccess && (
+        <div className="mb-4 flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-green-700">Profile Saved Successfully!</p>
+            <p className="text-xs text-green-600">Your profile has been verified and saved in the system.</p>
+          </div>
+        </div>
+      )}
+
+      {saveError && (
+        <div className="mb-4 flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-red-700">Save Failed</p>
+            <p className="text-xs text-red-600">{saveError}</p>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
@@ -255,13 +303,18 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
 
         <Button
           type="submit"
-          className="w-full bg-amber-500 hover:bg-amber-600"
-          disabled={updateMutation.isPending}
+          className={`w-full ${verifiedProfile ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-500 hover:bg-amber-600'}`}
+          disabled={updateMutation.isPending || !!verifiedProfile}
         >
           {updateMutation.isPending ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Saving...
+            </>
+          ) : verifiedProfile ? (
+            <>
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+              Profile Complete & Verified
             </>
           ) : (
             <>
@@ -270,10 +323,6 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
             </>
           )}
         </Button>
-
-        {updateMutation.isSuccess && (
-          <p className="text-sm text-green-600 text-center font-medium">✓ Profile saved successfully!</p>
-        )}
       </form>
     </Card>
   );
