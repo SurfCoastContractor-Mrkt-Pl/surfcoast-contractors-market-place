@@ -435,40 +435,7 @@ export default function ContractorAccount() {
             <ContactAdminPanel userEmail={userEmail} userName={contractor?.name} />
 
             {/* Delete Profile */}
-             <Card className="p-6 border-red-200 bg-red-50">
-              <h2 className="text-lg font-semibold text-red-800 mb-2">Delete Profile</h2>
-              <p className="text-sm text-red-700 mb-4">
-                Permanently delete your contractor profile. This cannot be undone. All your profile data will be removed from ContractorHub.
-              </p>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete My Profile
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Contractor Profile?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will permanently delete your profile for <strong>{contractor.name}</strong>. This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      className="bg-red-600 hover:bg-red-700"
-                      onClick={() => deleteMutation.mutate(contractor.email)}
-                    >
-                      Yes, Delete Permanently
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              {deleteMutation.isSuccess && (
-                <p className="text-green-700 text-sm mt-3 font-medium">Profile deleted successfully.</p>
-              )}
-            </Card>
+            <DeleteAccountSection userEmail={contractor.email} displayName={contractor.name} onDelete={() => deleteMutation.mutate(contractor.email)} />
           </>
           )}
           {!contractor && (

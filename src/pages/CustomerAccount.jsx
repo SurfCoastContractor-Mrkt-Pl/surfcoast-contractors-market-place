@@ -436,34 +436,7 @@ export default function CustomerAccount() {
             <ContactAdminPanel userEmail={userEmail} userName={customerProfile?.full_name} />
 
             {/* Delete Profile */}
-            <Card className="p-6 border-red-200 bg-red-50">
-             <h2 className="text-lg font-semibold text-red-800 mb-2">Delete My Account Data</h2>
-             <p className="text-sm text-red-700 mb-4">
-               Permanently delete all your account data including signed disclaimers, payment records, and activity. This cannot be undone.
-             </p>
-             <AlertDialog>
-               <AlertDialogTrigger asChild>
-                 <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
-                   <Trash2 className="w-4 h-4 mr-2" />
-                   Delete My Account Data
-                 </Button>
-               </AlertDialogTrigger>
-               <AlertDialogContent>
-                 <AlertDialogHeader>
-                   <AlertDialogTitle>Delete All Account Data?</AlertDialogTitle>
-                   <AlertDialogDescription>
-                     This will permanently delete all records associated with <strong>{userEmail}</strong>, including signed disclaimers and payment records. This cannot be undone.
-                   </AlertDialogDescription>
-                 </AlertDialogHeader>
-                 <AlertDialogFooter>
-                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                   <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={handleDeleteAll}>
-                     Yes, Delete Everything
-                   </AlertDialogAction>
-                 </AlertDialogFooter>
-               </AlertDialogContent>
-             </AlertDialog>
-            </Card>
+            <DeleteAccountSection userEmail={userEmail} onDelete={handleDeleteAll} />
           </div>
           </div>
           );
