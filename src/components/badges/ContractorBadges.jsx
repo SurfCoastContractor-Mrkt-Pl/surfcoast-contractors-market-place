@@ -7,7 +7,7 @@ export const BADGE_TIERS = [
     tier: 1,
     name: 'Newcomer',
     threshold: 1,
-    description: 'Completed first verified job',
+    description: 'Worked with first unique customer',
     iconColor: '#78716c',
     metalGradient: ['#a8a29e', '#78716c', '#57534e'],
     borderColor: '#a8a29e',
@@ -20,7 +20,7 @@ export const BADGE_TIERS = [
     tier: 2,
     name: 'Rising Star',
     threshold: 3,
-    description: 'Completed 3 verified jobs',
+    description: 'Worked with 3 unique customers',
     iconColor: '#b45309',
     metalGradient: ['#d97706', '#b45309', '#92400e'],
     borderColor: '#d97706',
@@ -33,7 +33,7 @@ export const BADGE_TIERS = [
     tier: 3,
     name: 'Reliable',
     threshold: 5,
-    description: 'Completed 5 verified jobs',
+    description: 'Worked with 5 unique customers',
     iconColor: '#b45309',
     metalGradient: ['#f59e0b', '#d97706', '#b45309'],
     borderColor: '#f59e0b',
@@ -46,7 +46,7 @@ export const BADGE_TIERS = [
     tier: 4,
     name: 'Skilled Tradesperson',
     threshold: 10,
-    description: 'Completed 10 verified jobs',
+    description: 'Worked with 10 unique customers',
     iconColor: '#15803d',
     metalGradient: ['#22c55e', '#16a34a', '#15803d'],
     borderColor: '#22c55e',
@@ -59,7 +59,7 @@ export const BADGE_TIERS = [
     tier: 5,
     name: 'Journeyman',
     threshold: 20,
-    description: 'Completed 20 verified jobs',
+    description: 'Worked with 20 unique customers',
     iconColor: '#0f766e',
     metalGradient: ['#14b8a6', '#0d9488', '#0f766e'],
     borderColor: '#14b8a6',
@@ -72,7 +72,7 @@ export const BADGE_TIERS = [
     tier: 6,
     name: 'Experienced Pro',
     threshold: 50,
-    description: 'Completed 50 verified jobs',
+    description: 'Worked with 50 unique customers',
     iconColor: '#1d4ed8',
     metalGradient: ['#3b82f6', '#2563eb', '#1d4ed8'],
     borderColor: '#3b82f6',
@@ -85,7 +85,7 @@ export const BADGE_TIERS = [
     tier: 7,
     name: 'Expert',
     threshold: 100,
-    description: 'Completed 100 verified jobs',
+    description: 'Worked with 100 unique customers',
     iconColor: '#6d28d9',
     metalGradient: ['#8b5cf6', '#7c3aed', '#6d28d9'],
     borderColor: '#8b5cf6',
@@ -98,7 +98,7 @@ export const BADGE_TIERS = [
     tier: 8,
     name: 'Master Craftsman',
     threshold: 150,
-    description: 'Completed 150 verified jobs',
+    description: 'Worked with 150 unique customers',
     iconColor: '#7e22ce',
     metalGradient: ['#a855f7', '#9333ea', '#7e22ce'],
     borderColor: '#a855f7',
@@ -111,7 +111,7 @@ export const BADGE_TIERS = [
     tier: 9,
     name: 'Elite Contractor',
     threshold: 200,
-    description: 'Completed 200 verified jobs',
+    description: 'Worked with 200 unique customers',
     iconColor: '#be123c',
     metalGradient: ['#f43f5e', '#e11d48', '#be123c'],
     borderColor: '#f43f5e',
@@ -124,7 +124,7 @@ export const BADGE_TIERS = [
     tier: 10,
     name: 'SurfCoast Legend',
     threshold: 300,
-    description: 'Completed 300 verified jobs on SurfCoast',
+    description: 'Worked with 300 unique customers on SurfCoast',
     iconColor: '#92400e',
     metalGradient: ['#fbbf24', '#f59e0b', '#d97706', '#b45309'],
     borderColor: '#f59e0b',
@@ -136,12 +136,12 @@ export const BADGE_TIERS = [
   },
 ];
 
-export function getEarnedBadges(completedJobsCount = 0) {
-  return BADGE_TIERS.filter(b => completedJobsCount >= b.threshold);
+export function getEarnedBadges(uniqueCustomersCount = 0) {
+  return BADGE_TIERS.filter(b => uniqueCustomersCount >= b.threshold);
 }
 
-export function getHighestBadge(completedJobsCount = 0) {
-  const earned = getEarnedBadges(completedJobsCount);
+export function getHighestBadge(uniqueCustomersCount = 0) {
+  const earned = getEarnedBadges(uniqueCustomersCount);
   return earned.length > 0 ? earned[earned.length - 1] : null;
 }
 
@@ -211,9 +211,9 @@ function BadgeIcon({ badge, size = 56, earned = true }) {
   );
 }
 
-function BadgeItem({ badge, earned, completedJobsCount }) {
+function BadgeItem({ badge, earned, uniqueCustomersCount }) {
   const progress = !earned
-    ? Math.min(100, Math.round((completedJobsCount / badge.threshold) * 100))
+    ? Math.min(100, Math.round((uniqueCustomersCount / badge.threshold) * 100))
     : 100;
 
   const isLegend = badge.isLegend;
@@ -263,10 +263,10 @@ function BadgeItem({ badge, earned, completedJobsCount }) {
   );
 }
 
-export default function ContractorBadges({ completedJobsCount = 0, compact = false }) {
-  const earned = getEarnedBadges(completedJobsCount);
-  const highest = getHighestBadge(completedJobsCount);
-  const next = BADGE_TIERS.find(b => b.threshold > completedJobsCount);
+export default function ContractorBadges({ completedJobsCount = 0, uniqueCustomersCount = 0, compact = false }) {
+  const earned = getEarnedBadges(uniqueCustomersCount);
+  const highest = getHighestBadge(uniqueCustomersCount);
+  const next = BADGE_TIERS.find(b => b.threshold > uniqueCustomersCount);
 
   if (compact) {
     if (!highest) return null;
@@ -291,7 +291,8 @@ export default function ContractorBadges({ completedJobsCount = 0, compact = fal
           <h2 className="text-lg font-semibold text-slate-900">Contractor Achievement Badges</h2>
         </div>
         <div className="text-sm text-slate-500">
-          <span className="font-semibold text-slate-700">{completedJobsCount}</span> verified jobs ·{' '}
+          <span className="font-semibold text-slate-700">{completedJobsCount}</span> total jobs ·{' '}
+          <span className="font-semibold text-blue-600">{uniqueCustomersCount}</span> unique customers ·{' '}
           <span className="font-semibold text-amber-600">{earned.length}</span>/10 badges
         </div>
       </div>
@@ -329,13 +330,13 @@ export default function ContractorBadges({ completedJobsCount = 0, compact = fal
         <div className="mb-5 p-3 bg-slate-50 border border-slate-200 rounded-xl">
           <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
             <span>Next: <strong className="text-slate-700">{next.name}</strong></span>
-            <span className="font-medium">{completedJobsCount}/{next.threshold} jobs</span>
+            <span className="font-medium">{uniqueCustomersCount}/{next.threshold} unique customers</span>
           </div>
           <div className="w-full bg-slate-200 rounded-full h-2">
             <div
               className="h-2 rounded-full transition-all"
               style={{
-                width: `${Math.min(100, Math.round((completedJobsCount / next.threshold) * 100))}%`,
+                width: `${Math.min(100, Math.round((uniqueCustomersCount / next.threshold) * 100))}%`,
                 background: next.metalGradient[0],
               }}
             />
@@ -348,8 +349,8 @@ export default function ContractorBadges({ completedJobsCount = 0, compact = fal
           <BadgeItem
             key={badge.tier}
             badge={badge}
-            earned={completedJobsCount >= badge.threshold}
-            completedJobsCount={completedJobsCount}
+            earned={uniqueCustomersCount >= badge.threshold}
+            uniqueCustomersCount={uniqueCustomersCount}
           />
         ))}
       </div>
