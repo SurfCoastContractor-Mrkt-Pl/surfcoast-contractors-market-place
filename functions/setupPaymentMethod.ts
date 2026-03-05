@@ -43,19 +43,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Verify phone matches (if phone was provided)
-    if (phone) {
-      const normalizedProvidedPhone = phone.replace(/\D/g, '');
-      const normalizedStripePhone = paymentMethod.billing_details?.phone?.replace(/\D/g, '') || '';
-      
-      if (normalizedProvidedPhone && normalizedStripePhone && normalizedProvidedPhone !== normalizedStripePhone) {
-        console.warn(`Phone mismatch for ${userEmail}: provided=${normalizedProvidedPhone}, Stripe=${normalizedStripePhone}`);
-        return Response.json(
-          { error: 'Phone number does not match your billing details. Payment method not saved.' },
-          { status: 400 }
-        );
-      }
-    }
+
 
     // Save payment method info to database
     const savedMethod = await base44.asServiceRole.entities.SavedPaymentMethod.create({
