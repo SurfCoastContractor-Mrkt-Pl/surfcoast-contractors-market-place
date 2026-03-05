@@ -1,0 +1,212 @@
+import React, { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Edit2, X } from 'lucide-react';
+
+export default function ContractorProfileEditor({ contractor }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({});
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (contractor) {
+      setEditData({
+        name: contractor.name || '',
+        email: contractor.email || '',
+        phone: contractor.phone || '',
+        location: contractor.location || '',
+        bio: contractor.bio || '',
+        hourly_rate: contractor.hourly_rate || '',
+        photo_url: contractor.photo_url || '',
+      });
+    }
+  }, [contractor]);
+
+  const updateMutation = useMutation({
+    mutationFn: async (data) => {
+      return base44.entities.Contractor.update(contractor.id, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
+      setIsEditing(false);
+    },
+  });
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const response = await base44.integrations.Core.UploadFile({ file });
+      setEditData({ ...editData, photo_url: response.file_url });
+    }
+  };
+
+  const handleSave = () => {
+    updateMutation.mutate(editData);
+  };
+
+  if (!contractor) return null;
+
+  return (
+    <Card className="p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-slate-900">Profile Information</h2>
+        {!isEditing && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsEditing(true)}
+            className="gap-1.5"
+          >
+            <Edit2 className="w-4 h-4" />
+            Edit
+          </Button>
+        )}
+      </div>
+
+      {isEditing ? (
+        <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+          {/* Profile Photo */}
+          <div>
+            <Label className="text-sm font-medium">Profile Photo</Label>
+            <div className="mt-2 flex items-center gap-4">
+              {editData.photo_url && (
+                <img src={editData.photo_url} alt="Profile" className="w-16 h-16 rounded-lg object-cover" />
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+                className="text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Name */}
+          <div>
+            <Label className="text-sm font-medium">Name</Label>
+            <Input
+              value={editData.name || ''}
+              onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <Label className="text-sm font-medium">Email</Label>
+            <Input
+              type="email"
+              value={editData.email || ''}
+              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Phone */}
+          <div>
+            <Label className="text-sm font-medium">Phone</Label>
+            <Input
+              type="tel"
+              value={editData.phone || ''}
+              onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <Label className="text-sm font-medium">Location</Label>
+            <Input
+              value={editData.location || ''}
+              onChange={(e) => setEditData({ ...editData, location: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Hourly Rate */}
+          <div>
+            <Label className="text-sm font-medium">Hourly Rate ($)</Label>
+            <Input
+              type="number"
+              value={editData.hourly_rate || ''}
+              onChange={(e) => setEditData({ ...editData, hourly_rate: parseFloat(e.target.value) })}
+              className="mt-1"
+              min="0"
+              step="5"
+            />
+          </div>
+
+          {/* Bio */}
+          <div>
+            <Label className="text-sm font-medium">Bio</Label>
+            <Textarea
+              value={editData.bio || ''}
+              onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
+              placeholder="Tell customers about yourself..."
+              rows={4}
+              className="mt-1 resize-none"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-2 pt-2">
+            <Button
+              onClick={handleSave}
+              className="bg-amber-500 hover:bg-amber-600"
+              disabled={updateMutation.isPending}
+            >
+              {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditing(false)}
+              disabled={updateMutation.isPending}
+            >
+              <X className="w-4 h-4 mr-1" />
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {contractor.photo_url && (
+            <div>
+              <img src={contractor.photo_url} alt={contractor.name} className="w-20 h-20 rounded-lg object-cover" />
+            </div>
+          )}
+          <div>
+            <div className="text-xs text-slate-500 font-medium">NAME</div>
+            <div className="text-sm text-slate-900">{contractor.name}</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">EMAIL</div>
+            <div className="text-sm text-slate-900">{contractor.email}</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">PHONE</div>
+            <div className="text-sm text-slate-900">{contractor.phone || '—'}</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">LOCATION</div>
+            <div className="text-sm text-slate-900">{contractor.location || '—'}</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">HOURLY RATE</div>
+            <div className="text-sm text-slate-900">${contractor.hourly_rate || '—'}/hr</div>
+          </div>
+          {contractor.bio && (
+            <div>
+              <div className="text-xs text-slate-500 font-medium">BIO</div>
+              <div className="text-sm text-slate-900 whitespace-pre-wrap">{contractor.bio}</div>
+            </div>
+          )}
+        </div>
+      )}
+    </Card>
+  );
+}
