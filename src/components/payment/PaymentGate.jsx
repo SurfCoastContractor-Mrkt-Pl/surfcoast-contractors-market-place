@@ -174,7 +174,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   <p className="mt-1">
                     {payerType === 'customer'
                       ? `This one-time fee unlocks communication with ${contractorName}. A separate $1.50 fee applies per contractor.`
-                      : 'This one-time fee activates your ability to receive and respond to customer inquiries on ContractorHub.'}
+                      : 'This one-time fee activates your ability to receive and respond to customer inquiries on SurfCoast Contractors.'}
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
                     Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe is coming soon — your fee is logged and a receipt will be emailed to you.

@@ -132,7 +132,7 @@ export default function AdminDashboard() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `contractorhub-fees-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `surfcoast-fees-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
               <ShieldCheck className="w-7 h-7 text-amber-400" />
             </div>
             <h1 className="text-xl font-bold text-slate-900">Admin Access</h1>
-            <p className="text-sm text-slate-500 mt-1">ContractorHub Fee Dashboard</p>
+            <p className="text-sm text-slate-500 mt-1">SurfCoast Contractor Market Place — Fee Dashboard</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
               <ShieldCheck className="w-7 h-7 text-amber-400" />
               Admin Fee Dashboard
             </h1>
-            <p className="text-slate-400 mt-1 text-sm">All platform access fees — ContractorHub</p>
+            <p className="text-slate-400 mt-1 text-sm">All platform access fees — SurfCoast Contractor Market Place</p>
           </div>
           <div className="flex items-center gap-3">
             <Button
