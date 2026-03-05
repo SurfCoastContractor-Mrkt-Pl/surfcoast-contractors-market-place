@@ -119,6 +119,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           userEmail,
           paymentMethodId,
           cardName: cardName || 'Unnamed Card',
+          cardholderName: cardholderName,
           phone: phone.replace(/\D/g, ''),
         });
         onSuccess();
