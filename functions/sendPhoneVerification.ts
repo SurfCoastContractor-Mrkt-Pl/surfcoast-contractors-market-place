@@ -1,5 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+// Simple in-memory storage for verification codes (use database in production)
+const verificationStore = new Map();
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -10,7 +13,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phone and email required' }, { status: 400 });
     }
 
-    // Check if phone number is associated with user's customer profile
+    // Verify customer profile exists for this email
     const profiles = await base44.asServiceRole.entities.CustomerProfile.filter({
       email: userEmail
     });
@@ -19,26 +22,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Customer profile not found' }, { status: 404 });
     }
 
-    const profile = profiles[0];
-    const normalizedPhone = phone.replace(/\D/g, '');
-    const profilePhone = profile.phone ? profile.phone.replace(/\D/g, '') : '';
-
-    if (normalizedPhone !== profilePhone) {
-      return Response.json({ 
-        error: 'This phone number is not associated with this email' 
-      }, { status: 400 });
-    }
-
-    // Generate 6-digit code and store temporarily
+    // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const normalizedPhone = phone.replace(/\D/g, '');
     
-    // In production, send SMS via Twilio or similar
-    // For now, log the code (in production, remove this)
-    console.log(`Verification code for ${phone}: ${code}`);
+    // Store code with 5 minute expiry
+    const expiresAt = Date.now() + 5 * 60 * 1000;
+    verificationStore.set(`${userEmail}-${normalizedPhone}`, { code, expiresAt });
 
-    // Store code with expiry (5 minutes) in a simple way
-    // In production, use a more robust storage solution
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    // In production, send SMS via Twilio or similar service
+    // For demo, log the code
+    console.log(`Verification code for ${userEmail} (${phone}): ${code}`);
 
     return Response.json({ 
       success: true, 
