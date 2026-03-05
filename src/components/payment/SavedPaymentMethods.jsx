@@ -99,7 +99,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       const { setupIntent, error: setupError } = await stripe.confirmCardSetup(clientSecret, {
         payment_method: {
           card: cardElement,
-          billing_details: { name: cardName || 'Card', phone: phone.replace(/\D/g, '') },
+          billing_details: { name: cardName || 'Card' },
         },
       });
 
@@ -112,7 +112,6 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           paymentMethodId,
           cardName: cardName || 'Unnamed Card',
           cardholderName: cardholderName,
-          phone: phone.replace(/\D/g, ''),
         });
         onSuccess();
       }
