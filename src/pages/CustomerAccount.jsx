@@ -213,7 +213,13 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="post-job" className="w-full">
-                <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name} />
+                {userEmail ? (
+                  <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name} />
+                ) : (
+                  <Card className="p-6 text-center text-slate-500">
+                    <p>Loading form...</p>
+                  </Card>
+                )}
               </TabsContent>
 
               <TabsContent value="payments">
