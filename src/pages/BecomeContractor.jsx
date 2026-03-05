@@ -243,6 +243,21 @@ export default function BecomeContractor() {
                   className="mt-1.5"
                 />
               </div>
+              <div>
+                <Label htmlFor="dob">Date of Birth * <span className="text-slate-400 font-normal">(must be 13+)</span></Label>
+                <Input
+                  id="dob"
+                  type="date"
+                  value={formData.date_of_birth}
+                  onChange={(e) => { handleChange('date_of_birth', e.target.value); setDobError(''); }}
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0]}
+                  className="mt-1.5"
+                />
+                {dobError && <p className="text-xs text-red-600 mt-1">{dobError}</p>}
+                {isMinor && (
+                  <p className="text-xs text-orange-600 mt-1 font-medium">⚠ Parental consent required — see section below</p>
+                )}
+              </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email">Email *</Label>
