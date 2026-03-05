@@ -54,19 +54,19 @@ export default function ContractorProfileEditor({ contractor }) {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-slate-900">Profile Information</h2>
-        {!isEditing && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditing(true)}
-            className="gap-1.5"
-          >
-            <Edit2 className="w-4 h-4" />
-            Edit
-          </Button>
-        )}
-      </div>
+         <h2 className="text-lg font-semibold text-slate-900">Profile Information</h2>
+         {!isEditing && (
+           <Button
+             variant="outline"
+             size="sm"
+             onClick={() => setIsEditing(true)}
+             className="gap-1.5"
+           >
+             <Edit2 className="w-4 h-4" />
+             Edit Profile
+           </Button>
+         )}
+       </div>
 
       {isEditing ? (
         <div className="space-y-4 max-h-96 overflow-y-auto pr-2">

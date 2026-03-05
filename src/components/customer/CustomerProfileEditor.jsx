@@ -161,7 +161,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           </p>
         </div>
         <div className="flex gap-2">
-          {!isEditing && verifiedProfile && (
+          {!isEditing && (
             <Button
               variant="outline"
               size="sm"
