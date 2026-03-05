@@ -2,7 +2,8 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Shield, Lock, CreditCard, Eye, Server, CheckCircle2 } from 'lucide-react';
 
-const SecurityFeature = ({ icon: Icon, title, description, color = "green" }) => {
+const SecurityFeature = ({ icon: IconComp, title, description, color = "green" }) => {
+  const Icon = IconComp;
   const colors = {
     green: { bg: 'bg-green-50', icon: 'text-green-600', border: 'border-green-200' },
     blue: { bg: 'bg-blue-50', icon: 'text-blue-600', border: 'border-blue-200' },
