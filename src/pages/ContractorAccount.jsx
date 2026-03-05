@@ -308,7 +308,7 @@ export default function ContractorAccount() {
               </TabsContent>
 
               <TabsContent value="badges">
-                <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} />
+                <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
               </TabsContent>
 
               <TabsContent value="fees">
@@ -424,7 +424,7 @@ export default function ContractorAccount() {
             </Tabs>
 
             {/* Contractor Badges */}
-             <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} />
+             <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
 
             {/* Delete Profile */}
              <Card className="p-6 border-red-200 bg-red-50">

@@ -202,8 +202,8 @@ export default function ContractorProfile() {
                       }
                     </Badge>
                     {/* Highest badge compact display */}
-                    {contractor.completed_jobs_count > 0 && (() => {
-                      const highest = getHighestBadge(contractor.completed_jobs_count);
+                    {contractor.unique_customers_count > 0 && (() => {
+                      const highest = getHighestBadge(contractor.unique_customers_count);
                       return highest ? (
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${highest.border} ${highest.bg} ${highest.text}`}>
                           {highest.emoji} {highest.name}
@@ -244,10 +244,22 @@ export default function ContractorProfile() {
                   {contractor.location}
                 </div>
                 {contractor.years_experience && (
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-slate-400" />
-                    {contractor.years_experience} years experience
-                  </div>
+                 <div className="flex items-center gap-1.5">
+                   <Clock className="w-4 h-4 text-slate-400" />
+                   {contractor.years_experience} years experience
+                 </div>
+                )}
+                {contractor.completed_jobs_count > 0 && (
+                 <div className="flex items-center gap-1.5">
+                   <Briefcase className="w-4 h-4 text-slate-400" />
+                   {contractor.completed_jobs_count} jobs completed
+                 </div>
+                )}
+                {contractor.unique_customers_count > 0 && (
+                 <div className="flex items-center gap-1.5">
+                   <CheckCircle2 className="w-4 h-4 text-slate-400" />
+                   {contractor.unique_customers_count} unique customers
+                 </div>
                 )}
               </div>
             </div>
@@ -341,7 +353,7 @@ export default function ContractorProfile() {
             />
 
             {/* Badges */}
-             <ContractorBadges completedJobsCount={contractor.completed_jobs_count || 0} />
+             <ContractorBadges completedJobsCount={contractor.completed_jobs_count || 0} uniqueCustomersCount={contractor.unique_customers_count || 0} />
 
             {/* Portfolio Projects */}
              <PortfolioDisplay contractorId={contractorId} isOwner={false} />
@@ -500,6 +512,18 @@ export default function ContractorProfile() {
                   <div className="flex justify-between">
                     <span className="text-slate-500">Experience</span>
                     <span className="font-medium">{contractor.years_experience} years</span>
+                  </div>
+                )}
+                {contractor.completed_jobs_count > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Jobs Completed</span>
+                    <span className="font-medium">{contractor.completed_jobs_count}</span>
+                  </div>
+                )}
+                {contractor.unique_customers_count > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Unique Customers</span>
+                    <span className="font-medium">{contractor.unique_customers_count}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
