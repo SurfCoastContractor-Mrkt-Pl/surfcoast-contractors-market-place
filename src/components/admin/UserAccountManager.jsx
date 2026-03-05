@@ -72,7 +72,7 @@ export default function UserAccountManager({ user, userType, onClose }) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="font-semibold text-slate-900 mb-1">{user.name || user.full_name}</h3>
-            <p className="text-sm text-slate-600">{user.email}</p>
+            <p className="text-xs text-slate-500 mb-1">{user.email}</p>
             <div className="flex gap-2 mt-2">
               {user.identity_verified && (
                 <Badge className="bg-green-100 text-green-700 text-xs">
