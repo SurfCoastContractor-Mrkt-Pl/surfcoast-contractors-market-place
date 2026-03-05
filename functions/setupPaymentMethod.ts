@@ -6,7 +6,7 @@ const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { userEmail, paymentMethodId, cardName } = await req.json();
+    const { userEmail, paymentMethodId, cardName, phone } = await req.json();
 
     if (!userEmail || !paymentMethodId) {
       return Response.json(
