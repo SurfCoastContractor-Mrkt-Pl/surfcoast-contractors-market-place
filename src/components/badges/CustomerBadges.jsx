@@ -260,12 +260,12 @@ function BadgeItem({ badge, earned, completedJobsCount }) {
 }
 
 export default function CustomerBadges({ completedJobsCount = 0 }) {
-  const earned = getEarnedCustomerBadges(completedJobsCount);
-  const highest = getHighestCustomerBadge(completedJobsCount);
-  const next = CUSTOMER_BADGE_TIERS.find(b => b.threshold > completedJobsCount);
+   const earned = getEarnedCustomerBadges(completedJobsCount);
+   const highest = getHighestCustomerBadge(completedJobsCount);
+   const next = CUSTOMER_BADGE_TIERS.find(b => b.threshold > completedJobsCount);
 
-  return (
-    <Card className="p-6">
+   return (
+     <Card className="p-6 w-full">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Heart className="w-5 h-5 text-rose-500" />
