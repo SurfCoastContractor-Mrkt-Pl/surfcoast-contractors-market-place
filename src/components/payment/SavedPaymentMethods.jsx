@@ -148,22 +148,25 @@ export default function SavedPaymentMethods({ userEmail }) {
   const [cardName, setCardName] = useState('');
   const [stripePromise, setStripePromise] = useState(null);
 
+  useEffect(() => {
+    const initStripe = async () => {
+      const keyResponse = await base44.functions.invoke('getStripePublicKey');
+      const keyData = keyResponse?.data || keyResponse;
+      const publishableKey = keyData?.publishableKey;
+
+      if (publishableKey) {
+        const stripe = await loadStripe(publishableKey);
+        setStripePromise(stripe);
+      }
+    };
+
+    initStripe();
+  }, []);
+
   const { data: paymentMethods, isLoading, refetch } = useQuery({
     queryKey: ['paymentMethods', userEmail],
     queryFn: () => base44.functions.invoke('getPaymentMethods', { userEmail }),
     enabled: !!userEmail,
-  });
-
-  const addPaymentMethodMutation = useMutation({
-    mutationFn: async (data) => {
-      return await base44.functions.invoke('setupPaymentMethod', data);
-    },
-    onSuccess: () => {
-      refetch();
-      setShowAddMethod(false);
-      setCardName('');
-      setError('');
-    },
   });
 
   const deletePaymentMethodMutation = useMutation({
