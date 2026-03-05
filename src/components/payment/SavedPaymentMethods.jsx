@@ -46,12 +46,11 @@ export default function SavedPaymentMethods({ userEmail }) {
     try {
       // Request setup intent from backend
       const setupData = await base44.functions.invoke('createSetupIntent', { userEmail });
-      setClientSecret(setupData.client_secret);
 
       // Load Stripe
       const { loadStripe } = await import('@stripe/stripe-js');
       const stripePublishableKey = await base44.functions.invoke('getStripePublicKey');
-      const stripe = await loadStripe(stripePublishableKey.publishable_key);
+      const stripe = await loadStripe(stripePublishableKey.publishableKey);
 
       if (!stripe) {
         alert('Payment processing is not available');
@@ -59,32 +58,16 @@ export default function SavedPaymentMethods({ userEmail }) {
         return;
       }
 
-      const { elements, confirmCardSetup } = await import('@stripe/stripe-js');
-      
-      // Create card element and confirm setup
-      const result = await confirmCardSetup(setupData.client_secret, {
-        payment_method: {
-          card: {
-            // In a real implementation, you'd use Stripe Elements here
-            // For now, we'll use the backend to handle card details securely
-          },
-          billing_details: {
-            name: cardName || 'Unnamed Card',
-          },
-        },
+      // Redirect to Stripe's hosted payment page for setup
+      const { error } = await stripe.confirmCardSetup(setupData.client_secret, {
+        return_url: window.location.origin,
       });
 
-      if (result.error) {
-        alert(result.error.message);
-      } else {
-        // Save payment method info to app
-        await addPaymentMethodMutation.mutateAsync({
-          userEmail,
-          paymentMethodId: result.setupIntent.payment_method,
-          cardName: cardName || 'Unnamed Card',
-        });
+      if (error) {
+        alert('Error: ' + error.message);
       }
     } catch (error) {
+      console.error('Payment method error:', error);
       alert('Error adding payment method: ' + error.message);
     } finally {
       setLoading(false);
