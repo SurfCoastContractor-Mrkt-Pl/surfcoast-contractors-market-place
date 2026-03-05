@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload } from 'lucide-react';
 
 const TRADES = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer',
@@ -29,6 +29,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     date_of_birth: '',
     location: '',
     bio: '',
+    photo_url: '',
     preferred_contractor_types: [],
     preferred_trades: [],
   });
@@ -52,6 +53,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         date_of_birth: profile.date_of_birth || '',
         location: profile.location || '',
         bio: profile.bio || '',
+        photo_url: profile.photo_url || '',
         preferred_contractor_types: profile.preferred_contractor_types || [],
         preferred_trades: profile.preferred_trades || [],
       });
@@ -143,6 +145,14 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     }));
   };
 
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const response = await base44.integrations.Core.UploadFile({ file });
+      setFormData(prev => ({ ...prev, photo_url: response.file_url }));
+    }
+  };
+
   return (
     <Card className={`p-6 border-2 transition-colors ${verifiedProfile ? 'border-green-200 bg-green-50' : 'border-slate-200'}`}>
       <div className="flex items-start justify-between mb-6">
@@ -206,6 +216,29 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
 
       {!verifiedProfile || isEditing ? (
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Profile Photo */}
+        <div>
+          <h3 className="font-semibold text-slate-900 mb-4">Profile Photo</h3>
+          <div className="flex items-center gap-4">
+            {formData.photo_url && (
+              <img src={formData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+            )}
+            <div className="flex-1">
+              <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors">
+                <Upload className="w-5 h-5 text-slate-400 mb-2" />
+                <span className="text-sm font-medium text-slate-700">Upload Photo</span>
+                <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+
         {/* Basic Info */}
         <div>
           <h3 className="font-semibold text-slate-900 mb-4">Personal Information</h3>
@@ -353,10 +386,16 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         </Button>
       </form>
       ) : (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Personal Information</h3>
-            <div className="space-y-3">
+       <div className="space-y-6">
+         {formData.photo_url && (
+           <div>
+             <h3 className="font-semibold text-slate-900 mb-4">Profile Photo</h3>
+             <img src={formData.photo_url} alt="Profile" className="w-24 h-24 rounded-lg object-cover" />
+           </div>
+         )}
+         <div>
+           <h3 className="font-semibold text-slate-900 mb-4">Personal Information</h3>
+           <div className="space-y-3">
               <div>
                 <div className="text-xs text-slate-500 font-medium">FULL NAME</div>
                 <div className="text-sm text-slate-900">{formData.full_name}</div>
