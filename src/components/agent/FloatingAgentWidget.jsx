@@ -38,25 +38,42 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   };
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !conversation) return;
 
     const userMsg = input;
-    const userMessage = { role: 'user', content: userMsg };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInput('');
     setLoading(true);
 
-    try {
-      if (!conversation) throw new Error('No conversation');
-      const updatedConv = await base44.agents.addMessage(conversation, { role: 'user', content: userMsg });
-      setConversation(updatedConv);
-      const lastMsg = updatedConv?.messages?.slice().reverse().find(m => m.role === 'agent' || m.role === 'assistant');
-      if (lastMsg) {
-        setMessages(prev => [...prev, { role: 'agent', content: lastMsg.content }]);
+    // Subscribe to streaming updates before sending
+    const unsubscribe = base44.agents.subscribeToConversation(conversation.id, (data) => {
+      const agentMessages = (data.messages || []).filter(m => m.role === 'agent' || m.role === 'assistant');
+      const lastAgent = agentMessages[agentMessages.length - 1];
+      if (lastAgent?.content) {
+        setMessages(prev => {
+          // Replace last agent message if streaming, otherwise append
+          const last = prev[prev.length - 1];
+          if (last?.role === 'agent' && last?._streaming) {
+            return [...prev.slice(0, -1), { role: 'agent', content: lastAgent.content, _streaming: true }];
+          }
+          return [...prev, { role: 'agent', content: lastAgent.content, _streaming: true }];
+        });
       }
-      setLoading(false);
+      // Stop loading once we have content
+      if (lastAgent?.content) setLoading(false);
+    });
+
+    try {
+      await base44.agents.addMessage(conversation, { role: 'user', content: userMsg });
+      // Finalize message (remove _streaming flag) after a short delay
+      setTimeout(() => {
+        setMessages(prev => prev.map(m => m._streaming ? { ...m, _streaming: false } : m));
+        setLoading(false);
+        unsubscribe();
+      }, 1000);
     } catch (error) {
       console.error('Failed to send message:', error);
+      unsubscribe();
       setMessages(prev => [...prev, { role: 'agent', content: "Sorry, I couldn't process that. Please try again." }]);
       setLoading(false);
     }
