@@ -142,6 +142,54 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       </div>
 
       <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          Phone Number {phoneVerified && <span className="text-green-600">✓ Verified</span>}
+        </label>
+        <div className="flex gap-2">
+          <Input
+            type="tel"
+            placeholder="(555) 123-4567"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            disabled={loading || verifying || phoneVerified}
+          />
+          {!phoneVerified && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={sendVerificationCode}
+              disabled={loading || verifying}
+            >
+              {verifying ? 'Sending...' : 'Send Code'}
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {showVerification && !phoneVerified && (
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Verification Code</label>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter 4-digit code"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value.slice(0, 6))}
+              disabled={loading || verifying}
+              maxLength="6"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={verifyCode}
+              disabled={loading || verifying || verificationCode.length < 4}
+            >
+              {verifying ? 'Verifying...' : 'Verify'}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <div>
         <label className="block text-sm font-medium text-slate-700 mb-2">Card Details</label>
         <div className="p-3 border border-slate-300 rounded-md bg-white">
           <CardElement
@@ -159,7 +207,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
                 },
               },
             }}
-            disabled={loading}
+            disabled={loading || !phoneVerified}
           />
         </div>
       </div>
