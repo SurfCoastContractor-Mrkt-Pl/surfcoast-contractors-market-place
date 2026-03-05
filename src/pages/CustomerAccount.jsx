@@ -212,8 +212,14 @@ export default function CustomerAccount() {
                 <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count ?? 0} />
               </TabsContent>
 
-              <TabsContent value="post-job" className="w-full min-h-screen">
-                <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name} />
+              <TabsContent value="post-job" className="w-full min-h-screen p-6">
+                {isLoading ? (
+                  <Card className="p-6 text-center text-slate-500">
+                    <p>Loading form...</p>
+                  </Card>
+                ) : (
+                  <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name || 'Customer'} />
+                )}
               </TabsContent>
 
               <TabsContent value="payments">
