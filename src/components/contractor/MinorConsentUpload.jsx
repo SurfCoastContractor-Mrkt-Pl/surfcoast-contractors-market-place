@@ -308,9 +308,26 @@ export default function MinorConsentUpload({ data, onChange, location = '', age 
       </div>{/* end locked section */}
 
       {allDocsUploaded ? (
-        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 font-medium">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
-          All 7 required items submitted. Your application will be reviewed by our admin team.
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 font-medium">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            All 7 required items submitted. Your application is now pending admin review.
+          </div>
+          <div className="rounded-xl border-2 border-yellow-400 bg-yellow-50 p-4 space-y-2">
+            <h4 className="font-bold text-yellow-900 flex items-center gap-2 text-sm">
+              <ShieldAlert className="w-4 h-4 text-yellow-700 shrink-0" />
+              Account Hold — Pending Verification
+            </h4>
+            <p className="text-sm text-yellow-800 leading-relaxed">
+              Your minor contractor profile will be placed <strong>on hold</strong> until our admin team has fully verified the identity of the minor and the parent/guardian. This includes reviewing all submitted documents and confirming all information is accurate and valid.
+            </p>
+            <p className="text-sm text-yellow-800 leading-relaxed">
+              <strong>If verification cannot be successfully completed</strong>, the account will be <strong>permanently deleted</strong> by our admin team without further notice. Please ensure all documents are clear, legible, and match the information provided.
+            </p>
+            <p className="text-xs text-yellow-700 mt-1 italic">
+              You will be contacted via the parent/guardian email provided once a decision has been made.
+            </p>
+          </div>
         </div>
       ) : (
         <div className="flex items-center gap-2 p-3 bg-orange-100 border border-orange-300 rounded-lg text-sm text-orange-800">
