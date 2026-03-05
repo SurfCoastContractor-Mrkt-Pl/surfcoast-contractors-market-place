@@ -203,7 +203,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
                 },
               },
             }}
-            disabled={loading || !phoneVerified}
+            disabled={loading || !emailVerified}
           />
         </div>
       </div>
