@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, HelpCircle, Plus } from 'lucide-react';
+import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import JobCloseout from '@/components/scopeofwork/JobCloseout.jsx';
