@@ -32,7 +32,7 @@ const contractorLinks = [
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
-  const [agentOpen, setAgentOpen] = useState(true);
+  const [agentOpen, setAgentOpen] = useState(false);
   const [isContractor, setIsContractor] = useState(null);
 
 
