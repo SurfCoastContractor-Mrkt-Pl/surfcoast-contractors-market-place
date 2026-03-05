@@ -14,6 +14,7 @@ import { AlertCircle, CheckCircle2, Lock, Unlock, Key, AlertTriangle } from 'luc
 export default function UserAccountManager({ user, userType, onClose }) {
   const [action, setAction] = useState(null);
   const [data, setData] = useState({});
+  const [editData, setEditData] = useState({});
   const queryClient = useQueryClient();
 
   const verifyMutation = useMutation({
@@ -65,6 +66,32 @@ export default function UserAccountManager({ user, userType, onClose }) {
       setData({});
     }
   });
+
+  const editMutation = useMutation({
+    mutationFn: async () => {
+      if (userType === 'contractor') {
+        return base44.asServiceRole.entities.Contractor.update(user.id, editData);
+      } else {
+        return base44.asServiceRole.entities.CustomerProfile.update(user.id, editData);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-contractors', 'admin-customers'] });
+      setAction(null);
+      setEditData({});
+    }
+  });
+
+  const openEdit = () => {
+    setEditData({
+      name: user.name || user.full_name || '',
+      email: user.email || '',
+      phone: user.phone || '',
+      location: user.location || '',
+      bio: user.bio || '',
+    });
+    setAction('edit');
+  };
 
   return (
     <>
