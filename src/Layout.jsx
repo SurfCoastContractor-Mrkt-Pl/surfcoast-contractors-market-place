@@ -240,7 +240,7 @@ export default function Layout({ children, currentPageName }) {
             )}
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
-            <span>© {new Date().getFullYear()} ContractorHub. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors">
                 Terms & Policies
