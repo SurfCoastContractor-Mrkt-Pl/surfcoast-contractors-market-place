@@ -49,12 +49,18 @@ export default function ContractorProfile() {
    const [showQuoteForm, setShowQuoteForm] = useState(false);
    const [showQuoteFeeDisclosure, setShowQuoteFeeDisclosure] = useState(false);
 
-   // Check user authentication
+   // Check user authentication or admin preview mode
    useEffect(() => {
-     base44.auth.me()
-       .then(user => setUserAuth(user))
-       .catch(() => setUserAuth(null))
-       .finally(() => setAuthLoading(false));
+     const isAdminPreview = urlParams.get('admin') === 'true';
+     if (isAdminPreview) {
+       setUserAuth({ id: 'admin-preview', full_name: 'Admin' });
+       setAuthLoading(false);
+     } else {
+       base44.auth.me()
+         .then(user => setUserAuth(user))
+         .catch(() => setUserAuth(null))
+         .finally(() => setAuthLoading(false));
+     }
    }, []);
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
