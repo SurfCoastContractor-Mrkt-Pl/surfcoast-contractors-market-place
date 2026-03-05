@@ -135,10 +135,10 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           <p className="text-sm font-semibold text-slate-700">Please acknowledge each of the following:</p>
 
           {[
-            { key: 'damages', label: 'I understand that once work has started, any damages are my responsibility as the customer, not the contractor\'s or ContractorHub\'s.' },
+            { key: 'damages', label: 'I understand that once work has started, any damages are my responsibility as the customer, not the contractor\'s or SurfCoast Contractor Market Place\'s.' },
             { key: 'vetting', label: 'I understand it is my sole responsibility to vet, verify, and research any contractor before accepting or awarding work.' },
-            { key: 'responsibility', label: 'I understand ContractorHub is a platform only and does not endorse, employ, or guarantee any contractor\'s work or qualifications.' },
-            { key: 'solo', label: 'I understand that all contractors on ContractorHub are individual freelancers only. Companies, crews, or multi-person entities are strictly prohibited and will be banned.' },
+            { key: 'responsibility', label: 'I understand SurfCoast Contractor Market Place is a platform only and does not endorse, employ, or guarantee any contractor\'s work or qualifications.' },
+            { key: 'solo', label: 'I understand that all contractors on SurfCoast Contractor Market Place are individual freelancers only. Companies, crews, or multi-person entities are strictly prohibited and will be banned.' },
             { key: 'legal', label: 'I understand this disclaimer is a legally binding acknowledgment and I agree to all terms stated above.' },
           ].map(item => (
             <div key={item.key} className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
