@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Loader2, Upload, CheckCircle2, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { Loader2, Upload, CheckCircle2, AlertTriangle, ShieldAlert, Camera, FileText, Home, User } from 'lucide-react';
 
-const DocUploadField = ({ label, description, fieldKey, value, onUploaded }) => {
+const DocUploadField = ({ label, description, fieldKey, value, onUploaded, isPhoto = false }) => {
   const [uploading, setUploading] = useState(false);
 
   const handleUpload = async (e) => {
@@ -16,6 +16,10 @@ const DocUploadField = ({ label, description, fieldKey, value, onUploaded }) => 
     setUploading(false);
   };
 
+  const accept = isPhoto ? 'image/*' : 'image/*,.pdf';
+  const uploadLabel = isPhoto ? 'Upload Photo' : 'Upload Document';
+  const subLabel = isPhoto ? 'JPG, PNG accepted' : 'JPG, PNG, PDF accepted';
+
   return (
     <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-2">
       <Label className="font-semibold text-slate-800 flex items-center gap-1">
@@ -24,14 +28,27 @@ const DocUploadField = ({ label, description, fieldKey, value, onUploaded }) => 
       </Label>
       {description && <p className="text-xs text-slate-500">{description}</p>}
       {value ? (
-        <div className="relative group">
-          <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span className="truncate">Document uploaded</span>
-          </div>
-          <label className="absolute inset-0 cursor-pointer opacity-0">
-            <input type="file" accept="image/*,.pdf" onChange={handleUpload} className="hidden" />
-          </label>
+        <div className="relative">
+          {isPhoto ? (
+            <div className="relative">
+              <img src={value} alt="Uploaded" className="w-32 h-32 object-cover rounded-lg border border-green-200" />
+              <label className="absolute inset-0 cursor-pointer opacity-0">
+                <input type="file" accept={accept} onChange={handleUpload} className="hidden" />
+              </label>
+              <div className="mt-1 flex items-center gap-1.5 text-xs text-green-700">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Photo uploaded — click to replace
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span className="truncate">Document uploaded</span>
+              <label className="ml-auto cursor-pointer text-xs text-slate-400 hover:text-slate-600 underline">
+                Replace
+                <input type="file" accept={accept} onChange={handleUpload} className="hidden" />
+              </label>
+            </div>
+          )}
         </div>
       ) : (
         <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-orange-300 rounded-xl cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors">
@@ -39,17 +56,29 @@ const DocUploadField = ({ label, description, fieldKey, value, onUploaded }) => 
             <Loader2 className="w-5 h-5 animate-spin text-orange-500" />
           ) : (
             <>
-              <Upload className="w-5 h-5 text-orange-400 mb-1" />
-              <span className="text-sm text-orange-600 font-medium">Upload Document</span>
-              <span className="text-xs text-orange-400">JPG, PNG, PDF accepted</span>
+              {isPhoto ? <Camera className="w-5 h-5 text-orange-400 mb-1" /> : <Upload className="w-5 h-5 text-orange-400 mb-1" />}
+              <span className="text-sm text-orange-600 font-medium">{uploadLabel}</span>
+              <span className="text-xs text-orange-400">{subLabel}</span>
             </>
           )}
-          <input type="file" accept="image/*,.pdf" onChange={handleUpload} className="hidden" />
+          <input type="file" accept={accept} onChange={handleUpload} className="hidden" />
         </label>
       )}
     </div>
   );
 };
+
+const SectionHeader = ({ icon: Icon, title, subtitle, color = 'orange' }) => (
+  <div className={`flex items-center gap-2 pb-2 border-b border-${color}-200`}>
+    <div className={`w-7 h-7 rounded-lg bg-${color}-100 flex items-center justify-center shrink-0`}>
+      <Icon className={`w-4 h-4 text-${color}-600`} />
+    </div>
+    <div>
+      <h4 className="font-semibold text-slate-800 text-sm">{title}</h4>
+      {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
+    </div>
+  </div>
+);
 
 export default function MinorConsentUpload({ data, onChange }) {
   const handleDoc = (field, url) => {
@@ -61,42 +90,83 @@ export default function MinorConsentUpload({ data, onChange }) {
   };
 
   const allDocsUploaded =
-    data?.parental_consent_form_url &&
+    data?.child_selfie_url &&
     data?.child_id_url &&
+    data?.parental_consent_form_url &&
     data?.parent_id_url &&
     data?.proof_of_relationship_url &&
     data?.child_proof_of_residence_url &&
     data?.parent_proof_of_residence_url;
 
+  const completedCount = [
+    data?.child_selfie_url,
+    data?.child_id_url,
+    data?.parental_consent_form_url,
+    data?.parent_id_url,
+    data?.proof_of_relationship_url,
+    data?.child_proof_of_residence_url,
+    data?.parent_proof_of_residence_url,
+  ].filter(Boolean).length;
+
   return (
-    <div className="p-5 rounded-xl border-2 border-orange-300 bg-orange-50 space-y-5">
+    <div className="p-5 rounded-xl border-2 border-orange-300 bg-orange-50 space-y-6">
       {/* Header */}
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
           <ShieldAlert className="w-5 h-5 text-orange-600" />
         </div>
-        <div>
-          <h3 className="font-bold text-orange-900">Parental Consent Required — Minor Contractor</h3>
+        <div className="flex-1">
+          <h3 className="font-bold text-orange-900">Parental / Guardian Consent Required</h3>
           <p className="text-sm text-orange-700 mt-1 leading-relaxed">
-            Because you are under 18, you must provide parental/guardian consent and all required documentation before your profile can be approved. 
-            All documents will be reviewed by our admin team.
+            Because you are under 18, your parent or legal guardian must provide consent and all required documentation before your profile can be approved.
           </p>
+          <div className="mt-2 flex items-center gap-2">
+            <div className="flex-1 h-2 rounded-full bg-orange-200">
+              <div
+                className="h-2 rounded-full bg-orange-500 transition-all"
+                style={{ width: `${(completedCount / 7) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs font-semibold text-orange-700">{completedCount}/7 completed</span>
+          </div>
         </div>
       </div>
 
       <div className="bg-amber-100 border border-amber-300 rounded-lg p-3 flex items-start gap-2 text-xs text-amber-800">
         <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-        <span>All uploaded documents are kept confidential and used only for identity and consent verification. They will not be shared with customers.</span>
+        <span>All documents are kept strictly confidential and used only for identity and consent verification. They are never shared with customers.</span>
       </div>
 
-      {/* Parent/Guardian Info */}
+      {/* Section 1: Child Identity */}
       <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
-        <h4 className="font-semibold text-slate-800">Parent / Guardian Information</h4>
+        <SectionHeader icon={User} title="Minor's Identity Verification" subtitle="Selfie + government-issued ID to confirm identity" />
+
+        <DocUploadField
+          label="Minor's Selfie / Face Photo"
+          description="A clear, unobstructed photo of the minor's face taken in good lighting. Used to match against their ID document."
+          fieldKey="child_selfie_url"
+          value={data?.child_selfie_url}
+          onUploaded={handleDoc}
+          isPhoto={true}
+        />
+
+        <DocUploadField
+          label="Minor's Government-Issued ID or Birth Certificate"
+          description="School ID, passport, state ID, or birth certificate clearly showing the minor's full name and date of birth."
+          fieldKey="child_id_url"
+          value={data?.child_id_url}
+          onUploaded={handleDoc}
+        />
+      </div>
+
+      {/* Section 2: Parent/Guardian Info */}
+      <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+        <SectionHeader icon={FileText} title="Parent / Guardian Information" subtitle="Legal name and contact details" />
         <div>
           <Label htmlFor="parent_name">Parent/Guardian Full Legal Name *</Label>
           <Input
             id="parent_name"
-            placeholder="Full legal name"
+            placeholder="As it appears on official ID"
             value={data?.parent_name || ''}
             onChange={(e) => handleInfo('parent_name', e.target.value)}
             className="mt-1.5"
@@ -128,45 +198,42 @@ export default function MinorConsentUpload({ data, onChange }) {
         </div>
       </div>
 
-      {/* Document Uploads */}
-      <div className="space-y-3">
-        <h4 className="font-semibold text-slate-800">Required Documents</h4>
+      {/* Section 3: Parent/Guardian Documents */}
+      <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+        <SectionHeader icon={FileText} title="Parent / Guardian Documentation" subtitle="ID, consent form, and proof of relationship" />
 
         <DocUploadField
           label="Signed Parental Consent Form"
-          description="A signed document from your parent/guardian consenting to your participation on this platform as a contractor."
+          description="A signed document from the parent/guardian explicitly consenting to the minor's participation as a contractor on this platform."
           fieldKey="parental_consent_form_url"
           value={data?.parental_consent_form_url}
           onUploaded={handleDoc}
         />
 
         <DocUploadField
-          label="Child's Government-Issued ID or Birth Certificate"
-          description="School ID, passport, or birth certificate showing the child's name and date of birth."
-          fieldKey="child_id_url"
-          value={data?.child_id_url}
-          onUploaded={handleDoc}
-        />
-
-        <DocUploadField
           label="Parent/Guardian Government-Issued ID or Driver's License"
-          description="Clear photo of the parent/guardian's ID. All four corners must be visible."
+          description="Clear photo of the parent or guardian's government-issued photo ID or driver's license. All four corners must be visible."
           fieldKey="parent_id_url"
           value={data?.parent_id_url}
           onUploaded={handleDoc}
         />
 
         <DocUploadField
-          label="Proof of Parental/Guardian Relationship"
-          description="Birth certificate showing parent-child relationship, adoption papers, or legal guardianship documents."
+          label="Legal Guardianship or Proof of Parental Relationship"
+          description="If a legal guardian (not biological parent): court-issued guardianship order or legal guardianship certificate. If a parent: birth certificate showing parent-child relationship or adoption papers."
           fieldKey="proof_of_relationship_url"
           value={data?.proof_of_relationship_url}
           onUploaded={handleDoc}
         />
+      </div>
+
+      {/* Section 4: Proof of Residence */}
+      <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+        <SectionHeader icon={Home} title="Proof of Residence" subtitle="Required for both the minor and the parent/guardian" />
 
         <DocUploadField
-          label="Child's Proof of Residence"
-          description="Utility bill, bank statement, or official mail showing the child's current residential address."
+          label="Minor's Proof of Residence"
+          description="A utility bill, bank statement, school enrollment letter, or government mail dated within the last 90 days showing the minor's current residential address."
           fieldKey="child_proof_of_residence_url"
           value={data?.child_proof_of_residence_url}
           onUploaded={handleDoc}
@@ -174,17 +241,22 @@ export default function MinorConsentUpload({ data, onChange }) {
 
         <DocUploadField
           label="Parent/Guardian's Proof of Residence"
-          description="Utility bill, bank statement, or official mail showing the parent/guardian's current residential address."
+          description="A utility bill, bank statement, lease agreement, or government mail dated within the last 90 days showing the parent/guardian's current residential address."
           fieldKey="parent_proof_of_residence_url"
           value={data?.parent_proof_of_residence_url}
           onUploaded={handleDoc}
         />
       </div>
 
-      {allDocsUploaded && (
-        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+      {allDocsUploaded ? (
+        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 font-medium">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
-          All required documents uploaded. Your profile will be reviewed by our admin team.
+          All 7 required items submitted. Your application will be reviewed by our admin team.
+        </div>
+      ) : (
+        <div className="flex items-center gap-2 p-3 bg-orange-100 border border-orange-300 rounded-lg text-sm text-orange-800">
+          <AlertTriangle className="w-4 h-4 shrink-0" />
+          {7 - completedCount} item(s) still required before you can submit.
         </div>
       )}
     </div>
