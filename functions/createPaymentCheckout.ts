@@ -42,8 +42,8 @@ Deno.serve(async (req) => {
             price_data: {
               currency: 'usd',
               product_data: {
-                name: 'ContractorHub Platform Access Fee',
-                description: 'One-time platform access fee for ContractorHub',
+                name: 'SurfCoast Platform Access Fee',
+                description: 'One-time platform access fee for SurfCoast Contractor Market Place',
               },
               unit_amount: 150, // $1.50 in cents
             },
