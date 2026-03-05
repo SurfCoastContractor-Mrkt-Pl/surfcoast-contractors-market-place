@@ -356,7 +356,7 @@ export default function SavedPaymentMethods({ userEmail }) {
       </div>
 
       <Dialog open={showAddMethod} onOpenChange={setShowAddMethod}>
-        <DialogContent aria-describedby="add-method-description">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Add Payment Method</DialogTitle>
           </DialogHeader>
