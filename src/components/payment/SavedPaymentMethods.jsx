@@ -78,7 +78,7 @@ export default function SavedPaymentMethods({ userEmail }) {
 
       // Use Stripe hosted form instead of embedded elements
       const { error: setupError, setupIntent } = await stripe.confirmCardSetup(
-        setupData.client_secret,
+        clientSecret,
         {
           return_url: `${window.location.origin}${window.location.pathname}`,
         }
