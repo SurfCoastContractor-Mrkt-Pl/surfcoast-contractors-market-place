@@ -21,6 +21,7 @@ import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 import ContractorBadges from '@/components/badges/ContractorBadges';
+import ContactAdminPanel from '@/components/support/ContactAdminPanel';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
