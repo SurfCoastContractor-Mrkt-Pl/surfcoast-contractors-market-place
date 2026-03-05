@@ -107,12 +107,16 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         setError(setupError.message);
       } else if (setupIntent?.status === 'succeeded') {
         const paymentMethodId = setupIntent.payment_method;
+        console.log('Card setup succeeded, saving payment method:', paymentMethodId);
+        
         const saveResponse = await base44.functions.invoke('setupPaymentMethod', {
           userEmail,
           paymentMethodId,
           cardName: cardName || 'Unnamed Card',
           cardholderName: cardholderName,
         });
+        
+        console.log('Save response:', saveResponse);
         
         if (saveResponse?.data?.error) {
           setError(saveResponse.data.error);
