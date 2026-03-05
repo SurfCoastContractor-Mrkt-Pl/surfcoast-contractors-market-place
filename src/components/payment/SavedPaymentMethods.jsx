@@ -347,11 +347,13 @@ export default function SavedPaymentMethods({ userEmail }) {
       </div>
 
       <Dialog open={showAddMethod} onOpenChange={setShowAddMethod}>
-        <DialogContent>
+        <DialogContent aria-describedby="add-method-description">
           <DialogHeader>
             <DialogTitle>Add Payment Method</DialogTitle>
-            <DialogDescription>Add a new saved payment method to your account for quick access.</DialogDescription>
           </DialogHeader>
+          <div id="add-method-description" className="text-sm text-slate-600 mb-4">
+            Add a new saved payment method to your account for quick access.
+          </div>
           {stripePromise ? (
             <Elements stripe={stripePromise}>
               <CardInputForm
