@@ -69,7 +69,19 @@ export default function PortfolioDisplay({ contractorId, isOwner = false }) {
         <div className="grid gap-4">
           {portfolio.map(project => (
             <div key={project.id} className="border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-              {project.images && project.images.length > 0 && (
+              {/* Together photo thumbnail takes priority */}
+              {project.scope_id && project.together_photo_url ? (
+                <div className="relative">
+                  <img
+                    src={project.together_photo_url}
+                    alt="Job together photo"
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="absolute bottom-2 left-2 bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    📸 On-site photo
+                  </div>
+                </div>
+              ) : project.images && project.images.length > 0 ? (
                 <div className="flex gap-2 p-4 pb-0 overflow-x-auto">
                   {project.images.map((img, idx) => (
                     <img
@@ -81,7 +93,7 @@ export default function PortfolioDisplay({ contractorId, isOwner = false }) {
                     />
                   ))}
                 </div>
-              )}
+              ) : null}
               <div className="p-4">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <h4 className="font-semibold text-slate-900">{project.project_title}</h4>
