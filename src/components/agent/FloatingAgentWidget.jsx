@@ -62,13 +62,12 @@ export default function FloatingAgentWidget({ open, onClose }) {
     }
   };
 
-  if (!open) return null;
-
-  if (minimized) {
+  // Always show the bubble; when closed show just the FAB
+  if (!open || minimized) {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <button
-          onClick={() => setMinimized(false)}
+          onClick={() => { setMinimized(false); if (!open) { /* parent controls open */ } }}
           className="flex items-center justify-center w-14 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all"
           title="Open AI Assistant"
         >
@@ -79,7 +78,7 @@ export default function FloatingAgentWidget({ open, onClose }) {
   }
 
   return (
-    <div className="fixed top-1/2 right-6 z-50 w-80 max-w-[calc(100vw-3rem)] h-96 -translate-y-1/2 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto">
+    <div className="fixed bottom-24 right-6 z-50 w-80 max-w-[calc(100vw-3rem)] h-[28rem] flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
         <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
