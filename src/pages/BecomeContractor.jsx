@@ -545,6 +545,8 @@ export default function BecomeContractor() {
                 <MinorConsentUpload
                   data={formData.parental_consent_docs}
                   onChange={(docs) => handleChange('parental_consent_docs', docs)}
+                  location={formData.location}
+                  age={age}
                 />
               )}
 
