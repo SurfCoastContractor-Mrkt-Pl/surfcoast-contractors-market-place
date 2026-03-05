@@ -7,7 +7,23 @@ Deno.serve(async (req) => {
     // Fetch all reviews
     const reviews = await base44.asServiceRole.entities.Review.list();
     
-    // Group by contractor_id and calculate averages
+    // Fetch all closed scopes to compute job counts and unique customers
+    const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ status: 'closed' });
+
+    // Build per-contractor maps: total closed jobs and unique customer emails
+    const jobsByContractor = {};
+    scopes.forEach(scope => {
+      if (!scope.contractor_id) return;
+      if (!jobsByContractor[scope.contractor_id]) {
+        jobsByContractor[scope.contractor_id] = { totalJobs: 0, customerEmails: new Set() };
+      }
+      jobsByContractor[scope.contractor_id].totalJobs += 1;
+      if (scope.customer_email) {
+        jobsByContractor[scope.contractor_id].customerEmails.add(scope.customer_email.toLowerCase());
+      }
+    });
+
+    // Group reviews by contractor_id and calculate averages
     const ratingsByContractor = {};
     reviews.forEach(review => {
       if (review.verified && review.contractor_id) {
@@ -19,14 +35,30 @@ Deno.serve(async (req) => {
       }
     });
 
+    // Collect all contractor IDs to update
+    const allContractorIds = new Set([
+      ...Object.keys(ratingsByContractor),
+      ...Object.keys(jobsByContractor),
+    ]);
+
     // Update contractor records
     let updated = 0;
-    for (const [contractorId, data] of Object.entries(ratingsByContractor)) {
-      const avgRating = data.ratings.reduce((a, b) => a + b, 0) / data.ratings.length;
-      await base44.asServiceRole.entities.Contractor.update(contractorId, {
-        rating: Math.round(avgRating * 10) / 10,
-        reviews_count: data.count,
-      });
+    for (const contractorId of allContractorIds) {
+      const ratingData = ratingsByContractor[contractorId];
+      const jobData = jobsByContractor[contractorId];
+
+      const updatePayload = {};
+      if (ratingData) {
+        const avgRating = ratingData.ratings.reduce((a, b) => a + b, 0) / ratingData.ratings.length;
+        updatePayload.rating = Math.round(avgRating * 10) / 10;
+        updatePayload.reviews_count = ratingData.count;
+      }
+      if (jobData) {
+        updatePayload.completed_jobs_count = jobData.totalJobs;
+        updatePayload.unique_customers_count = jobData.customerEmails.size;
+      }
+
+      await base44.asServiceRole.entities.Contractor.update(contractorId, updatePayload);
       updated++;
     }
 
