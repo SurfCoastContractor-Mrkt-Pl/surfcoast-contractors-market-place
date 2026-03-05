@@ -26,6 +26,10 @@ const trades = [
 
 export default function QuickJobPostForm({ userEmail, userName }) {
   const queryClient = useQueryClient();
+  
+  // Fallback for userName if not provided
+  const displayName = userName || 'Customer';
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
