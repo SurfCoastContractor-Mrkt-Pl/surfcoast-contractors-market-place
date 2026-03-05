@@ -35,7 +35,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
 
     try {
       const response = await base44.functions.invoke('sendPhoneVerification', {
-        phone: phone.replace(/\D/g, ''),
+        phone: normalizedPhone,
         userEmail,
       });
 
