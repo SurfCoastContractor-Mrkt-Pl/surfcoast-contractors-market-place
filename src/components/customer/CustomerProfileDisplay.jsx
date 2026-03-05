@@ -83,6 +83,30 @@ export default function CustomerProfileDisplay({ profile, jobCount }) {
         </div>
       </Card>
 
+      {togetherPhotos.length > 0 && (
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <Camera className="w-5 h-5 text-amber-500" />
+            On-Site Job Photos
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {togetherPhotos.map(scope => (
+              <div key={scope.id} className="relative rounded-lg overflow-hidden aspect-square">
+                <img
+                  src={scope.job_together_photo_url}
+                  alt={scope.job_title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                  <p className="text-white text-xs font-medium truncate">{scope.job_title}</p>
+                  <p className="text-white/70 text-xs">with {scope.contractor_name}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
       {(profile?.preferred_contractor_types?.length > 0 || profile?.preferred_trades?.length > 0) && (
         <Card className="p-6">
           <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
