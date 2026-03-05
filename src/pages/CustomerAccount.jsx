@@ -11,7 +11,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Trash2, Search, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, HelpCircle, Plus } from 'lucide-react';
+import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus } from 'lucide-react';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -34,7 +34,7 @@ export default function CustomerAccount() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [agentOpen, setAgentOpen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const user = await base44.auth.me();

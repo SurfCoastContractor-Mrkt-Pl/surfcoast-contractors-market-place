@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, Trash2, Search, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X } from 'lucide-react';
+import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X } from 'lucide-react';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Textarea } from '@/components/ui/textarea';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
@@ -32,7 +32,7 @@ export default function ContractorAccount() {
   const [editingBio, setEditingBio] = useState(false);
   const [bioText, setBioText] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const user = await base44.auth.me();
