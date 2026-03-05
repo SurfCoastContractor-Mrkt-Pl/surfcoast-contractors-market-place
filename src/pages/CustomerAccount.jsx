@@ -24,6 +24,7 @@ import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 import CustomerBadges from '@/components/badges/CustomerBadges';
 import JobHistory from '@/components/customer/JobHistory';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
+import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
