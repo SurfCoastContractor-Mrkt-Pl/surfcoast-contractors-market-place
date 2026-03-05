@@ -236,14 +236,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           type="button"
           variant="outline"
           onClick={onCancel}
-          disabled={loading}
+          disabled={loading || verifying}
         >
           Cancel
         </Button>
         <Button
           type="submit"
           className="bg-amber-500 hover:bg-amber-600"
-          disabled={loading || !stripe || !elements}
+          disabled={loading || !stripe || !elements || !phoneVerified}
         >
           {loading ? (
             <>
