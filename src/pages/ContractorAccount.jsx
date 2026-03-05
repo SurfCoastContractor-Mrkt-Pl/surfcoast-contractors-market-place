@@ -431,6 +431,9 @@ export default function ContractorAccount() {
             {/* Contractor Badges */}
              <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
 
+            {/* Contact Admin */}
+            <ContactAdminPanel userEmail={userEmail} userName={contractor?.name} />
+
             {/* Delete Profile */}
              <Card className="p-6 border-red-200 bg-red-50">
               <h2 className="text-lg font-semibold text-red-800 mb-2">Delete Profile</h2>

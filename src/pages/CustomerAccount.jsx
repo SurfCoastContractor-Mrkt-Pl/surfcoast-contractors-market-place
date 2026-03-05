@@ -432,6 +432,9 @@ export default function CustomerAccount() {
               </div>
              )}
 
+            {/* Contact Admin */}
+            <ContactAdminPanel userEmail={userEmail} userName={customerProfile?.full_name} />
+
             {/* Delete Profile */}
             <Card className="p-6 border-red-200 bg-red-50">
              <h2 className="text-lg font-semibold text-red-800 mb-2">Delete My Account Data</h2>
