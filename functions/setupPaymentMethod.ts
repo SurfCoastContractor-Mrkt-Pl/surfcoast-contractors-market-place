@@ -15,16 +15,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Verify user exists and get their full name
-    let userFullName = null;
-    try {
-      const user = await base44.auth.me();
-      if (user?.email === userEmail) {
-        userFullName = user.full_name;
-      }
-    } catch (err) {
-      console.warn('Could not verify user full name:', err.message);
-    }
+
 
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
