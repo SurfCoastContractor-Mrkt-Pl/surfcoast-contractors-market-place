@@ -13,6 +13,10 @@ import {
   MessageSquare, ShieldAlert, Eye, EyeOff
 } from 'lucide-react';
 import AdminProfileViewer from '../components/admin/AdminProfileViewer';
+import AdminTableFilters from '../components/admin/AdminTableFilters';
+import PaymentsTable from '../components/admin/PaymentsTable';
+import MessagesTable from '../components/admin/MessagesTable';
+import UserAccountManager from '../components/admin/UserAccountManager';
 
 // Admin password is hardcoded for now (no environment variables available in browser)
 // TODO: Move to backend function to load from environment variables
@@ -22,6 +26,7 @@ export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: payments = [], isLoading } = useQuery({
@@ -317,7 +322,8 @@ export default function AdminDashboard() {
               )}
             </TabsTrigger>
             <TabsTrigger value="profiles">Profiles</TabsTrigger>
-          </TabsList>
+            <TabsTrigger value="users">User Management</TabsTrigger>
+            </TabsList>
 
           {/* Signups & Growth Tab */}
           <TabsContent value="signups">
@@ -425,51 +431,7 @@ export default function AdminDashboard() {
           <TabsContent value="payments">
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">All Fee Transactions</h2>
-              {isLoading ? (
-                <div className="space-y-3">
-                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
-                </div>
-              ) : payments.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">No fee transactions yet.</div>
-              ) : (
-                <div className="space-y-3">
-                  {payments.map(p => (
-                    <div key={p.id} className="flex items-center justify-between gap-4 p-4 bg-slate-50 rounded-xl flex-wrap">
-                      <div className="flex items-center gap-3 min-w-0">
-                        {p.status === 'confirmed' ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-                        ) : (
-                          <Clock className="w-5 h-5 text-amber-500 shrink-0" />
-                        )}
-                        <div className="min-w-0">
-                          <div className="font-medium text-slate-900 text-sm truncate">{p.payer_name}</div>
-                          <div className="text-xs text-slate-500 truncate">{p.payer_email}</div>
-                          <div className="text-xs text-slate-400 mt-0.5 truncate">{p.purpose}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                        <Badge className={p.payer_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'}>
-                          {p.payer_type}
-                        </Badge>
-                        <span className="font-bold text-slate-900">${(p.amount || 0).toFixed(2)}</span>
-                        <span className="text-xs text-slate-400">{new Date(p.created_date).toLocaleDateString()}</span>
-                        {p.status === 'pending' ? (
-                          <Button
-                            size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white text-xs"
-                            onClick={() => confirmMutation.mutate(p.id)}
-                            disabled={confirmMutation.isPending}
-                          >
-                            Mark Confirmed
-                          </Button>
-                        ) : (
-                          <Badge className="bg-green-100 text-green-700">Confirmed</Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <PaymentsTable payments={payments} isLoading={isLoading} />
             </Card>
           </TabsContent>
 
@@ -477,40 +439,7 @@ export default function AdminDashboard() {
           <TabsContent value="messages">
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">All In-App Messages</h2>
-              {messagesLoading ? (
-                <div className="space-y-3">
-                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
-                </div>
-              ) : messages.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">No messages yet.</div>
-              ) : (
-                <div className="space-y-3">
-                  {messages.map(m => (
-                    <div key={m.id} className={`p-4 rounded-xl border ${m.read ? 'bg-slate-50 border-slate-200' : 'bg-blue-50 border-blue-200'}`}>
-                      <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <span className="font-medium text-slate-900 text-sm">{m.sender_name}</span>
-                            <span className="text-slate-400 text-xs">→</span>
-                            <span className="font-medium text-slate-700 text-sm">{m.recipient_name}</span>
-                            <Badge className={m.sender_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'} size="sm">
-                              {m.sender_type}
-                            </Badge>
-                            {!m.read && <Badge className="bg-blue-500 text-white text-xs">New</Badge>}
-                          </div>
-                          {m.subject && <div className="text-xs text-slate-500 mb-1">Subject: {m.subject}</div>}
-                          <div className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{m.body}</div>
-                          <div className="flex items-center gap-3 mt-2 text-xs text-slate-400">
-                            <span>{m.sender_email}</span>
-                            <span>·</span>
-                            <span>{new Date(m.created_date).toLocaleString()}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <MessagesTable messages={messages} isLoading={messagesLoading} />
             </Card>
           </TabsContent>
 
@@ -633,7 +562,38 @@ export default function AdminDashboard() {
             <AdminProfileViewer contractors={contractors} customers={customers} />
           </TabsContent>
 
-        </Tabs>
+          {/* User Management Tab */}
+          <TabsContent value="users">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Contractors</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {contractors.length === 0 ? (
+                    <div className="text-center py-10 text-slate-400 col-span-2">No contractors yet.</div>
+                  ) : (
+                    contractors.map(c => (
+                      <UserAccountManager key={c.id} user={c} userType="contractor" onClose={() => setSelectedUser(null)} />
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Customers</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {customers.length === 0 ? (
+                    <div className="text-center py-10 text-slate-400 col-span-2">No customers yet.</div>
+                  ) : (
+                    customers.map(c => (
+                      <UserAccountManager key={c.id} user={c} userType="customer" onClose={() => setSelectedUser(null)} />
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          </Tabs>
 
         <p className="text-center text-xs text-slate-400 pb-4">
           All fees are $1.50 USD per transaction. Disclosed upfront per California SB 478 (Honest Pricing Law). 
