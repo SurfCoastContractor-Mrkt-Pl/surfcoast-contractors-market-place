@@ -38,6 +38,7 @@ export default function BecomeContractor() {
     name: '',
     email: '',
     phone: '',
+    date_of_birth: '',
     photo_url: '',
     id_document_url: '',
     face_photo_url: '',
@@ -53,7 +54,21 @@ export default function BecomeContractor() {
     rating: null,
     reviews_count: 0,
     credential_documents: [],
+    parental_consent_docs: {},
   });
+  const [dobError, setDobError] = useState('');
+
+  const getAge = (dob) => {
+    if (!dob) return null;
+    const today = new Date();
+    const birth = new Date(dob);
+    return today.getFullYear() - birth.getFullYear() - (
+      today < new Date(today.getFullYear(), birth.getMonth(), birth.getDate()) ? 1 : 0
+    );
+  };
+
+  const age = getAge(formData.date_of_birth);
+  const isMinor = age !== null && age < 18;
 
   const mutation = useMutation({
     mutationFn: async (data) => {
