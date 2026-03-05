@@ -20,19 +20,8 @@ Deno.serve(async (req) => {
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
 
-    // Verify cardholder name matches (if provided)
-    if (cardholderName) {
-      const providedName = cardholderName.trim().toLowerCase();
-      const stripeName = paymentMethod.billing_details?.name?.trim().toLowerCase() || '';
-      
-      if (!stripeName || stripeName !== providedName) {
-        console.warn(`Cardholder name mismatch for ${userEmail}: provided="${cardholderName}", Stripe="${paymentMethod.billing_details?.name}"`);
-        return Response.json(
-          { error: 'Cardholder name does not match the card. Please verify and try again.' },
-          { status: 400 }
-        );
-      }
-    }
+    // Log for debugging
+    console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card?.brand}, last4: ${paymentMethod.card?.last4}`);
 
 
 
