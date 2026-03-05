@@ -340,25 +340,47 @@ export default function ContractorAccount() {
 
               <TabsContent value="fees">
                 <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Status</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 mb-2">Platform Fee Status</h2>
+                  {!allInvoicesDownloaded && (
+                    <div className="flex items-start gap-3 p-3 mb-4 bg-amber-50 border border-amber-200 rounded-xl">
+                      <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                      <p className="text-sm text-amber-800">
+                        <strong>Action Required:</strong> You must download the invoice for each confirmed payment before taking on a new scope of work.
+                      </p>
+                    </div>
+                  )}
                   {payments?.length > 0 ? (
                     <div className="space-y-3">
                       {payments.map(p => (
-                        <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                          <div className="flex items-center gap-3">
+                        <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
                             {p.status === 'confirmed' ? (
-                              <CheckCircle2 className="w-5 h-5 text-green-600" />
+                              <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
                             ) : (
-                              <Clock className="w-5 h-5 text-amber-500" />
+                              <Clock className="w-5 h-5 text-amber-500 shrink-0" />
                             )}
-                            <div>
+                            <div className="min-w-0">
                               <div className="text-sm font-medium text-slate-800">${p.amount.toFixed(2)} — {p.purpose}</div>
                               <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
                             </div>
                           </div>
-                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
-                            {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                          </Badge>
+                          <div className="flex items-center gap-2 shrink-0">
+                            {p.status === 'confirmed' && (
+                              <Button
+                                size="sm"
+                                variant={downloadedInvoices.includes(p.id) ? 'ghost' : 'outline'}
+                                className={`text-xs h-7 px-2 gap-1 ${downloadedInvoices.includes(p.id) ? 'text-green-600' : 'border-amber-400 text-amber-700 hover:bg-amber-50'}`}
+                                onClick={() => handleDownloadInvoice(p.id)}
+                                disabled={downloadingId === p.id}
+                              >
+                                <Download className="w-3 h-3" />
+                                {downloadingId === p.id ? 'Downloading...' : downloadedInvoices.includes(p.id) ? 'Downloaded ✓' : 'Download Invoice'}
+                              </Button>
+                            )}
+                            <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}>
+                              {p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                            </Badge>
+                          </div>
                         </div>
                       ))}
                     </div>
