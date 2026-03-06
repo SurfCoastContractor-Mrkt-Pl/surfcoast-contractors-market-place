@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload, X } from 'lucide-react';
+import { logError } from '@/components/utils/logError';
 
 const TRADES = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer',
