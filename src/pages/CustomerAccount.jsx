@@ -350,16 +350,24 @@ export default function CustomerAccount() {
                                 <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`}</div>
                               </div>
                             </div>
-                            <Badge className={
-                              s.status === 'closed' ? 'bg-slate-100 text-slate-600' :
-                              s.status === 'approved' ? 'bg-green-100 text-green-700' :
-                              s.status === 'rejected' ? 'bg-red-100 text-red-700' :
-                              'bg-amber-100 text-amber-700'
-                            }>
-                              {s.status === 'pending_approval' ? 'Pending' : s.status}
-                            </Badge>
-                          </div>
-                          {s.status === 'pending_approval' && (
+                            <div className="flex items-center gap-2 shrink-0">
+                             <ScopeChatPanel
+                               scope={s}
+                               userEmail={userEmail}
+                               userName={customerProfile?.full_name || userEmail}
+                               userType="customer"
+                             />
+                             <Badge className={
+                               s.status === 'closed' ? 'bg-slate-100 text-slate-600' :
+                               s.status === 'approved' ? 'bg-green-100 text-green-700' :
+                               s.status === 'rejected' ? 'bg-red-100 text-red-700' :
+                               'bg-amber-100 text-amber-700'
+                             }>
+                               {s.status === 'pending_approval' ? 'Pending' : s.status}
+                             </Badge>
+                            </div>
+                            </div>
+                            {s.status === 'pending_approval' && (
                             <div className="p-3 bg-amber-50 border-t border-slate-200 space-y-2">
                               <p className="text-xs text-amber-800 font-medium">Action Required: Approve or Reject this scope</p>
                               <div className="flex gap-2">
