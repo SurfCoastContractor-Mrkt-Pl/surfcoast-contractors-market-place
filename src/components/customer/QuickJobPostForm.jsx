@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { logError } from '@/components/utils/logError';
 import BeforePhotosUpload from '@/components/photos/BeforePhotosUpload';
 
 const trades = [
