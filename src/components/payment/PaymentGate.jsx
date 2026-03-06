@@ -99,6 +99,15 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
     onError: (error) => {
       setCheckingout(false);
       console.error('Payment checkout error:', error.message);
+      logError({
+        error_type: 'payment',
+        severity: 'high',
+        user_email: formData.email || 'unknown',
+        user_type: payerType || 'unknown',
+        action: 'Create payment checkout session',
+        error_message: error.message,
+        context: { payerType, contractorId, contractorEmail },
+      });
     },
   });
 
