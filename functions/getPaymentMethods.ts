@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch saved payment methods from database
-    const paymentMethods = await base44.asServiceRole.entities.SavedPaymentMethod.filter({
+    const paymentMethods = await base44.entities.SavedPaymentMethod.filter({
       user_email: userEmail,
     });
 

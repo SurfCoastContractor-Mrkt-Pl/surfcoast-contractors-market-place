@@ -207,21 +207,40 @@ async function handleChargeFailed(charge, base44) {
 
 async function handlePaymentIntentSucceeded(paymentIntent, base44) {
   try {
-    const email = paymentIntent.metadata?.user_email;
-    if (email && paymentIntent.metadata?.payment_id) {
+    console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
+
+    // Try to match by payment_id in metadata first
+    if (paymentIntent.metadata?.payment_id) {
       const payments = await base44.asServiceRole.entities.Payment.filter({
         id: paymentIntent.metadata.payment_id
       });
-
       if (payments && payments.length > 0) {
         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
         });
+        console.log(`Payment confirmed by payment_id: ${payments[0].id}`);
+        return;
       }
     }
 
-    console.log(`Payment intent succeeded: ${paymentIntent.id}`);
+    // Fallback: match by payer_email if available
+    const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
+    if (email) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: email,
+        status: 'pending',
+      });
+      if (payments && payments.length > 0) {
+        // Update the most recent pending payment
+        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+          status: 'confirmed',
+          confirmed_at: new Date().toISOString(),
+        });
+        console.log(`Payment confirmed by email fallback: ${sorted[0].id}`);
+      }
+    }
   } catch (error) {
     console.error('Error handling payment intent success:', error);
   }

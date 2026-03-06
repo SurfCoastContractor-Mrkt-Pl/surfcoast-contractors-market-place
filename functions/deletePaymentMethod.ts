@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     }
 
     // Get the saved payment method record to get the Stripe ID
-    const savedMethod = await base44.asServiceRole.entities.SavedPaymentMethod.get(paymentMethodId);
+    const savedMethod = await base44.entities.SavedPaymentMethod.get(paymentMethodId);
 
     if (!savedMethod) {
       return Response.json({ error: 'Payment method not found' }, { status: 404 });
@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
     await stripeClient.paymentMethods.detach(savedMethod.stripe_payment_method_id);
 
     // Delete from database
-    await base44.asServiceRole.entities.SavedPaymentMethod.delete(paymentMethodId);
+    await base44.entities.SavedPaymentMethod.delete(paymentMethodId);
 
     return Response.json({ success: true });
   } catch (error) {
