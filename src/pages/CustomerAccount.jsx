@@ -225,6 +225,7 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="payments">
+                <ActiveSessions payments={payments} />
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Payments</h2>
                   {payments?.filter(p => p.status !== 'work_scheduled').length > 0 ? (
