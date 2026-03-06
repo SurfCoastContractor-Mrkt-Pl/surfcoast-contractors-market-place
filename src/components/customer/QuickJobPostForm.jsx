@@ -93,6 +93,15 @@ export default function QuickJobPostForm({ userEmail, userName }) {
     onError: (error) => {
       setErrorMessage(error.message || 'Failed to post job');
       setTimeout(() => setErrorMessage(''), 3000);
+      logError({
+        error_type: 'job_posting',
+        severity: 'high',
+        user_email: userEmail,
+        user_type: 'customer',
+        action: 'Post job',
+        error_message: error.message || 'Failed to post job',
+        context: { jobTitle: formData.title },
+      });
     },
   });
 
