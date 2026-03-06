@@ -11,11 +11,14 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
   const queryClient = useQueryClient();
   const messagesEndRef = useRef(null);
 
-  const { data: messages } = useQuery({
+  const { data: messagesRaw } = useQuery({
     queryKey: ['project-messages', scopeId],
-    queryFn: () => base44.entities.ProjectMessage.filter({ scope_id: scopeId }, '-created_date'),
-    enabled: !!scopeId
+    queryFn: () => base44.entities.ProjectMessage.filter({ scope_id: scopeId }, 'created_date'),
+    enabled: !!scopeId,
+    refetchInterval: 10000,
   });
+
+  const messages = messagesRaw;
 
   const sendMutation = useMutation({
     mutationFn: (messageData) => base44.entities.ProjectMessage.create(messageData),
