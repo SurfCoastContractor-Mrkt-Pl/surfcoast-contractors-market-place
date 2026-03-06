@@ -38,6 +38,7 @@ export default function Layout({ children, currentPageName }) {
 
 
   const isHome = currentPageName === 'Home';
+  useGeoCheck();
 
   useEffect(() => {
     const checkUserType = async () => {

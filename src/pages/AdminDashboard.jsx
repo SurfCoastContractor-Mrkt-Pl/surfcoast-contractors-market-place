@@ -68,8 +68,17 @@ export default function AdminDashboard() {
     refetchInterval: 30000,
   });
 
+  const { data: securityAlerts = [] } = useQuery({
+    queryKey: ['security-alerts'],
+    queryFn: () => base44.entities.SecurityAlert.list('-created_date', 200),
+    enabled: authed,
+    refetchInterval: 30000,
+  });
+
   const unresolvedErrors = errorLogs.filter(l => !l.resolved);
   const criticalErrors = unresolvedErrors.filter(l => l.severity === 'critical' || l.severity === 'high');
+  const unresolvedAlerts = securityAlerts.filter(a => !a.resolved);
+  const criticalAlerts = unresolvedAlerts.filter(a => a.severity === 'high' || a.severity === 'critical');
 
   const markReadMutation = useMutation({
     mutationFn: (id) => base44.entities.Suggestion.update(id, { admin_read: true }),
