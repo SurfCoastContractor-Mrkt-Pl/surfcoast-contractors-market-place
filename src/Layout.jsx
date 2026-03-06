@@ -7,6 +7,7 @@ import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 'lucide-r
 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
+import useGeoCheck from './components/security/useGeoCheck';
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [

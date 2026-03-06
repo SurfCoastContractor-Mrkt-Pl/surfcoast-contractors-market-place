@@ -18,6 +18,7 @@ import PaymentsTable from '../components/admin/PaymentsTable';
 import MessagesTable from '../components/admin/MessagesTable';
 import UserAccountManager from '../components/admin/UserAccountManager';
 import ErrorLogTable from '../components/admin/ErrorLogTable';
+import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
 
 // Admin password is hardcoded for now (no environment variables available in browser)
 // TODO: Move to backend function to load from environment variables
