@@ -21,6 +21,7 @@ import CustomerWelcomeModal from '@/components/customer/CustomerWelcomeModal';
 import CustomerProfileEditor from '@/components/customer/CustomerProfileEditor';
 import FloatingAgentWidget from '@/components/agent/FloatingAgentWidget';
 import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
+import ActiveSessions from '@/components/payment/ActiveSessions';
 import CustomerBadges from '@/components/badges/CustomerBadges';
 import JobHistory from '@/components/customer/JobHistory';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
