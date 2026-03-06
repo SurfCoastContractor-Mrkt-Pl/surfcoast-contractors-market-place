@@ -36,6 +36,17 @@ export default function ContractorProfileEditor({ contractor }) {
       queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
       setIsEditing(false);
     },
+    onError: (error) => {
+      logError({
+        error_type: 'profile_setup',
+        severity: 'high',
+        user_email: contractor?.email,
+        user_type: 'contractor',
+        action: 'Save contractor profile',
+        error_message: error.message || 'Failed to save contractor profile',
+        context: { contractor_id: contractor?.id },
+      });
+    },
   });
 
   const handlePhotoUpload = async (e) => {
