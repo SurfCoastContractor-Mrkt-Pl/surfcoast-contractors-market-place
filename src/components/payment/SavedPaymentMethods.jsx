@@ -106,6 +106,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
 
       if (setupError) {
         setError(setupError.message);
+        logError({
+          error_type: 'payment',
+          severity: 'high',
+          user_email: userEmail,
+          user_type: 'unknown',
+          action: 'Confirm card setup (SetupIntent)',
+          error_message: setupError.message,
+        });
       } else if (setupIntent?.status === 'succeeded') {
         const paymentMethodId = setupIntent.payment_method;
         console.log('Card setup succeeded, saving payment method:', paymentMethodId);
