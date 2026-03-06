@@ -10,13 +10,14 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 import { 
   DollarSign, Users, CheckCircle2, Clock, 
   CreditCard, TrendingUp, ShieldCheck, Download,
-  MessageSquare, ShieldAlert, Eye, EyeOff
+  MessageSquare, ShieldAlert, Eye, EyeOff, AlertTriangle
 } from 'lucide-react';
 import AdminProfileViewer from '../components/admin/AdminProfileViewer';
 import AdminTableFilters from '../components/admin/AdminTableFilters';
 import PaymentsTable from '../components/admin/PaymentsTable';
 import MessagesTable from '../components/admin/MessagesTable';
 import UserAccountManager from '../components/admin/UserAccountManager';
+import ErrorLogTable from '../components/admin/ErrorLogTable';
 
 // Admin password is hardcoded for now (no environment variables available in browser)
 // TODO: Move to backend function to load from environment variables
