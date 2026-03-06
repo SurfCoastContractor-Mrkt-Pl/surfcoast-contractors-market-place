@@ -23,6 +23,7 @@ import ContractorProfileEditor from '@/components/contractor/ContractorProfileEd
 import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 import ContractorBadges from '@/components/badges/ContractorBadges';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
+import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 
 export default function ContractorAccount() {
