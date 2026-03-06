@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
+import { logError } from '@/components/utils/logError';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Initialize Stripe with environment variable or fetch from backend
