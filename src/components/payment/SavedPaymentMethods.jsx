@@ -135,6 +135,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       }
     } catch (err) {
       setError(err.message);
+      logError({
+        error_type: 'payment',
+        severity: 'high',
+        user_email: userEmail,
+        user_type: 'unknown',
+        action: 'Add payment method (card setup flow)',
+        error_message: err.message,
+      });
     } finally {
       setLoading(false);
     }
