@@ -334,6 +334,19 @@ export default function AdminDashboard() {
             </TabsTrigger>
             <TabsTrigger value="profiles">Profiles</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="errors" className="relative">
+              Errors
+              {criticalErrors.length > 0 && (
+                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {criticalErrors.length}
+                </span>
+              )}
+              {unresolvedErrors.length > 0 && criticalErrors.length === 0 && (
+                <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {unresolvedErrors.length}
+                </span>
+              )}
+            </TabsTrigger>
             </TabsList>
 
           {/* Signups & Growth Tab */}
