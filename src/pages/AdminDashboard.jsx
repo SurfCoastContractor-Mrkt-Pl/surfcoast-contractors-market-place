@@ -60,6 +60,16 @@ export default function AdminDashboard() {
     enabled: authed,
   });
 
+  const { data: errorLogs = [] } = useQuery({
+    queryKey: ['error-logs'],
+    queryFn: () => base44.entities.ErrorLog.list('-created_date', 200),
+    enabled: authed,
+    refetchInterval: 30000,
+  });
+
+  const unresolvedErrors = errorLogs.filter(l => !l.resolved);
+  const criticalErrors = unresolvedErrors.filter(l => l.severity === 'critical' || l.severity === 'high');
+
   const markReadMutation = useMutation({
     mutationFn: (id) => base44.entities.Suggestion.update(id, { admin_read: true }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-suggestions'] }),
