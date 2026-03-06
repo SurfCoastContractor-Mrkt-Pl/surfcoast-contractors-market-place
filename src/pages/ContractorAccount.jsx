@@ -325,6 +325,12 @@ export default function ContractorAccount() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
+                            <ScopeChatPanel
+                              scope={s}
+                              userEmail={userEmail}
+                              userName={contractor?.name || userEmail}
+                              userType="contractor"
+                            />
                             <Badge className={
                               s.status === 'closed' ? 'bg-slate-100 text-slate-600' :
                               s.status === 'approved' ? 'bg-green-100 text-green-700' :
