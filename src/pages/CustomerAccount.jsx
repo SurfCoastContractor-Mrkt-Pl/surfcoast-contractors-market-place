@@ -366,6 +366,7 @@ export default function CustomerAccount() {
                                {s.status === 'pending_approval' ? 'Pending' : s.status}
                              </Badge>
                             </div>
+                            </div>
                             {s.status === 'pending_approval' && (
                             <div className="p-3 bg-amber-50 border-t border-slate-200 space-y-2">
                               <p className="text-xs text-amber-800 font-medium">Action Required: Approve or Reject this scope</p>
@@ -375,7 +376,6 @@ export default function CustomerAccount() {
                                   className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs h-7"
                                   onClick={async () => {
                                     await base44.entities.ScopeOfWork.update(s.id, { status: 'approved' });
-                                    // Notify contractor of approval
                                     await base44.integrations.Core.SendEmail({
                                       to: s.contractor_email,
                                       subject: `✅ Scope Approved: "${s.job_title}"`,
@@ -396,15 +396,15 @@ export default function CustomerAccount() {
                                 </Button>
                               </div>
                             </div>
-                          )}
-                          {s.status !== 'closed' && s.status !== 'rejected' && (
+                            )}
+                            {s.status !== 'closed' && s.status !== 'rejected' && (
                             <div className="p-3 bg-slate-50 border-t border-slate-200">
                               <Button size="sm" variant="outline" className="w-full text-xs h-7 border-green-300 text-green-700 hover:bg-green-50" onClick={() => setCloseoutScope(s)}>
                                 <LogOut className="w-3 h-3 mr-1" /> Close Out Job
                               </Button>
                             </div>
-                          )}
-                        </div>
+                            )}
+                            </div>
                       ))}
                     </div>
                   ) : (
