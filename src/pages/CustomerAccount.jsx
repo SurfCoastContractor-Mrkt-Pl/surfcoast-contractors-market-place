@@ -27,6 +27,7 @@ import JobHistory from '@/components/customer/JobHistory';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 import QuickJobPostForm from '@/components/customer/QuickJobPostForm';
+import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
