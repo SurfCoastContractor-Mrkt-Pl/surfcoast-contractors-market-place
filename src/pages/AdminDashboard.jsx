@@ -652,6 +652,21 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* Security Tab */}
+          <TabsContent value="security">
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <ShieldCheck className="w-5 h-5 text-blue-600" />
+                <h2 className="text-lg font-semibold text-slate-900">Security Alerts</h2>
+              </div>
+              <p className="text-sm text-slate-500 mb-4">
+                Geo-blocks (non-US access attempts), suspicious proxy/VPN usage, and other threat detections. 
+                Admin is emailed automatically for every alert.
+              </p>
+              <SecurityAlertsTable authed={authed} />
+            </Card>
+          </TabsContent>
+
           </Tabs>
 
         <p className="text-center text-xs text-slate-400 pb-4">
