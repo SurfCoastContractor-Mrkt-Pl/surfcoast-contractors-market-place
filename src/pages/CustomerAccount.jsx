@@ -366,7 +366,6 @@ export default function CustomerAccount() {
                                {s.status === 'pending_approval' ? 'Pending' : s.status}
                              </Badge>
                             </div>
-                            </div>
                             {s.status === 'pending_approval' && (
                             <div className="p-3 bg-amber-50 border-t border-slate-200 space-y-2">
                               <p className="text-xs text-amber-800 font-medium">Action Required: Approve or Reject this scope</p>
