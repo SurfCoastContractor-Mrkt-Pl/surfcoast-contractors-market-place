@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
 
-    // Log for debugging.
+    // Log for debugging
     console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card?.brand}, last4: ${paymentMethod.card?.last4}`);
 
     // Save payment method info to database
