@@ -357,6 +357,19 @@ export default function AdminDashboard() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="security" className="relative">
+              Security
+              {criticalAlerts.length > 0 && (
+                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {criticalAlerts.length}
+                </span>
+              )}
+              {unresolvedAlerts.length > 0 && criticalAlerts.length === 0 && (
+                <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {unresolvedAlerts.length}
+                </span>
+              )}
+            </TabsTrigger>
             </TabsList>
 
           {/* Signups & Growth Tab */}
