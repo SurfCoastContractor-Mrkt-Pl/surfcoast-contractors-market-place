@@ -617,6 +617,18 @@ export default function AdminDashboard() {
             </div>
           </TabsContent>
 
+          {/* Error Log Tab */}
+          <TabsContent value="errors">
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle className="w-5 h-5 text-red-500" />
+                <h2 className="text-lg font-semibold text-slate-900">Error Log</h2>
+              </div>
+              <p className="text-sm text-slate-500 mb-4">Failed attempts, bugs, and errors encountered by contractors and customers during profile setup, payments, and job management.</p>
+              <ErrorLogTable authed={authed} />
+            </Card>
+          </TabsContent>
+
           </Tabs>
 
         <p className="text-center text-xs text-slate-400 pb-4">
