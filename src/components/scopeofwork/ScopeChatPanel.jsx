@@ -1,25 +1,47 @@
 import React, { useState } from 'react';
-import { MessageSquare, X, Lock } from 'lucide-react';
+import { MessageSquare, X, Lock, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProjectChat from '@/components/projects/ProjectChat';
 
 export default function ScopeChatPanel({ scope, userEmail, userName, userType }) {
   const [open, setOpen] = useState(false);
 
-  const isClosed = scope.status === 'closed' || scope.status === 'rejected';
+  // Chat is only available when scope is approved (both parties agreed) and not yet closed/rejected/cancelled
+  const isApproved = scope.status === 'approved';
+  const isClosed = scope.status === 'closed' || scope.status === 'rejected' || scope.status === 'cancelled';
+  const isPending = scope.status === 'pending_approval';
+
+  const canChat = isApproved;
+
+  let buttonLabel = 'Chat';
+  let buttonTitle = 'Open project chat';
+  let ButtonIcon = MessageSquare;
+  let buttonClass = 'border-blue-300 text-blue-700 hover:bg-blue-50';
+
+  if (isClosed) {
+    buttonLabel = 'Chat Closed';
+    buttonTitle = 'Chat is closed — job has ended';
+    ButtonIcon = Lock;
+    buttonClass = 'opacity-50 cursor-not-allowed';
+  } else if (isPending) {
+    buttonLabel = 'Pending';
+    buttonTitle = 'Chat available once scope is approved by both parties';
+    ButtonIcon = Clock;
+    buttonClass = 'opacity-50 cursor-not-allowed text-slate-500';
+  }
 
   return (
     <>
       <Button
         size="sm"
         variant="outline"
-        className={`text-xs h-7 px-2 gap-1 ${isClosed ? 'opacity-50 cursor-not-allowed' : 'border-blue-300 text-blue-700 hover:bg-blue-50'}`}
-        onClick={() => !isClosed && setOpen(true)}
-        disabled={isClosed}
-        title={isClosed ? 'Chat is closed — job has ended' : 'Open project chat'}
+        className={`text-xs h-7 px-2 gap-1 ${buttonClass}`}
+        onClick={() => canChat && setOpen(true)}
+        disabled={!canChat}
+        title={buttonTitle}
       >
-        {isClosed ? <Lock className="w-3 h-3" /> : <MessageSquare className="w-3 h-3" />}
-        {isClosed ? 'Chat Closed' : 'Chat'}
+        <ButtonIcon className="w-3 h-3" />
+        {buttonLabel}
       </Button>
 
       {open && (
