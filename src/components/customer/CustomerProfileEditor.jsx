@@ -133,6 +133,14 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       updateMutation.mutate({ ...formData, email: user.email });
     } catch (err) {
       setSaveError('Failed to verify your account');
+      logError({
+        error_type: 'profile_setup',
+        severity: 'high',
+        user_email: userEmail,
+        user_type: 'customer',
+        action: 'Verify account before saving profile',
+        error_message: err.message || 'Failed to verify account',
+      });
     }
   };
 
