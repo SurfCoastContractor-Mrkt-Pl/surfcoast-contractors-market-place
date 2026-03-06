@@ -83,6 +83,14 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     onError: (error) => {
       setSaveError(error.message || 'Failed to save profile');
       setTimeout(() => setSaveError(''), 5000);
+      logError({
+        error_type: 'profile_setup',
+        severity: 'high',
+        user_email: userEmail,
+        user_type: 'customer',
+        action: 'Save customer profile',
+        error_message: error.message || 'Failed to save profile',
+      });
     },
   });
 
