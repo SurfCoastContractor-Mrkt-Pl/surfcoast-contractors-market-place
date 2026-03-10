@@ -57,7 +57,7 @@ export default function SubscriptionModal({ open, onClose, userEmail, userType }
 
         <div className="space-y-4">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-3xl font-bold text-slate-900">$20</p>
+            <p className="text-3xl font-bold text-slate-900">$50</p>
             <p className="text-sm text-slate-600">per month, cancel anytime</p>
           </div>
 
