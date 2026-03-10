@@ -38,7 +38,8 @@ Deno.serve(async (req) => {
         : `Customer access to contact contractor ${contractorName}`,
     });
 
-    // Use Stripe price for $1.50 one-time payment
+    // Use pre-configured Stripe price (prod_U7iEdzTxs41iP8 / price_1T9SoFDrSxvL03OBSZukhlMr)
+    const PAYMENT_PRICE_ID = 'price_1T9SoFDrSxvL03OBSZukhlMr';
     const origin = req.headers.get('origin') || 'https://localhost:3000';
     let session;
     try {
@@ -48,14 +49,7 @@ Deno.serve(async (req) => {
         customer_email: payerEmail,
         line_items: [
           {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: 'SurfCoast Platform Access Fee',
-                description: 'One-time platform access fee for SurfCoast Contractor Market Place',
-              },
-              unit_amount: 150, // $1.50 in cents
-            },
+            price: PAYMENT_PRICE_ID,
             quantity: 1,
           },
         ],
