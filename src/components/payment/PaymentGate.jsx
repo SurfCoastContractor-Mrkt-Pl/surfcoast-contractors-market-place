@@ -128,10 +128,10 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-amber-500" />
-            Platform Access Fee — $1.50
+            Quote Request Fee — $1.75
           </DialogTitle>
           <DialogDescription>
-            Secure payment to unlock communication access on SurfCoast Contractor Market Place.
+            Secure payment to request a written estimate from this contractor.
           </DialogDescription>
         </DialogHeader>
 
@@ -183,14 +183,14 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               <div className="flex items-start gap-2">
                 <Shield className="w-4 h-4 shrink-0 mt-0.5 text-slate-500" />
                 <div>
-                  <strong className="text-slate-900">Platform Access Fee: $1.50 (USD)</strong>
+                  <strong className="text-slate-900">Quote Request Fee: $1.75 (USD)</strong>
                   <p className="mt-1">
                     {payerType === 'customer'
-                      ? `This one-time fee unlocks 10 minutes of communication with ${contractorName}. A separate $1.50 fee applies per contractor.`
-                      : 'This one-time fee activates 10 minutes of communication access to receive and respond to customer inquiries on SurfCoast Contractors.'}
+                      ? `This one-time fee allows ${contractorName} to review your project and provide a written estimate. A separate $1.75 fee applies per contractor.`
+                      : 'This one-time fee enables you to receive and respond to customer quote requests on SurfCoast Contractors.'}
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
-                    Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe is coming soon — your fee is logged and a receipt will be emailed to you.
+                    Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe. A receipt will be emailed to you.
                   </p>
                 </div>
               </div>
@@ -234,19 +234,19 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             </div>
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={mutation.isPending || checkingout}>Cancel</Button>
-              <Button
-                type="submit"
-                className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                disabled={mutation.isPending || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
-              >
-                {mutation.isPending || checkingout ? (
-                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{checkingout ? 'Redirecting...' : 'Processing...'}</>
-                ) : (
-                  'Confirm & Pay $1.50'
-                )}
-              </Button>
-            </div>
+               <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={mutation.isPending || checkingout}>Cancel</Button>
+               <Button
+                 type="submit"
+                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                 disabled={mutation.isPending || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
+               >
+                 {mutation.isPending || checkingout ? (
+                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{checkingout ? 'Redirecting...' : 'Processing...'}</>
+                 ) : (
+                   'Confirm & Pay $1.75'
+                 )}
+               </Button>
+             </div>
             {mutation.isError && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> {mutation.error?.message || 'Payment failed. Please try again.'}
@@ -254,8 +254,8 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             )}
 
             <p className="text-center text-xs text-slate-400">
-              By proceeding, you authorize a $1.50 USD platform access fee. All fees are non-refundable.
-              {payerType === 'customer' && ' You also acknowledge that contractor payment terms are agreed directly between you and the contractor, and payment is due upon job completion.'}
+              By proceeding, you authorize a $1.75 USD quote request fee. All fees are non-refundable.
+              {payerType === 'customer' && ' This fee covers the cost of a written estimate from the contractor.'}
             </p>
           </form>
         )}
