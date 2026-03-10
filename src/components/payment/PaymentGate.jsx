@@ -124,13 +124,13 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" aria-describedby="payment-description">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-amber-500" />
             Quote Request Fee — $1.75
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription id="payment-description">
             Secure payment to request a written estimate from this contractor.
           </DialogDescription>
         </DialogHeader>
