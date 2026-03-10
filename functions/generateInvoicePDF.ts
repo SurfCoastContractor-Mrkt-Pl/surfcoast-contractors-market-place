@@ -10,12 +10,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'scope_id is required' }, { status: 400 });
     }
 
+    // Require authentication
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (!isAuthenticated) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     // Fetch scope of work details
-    const scope = await base44.asServiceRole.entities.ScopeOfWork.list();
-    const scopeData = scope.find(s => s.id === scope_id);
+    const scope = await base44.entities.ScopeOfWork.filter({ id: scope_id });
+    const scopeData = scope && scope.length > 0 ? scope[0] : null;
 
     if (!scopeData) {
       return Response.json({ error: 'Scope of work not found' }, { status: 404 });
+    }
+
+    // Authorize: only contractor, customer, or admin can generate invoice
+    const isAuthorized = 
+      user.email.toLowerCase() === scopeData.contractor_email?.toLowerCase() ||
+      user.email.toLowerCase() === scopeData.customer_email?.toLowerCase() ||
+      user.role === 'admin';
+
+    if (!isAuthorized) {
+      return Response.json({ error: 'Unauthorized: you do not have access to this scope' }, { status: 403 });
     }
 
     if (scopeData.status !== 'closed') {
