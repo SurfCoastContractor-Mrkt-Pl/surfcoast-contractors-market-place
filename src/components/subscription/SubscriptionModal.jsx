@@ -14,16 +14,14 @@ export default function SubscriptionModal({ open, onClose, userEmail, userType }
     // Load Stripe publishable key and set up
     const loadStripeKey = async () => {
       const { data } = await base44.functions.invoke('getStripePublicKey');
-      if (data?.publishable_key) {
-        setStripePromise(loadStripe(data.publishable_key));
+      if (data?.publishableKey) {
+        setStripePromise(loadStripe(data.publishableKey));
+      }
+      if (data?.subscriptionPriceId) {
+        setPriceId(data.subscriptionPriceId);
       }
     };
     loadStripeKey();
-  }, []);
-
-  useEffect(() => {
-    // Set the price ID for the monthly subscription
-    setPriceId('price_1T6wNARUQju4EsXrHfMvUkNl');
   }, []);
 
   const checkoutMutation = useMutation({
