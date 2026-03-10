@@ -167,29 +167,28 @@ export default function AdminDashboard() {
     a.click();
   };
 
+  if (loginLoading) {
+    return (
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-sm p-8 text-center">
+          <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-7 h-7 text-amber-400" />
+          </div>
+          <p className="text-slate-500 text-sm">Verifying access...</p>
+        </Card>
+      </div>
+    );
+  }
+
   if (!authed) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-sm p-8">
-          <div className="text-center mb-6">
-            <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center mx-auto mb-4">
-              <ShieldCheck className="w-7 h-7 text-amber-400" />
-            </div>
-            <h1 className="text-xl font-bold text-slate-900">Admin Access</h1>
-            <p className="text-sm text-slate-500 mt-1">SurfCoast Contractor Market Place — Fee Dashboard</p>
+        <Card className="w-full max-w-sm p-8 text-center">
+          <div className="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-7 h-7 text-red-500" />
           </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <Input
-              type="password"
-              placeholder="Admin password"
-              value={password}
-              onChange={e => { setPassword(e.target.value); setError(''); }}
-            />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <Button type="submit" disabled={loginLoading} className="w-full bg-slate-900 hover:bg-slate-800 text-white">
-              {loginLoading ? 'Verifying...' : 'Sign In'}
-            </Button>
-          </form>
+          <h1 className="text-xl font-bold text-slate-900 mb-2">Access Denied</h1>
+          <p className="text-sm text-slate-500">{error || 'You must be logged in as an admin to view this page.'}</p>
         </Card>
       </div>
     );
