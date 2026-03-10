@@ -124,12 +124,21 @@ export default function AdminDashboard() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all-payments'] }),
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthed(true);
-    } else {
-      setError('Incorrect password.');
+    setLoginLoading(true);
+    setError('');
+    try {
+      const res = await base44.functions.invoke('adminAuth', { password });
+      if (res.data?.success) {
+        setAuthed(true);
+      } else {
+        setError(res.data?.error || 'Incorrect password.');
+      }
+    } catch {
+      setError('Login failed. Please try again.');
+    } finally {
+      setLoginLoading(false);
     }
   };
 
