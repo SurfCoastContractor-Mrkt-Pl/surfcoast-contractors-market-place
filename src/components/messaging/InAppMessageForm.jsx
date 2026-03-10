@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { hasActiveSubscription } from '@/components/subscription/subscriptionUtils';
 
 // Simple rate limiting for message spam prevention
