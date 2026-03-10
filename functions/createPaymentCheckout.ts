@@ -15,13 +15,20 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // If user is authenticated, validate payerEmail matches their session
+    // Require authentication - prevent unauthenticated arbitrary email submissions
     const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      const user = await base44.auth.me();
-      if (user.email.toLowerCase() !== payerEmail.toLowerCase()) {
-        return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
-      }
+    if (!isAuthenticated) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
+    // Validate payerEmail matches authenticated user
+    if (user.email.toLowerCase() !== payerEmail.toLowerCase()) {
+      return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
     }
 
     // Create a Payment record first (service role to avoid RLS issues with unauthed users)
