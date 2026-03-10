@@ -22,17 +22,24 @@ export default function ContactAdminPanel({ userEmail, userName }) {
     }
     setError('');
     setSending(true);
-    await base44.integrations.Core.SendEmail({
-      to: 'admin@surfcoastcmp.com',
-      from_name: userName || userEmail,
-      subject: `[${category}] ${subject}`,
-      body: `From: ${userName || 'Unknown'} <${userEmail}>\nCategory: ${category}\nSubject: ${subject}\n\n${message}`,
-    });
-    setSending(false);
-    setSent(true);
-    setSubject('');
-    setCategory('');
-    setMessage('');
+    try {
+      await base44.functions.invoke('sendAdminContactMessage', {
+        userEmail,
+        userName,
+        category,
+        subject,
+        message,
+      });
+      setSending(false);
+      setSent(true);
+      setSubject('');
+      setCategory('');
+      setMessage('');
+    } catch (err) {
+      setError('Failed to send message. Please try again.');
+      setSending(false);
+      console.error('Error:', err);
+    }
   };
 
   return (
