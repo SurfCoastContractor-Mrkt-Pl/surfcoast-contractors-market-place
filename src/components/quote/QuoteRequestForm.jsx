@@ -54,8 +54,8 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex gap-3">
               <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-blue-900">$0.75 Fee</p>
-                <p className="text-xs text-blue-700 mt-1">A one-time $0.75 fee gives you a written estimate from this contractor, no communication required.</p>
+                <p className="text-sm font-medium text-blue-900">$1.75 Fee</p>
+                <p className="text-xs text-blue-700 mt-1">A one-time $1.75 fee gives you a written estimate from this contractor, no communication required.</p>
               </div>
             </div>
 
@@ -71,7 +71,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
               className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
             >
               <DollarSign className="w-4 h-4 mr-2" />
-              Pay $0.75 to Continue
+              Pay $1.75 to Continue
             </Button>
 
             <PaymentGate
@@ -103,7 +103,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
             <p className="text-xs text-green-700">
-              ✓ $0.75 fee paid · Ready to request quote
+              ✓ $1.75 fee paid · Ready to request quote
             </p>
           </div>
 

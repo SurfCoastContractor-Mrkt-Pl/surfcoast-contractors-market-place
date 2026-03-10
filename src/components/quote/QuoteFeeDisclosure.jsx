@@ -19,7 +19,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
           <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
             <div className="flex items-baseline justify-between">
               <span className="text-slate-700">Quote Request Fee:</span>
-              <span className="text-2xl font-bold text-amber-600">$0.75</span>
+              <span className="text-2xl font-bold text-amber-600">$1.75</span>
             </div>
             <p className="text-sm text-slate-600">
               This fee allows {contractorName} to review your project and provide a written estimate.
@@ -47,7 +47,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg flex gap-2">
             <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-700">
-              You can request quotes from multiple contractors. Each request is a separate $0.75 charge.
+              You can request quotes from multiple contractors. Each request is a separate $1.75 charge.
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
             Cancel
           </Button>
           <Button className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900" onClick={onConfirm}>
-            Continue ($0.75)
+            Continue ($1.75)
           </Button>
         </div>
       </DialogContent>
