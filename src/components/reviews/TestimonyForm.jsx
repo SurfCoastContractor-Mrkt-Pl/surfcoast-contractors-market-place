@@ -7,12 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Star, Loader2, MessageSquareQuote } from 'lucide-react';
 
-export default function TestimonyForm({ contractorId, contractorName, open, onClose }) {
+export default function TestimonyForm({ contractorId, contractorName, open, onClose, user }) {
   const queryClient = useQueryClient();
   const [overallRating, setOverallRating] = useState(5);
   const [comment, setComment] = useState('');
-  const [reviewerName, setReviewerName] = useState('');
-  const [reviewerEmail, setReviewerEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const createMutation = useMutation({
@@ -25,16 +23,16 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!reviewerName || !reviewerEmail || !comment) {
-      alert('Please fill in all required fields');
+    if (!comment) {
+      alert('Please write your testimony before submitting.');
       return;
     }
 
     createMutation.mutate({
       contractor_id: contractorId,
       contractor_name: contractorName,
-      reviewer_name: reviewerName,
-      reviewer_email: reviewerEmail,
+      reviewer_name: user?.full_name || '',
+      reviewer_email: user?.email || '',
       reviewer_type: 'customer',
       overall_rating: overallRating,
       comment,
@@ -47,8 +45,6 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
     setSubmitted(false);
     setOverallRating(5);
     setComment('');
-    setReviewerName('');
-    setReviewerEmail('');
     onClose();
   };
 
@@ -73,6 +69,11 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Reviewer info (read-only) */}
+            <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700">
+              Submitting as <strong>{user?.full_name}</strong> ({user?.email})
+            </div>
+
             {/* Overall Rating */}
             <div>
               <Label className="text-sm font-semibold mb-2 block">Overall Rating *</Label>
@@ -115,39 +116,13 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
               />
             </div>
 
-            {/* Reviewer Info */}
-            <div className="space-y-3 border-t pt-4">
-              <div>
-                <Label htmlFor="testimony-name">Your Name *</Label>
-                <input
-                  id="testimony-name"
-                  type="text"
-                  value={reviewerName}
-                  onChange={(e) => setReviewerName(e.target.value)}
-                  placeholder="Jane Smith"
-                  className="w-full mt-1.5 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
-                />
-              </div>
-              <div>
-                <Label htmlFor="testimony-email">Your Email * <span className="text-slate-400 font-normal">(not shown publicly)</span></Label>
-                <input
-                  id="testimony-email"
-                  type="email"
-                  value={reviewerEmail}
-                  onChange={(e) => setReviewerEmail(e.target.value)}
-                  placeholder="jane@example.com"
-                  className="w-full mt-1.5 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
-                />
-              </div>
-            </div>
-
             <div className="flex gap-3 pt-1">
               <Button type="button" variant="outline" onClick={handleClose} className="flex-1">
                 Cancel
               </Button>
               <Button
                 type="submit"
-                disabled={createMutation.isPending || !reviewerName || !reviewerEmail || !comment}
+                disabled={createMutation.isPending || !comment}
                 className="flex-1 bg-amber-500 hover:bg-amber-600"
               >
                 {createMutation.isPending ? (
