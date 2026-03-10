@@ -15,8 +15,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Create a Payment record first
-    paymentRecord = await base44.entities.Payment.create({
+    // Create a Payment record first (service role to avoid RLS issues with unauthed users)
+    paymentRecord = await base44.asServiceRole.entities.Payment.create({
       payer_email: payerEmail,
       payer_name: payerName,
       payer_type: payerType,
