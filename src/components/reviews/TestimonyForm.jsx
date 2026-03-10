@@ -14,10 +14,14 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
   const [submitted, setSubmitted] = useState(false);
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Review.create(data),
+    mutationFn: (data) => base44.functions.invoke('submitReview', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews', 'contractor', contractorId] });
       setSubmitted(true);
+    },
+    onError: (err) => {
+      const msg = err?.response?.data?.error || 'Failed to submit testimony. Please try again.';
+      alert(msg);
     }
   });
 
@@ -31,13 +35,9 @@ export default function TestimonyForm({ contractorId, contractorName, open, onCl
     createMutation.mutate({
       contractor_id: contractorId,
       contractor_name: contractorName,
-      reviewer_name: user?.full_name || '',
-      reviewer_email: user?.email || '',
-      reviewer_type: 'customer',
       overall_rating: overallRating,
       comment,
       is_testimony: true,
-      verified: false,
     });
   };
 
