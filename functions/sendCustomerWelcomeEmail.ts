@@ -4,9 +4,21 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Require authentication - only allow service role or authenticated users
-    const user = await base44.auth.me();
-    if (!user && req.headers.get('authorization') !== `Bearer ${Deno.env.get('BASE44_SERVICE_TOKEN')}`) {
+    // Validate request origin - only allow from Base44 platform (entity creation webhook)
+    const authHeader = req.headers.get('authorization');
+    const isServiceCall = authHeader === `Bearer ${Deno.env.get('BASE44_SERVICE_TOKEN')}`;
+    
+    // Also allow authenticated users initiating their own welcome email
+    let isAuthenticated = false;
+    try {
+      const user = await base44.auth.me();
+      isAuthenticated = !!user;
+    } catch {
+      isAuthenticated = false;
+    }
+
+    if (!isServiceCall && !isAuthenticated) {
+      console.warn('Unauthorized sendCustomerWelcomeEmail request');
       return Response.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
