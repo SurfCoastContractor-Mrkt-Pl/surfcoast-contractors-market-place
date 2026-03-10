@@ -12,6 +12,11 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const { eventName, properties = {}, userEmail } = body;
 
+    // Validate required fields
+    if (!eventName) {
+      return Response.json({ tracked: false, reason: 'missing_event_name' });
+    }
+
     // Check if user email is in exclusion list
     if (userEmail && EXCLUDED_EMAILS.includes(userEmail.toLowerCase())) {
       console.log(`[Analytics] Filtered event from excluded email: ${userEmail}`);
