@@ -188,7 +188,6 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   const scheduleMutation = useMutation({
     mutationFn: () => base44.entities.Payment.update(paymentId, { status: 'work_scheduled' }),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
       // Notify both parties
       await Promise.all([
         base44.integrations.Core.SendEmail({
