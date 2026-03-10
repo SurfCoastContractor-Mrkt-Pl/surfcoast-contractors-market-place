@@ -353,12 +353,25 @@ export default function ContractorProfile() {
             {/* Availability */}
             <AvailabilityCalendar slots={availability} />
 
-            {/* Reviews */}
-            <ReviewsDisplayDetailed 
-              revieweeId={contractorId} 
-              revieweeName={contractor?.name}
-              revieweeType="contractor"
-            />
+            {/* Reviews & Testimonies */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div />
+                <Button
+                  onClick={() => setShowTestimonyForm(true)}
+                  className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+                  size="sm"
+                >
+                  <MessageSquareQuote className="w-4 h-4 mr-2" />
+                  Leave a Testimony
+                </Button>
+              </div>
+              <ReviewsDisplayDetailed 
+                revieweeId={contractorId} 
+                revieweeName={contractor?.name}
+                revieweeType="contractor"
+              />
+            </div>
 
             {/* Badges */}
              <ContractorBadges completedJobsCount={contractor.completed_jobs_count || 0} uniqueCustomersCount={contractor.unique_customers_count || 0} />
