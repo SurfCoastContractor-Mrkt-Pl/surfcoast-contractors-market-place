@@ -345,7 +345,11 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
             {/* Thread */}
             {!needsSetup && (
               <div className="flex-1 overflow-y-auto space-y-3 mb-4 min-h-[120px] max-h-80 pr-1">
-                {thread.length === 0 ? (
+                {threadLoading ? (
+                  <div className="flex items-center justify-center py-8 gap-2 text-slate-400 text-sm">
+                    <Loader2 className="w-4 h-4 animate-spin" /> Loading messages...
+                  </div>
+                ) : thread.length === 0 ? (
                   <div className="text-center py-8 text-slate-400 text-sm">No messages yet. Send the first message below.</div>
                 ) : (
                   thread.map(m => (
