@@ -187,8 +187,8 @@ export default function AdminDashboard() {
               onChange={e => { setPassword(e.target.value); setError(''); }}
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white">
-              Sign In
+            <Button type="submit" disabled={loginLoading} className="w-full bg-slate-900 hover:bg-slate-800 text-white">
+              {loginLoading ? 'Verifying...' : 'Sign In'}
             </Button>
           </form>
         </Card>
