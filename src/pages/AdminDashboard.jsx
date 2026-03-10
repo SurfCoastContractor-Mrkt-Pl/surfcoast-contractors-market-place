@@ -22,9 +22,8 @@ import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const queryClient = useQueryClient();
 
