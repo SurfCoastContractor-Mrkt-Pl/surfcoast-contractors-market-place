@@ -188,6 +188,11 @@ export default function ReviewsDisplayDetailed({
               {review.verified && (
                 <p className="text-xs text-green-600">✓ Verified Review</p>
               )}
+              {review.is_testimony && !review.verified && (
+                <p className="text-xs text-amber-600 flex items-center gap-1">
+                  <MessageSquareQuote className="w-3 h-3" /> Customer Testimony
+                </p>
+              )}
             </div>
           ))}
         </div>
