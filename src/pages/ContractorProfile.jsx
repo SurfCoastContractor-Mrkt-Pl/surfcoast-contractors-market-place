@@ -49,6 +49,7 @@ export default function ContractorProfile() {
    const [showDisclaimer, setShowDisclaimer] = useState(false);
    const [showQuoteForm, setShowQuoteForm] = useState(false);
    const [showQuoteFeeDisclosure, setShowQuoteFeeDisclosure] = useState(false);
+   const [showTestimonyForm, setShowTestimonyForm] = useState(false);
 
    // Check user authentication or admin preview mode
    useEffect(() => {
