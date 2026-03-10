@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
 
         // Send admin email alert for geo blocks
         await base44.asServiceRole.integrations.Core.SendEmail({
-          to: 'hexthegreat25@gmail.com',
+          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
           from_name: 'SurfCoast Security',
           subject: `[SECURITY] Geo Block — ${countryName} (${country})`,
           body: `A non-US access attempt was blocked.\n\nIP: ${ip}\nCountry: ${countryName} (${country})\nProxy/VPN: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis is an automated security alert from SurfCoast Contractor Market Place.`,
@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
 
         // Email admin for high-severity suspicious proxy
         await base44.asServiceRole.integrations.Core.SendEmail({
-          to: 'hexthegreat25@gmail.com',
+          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
           from_name: 'SurfCoast Security',
           subject: `[SECURITY ALERT] Suspicious Proxy/VPN Detected`,
           body: `A suspicious request was flagged — US IP using proxy/VPN or hosting provider.\n\nIP: ${ip}\nProxy: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis may indicate a geo-restriction bypass attempt.\n\nSurfCoast Security System`,
