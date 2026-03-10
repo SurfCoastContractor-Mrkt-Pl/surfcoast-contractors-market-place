@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
     for (const job of jobsToDelete) {
       try {
         // Send notification email to customer
-        await base44.integrations.Core.SendEmail({
+        await base44.asServiceRole.integrations.Core.SendEmail({
           to: job.poster_email,
           subject: 'Your Job Posting Has Expired',
           body: `Your job posting "${job.title}" has been automatically removed after 30 days with no contractor interest. No agreements were made with any contractors. You can post a new job at any time.`
