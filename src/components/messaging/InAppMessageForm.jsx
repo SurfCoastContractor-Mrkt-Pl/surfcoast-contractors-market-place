@@ -70,17 +70,36 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     checkSubscription();
   }, [open, formData.email]);
 
-  // Load the thread — all messages tied to this payment (with pagination)
-   const [pageSize] = useState(50);
-   const { data: thread = [] } = useQuery({
-     queryKey: ['message-thread', paymentId],
-     queryFn: async () => {
-       const messages = await base44.entities.Message.filter({ payment_id: paymentId }, '-created_date', pageSize);
-       return messages;
-     },
-     enabled: open && !!paymentId,
-     refetchInterval: open ? 8000 : false,
-   });
+  // Load the thread — all messages tied to this payment (real-time via subscription)
+  const [thread, setThread] = useState([]);
+  const [threadLoading, setThreadLoading] = useState(false);
+
+  useEffect(() => {
+    if (!open || !paymentId) { setThread([]); return; }
+
+    // Initial load
+    setThreadLoading(true);
+    base44.entities.Message.filter({ payment_id: paymentId }, 'created_date', 100)
+      .then(msgs => setThread(msgs || []))
+      .finally(() => setThreadLoading(false));
+
+    // Real-time subscription
+    const unsubscribe = base44.entities.Message.subscribe((event) => {
+      if (event.data?.payment_id !== paymentId) return;
+      if (event.type === 'create') {
+        setThread(prev => {
+          if (prev.find(m => m.id === event.id)) return prev;
+          return [...prev, event.data];
+        });
+      } else if (event.type === 'update') {
+        setThread(prev => prev.map(m => m.id === event.id ? event.data : m));
+      } else if (event.type === 'delete') {
+        setThread(prev => prev.filter(m => m.id !== event.id));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [open, paymentId]);
 
    // Mark unread messages as read when thread is viewed
    const markAsReadMutation = useMutation({
