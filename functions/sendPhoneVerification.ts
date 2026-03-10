@@ -1,7 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory storage for verification codes (use database in production)
-const verificationStore = new Map();
+// Rate limiter for verification code requests
+const requestCounts = new Map();
+const RATE_LIMIT_WINDOW = 3600000; // 1 hour
+const RATE_LIMIT_THRESHOLD = 3; // Max 3 requests per hour per user
 
 Deno.serve(async (req) => {
   try {
@@ -22,10 +24,27 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Rate limiting per user/phone combo
+    const now = Date.now();
+    const requestKey = `${userEmail}-${phone}`;
+    if (!requestCounts.has(requestKey)) {
+      requestCounts.set(requestKey, []);
+    }
+
+    const userRequests = requestCounts.get(requestKey);
+    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
+    
+    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
+      return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
+    }
+
+    recentRequests.push(now);
+    requestCounts.set(requestKey, recentRequests);
+
     const normalizedPhone = phone.replace(/\D/g, '');
 
     // Check if customer profile exists and if phone matches (optional, not required for new users)
-    const profiles = await base44.asServiceRole.entities.CustomerProfile.filter({
+    const profiles = await base44.entities.CustomerProfile.filter({
       email: userEmail
     });
 
@@ -45,9 +64,14 @@ Deno.serve(async (req) => {
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // Store code with 5 minute expiry
-    const expiresAt = Date.now() + 5 * 60 * 1000;
-    verificationStore.set(`${userEmail}-${normalizedPhone}`, { code, expiresAt });
+    // Store code in database with 5 minute expiry
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    await base44.asServiceRole.entities.EmailVerification.create({
+      email: `${userEmail}-${normalizedPhone}`,
+      code: code,
+      expires_at: expiresAt,
+      verified: false
+    });
 
     // Send SMS via Twilio
     const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
