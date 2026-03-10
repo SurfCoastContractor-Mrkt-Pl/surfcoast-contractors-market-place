@@ -637,6 +637,7 @@ export default function ContractorProfile() {
         onClose={() => setShowTestimonyForm(false)}
         contractorId={contractorId}
         contractorName={contractor?.name}
+        user={userAuth}
       />
     </div>
   );
