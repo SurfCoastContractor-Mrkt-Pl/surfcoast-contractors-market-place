@@ -339,7 +339,7 @@ export default function ContractorProfile() {
                             )}
                           </div>
                         </div>
-                        <a href={cred.file_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline shrink-0 ml-2">View Doc</a>
+                        <span className="text-xs text-slate-400 shrink-0 ml-2 italic">Verified on file</span>
                       </div>
                     );
                   })}
