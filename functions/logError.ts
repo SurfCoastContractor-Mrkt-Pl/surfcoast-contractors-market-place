@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     // Send email alert to admin for high/critical severity
     if (severity === 'high' || severity === 'critical') {
       await base44.asServiceRole.integrations.Core.SendEmail({
-        to: 'admin@surfcoastcontractors.com.au',
+        to: Deno.env.get('ADMIN_ALERT_EMAIL'),
         from_name: 'SurfCoast Error Monitor',
         subject: `🚨 ${severity?.toUpperCase()} Error: ${action}`,
         body: `A ${severity} error was logged on SurfCoast.\n\nUser: ${user_email || 'unknown'} (${user_type || 'unknown'})\nAction: ${action}\nError: ${error_message}\nContext: ${typeof context === 'object' ? JSON.stringify(context, null, 2) : (context || 'N/A')}\nTime: ${new Date().toISOString()}\n\nLog ID: ${log.id}\n\nPlease review at your Admin Dashboard → Error Log tab.`,
