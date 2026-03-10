@@ -25,6 +25,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Payment method not found' }, { status: 404 });
     }
 
+    // Only allow the owner or admin to delete
+    if (user.role !== 'admin' && savedMethod.user_email.toLowerCase() !== user.email.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: You can only delete your own payment methods' }, { status: 403 });
+    }
+
     // Detach from Stripe
     await stripeClient.paymentMethods.detach(savedMethod.stripe_payment_method_id);
 
