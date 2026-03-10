@@ -5,9 +5,9 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   let paymentRecord = null;
+  const base44 = createClientFromRequest(req);
 
   try {
-    const base44 = createClientFromRequest(req);
 
     const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName } = await req.json();
 
