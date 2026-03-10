@@ -1,8 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory storage for verification codes (use database in production)
-const verificationStore = new Map();
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -32,27 +29,36 @@ Deno.serve(async (req) => {
     }
 
     const normalizedPhone = phone.replace(/\D/g, '');
-    const key = `${userEmail}-${normalizedPhone}`;
 
-    // Check stored verification code
-    const stored = verificationStore.get(key);
-    if (!stored) {
+    // Query database for active verification code
+    const verifications = await base44.asServiceRole.entities.PhoneVerification.filter({
+      email: userEmail,
+      phone: normalizedPhone,
+      verified: false
+    });
+
+    if (!verifications || verifications.length === 0) {
       return Response.json({ error: 'Verification code expired or not sent' }, { status: 400 });
     }
 
+    const verification = verifications[0];
+
     // Check if expired
-    if (Date.now() > stored.expiresAt) {
-      verificationStore.delete(key);
+    if (new Date(verification.expires_at) < new Date()) {
+      await base44.asServiceRole.entities.PhoneVerification.delete(verification.id);
       return Response.json({ error: 'Verification code expired' }, { status: 400 });
     }
 
     // Verify code matches
-    if (stored.code !== code) {
+    if (verification.code !== code) {
       return Response.json({ error: 'Invalid verification code' }, { status: 400 });
     }
 
-    // Code is valid, remove it from storage
-    verificationStore.delete(key);
+    // Code is valid, mark as verified
+    await base44.asServiceRole.entities.PhoneVerification.update(verification.id, {
+      verified: true
+    });
+
     return Response.json({ success: true, message: 'Phone verified successfully' });
   } catch (error) {
     console.error('Phone verification error:', error);
