@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Require authentication - only allow service role or authenticated users
+    const user = await base44.auth.me();
+    if (!user && req.headers.get('authorization') !== `Bearer ${Deno.env.get('BASE44_SERVICE_TOKEN')}`) {
+      return Response.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { event, data } = await req.json();
 
     if (!data || !data.email || !data.full_name) {
