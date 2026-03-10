@@ -1,5 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+// Rate limiter for verification code requests
+const requestCounts = new Map();
+const RATE_LIMIT_WINDOW = 3600000; // 1 hour
+const RATE_LIMIT_THRESHOLD = 3; // Max 3 requests per hour per user
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -18,6 +23,22 @@ Deno.serve(async (req) => {
         return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
       }
     }
+
+    // Rate limiting per email
+    const now = Date.now();
+    if (!requestCounts.has(userEmail)) {
+      requestCounts.set(userEmail, []);
+    }
+
+    const userRequests = requestCounts.get(userEmail);
+    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
+    
+    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
+      return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
+    }
+
+    recentRequests.push(now);
+    requestCounts.set(userEmail, recentRequests);
 
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
