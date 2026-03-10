@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { 
   ArrowLeft, Star, MapPin, Clock, Phone, Mail, 
   CheckCircle2, DollarSign, ShieldAlert, AlertCircle, FileText, CalendarCheck,
-  GraduationCap, Award, Briefcase
+  GraduationCap, Award, Briefcase, MessageSquareQuote
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
