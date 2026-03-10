@@ -9,6 +9,15 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Allow scheduled automations (no auth) OR admin users only
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (isAuthenticated) {
+      const user = await base44.auth.me();
+      if (user?.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+      }
+    }
+
     const minors = await base44.asServiceRole.entities.Contractor.filter({ is_minor: true });
     const now = new Date();
     let locked = 0;
