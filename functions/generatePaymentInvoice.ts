@@ -22,6 +22,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Payment not found' }, { status: 404 });
     }
 
+    // Only allow payer or admin to download their invoice
+    if (user.role !== 'admin' && payment.payer_email !== user.email) {
+      return Response.json({ error: 'Forbidden: You can only access your own invoices' }, { status: 403 });
+    }
+
     const invoiceDate = new Date(payment.created_date);
     const invoiceNumber = `INV-${payment.id.substring(0, 8).toUpperCase()}-${invoiceDate.getFullYear()}`;
 
