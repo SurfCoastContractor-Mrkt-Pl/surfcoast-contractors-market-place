@@ -31,15 +31,15 @@ Deno.serve(async (req) => {
       payer_type: payerType,
       contractor_id: contractorId || null,
       contractor_email: contractorEmail || null,
-      amount: 1.50,
+      amount: 1.75,
       status: 'pending',
       purpose: payerType === 'contractor'
         ? 'Contractor platform access fee'
-        : `Customer access to contact contractor ${contractorName}`,
+        : `Quote request from contractor ${contractorName}`,
     });
 
-    // Use pre-configured Stripe price (prod_U7iEdzTxs41iP8 / price_1T9SoFDrSxvL03OBSZukhlMr)
-    const PAYMENT_PRICE_ID = 'price_1T9SoFDrSxvL03OBSZukhlMr';
+    // Use pre-configured Stripe price (prod_U7iveIQsRZcOwH / price_1T9TTTDrSxvL03OB7lwLoVKz)
+    const PAYMENT_PRICE_ID = 'price_1T9TTTDrSxvL03OB7lwLoVKz';
     const origin = req.headers.get('origin') || 'https://localhost:3000';
     let session;
     try {
