@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Must be authenticated
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { accountType, accountEmail } = await req.json();
 
     if (!accountType || !accountEmail) {
@@ -11,6 +18,12 @@ Deno.serve(async (req) => {
 
     if (!['contractor', 'customer'].includes(accountType)) {
       return Response.json({ error: 'accountType must be contractor or customer' }, { status: 400 });
+    }
+
+    // Only allow users to delete their own account (unless admin)
+    if (user.role !== 'admin' && user.email !== accountEmail) {
+      console.warn(`Unauthorized account deletion attempt: ${user.email} tried to delete ${accountEmail}`);
+      return Response.json({ error: 'Forbidden: You can only delete your own account.' }, { status: 403 });
     }
 
     let contractorId = null;
