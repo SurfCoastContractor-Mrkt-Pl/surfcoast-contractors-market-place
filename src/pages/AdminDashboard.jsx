@@ -20,14 +20,11 @@ import UserAccountManager from '../components/admin/UserAccountManager';
 import ErrorLogTable from '../components/admin/ErrorLogTable';
 import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
 
-// Admin password is hardcoded for now (no environment variables available in browser)
-// TODO: Move to backend function to load from environment variables
-const ADMIN_PASSWORD = 'contractorhub2024';
-
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const queryClient = useQueryClient();
 
