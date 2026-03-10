@@ -47,10 +47,10 @@ export default function SubscriptionModal({ open, onClose, userEmail, userType }
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" aria-describedby="subscription-description">
         <DialogHeader>
           <DialogTitle>Unlimited Communication</DialogTitle>
-          <DialogDescription>
+          <DialogDescription id="subscription-description">
             Get unlimited messaging for one month
           </DialogDescription>
         </DialogHeader>
