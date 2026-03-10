@@ -6,6 +6,12 @@ const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { userEmail, paymentMethodId, cardName, phone, cardholderName } = await req.json();
 
     if (!userEmail || !paymentMethodId) {
@@ -13,6 +19,11 @@ Deno.serve(async (req) => {
         { error: 'userEmail and paymentMethodId required' },
         { status: 400 }
       );
+    }
+
+    // Prevent saving payment methods on behalf of other users
+    if (user.role !== 'admin' && user.email.toLowerCase() !== userEmail.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: You can only manage your own payment methods' }, { status: 403 });
     }
 
 
