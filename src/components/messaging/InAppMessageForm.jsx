@@ -266,7 +266,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Session Expired</h3>
             <p className="text-slate-600 text-sm mb-4">
-              Your 1-hour communication session has ended. Past messages are shown below for your records.
+              Your 10-minute communication session has ended. Past messages are shown below for your records.
             </p>
             <p className="text-xs text-slate-400 mb-6">To continue communicating, a new $1.50 platform access fee is required.</p>
             {thread.length > 0 && (
