@@ -612,6 +612,13 @@ export default function ContractorProfile() {
         contractor={contractor}
         customer={userAuth}
       />
+
+      <TestimonyForm
+        open={showTestimonyForm}
+        onClose={() => setShowTestimonyForm(false)}
+        contractorId={contractorId}
+        contractorName={contractor?.name}
+      />
     </div>
   );
 }
