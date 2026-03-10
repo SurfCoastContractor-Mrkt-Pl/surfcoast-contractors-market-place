@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, ChevronRight, Loader2 } from 'lucide-react';
-import DisputeDetailModal from '../components/disputes/DisputeDetailModal';
+import DisputeDetailModal from '@/components/disputes/DisputeDetailModal';
 
 const statusColors = {
   open: 'bg-blue-100 text-blue-800',
