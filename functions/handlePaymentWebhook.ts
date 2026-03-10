@@ -14,8 +14,19 @@ Deno.serve(async (req) => {
     const signature = req.headers.get('stripe-signature');
     const body = await req.text();
 
+    if (!signature) {
+      console.error('Missing Stripe signature');
+      return Response.json({ error: 'Missing signature' }, { status: 400 });
+    }
+
     // Validate webhook signature
-    const event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+    let event;
+    try {
+      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+    } catch (sigError) {
+      console.error('Webhook signature verification failed:', sigError.message);
+      return Response.json({ error: 'Invalid signature' }, { status: 400 });
+    }
     
     // Create base44 client after auth (webhook may not have auth context)
     const base44 = createClientFromRequest(req);
