@@ -182,7 +182,6 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
       onSuccess: () => {
         setBody('');
         setAttachments([]);
-        queryClient.invalidateQueries({ queryKey: ['message-thread', paymentId] });
       },
     });
 
