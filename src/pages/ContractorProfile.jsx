@@ -370,14 +370,20 @@ export default function ContractorProfile() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div />
-                <Button
-                  onClick={() => setShowTestimonyForm(true)}
-                  className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-                  size="sm"
-                >
-                  <MessageSquareQuote className="w-4 h-4 mr-2" />
-                  Leave a Testimony
-                </Button>
+                {hasWorkedWithContractor ? (
+                  <Button
+                    onClick={() => setShowTestimonyForm(true)}
+                    className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+                    size="sm"
+                  >
+                    <MessageSquareQuote className="w-4 h-4 mr-2" />
+                    Leave a Testimony
+                  </Button>
+                ) : (
+                  <p className="text-xs text-slate-400 italic">
+                    Only customers who have completed a job with this contractor can leave a review.
+                  </p>
+                )}
               </div>
               <ReviewsDisplayDetailed 
                 revieweeId={contractorId} 
