@@ -54,10 +54,8 @@ export default function JobCloseout({ scope, role, open, onClose }) {
             completed_jobs_count: newCount,
           });
           if (newCount === 300) {
-            await base44.integrations.Core.SendEmail({
-              to: 'admin@surfcoastmarketplace.com.au',
-              subject: '🌊 SurfCoast Legend Achieved — Contractor',
-              body: `Contractor ${contractor.name} (${contractor.email}) has just reached 300 verified completed jobs and earned the SurfCoast Legend badge!\n\nConsider reaching out to congratulate them.`,
+            await base44.functions.invoke('notifyAdminBadgeMilestone', {
+              name: contractor.name, email: contractor.email, count: newCount, type: 'contractor',
             });
           }
         }
