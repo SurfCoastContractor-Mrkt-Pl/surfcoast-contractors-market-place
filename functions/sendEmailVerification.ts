@@ -10,6 +10,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Email required' }, { status: 400 });
     }
 
+    // If authenticated, ensure userEmail matches the session
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (isAuthenticated) {
+      const user = await base44.auth.me();
+      if (user.email.toLowerCase() !== userEmail.toLowerCase()) {
+        return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
+      }
+    }
+
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     
