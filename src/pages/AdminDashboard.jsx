@@ -324,7 +324,7 @@ export default function AdminDashboard() {
 
         {/* Tabs */}
         <Tabs defaultValue="signups">
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 flex-wrap h-auto gap-1">
             <TabsTrigger value="signups">Signups & Growth</TabsTrigger>
             <TabsTrigger value="payments">Fee Transactions</TabsTrigger>
             <TabsTrigger value="messages">
