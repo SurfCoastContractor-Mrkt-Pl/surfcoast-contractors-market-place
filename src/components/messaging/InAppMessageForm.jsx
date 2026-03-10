@@ -245,11 +245,16 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 flex-wrap">
             <MessageSquare className="w-5 h-5 text-amber-500" />
             Conversation with {recipientName}
+            {!isSessionExpired && !isWorkScheduled && (
+              <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" /> Live
+              </span>
+            )}
             {isWorkScheduled && (
-              <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal flex items-center gap-1">
+              <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal flex items-center gap-1">
                 <CalendarCheck className="w-3 h-3" /> Work Scheduled
               </span>
             )}
