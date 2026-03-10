@@ -105,7 +105,7 @@ export default function DisputeDetailModal({ dispute, open, onClose, currentUser
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" aria-describedby="dispute-description">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span>{dispute.title}</span>
@@ -113,7 +113,7 @@ export default function DisputeDetailModal({ dispute, open, onClose, currentUser
               {dispute.status.replace(/_/g, ' ')}
             </Badge>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription id="dispute-description">
             Filed on {new Date(dispute.submitted_at).toLocaleDateString()}
           </DialogDescription>
         </DialogHeader>
