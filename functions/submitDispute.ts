@@ -4,14 +4,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Require authentication
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    // Check if authenticated, otherwise use email from body
+    let user = null;
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (isAuthenticated) {
+      user = await base44.auth.me();
     }
 
     const body = await req.json();
     const {
+      initiator_email,
+      initiator_name,
+      initiator_type,
       respondent_email,
       respondent_name,
       respondent_type,
@@ -30,8 +34,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Get initiator info
+    const finalInitiatorEmail = initiator_email || (user?.email);
+    const finalInitiatorName = initiator_name || (user?.full_name || 'User');
+    const finalInitiatorType = initiator_type || 'customer';
+
+    if (!finalInitiatorEmail) {
+      return Response.json({ error: 'Initiator email required' }, { status: 400 });
+    }
+
     // Prevent self-disputes
-    if (user.email.toLowerCase() === respondent_email.toLowerCase()) {
+    if (finalInitiatorEmail.toLowerCase() === respondent_email.toLowerCase()) {
       return Response.json({ error: 'Cannot file a dispute against yourself' }, { status: 400 });
     }
 
@@ -55,9 +68,9 @@ Deno.serve(async (req) => {
     // Create dispute
     const dispute = await base44.asServiceRole.entities.Dispute.create({
       dispute_number,
-      initiator_email: user.email,
-      initiator_name: user.full_name || 'User',
-      initiator_type,
+      initiator_email: finalInitiatorEmail,
+      initiator_name: finalInitiatorName,
+      initiator_type: finalInitiatorType,
       respondent_email,
       respondent_name,
       respondent_type,
@@ -99,7 +112,7 @@ Deno.serve(async (req) => {
       console.error('Failed to send respondent notification:', emailError.message);
     }
 
-    console.log(`Dispute ${dispute.dispute_number} created by ${user.email}`);
+    console.log(`Dispute ${dispute.dispute_number} created by ${finalInitiatorEmail}`);
 
     return Response.json({
       success: true,
