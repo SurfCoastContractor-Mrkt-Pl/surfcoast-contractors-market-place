@@ -123,23 +123,23 @@ export default function AdminDashboard() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all-payments'] }),
   });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoginLoading(true);
-    setError('');
-    try {
-      const res = await base44.functions.invoke('adminAuth', { password });
-      if (res.data?.success) {
-        setAuthed(true);
-      } else {
-        setError(res.data?.error || 'Incorrect password.');
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await base44.functions.invoke('adminAuth', {});
+        if (res.data?.success) {
+          setAuthed(true);
+        } else {
+          setError(res.data?.error || 'Admin access required.');
+        }
+      } catch {
+        setError('Authentication failed. Make sure you are logged in as an admin.');
+      } finally {
+        setLoginLoading(false);
       }
-    } catch {
-      setError('Login failed. Please try again.');
-    } finally {
-      setLoginLoading(false);
-    }
-  };
+    };
+    checkAuth();
+  }, []);
 
   const totalCollected = payments.filter(p => p.status === 'confirmed').reduce((sum, p) => sum + (p.amount || 0), 0);
   const totalPending = payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + (p.amount || 0), 0);
