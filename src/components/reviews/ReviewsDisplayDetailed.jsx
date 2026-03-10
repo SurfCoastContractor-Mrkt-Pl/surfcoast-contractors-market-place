@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Star, Plus } from 'lucide-react';
+import { Star, Plus, MessageSquareQuote } from 'lucide-react';
 import { format } from 'date-fns';
 import ReviewFormDetailed from './ReviewFormDetailed';
 
