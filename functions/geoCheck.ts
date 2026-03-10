@@ -48,21 +48,23 @@ Deno.serve(async (req) => {
     }
 
     const isUS = country === 'US';
+    const blockedCountries = ['IL']; // Israel
+    const isBlocked = blockedCountries.includes(country);
 
     // Log geo block
-    if (!isUS) {
+    if (!isUS || isBlocked) {
       console.warn(`GEO BLOCK: ${ip} from ${countryName} (${country}) tried to access ${path}`);
       
       try {
         await base44.asServiceRole.entities.SecurityAlert.create({
           alert_type: 'geo_block',
-          severity: 'medium',
+          severity: isBlocked ? 'high' : 'medium',
           ip_address: ip,
           country: country,
           country_name: countryName,
           user_agent: userAgent.substring(0, 300),
           path: path,
-          details: `Non-US access attempt from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}`,
+          details: isBlocked ? `Blocked country access from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}` : `Non-US access attempt from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}`,
         });
 
         // Send admin email alert for geo blocks
