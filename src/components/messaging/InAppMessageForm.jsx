@@ -33,7 +33,6 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     const [showScheduleConfirm, setShowScheduleConfirm] = useState(false);
     const [hasSubscription, setHasSubscription] = useState(false);
     const [checkingSubscription, setCheckingSubscription] = useState(true);
-    const queryClient = useQueryClient();
     const bottomRef = useRef(null);
     const fileInputRef = useRef(null);
     const rateLimiter = useRef(createRateLimiter(1000)).current; // 1 second between messages
