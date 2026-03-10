@@ -44,7 +44,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   const sessionExpiry = paymentRecord?.session_expires_at ? new Date(paymentRecord.session_expires_at) : null;
   const [now, setNow] = useState(new Date());
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 10000); // update every 10s
+    const interval = setInterval(() => setNow(new Date()), 1000); // update every second
     return () => clearInterval(interval);
   }, []);
   const isSessionExpired = sessionExpiry && now > sessionExpiry && !isWorkScheduled;
