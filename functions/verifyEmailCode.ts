@@ -10,6 +10,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Code and email required' }, { status: 400 });
     }
 
+    // If authenticated, ensure userEmail matches the session
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (isAuthenticated) {
+      const user = await base44.auth.me();
+      if (user.email.toLowerCase() !== userEmail.toLowerCase()) {
+        return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
+      }
+    }
+
     // Get stored verification from database
     const verifications = await base44.asServiceRole.entities.EmailVerification.filter({
       email: userEmail,
