@@ -31,6 +31,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Scope must be closed before creating review' }, { status: 400 });
     }
 
+    // Only the customer or admin can trigger review creation for a scope
+    if (user.role !== 'admin' && user.email !== scope.customer_email) {
+      return Response.json({ error: 'Forbidden: You are not the customer for this scope.' }, { status: 403 });
+    }
+
     // Check if review already exists for this contractor from this customer
     const existing = await base44.asServiceRole.entities.Review.filter({ 
       contractor_id: scope.contractor_id,
