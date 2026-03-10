@@ -111,6 +111,19 @@ export default function ContractorProfile() {
     enabled: !!contractorId,
   });
 
+  // Check if the logged-in customer has a closed scope with this contractor
+  const { data: closedScopes } = useQuery({
+    queryKey: ['closed-scopes', contractorId, userAuth?.email],
+    queryFn: () => base44.entities.ScopeOfWork.filter({
+      contractor_id: contractorId,
+      customer_email: userAuth.email,
+      status: 'closed',
+    }),
+    enabled: !!contractorId && !!userAuth?.email,
+  });
+
+  const hasWorkedWithContractor = closedScopes && closedScopes.length > 0;
+
   if (isLoading || authLoading) {
      return (
        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
