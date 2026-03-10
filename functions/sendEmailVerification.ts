@@ -8,11 +8,17 @@ const RATE_LIMIT_THRESHOLD = 3; // Max 3 requests per hour per user
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const body = await req.json();
-    const { userEmail } = body;
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return Response.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    const userEmail = body?.userEmail || body?.email;
 
-    if (!userEmail) {
-      return Response.json({ error: 'Email required' }, { status: 400 });
+    if (!userEmail || typeof userEmail !== 'string' || !userEmail.includes('@')) {
+      return Response.json({ error: 'Valid email required' }, { status: 400 });
     }
 
     // If authenticated, ensure userEmail matches the session

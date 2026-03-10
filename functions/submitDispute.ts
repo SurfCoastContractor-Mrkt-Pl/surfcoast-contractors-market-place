@@ -58,12 +58,14 @@ Deno.serve(async (req) => {
     const random = Math.floor(Math.random() * 10000);
     const dispute_number = `DSP-${new Date().getFullYear()}-${String(random).padStart(5, '0')}`;
 
-    // Determine initiator type
-    const initiatorTypes = {
-      'contractor': 'customer',
-      'customer': 'contractor'
-    };
-    const initiator_type = initiatorTypes[respondent_type] || respondent_type;
+    // Use provided initiator_type or infer from respondent
+    if (!finalInitiatorType && !initiator_type) {
+      const initiatorTypes = {
+        'contractor': 'customer',
+        'customer': 'contractor'
+      };
+      finalInitiatorType = initiatorTypes[respondent_type] || 'customer';
+    }
 
     // Create dispute
     const dispute = await base44.asServiceRole.entities.Dispute.create({
@@ -94,7 +96,7 @@ Deno.serve(async (req) => {
         await base44.integrations.Core.SendEmail({
           to: adminEmail,
           subject: `[DISPUTE] New dispute filed: ${dispute.dispute_number}`,
-          body: `A new dispute has been filed:\n\nDispute #: ${dispute.dispute_number}\nInitiator: ${user.full_name} (${user.email})\nRespondent: ${respondent_name} (${respondent_email})\nCategory: ${category}\nSeverity: ${severity}\nTitle: ${title}\n\nDescription:\n${description}\n\nPlease review in the Admin Dashboard.`
+          body: `A new dispute has been filed:\n\nDispute #: ${dispute.dispute_number}\nInitiator: ${finalInitiatorName} (${finalInitiatorEmail})\nRespondent: ${respondent_name} (${respondent_email})\nCategory: ${category}\nSeverity: ${severity}\nTitle: ${title}\n\nDescription:\n${description}\n\nPlease review in the Admin Dashboard.`
         });
       } catch (emailError) {
         console.error('Failed to send admin notification:', emailError.message);
@@ -106,7 +108,7 @@ Deno.serve(async (req) => {
       await base44.integrations.Core.SendEmail({
         to: respondent_email,
         subject: `Dispute filed against you: ${dispute.dispute_number}`,
-        body: `A dispute has been filed against you.\n\nDispute #: ${dispute.dispute_number}\nFiled by: ${user.full_name}\nCategory: ${category}\n\nPlease log in to your account to respond. This will be reviewed by our admin team.`
+        body: `A dispute has been filed against you.\n\nDispute #: ${dispute.dispute_number}\nFiled by: ${finalInitiatorName}\nCategory: ${category}\n\nPlease log in to your account to respond. This will be reviewed by our admin team.`
       });
     } catch (emailError) {
       console.error('Failed to send respondent notification:', emailError.message);
