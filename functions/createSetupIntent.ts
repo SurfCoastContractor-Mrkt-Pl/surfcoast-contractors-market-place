@@ -6,11 +6,14 @@ const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { userEmail } = await req.json();
 
-    if (!userEmail) {
-      return Response.json({ error: 'userEmail required' }, { status: 400 });
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    // Ignore payload email — always use the authenticated user's email
+    const userEmail = user.email;
 
     // Create a setup intent for saving the payment method
     const setupIntent = await stripeClient.setupIntents.create({
