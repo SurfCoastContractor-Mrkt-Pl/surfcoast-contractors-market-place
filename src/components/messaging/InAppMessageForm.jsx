@@ -101,22 +101,12 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     return () => unsubscribe();
   }, [open, paymentId]);
 
-   // Mark unread messages as read when thread is viewed
-   const markAsReadMutation = useMutation({
-     mutationFn: async (messageId) => {
-       await base44.entities.Message.update(messageId, {
-         read: true,
-         read_at: new Date().toISOString()
-       });
-     },
-   });
-
    // Auto-mark received messages as read
    useEffect(() => {
-     if (!open || senderType === 'contractor') return; // Only customers auto-read
+     if (!open) return;
      thread.forEach(msg => {
        if (!msg.read && msg.sender_type !== senderType) {
-         markAsReadMutation.mutate(msg.id);
+         base44.entities.Message.update(msg.id, { read: true, read_at: new Date().toISOString() });
        }
      });
    }, [thread, open, senderType]);
