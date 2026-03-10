@@ -32,7 +32,7 @@ function SessionTimer({ expiresAt }) {
 
   const end = new Date(expiresAt);
   const now = new Date();
-  const totalDuration = 60 * 60 * 1000; // 1 hour in ms
+  const totalDuration = 10 * 60 * 1000; // 10 minutes in ms
   const elapsed = Math.min(now - (end - totalDuration), totalDuration);
   const progressPct = Math.min(100, (elapsed / totalDuration) * 100);
   const isWarning = !expired && progressPct > 75;
