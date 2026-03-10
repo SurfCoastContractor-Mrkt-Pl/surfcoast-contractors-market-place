@@ -10,6 +10,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'paymentId required' }, { status: 400 });
     }
 
+    // Must be authenticated
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Fetch payment
     const payment = await base44.asServiceRole.entities.Payment.get(paymentId);
     if (!payment) {
