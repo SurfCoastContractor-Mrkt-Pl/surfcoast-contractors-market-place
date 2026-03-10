@@ -63,9 +63,9 @@ import MyJobs from './pages/MyJobs';
 import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
+import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import RegionBlocked from './pages/RegionBlocked';
 import __Layout from './Layout.jsx';
 
 
@@ -86,9 +86,9 @@ export const PAGES = {
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
     "ProjectManagement": ProjectManagement,
+    "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
-    "RegionBlocked": RegionBlocked,
 }
 
 export const pagesConfig = {

@@ -25,6 +25,7 @@ import EquipmentDisplay from '@/components/contractor/EquipmentDisplay';
 import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
 import QuoteFeeDisclosure from '@/components/quote/QuoteFeeDisclosure';
 import ContractorBadges, { getHighestBadge } from '@/components/badges/ContractorBadges';
+import TestimonyForm from '@/components/reviews/TestimonyForm';
 
 const tradeLabels = {
   electrician: 'Electrician',
