@@ -40,7 +40,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
   const paymentId = paymentRecord?.id;
   const isWorkScheduled = paymentRecord?.status === 'work_scheduled';
 
-  // 1-hour session expiry logic
+  // 10-minute session expiry logic
   const sessionExpiry = paymentRecord?.session_expires_at ? new Date(paymentRecord.session_expires_at) : null;
   const [now, setNow] = useState(new Date());
   useEffect(() => {
