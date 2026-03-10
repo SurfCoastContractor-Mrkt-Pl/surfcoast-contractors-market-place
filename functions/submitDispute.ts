@@ -4,17 +4,19 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Check if authenticated, otherwise use email from body
-    let user = null;
+    // Require authentication to prevent spoofing
     const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      user = await base44.auth.me();
+    if (!isAuthenticated) {
+      return Response.json({ error: 'Authentication required to file a dispute' }, { status: 401 });
+    }
+    
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
     }
 
     const body = await req.json();
     const {
-      initiator_email,
-      initiator_name,
       initiator_type,
       respondent_email,
       respondent_name,
@@ -34,14 +36,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Get initiator info
-    const finalInitiatorEmail = initiator_email || (user?.email);
-    const finalInitiatorName = initiator_name || (user?.full_name || 'User');
+    // Initiator is always the authenticated user (prevent spoofing)
+    const finalInitiatorEmail = user.email;
+    const finalInitiatorName = user.full_name || 'User';
     const finalInitiatorType = initiator_type || 'customer';
-
-    if (!finalInitiatorEmail) {
-      return Response.json({ error: 'Initiator email required' }, { status: 400 });
-    }
 
     // Prevent self-disputes
     if (finalInitiatorEmail.toLowerCase() === respondent_email.toLowerCase()) {
