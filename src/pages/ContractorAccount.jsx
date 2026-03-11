@@ -30,6 +30,9 @@ import StripePayoutSetup from '@/components/contractor/StripePayoutSetup';
 import IdentityVerification from '@/components/contractor/IdentityVerification';
 import MinorHoursTracker from '@/components/contractor/MinorHoursTracker';
 import MinorComplianceChecklist from '@/components/contractor/MinorComplianceChecklist';
+import ContractorAnalyticsDashboard from '@/components/contractor/ContractorAnalyticsDashboard';
+import AvailabilityStatusManager from '@/components/contractor/AvailabilityStatusManager';
+import FeaturedBadgeToggle from '@/components/contractor/FeaturedBadgeToggle';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -226,29 +229,38 @@ export default function ContractorAccount() {
             </Card>
 
             <Tabs defaultValue="profile">
-              <TabsList className="w-full grid-cols-6">
-                <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
-                <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
-                <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
-                <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
-                  <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
-                  {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
-                    <span className="ml-0.5 bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
-                  )}
-                </TabsTrigger>
-                <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
-                <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5">
-                  <CalendarCheck className="w-3 h-3 sm:w-4 sm:h-4" />Work
-                  {pastWorkPayments?.length > 0 && (
-                    <span className="ml-0.5 bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
-                  )}
-                </TabsTrigger>
-              </TabsList>
+              <TabsList className="w-full grid-cols-7">
+                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
+                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
+                 <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
+                 <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
+                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
+                   <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
+                   {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
+                     <span className="ml-0.5 bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
+                   )}
+                 </TabsTrigger>
+                 <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
+                 <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5">
+                   <CalendarCheck className="w-3 h-3 sm:w-4 sm:h-4" />Work
+                   {pastWorkPayments?.length > 0 && (
+                     <span className="ml-0.5 bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
+                   )}
+                 </TabsTrigger>
+               </TabsList>
+
+              <TabsContent value="dashboard">
+                 <div className="space-y-4">
+                   <ContractorAnalyticsDashboard contractor={contractor} />
+                   <AvailabilityStatusManager contractor={contractor} />
+                   <FeaturedBadgeToggle contractor={contractor} />
+                 </div>
+               </TabsContent>
 
               <TabsContent value="profile">
-                <div className="space-y-4">
-                   {/* Minor Hours Tracker */}
-                   {contractor?.is_minor && <MinorHoursTracker contractor={contractor} />}
+                 <div className="space-y-4">
+                    {/* Minor Hours Tracker */}
+                    {contractor?.is_minor && <MinorHoursTracker contractor={contractor} />}
 
                    {/* Minor Compliance Checklist */}
                    {contractor?.is_minor && <MinorComplianceChecklist contractor={contractor} />}
