@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    // Reject unauthenticated requests
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { quote_id, event_type } = await req.json();
 
     if (!quote_id || !event_type) {
@@ -12,6 +19,12 @@ Deno.serve(async (req) => {
     const quote = await base44.asServiceRole.entities.QuoteRequest.get(quote_id);
     if (!quote) {
       return Response.json({ error: 'Quote not found' }, { status: 404 });
+    }
+
+    // Verify user is the contractor or customer in the quote
+    const isAuthorized = user.email === quote.contractor_email || user.email === quote.customer_email || user.role === 'admin';
+    if (!isAuthorized) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Send email based on event type
