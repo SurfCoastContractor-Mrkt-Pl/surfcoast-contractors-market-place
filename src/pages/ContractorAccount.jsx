@@ -386,15 +386,27 @@ export default function ContractorAccount() {
 
               <TabsContent value="fees">
                 <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-2">Platform Fee Status</h2>
-                  {!allInvoicesDownloaded && (
-                    <div className="flex items-start gap-3 p-3 mb-4 bg-amber-50 border border-amber-200 rounded-xl">
-                      <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                      <p className="text-sm text-amber-800">
-                        <strong>Action Required:</strong> You must download the invoice for each confirmed payment before taking on a new scope of work.
+                  <h2 className="text-lg font-semibold text-slate-900 mb-1">Platform Fee Status</h2>
+                  <p className="text-xs text-slate-500 mb-4">Download an invoice for each confirmed payment to stay eligible for new scopes of work.</p>
+
+                  {/* Checklist summary */}
+                  <div className={`flex items-center gap-3 p-3 mb-4 rounded-xl border ${allInvoicesDownloaded ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`}>
+                    {allInvoicesDownloaded ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                    ) : (
+                      <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+                    )}
+                    <div>
+                      <p className={`text-sm font-semibold ${allInvoicesDownloaded ? 'text-green-800' : 'text-amber-800'}`}>
+                        {allInvoicesDownloaded
+                          ? 'All invoices downloaded — you\'re clear to take new scopes'
+                          : `${confirmedPayments.filter(p => !downloadedInvoices.includes(p.id)).length} invoice(s) still need to be downloaded`}
                       </p>
+                      {!allInvoicesDownloaded && (
+                        <p className="text-xs text-amber-700 mt-0.5">Download the invoices below to unlock the Close Out button on your scopes.</p>
+                      )}
                     </div>
-                  )}
+                  </div>
                   {payments?.length > 0 ? (
                     <div className="space-y-3">
                       {payments.map(p => (
