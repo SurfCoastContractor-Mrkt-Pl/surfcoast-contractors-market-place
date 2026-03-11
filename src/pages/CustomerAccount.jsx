@@ -100,6 +100,12 @@ export default function CustomerAccount() {
     enabled: !!userEmail,
   });
 
+  const { data: progressPayments } = useQuery({
+    queryKey: ['customer-progress-payments', userEmail],
+    queryFn: () => base44.entities.ProgressPayment.filter({ customer_email: userEmail }),
+    enabled: !!userEmail,
+  });
+
   const deleteDisclaimerMutation = useMutation({
     mutationFn: (id) => base44.entities.DisclaimerAcceptance.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] }),
