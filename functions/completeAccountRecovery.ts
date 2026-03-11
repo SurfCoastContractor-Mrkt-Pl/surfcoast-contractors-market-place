@@ -23,7 +23,11 @@ Deno.serve(async (req) => {
       tokenData = JSON.parse(tokenPayload);
 
       // Verify HMAC signature
-      const signingKey = Deno.env.get('STRIPE_WEBHOOK_SECRET') || 'fallback-key';
+      const signingKey = Deno.env.get('ACCOUNT_RECOVERY_SECRET');
+      if (!signingKey) {
+        console.error('ACCOUNT_RECOVERY_SECRET is not configured');
+        return Response.json({ error: 'Recovery service unavailable' }, { status: 500 });
+      }
       const encoder = new TextEncoder();
       const data = encoder.encode(tokenPayload);
       const keyData = encoder.encode(signingKey);
