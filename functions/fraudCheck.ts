@@ -10,9 +10,13 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Enforce service-role only access (internal fraud checks only)
-    const isServiceRole = req.headers.get('x-base44-service-role') === 'true';
-    if (!isServiceRole) {
+    // Validate internal key for service-to-service calls
+    const providedKey = req.headers.get('x-internal-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    
+    const isValidInternalCall = providedKey && expectedKey && providedKey === expectedKey;
+    if (!isValidInternalCall) {
+      console.warn('Unauthorized fraud check attempt - invalid or missing internal key');
       return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
