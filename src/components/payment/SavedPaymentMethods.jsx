@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { CreditCard, Trash2, Plus, Loader2, Shield, Lock } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { logError } from '@/components/utils/logError';
 
 
