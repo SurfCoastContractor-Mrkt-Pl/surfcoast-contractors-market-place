@@ -27,6 +27,7 @@ import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 import StripePayoutSetup from '@/components/contractor/StripePayoutSetup';
+import IdentityVerification from '@/components/contractor/IdentityVerification';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -244,6 +245,9 @@ export default function ContractorAccount() {
 
               <TabsContent value="profile">
                 <div className="space-y-4">
+                   {/* Identity Verification */}
+                   <IdentityVerification contractor={contractor} onVerified={() => queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] })} />
+
                    {/* Profile Information Editor */}
                    <ContractorProfileEditor contractor={contractor} />
 
