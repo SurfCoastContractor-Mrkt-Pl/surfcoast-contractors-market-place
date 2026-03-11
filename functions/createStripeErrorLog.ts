@@ -2,6 +2,26 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
   try {
+    // Validate internal key for security (only callable from trusted contexts)
+    const internalKey = req.headers.get('x-internal-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    
+    if (!expectedKey) {
+      console.error('INTERNAL_SERVICE_KEY not configured');
+      return Response.json(
+        { error: 'Service configuration error' },
+        { status: 500 }
+      );
+    }
+
+    if (!internalKey || internalKey !== expectedKey) {
+      console.warn('Unauthorized error log creation attempt with invalid key');
+      return Response.json(
+        { error: 'Unauthorized: invalid internal key' },
+        { status: 403 }
+      );
+    }
+
     const base44 = createClientFromRequest(req);
 
     const {
