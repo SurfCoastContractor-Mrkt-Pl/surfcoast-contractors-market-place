@@ -81,6 +81,8 @@ export default function AdminDashboard() {
   });
 
   const unverifiedContractors = contractors.filter(c => !c.identity_verified);
+  const minorContractors = contractors.filter(c => c.is_minor);
+  const lockedMinors = minorContractors.filter(c => c.minor_hours_locked);
 
   // Growth chart data
   const getGrowthData = () => {
@@ -339,11 +341,22 @@ export default function AdminDashboard() {
               )}
             </TabsTrigger>
             <TabsTrigger value="verification">
-              ID Verification {unverifiedContractors.length > 0 && (
-                <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {unverifiedContractors.length}
-                </span>
-              )}
+             ID Verification {unverifiedContractors.length > 0 && (
+               <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                 {unverifiedContractors.length}
+               </span>
+             )}
+            </TabsTrigger>
+            <TabsTrigger value="minors">
+             Minors {lockedMinors.length > 0 && (
+               <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                 {lockedMinors.length}
+               </span>
+             )} {minorContractors.length > 0 && lockedMinors.length === 0 && (
+               <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                 {minorContractors.length}
+               </span>
+             )}
             </TabsTrigger>
             <TabsTrigger value="profiles">Profiles</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
@@ -607,6 +620,51 @@ export default function AdminDashboard() {
               )}
             </Card>
           </TabsContent>
+          {/* Minors Compliance Tab */}
+          <TabsContent value="minors">
+            <Card className="p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-1">Minor Contractor Monitoring</h2>
+              <p className="text-sm text-slate-500 mb-4">California child labor law compliance. Minors limited to 20 hours/week during school months.</p>
+              {minorContractors.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">No minor contractors registered.</div>
+              ) : (
+                <div className="space-y-4">
+                  {minorContractors.map(c => (
+                    <div key={c.id} className={`p-4 rounded-xl border ${c.minor_hours_locked ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'}`}>
+                      <div className="flex items-start justify-between gap-3 flex-wrap mb-3">
+                        <div>
+                          <div className="font-medium text-slate-900">{c.name}</div>
+                          <div className="text-xs text-slate-500">{c.email} · Age: {Math.floor((new Date() - new Date(c.date_of_birth)) / (365.25 * 24 * 60 * 60 * 1000))}</div>
+                        </div>
+                        <div className="flex gap-2">
+                          {c.minor_hours_locked ? (
+                            <Badge className="bg-red-100 text-red-700">Locked</Badge>
+                          ) : (
+                            <Badge className="bg-blue-100 text-blue-700">Active</Badge>
+                          )}
+                          {!c.parental_consent_docs?.parental_consent_form_url && (
+                            <Badge className="bg-amber-100 text-amber-700">Missing Docs</Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-xs text-slate-700">
+                        <div className="flex justify-between">
+                          <span>Hours This Week:</span>
+                          <strong>{c.minor_weekly_hours_used || 0} / 20</strong>
+                        </div>
+                        {c.minor_hours_locked && (
+                          <div className="p-2 bg-red-100 border border-red-300 rounded text-red-800">
+                            Locked until: {new Date(c.minor_hours_lock_until).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+
           {/* Profiles Tab */}
           <TabsContent value="profiles">
             <AdminProfileViewer contractors={contractors} customers={customers} />
