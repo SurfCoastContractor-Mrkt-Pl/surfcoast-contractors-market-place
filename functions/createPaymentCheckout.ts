@@ -1,7 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
-const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
+const secretKey = Deno.env.get("STRIPE_SECRET_KEY");
+if (!secretKey || !secretKey.startsWith('sk_')) {
+  throw new Error('Invalid STRIPE_SECRET_KEY: not configured or expired');
+}
+const stripe = new Stripe(secretKey);
 
 Deno.serve(async (req) => {
   let paymentRecord = null;
@@ -85,12 +89,43 @@ Deno.serve(async (req) => {
         },
       });
     } catch (stripeError) {
-      // Handle Stripe rate limits and other API errors
-      if (stripeError.status === 429) {
-        console.error('Stripe rate limit exceeded:', stripeError.message);
-        await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
-        return Response.json({ error: 'Service temporarily unavailable. Please try again in a moment.' }, { status: 429 });
+      console.error('Stripe checkout error:', {
+        message: stripeError.message,
+        type: stripeError.type,
+        code: stripeError.code,
+        statusCode: stripeError.statusCode,
+      });
+
+      // Clean up payment record
+      if (paymentRecord?.id) {
+        try {
+          await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
+        } catch (deleteError) {
+          console.error('Failed to clean up payment record:', deleteError.message);
+        }
       }
+
+      // Log to ErrorLog
+      try {
+        await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+          error_type: 'payment',
+          error_message: stripeError.message,
+          user_email: payerEmail,
+          user_type: payerType,
+          action: 'Create checkout session',
+          severity: stripeError.statusCode === 429 ? 'medium' : 'high',
+        });
+      } catch (logError) {
+        console.error('Failed to log error:', logError.message);
+      }
+
+      // Handle specific error types
+      if (stripeError.statusCode === 429) {
+        return Response.json({ 
+          error: 'Service temporarily unavailable. Please try again in a moment.' 
+        }, { status: 429 });
+      }
+
       throw stripeError;
     }
 
@@ -100,12 +135,15 @@ Deno.serve(async (req) => {
       url: session.url,
     });
   } catch (error) {
-    console.error('Checkout error:', error.message);
-    console.error('Error type:', error.type);
-    console.error('Full error:', error);
+    console.error('Checkout error:', {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      statusCode: error.statusCode,
+    });
     
-    // Delete orphaned payment record if checkout fails
-    if (paymentRecord && paymentRecord.id) {
+    // Clean up payment record
+    if (paymentRecord?.id) {
       try {
         await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
         console.log(`Cleaned up orphaned payment record: ${paymentRecord.id}`);
@@ -113,6 +151,24 @@ Deno.serve(async (req) => {
         console.error('Failed to clean up payment record:', deleteError.message);
       }
     }
-    return Response.json({ error: error.message }, { status: 500 });
+
+    // Log to ErrorLog
+    try {
+      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+        error_type: 'payment',
+        error_message: error.message,
+        user_email: payerEmail || 'unknown',
+        user_type: payerType || 'unknown',
+        action: 'Create checkout session',
+        severity: 'high',
+      });
+    } catch (logError) {
+      console.error('Failed to log error:', logError.message);
+    }
+
+    return Response.json({ 
+      error: error.message,
+      details: error.code || error.type 
+    }, { status: error.statusCode || 500 });
   }
 });

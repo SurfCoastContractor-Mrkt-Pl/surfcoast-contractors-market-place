@@ -1,7 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
-const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+if (!secretKey || !secretKey.startsWith('sk_')) {
+  throw new Error('Invalid STRIPE_SECRET_KEY: not configured or expired');
+}
+const stripeClient = new Stripe(secretKey);
 
 Deno.serve(async (req) => {
   try {
@@ -38,7 +42,30 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('Error deleting payment method:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error deleting payment method:', {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      statusCode: error.statusCode,
+    });
+    
+    // Log to ErrorLog
+    try {
+      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+        error_type: 'payment',
+        error_message: error.message,
+        user_email: user?.email || 'unknown',
+        user_type: 'unknown',
+        action: 'Delete payment method',
+        severity: 'high',
+      });
+    } catch (logError) {
+      console.error('Failed to log error:', logError.message);
+    }
+
+    return Response.json({ 
+      error: error.message,
+      details: error.code || error.type 
+    }, { status: error.statusCode || 500 });
   }
 });
