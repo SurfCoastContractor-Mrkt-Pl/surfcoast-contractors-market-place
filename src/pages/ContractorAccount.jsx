@@ -385,9 +385,13 @@ export default function ContractorAccount() {
               </TabsContent>
 
               <TabsContent value="fees">
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-1">Platform Fee Status</h2>
-                  <p className="text-xs text-slate-500 mb-4">Download an invoice for each confirmed payment to stay eligible for new scopes of work.</p>
+                <div className="space-y-4">
+                  {/* Stripe Payout Setup */}
+                  <StripePayoutSetup contractor={contractor} onSetupComplete={() => {}} />
+
+                  <Card className="p-6">
+                    <h2 className="text-lg font-semibold text-slate-900 mb-1">Platform Fee Status</h2>
+                    <p className="text-xs text-slate-500 mb-4">Download an invoice for each confirmed payment to stay eligible for new scopes of work.</p>
 
                   {/* Checklist summary */}
                   <div className={`flex items-center gap-3 p-3 mb-4 rounded-xl border ${allInvoicesDownloaded ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`}>
@@ -444,9 +448,10 @@ export default function ContractorAccount() {
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">No platform fee payments found.</p>
-                  )}
-                </Card>
-              </TabsContent>
+                    )}
+                    </Card>
+                    </div>
+                    </TabsContent>
 
               <TabsContent value="settings">
                 <div className="space-y-4">
