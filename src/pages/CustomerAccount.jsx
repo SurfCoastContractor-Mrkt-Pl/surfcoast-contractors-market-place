@@ -201,7 +201,14 @@ export default function CustomerAccount() {
                 </TabsTrigger>
                 <TabsTrigger value="history" className="text-xs sm:text-sm">History</TabsTrigger>
                 <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
-                <TabsTrigger value="scopes" className="text-xs sm:text-sm">Scopes</TabsTrigger>
+                <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1">
+                  Scopes
+                  {scopes?.filter(s => s.status === 'pending_approval').length > 0 && (
+                    <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">
+                      {scopes.filter(s => s.status === 'pending_approval').length}
+                    </span>
+                  )}
+                </TabsTrigger>
                 <TabsTrigger value="payments" className="text-xs sm:text-sm">Payments</TabsTrigger>
                 <TabsTrigger value="settings" className="text-xs sm:text-sm"><Settings className="w-3 h-3 sm:w-4 sm:h-4" /></TabsTrigger>
               </TabsList>
