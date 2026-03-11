@@ -35,8 +35,12 @@ Deno.serve(async (req) => {
     // Get payment method details from Stripe
     const paymentMethod = await stripeClient.paymentMethods.retrieve(paymentMethodId);
 
-    // Log for debugging
-    console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card?.brand}, last4: ${paymentMethod.card?.last4}`);
+    // Validate card data exists
+    if (!paymentMethod.card) {
+      return Response.json({ error: 'Payment method is not a valid card' }, { status: 400 });
+    }
+
+    console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card.brand}, last4: ${paymentMethod.card.last4}`);
 
     // Save payment method info to database
     console.log(`Attempting to save payment method for email: ${userEmail}`);
@@ -58,8 +62,23 @@ Deno.serve(async (req) => {
       type: error.type,
       code: error.code,
       statusCode: error.statusCode,
-      raw: error,
     });
+
+    // Log to ErrorLog
+    try {
+      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+        error_type: 'payment',
+        error_message: error.message,
+        user_email: userEmail || 'unknown',
+        user_type: 'unknown',
+        action: 'Save payment method',
+        severity: 'medium',
+        context: JSON.stringify({ paymentMethodId, errorCode: error.code }),
+      });
+    } catch (logError) {
+      console.error('Failed to log error:', logError.message);
+    }
+
     return Response.json({ 
       error: error.message,
       details: error.code || error.type 

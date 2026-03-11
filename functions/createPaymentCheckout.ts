@@ -136,22 +136,15 @@ Deno.serve(async (req) => {
 
       // Log to ErrorLog
       try {
-        const logFn = await fetch(`${Deno.env.get('BASE44_FUNCTIONS_URL')}/createStripeErrorLog`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
-          },
-          body: JSON.stringify({
-            error_type: 'payment',
-            error_message: stripeError.message,
-            user_email: payerEmail,
-            user_type: payerType,
-            action: 'Create checkout session',
-            severity: stripeError.statusCode === 429 ? 'medium' : 'high',
-          }),
+        await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+          error_type: 'payment',
+          error_message: stripeError.message,
+          user_email: payerEmail,
+          user_type: payerType,
+          action: 'Create checkout session',
+          severity: stripeError.statusCode === 429 ? 'medium' : 'high',
+          context: JSON.stringify({ statusCode: stripeError.statusCode, code: stripeError.code }),
         });
-        if (!logFn.ok) console.error('Error log creation failed:', await logFn.text());
       } catch (logError) {
         console.error('Failed to log error:', logError.message);
       }
@@ -191,22 +184,15 @@ Deno.serve(async (req) => {
 
     // Log to ErrorLog
     try {
-      const logFn = await fetch(`${Deno.env.get('BASE44_FUNCTIONS_URL')}/createStripeErrorLog`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
-        },
-        body: JSON.stringify({
-          error_type: 'payment',
-          error_message: error.message,
-          user_email: payerEmail || 'unknown',
-          user_type: payerType || 'unknown',
-          action: 'Create checkout session',
-          severity: 'high',
-        }),
+      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+        error_type: 'payment',
+        error_message: error.message,
+        user_email: payerEmail || 'unknown',
+        user_type: payerType || 'unknown',
+        action: 'Create checkout session',
+        severity: 'high',
+        context: JSON.stringify({ errorType: error.type, code: error.code }),
       });
-      if (!logFn.ok) console.error('Error log creation failed:', await logFn.text());
     } catch (logError) {
       console.error('Failed to log error:', logError.message);
     }
