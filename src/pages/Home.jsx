@@ -11,6 +11,7 @@ import TradeCategories from '@/components/home/TradeCategories';
 import FeaturedContractors from '@/components/home/FeaturedContractors';
 import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
+import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -49,8 +50,8 @@ export default function Home() {
   }, [navigate]);
 
   const { data: contractors, isLoading: contractorsLoading } = useQuery({
-    queryKey: ['contractors-featured'],
-    queryFn: () => base44.entities.Contractor.filter({ available: true }, '-rating', 6),
+    queryKey: ['contractors-all'],
+    queryFn: () => base44.entities.Contractor.filter({ available: true }, '-rating', 50),
   });
 
   const { data: jobs, isLoading: jobsLoading, refetch: refetchJobs } = useQuery({
@@ -59,7 +60,7 @@ export default function Home() {
   });
 
   const handleRefresh = async () => {
-    await queryClient.invalidateQueries({ queryKey: ['contractors-featured'] });
+    await queryClient.invalidateQueries({ queryKey: ['contractors-all'] });
     await queryClient.invalidateQueries({ queryKey: ['jobs-recent'] });
     await refetchJobs();
   };
@@ -83,7 +84,8 @@ export default function Home() {
       <HeroSection />
       <CTASection />
       <TradeCategories />
-      <FeaturedContractors contractors={contractors} isLoading={contractorsLoading} />
+      {contractors && <ContractorSearchFilter contractors={contractors} />}
+      <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
     </div>
   );
