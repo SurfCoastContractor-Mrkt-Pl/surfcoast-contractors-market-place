@@ -143,6 +143,8 @@ Deno.serve(async (req) => {
           user_type: payerType,
           action: 'Create checkout session',
           severity: stripeError.statusCode === 429 ? 'medium' : 'high',
+        }, {
+          'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY')
         });
       } catch (logError) {
         console.error('Failed to log error:', logError.message);
@@ -190,6 +192,8 @@ Deno.serve(async (req) => {
         user_type: payerType || 'unknown',
         action: 'Create checkout session',
         severity: 'high',
+      }, {
+        'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY')
       });
     } catch (logError) {
       console.error('Failed to log error:', logError.message);
