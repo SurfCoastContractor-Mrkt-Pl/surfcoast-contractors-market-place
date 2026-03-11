@@ -26,6 +26,7 @@ import ContactAdminPanel from '@/components/support/ContactAdminPanel';
 import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
+import StripePayoutSetup from '@/components/contractor/StripePayoutSetup';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
