@@ -39,7 +39,11 @@ Deno.serve(async (req) => {
     }
 
     // Create temporary recovery token (valid for 30 minutes) with HMAC signature
-    const signingKey = Deno.env.get('STRIPE_WEBHOOK_SECRET') || 'fallback-key';
+    const signingKey = Deno.env.get('ACCOUNT_RECOVERY_SECRET');
+    if (!signingKey) {
+      console.error('ACCOUNT_RECOVERY_SECRET is not configured');
+      return Response.json({ error: 'Account recovery is temporarily unavailable' }, { status: 500 });
+    }
     const tokenData = {
       email,
       timestamp: Date.now(),
