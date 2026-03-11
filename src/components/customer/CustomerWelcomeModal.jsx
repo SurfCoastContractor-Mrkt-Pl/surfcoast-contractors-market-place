@@ -1,7 +1,8 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Lightbulb, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Lightbulb, ArrowRight, Info } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }) {
   return (
@@ -25,7 +26,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
             
             <div className="space-y-2">
               <h4 className="font-semibold text-slate-900 text-sm">What's next?</h4>
-              <ul className="space-y-1.5 text-sm text-slate-600">
+              <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
                   <span>Complete your profile</span>
@@ -36,11 +37,35 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
-                  <span>Request estimates from contractors you're not connected with ($1.75 per request)</span>
+                  <div className="flex items-start gap-1.5">
+                    <span>Request estimates ($1.75 each)</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-slate-400 mt-0.5 cursor-help flex-shrink-0" />
+                        </TooltipTrigger>
+                        <TooltipContent className="text-xs max-w-xs">
+                          Send estimate requests to contractors you haven't worked with yet
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
-                  <span>Message contractors ($1.50 per 10-minute session or $50/month unlimited)</span>
+                  <div className="flex items-start gap-1.5">
+                    <span>Message contractors ($1.50/session or $50/month)</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-slate-400 mt-0.5 cursor-help flex-shrink-0" />
+                        </TooltipTrigger>
+                        <TooltipContent className="text-xs max-w-xs">
+                          $1.50 for 10-minute communication window, or $50/month for unlimited messaging
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </li>
               </ul>
             </div>
