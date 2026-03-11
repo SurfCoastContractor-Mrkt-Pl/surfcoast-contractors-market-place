@@ -23,6 +23,25 @@ Deno.serve(async (req) => {
     let locked = 0;
     let unlocked = 0;
 
+    // Early exit — no minors to process
+    if (!minors || minors.length === 0) {
+      return Response.json({ success: true, minors_checked: 0, locked, unlocked });
+    }
+
+    // Fetch ALL closed scopes for minor contractors in one batch (avoids N+1 DB calls)
+    const minorIds = new Set(minors.map(c => c.id));
+    const allClosedScopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ status: 'closed' });
+    // Build a map: contractor_id → list of their closed scopes
+    const scopesByContractor = new Map();
+    for (const scope of allClosedScopes) {
+      if (scope.contractor_id && minorIds.has(scope.contractor_id)) {
+        if (!scopesByContractor.has(scope.contractor_id)) {
+          scopesByContractor.set(scope.contractor_id, []);
+        }
+        scopesByContractor.get(scope.contractor_id).push(scope);
+      }
+    }
+
     for (const contractor of minors) {
       // --- Auto-unlock if lock period has elapsed ---
       if (contractor.minor_hours_locked && contractor.minor_hours_lock_until) {
@@ -34,18 +53,22 @@ Deno.serve(async (req) => {
             minor_weekly_hours_used: 0,
             minor_weekly_hours_reset_date: now.toISOString(),
           });
-          await base44.asServiceRole.integrations.Core.SendEmail({
-            to: contractor.email,
-            subject: '✅ Your Account Has Been Unlocked | SurfCoast Contractors',
-            body: `Hi ${contractor.name},\n\nYour account has been automatically unlocked. A full week has passed since your last completed job. You may now accept new work up to your 20-hour weekly limit.\n\nRemember: Your parent or guardian must oversee all work activities and safety decisions.\n\nSurfCoast Contractor Market Place`,
-          });
+          // Fire emails in parallel
+          const emailPromises = [
+            base44.asServiceRole.integrations.Core.SendEmail({
+              to: contractor.email,
+              subject: '✅ Your Account Has Been Unlocked | SurfCoast Contractors',
+              body: `Hi ${contractor.name},\n\nYour account has been automatically unlocked. A full week has passed since your last completed job. You may now accept new work up to your 20-hour weekly limit.\n\nRemember: Your parent or guardian must oversee all work activities and safety decisions.\n\nSurfCoast Contractor Market Place`,
+            }),
+          ];
           if (contractor.parental_consent_docs?.parent_email) {
-            await base44.asServiceRole.integrations.Core.SendEmail({
+            emailPromises.push(base44.asServiceRole.integrations.Core.SendEmail({
               to: contractor.parental_consent_docs.parent_email,
               subject: `✅ ${contractor.name}'s Contractor Account Unlocked | SurfCoast`,
               body: `Dear ${contractor.parental_consent_docs.parent_name || 'Parent/Guardian'},\n\nThis is to notify you that ${contractor.name}'s contractor account on SurfCoast has been automatically unlocked. A full week has now passed since their last completed job.\n\nAs a reminder, you are responsible for overseeing ${contractor.name}'s work activities, ensuring their safety, and making any important decisions on their behalf.\n\nSurfCoast Contractor Market Place`,
-            });
+            }));
           }
+          await Promise.all(emailPromises);
           unlocked++;
           continue;
         }
@@ -60,10 +83,7 @@ Deno.serve(async (req) => {
         ? new Date(contractor.minor_weekly_hours_reset_date)
         : new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-      const closedScopes = await base44.asServiceRole.entities.ScopeOfWork.filter({
-        contractor_id: contractor.id,
-        status: 'closed',
-      });
+      const closedScopes = scopesByContractor.get(contractor.id) || [];
 
       const weekScopes = closedScopes.filter(s => {
         const closedDate = s.closed_date ? new Date(s.closed_date) : null;
