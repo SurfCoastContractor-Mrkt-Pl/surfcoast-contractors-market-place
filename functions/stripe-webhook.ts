@@ -103,9 +103,7 @@ async function handleSubscriptionCreated(subscription, base44) {
 
 async function handleSubscriptionUpdated(subscription, base44) {
   try {
-    // Match by stripe_subscription_id — no need for email here
-    const email = subscription.metadata?.user_email || null;
-
+    // Match by stripe_subscription_id only — no email needed
     const subscriptions = await base44.asServiceRole.entities.Subscription.filter({
       stripe_subscription_id: subscription.id
     });
