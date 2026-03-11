@@ -470,6 +470,33 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
           </div>
         </div>
 
+        {/* Notification Preferences */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Bell className="w-4 h-4 text-slate-600" />
+            <h3 className="font-semibold text-slate-900">Notification Preferences</h3>
+          </div>
+          <div className="space-y-3">
+            {[
+              { key: 'notify_job_updates', label: 'Job & scope status updates', desc: 'Approvals, rejections, completions' },
+              { key: 'notify_messages', label: 'New messages', desc: 'When a contractor replies to you' },
+              { key: 'notify_payment_receipts', label: 'Payment receipts', desc: 'Confirmations and invoices' },
+              { key: 'notify_platform_news', label: 'Platform news & tips', desc: 'Occasional updates from SurfCoast' },
+            ].map(({ key, label, desc }) => (
+              <div key={key} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div>
+                  <div className="text-sm font-medium text-slate-800">{label}</div>
+                  <div className="text-xs text-slate-500">{desc}</div>
+                </div>
+                <Switch
+                  checked={!!formData[key]}
+                  onCheckedChange={(val) => setFormData(prev => ({ ...prev, [key]: val }))}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
         <Button
           type="submit"
           className={`w-full ${verifiedProfile ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-500 hover:bg-amber-600'}`}
