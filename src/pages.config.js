@@ -57,6 +57,7 @@ import ContractorProfile from './pages/ContractorProfile';
 import Contractors from './pages/Contractors';
 import CustomerAccount from './pages/CustomerAccount';
 import DisputeCenter from './pages/DisputeCenter';
+import FindContractors from './pages/FindContractors';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
@@ -67,7 +68,7 @@ import ProjectManagement from './pages/ProjectManagement';
 import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import FindContractors from './pages/FindContractors';
+import AccountRecovery from './pages/AccountRecovery';
 import __Layout from './Layout.jsx';
 
 
@@ -82,6 +83,7 @@ export const PAGES = {
     "Contractors": Contractors,
     "CustomerAccount": CustomerAccount,
     "DisputeCenter": DisputeCenter,
+    "FindContractors": FindContractors,
     "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
@@ -92,7 +94,7 @@ export const PAGES = {
     "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
-    "FindContractors": FindContractors,
+    "AccountRecovery": AccountRecovery,
 }
 
 export const pagesConfig = {
