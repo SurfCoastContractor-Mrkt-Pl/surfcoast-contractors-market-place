@@ -2,13 +2,23 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
 const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
-if (!secretKey || !secretKey.startsWith('sk_')) {
-  throw new Error('Invalid STRIPE_SECRET_KEY: not configured or expired');
+let stripeClient;
+
+try {
+  stripeClient = new Stripe(secretKey);
+} catch (error) {
+  console.error('Failed to initialize Stripe client');
+  stripeClient = null;
 }
-const stripeClient = new Stripe(secretKey);
 
 Deno.serve(async (req) => {
   try {
+    if (!stripeClient) {
+      return Response.json({ 
+        error: 'Payment service unavailable' 
+      }, { status: 503 });
+    }
+
     const base44 = createClientFromRequest(req);
 
     const user = await base44.auth.me();
