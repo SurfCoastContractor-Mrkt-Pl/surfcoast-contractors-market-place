@@ -370,7 +370,8 @@ export default function ContractorAccount() {
                             )}
                           </div>
                         </div>
-                      );})
+                        </React.Fragment>
+                        );})}
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">No scope of work agreements yet.</p>
