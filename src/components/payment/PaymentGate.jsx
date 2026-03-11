@@ -58,6 +58,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       }
 
       // Call backend to create Stripe checkout session
+      if (checkingout) return null; // Prevent double-click
       setCheckingout(true);
       const response = await base44.functions.invoke('createPaymentCheckout', {
         payerEmail: data.email,

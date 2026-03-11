@@ -27,20 +27,22 @@ export default function ContractorSearchFilter({ contractors = [] }) {
     return unique.sort();
   }, [contractors]);
 
-  // Filter contractors
+  // Filter and sort contractors by rating
   const filteredContractors = useMemo(() => {
-    return contractors.filter(contractor => {
-      const matchesName = !searchName || 
-        contractor.name.toLowerCase().includes(searchName.toLowerCase());
-      
-      const matchesCategory = !selectedCategory || 
-        contractor.trade_specialty === selectedCategory;
-      
-      const matchesLocation = !selectedLocation || 
-        contractor.location === selectedLocation;
+    return contractors
+      .filter(contractor => {
+        const matchesName = !searchName || 
+          contractor.name.toLowerCase().includes(searchName.toLowerCase());
+        
+        const matchesCategory = !selectedCategory || 
+          contractor.trade_specialty === selectedCategory;
+        
+        const matchesLocation = !selectedLocation || 
+          contractor.location === selectedLocation;
 
-      return matchesName && matchesCategory && matchesLocation;
-    });
+        return matchesName && matchesCategory && matchesLocation;
+      })
+      .sort((a, b) => (b.rating || 0) - (a.rating || 0)); // Sort by rating descending
   }, [contractors, searchName, selectedCategory, selectedLocation]);
 
   const hasActiveFilters = searchName || selectedCategory || selectedLocation;
