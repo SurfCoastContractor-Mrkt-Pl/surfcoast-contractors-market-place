@@ -51,15 +51,22 @@ Deno.serve(async (req) => {
     
     // Log to ErrorLog
     try {
-      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
-        error_type: 'payment',
-        error_message: error.message,
-        user_email: user?.email || 'unknown',
-        user_type: 'unknown',
-        action: 'Delete payment method',
-        severity: 'high',
-        isServiceRoleCall: true,
+      const logFn = await fetch(`${Deno.env.get('BASE44_FUNCTIONS_URL')}/createStripeErrorLog`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
+        },
+        body: JSON.stringify({
+          error_type: 'payment',
+          error_message: error.message,
+          user_email: user?.email || 'unknown',
+          user_type: 'unknown',
+          action: 'Delete payment method',
+          severity: 'high',
+        }),
       });
+      if (!logFn.ok) console.error('Error log creation failed:', await logFn.text());
     } catch (logError) {
       console.error('Failed to log error:', logError.message);
     }
