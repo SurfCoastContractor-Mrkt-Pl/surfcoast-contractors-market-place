@@ -33,8 +33,8 @@ Deno.serve(async (req) => {
           cleanedUp++;
           console.log(`Cleaned up stale payment session: ${payment.id}`);
         } catch (e) {
-          console.error(`Error cleaning up payment ${payment.id}:`, e.message);
-        }
+            console.error(`Error cleaning up payment ${payment.id}`);
+          }
       }
     }
 
@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       message: `Cleaned up ${cleanedUp} stale checkout session(s)`
     });
   } catch (error) {
-    console.error('Cleanup error:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Cleanup error');
+    return Response.json({ error: 'An error occurred' }, { status: 500 });
   }
 });

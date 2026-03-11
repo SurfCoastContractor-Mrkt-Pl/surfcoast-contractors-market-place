@@ -75,9 +75,9 @@ Deno.serve(async (req) => {
       });
     }
   } catch (error) {
-    console.error('Identity verification completion error:', error);
+    console.error('Identity verification completion error');
     return Response.json(
-      { error: error.message },
+      { error: 'Identity verification failed' },
       { status: 500 }
     );
   }

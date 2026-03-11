@@ -150,41 +150,35 @@ Deno.serve(async (req) => {
         },
       });
     } catch (stripeError) {
-      console.error('Stripe checkout error:', {
-        message: stripeError.message,
-        type: stripeError.type,
-        code: stripeError.code,
-        statusCode: stripeError.statusCode,
-      });
+      console.error('Stripe checkout error');
 
       // Clean up payment record
       if (paymentRecord?.id) {
         try {
           await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
         } catch (deleteError) {
-          console.error('Failed to clean up payment record:', deleteError.message);
+            console.error('Failed to clean up payment record');
+          }
         }
-      }
 
-      // Log to ErrorLog with detailed context
-      try {
-        await base44.asServiceRole.functions.invoke('logError', {
-          error_type: 'payment',
-          error_message: stripeError.message,
-          user_email: payerEmail.substring(0, 3) + '***', // Anonymize
-          user_type: payerType,
-          action: 'Create checkout session',
-          severity: stripeError.statusCode === 429 ? 'medium' : 'high',
-          context: JSON.stringify({
-            statusCode: stripeError.statusCode,
-            code: stripeError.code,
-            amount: 1.75,
-            priceId: PAYMENT_PRICE_ID.substring(0, 5) + '***' // Anonymize
-          }),
-        });
-      } catch (logError) {
-        console.error('Failed to log error:', logError.message);
-      }
+        // Log to ErrorLog with detailed context
+        try {
+          await base44.asServiceRole.functions.invoke('logError', {
+            error_type: 'payment',
+            error_message: stripeError.message || 'Stripe error',
+            user_email: payerEmail.substring(0, 3) + '***', // Anonymize
+            user_type: payerType,
+            action: 'Create checkout session',
+            severity: stripeError.statusCode === 429 ? 'medium' : 'high',
+            context: JSON.stringify({
+              statusCode: stripeError.statusCode,
+              code: stripeError.code,
+              amount: 1.75,
+            }),
+          });
+        } catch (logError) {
+          console.error('Failed to log error');
+        }
 
       // Handle specific error types
       if (stripeError.statusCode === 429) {
@@ -202,20 +196,14 @@ Deno.serve(async (req) => {
       url: session.url,
     });
   } catch (error) {
-    console.error('Checkout error:', {
-      message: error.message,
-      type: error.type,
-      code: error.code,
-      statusCode: error.statusCode,
-    });
+    console.error('Checkout error');
     
     // Clean up payment record
     if (paymentRecord?.id) {
       try {
         await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
-        console.log(`Cleaned up orphaned payment record: ${paymentRecord.id}`);
       } catch (deleteError) {
-        console.error('Failed to clean up payment record:', deleteError.message);
+        console.error('Failed to clean up payment record');
       }
     }
 
@@ -223,24 +211,21 @@ Deno.serve(async (req) => {
     try {
       await base44.asServiceRole.functions.invoke('logError', {
         error_type: 'payment',
-        error_message: error.message,
+        error_message: error.message || 'Checkout error',
         user_email: payerEmail ? payerEmail.substring(0, 3) + '***' : 'unknown',
         user_type: payerType || 'unknown',
         action: 'Create checkout session',
         severity: 'high',
         context: JSON.stringify({
-          errorType: error.type,
-          code: error.code,
           amount: 1.75,
         }),
       });
     } catch (logError) {
-      console.error('Failed to log error:', logError.message);
+      console.error('Failed to log error');
     }
 
     return Response.json({ 
-      error: error.message,
-      details: error.code || error.type 
+      error: 'An error occurred during checkout',
     }, { status: error.statusCode || 500 });
   }
 });
