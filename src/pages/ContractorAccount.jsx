@@ -253,8 +253,9 @@ export default function ContractorAccount() {
 
               <TabsContent value="dashboard">
                  <div className="space-y-4">
+                   <RealTimeAvailabilityManager contractor={contractor} />
+                   <ContractorJobDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
                    <ContractorAnalyticsDashboard contractor={contractor} />
-                   <AvailabilityStatusManager contractor={contractor} />
                    <FeaturedBadgeToggle contractor={contractor} />
                  </div>
                </TabsContent>
