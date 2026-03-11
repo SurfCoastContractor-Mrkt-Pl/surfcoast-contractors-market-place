@@ -1,208 +1,208 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { ChevronRight, AlertCircle } from 'lucide-react';
-import { format } from 'date-fns';
-import DisputeDetail from './DisputeDetail';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AlertTriangle, FileText, Mail, Loader2 } from 'lucide-react';
+import DisputeResolutionPanel from '@/components/disputes/DisputeResolutionPanel';
 
-const severityColors = {
-  low: 'bg-blue-100 text-blue-800',
-  medium: 'bg-yellow-100 text-yellow-800',
-  high: 'bg-orange-100 text-orange-800',
-  critical: 'bg-red-100 text-red-800'
+const CATEGORY_COLORS = {
+  payment_issue: 'bg-red-100 text-red-700',
+  work_quality: 'bg-orange-100 text-orange-700',
+  timeline_delay: 'bg-yellow-100 text-yellow-700',
+  communication_problem: 'bg-blue-100 text-blue-700',
+  contract_breach: 'bg-purple-100 text-purple-700',
+  safety_concern: 'bg-red-100 text-red-700',
+  other: 'bg-slate-100 text-slate-700'
 };
 
-const statusColors = {
-  open: 'bg-slate-100 text-slate-800',
-  in_review: 'bg-blue-100 text-blue-800',
-  under_mediation: 'bg-purple-100 text-purple-800',
-  resolved: 'bg-green-100 text-green-800',
-  closed: 'bg-slate-200 text-slate-800',
-  escalated: 'bg-red-100 text-red-800'
+const SEVERITY_COLORS = {
+  low: 'bg-blue-100 text-blue-700',
+  medium: 'bg-yellow-100 text-yellow-700',
+  high: 'bg-orange-100 text-orange-700',
+  critical: 'bg-red-100 text-red-700'
 };
 
-export default function DisputesTable() {
+const STATUS_COLORS = {
+  open: 'bg-amber-100 text-amber-700',
+  in_review: 'bg-blue-100 text-blue-700',
+  under_mediation: 'bg-purple-100 text-purple-700',
+  resolved: 'bg-green-100 text-green-700',
+  closed: 'bg-slate-100 text-slate-700',
+  escalated: 'bg-red-100 text-red-700'
+};
+
+export default function DisputesTable({ disputes, authed }) {
   const [selectedDispute, setSelectedDispute] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterSeverity, setFilterSeverity] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showStatusDialog, setShowStatusDialog] = useState(false);
-  const [newStatus, setNewStatus] = useState('');
-  const [adminNotes, setAdminNotes] = useState('');
-  const queryClient = useQueryClient();
+  const [resolvedDisputes, setResolvedDisputes] = useState({});
 
-  const { data: disputes = [], isLoading } = useQuery({
-    queryKey: ['disputes'],
-    queryFn: () => base44.asServiceRole.entities.Dispute.list()
-  });
+  if (!authed || !disputes) {
+    return (
+      <div className="text-center py-10 text-slate-400">
+        <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin" />
+        Loading disputes...
+      </div>
+    );
+  }
 
-  const updateMutation = useMutation({
-    mutationFn: (data) => base44.asServiceRole.entities.Dispute.update(selectedDispute.id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['disputes'] });
-      setShowStatusDialog(false);
-      setNewStatus('');
-      setAdminNotes('');
-      setSelectedDispute(null);
-    }
-  });
+  if (disputes.length === 0) {
+    return (
+      <div className="text-center py-10 text-slate-400">
+        <AlertTriangle className="w-5 h-5 mx-auto mb-2 opacity-50" />
+        No disputes filed yet.
+      </div>
+    );
+  }
 
-  const filteredDisputes = disputes.filter(d => {
-    const matchStatus = filterStatus === 'all' || d.status === filterStatus;
-    const matchSeverity = filterSeverity === 'all' || d.severity === filterSeverity;
-    const matchSearch = !searchTerm || 
-      d.dispute_number.includes(searchTerm.toUpperCase()) ||
-      d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      d.initiator_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      d.respondent_name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchStatus && matchSeverity && matchSearch;
-  });
-
-  if (isLoading) return <div className="text-center py-8 text-slate-500">Loading disputes...</div>;
+  const handleResolved = (disputeId) => {
+    setResolvedDisputes(prev => ({ ...prev, [disputeId]: true }));
+    setSelectedDispute(null);
+  };
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
-      <div className="flex flex-col gap-4 p-4 bg-white rounded-lg border border-slate-200">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Input
-            placeholder="Search by dispute #, title, or party name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1"
-          />
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="open">Open</SelectItem>
-              <SelectItem value="in_review">In Review</SelectItem>
-              <SelectItem value="under_mediation">Under Mediation</SelectItem>
-              <SelectItem value="resolved">Resolved</SelectItem>
-              <SelectItem value="closed">Closed</SelectItem>
-              <SelectItem value="escalated">Escalated</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={filterSeverity} onValueChange={setFilterSeverity}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Severities</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Disputes List */}
-      <div className="space-y-2">
-        {filteredDisputes.length === 0 ? (
-          <div className="text-center py-8 bg-white rounded-lg border border-slate-200">
-            <AlertCircle className="w-8 h-8 mx-auto mb-2 text-slate-400" />
-            <p className="text-slate-500">No disputes found</p>
-          </div>
-        ) : (
-          filteredDisputes.map(dispute => (
-            <button
-              key={dispute.id}
-              onClick={() => setSelectedDispute(dispute)}
-              className="w-full text-left p-4 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <p className="font-semibold text-slate-900">{dispute.dispute_number}</p>
-                    <Badge className={severityColors[dispute.severity]}>
-                      {dispute.severity.toUpperCase()}
-                    </Badge>
-                    <Badge className={statusColors[dispute.status]}>
-                      {dispute.status.replace(/_/g, ' ').toUpperCase()}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-slate-600 mb-2">{dispute.title}</p>
-                  <p className="text-xs text-slate-500">
-                    {dispute.initiator_name} → {dispute.respondent_name} • Category: {dispute.category.replace(/_/g, ' ')}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Filed {format(new Date(dispute.submitted_at), 'MMM d, yyyy h:mm a')}
-                  </p>
+      {disputes.map(dispute => (
+        <Card
+          key={dispute.id}
+          className={`p-4 border-l-4 ${
+            resolvedDisputes[dispute.id] ? 'border-l-green-500 bg-green-50' : 
+            dispute.severity === 'critical' ? 'border-l-red-500 bg-red-50' :
+            dispute.severity === 'high' ? 'border-l-orange-500 bg-orange-50' :
+            'border-l-amber-500 bg-amber-50'
+          }`}
+        >
+          <div className="space-y-3">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-3 flex-wrap">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap mb-2">
+                  <h3 className="font-semibold text-slate-900 text-base">{dispute.title}</h3>
+                  <Badge className={STATUS_COLORS[dispute.status]}>
+                    {dispute.status.replace(/_/g, ' ')}
+                  </Badge>
+                  <Badge className={SEVERITY_COLORS[dispute.severity]}>
+                    {dispute.severity}
+                  </Badge>
                 </div>
-                <ChevronRight className="w-5 h-5 text-slate-400 mt-1" />
+                <p className="text-sm text-slate-600 mb-3">{dispute.description}</p>
               </div>
-            </button>
-          ))
-        )}
-      </div>
-
-      {/* Detail Dialog */}
-      {selectedDispute && (
-        <Dialog open={!!selectedDispute} onOpenChange={() => setSelectedDispute(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Dispute Details</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <DisputeDetail dispute={selectedDispute} isAdmin={true} />
-              
-              {/* Admin Actions */}
-              <div className="border-t pt-4 space-y-3">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Update Status</label>
-                  <Select value={selectedDispute.status} onValueChange={(status) => {
-                    setNewStatus(status);
-                    setShowStatusDialog(true);
-                  }}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="open">Open</SelectItem>
-                      <SelectItem value="in_review">In Review</SelectItem>
-                      <SelectItem value="under_mediation">Under Mediation</SelectItem>
-                      <SelectItem value="resolved">Resolved</SelectItem>
-                      <SelectItem value="closed">Closed</SelectItem>
-                      <SelectItem value="escalated">Escalated</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Admin Notes</label>
-                  <Textarea
-                    value={adminNotes || selectedDispute.admin_notes || ''}
-                    onChange={(e) => setAdminNotes(e.target.value)}
-                    placeholder="Internal notes only..."
-                    className="h-24"
-                  />
-                </div>
-
+              {!resolvedDisputes[dispute.id] && dispute.status !== 'resolved' && (
                 <Button
-                  onClick={() => updateMutation.mutate({
-                    status: newStatus || selectedDispute.status,
-                    admin_notes: adminNotes || selectedDispute.admin_notes,
-                    last_updated_at: new Date().toISOString()
-                  })}
-                  disabled={updateMutation.isPending}
-                  className="w-full"
+                  onClick={() => setSelectedDispute(dispute)}
+                  className="shrink-0 bg-amber-600 hover:bg-amber-700"
                 >
-                  {updateMutation.isPending ? 'Updating...' : 'Update Dispute'}
+                  Resolve
                 </Button>
+              )}
+              {resolvedDisputes[dispute.id] && (
+                <Badge className="bg-green-100 text-green-700 shrink-0">
+                  ✓ Resolved
+                </Badge>
+              )}
+            </div>
+
+            {/* Parties */}
+            <div className="grid grid-cols-2 gap-4 bg-white/50 rounded-lg p-3">
+              <div>
+                <p className="text-xs text-slate-500 font-medium mb-1">INITIATOR</p>
+                <p className="font-medium text-slate-900 text-sm">{dispute.initiator_name}</p>
+                <div className="flex items-center gap-1 text-xs text-slate-600 mt-1">
+                  <Mail className="w-3 h-3" />
+                  {dispute.initiator_email}
+                </div>
+                <Badge className="mt-2 bg-slate-100 text-slate-700 capitalize text-xs">
+                  {dispute.initiator_type}
+                </Badge>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium mb-1">RESPONDENT</p>
+                <p className="font-medium text-slate-900 text-sm">{dispute.respondent_name}</p>
+                <div className="flex items-center gap-1 text-xs text-slate-600 mt-1">
+                  <Mail className="w-3 h-3" />
+                  {dispute.respondent_email}
+                </div>
+                <Badge className="mt-2 bg-slate-100 text-slate-700 capitalize text-xs">
+                  {dispute.respondent_type}
+                </Badge>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+
+            {/* Details */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+              <div>
+                <p className="text-slate-500 mb-1">Category</p>
+                <Badge className={`${CATEGORY_COLORS[dispute.category]} capitalize`}>
+                  {dispute.category.replace(/_/g, ' ')}
+                </Badge>
+              </div>
+              {dispute.scope_id && (
+                <div>
+                  <p className="text-slate-500 mb-1">Scope ID</p>
+                  <code className="bg-slate-100 px-2 py-1 rounded text-slate-700 break-all">
+                    {dispute.scope_id.substring(0, 8)}...
+                  </code>
+                </div>
+              )}
+              {dispute.job_id && (
+                <div>
+                  <p className="text-slate-500 mb-1">Job ID</p>
+                  <code className="bg-slate-100 px-2 py-1 rounded text-slate-700 break-all">
+                    {dispute.job_id.substring(0, 8)}...
+                  </code>
+                </div>
+              )}
+              <div>
+                <p className="text-slate-500 mb-1">Submitted</p>
+                <p className="text-slate-700">
+                  {new Date(dispute.submitted_at).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+
+            {/* Evidence */}
+            {dispute.evidence_urls && dispute.evidence_urls.length > 0 && (
+              <div className="border-t border-slate-200 pt-3">
+                <p className="text-xs text-slate-500 font-medium mb-2">EVIDENCE ({dispute.evidence_urls.length})</p>
+                <div className="flex flex-wrap gap-2">
+                  {dispute.evidence_urls.map((url, idx) => (
+                    <a
+                      key={idx}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 bg-white px-3 py-1 rounded border border-slate-200 hover:border-slate-300 text-xs text-slate-600 hover:text-slate-900"
+                    >
+                      <FileText className="w-3 h-3" />
+                      Evidence {idx + 1}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Resolution Info */}
+            {dispute.status === 'resolved' && dispute.resolution_type && (
+              <div className="border-t border-green-200 bg-green-50/50 rounded-lg p-3 mt-3">
+                <p className="text-xs text-green-700 font-medium mb-2">RESOLUTION</p>
+                <p className="text-sm text-green-800 mb-1">
+                  <strong>Type:</strong> {dispute.resolution_type.replace(/_/g, ' ')}
+                </p>
+                {dispute.resolution_details && (
+                  <p className="text-sm text-green-800">
+                    <strong>Details:</strong> {dispute.resolution_details}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </Card>
+      ))}
+
+      {/* Resolution Modal */}
+      {selectedDispute && (
+        <DisputeResolutionPanel
+          dispute={selectedDispute}
+          onResolved={() => handleResolved(selectedDispute.id)}
+        />
       )}
     </div>
   );
