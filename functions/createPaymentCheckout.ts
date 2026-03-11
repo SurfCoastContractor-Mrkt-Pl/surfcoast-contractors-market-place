@@ -62,22 +62,45 @@ Deno.serve(async (req) => {
 
     // FRAUD CHECK: Run fraud detection before creating payment
     if (payerType === 'customer') {
-      const fraudCheckResp = await base44.asServiceRole.functions.invoke('fraudCheck', {
-        customer_email: payerEmail,
-        contractor_id: contractorId,
-        amount: 1.75
-      });
-
-      if (fraudCheckResp.data?.fraud_detected) {
-        return Response.json(
-          {
-            error: fraudCheckResp.data.message,
-            reason: fraudCheckResp.data.reason
+      // Invoke fraudCheck via REST with internal key for proper authorization
+      try {
+        const fraudResp = await fetch(`${req.headers.get('origin')}/api/fraudCheck`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
           },
-          { status: 429 }
+          body: JSON.stringify({
+            customer_email: payerEmail,
+            contractor_id: contractorId,
+            amount: 1.75
+          }),
+        });
+
+        if (!fraudResp.ok) {
+          const fraudData = await fraudResp.json();
+          if (fraudResp.status === 429 || fraudResp.status === 400) {
+            return Response.json(
+              {
+                error: fraudData.message || 'Payment blocked',
+                reason: fraudData.reason
+              },
+              { status: fraudResp.status }
+            );
+          }
+          throw new Error('Fraud check failed');
+        }
+
+        const fraudCheckResp = await fraudResp.json();
+      } catch (fraudError) {
+        console.error('Fraud check error:', fraudError.message);
+        return Response.json(
+          { error: 'Payment verification failed. Please try again.' },
+          { status: 503 }
         );
       }
-    }
+
+      }
 
     // Create a Payment record first (service role to avoid RLS issues with unauthed users)
     paymentRecord = await base44.asServiceRole.entities.Payment.create({
