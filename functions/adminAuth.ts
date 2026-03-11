@@ -2,16 +2,22 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const body = await req.json().catch(() => ({}));
+    const { password } = body;
 
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ success: false, error: 'Not authenticated.' }, { status: 401 });
+    if (!password) {
+      return Response.json({ success: false, error: 'Password required.' }, { status: 400 });
     }
 
-    if (user.role !== 'admin') {
-      console.warn(`Non-admin access attempt by ${user.email} at ${new Date().toISOString()}`);
-      return Response.json({ success: false, error: 'Admin access required.' }, { status: 403 });
+    const correctPassword = Deno.env.get('ADMIN_DASHBOARD_PASSWORD');
+    if (!correctPassword) {
+      console.error('ADMIN_DASHBOARD_PASSWORD not set');
+      return Response.json({ success: false, error: 'Server error.' }, { status: 500 });
+    }
+
+    if (password !== correctPassword) {
+      console.warn(`Invalid admin password attempt at ${new Date().toISOString()}`);
+      return Response.json({ success: false, error: 'Invalid password.' }, { status: 403 });
     }
 
     return Response.json({ success: true });
