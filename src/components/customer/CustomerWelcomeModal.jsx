@@ -12,7 +12,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5 text-green-600" />
             </div>
-            Welcome to SurfCoast Market Place!
+            Welcome to SurfCoast Contractor Market Place!
           </DialogTitle>
           <div className="sr-only">New customer welcome dialog</div>
         </DialogHeader>
@@ -36,7 +36,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
-                  <span>Message contractors ($1.50 per project or $20/month)</span>
+                  <span>Message contractors ($1.50 per 10-minute session or $50/month unlimited)</span>
                 </li>
               </ul>
             </div>
