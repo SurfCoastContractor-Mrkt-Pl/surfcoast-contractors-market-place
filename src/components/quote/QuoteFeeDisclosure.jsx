@@ -22,7 +22,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
               <span className="text-2xl font-bold text-amber-600">$1.75</span>
             </div>
             <p className="text-sm text-slate-600">
-              This fee is charged to you (the customer) to request that {contractorName} review your posted job or project and provide a blind written estimate — no communication required.
+              This fee is charged to you (the customer) to request that {contractorName} review your posted job or project and provide a blind written estimate — no direct communication required.
             </p>
           </div>
 
