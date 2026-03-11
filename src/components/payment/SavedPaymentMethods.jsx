@@ -156,6 +156,8 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+
+      {/* 1. Cardholder Name */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-2">Cardholder Full Name</label>
         <Input
@@ -167,8 +169,68 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         <p className="text-xs text-slate-500 mt-1">Must match the name on your card exactly</p>
       </div>
 
+      {/* 2. Card Number */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname</label>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Number</label>
+        <div className="p-3 border border-slate-300 rounded-md bg-white">
+          <CardNumberElement
+            options={{
+              style: {
+                base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                invalid: { color: '#dc2626' },
+              },
+              showIcon: true,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* 3. Expiration Date + CVV */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Expiration Date</label>
+          <div className="p-3 border border-slate-300 rounded-md bg-white">
+            <CardExpiryElement
+              options={{
+                style: {
+                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                  invalid: { color: '#dc2626' },
+                },
+              }}
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">CVV</label>
+          <div className="p-3 border border-slate-300 rounded-md bg-white">
+            <CardCvcElement
+              options={{
+                style: {
+                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                  invalid: { color: '#dc2626' },
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Phone Number */}
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+        <Input
+          type="tel"
+          placeholder="(555) 000-0000"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          disabled={loading}
+        />
+        <p className="text-xs text-slate-500 mt-1">Used for identity verification with this card</p>
+      </div>
+
+      {/* 5. Card Nickname */}
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname <span className="text-slate-400 font-normal">(optional)</span></label>
         <Input
           placeholder="e.g., My Visa, Personal Card"
           value={cardName}
@@ -177,11 +239,12 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         />
       </div>
 
+      {/* 6. Email Verification */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-sm text-blue-900 mb-3">
-          <strong>Email Verification Required:</strong> We'll send a verification code to <strong>{userEmail}</strong>
+          <strong>Email Verification Required:</strong> We'll send a one-time code to <strong>{userEmail}</strong>
         </p>
-        {!emailVerified && (
+        {!emailVerified ? (
           <Button
             type="button"
             className="w-full"
@@ -190,13 +253,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           >
             {verifying ? 'Sending...' : 'Send Verification Code'}
           </Button>
+        ) : (
+          <p className="text-green-600 text-sm font-medium">✓ Email verified</p>
         )}
-        {emailVerified && <p className="text-green-600 text-sm font-medium">✓ Email verified</p>}
       </div>
 
       {showVerification && !emailVerified && (
         <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <p className="text-sm text-amber-900 mb-3">Check your email ({userEmail}) for the 6-digit verification code.</p>
+          <p className="text-sm text-amber-900 mb-3">Check your email ({userEmail}) for the 6-digit code.</p>
           <div className="flex gap-2">
             <Input
               placeholder="Enter 6-digit code"
@@ -216,66 +280,6 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           </div>
         </div>
       )}
-
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Card Number</label>
-        <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
-          <CardNumberElement
-            options={{
-              style: {
-                base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
-                invalid: { color: '#dc2626' },
-              },
-              showIcon: true,
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Expiry Date</label>
-          <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
-            <CardExpiryElement
-              options={{
-                style: {
-                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
-                  invalid: { color: '#dc2626' },
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">CVV</label>
-          <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
-            <CardCvcElement
-              options={{
-                style: {
-                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
-                  invalid: { color: '#dc2626' },
-                },
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className={`p-4 border rounded-lg ${!emailVerified ? 'opacity-50 pointer-events-none bg-slate-50 border-slate-200' : 'bg-white border-slate-300'}`}>
-        <label className="block text-sm font-medium text-slate-700 mb-3">
-          Phone Number for Verification
-        </label>
-        <Input
-          type="tel"
-          placeholder="(555) 000-0000"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          disabled={loading || !emailVerified}
-        />
-        <p className="text-xs text-slate-500 mt-1">
-          Associated with this card and your name for identity verification
-        </p>
-      </div>
 
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
