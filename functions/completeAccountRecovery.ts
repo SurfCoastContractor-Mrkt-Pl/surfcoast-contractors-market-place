@@ -26,7 +26,7 @@ Deno.serve(async (req) => {
       const signingKey = Deno.env.get('ACCOUNT_RECOVERY_SECRET');
       if (!signingKey) {
         console.error('ACCOUNT_RECOVERY_SECRET is not configured');
-        return Response.json({ error: 'Recovery service unavailable' }, { status: 500 });
+        return Response.json({ error: 'Account recovery is temporarily unavailable' }, { status: 500 });
       }
       const encoder = new TextEncoder();
       const data = encoder.encode(tokenPayload);
