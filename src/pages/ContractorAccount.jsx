@@ -33,6 +33,8 @@ import MinorComplianceChecklist from '@/components/contractor/MinorComplianceChe
 import ContractorAnalyticsDashboard from '@/components/contractor/ContractorAnalyticsDashboard';
 import AvailabilityStatusManager from '@/components/contractor/AvailabilityStatusManager';
 import FeaturedBadgeToggle from '@/components/contractor/FeaturedBadgeToggle';
+import ContractorJobDashboard from '@/components/contractor/ContractorJobDashboard';
+import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailabilityManager';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
