@@ -138,22 +138,14 @@ export default function AdminDashboard() {
   React.useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Check if user has password for admin
-        const password = prompt('Enter admin password:');
-        if (!password) {
-          setError('Admin password required.');
-          setLoginLoading(false);
-          return;
-        }
-        
-        const res = await base44.functions.invoke('adminAuth', { password });
+        const res = await base44.functions.invoke('adminAuth', {});
         if (res.data?.success) {
           setAuthed(true);
         } else {
-          setError(res.data?.error || 'Invalid password.');
+          setError(res.data?.error || 'Admin access required.');
         }
-      } catch (err) {
-        setError('Authentication failed. Make sure to enter the correct admin password.');
+      } catch {
+        setError('Authentication failed. Make sure you are logged in as an admin.');
       } finally {
         setLoginLoading(false);
       }
