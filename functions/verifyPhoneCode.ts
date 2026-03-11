@@ -1,5 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+// In-memory tracking for failed verification attempts
+const failedAttempts = new Map();
+const FAILED_ATTEMPT_THRESHOLD = 3; // Lock after 3 failed attempts
+const LOCKOUT_DURATION = 3600000; // 1 hour lockout
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
