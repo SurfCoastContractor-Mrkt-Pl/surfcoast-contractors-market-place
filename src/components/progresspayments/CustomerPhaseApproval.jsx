@@ -5,8 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, CheckCircle2, Clock, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState as useLocalState } from 'react';
+import { AlertCircle, CheckCircle2, Loader2, ChevronDown, ChevronUp, FileText, Download } from 'lucide-react';
 
 export default function CustomerPhaseApproval({ payment, onSuccess }) {
   const [approvalNotes, setApprovalNotes] = useState('');
