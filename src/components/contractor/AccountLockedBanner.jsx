@@ -130,6 +130,45 @@ export default function AccountLockedBanner({ contractor, lockedScope }) {
           </p>
         </div>
       )}
+
+      {/* Request Admin Review */}
+      <div className="border border-red-200 rounded-xl bg-white p-4">
+        <button
+          className="flex items-center gap-2 text-sm font-medium text-slate-700 w-full text-left"
+          onClick={() => setShowAppeal(!showAppeal)}
+        >
+          <MessageSquare className="w-4 h-4 text-slate-500" />
+          Can't upload photos right now? Request admin review
+        </button>
+        {showAppeal && (
+          <div className="mt-3 space-y-2">
+            {appealSent ? (
+              <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded text-sm text-green-700">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                Appeal sent! An admin will review your situation shortly.
+              </div>
+            ) : (
+              <>
+                <Textarea
+                  value={appealText}
+                  onChange={e => setAppealText(e.target.value)}
+                  placeholder="Explain your situation — e.g. connectivity issues, emergency, dispute with job scope, etc."
+                  rows={3}
+                  className="text-sm resize-none"
+                />
+                <Button
+                  size="sm"
+                  className="w-full bg-slate-700 hover:bg-slate-800 text-white"
+                  onClick={handleSendAppeal}
+                  disabled={sendingAppeal || !appealText.trim()}
+                >
+                  {sendingAppeal ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" />Sending...</> : 'Send Appeal to Admin'}
+                </Button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
