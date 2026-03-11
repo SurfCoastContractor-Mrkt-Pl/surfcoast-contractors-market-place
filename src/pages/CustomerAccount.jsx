@@ -11,7 +11,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus, Bell } from 'lucide-react';
+import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus, Bell, AlertCircle } from 'lucide-react';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -32,36 +32,45 @@ import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar
 import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
 
 export default function CustomerAccount() {
-  const [closeoutScope, setCloseoutScope] = useState(null);
-  const queryClient = useQueryClient();
-  const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [agentOpen, setAgentOpen] = useState(false);
+   const urlParams = new URLSearchParams(window.location.search);
+   const adminPreviewEmail = urlParams.get('email');
+   const isAdminPreview = urlParams.get('admin') === 'true';
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await base44.auth.me();
-        if (!user) {
-          base44.auth.redirectToLogin();
-          return;
-        }
-        setUserEmail(user.email);
-        
-        // Check if this is a new customer (no profile yet)
-        const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
-        if (!profiles || profiles.length === 0) {
-          setShowWelcome(true);
-        }
-      } catch (error) {
-        base44.auth.redirectToLogin();
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkAuth();
-  }, []);
+   const [closeoutScope, setCloseoutScope] = useState(null);
+   const queryClient = useQueryClient();
+   const [loading, setLoading] = useState(true);
+   const [userEmail, setUserEmail] = useState(null);
+   const [showWelcome, setShowWelcome] = useState(false);
+   const [agentOpen, setAgentOpen] = useState(false);
+
+   useEffect(() => {
+     const checkAuth = async () => {
+       try {
+         if (isAdminPreview && adminPreviewEmail) {
+           setUserEmail(adminPreviewEmail);
+           setLoading(false);
+           return;
+         }
+         const user = await base44.auth.me();
+         if (!user) {
+           base44.auth.redirectToLogin();
+           return;
+         }
+         setUserEmail(user.email);
+
+         // Check if this is a new customer (no profile yet)
+         const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
+         if (!profiles || profiles.length === 0) {
+           setShowWelcome(true);
+         }
+       } catch (error) {
+         base44.auth.redirectToLogin();
+       } finally {
+         setLoading(false);
+       }
+     };
+     checkAuth();
+   }, []);
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
     queryKey: ['customer-payments', userEmail],
@@ -182,14 +191,30 @@ export default function CustomerAccount() {
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+         {/* Admin Preview Banner */}
+         {isAdminPreview && (
+           <Card className="p-5 bg-blue-50 border-blue-200">
+             <div className="flex items-start gap-3">
+               <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+               <div>
+                 <h4 className="font-semibold text-blue-800 mb-1">Admin Preview Mode</h4>
+                 <p className="text-xs text-blue-700">
+                   You are viewing this customer's account setup as an admin. Edit, delete, and logout features are disabled in preview mode.
+                 </p>
+               </div>
+             </div>
+           </Card>
+         )}
+
          {/* Auth Button */}
          <div className="flex gap-3">
            <Button
              variant="outline"
              onClick={() => base44.auth.logout()}
+             disabled={isAdminPreview}
            >
              <LogOut className="w-4 h-4 mr-2" />
-             Logout
+             {isAdminPreview ? 'Logout (Disabled in Preview)' : 'Logout'}
            </Button>
          </div>
 
