@@ -32,18 +32,30 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phase must be marked complete by contractor first' }, { status: 400 });
     }
 
-    // For now, update status to customer_approved
-    // In production, this would integrate with Stripe Connect to release funds
+    const approvedAt = new Date().toISOString();
     const updated = await base44.asServiceRole.entities.ProgressPayment.update(paymentId, {
       status: 'customer_approved',
-      customer_approved_date: new Date().toISOString(),
+      customer_approved_date: approvedAt,
       customer_approval_notes: approvalNotes || '',
-      paid_date: new Date().toISOString()
+      paid_date: approvedAt,
     });
 
     console.log(`Phase ${payment.phase_number} approved and marked paid for scope ${payment.scope_id}`);
 
-    return Response.json({ success: true, payment: updated });
+    // Auto-generate phase invoice
+    let invoiceUrl = null;
+    let invoiceNumber = null;
+    try {
+      const invoiceResp = await base44.functions.invoke('generatePhaseInvoice', { progressPaymentId: paymentId });
+      const invoiceData = invoiceResp?.data || invoiceResp;
+      invoiceUrl = invoiceData?.pdfUrl || null;
+      invoiceNumber = invoiceData?.invoiceNumber || null;
+      console.log(`Invoice generated: ${invoiceNumber} — ${invoiceUrl}`);
+    } catch (invoiceError) {
+      console.error('Invoice generation failed (non-fatal):', invoiceError.message);
+    }
+
+    return Response.json({ success: true, payment: updated, invoiceUrl, invoiceNumber });
   } catch (error) {
     console.error('Error in releaseProgressPayment:', error);
     return Response.json({ error: error.message }, { status: 500 });
