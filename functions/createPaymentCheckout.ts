@@ -116,8 +116,11 @@ Deno.serve(async (req) => {
         : `Quote request from contractor ${contractorName}`,
     });
 
-    // Use pre-configured Stripe price (prod_U7iveIQsRZcOwH / price_1T9TTTDrSxvL03OB7lwLoVKz)
-    const PAYMENT_PRICE_ID = 'price_1T9TTTDrSxvL03OB7lwLoVKz';
+    // Get Stripe price ID from environment variable
+    const PAYMENT_PRICE_ID = Deno.env.get('STRIPE_QUOTE_PRICE_ID');
+    if (!PAYMENT_PRICE_ID) {
+      throw new Error('STRIPE_QUOTE_PRICE_ID environment variable not configured');
+    }
     const origin = req.headers.get('origin') || 'https://localhost:3000';
     let session;
     try {
