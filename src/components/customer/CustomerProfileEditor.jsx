@@ -30,10 +30,16 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     phone: '',
     date_of_birth: '',
     location: '',
+    property_type: '',
+    property_address: '',
     bio: '',
     photo_url: '',
     preferred_contractor_types: [],
     preferred_trades: [],
+    notify_job_updates: true,
+    notify_messages: true,
+    notify_payment_receipts: true,
+    notify_platform_news: false,
   });
   const [dobError, setDobError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
