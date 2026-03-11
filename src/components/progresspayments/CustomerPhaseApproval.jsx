@@ -76,6 +76,18 @@ export default function CustomerPhaseApproval({ payment, onSuccess }) {
         {payment.status === 'contractor_completed' && (
           expanded ? <ChevronUp className="w-5 h-5 shrink-0" /> : <ChevronDown className="w-5 h-5 shrink-0" />
         )}
+        {(payment.status === 'customer_approved' || payment.status === 'paid') && invoiceUrl && (
+          <a
+            href={invoiceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md hover:bg-amber-100 transition-colors shrink-0"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Invoice
+          </a>
+        )}
       </button>
 
       {expanded && payment.status === 'contractor_completed' && (
