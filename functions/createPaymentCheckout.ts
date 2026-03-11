@@ -27,6 +27,25 @@ Deno.serve(async (req) => {
     }
     // Allow unauthenticated payments (public app)
 
+    // FRAUD CHECK: Run fraud detection before creating payment
+    if (payerType === 'customer') {
+      const fraudCheckResp = await base44.asServiceRole.functions.invoke('fraudCheck', {
+        customer_email: payerEmail,
+        contractor_id: contractorId,
+        amount: 1.75
+      });
+
+      if (fraudCheckResp.data?.fraud_detected) {
+        return Response.json(
+          {
+            error: fraudCheckResp.data.message,
+            reason: fraudCheckResp.data.reason
+          },
+          { status: 429 }
+        );
+      }
+    }
+
     // Create a Payment record first (service role to avoid RLS issues with unauthed users)
     paymentRecord = await base44.asServiceRole.entities.Payment.create({
       payer_email: payerEmail,
