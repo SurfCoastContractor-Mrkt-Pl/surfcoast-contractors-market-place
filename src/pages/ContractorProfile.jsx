@@ -151,13 +151,28 @@ export default function ContractorProfile() {
 
   if (!contractor) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-900 mb-4">Contractor Not Found</h1>
-          <Link to={createPageUrl('Contractors')}>
-            <Button>Browse Contractors</Button>
-          </Link>
-        </div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto">
+            <AlertCircle className="w-8 h-8 text-slate-400" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">Contractor Not Found</h1>
+            <p className="text-sm text-slate-600">This contractor's profile is no longer available. They may have deleted their account or the profile ID may be incorrect.</p>
+          </div>
+          <div className="space-y-2 pt-2">
+            <Link to={createPageUrl('FindContractors')} className="block">
+              <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
+                Browse All Contractors
+              </Button>
+            </Link>
+            <a href="mailto:support@surfcoast.com" className="block">
+              <Button variant="outline" className="w-full">
+                Contact Support
+              </Button>
+            </a>
+          </div>
+        </Card>
       </div>
     );
   }
