@@ -106,19 +106,16 @@ Deno.serve(async (req) => {
     });
 
     if (!twilioResponse.ok) {
-      const errorData = await twilioResponse.json();
-      console.error('Twilio error:', errorData);
+      console.error('Twilio error');
       return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
     }
-
-    console.log(`Verification code sent to ${toPhone} for ${userEmail}`);
 
     return Response.json({ 
       success: true, 
       message: 'Verification code sent to your phone'
     });
-  } catch (error) {
-    console.error('Phone verification error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+    } catch (error) {
+    console.error('Phone verification error');
+    return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
+    }
 });

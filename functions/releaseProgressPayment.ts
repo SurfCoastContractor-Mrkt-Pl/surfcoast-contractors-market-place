@@ -88,9 +88,9 @@ Deno.serve(async (req) => {
       transferId = transfer.id;
       console.log(`Stripe transfer created: ${transferId} for $${payment.amount} to contractor ${contractor.id}`);
     } catch (stripeError) {
-      console.error('Stripe transfer failed:', stripeError.message);
+      console.error('Stripe transfer failed');
       return Response.json({
-        error: `Payment processing failed: ${stripeError.message}`,
+        error: 'Payment processing failed',
         stripeError: true
       }, { status: 500 });
     }
@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
       invoiceNumber = invoiceData?.invoiceNumber || null;
       console.log(`Invoice generated: ${invoiceNumber} — ${invoiceUrl}`);
     } catch (invoiceError) {
-      console.error('Invoice generation failed (non-fatal):', invoiceError.message);
+      console.error('Invoice generation failed (non-fatal)');
     }
 
     return Response.json({
@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
       payoutId: transferId
     });
   } catch (error) {
-    console.error('Error in releaseProgressPayment:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error in releaseProgressPayment');
+    return Response.json({ error: 'Failed to release payment' }, { status: 500 });
   }
 });

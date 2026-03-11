@@ -61,11 +61,9 @@ Deno.serve(async (req) => {
       body: `From: ${userName} <${user.email}>\nCategory: ${category}\nSubject: ${subject}\n\n${message}`,
     });
 
-    console.log(`Admin contact message sent from ${user.email} to ${adminEmail}`);
-
     return Response.json({ success: true });
-  } catch (error) {
-    console.error('Error sending admin contact message:', error);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+    } catch (error) {
+    console.error('Error sending admin contact message');
+    return Response.json({ error: 'Failed to send message' }, { status: 500 });
+    }
 });

@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
       amount: payment.amount
     });
   } catch (error) {
-    console.error('Error in releaseProgressPaymentPayout:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error in releaseProgressPaymentPayout');
+    return Response.json({ error: 'Failed to release payout' }, { status: 500 });
   }
 });

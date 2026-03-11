@@ -44,10 +44,9 @@ Happy hiring!
 SurfCoast Team`,
     });
 
-    console.log(`Welcome email sent to ${email}`);
     return Response.json({ success: true });
-  } catch (error) {
-    console.error('Error sending welcome email:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+    } catch (error) {
+    console.error('Error sending welcome email');
+    return Response.json({ error: 'Failed to send email' }, { status: 500 });
+    }
 });

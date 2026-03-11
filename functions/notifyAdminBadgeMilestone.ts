@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('notifyAdminBadgeMilestone error:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('notifyAdminBadgeMilestone error');
+    return Response.json({ error: 'Failed to send notification' }, { status: 500 });
   }
 });
