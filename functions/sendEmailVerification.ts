@@ -21,12 +21,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Valid email required' }, { status: 400 });
     }
 
-    // If authenticated, ensure userEmail matches the session
+    // For unauthenticated requests, this is allowed (public app)
+    // For authenticated requests, ensure email matches
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (isAuthenticated) {
-      const user = await base44.auth.me();
-      if (user.email.toLowerCase() !== userEmail.toLowerCase()) {
-        return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
+      try {
+        const user = await base44.auth.me();
+        if (user.email.toLowerCase() !== userEmail.toLowerCase()) {
+          return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
+        }
+      } catch {
+        // If auth fails, allow unauthenticated flow
       }
     }
 
