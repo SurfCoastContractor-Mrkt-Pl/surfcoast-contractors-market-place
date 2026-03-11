@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2, Lightbulb, ArrowRight, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }) {
+export default function ContractorWelcomeModal({ open, onClose, onStartWithAgent }) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
@@ -15,13 +15,13 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
             </div>
             Welcome to SurfCoast Contractor Market Place!
           </DialogTitle>
-          <div className="sr-only">New customer welcome dialog</div>
+          <div className="sr-only">New contractor welcome dialog</div>
         </DialogHeader>
         
         <div className="space-y-6">
           <div className="space-y-3">
             <p className="text-slate-700">
-              Your account is ready! Let's get you set up to find contractors and post jobs.
+              Your contractor profile is ready. Let's get you set up to browse jobs and connect with customers.
             </p>
             
             <div className="space-y-2">
@@ -33,19 +33,19 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
-                  <span>Browse contractors or post a job</span>
+                  <span>Browse available jobs</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
                   <div className="flex items-start gap-1.5">
-                    <span>Request estimates ($1.75 each)</span>
+                    <span>Respond to quote requests</span>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Info className="w-4 h-4 text-slate-400 mt-0.5 cursor-help flex-shrink-0" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs max-w-xs">
-                          Send estimate requests to contractors you haven't worked with yet
+                          Customers will send you estimate requests—respond to grow your business
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -54,14 +54,14 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
                   <div className="flex items-start gap-1.5">
-                    <span>Message contractors ($1.50/session or $50/month)</span>
+                    <span>Message customers ($1.50/session or $50/month)</span>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Info className="w-4 h-4 text-slate-400 mt-0.5 cursor-help flex-shrink-0" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs max-w-xs">
-                          Both you and contractors pay $1.50 for 10-minute sessions, or $50/month for unlimited messaging
+                          Both you and customers pay $1.50 for 10-minute sessions, or $50/month for unlimited messaging
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
