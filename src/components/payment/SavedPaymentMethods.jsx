@@ -286,15 +286,18 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         <Button
           type="submit"
           className="bg-amber-500 hover:bg-amber-600"
-          disabled={loading || !stripe || !elements || !emailVerified}
+          disabled={loading || !stripe || !elements || !emailVerified || !cardholderName.trim()}
         >
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Adding...
+              Saving...
             </>
           ) : (
-            'Add Card'
+            <>
+              <Lock className="w-4 h-4 mr-2" />
+              Save Card
+            </>
           )}
         </Button>
       </div>
