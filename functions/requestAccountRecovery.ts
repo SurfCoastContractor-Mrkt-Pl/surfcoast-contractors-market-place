@@ -21,21 +21,39 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Rate limit: max 3 recovery requests per email per hour
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    // Rate limit: max 2 recovery requests per email per 30 minutes
+    const thirtyMinsAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
     let recentRequests = [];
     try {
       recentRequests = await base44.asServiceRole.entities.EmailVerification.filter({
         email,
-        created_date: { '$gte': oneHourAgo }
+        created_date: { '$gte': thirtyMinsAgo }
       });
     } catch (e) {
       console.error('Error checking rate limit:', e.message);
     }
 
-    if (recentRequests.length >= 3) {
+    // Progressive lockout: block after 2 attempts in 30 mins, then 5 in 24 hours
+    if (recentRequests.length >= 2) {
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      let dailyRequests = [];
+      try {
+        dailyRequests = await base44.asServiceRole.entities.EmailVerification.filter({
+          email,
+          created_date: { '$gte': oneDayAgo }
+        });
+      } catch (e) {
+        console.error('Error checking daily rate limit:', e.message);
+      }
+
+      if (dailyRequests.length >= 5) {
+        return Response.json({ 
+          error: 'Too many recovery attempts. Please try again in 24 hours.' 
+        }, { status: 429 });
+      }
+
       return Response.json({ 
-        error: 'Too many recovery attempts. Please try again in an hour.' 
+        error: 'Too many recovery attempts. Please try again in 30 minutes.' 
       }, { status: 429 });
     }
 
