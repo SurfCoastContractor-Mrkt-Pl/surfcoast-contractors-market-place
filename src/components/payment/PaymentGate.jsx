@@ -183,11 +183,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               <div className="flex items-start gap-2">
                 <Shield className="w-4 h-4 shrink-0 mt-0.5 text-slate-500" />
                 <div>
-                  <strong className="text-slate-900">Quote Request Fee: $1.75 (USD)</strong>
+                  <strong className="text-slate-900">Blind Quote Request Fee: $1.75 (USD)</strong>
                   <p className="mt-1">
-                    {payerType === 'customer'
-                      ? `This one-time fee allows ${contractorName} to review your project and provide a written estimate. A separate $1.75 fee applies per contractor.`
-                      : 'This one-time fee enables you to receive and respond to customer quote requests on SurfCoast Contractors.'}
+                    This one-time fee allows {contractorName} to review your posted job or project and provide you with a blind written estimate — no back-and-forth required. A separate $1.75 fee applies for each contractor you request a quote from.
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
                     Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe. A receipt will be emailed to you.

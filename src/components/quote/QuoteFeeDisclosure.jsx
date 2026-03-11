@@ -18,11 +18,11 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
         <div className="space-y-4 py-4">
           <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
             <div className="flex items-baseline justify-between">
-              <span className="text-slate-700">Quote Request Fee:</span>
+              <span className="text-slate-700">Blind Quote Request Fee:</span>
               <span className="text-2xl font-bold text-amber-600">$1.75</span>
             </div>
             <p className="text-sm text-slate-600">
-              This fee allows {contractorName} to review your project and provide a written estimate.
+              This fee is charged to you (the customer) to request that {contractorName} review your posted job or project and provide a blind written estimate — no communication required.
             </p>
           </div>
 
@@ -31,7 +31,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
             <ul className="space-y-1 text-slate-600 ml-2">
               <li className="flex gap-2">
                 <span>✓</span>
-                <span>Written project estimate from the contractor</span>
+                <span>A blind written estimate based on your posted job</span>
               </li>
               <li className="flex gap-2">
                 <span>✓</span>
@@ -39,7 +39,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
               </li>
               <li className="flex gap-2">
                 <span>✓</span>
-                <span>Quick response from professionals</span>
+                <span>Contractor reviews your project details and photos</span>
               </li>
             </ul>
           </div>
@@ -47,7 +47,7 @@ export default function QuoteFeeDisclosure({ open, onClose, onConfirm, contracto
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg flex gap-2">
             <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-700">
-              You can request quotes from multiple contractors. Each request is a separate $1.75 charge.
+              Each contractor quote request is a separate $1.75 charge. Contractors are not charged any fee.
             </p>
           </div>
         </div>
