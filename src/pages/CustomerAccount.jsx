@@ -421,8 +421,10 @@ export default function CustomerAccount() {
                             </div>
                             )}
                             </div>
+                            </div>
                             </React.Fragment>
                             );})}
+
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">No scope of work agreements found.</p>
