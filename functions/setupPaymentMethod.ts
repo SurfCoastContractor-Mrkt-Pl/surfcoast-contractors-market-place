@@ -1,7 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
-const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+if (!secretKey || !secretKey.startsWith('sk_')) {
+  throw new Error('Invalid STRIPE_SECRET_KEY: not configured or expired');
+}
+const stripeClient = new Stripe(secretKey);
 
 Deno.serve(async (req) => {
   try {
