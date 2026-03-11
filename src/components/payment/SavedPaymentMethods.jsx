@@ -313,6 +313,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           type="submit"
           className="bg-amber-500 hover:bg-amber-600"
           disabled={loading || !stripe || !elements || !emailVerified || !cardholderName.trim() || phoneNumber.replace(/\D/g, '').length < 10}
+          title={!emailVerified ? 'Please verify your email before saving' : ''}
         >
           {loading ? (
             <>
