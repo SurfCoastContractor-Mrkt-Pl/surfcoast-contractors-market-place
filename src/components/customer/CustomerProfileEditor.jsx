@@ -377,6 +377,33 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
             </div>
 
             <div>
+              <Label htmlFor="property_type">Property Type</Label>
+              <select
+                id="property_type"
+                value={formData.property_type}
+                onChange={(e) => setFormData(prev => ({ ...prev, property_type: e.target.value }))}
+                className="mt-1.5 w-full border border-input bg-background rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+              >
+                <option value="">Select property type...</option>
+                {Object.entries(PROPERTY_TYPES).map(([val, label]) => (
+                  <option key={val} value={val}>{label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <Label htmlFor="property_address">Property / Site Address</Label>
+              <Input
+                id="property_address"
+                placeholder="123 Main St, City, State"
+                value={formData.property_address}
+                onChange={(e) => setFormData(prev => ({ ...prev, property_address: e.target.value }))}
+                className="mt-1.5"
+              />
+              <p className="text-xs text-slate-400 mt-1">Where work is typically carried out — shared with contractors when you engage them</p>
+            </div>
+
+            <div>
               <Label htmlFor="bio">About You</Label>
               <Textarea
                 id="bio"
