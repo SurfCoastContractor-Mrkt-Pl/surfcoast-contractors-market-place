@@ -9,7 +9,7 @@ import { AlertCircle, CheckCircle2, Loader2, ChevronDown, ChevronUp, FileText, D
 
 export default function CustomerPhaseApproval({ payment, onSuccess }) {
   const [approvalNotes, setApprovalNotes] = useState('');
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(payment.status === 'contractor_completed');
   const [invoiceUrl, setInvoiceUrl] = useState(null);
 
   const mutation = useMutation({
