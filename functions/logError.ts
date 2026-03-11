@@ -73,12 +73,15 @@ Deno.serve(async (req) => {
 
     // Send email alert to admin for high/critical severity
     if (severity === 'high' || severity === 'critical') {
-      await base44.asServiceRole.integrations.Core.SendEmail({
-        to: Deno.env.get('ADMIN_ALERT_EMAIL'),
-        from_name: 'SurfCoast Error Monitor',
-        subject: `🚨 ${severity?.toUpperCase()} Error: ${action}`,
-        body: `A ${severity} error was logged on SurfCoast.\n\nUser: ${user_email || user.email} (${user_type || 'unknown'})\nAction: ${action}\nError: ${error_message}\nContext: ${typeof context === 'object' ? JSON.stringify(context, null, 2) : (context || 'N/A')}\nTime: ${new Date().toISOString()}\n\nLog ID: ${log.id}\n\nPlease review at your Admin Dashboard → Error Log tab.`,
-      });
+      try {
+        await base44.integrations.Core.SendEmail({
+          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
+          subject: `🚨 ${severity?.toUpperCase()} Error: ${action}`,
+          body: `A ${severity} error was logged on SurfCoast.\n\nUser: ${user_email || user?.email || 'unknown'} (${user_type || 'unknown'})\nAction: ${action}\nError: ${error_message}\nContext: ${typeof context === 'object' ? JSON.stringify(context, null, 2) : (context || 'N/A')}\nTime: ${new Date().toISOString()}\n\nLog ID: ${log?.id || 'pending'}\n\nPlease review at your Admin Dashboard → Error Log tab.`,
+        });
+      } catch (emailError) {
+        console.error('Failed to send admin alert:', emailError.message);
+      }
     }
 
     console.log(`[ErrorLog] ${severity} | ${error_type} | ${user_email} | ${action} | ${error_message}`);
