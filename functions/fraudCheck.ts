@@ -109,9 +109,9 @@ Deno.serve(async (req) => {
       }
     });
   } catch (error) {
-    console.error('Fraud check error:', error);
+    console.error('Fraud check error');
     return Response.json(
-      { error: 'Fraud check failed', details: error.message },
+      { error: 'Fraud check failed' },
       { status: 500 }
     );
   }

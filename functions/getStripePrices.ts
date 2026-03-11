@@ -24,6 +24,7 @@ Deno.serve(async (req) => {
     }));
     return Response.json({ prices: summary });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('getStripePrices error');
+    return Response.json({ error: 'Failed to retrieve prices' }, { status: 500 });
   }
 });

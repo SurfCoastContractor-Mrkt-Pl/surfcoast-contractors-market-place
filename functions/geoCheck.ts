@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
           body: `A non-US access attempt was blocked.\n\nIP: ${ip}\nCountry: ${countryName} (${country})\nProxy/VPN: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis is an automated security alert from SurfCoast Contractor Market Place.`,
         });
       } catch (logErr) {
-        console.error('Failed to log geo block:', logErr.message);
+        console.error('Failed to log geo block');
       }
 
       return Response.json({ allowed: false, country, countryName, reason: 'geo_blocked' });
@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
           body: `A suspicious request was flagged — US IP using proxy/VPN or hosting provider.\n\nIP: ${ip}\nProxy: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis may indicate a geo-restriction bypass attempt.\n\nSurfCoast Security System`,
         });
       } catch (logErr) {
-        console.error('Failed to log suspicious proxy:', logErr.message);
+        console.error('Failed to log suspicious proxy');
       }
 
       // Still allow — it's a US IP — but flag it
@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ allowed: true, country, countryName });
   } catch (error) {
-    console.error('geoCheck error:', error.message);
+    console.error('geoCheck error');
     // Fail open — don't block users if our check crashes
     return Response.json({ allowed: true, country: 'US', reason: 'error_fallback' });
   }

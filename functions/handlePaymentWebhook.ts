@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (sigError) {
-      console.error('Webhook signature verification failed:', sigError.message);
+      console.error('Webhook signature verification failed');
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
     
@@ -104,10 +104,9 @@ Deno.serve(async (req) => {
 
         console.log(`Payment ${paymentId} confirmed successfully`);
       } catch (updateError) {
-        console.error('Error confirming payment for session', session.id, ':', updateError.message);
-        console.error('Error details:', updateError);
-        // Still return received: true to prevent Stripe retrying indefinitely
-      }
+         console.error('Error confirming payment for session', session.id);
+         // Still return received: true to prevent Stripe retrying indefinitely
+       }
     }
 
     // Handle charge.refunded
@@ -122,8 +121,7 @@ Deno.serve(async (req) => {
           });
           console.log(`Payment ${paymentId} refunded successfully`);
         } catch (refundError) {
-          console.error('Error updating refund status for payment', paymentId, ':', refundError.message);
-          console.error('Error details:', refundError);
+          console.error('Error updating refund status for payment', paymentId);
         }
       } else {
         console.warn('Refund event received but no payment_id in metadata:', charge.metadata);
@@ -142,8 +140,7 @@ Deno.serve(async (req) => {
           });
           console.log(`Payment ${paymentId} disputed successfully`);
         } catch (disputeError) {
-          console.error('Error updating dispute status for payment', paymentId, ':', disputeError.message);
-          console.error('Error details:', disputeError);
+          console.error('Error updating dispute status for payment', paymentId);
         }
       } else {
         console.warn('Dispute event received but no payment_id in metadata:', dispute.metadata);
@@ -152,7 +149,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error.message);
+    console.error('Webhook error');
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 });

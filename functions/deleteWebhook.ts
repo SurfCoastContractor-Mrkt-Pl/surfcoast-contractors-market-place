@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     const deleted = await stripe.webhookEndpoints.del(webhookId);
     return Response.json({ deleted });
   } catch (error) {
-    console.error('deleteWebhook error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('deleteWebhook error');
+    return Response.json({ error: 'Failed to delete webhook' }, { status: 500 });
   }
 });
