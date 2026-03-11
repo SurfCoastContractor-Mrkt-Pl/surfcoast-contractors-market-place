@@ -20,7 +20,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
         <div className="space-y-6">
           <div className="space-y-3">
             <p className="text-slate-700">
-              Your customer account is ready. Let's get you set up to find contractors and post jobs.
+              Your customer account is ready for setup. Let's get you set up to find contractors and post jobs.
             </p>
             
             <div className="space-y-2">
