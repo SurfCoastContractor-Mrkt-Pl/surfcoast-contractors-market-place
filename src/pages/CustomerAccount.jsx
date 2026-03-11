@@ -352,6 +352,20 @@ export default function CustomerAccount() {
               <TabsContent value="scopes">
                 <Card className="p-6">
                   <h2 className="text-lg font-semibold text-slate-900 mb-4">Scope of Work Agreements</h2>
+
+                  {/* Pending progress payments notice */}
+                  {progressPayments?.filter(pp => pp.status === 'contractor_completed').length > 0 && (
+                    <div className="flex items-start gap-3 p-3 mb-4 bg-orange-50 border border-orange-200 rounded-xl">
+                      <Bell className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-orange-800">
+                          {progressPayments.filter(pp => pp.status === 'contractor_completed').length} phase(s) awaiting your approval
+                        </p>
+                        <p className="text-xs text-orange-700 mt-0.5">A contractor has completed work and is waiting for your review and payment release.</p>
+                      </div>
+                    </div>
+                  )}
+
                   {scopes?.length > 0 ? (
                     <div className="space-y-3">
                       {scopes.map(s => {
