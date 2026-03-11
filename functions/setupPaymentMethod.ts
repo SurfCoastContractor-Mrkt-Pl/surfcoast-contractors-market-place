@@ -49,17 +49,7 @@ Deno.serve(async (req) => {
     console.log(`Successfully saved payment method with ID: ${savedMethod.id}`);
     return Response.json({ success: true, data: savedMethod });
   } catch (error) {
-    console.error('Error saving payment method:', error);
-    console.error('Error stack:', error.stack);
-    console.error('Error type:', error.type);
-    console.error('Full error object:', JSON.stringify(error, null, 2));
-    
-    return Response.json({
-      error: error.message,
-      type: error.type,
-      status: error.status,
-      details: error.raw?.message || error.raw?.error?.message,
-      fullError: process.env.NODE_ENV === 'development' ? error : undefined
-    }, { status: error.status || 500 });
+    console.error('Error saving payment method:', error.message);
+    return Response.json({ error: error.message }, { status: error.status || 500 });
   }
 });
