@@ -183,6 +183,29 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
     }
   };
 
+  const completionSteps = [
+    { label: 'Full name', done: !!formData.full_name },
+    { label: 'Date of birth', done: !!formData.date_of_birth },
+    { label: 'Phone number', done: !!formData.phone },
+    { label: 'Location', done: !!formData.location },
+    { label: 'Property type', done: !!formData.property_type },
+    { label: 'Property address', done: !!formData.property_address },
+    { label: 'Profile photo', done: !!formData.photo_url },
+    { label: 'Bio', done: !!formData.bio },
+    { label: 'Preferred trades', done: formData.preferred_trades.length > 0 },
+  ];
+  const completionPct = Math.round((completionSteps.filter(s => s.done).length / completionSteps.length) * 100);
+  const missingSteps = completionSteps.filter(s => !s.done);
+
+  const PROPERTY_TYPES = {
+    residential_house: 'Residential House',
+    residential_apartment: 'Residential Apartment',
+    residential_condo: 'Residential Condo/Townhouse',
+    commercial: 'Commercial',
+    industrial: 'Industrial',
+    land_vacant: 'Land / Vacant Lot',
+  };
+
   return (
     <Card className={`p-6 border-2 transition-colors ${verifiedProfile ? 'border-green-200 bg-green-50' : 'border-slate-200'}`}>
       <div className="flex items-start justify-between mb-6">
