@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Lock, Unlock, Loader2, Camera, AlertTriangle } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Lock, Unlock, Loader2, Camera, AlertTriangle, MessageSquare, CheckCircle2 } from 'lucide-react';
 
 export default function AccountLockedBanner({ contractor, lockedScope }) {
   const [uploading, setUploading] = useState(false);

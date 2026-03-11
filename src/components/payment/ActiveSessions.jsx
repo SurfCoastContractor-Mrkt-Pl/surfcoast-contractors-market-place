@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, CheckCircle2, AlertCircle, Timer } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, CheckCircle2, AlertCircle, Timer, RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 function SessionTimer({ expiresAt }) {
   const [remaining, setRemaining] = useState('');
