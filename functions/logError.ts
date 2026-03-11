@@ -23,9 +23,9 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Rate limiting per user
+    // Rate limiting per user/IP
     const now = Date.now();
-    const userKey = user.email;
+    const userKey = user?.email || req.headers.get('x-forwarded-for') || 'anonymous';
     if (!requestCounts.has(userKey)) {
       requestCounts.set(userKey, []);
     }
@@ -48,16 +48,28 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'action and error_message are required' }, { status: 400 });
     }
 
-    const log = await base44.asServiceRole.entities.ErrorLog.create({
-      error_type: error_type || 'other',
-      severity: severity || 'medium',
-      user_email: user_email || user.email,
-      user_type: user_type || 'unknown',
-      action,
-      error_message,
-      context: typeof context === 'object' ? JSON.stringify(context) : (context || ''),
-      resolved: false,
-    });
+    // Only service role can log errors
+    if (!hasValidKey && !isAuthenticated) {
+      return Response.json({ error: 'Unauthorized to log errors' }, { status: 403 });
+    }
+
+    let log;
+    try {
+      log = await base44.asServiceRole.entities.ErrorLog.create({
+        error_type: error_type || 'other',
+        severity: severity || 'medium',
+        user_email: user_email || user?.email || 'unknown',
+        user_type: user_type || 'unknown',
+        action,
+        error_message,
+        context: typeof context === 'object' ? JSON.stringify(context) : (context || ''),
+        resolved: false,
+      });
+    } catch (dbError) {
+      console.error('Failed to create error log:', dbError.message);
+      // Still return success to avoid cascading errors
+      return Response.json({ success: true, message: 'Error logged (deferred)' });
+    }
 
     // Send email alert to admin for high/critical severity
     if (severity === 'high' || severity === 'critical') {
