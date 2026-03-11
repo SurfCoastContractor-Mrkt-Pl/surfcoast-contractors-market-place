@@ -16,7 +16,6 @@ Deno.serve(async (req) => {
     }
 
     if (password !== correctPassword) {
-      console.warn(`Invalid admin password attempt at ${new Date().toISOString()}`);
       return Response.json({ success: false, error: 'Invalid password.' }, { status: 403 });
     }
 

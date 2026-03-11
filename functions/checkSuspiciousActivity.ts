@@ -62,9 +62,9 @@ Deno.serve(async (req) => {
       recommendation: alerts.length > 0 ? 'Review and potentially verify customer' : 'Normal activity'
     });
   } catch (error) {
-    console.error('Suspicious activity check error:', error);
+    console.error('Suspicious activity check error');
     return Response.json(
-      { error: 'Check failed', details: error.message },
+      { error: 'Check failed' },
       { status: 500 }
     );
   }

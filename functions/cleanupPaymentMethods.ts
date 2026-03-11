@@ -38,9 +38,9 @@ Deno.serve(async (req) => {
           });
         }
       } catch (error) {
-        console.error(`Error processing payment method ${method.id}:`, error.message);
+        console.error(`Error processing payment method ${method.id}`);
         // If Stripe payment method doesn't exist or is invalid, delete the record
-        if (error.message.includes('No such payment_method')) {
+        if (error.message?.includes('No such payment_method')) {
           await base44.asServiceRole.entities.SavedPaymentMethod.delete(method.id);
           deletedCount++;
           issues.push({

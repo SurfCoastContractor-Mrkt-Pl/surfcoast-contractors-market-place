@@ -13,10 +13,9 @@ Deno.serve(async (req) => {
       }
     } else {
       // Unauthenticated calls must come from an internal automation context
-      // Verify via a shared secret header to prevent open invocation
       const internalKey = req.headers.get('x-internal-key');
-      const expectedKey = Deno.env.get('INTERNAL_AUTOMATION_KEY');
-      if (expectedKey && internalKey !== expectedKey) {
+      const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+      if (!expectedKey || internalKey !== expectedKey) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
