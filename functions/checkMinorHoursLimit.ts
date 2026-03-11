@@ -9,12 +9,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Allow scheduled automations (no auth) OR admin users only
+    // Allow scheduled automations OR authenticated admin users only
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (isAuthenticated) {
       const user = await base44.auth.me();
       if (user?.role !== 'admin') {
         return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+      }
+    } else {
+      const internalKey = req.headers.get('x-internal-key');
+      const expectedKey = Deno.env.get('INTERNAL_AUTOMATION_KEY');
+      if (expectedKey && internalKey !== expectedKey) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
 

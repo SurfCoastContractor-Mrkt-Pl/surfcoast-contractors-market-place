@@ -76,9 +76,10 @@ Deno.serve(async (req) => {
 
 async function handleSubscriptionCreated(subscription, base44) {
   try {
-    const email = subscription.metadata?.user_email || subscription.billing_details?.email;
+    // Note: email is NOT stored in Stripe metadata (PII policy) — retrieve from customer object instead
+    const email = subscription.metadata?.user_email || subscription.customer_email;
     if (!email) {
-      console.warn('Subscription created without email metadata');
+      console.warn('Subscription created without resolvable email — skipping record creation');
       return;
     }
 
@@ -102,11 +103,8 @@ async function handleSubscriptionCreated(subscription, base44) {
 
 async function handleSubscriptionUpdated(subscription, base44) {
   try {
-    const email = subscription.metadata?.user_email;
-    if (!email) {
-      console.warn('Subscription updated without email metadata');
-      return;
-    }
+    // Match by stripe_subscription_id — no need for email here
+    const email = subscription.metadata?.user_email || null;
 
     const subscriptions = await base44.asServiceRole.entities.Subscription.filter({
       stripe_subscription_id: subscription.id
