@@ -432,19 +432,21 @@ export default function SavedPaymentMethods({ userEmail }) {
             Add a new saved payment method to your account for quick access.
           </div>
           {stripePromise ? (
-            <Elements stripe={stripePromise}>
-              <CardInputForm
-                userEmail={userEmail}
-                cardName={cardName}
-                setCardName={setCardName}
-                onSuccess={() => {
-                  setShowAddMethod(false);
-                  setCardName('');
-                  refetch();
-                }}
-                onCancel={() => setShowAddMethod(false)}
-              />
-            </Elements>
+            <div className="max-h-[70vh] overflow-y-auto overflow-x-auto">
+              <Elements stripe={stripePromise}>
+                <CardInputForm
+                  userEmail={userEmail}
+                  cardName={cardName}
+                  setCardName={setCardName}
+                  onSuccess={() => {
+                    setShowAddMethod(false);
+                    setCardName('');
+                    refetch();
+                  }}
+                  onCancel={() => setShowAddMethod(false)}
+                />
+              </Elements>
+            </div>
           ) : (
             <div className="text-center py-4 text-slate-500">Loading payment form...</div>
           )}
