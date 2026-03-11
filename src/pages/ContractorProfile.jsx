@@ -132,7 +132,9 @@ export default function ContractorProfile() {
      );
    }
 
-   if (!userAuth) {
+   const isAdminPreview = urlParams.get('admin') === 'true';
+
+   if (!userAuth && !isAdminPreview) {
      return (
        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
          <Card className="max-w-md w-full p-8 text-center">
@@ -415,22 +417,35 @@ export default function ContractorProfile() {
                 </TabsList>
 
                 <TabsContent value="quote" className="space-y-3">
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-xs text-blue-700">
-                      <strong>$0.75 per quote</strong> — Get a written estimate without back-and-forth conversation
-                    </p>
-                  </div>
-                  <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                    onClick={() => setShowQuoteFeeDisclosure(true)}
-                  >
-                    Request Quick Quote
-                  </Button>
+                  {isAdminPreview ? (
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-center">
+                      <p className="text-xs text-amber-700"><strong>Admin Preview Mode</strong><br/>Quote features disabled</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-xs text-blue-700">
+                          <strong>$1.75 per quote</strong> — Get a written estimate without back-and-forth conversation
+                        </p>
+                      </div>
+                      <Button
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={() => setShowQuoteFeeDisclosure(true)}
+                      >
+                        Request Quick Quote
+                      </Button>
+                    </>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="message">
                   <div className="space-y-3">
-                    {disclaimerSigned && customerPaid ? (
+                    {isAdminPreview ? (
+                      <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-center space-y-2">
+                        <p className="text-xs font-semibold text-amber-800">Admin Preview Mode</p>
+                        <p className="text-xs text-amber-700">Messaging features are disabled during admin preview. Sign in as a customer to test messaging.</p>
+                      </div>
+                    ) : disclaimerSigned && customerPaid ? (
                       <div className="space-y-3">
                       {isWorkScheduled ? (
                         <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
@@ -504,21 +519,36 @@ export default function ContractorProfile() {
               </Tabs>
             </Card>
 
-            {/* Identity Verification Status */}
-            {!contractor.identity_verified && (
-              <Card className="p-5 bg-orange-50 border-orange-200">
-                <div className="flex items-start gap-3">
-                  <ShieldAlert className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-orange-800 mb-1">Identity Not Yet Verified</h4>
-                    <p className="text-xs text-orange-700 leading-relaxed">
-                      This contractor's identity documents have not yet been reviewed by ContractorHub. 
-                      Exercise caution and conduct your own due diligence before engaging.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            )}
+            {/* Admin Preview Banner */}
+             {isAdminPreview && (
+               <Card className="p-5 bg-blue-50 border-blue-200">
+                 <div className="flex items-start gap-3">
+                   <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                   <div>
+                     <h4 className="font-semibold text-blue-800 mb-1">Admin Preview Mode</h4>
+                     <p className="text-xs text-blue-700 leading-relaxed">
+                       You are viewing this profile as an admin. Payment & messaging features are disabled. Sign in as a customer to test all features.
+                     </p>
+                   </div>
+                 </div>
+               </Card>
+             )}
+
+             {/* Identity Verification Status */}
+             {!contractor.identity_verified && (
+               <Card className="p-5 bg-orange-50 border-orange-200">
+                 <div className="flex items-start gap-3">
+                   <ShieldAlert className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
+                   <div>
+                     <h4 className="font-semibold text-orange-800 mb-1">Identity Not Yet Verified</h4>
+                     <p className="text-xs text-orange-700 leading-relaxed">
+                       This contractor's identity documents have not yet been reviewed by SurfCoast. 
+                       Exercise caution and conduct your own due diligence before engaging.
+                     </p>
+                   </div>
+                 </div>
+               </Card>
+             )}
 
             {/* Disclaimer Notice */}
             <Card className="p-5 bg-red-50 border-red-200">
