@@ -20,7 +20,14 @@ Deno.serve(async (req) => {
     // If no contractorId, this is an automation call to check ALL minors
     const isAutomation = !contractorId;
     
-    if (!isAutomation) {
+    if (isAutomation) {
+      // Validate internal key for automation calls
+      const internalKey = req.headers.get('x-internal-key');
+      const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+      if (!expectedKey || internalKey !== expectedKey) {
+        return Response.json({ error: 'Unauthorized: Invalid or missing internal key' }, { status: 403 });
+      }
+    } else {
       const user = await base44.auth.me();
       if (!user) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -138,9 +145,9 @@ Deno.serve(async (req) => {
       week_starts: startOfWeek.toISOString()
     });
   } catch (error) {
-    console.error('Minor hours check error:', error);
+    console.error('Minor hours check error');
     return Response.json(
-      { error: error.message },
+      { error: 'Minor hours check failed' },
       { status: 500 }
     );
   }
