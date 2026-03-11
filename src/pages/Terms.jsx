@@ -67,7 +67,8 @@ export default function Terms() {
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li><strong>Job / Project Posting (Customers):</strong> Always free. Customers post their jobs and projects at no cost so contractors can browse and decide if they'd like to pursue the work.</li>
                 <li><strong>Blind Quote Request (Customers only — $1.75):</strong> When a customer wants a contractor to provide a blind estimate or quote on their posted job or project, a one-time $1.75 fee is charged to the customer. This covers one quote request per contractor. Each additional contractor quote request requires a separate $1.75 fee. Contractors are not charged any fee to view jobs or submit quotes.</li>
-                <li><strong>Unlimited Communication:</strong> $50.00/month subscription. Allows unlimited messaging across the platform. Auto-renews monthly. Cancel anytime — cancellation takes effect at the end of the current billing period.</li>
+                <li><strong>Communication Session ($1.50 — applies to both customers and contractors):</strong> Either party may initiate a direct messaging session with the other for a one-time $1.50 fee per session. This unlocks a timed communication window for that engagement. A new $1.50 fee is required to open a new session after one ends.</li>
+                <li><strong>Unlimited Communication:</strong> $50.00/month subscription. Allows unlimited messaging across the platform for both customers and contractors. Auto-renews monthly. Cancel anytime — cancellation takes effect at the end of the current billing period.</li>
               </ul>
               <p>All fees are disclosed upfront before payment in compliance with California SB 478 (Honest Pricing Law). Contractor work costs are entirely separate and negotiated directly between you and the contractor — SurfCoast does not process or hold work payments.</p>
             </div>

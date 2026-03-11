@@ -173,8 +173,8 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
 
         await base44.integrations.Core.SendEmail({
           to: recipientEmail,
-          subject: `📬 New Message on ContractorHub${formData.subject ? ': ' + formData.subject : ''}`,
-          body: `Hello ${recipientName},\n\nYou have a new message on ContractorHub.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n${attachments.length > 0 ? `\nFiles attached: ${attachments.length}\n` : ''}Log in to ContractorHub to reply. Your contact details remain protected within the platform.\n\nContractorHub\n(Do not reply to this automated email)`,
+          subject: `📬 New Message on SurfCoast${formData.subject ? ': ' + formData.subject : ''}`,
+          body: `Hello ${recipientName},\n\nYou have a new message on SurfCoast Contractor Market Place.\n\nFrom: ${formData.name}\nMessage:\n---\n${body}\n---\n${attachments.length > 0 ? `\nFiles attached: ${attachments.length}\n` : ''}Log in to SurfCoast to reply. Your contact details remain protected within the platform.\n\nSurfCoast Contractor Market Place\n(Do not reply to this automated email)`,
         });
 
         return msg;
@@ -192,13 +192,13 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
       await Promise.all([
         base44.integrations.Core.SendEmail({
           to: recipientEmail,
-          subject: '✅ Work Scheduled — ContractorHub',
-          body: `Hello ${recipientName},\n\nBoth you and the other party have agreed on the work. This engagement has been marked as "Work Scheduled" on ContractorHub.\n\nNo further in-app messaging is available for this session. If you need to communicate again for a new job, a new $1.50 platform access fee will apply.\n\nThank you for using ContractorHub!`,
+          subject: '✅ Work Scheduled — SurfCoast Contractor Market Place',
+          body: `Hello ${recipientName},\n\nBoth you and the other party have agreed on the work. This engagement has been marked as "Work Scheduled" on SurfCoast Contractor Market Place.\n\nNo further in-app messaging is available for this session. If you need to communicate again for a new job, a new $1.50 communication fee will apply.\n\nThank you for using SurfCoast Contractor Market Place!`,
         }),
         formData.email ? base44.integrations.Core.SendEmail({
           to: formData.email,
-          subject: '✅ Work Scheduled — ContractorHub',
-          body: `Hello ${formData.name},\n\nThis engagement with ${recipientName} has been marked as "Work Scheduled". Both parties have agreed and an appointment has been set.\n\nThis session is now closed. A new $1.50 fee applies to open a new communication session.\n\nContractorHub`,
+          subject: '✅ Work Scheduled — SurfCoast Contractor Market Place',
+          body: `Hello ${formData.name},\n\nThis engagement with ${recipientName} has been marked as "Work Scheduled". Both parties have agreed and an appointment has been set.\n\nThis session is now closed. A new $1.50 fee applies to open a new communication session.\n\nSurfCoast Contractor Market Place`,
         }) : Promise.resolve(),
       ]);
       setShowScheduleConfirm(false);
@@ -230,7 +230,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                 <Lock className="w-8 h-8 text-amber-600" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Access Required</h3>
-              <p className="text-slate-600 text-sm mb-6">Pay $1.50 for one session or $20/month for unlimited messaging.</p>
+              <p className="text-slate-600 text-sm mb-6">A $1.50 fee unlocks a communication session, or subscribe for $50/month for unlimited messaging.</p>
               <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Go Back</Button>
             </div>
           </DialogContent>
@@ -273,7 +273,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
             <p className="text-slate-600 text-sm mb-4">
               Your 10-minute communication session has ended. Past messages are shown below for your records.
             </p>
-            <p className="text-xs text-slate-400 mb-6">To continue communicating, a new $1.50 platform access fee is required.</p>
+            <p className="text-xs text-slate-400 mb-6">To continue communicating, a new $1.50 communication fee is required. This applies to both customers and contractors.</p>
             {thread.length > 0 && (
               <div className="text-left space-y-3 max-h-64 overflow-y-auto bg-slate-50 rounded-xl p-4 mb-4">
                 {thread.map(m => (
@@ -299,7 +299,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
               This session has been closed — both parties agreed and an appointment was set. 
               Past messages are shown below for your records.
             </p>
-            <p className="text-xs text-slate-400 mb-6">To open a new communication session, a new $1.50 platform access fee will apply.</p>
+            <p className="text-xs text-slate-400 mb-6">To open a new communication session, a new $1.50 fee will apply to whoever initiates it.</p>
             {/* Show past messages read-only */}
             {thread.length > 0 && (
             <div className="text-left space-y-3 max-h-64 overflow-y-auto bg-slate-50 rounded-xl p-4 mb-4">
@@ -472,7 +472,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                       <AlertTriangle className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
                       <p className="text-sm text-green-800">
                         <strong>Confirm Work Scheduled?</strong> This will close this communication session permanently. 
-                        Both parties will be notified. A new $1.50 fee is required to reopen messaging with this person.
+                        Both parties will be notified. A new $1.50 fee is required by whoever initiates the next communication session.
                       </p>
                     </div>
                     <div className="flex gap-2">
