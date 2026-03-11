@@ -125,11 +125,18 @@ function ContractorProfileView({ contractor }) {
 
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="text-xs text-slate-400">Joined: {new Date(contractor.created_date).toLocaleDateString()} · ID: {contractor.id}</div>
-        <a href={createPageUrl(`ContractorProfile?id=${contractor.id}`)} target="_blank" rel="noopener noreferrer">
-          <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs flex items-center gap-1">
-            <ExternalLink className="w-3 h-3" /> Preview as Customer
-          </Button>
-        </a>
+        <div className="flex gap-2">
+          <a href={createPageUrl(`ContractorProfile?id=${contractor.id}&admin=true`)} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" variant="outline" className="text-xs flex items-center gap-1">
+              <ExternalLink className="w-3 h-3" /> Preview Profile
+            </Button>
+          </a>
+          <a href={createPageUrl(`ContractorAccount?id=${contractor.id}&admin=true`)} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs flex items-center gap-1">
+              <ExternalLink className="w-3 h-3" /> Preview Account
+            </Button>
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -202,9 +209,9 @@ function CustomerProfileView({ customer }) {
 
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="text-xs text-slate-400">Joined: {new Date(customer.created_date).toLocaleDateString()} · ID: {customer.id}</div>
-        <a href={createPageUrl(`CustomerAccount`)} target="_blank" rel="noopener noreferrer">
-          <Button size="sm" variant="outline" className="text-xs flex items-center gap-1">
-            <ExternalLink className="w-3 h-3" /> Preview Customer Profile
+        <a href={createPageUrl(`CustomerAccount?admin=true`)} target="_blank" rel="noopener noreferrer">
+          <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600 text-white text-xs flex items-center gap-1">
+            <ExternalLink className="w-3 h-3" /> Preview Account
           </Button>
         </a>
       </div>
