@@ -588,6 +588,25 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
               )}
             </div>
           </div>
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Bell className="w-4 h-4 text-slate-500" />
+              <h3 className="font-semibold text-slate-900">Notifications</h3>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {[
+                { key: 'notify_job_updates', label: 'Job updates' },
+                { key: 'notify_messages', label: 'Messages' },
+                { key: 'notify_payment_receipts', label: 'Payment receipts' },
+                { key: 'notify_platform_news', label: 'Platform news' },
+              ].map(({ key, label }) => (
+                <div key={key} className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${formData[key] ? 'bg-green-500' : 'bg-slate-300'}`} />
+                  <span className="text-xs text-slate-600">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
           <Button
             onClick={() => setIsEditing(true)}
             className="bg-amber-500 hover:bg-amber-600 w-full"
