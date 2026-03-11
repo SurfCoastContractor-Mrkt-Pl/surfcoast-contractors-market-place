@@ -51,7 +51,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       });
 
       if (setupError) {
-        setError(setupError.message);
+        setError('Failed to process card. Please try again.');
         logError({
           error_type: 'payment',
           severity: 'high',
@@ -62,19 +62,16 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         });
       } else if (setupIntent?.status === 'succeeded') {
         const paymentMethodId = setupIntent.payment_method;
-        console.log('Card setup succeeded, saving payment method:', paymentMethodId);
-        
+
         const saveResponse = await base44.functions.invoke('setupPaymentMethod', {
           userEmail,
           paymentMethodId,
           cardName: cardName || 'Unnamed Card',
           cardholderName: cardholderName,
         });
-        
-        console.log('Save response:', saveResponse);
-        
+
         if (saveResponse?.data?.error) {
-          setError(saveResponse.data.error);
+          setError('Failed to save payment method. Please try again.');
           logError({
             error_type: 'payment',
             severity: 'high',
@@ -88,7 +85,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         }
       }
     } catch (err) {
-      setError(err.message);
+      setError('An error occurred. Please try again.');
       logError({
         error_type: 'payment',
         severity: 'high',
@@ -231,13 +228,17 @@ export default function SavedPaymentMethods({ userEmail }) {
 
   useEffect(() => {
     const initStripe = async () => {
-      const keyResponse = await base44.functions.invoke('getStripePublicKey');
-      const keyData = keyResponse?.data || keyResponse;
-      const publishableKey = keyData?.publishableKey;
+      try {
+        const keyResponse = await base44.functions.invoke('getStripePublicKey');
+        const keyData = keyResponse?.data || keyResponse;
+        const publishableKey = keyData?.publishableKey;
 
-      if (publishableKey) {
-        const stripe = await loadStripe(publishableKey);
-        setStripePromise(stripe);
+        if (publishableKey) {
+          const stripe = await loadStripe(publishableKey);
+          setStripePromise(stripe);
+        }
+      } catch (error) {
+        console.error('Failed to load Stripe');
       }
     };
 
