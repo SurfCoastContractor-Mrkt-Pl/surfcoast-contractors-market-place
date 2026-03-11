@@ -322,8 +322,17 @@ export default function ContractorAccount() {
                   )}
                   {contractorScopes?.length > 0 ? (
                     <div className="space-y-3">
-                      {contractorScopes.map(s => (
-                        <div key={s.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl gap-3">
+                      {contractorScopes.map(s => {
+                        const scopePhases = (progressPayments || []).filter(pp => pp.scope_id === s.id);
+                        const hasProgressPayments = scopePhases.length > 0;
+                        return (
+                        <div key={s.id} className="border border-slate-200 rounded-xl overflow-hidden">
+                          {hasProgressPayments && s.status === 'approved' && (
+                            <div className="p-3 border-b border-slate-100 bg-white">
+                              <ProjectProgressBar payments={scopePhases} />
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between p-3 bg-slate-50 gap-3">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <FileText className="w-5 h-5 text-amber-500 shrink-0" />
                             <div className="min-w-0">
