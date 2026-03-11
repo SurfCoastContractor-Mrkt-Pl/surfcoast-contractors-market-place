@@ -10,10 +10,30 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Recovery token is required' }, { status: 400 });
     }
 
-    // Decode and validate token
+    // Decode and validate token with HMAC signature
     let tokenData;
+    let email;
     try {
-      tokenData = JSON.parse(atob(recoveryToken));
+      const [encodedPayload, signature] = recoveryToken.split('.');
+      if (!encodedPayload || !signature) {
+        return Response.json({ error: 'Invalid recovery token' }, { status: 400 });
+      }
+
+      const tokenPayload = atob(encodedPayload);
+      tokenData = JSON.parse(tokenPayload);
+
+      // Verify HMAC signature
+      const signingKey = Deno.env.get('STRIPE_WEBHOOK_SECRET') || 'fallback-key';
+      const encoder = new TextEncoder();
+      const data = encoder.encode(tokenPayload);
+      const keyData = encoder.encode(signingKey);
+      const key = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
+      const signatureBytes = new Uint8Array(signature.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+      const isValid = await crypto.subtle.verify('HMAC', key, signatureBytes, data);
+
+      if (!isValid) {
+        return Response.json({ error: 'Invalid recovery token' }, { status: 400 });
+      }
     } catch {
       return Response.json({ error: 'Invalid recovery token' }, { status: 400 });
     }
@@ -27,7 +47,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Recovery token expired' }, { status: 400 });
     }
 
-    const email = tokenData.email;
+    email = tokenData.email;
 
     // Check if user exists
     const contractors = await base44.asServiceRole.entities.Contractor.filter({ email });
