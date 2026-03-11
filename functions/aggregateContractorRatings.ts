@@ -4,15 +4,21 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Allow scheduled automations (no auth token) OR admin users
+    // Allow scheduled automations (service-role context) OR authenticated admin users only
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (isAuthenticated) {
       const user = await base44.auth.me();
       if (user?.role !== 'admin') {
         return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
       }
+    } else {
+      // Unauthenticated calls must come from an internal automation context
+      const internalKey = req.headers.get('x-internal-key');
+      const expectedKey = Deno.env.get('INTERNAL_AUTOMATION_KEY');
+      if (expectedKey && internalKey !== expectedKey) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
-    // If not authenticated, this is a scheduled automation call — allow it through
 
     // Fetch all reviews
     const reviews = await base44.asServiceRole.entities.Review.list();

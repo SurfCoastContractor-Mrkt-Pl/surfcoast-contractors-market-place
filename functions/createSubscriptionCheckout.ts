@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       cancel_url: `${origin}/Cancel`,
       metadata: {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),
-        user_email: email,
+        // NOTE: No PII (email) in Stripe metadata — user association tracked internally only
         user_type: userType,
       },
     });

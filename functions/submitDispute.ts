@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
       finalInitiatorType = initiatorTypes[respondent_type] || 'customer';
     }
 
-    // Create dispute
+    // Create dispute (service role required — RLS restricts user-scoped create)
     const dispute = await base44.asServiceRole.entities.Dispute.create({
       dispute_number,
       initiator_email: finalInitiatorEmail,
