@@ -38,12 +38,22 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Failed to verify code' }, { status: 500 });
     }
 
-    // Create temporary recovery token (valid for 30 minutes)
-    const recoveryToken = btoa(JSON.stringify({
+    // Create temporary recovery token (valid for 30 minutes) with HMAC signature
+    const signingKey = Deno.env.get('STRIPE_WEBHOOK_SECRET') || 'fallback-key';
+    const tokenData = {
       email,
       timestamp: Date.now(),
       type: 'account_recovery'
-    }));
+    };
+    const tokenPayload = JSON.stringify(tokenData);
+    const encoder = new TextEncoder();
+    const data = encoder.encode(tokenPayload);
+    const keyData = encoder.encode(signingKey);
+    const key = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+    const signature = await crypto.subtle.sign('HMAC', key, data);
+    const signatureHex = Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+    const recoveryToken = btoa(tokenPayload) + '.' + signatureHex;
 
     return Response.json({ 
       message: 'Code verified successfully',
