@@ -7,9 +7,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Stripe key not configured' }, { status: 500 });
     }
 
-    const subscriptionPriceId = Deno.env.get("STRIPE_SUBSCRIPTION_PRICE_ID");
+    const subscriptionPriceId = (Deno.env.get("STRIPE_SUBSCRIPTION_PRICE_ID") || '').trim().replace(/\.$/, '');
 
-    return Response.json({ publishableKey, subscriptionPriceId });
+    return Response.json({ publishableKey: publishableKey.trim(), subscriptionPriceId });
   } catch (error) {
     console.error('Error fetching Stripe key:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
