@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
 
     // Verify the user/badge milestone actually exists and has the claimed count
     if (type === 'contractor') {
-      const contractors = await base44.entities.Contractor.filter({ email });
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ email });
       if (!contractors || contractors.length === 0) {
         return Response.json({ error: 'Contractor not found' }, { status: 404 });
       }
@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
         return Response.json({ error: 'Completed jobs count does not match database record' }, { status: 400 });
       }
     } else {
-      const customers = await base44.entities.CustomerProfile.filter({ email });
+      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email });
       if (!customers || customers.length === 0) {
         return Response.json({ error: 'Customer not found' }, { status: 404 });
       }
