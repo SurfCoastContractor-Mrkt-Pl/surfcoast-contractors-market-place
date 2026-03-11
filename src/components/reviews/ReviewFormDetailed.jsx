@@ -75,6 +75,13 @@ export default function ReviewFormDetailed({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Enforce verified reviews only if no scope provided
+    if (!scopeId && !revieweeType === 'contractor') {
+      alert('Reviews can only be submitted for completed jobs or by verified contractors');
+      return;
+    }
+    
     if (!reviewerName || !reviewerEmail || !comment) {
       alert('Please fill in all required fields');
       return;
