@@ -10,9 +10,9 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Enforce service-role only access
-    const isServiceRole = req.headers.get('x-base44-service-role') === 'true';
-    if (!isServiceRole) {
+    // Validate explicit shared secret for service-to-service calls
+    const internalServiceKey = req.headers.get('x-internal-service-key');
+    if (internalServiceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
       return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
