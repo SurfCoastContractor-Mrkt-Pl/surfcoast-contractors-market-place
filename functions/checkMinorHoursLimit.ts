@@ -112,19 +112,21 @@ Deno.serve(async (req) => {
           minor_hours_lock_until: lockUntil.toISOString(),
         });
 
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: contractor.email,
-          subject: '⏸ Weekly Hours Limit Reached | SurfCoast Contractors',
-          body: `Hi ${contractor.name},\n\nYou have reached the 20-hour weekly work limit for minor contractors. Your account has been temporarily locked and will automatically unlock on ${lockUntil.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} (one week after your last completed job).\n\nThis policy exists to ensure the well-being of young workers on our platform.\n\nSurfCoast Contractor Market Place`,
-        });
-
+        const lockEmailPromises = [
+          base44.asServiceRole.integrations.Core.SendEmail({
+            to: contractor.email,
+            subject: '⏸ Weekly Hours Limit Reached | SurfCoast Contractors',
+            body: `Hi ${contractor.name},\n\nYou have reached the 20-hour weekly work limit for minor contractors. Your account has been temporarily locked and will automatically unlock on ${lockUntil.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} (one week after your last completed job).\n\nThis policy exists to ensure the well-being of young workers on our platform.\n\nSurfCoast Contractor Market Place`,
+          }),
+        ];
         if (contractor.parental_consent_docs?.parent_email) {
-          await base44.asServiceRole.integrations.Core.SendEmail({
+          lockEmailPromises.push(base44.asServiceRole.integrations.Core.SendEmail({
             to: contractor.parental_consent_docs.parent_email,
             subject: `⏸ ${contractor.name} Has Reached the Weekly Hours Limit | SurfCoast`,
             body: `Dear ${contractor.parental_consent_docs.parent_name || 'Parent/Guardian'},\n\n${contractor.name} has reached the 20-hour weekly work limit for minor contractors on SurfCoast. Their account has been temporarily locked.\n\nUnlock date: ${lockUntil.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n\nAs a reminder, you are responsible for supervising ${contractor.name}'s work activities, ensuring their safety, and making any important decisions on their behalf while they are working.\n\nSurfCoast Contractor Market Place`,
-          });
+          }));
         }
+        await Promise.all(lockEmailPromises);
 
         locked++;
       }
