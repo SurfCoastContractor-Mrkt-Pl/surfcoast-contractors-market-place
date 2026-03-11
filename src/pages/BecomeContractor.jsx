@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle } from 'lucide-react';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
+import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -44,6 +45,8 @@ export default function BecomeContractor() {
     face_photo_url: '',
     contractor_type: '',
     trade_specialty: '',
+    line_of_work: '',
+    line_of_work_other: '',
     years_experience: '',
     hourly_rate: '',
     location: '',
@@ -104,9 +107,17 @@ export default function BecomeContractor() {
       return;
     }
     if (age === null || age < 13) {
-      setDobError('You must be at least 13 years old to register as a contractor');
-      return;
-    }
+       setDobError('You must be at least 13 years old to register as a contractor');
+       return;
+     }
+     if (!formData.line_of_work) {
+       setDobError('Please select your line of work');
+       return;
+     }
+     if (formData.line_of_work === 'other' && !formData.line_of_work_other?.trim()) {
+       setDobError('Please specify your line of work');
+       return;
+     }
     if (isMinor) {
       const pd = formData.parental_consent_docs;
       if (!pd?.parent_name || !pd?.parent_email || !pd?.parent_phone) {
@@ -138,6 +149,7 @@ export default function BecomeContractor() {
       is_minor: isMinor,
       years_experience: formData.years_experience ? Number(formData.years_experience) : null,
       hourly_rate: formData.hourly_rate ? Number(formData.hourly_rate) : null,
+      line_of_work_other: formData.line_of_work === 'other' ? formData.line_of_work_other : null,
     };
     mutation.mutate(data);
   };
@@ -323,35 +335,13 @@ export default function BecomeContractor() {
             <h2 className="text-lg font-semibold text-slate-900 mb-6">Professional Details</h2>
             
             <div className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <Label>Contractor Type *</Label>
-                  <Select value={formData.contractor_type} onValueChange={(v) => handleChange('contractor_type', v)}>
-                    <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="trade_specific">Trade Specific</SelectItem>
-                      <SelectItem value="general">General Contractor</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {formData.contractor_type === 'trade_specific' && (
-                  <div>
-                    <Label>Trade Specialty</Label>
-                    <Select value={formData.trade_specialty} onValueChange={(v) => handleChange('trade_specialty', v)}>
-                      <SelectTrigger className="mt-1.5">
-                        <SelectValue placeholder="Select trade" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {trades.map(trade => (
-                          <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
+              <div>
+                <LineOfWorkSelector
+                  value={formData.line_of_work}
+                  customValue={formData.line_of_work_other}
+                  onChange={(v) => handleChange('line_of_work', v)}
+                  onCustomChange={(v) => handleChange('line_of_work_other', v)}
+                />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">

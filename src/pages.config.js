@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AccountRecovery from './pages/AccountRecovery';
 import AdminDashboard from './pages/AdminDashboard';
 import AgentDemo from './pages/AgentDemo';
 import BadgeShowcase from './pages/BadgeShowcase';
@@ -68,11 +69,11 @@ import ProjectManagement from './pages/ProjectManagement';
 import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import AccountRecovery from './pages/AccountRecovery';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AccountRecovery": AccountRecovery,
     "AdminDashboard": AdminDashboard,
     "AgentDemo": AgentDemo,
     "BadgeShowcase": BadgeShowcase,
@@ -94,7 +95,6 @@ export const PAGES = {
     "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
-    "AccountRecovery": AccountRecovery,
 }
 
 export const pagesConfig = {
