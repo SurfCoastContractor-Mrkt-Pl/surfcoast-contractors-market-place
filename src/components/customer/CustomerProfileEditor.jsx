@@ -247,6 +247,25 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         </div>
       </div>
 
+      {/* Profile Completion Progress */}
+      {(!verifiedProfile || isEditing) && (
+        <div className="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold text-slate-700">Profile Completion</span>
+            <span className={`text-sm font-bold ${completionPct === 100 ? 'text-green-600' : completionPct >= 60 ? 'text-amber-600' : 'text-red-500'}`}>{completionPct}%</span>
+          </div>
+          <div className="w-full bg-slate-200 rounded-full h-2 mb-2">
+            <div
+              className={`h-2 rounded-full transition-all duration-500 ${completionPct === 100 ? 'bg-green-500' : completionPct >= 60 ? 'bg-amber-500' : 'bg-red-400'}`}
+              style={{ width: `${completionPct}%` }}
+            />
+          </div>
+          {missingSteps.length > 0 && (
+            <p className="text-xs text-slate-500">Missing: {missingSteps.map(s => s.label).join(', ')}</p>
+          )}
+        </div>
+      )}
+
       {saveSuccess && (
         <div className="mb-4 flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
           <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
