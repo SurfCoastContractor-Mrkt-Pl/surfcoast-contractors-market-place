@@ -1,11 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-const EXCLUDED_EMAILS = [
-  'hexthegreat25@gmail.com',
-  'hanavarrete83@gmail.com',
-  'surfcoastplumbing.sd@gmail.com',
-  'danielleyg@aol.com'
-];
+// Excluded emails loaded from env secret (comma-separated) to avoid hardcoding PII in source
+const EXCLUDED_EMAILS = (Deno.env.get('ANALYTICS_EXCLUDED_EMAILS') || '')
+  .split(',')
+  .map(e => e.trim().toLowerCase())
+  .filter(Boolean);
 
 Deno.serve(async (req) => {
   try {
