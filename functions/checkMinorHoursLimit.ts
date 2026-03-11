@@ -8,19 +8,71 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
 
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    let contractorId;
+    try {
+      const body = await req.json();
+      contractorId = body.contractorId;
+    } catch {
+      contractorId = null;
     }
 
-    const { contractorId } = await req.json();
-
-    if (!contractorId) {
-      return Response.json({ error: 'contractorId required' }, { status: 400 });
+    // If no contractorId, this is an automation call to check ALL minors
+    const isAutomation = !contractorId;
+    
+    if (!isAutomation) {
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
     }
 
-    // Get contractor profile
+    // If automation call (no contractorId), check ALL minors
+    if (isAutomation) {
+      const allMinors = await base44.asServiceRole.entities.Contractor.filter({
+        is_minor: true
+      });
+
+      let updated = 0;
+      for (const c of allMinors) {
+        const now = new Date();
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const lastResetDate = c.minor_weekly_hours_reset_date ? new Date(c.minor_weekly_hours_reset_date) : null;
+
+        // Reset hours if week has passed
+        if (!lastResetDate || lastResetDate < startOfWeek) {
+          await base44.asServiceRole.entities.Contractor.update(c.id, {
+            minor_weekly_hours_used: 0,
+            minor_weekly_hours_reset_date: startOfWeek.toISOString()
+          });
+          updated++;
+        }
+
+        // Unlock if lock period has expired
+        if (c.minor_hours_locked && c.minor_hours_lock_until) {
+          if (new Date(c.minor_hours_lock_until) <= now) {
+            await base44.asServiceRole.entities.Contractor.update(c.id, {
+              minor_hours_locked: false,
+              minor_weekly_hours_used: 0,
+              minor_weekly_hours_reset_date: startOfWeek.toISOString()
+            });
+            updated++;
+          }
+        }
+      }
+
+      return Response.json({
+        success: true,
+        checked: allMinors.length,
+        updated,
+        message: `Processed ${allMinors.length} minor contractors, updated ${updated}`
+      });
+    }
+
+    // Single contractor check (API call with contractorId)
     const contractor = await base44.asServiceRole.entities.Contractor.filter({
       id: contractorId
     });

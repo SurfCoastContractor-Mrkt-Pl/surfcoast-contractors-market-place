@@ -18,35 +18,22 @@ Deno.serve(async (req) => {
 
     console.log('Cleaning up stale checkout sessions...');
 
-    // Get expired checkout sessions (more than 1 hour old, unpaid)
-    const oneHourAgo = Math.floor((Date.now() - 60 * 60 * 1000) / 1000);
-    const sessions = await stripe.checkout.sessions.list({
-      limit: 100,
-    });
+    // Get expired pending payments from database instead (avoids Stripe API calls)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const staleSessions = await base44.asServiceRole.entities.Payment.filter({
+      status: 'pending'
+    }, '-created_date', 50);
 
     let cleanedUp = 0;
 
-    for (const session of sessions.data) {
-      if (
-        session.payment_status === 'unpaid' &&
-        session.created < oneHourAgo &&
-        session.metadata?.payment_id
-      ) {
+    for (const payment of staleSessions || []) {
+      if (payment.created_date && new Date(payment.created_date) < new Date(oneHourAgo)) {
         try {
-          // Delete the pending payment from database
-          const paymentId = session.metadata.payment_id;
-          const payments = await base44.asServiceRole.entities.Payment.filter({
-            id: paymentId,
-            status: 'pending'
-          });
-
-          if (payments && payments.length > 0) {
-            await base44.asServiceRole.entities.Payment.delete(paymentId);
-            cleanedUp++;
-            console.log(`Cleaned up stale payment session: ${paymentId}`);
-          }
+          await base44.asServiceRole.entities.Payment.delete(payment.id);
+          cleanedUp++;
+          console.log(`Cleaned up stale payment session: ${payment.id}`);
         } catch (e) {
-          console.error(`Error cleaning up session ${session.id}:`, e.message);
+          console.error(`Error cleaning up payment ${payment.id}:`, e.message);
         }
       }
     }
