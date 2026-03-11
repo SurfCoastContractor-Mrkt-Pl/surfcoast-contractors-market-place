@@ -60,10 +60,16 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         phone: profile.phone || '',
         date_of_birth: profile.date_of_birth || '',
         location: profile.location || '',
+        property_type: profile.property_type || '',
+        property_address: profile.property_address || '',
         bio: profile.bio || '',
         photo_url: profile.photo_url || '',
         preferred_contractor_types: profile.preferred_contractor_types || [],
         preferred_trades: profile.preferred_trades || [],
+        notify_job_updates: profile.notify_job_updates ?? true,
+        notify_messages: profile.notify_messages ?? true,
+        notify_payment_receipts: profile.notify_payment_receipts ?? true,
+        notify_platform_news: profile.notify_platform_news ?? false,
       });
     }
   }, [profile]);
