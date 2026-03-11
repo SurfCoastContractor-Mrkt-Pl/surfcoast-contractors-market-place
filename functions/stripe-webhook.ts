@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (err) {
-      console.error('Webhook signature verification failed:', err.message);
+      console.error('Webhook signature verification failed');
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
@@ -105,8 +105,8 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true }, { status: 200 });
   } catch (error) {
-    console.error('Webhook processing error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Webhook processing error');
+    return Response.json({ error: 'Webhook processing failed' }, { status: 500 });
   }
 });
 
@@ -131,10 +131,9 @@ async function handleSubscriptionCreated(subscription, base44) {
       amount_paid: subscription.items.data[0]?.plan?.amount || 0,
     });
 
-    console.log(`Subscription created: ${subscription.id} for ${email}`);
-  } catch (error) {
-    console.error('Error handling subscription creation:', error);
-  }
+    } catch (error) {
+      console.error('Error handling subscription creation');
+    }
 }
 
 async function handleSubscriptionUpdated(subscription, base44) {
@@ -154,11 +153,10 @@ async function handleSubscriptionUpdated(subscription, base44) {
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       });
 
-      console.log(`Subscription updated: ${subscription.id} - status: ${newStatus}`);
-    }
-  } catch (error) {
-    console.error('Error handling subscription update:', error);
-  }
+      }
+      } catch (error) {
+      console.error('Error handling subscription update');
+      }
 }
 
 async function handleSubscriptionDeleted(subscription, base44) {
@@ -171,11 +169,10 @@ async function handleSubscriptionDeleted(subscription, base44) {
       await base44.asServiceRole.entities.Subscription.update(subscriptions[0].id, {
         status: 'cancelled',
       });
-      console.log(`Subscription deleted: ${subscription.id}`);
-    }
-  } catch (error) {
-    console.error('Error handling subscription deletion:', error);
-  }
+      }
+      } catch (error) {
+      console.error('Error handling subscription deletion');
+      }
 }
 
 async function handleInvoicePaid(invoice, base44) {
@@ -186,11 +183,10 @@ async function handleInvoicePaid(invoice, base44) {
       return;
     }
 
-    console.log(`Invoice paid: ${invoice.id} for ${email}`);
     // Additional invoice processing can be added here
-  } catch (error) {
-    console.error('Error handling invoice paid:', error);
-  }
+    } catch (error) {
+    console.error('Error handling invoice paid');
+    }
 }
 
 async function handleInvoicePaymentFailed(invoice, base44) {
@@ -212,10 +208,9 @@ async function handleInvoicePaymentFailed(invoice, base44) {
       });
     }
 
-    console.log(`Invoice payment failed: ${invoice.id} for ${email}`);
-  } catch (error) {
-    console.error('Error handling invoice payment failed:', error);
-  }
+    } catch (error) {
+      console.error('Error handling invoice payment failed');
+    }
 }
 
 async function handleDisputeCreated(charge, base44) {
@@ -223,18 +218,18 @@ async function handleDisputeCreated(charge, base44) {
     console.log(`Dispute created for charge: ${charge.id}`);
     // Implement dispute handling logic here
     // Could notify admins, update order status, etc.
-  } catch (error) {
-    console.error('Error handling dispute:', error);
-  }
+    } catch (error) {
+    console.error('Error handling dispute');
+    }
 }
 
 async function handleChargeFailed(charge, base44) {
   try {
     console.log(`Charge failed: ${charge.id} - Reason: ${charge.failure_reason}`);
     // Implement failed charge handling
-  } catch (error) {
-    console.error('Error handling failed charge:', error);
-  }
+    } catch (error) {
+    console.error('Error handling failed charge');
+    }
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent, base44) {
@@ -251,7 +246,6 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
         });
-        console.log(`Payment confirmed by payment_id: ${payments[0].id}`);
         return;
       }
     }
@@ -270,10 +264,9 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
         });
-        console.log(`Payment confirmed by email fallback: ${sorted[0].id}`);
-      }
-    }
-  } catch (error) {
-    console.error('Error handling payment intent success:', error);
-  }
+        }
+        }
+        } catch (error) {
+        console.error('Error handling payment intent success');
+        }
 }

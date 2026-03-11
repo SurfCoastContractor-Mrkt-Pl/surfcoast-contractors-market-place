@@ -42,22 +42,17 @@ Deno.serve(async (req) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Stripe health check failed:', {
-      message: error.message,
-      type: error.type,
-      code: error.code,
-      statusCode: error.statusCode,
-    });
+    console.error('Stripe health check failed');
 
     let statusCode = 500;
     let errorMessage = 'Stripe API error';
 
     if (error.type === 'StripeAuthenticationError') {
       statusCode = 401;
-      errorMessage = 'Stripe authentication failed - API key may be invalid or revoked';
+      errorMessage = 'Stripe authentication failed';
     } else if (error.type === 'StripeNetworkError') {
       statusCode = 503;
-      errorMessage = 'Stripe API unavailable - network error';
+      errorMessage = 'Stripe API unavailable';
     } else if (error.statusCode === 429) {
       statusCode = 429;
       errorMessage = 'Rate limited by Stripe';
@@ -66,7 +61,6 @@ Deno.serve(async (req) => {
     return Response.json({
       status: 'error',
       message: errorMessage,
-      details: error.message,
       timestamp: new Date().toISOString(),
     }, { status: statusCode });
   }

@@ -2,9 +2,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
 const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
-if (!secretKey || !secretKey.startsWith('sk_')) {
-  throw new Error('Invalid STRIPE_SECRET_KEY: not configured or expired');
-}
 const stripeClient = new Stripe(secretKey);
 
 Deno.serve(async (req) => {
@@ -40,10 +37,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Payment method is not a valid card' }, { status: 400 });
     }
 
-    console.log(`Payment method retrieved: ${paymentMethodId}, card brand: ${paymentMethod.card.brand}, last4: ${paymentMethod.card.last4}`);
-
     // Save payment method info to database
-    console.log(`Attempting to save payment method for email: ${userEmail}`);
     const savedMethod = await base44.entities.SavedPaymentMethod.create({
       user_email: userEmail,
       stripe_payment_method_id: paymentMethodId,
@@ -54,34 +48,27 @@ Deno.serve(async (req) => {
       card_exp_year: paymentMethod.card.exp_year,
     });
 
-    console.log(`Successfully saved payment method with ID: ${savedMethod.id}`);
     return Response.json({ success: true, data: savedMethod });
   } catch (error) {
-    console.error('Error saving payment method:', {
-      message: error.message,
-      type: error.type,
-      code: error.code,
-      statusCode: error.statusCode,
-    });
+    console.error('Error saving payment method');
 
     // Log to ErrorLog
     try {
       await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
         error_type: 'payment',
-        error_message: error.message,
+        error_message: 'Failed to save payment method',
         user_email: userEmail || 'unknown',
         user_type: 'unknown',
         action: 'Save payment method',
         severity: 'medium',
-        context: JSON.stringify({ paymentMethodId, errorCode: error.code }),
+        context: JSON.stringify({ errorCode: error.code }),
       });
     } catch (logError) {
-      console.error('Failed to log error:', logError.message);
+      console.error('Failed to log error');
     }
 
     return Response.json({ 
-      error: error.message,
-      details: error.code || error.type 
+      error: 'Failed to save payment method' 
     }, { status: error.statusCode || 500 });
   }
 });
