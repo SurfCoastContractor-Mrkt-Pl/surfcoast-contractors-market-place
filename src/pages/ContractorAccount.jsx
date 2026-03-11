@@ -92,6 +92,12 @@ export default function ContractorAccount() {
     enabled: !!contractor?.id,
   });
 
+  const { data: progressPayments } = useQuery({
+    queryKey: ['contractor-progress-payments', userEmail],
+    queryFn: () => base44.entities.ProgressPayment.filter({ contractor_email: userEmail }),
+    enabled: !!userEmail,
+  });
+
   const updateBioMutation = useMutation({
     mutationFn: async (bioData) => {
       return base44.entities.Contractor.update(contractor.id, bioData);
