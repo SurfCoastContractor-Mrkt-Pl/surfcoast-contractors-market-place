@@ -2,8 +2,12 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 // Rate limiter for verification code requests
 const requestCounts = new Map();
-const RATE_LIMIT_WINDOW = 3600000; // 1 hour
-const RATE_LIMIT_THRESHOLD = 3; // Max 3 requests per hour per user
+const failedAttempts = new Map();
+const SHORT_WINDOW = 300000; // 5 minutes
+const LONG_WINDOW = 3600000; // 1 hour
+const SHORT_THRESHOLD = 2; // Max 2 requests per 5 minutes
+const LONG_THRESHOLD = 5; // Max 5 requests per hour
+const FAILED_ATTEMPT_THRESHOLD = 3; // Lock after 3 failed verification attempts
 
 Deno.serve(async (req) => {
   try {
