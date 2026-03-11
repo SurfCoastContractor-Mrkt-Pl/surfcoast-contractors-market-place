@@ -4,7 +4,10 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Validate authorization: only admins or service-role contexts can create error logs
+    // Validate authorization: internal key check for service-to-service calls
+    const providedKey = req.headers.get('x-internal-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+
     let user = null;
     try {
       user = await base44.auth.me();
@@ -12,11 +15,11 @@ Deno.serve(async (req) => {
       // User not authenticated
     }
 
-    // Allow if: (1) authenticated as admin, or (2) called from service-role context (other backend function)
     const isAdmin = user?.role === 'admin';
-    const isServiceRoleCall = req.headers.get('x-service-role') === 'true';
+    const isValidInternalCall = providedKey && expectedKey && providedKey === expectedKey;
 
-    if (!isAdmin && !isServiceRoleCall) {
+    // Only allow: (1) authenticated admin users, or (2) valid internal service calls
+    if (!isAdmin && !isValidInternalCall) {
       console.warn(`Unauthorized error log creation attempt from ${user?.email || 'unauthenticated'}`);
       return Response.json(
         { error: 'Unauthorized: only admins or internal service calls allowed' },
@@ -32,7 +35,6 @@ Deno.serve(async (req) => {
       action,
       context,
       severity = 'medium',
-      isServiceRoleCall: _isServiceRoleCall,
     } = await req.json();
 
     if (!error_type || !error_message || !action) {
