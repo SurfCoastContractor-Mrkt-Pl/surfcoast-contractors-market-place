@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AlertTriangle, FileText, Mail, Loader2 } from 'lucide-react';
-import DisputeResolutionPanel from '@/components/disputes/DisputeResolutionPanel';
 
 const CATEGORY_COLORS = {
   payment_issue: 'bg-red-100 text-red-700',
@@ -32,7 +31,6 @@ const STATUS_COLORS = {
 };
 
 export default function DisputesTable({ disputes, authed }) {
-  const [selectedDispute, setSelectedDispute] = useState(null);
   const [resolvedDisputes, setResolvedDisputes] = useState({});
 
   if (!authed || !disputes) {
@@ -53,9 +51,8 @@ export default function DisputesTable({ disputes, authed }) {
     );
   }
 
-  const handleResolved = (disputeId) => {
-    setResolvedDisputes(prev => ({ ...prev, [disputeId]: true }));
-    setSelectedDispute(null);
+  const handleResolveClick = (dispute) => {
+    window.open(`/dispute-center?dispute_id=${dispute.id}`, '_blank');
   };
 
   return (
@@ -87,7 +84,7 @@ export default function DisputesTable({ disputes, authed }) {
               </div>
               {!resolvedDisputes[dispute.id] && dispute.status !== 'resolved' && (
                 <Button
-                  onClick={() => setSelectedDispute(dispute)}
+                  onClick={() => handleResolveClick(dispute)}
                   className="shrink-0 bg-amber-600 hover:bg-amber-700"
                 >
                   Resolve
@@ -197,13 +194,6 @@ export default function DisputesTable({ disputes, authed }) {
         </Card>
       ))}
 
-      {/* Resolution Modal */}
-      {selectedDispute && (
-        <DisputeResolutionPanel
-          dispute={selectedDispute}
-          onResolved={() => handleResolved(selectedDispute.id)}
-        />
-      )}
     </div>
   );
 }
