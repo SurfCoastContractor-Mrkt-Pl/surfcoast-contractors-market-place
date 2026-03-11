@@ -17,62 +17,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [showVerification, setShowVerification] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [verifying, setVerifying] = useState(false);
   const [cardholderName, setCardholderName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-
-  const sendVerificationCode = async () => {
-    setError('');
-    setVerifying(true);
-
-    try {
-      const response = await base44.functions.invoke('sendEmailVerification', {
-        userEmail,
-      });
-
-      if (response?.data?.success || response?.success) {
-        setShowVerification(true);
-      } else {
-        setError('Failed to send verification code');
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setVerifying(false);
-    }
-  };
-
-  const verifyCode = async () => {
-    if (!verificationCode || verificationCode.length < 6) {
-      setError('Please enter a valid 6-digit code');
-      return;
-    }
-
-    setError('');
-    setVerifying(true);
-
-    try {
-      const response = await base44.functions.invoke('verifyEmailCode', {
-        code: verificationCode,
-        userEmail,
-      });
-
-      if (response?.data?.success || response?.success) {
-        setEmailVerified(true);
-        setShowVerification(false);
-        setVerificationCode('');
-      } else {
-        setError('Invalid verification code');
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setVerifying(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
