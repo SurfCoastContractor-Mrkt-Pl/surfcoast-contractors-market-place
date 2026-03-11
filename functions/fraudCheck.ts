@@ -9,6 +9,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Enforce service-role only access (internal fraud checks only)
+    const isServiceRole = req.headers.get('x-base44-service-role') === 'true';
+    if (!isServiceRole) {
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     const { customer_email, contractor_id, amount } = await req.json();
 
     if (!customer_email || !contractor_id || !amount) {
