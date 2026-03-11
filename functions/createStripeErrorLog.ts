@@ -64,17 +64,17 @@ Deno.serve(async (req) => {
           await base44.integrations.Core.SendEmail({
             to: adminEmail,
             subject: `🚨 Critical Payment Error: ${action}`,
-            body: `Error Type: ${error_type}\nMessage: ${error_message}\nUser: ${user_email || 'unknown'}\n\nPlease check the ErrorLog in the admin dashboard.`,
+            body: `Error Type: ${error_type}\nMessage: ${error_message}\n\nPlease check the ErrorLog in the admin dashboard.`,
           });
         } catch (emailError) {
-          console.error('Failed to send admin alert:', emailError.message);
+          console.error('Failed to send admin alert');
         }
       }
     }
 
     return Response.json({ success: true, error_log_id: errorLog.id });
   } catch (error) {
-    console.error('Error creating error log:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error creating error log');
+    return Response.json({ error: 'Failed to create error log' }, { status: 500 });
   }
 });

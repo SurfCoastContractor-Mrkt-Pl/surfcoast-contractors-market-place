@@ -49,10 +49,9 @@ Deno.serve(async (req) => {
       },
     });
 
-    console.log(`Subscription checkout created: ${session.id} for ${email}`);
     return Response.json({ sessionId: session.id, url: session.url });
-  } catch (error) {
-    console.error('Subscription checkout error:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+    } catch (error) {
+    console.error('Subscription checkout error');
+    return Response.json({ error: 'Failed to create subscription checkout' }, { status: 500 });
+    }
 });

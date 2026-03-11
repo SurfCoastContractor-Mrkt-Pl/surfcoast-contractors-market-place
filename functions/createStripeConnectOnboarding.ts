@@ -64,11 +64,9 @@ Deno.serve(async (req) => {
       stripe_connected_account_id: account.id
     });
 
-    console.log(`Stripe Connect account created for contractor ${contractor.id}`);
-
     return Response.json({ onboardingUrl: accountLink.url });
   } catch (error) {
-    console.error('Error in createStripeConnectOnboarding:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error in createStripeConnectOnboarding');
+    return Response.json({ error: 'Failed to create onboarding link' }, { status: 500 });
   }
 });

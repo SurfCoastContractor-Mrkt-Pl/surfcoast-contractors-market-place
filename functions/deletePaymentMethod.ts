@@ -42,31 +42,25 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('Error deleting payment method:', {
-      message: error.message,
-      type: error.type,
-      code: error.code,
-      statusCode: error.statusCode,
-    });
+    console.error('Error deleting payment method');
     
     // Log to ErrorLog
     try {
       await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
         error_type: 'payment',
-        error_message: error.message,
+        error_message: error.message || 'Delete payment method failed',
         user_email: user?.email || 'unknown',
         user_type: 'unknown',
         action: 'Delete payment method',
         severity: 'high',
-        context: JSON.stringify({ paymentMethodId, stripeId: savedMethod?.stripe_payment_method_id }),
+        context: JSON.stringify({ paymentMethodId }),
       });
     } catch (logError) {
-      console.error('Failed to log error:', logError.message);
+      console.error('Failed to log error');
     }
 
     return Response.json({ 
-      error: error.message,
-      details: error.code || error.type 
+      error: 'Failed to delete payment method'
     }, { status: error.statusCode || 500 });
   }
 });
