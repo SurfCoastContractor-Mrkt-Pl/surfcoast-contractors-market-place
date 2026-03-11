@@ -2,27 +2,27 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
   try {
-    // Validate internal key for security (only callable from trusted contexts)
-    const internalKey = req.headers.get('x-internal-key');
-    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    
-    if (!expectedKey) {
-      console.error('INTERNAL_SERVICE_KEY not configured');
-      return Response.json(
-        { error: 'Service configuration error' },
-        { status: 500 }
-      );
+    const base44 = createClientFromRequest(req);
+
+    // Validate authorization: only admins or service-role contexts can create error logs
+    let user = null;
+    try {
+      user = await base44.auth.me();
+    } catch {
+      // User not authenticated
     }
 
-    if (!internalKey || internalKey !== expectedKey) {
-      console.warn('Unauthorized error log creation attempt with invalid key');
+    // Allow if: (1) authenticated as admin, or (2) called from service-role context (other backend function)
+    const isAdmin = user?.role === 'admin';
+    const isServiceRoleCall = req.headers.get('x-service-role') === 'true';
+
+    if (!isAdmin && !isServiceRoleCall) {
+      console.warn(`Unauthorized error log creation attempt from ${user?.email || 'unauthenticated'}`);
       return Response.json(
-        { error: 'Unauthorized: invalid internal key' },
+        { error: 'Unauthorized: only admins or internal service calls allowed' },
         { status: 403 }
       );
     }
-
-    const base44 = createClientFromRequest(req);
 
     const {
       error_type,
