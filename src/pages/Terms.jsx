@@ -65,7 +65,9 @@ export default function Terms() {
             <div className="space-y-4 text-slate-700">
               <p>SurfCoast Contractor Market Place charges the following platform fees:</p>
               <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong>Quote Request:</strong> $1.75 one-time fee per quote request sent to a contractor. Each contractor requires a separate fee.</li>
+                <li><strong>Job / Project Posting (Customers):</strong> Always free. Customers can post jobs and projects at no cost so contractors can browse and decide if they'd like to pursue the work.</li>
+                <li><strong>Quote Request (Customers → Contractors):</strong> $1.75 one-time fee per quote request. This fee is charged when a customer initiates a direct quote request to a specific contractor. Each contractor requires a separate fee.</li>
+                <li><strong>Contractor Contact Fee:</strong> $1.75 one-time fee when a contractor reaches out to a customer about a posted job.</li>
                 <li><strong>Unlimited Communication:</strong> $50.00/month subscription. Allows unlimited messaging across the platform. Auto-renews monthly. Cancel anytime — cancellation takes effect at the end of the current billing period.</li>
               </ul>
               <p>All fees are disclosed upfront before payment in compliance with California SB 478 (Honest Pricing Law). Contractor work costs are entirely separate and negotiated directly between you and the contractor — SurfCoast does not process or hold work payments.</p>
