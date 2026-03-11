@@ -32,13 +32,8 @@ Deno.serve(async (req) => {
       action,
       context,
       severity = 'medium',
-      isServiceRoleCall,
+      isServiceRoleCall: _isServiceRoleCall,
     } = await req.json();
-
-    // Update flag based on service-role call
-    if (isServiceRoleCall) {
-      // Mark as trusted service-role call for logging purposes
-    }
 
     if (!error_type || !error_message || !action) {
       return Response.json(
