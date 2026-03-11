@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
     });
 
     // Send email
-    const emailResult = await base44.integrations.Core.SendEmail({
+    const emailResult = await base44.asServiceRole.integrations.Core.SendEmail({
       to: userEmail,
       subject: 'Your Payment Verification Code',
       body: `Your verification code is: ${code}\n\nThis code will expire in 5 minutes.`
