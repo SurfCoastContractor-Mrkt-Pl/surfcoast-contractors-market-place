@@ -125,6 +125,10 @@ export default function CustomerPhaseApproval({ payment, onSuccess }) {
             />
           </div>
 
+          <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-700 mb-2">
+            <strong>Note:</strong> Approving releases payment to the contractor. If you have concerns about the work quality, add notes above or contact admin before approving.
+          </div>
+
           <div className="flex gap-2">
             <Button
               onClick={() => mutation.mutate()}
