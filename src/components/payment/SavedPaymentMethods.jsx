@@ -212,28 +212,46 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       )}
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Card Details</label>
-        <div className="p-3 border border-slate-300 rounded-md bg-white">
-          <CardElement
+        <label className="block text-sm font-medium text-slate-700 mb-2">Card Number</label>
+        <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
+          <CardNumberElement
             options={{
-              wallets: {
-                link: 'never',
-              },
               style: {
-                base: {
-                  fontSize: '16px',
-                  color: '#1e293b',
-                  '::placeholder': {
-                    color: '#cbd5e1',
-                  },
-                },
-                invalid: {
-                  color: '#dc2626',
-                },
+                base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                invalid: { color: '#dc2626' },
               },
+              showIcon: true,
             }}
-            disabled={loading || !emailVerified}
           />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Expiry Date</label>
+          <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
+            <CardExpiryElement
+              options={{
+                style: {
+                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                  invalid: { color: '#dc2626' },
+                },
+              }}
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">CVV</label>
+          <div className={`p-3 border rounded-md bg-white ${!emailVerified ? 'opacity-50 pointer-events-none' : 'border-slate-300'}`}>
+            <CardCvcElement
+              options={{
+                style: {
+                  base: { fontSize: '16px', color: '#1e293b', '::placeholder': { color: '#cbd5e1' } },
+                  invalid: { color: '#dc2626' },
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
 
