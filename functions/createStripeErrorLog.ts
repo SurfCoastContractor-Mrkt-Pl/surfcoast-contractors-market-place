@@ -1,0 +1,57 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+
+    const {
+      error_type,
+      error_message,
+      user_email,
+      user_type,
+      action,
+      context,
+      severity = 'medium',
+    } = await req.json();
+
+    if (!error_type || !error_message || !action) {
+      return Response.json(
+        { error: 'error_type, error_message, and action are required' },
+        { status: 400 }
+      );
+    }
+
+    // Create error log (service role to bypass auth)
+    const errorLog = await base44.asServiceRole.entities.ErrorLog.create({
+      error_type,
+      error_message,
+      user_email: user_email || 'unknown',
+      user_type: user_type || 'unknown',
+      action,
+      context: context || '',
+      severity,
+      resolved: false,
+    });
+
+    // If critical severity and admin email exists, send alert
+    if (severity === 'critical') {
+      const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL');
+      if (adminEmail) {
+        try {
+          await base44.integrations.Core.SendEmail({
+            to: adminEmail,
+            subject: `🚨 Critical Payment Error: ${action}`,
+            body: `Error Type: ${error_type}\nMessage: ${error_message}\nUser: ${user_email || 'unknown'}\n\nPlease check the ErrorLog in the admin dashboard.`,
+          });
+        } catch (emailError) {
+          console.error('Failed to send admin alert:', emailError.message);
+        }
+      }
+    }
+
+    return Response.json({ success: true, error_log_id: errorLog.id });
+  } catch (error) {
+    console.error('Error creating error log:', error.message);
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+});
