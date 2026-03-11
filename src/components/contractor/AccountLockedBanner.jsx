@@ -7,7 +7,23 @@ import { Lock, Unlock, Loader2, Camera, AlertTriangle, MessageSquare, CheckCircl
 
 export default function AccountLockedBanner({ contractor, lockedScope }) {
   const [uploading, setUploading] = useState(false);
+  const [showAppeal, setShowAppeal] = useState(false);
+  const [appealText, setAppealText] = useState('');
+  const [appealSent, setAppealSent] = useState(false);
+  const [sendingAppeal, setSendingAppeal] = useState(false);
   const queryClient = useQueryClient();
+
+  const handleSendAppeal = async () => {
+    if (!appealText.trim()) return;
+    setSendingAppeal(true);
+    await base44.integrations.Core.SendEmail({
+      to: 'admin@surfcoast.com.au',
+      subject: `Account Lock Appeal: ${contractor.name}`,
+      body: `Contractor: ${contractor.name}\nEmail: ${contractor.email}\nJob: ${lockedScope?.job_title || contractor.locked_scope_id}\n\nAppeal message:\n${appealText}`,
+    });
+    setAppealSent(true);
+    setSendingAppeal(false);
+  };
 
   const photosUploaded = (lockedScope?.after_photo_urls || []).length;
   const remaining = Math.max(0, 5 - photosUploaded);
