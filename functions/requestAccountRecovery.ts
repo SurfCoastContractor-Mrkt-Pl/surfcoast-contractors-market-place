@@ -23,10 +23,15 @@ Deno.serve(async (req) => {
 
     // Rate limit: max 3 recovery requests per email per hour
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const recentRequests = await base44.asServiceRole.entities.EmailVerification.filter({
-      email,
-      created_date: { '$gte': oneHourAgo }
-    });
+    let recentRequests = [];
+    try {
+      recentRequests = await base44.asServiceRole.entities.EmailVerification.filter({
+        email,
+        created_date: { '$gte': oneHourAgo }
+      });
+    } catch (e) {
+      console.error('Error checking rate limit:', e.message);
+    }
 
     if (recentRequests.length >= 3) {
       return Response.json({ 
@@ -39,19 +44,29 @@ Deno.serve(async (req) => {
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 minutes
 
     // Store recovery code
-    await base44.asServiceRole.entities.EmailVerification.create({
-      email,
-      code,
-      expires_at: expiresAt,
-      verified: false
-    });
+    try {
+      await base44.asServiceRole.entities.EmailVerification.create({
+        email,
+        code,
+        expires_at: expiresAt,
+        verified: false
+      });
+    } catch (dbError) {
+      console.error('Error creating recovery code:', dbError.message);
+      return Response.json({ error: 'Failed to create recovery code' }, { status: 500 });
+    }
 
     // Send recovery email
-    await base44.integrations.Core.SendEmail({
-      to: email,
-      subject: 'Account Recovery - Verification Code',
-      body: `We received a request to recover your account. Use this code to proceed:\n\n${code}\n\nThis code expires in 15 minutes.\n\nIf you didn't request this, ignore this email.`
-    });
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: email,
+        subject: 'Account Recovery - Verification Code',
+        body: `We received a request to recover your account. Use this code to proceed:\n\n${code}\n\nThis code expires in 15 minutes.\n\nIf you didn't request this, ignore this email.`
+      });
+    } catch (emailError) {
+      console.error('Error sending recovery email:', emailError.message);
+      return Response.json({ error: 'Failed to send recovery email' }, { status: 500 });
+    }
 
     return Response.json({ 
       message: 'Recovery instructions sent to your email',
