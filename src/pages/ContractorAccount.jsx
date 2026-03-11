@@ -24,6 +24,7 @@ import SavedPaymentMethods from '@/components/payment/SavedPaymentMethods';
 import ContractorBadges from '@/components/badges/ContractorBadges';
 import ContactAdminPanel from '@/components/support/ContactAdminPanel';
 import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
+import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 
 export default function ContractorAccount() {
