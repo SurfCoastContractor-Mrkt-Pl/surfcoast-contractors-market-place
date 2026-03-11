@@ -70,7 +70,30 @@ Deno.serve(async (req) => {
 
     // Check code
     if (verification.code !== code.toString()) {
-      return Response.json({ error: 'Invalid verification code' }, { status: 400 });
+      // Track failed attempt
+      if (!failedAttempts.has(userEmail)) {
+        failedAttempts.set(userEmail, { count: 0, lockedUntil: 0 });
+      }
+      const attempt = failedAttempts.get(userEmail);
+      attempt.count += 1;
+
+      // Lock account after threshold
+      if (attempt.count >= FAILED_ATTEMPT_THRESHOLD) {
+        attempt.lockedUntil = now + LOCKOUT_DURATION;
+        return Response.json({ 
+          error: 'Account locked due to multiple failed attempts. Please try again in 1 hour.' 
+        }, { status: 429 });
+      }
+
+      const remainingAttempts = FAILED_ATTEMPT_THRESHOLD - attempt.count;
+      return Response.json({ 
+        error: `Invalid verification code. ${remainingAttempts} attempt${remainingAttempts > 1 ? 's' : ''} remaining.`
+      }, { status: 400 });
+    }
+
+    // Clear failed attempts on success
+    if (failedAttempts.has(userEmail)) {
+      failedAttempts.delete(userEmail);
     }
 
     // Mark as verified
