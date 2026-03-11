@@ -28,16 +28,16 @@ export default function Terms() {
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Refund Policy</h2>
             <div className="space-y-4 text-slate-700">
               <p>
-                We deeply value every transaction and the trust you place in us. Here's why we maintain a no-refund policy:
+                We genuinely appreciate every person who trusts SurfCoast with their project. Our fees are kept intentionally small — just $1.75 per quote request — because we want this platform to be accessible and fair for everyone.
               </p>
               <p>
-                The $1.75 quote request fee grants you access to receive a written estimate from a specific contractor. Once payment is processed, the request is delivered immediately and the service cannot be "returned." For the $50/month unlimited communication subscription, cancellation stops future billing but the current billing period is non-refundable.
+                Because our services are delivered the moment payment is made — your quote request is instantly sent to the contractor, and your communication access is immediately activated — we're unable to offer refunds once a transaction is processed. The value is delivered right away, and there's no way to "unsend" a request or reclaim that window of access.
               </p>
               <p>
-                We understand this may feel strict, and we take that seriously. If you experience a genuine issue—technical problems, fraudulent activity, or service failure on our end—please reach out to our support team. We're committed to making things right.
+                For the $50/month unlimited communication subscription, cancelling at any time will stop future charges immediately — you keep full access through the end of your current billing period, and you won't be charged again.
               </p>
               <p>
-                Our no-refund approach also helps us keep fees low and invest in platform security, identity verification, and features that protect both contractors and customers.
+                We know that's not always what someone hopes to hear, and we're truly sorry if a situation didn't go as expected. If you believe there was a technical failure or error on our end, please don't hesitate to reach out — we will always do our best to make it right.
               </p>
             </div>
           </section>
