@@ -3,6 +3,30 @@ import Stripe from 'npm:stripe@17.13.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
+// Idempotency tracking
+const processedEvents = new Map();
+const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000;
+
+function isEventProcessed(eventId) {
+  if (processedEvents.has(eventId)) {
+    const timestamp = processedEvents.get(eventId);
+    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
+      return true;
+    }
+    processedEvents.delete(eventId);
+  }
+  return false;
+}
+
+function markEventProcessed(eventId) {
+  processedEvents.set(eventId, Date.now());
+  for (const [id, ts] of processedEvents.entries()) {
+    if (Date.now() - ts > IDEMPOTENCY_TTL) {
+      processedEvents.delete(id);
+    }
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const signature = req.headers.get('stripe-signature');
@@ -15,6 +39,13 @@ Deno.serve(async (req) => {
       signature,
       webhookSecret
     );
+
+    // Check idempotency
+    if (isEventProcessed(event.id)) {
+      console.log(`Skipping duplicate subscription webhook: ${event.id}`);
+      return Response.json({ received: true, duplicate: true }, { status: 200 });
+    }
+    markEventProcessed(event.id);
 
     const base44 = createClientFromRequest(req);
 
@@ -64,6 +95,20 @@ Deno.serve(async (req) => {
         await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
           status: 'cancelled',
         });
+      }
+    }
+
+    if (event.type === 'invoice.payment_failed') {
+      const invoice = event.data.object;
+      const subs = await base44.asServiceRole.entities.Subscription.filter({
+        stripe_subscription_id: invoice.subscription,
+      });
+
+      if (subs && subs.length > 0) {
+        await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
+          status: 'past_due',
+        });
+        console.log(`Subscription marked past_due: ${invoice.subscription}`);
       }
     }
 

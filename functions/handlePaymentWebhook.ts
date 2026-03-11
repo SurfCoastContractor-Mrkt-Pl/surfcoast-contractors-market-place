@@ -9,6 +9,31 @@ if (!webhookSecret) {
   console.error('STRIPE_WEBHOOK_SECRET is not configured');
 }
 
+// Idempotency tracking
+const processedEvents = new Map();
+const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000;
+
+function isEventProcessed(eventId) {
+  if (processedEvents.has(eventId)) {
+    const timestamp = processedEvents.get(eventId);
+    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
+      return true;
+    }
+    processedEvents.delete(eventId);
+  }
+  return false;
+}
+
+function markEventProcessed(eventId) {
+  processedEvents.set(eventId, Date.now());
+  // Cleanup expired entries
+  for (const [id, ts] of processedEvents.entries()) {
+    if (Date.now() - ts > IDEMPOTENCY_TTL) {
+      processedEvents.delete(id);
+    }
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const signature = req.headers.get('stripe-signature');
@@ -28,10 +53,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
     
+    // Check idempotency
+    if (isEventProcessed(event.id)) {
+      console.log(`Skipping duplicate webhook event: ${event.id}`);
+      return Response.json({ received: true, duplicate: true }, { status: 200 });
+    }
+    markEventProcessed(event.id);
+    
     // Create base44 client after auth (webhook may not have auth context)
     const base44 = createClientFromRequest(req);
 
-    // Handle checkout.session.completed
+    // Handle checkout.session.completed (fast path)
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const paymentId = session.metadata?.payment_id;

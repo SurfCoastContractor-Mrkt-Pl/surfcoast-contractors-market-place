@@ -4,6 +4,31 @@ import Stripe from 'npm:stripe@17.5.0';
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
+// In-memory idempotency tracking (24-hour TTL)
+const processedEvents = new Map();
+const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000;
+
+function isEventProcessed(eventId) {
+  if (processedEvents.has(eventId)) {
+    const timestamp = processedEvents.get(eventId);
+    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
+      return true;
+    }
+    processedEvents.delete(eventId);
+  }
+  return false;
+}
+
+function markEventProcessed(eventId) {
+  processedEvents.set(eventId, Date.now());
+  // Cleanup expired entries
+  for (const [id, ts] of processedEvents.entries()) {
+    if (Date.now() - ts > IDEMPOTENCY_TTL) {
+      processedEvents.delete(id);
+    }
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
@@ -26,11 +51,21 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
+    // Check idempotency: prevent duplicate processing
+    if (isEventProcessed(event.id)) {
+      console.log(`Skipping duplicate event: ${event.id} (${event.type})`);
+      return Response.json({ received: true, duplicate: true }, { status: 200 });
+    }
+    markEventProcessed(event.id);
+
     const base44 = createClientFromRequest(req);
     
-    console.log(`Processing Stripe event: ${event.type}`);
+    console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
 
-    switch (event.type) {
+    // Process events in order of priority
+    const eventType = event.type;
+    
+    switch (eventType) {
       case 'customer.subscription.created':
         await handleSubscriptionCreated(event.data.object, base44);
         break;
@@ -64,7 +99,8 @@ Deno.serve(async (req) => {
         break;
       
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        // Log unhandled events but still mark as processed
+        console.debug(`Unhandled Stripe event type: ${eventType}`);
     }
 
     return Response.json({ received: true }, { status: 200 });
