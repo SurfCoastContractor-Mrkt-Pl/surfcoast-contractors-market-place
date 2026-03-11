@@ -106,17 +106,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       });
 
       if (setupError) {
-        const errorMsg = setupError.message.includes('key') || setupError.message.includes('API') 
-          ? 'expired API keys provided'
-          : setupError.message;
-        setError(errorMsg);
+        setError(setupError.message);
         logError({
           error_type: 'payment',
           severity: 'high',
           user_email: userEmail,
           user_type: 'unknown',
           action: 'Confirm card setup (SetupIntent)',
-          error_message: errorMsg,
+          error_message: setupError.message,
         });
       } else if (setupIntent?.status === 'succeeded') {
         const paymentMethodId = setupIntent.payment_method;
@@ -132,26 +129,28 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         console.log('Save response:', saveResponse);
         
         if (saveResponse?.data?.error) {
-          const errorMsg = saveResponse.data.error.includes('key') || saveResponse.data.error.includes('API')
-            ? 'expired API keys provided'
-            : saveResponse.data.error;
-          setError(errorMsg);
+          setError(saveResponse.data.error);
+          logError({
+            error_type: 'payment',
+            severity: 'high',
+            user_email: userEmail,
+            user_type: 'unknown',
+            action: 'Save payment method',
+            error_message: saveResponse.data.error,
+          });
         } else {
           onSuccess();
         }
       }
     } catch (err) {
-      const errorMsg = err.message.includes('key') || err.message.includes('API')
-        ? 'expired API keys provided'
-        : err.message;
-      setError(errorMsg);
+      setError(err.message);
       logError({
         error_type: 'payment',
         severity: 'high',
         user_email: userEmail,
         user_type: 'unknown',
         action: 'Add payment method (card setup flow)',
-        error_message: errorMsg,
+        error_message: err.message,
       });
     } finally {
       setLoading(false);
