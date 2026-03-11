@@ -18,6 +18,7 @@ import MessagesTable from '../components/admin/MessagesTable';
 import UserAccountManager from '../components/admin/UserAccountManager';
 import ErrorLogTable from '../components/admin/ErrorLogTable';
 import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
+import DisputesTable from '../components/admin/DisputesTable';
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
@@ -70,10 +71,19 @@ export default function AdminDashboard() {
     refetchInterval: 30000,
   });
 
+  const { data: disputes = [] } = useQuery({
+    queryKey: ['disputes'],
+    queryFn: () => base44.entities.Dispute.list('-created_date', 200),
+    enabled: authed,
+    refetchInterval: 30000,
+  });
+
   const unresolvedErrors = errorLogs.filter(l => !l.resolved);
   const criticalErrors = unresolvedErrors.filter(l => l.severity === 'critical' || l.severity === 'high');
   const unresolvedAlerts = securityAlerts.filter(a => !a.resolved);
   const criticalAlerts = unresolvedAlerts.filter(a => a.severity === 'high' || a.severity === 'critical');
+  const openDisputes = disputes.filter(d => d.status === 'open' || d.status === 'in_review');
+  const criticalDisputes = openDisputes.filter(d => d.severity === 'critical' || d.severity === 'high');
 
   const markReadMutation = useMutation({
     mutationFn: (id) => base44.entities.Suggestion.update(id, { admin_read: true }),
@@ -383,6 +393,19 @@ export default function AdminDashboard() {
               {unresolvedAlerts.length > 0 && criticalAlerts.length === 0 && (
                 <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5">
                   {unresolvedAlerts.length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="disputes" className="relative">
+              Disputes
+              {criticalDisputes.length > 0 && (
+                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {criticalDisputes.length}
+                </span>
+              )}
+              {openDisputes.length > 0 && criticalDisputes.length === 0 && (
+                <span className="ml-1.5 bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {openDisputes.length}
                 </span>
               )}
             </TabsTrigger>
@@ -725,6 +748,20 @@ export default function AdminDashboard() {
                 Admin is emailed automatically for every alert.
               </p>
               <SecurityAlertsTable authed={authed} />
+            </Card>
+          </TabsContent>
+
+          {/* Disputes Tab */}
+          <TabsContent value="disputes">
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+                <h2 className="text-lg font-semibold text-slate-900">Disputes</h2>
+              </div>
+              <p className="text-sm text-slate-500 mb-4">
+                Project disputes filed by contractors or customers. Related payments are automatically paused. Review evidence and resolve.
+              </p>
+              <DisputesTable authed={authed} disputes={disputes} />
             </Card>
           </TabsContent>
 
