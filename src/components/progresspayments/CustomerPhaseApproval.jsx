@@ -44,6 +44,10 @@ export default function CustomerPhaseApproval({ payment, onSuccess }) {
     paid: {
       badge: <Badge className="bg-green-100 text-green-800">Paid</Badge>,
       color: 'text-green-600'
+    },
+    cancelled: {
+      badge: <Badge className="bg-red-100 text-red-800">Cancelled</Badge>,
+      color: 'text-red-600'
     }
   };
 
