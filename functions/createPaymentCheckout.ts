@@ -12,8 +12,15 @@ Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
   try {
+    const body = await req.json();
+    
+    // PCI Compliance: Never log or store raw card data
+    if (body.card || body.cardNumber || body.cvv) {
+      console.error('PCI Violation: Card data detected in request payload');
+      return Response.json({ error: 'Invalid request: card data not allowed' }, { status: 400 });
+    }
 
-    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName } = await req.json();
+    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName } = body;
 
     if (!payerEmail || !payerName || !payerType) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
@@ -62,13 +69,12 @@ Deno.serve(async (req) => {
 
     // FRAUD CHECK: Run fraud detection before creating payment
     if (payerType === 'customer') {
-      // Invoke fraudCheck via REST with internal key for proper authorization
       try {
         const fraudResp = await fetch(`${req.headers.get('origin')}/api/fraudCheck`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
+            'x-internal-service-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
           },
           body: JSON.stringify({
             customer_email: payerEmail,
@@ -90,17 +96,17 @@ Deno.serve(async (req) => {
           }
           throw new Error('Fraud check failed');
         }
-
-        const fraudCheckResp = await fraudResp.json();
       } catch (fraudError) {
-        console.error('Fraud check error:', fraudError.message);
+        console.error('Fraud check error:', {
+          message: fraudError.message,
+          email: payerEmail.substring(0, 3) + '***', // Anonymize
+        });
         return Response.json(
           { error: 'Payment verification failed. Please try again.' },
           { status: 503 }
         );
       }
-
-      }
+    }
 
     // Create a Payment record first (service role to avoid RLS issues with unauthed users)
     paymentRecord = await base44.asServiceRole.entities.Payment.create({
@@ -160,16 +166,21 @@ Deno.serve(async (req) => {
         }
       }
 
-      // Log to ErrorLog
+      // Log to ErrorLog with detailed context
       try {
-        await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+        await base44.asServiceRole.functions.invoke('logError', {
           error_type: 'payment',
           error_message: stripeError.message,
-          user_email: payerEmail,
+          user_email: payerEmail.substring(0, 3) + '***', // Anonymize
           user_type: payerType,
           action: 'Create checkout session',
           severity: stripeError.statusCode === 429 ? 'medium' : 'high',
-          context: JSON.stringify({ statusCode: stripeError.statusCode, code: stripeError.code }),
+          context: JSON.stringify({
+            statusCode: stripeError.statusCode,
+            code: stripeError.code,
+            amount: 1.75,
+            priceId: PAYMENT_PRICE_ID.substring(0, 5) + '***' // Anonymize
+          }),
         });
       } catch (logError) {
         console.error('Failed to log error:', logError.message);
@@ -208,16 +219,20 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Log to ErrorLog
+    // Log to ErrorLog with detailed context
     try {
-      await base44.asServiceRole.functions.invoke('createStripeErrorLog', {
+      await base44.asServiceRole.functions.invoke('logError', {
         error_type: 'payment',
         error_message: error.message,
-        user_email: payerEmail || 'unknown',
+        user_email: payerEmail ? payerEmail.substring(0, 3) + '***' : 'unknown',
         user_type: payerType || 'unknown',
         action: 'Create checkout session',
         severity: 'high',
-        context: JSON.stringify({ errorType: error.type, code: error.code }),
+        context: JSON.stringify({
+          errorType: error.type,
+          code: error.code,
+          amount: 1.75,
+        }),
       });
     } catch (logError) {
       console.error('Failed to log error:', logError.message);
