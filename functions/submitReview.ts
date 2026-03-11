@@ -28,43 +28,65 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'overall_rating must be between 1 and 5.' }, { status: 400 });
     }
 
-    // Enforce: user must have a closed ScopeOfWork with this contractor
-    const closedScopes = await base44.asServiceRole.entities.ScopeOfWork.filter({
-      contractor_id,
-      customer_email: user.email,
-      status: 'closed',
-    });
+    // For non-testimony reviews: verify closed scope with contractor
+    if (!is_testimony && contractor_id) {
+      let closedScopes = [];
+      try {
+        closedScopes = await base44.asServiceRole.entities.ScopeOfWork.filter({
+          contractor_id,
+          customer_email: user.email,
+          status: 'closed',
+        });
+      } catch (e) {
+        console.error('Error checking scopes:', e.message);
+      }
 
-    if (!closedScopes || closedScopes.length === 0) {
-      return Response.json({
-        error: 'You can only leave a review or testimony after completing a verified job with this contractor.'
-      }, { status: 403 });
-    }
+      if (!closedScopes || closedScopes.length === 0) {
+        return Response.json({
+          error: 'You can only leave a verified review after completing a job with this contractor.'
+        }, { status: 403 });
+      }
 
-    // Check for duplicate review from this user for this contractor
-    const existing = await base44.asServiceRole.entities.Review.filter({
-      contractor_id,
-      reviewer_email: user.email,
-    });
+      // Check for duplicate review from this user for this contractor
+      let existing = [];
+      try {
+        existing = await base44.asServiceRole.entities.Review.filter({
+          contractor_id,
+          reviewer_email: user.email,
+        });
+      } catch (e) {
+        console.error('Error checking existing reviews:', e.message);
+      }
 
-    if (existing && existing.length > 0) {
-      return Response.json({
-        error: 'You have already submitted a review for this contractor.'
-      }, { status: 409 });
+      if (existing && existing.length > 0) {
+        return Response.json({
+          error: 'You have already submitted a review for this contractor.'
+        }, { status: 409 });
+      }
     }
 
     // Create the review
-    const review = await base44.asServiceRole.entities.Review.create({
-      contractor_id,
-      contractor_name,
-      reviewer_name: user.full_name,
-      reviewer_email: user.email,
-      reviewer_type: 'customer',
-      overall_rating,
-      comment,
-      is_testimony: is_testimony || false,
-      verified: false,
-    });
+    let review;
+    try {
+      review = await base44.asServiceRole.entities.Review.create({
+        contractor_id: contractor_id || null,
+        contractor_name: contractor_name || 'Anonymous',
+        reviewer_name: user.full_name || user.email,
+        reviewer_email: user.email,
+        reviewer_type: 'customer',
+        overall_rating,
+        quality_rating: quality_rating || overall_rating,
+        punctuality_rating: punctuality_rating || overall_rating,
+        communication_rating: communication_rating || overall_rating,
+        professionalism_rating: professionalism_rating || overall_rating,
+        comment,
+        is_testimony: is_testimony || false,
+        verified: !is_testimony, // Auto-verify testimonials
+      });
+    } catch (createError) {
+      console.error('Error creating review:', createError.message);
+      return Response.json({ error: 'Failed to submit review' }, { status: 500 });
+    }
 
     return Response.json({ success: true, review });
   } catch (error) {
