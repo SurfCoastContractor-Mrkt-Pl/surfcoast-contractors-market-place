@@ -52,6 +52,25 @@ Deno.serve(async (req) => {
       }, { status: 400 });
     }
 
+    // FRAUD CHECK: Verify payment patterns before releasing funds
+    const fraudCheckResp = await base44.asServiceRole.functions.invoke('fraudCheck', {
+      customer_email: payment.customer_email,
+      contractor_id: contractor.id,
+      amount: payment.amount
+    });
+
+    if (fraudCheckResp.data?.fraud_detected) {
+      console.warn(`Fraud detected for payment ${paymentId}: ${fraudCheckResp.data.reason}`);
+      return Response.json(
+        {
+          error: fraudCheckResp.data.message,
+          reason: fraudCheckResp.data.reason,
+          fraud_detected: true
+        },
+        { status: 429 }
+      );
+    }
+
     // Create Stripe transfer to contractor
     let transferId = null;
     try {
