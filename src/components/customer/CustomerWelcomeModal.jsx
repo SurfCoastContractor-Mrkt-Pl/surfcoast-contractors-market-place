@@ -61,7 +61,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                           <Info className="w-4 h-4 text-slate-400 mt-0.5 cursor-help flex-shrink-0" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs max-w-xs">
-                          $1.50 for 10-minute communication window, or $50/month for unlimited messaging
+                          Both you and contractors pay $1.50 for 10-minute sessions, or $50/month for unlimited messaging
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
