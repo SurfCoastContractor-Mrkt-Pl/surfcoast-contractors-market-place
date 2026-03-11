@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload, X } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload, X, Bell } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
 
 const TRADES = [
