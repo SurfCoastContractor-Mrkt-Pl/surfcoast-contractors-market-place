@@ -4,15 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-react';
 
-const GREETING_MESSAGE = `👋 Welcome to SurfCoast Contractors Market Place!
+const DEFAULT_GREETING = `👋 Welcome to SurfCoast Contractors Market Place!
 
 I'm your AI Assistant. I can help you understand how the app works, our pricing, and how to get started — whether you're a customer or a contractor.
 
 Ask me anything about the platform! 😊`;
 
+const getGreetingMessage = () => {
+  // Load from environment variable if available, otherwise use default
+  return window.__AGENT_GREETING_MESSAGE__ || DEFAULT_GREETING;
+};
+
 export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [messages, setMessages] = useState([
-    { role: 'agent', content: GREETING_MESSAGE }
+    { role: 'agent', content: getGreetingMessage() }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
