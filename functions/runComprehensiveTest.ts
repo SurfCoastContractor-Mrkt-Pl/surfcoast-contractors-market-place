@@ -241,7 +241,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Comprehensive test error:', error);
     return Response.json(
-      { error: 'Test suite failed', details: error.message },
+      { error: 'Test suite failed' },
       { status: 500 }
     );
   }
