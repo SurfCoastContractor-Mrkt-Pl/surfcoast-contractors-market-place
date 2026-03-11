@@ -29,6 +29,7 @@ import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 import QuickJobPostForm from '@/components/customer/QuickJobPostForm';
 import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
+import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
 
 export default function CustomerAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -194,10 +195,11 @@ export default function CustomerAccount() {
 
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
-              <TabsList className="w-full grid grid-cols-7">
+              <TabsList className="w-full grid grid-cols-8">
                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
+                <TabsTrigger value="quotes" className="text-xs sm:text-sm">Quotes</TabsTrigger>
                 <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
-                  <Plus className="w-3 h-3 sm:w-4 sm:h-4" />Post Job
+                  <Plus className="w-3 h-3 sm:w-4 sm:h-4" />Job
                 </TabsTrigger>
                 <TabsTrigger value="history" className="text-xs sm:text-sm">History</TabsTrigger>
                 <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
@@ -219,6 +221,10 @@ export default function CustomerAccount() {
                   userEmail={userEmail}
                   onAskAgent={() => setAgentOpen(true)}
                 />
+              </TabsContent>
+
+              <TabsContent value="quotes">
+                <QuoteComparisonDashboard customerEmail={userEmail} />
               </TabsContent>
 
               <TabsContent value="history">
