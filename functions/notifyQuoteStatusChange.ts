@@ -21,10 +21,20 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Quote not found' }, { status: 404 });
     }
 
-    // Verify user is the contractor or customer in the quote
-    const isAuthorized = user.email === quote.contractor_email || user.email === quote.customer_email || user.role === 'admin';
+    // Verify authorization based on event type
+    let isAuthorized = false;
+    if (user.role === 'admin') {
+      isAuthorized = true;
+    } else if (event_type === 'quote_provided') {
+      // Only the contractor who provided the quote can notify about it
+      isAuthorized = user.email === quote.contractor_email;
+    } else if (event_type === 'quote_accepted') {
+      // Only the customer can accept a quote
+      isAuthorized = user.email === quote.customer_email;
+    }
+
     if (!isAuthorized) {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+      return Response.json({ error: 'Forbidden: insufficient permissions for this action' }, { status: 403 });
     }
 
     // Send email based on event type
