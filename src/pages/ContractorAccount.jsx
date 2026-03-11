@@ -37,34 +37,43 @@ import ContractorJobDashboard from '@/components/contractor/ContractorJobDashboa
 import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailabilityManager';
 
 export default function ContractorAccount() {
-  const [closeoutScope, setCloseoutScope] = useState(null);
-  const queryClient = useQueryClient();
-  const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState(null);
-  const [editingBio, setEditingBio] = useState(false);
-  const [bioText, setBioText] = useState('');
-  const [downloadedInvoices, setDownloadedInvoices] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('downloadedInvoices') || '[]'); } catch { return []; }
-  });
-  const [downloadingId, setDownloadingId] = useState(null);
+   const urlParams = new URLSearchParams(window.location.search);
+   const adminPreviewId = urlParams.get('id');
+   const isAdminPreview = urlParams.get('admin') === 'true';
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await base44.auth.me();
-        if (!user) {
-          base44.auth.redirectToLogin();
-          return;
-        }
-        setUserEmail(user.email);
-      } catch (error) {
-        base44.auth.redirectToLogin();
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkAuth();
-  }, []);
+   const [closeoutScope, setCloseoutScope] = useState(null);
+   const queryClient = useQueryClient();
+   const [loading, setLoading] = useState(true);
+   const [userEmail, setUserEmail] = useState(null);
+   const [editingBio, setEditingBio] = useState(false);
+   const [bioText, setBioText] = useState('');
+   const [downloadedInvoices, setDownloadedInvoices] = useState(() => {
+     try { return JSON.parse(localStorage.getItem('downloadedInvoices') || '[]'); } catch { return []; }
+   });
+   const [downloadingId, setDownloadingId] = useState(null);
+
+   useEffect(() => {
+     const checkAuth = async () => {
+       try {
+         if (isAdminPreview && adminPreviewId) {
+           setUserEmail(adminPreviewId);
+           setLoading(false);
+           return;
+         }
+         const user = await base44.auth.me();
+         if (!user) {
+           base44.auth.redirectToLogin();
+           return;
+         }
+         setUserEmail(user.email);
+       } catch (error) {
+         base44.auth.redirectToLogin();
+       } finally {
+         setLoading(false);
+       }
+     };
+     checkAuth();
+   }, []);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['my-contractor', userEmail],
@@ -190,14 +199,30 @@ export default function ContractorAccount() {
       <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+         {/* Admin Preview Banner */}
+         {isAdminPreview && (
+           <Card className="p-5 bg-blue-50 border-blue-200">
+             <div className="flex items-start gap-3">
+               <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+               <div>
+                 <h4 className="font-semibold text-blue-800 mb-1">Admin Preview Mode</h4>
+                 <p className="text-xs text-blue-700">
+                   You are viewing this contractor's account setup as an admin. Edit, delete, and logout features are disabled in preview mode.
+                 </p>
+               </div>
+             </div>
+           </Card>
+         )}
+
          {/* Auth Button */}
          <div className="flex gap-3">
            <Button
              variant="outline"
              onClick={() => base44.auth.logout()}
+             disabled={isAdminPreview}
            >
              <LogOut className="w-4 h-4 mr-2" />
-             Logout
+             {isAdminPreview ? 'Logout (Disabled in Preview)' : 'Logout'}
            </Button>
          </div>
 
@@ -279,16 +304,17 @@ export default function ContractorAccount() {
                     <div className="flex items-center justify-between mb-4">
                       <h2 className="text-lg font-semibold text-slate-900">About Me</h2>
                       {!editingBio && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleBioEdit}
-                          className="gap-1.5"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                          Edit
-                        </Button>
-                      )}
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={handleBioEdit}
+                           disabled={isAdminPreview}
+                           className="gap-1.5"
+                         >
+                           <Edit2 className="w-4 h-4" />
+                           Edit
+                         </Button>
+                       )}
                     </div>
 
                     {editingBio ? (
