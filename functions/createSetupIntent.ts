@@ -34,7 +34,16 @@ Deno.serve(async (req) => {
       setup_intent_id: setupIntent.id,
     });
   } catch (error) {
-    console.error('Error creating setup intent:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error creating setup intent:', {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      statusCode: error.statusCode,
+      raw: error,
+    });
+    return Response.json({ 
+      error: error.message,
+      details: error.code || error.type 
+    }, { status: error.statusCode || 500 });
   }
 });
