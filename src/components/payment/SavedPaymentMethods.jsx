@@ -83,6 +83,11 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       return;
     }
 
+    if (!phoneNumber.trim() || phoneNumber.replace(/\D/g, '').length < 10) {
+      setError('Please enter a valid phone number');
+      return;
+    }
+
     setError('');
     setLoading(true);
 
