@@ -15,6 +15,22 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phone, code, and email required' }, { status: 400 });
     }
 
+    // Check if email/phone is locked due to failed attempts
+    const now = Date.now();
+    const lockKey = `${userEmail}:${phone.replace(/\D/g, '')}`;
+    if (failedAttempts.has(lockKey)) {
+      const { count, lockedUntil } = failedAttempts.get(lockKey);
+      if (now < lockedUntil) {
+        const remainingMinutes = Math.ceil((lockedUntil - now) / 60000);
+        return Response.json({ 
+          error: `Account locked due to multiple failed attempts. Try again in ${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''}.` 
+        }, { status: 429 });
+      } else {
+        // Reset failed attempts after lockout expires
+        failedAttempts.delete(lockKey);
+      }
+    }
+
     // If authenticated, ensure userEmail matches the session
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (isAuthenticated) {
