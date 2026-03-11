@@ -10,6 +10,7 @@ import { AlertCircle, CheckCircle2, Loader2, ChevronDown, ChevronUp, FileText, D
 export default function CustomerPhaseApproval({ payment, onSuccess }) {
   const [approvalNotes, setApprovalNotes] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [invoiceUrl, setInvoiceUrl] = useState(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -18,7 +19,9 @@ export default function CustomerPhaseApproval({ payment, onSuccess }) {
         approvalNotes: approvalNotes
       });
     },
-    onSuccess: () => {
+    onSuccess: (resp) => {
+      const data = resp?.data || resp;
+      if (data?.invoiceUrl) setInvoiceUrl(data.invoiceUrl);
       setApprovalNotes('');
       setExpanded(false);
       onSuccess?.();
