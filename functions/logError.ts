@@ -9,15 +9,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Require authentication - prevent anonymous error log flooding
+    // Allow unauthenticated error logging for public app, but validate internal key
+    const internalKey = req.headers.get('x-internal-service-key');
+    const hasValidKey = internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    
+    let user = null;
     const isAuthenticated = await base44.auth.isAuthenticated();
-    if (!isAuthenticated) {
-      return Response.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    if (isAuthenticated) {
+      try {
+        user = await base44.auth.me();
+      } catch {
+        // User not found, continue with anonymous
+      }
     }
 
     // Rate limiting per user
