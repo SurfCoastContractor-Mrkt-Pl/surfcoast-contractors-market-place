@@ -3,11 +3,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Loader2 } from 'lucide-react';
+import { Send, Loader2, Paperclip, File } from 'lucide-react';
 import { format } from 'date-fns';
+import FileUploadZone from '@/components/files/FileUploadZone';
 
 export default function ProjectChat({ scopeId, userEmail, userName, userType }) {
   const [input, setInput] = useState('');
+  const [attachments, setAttachments] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const queryClient = useQueryClient();
   const messagesEndRef = useRef(null);
 
@@ -25,6 +28,7 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project-messages', scopeId] });
       setInput('');
+      setAttachments([]);
     }
   });
 
@@ -33,14 +37,15 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
   }, [messages]);
 
   const handleSend = () => {
-    if (!input.trim() || !scopeId || !userEmail) return;
+    if ((!input.trim() && attachments.length === 0) || !scopeId || !userEmail) return;
     
     sendMutation.mutate({
       scope_id: scopeId,
       sender_email: userEmail,
       sender_name: userName,
       sender_type: userType,
-      message: input
+      message: input,
+      file_urls: attachments.length > 0 ? attachments : undefined
     });
   };
 
@@ -64,7 +69,25 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
                 {msg.sender_type !== userType && (
                   <p className="text-xs font-semibold mb-1 opacity-75">{msg.sender_name}</p>
                 )}
-                <p className="break-words">{msg.message}</p>
+                {msg.message && <p className="break-words">{msg.message}</p>}
+                {msg.file_urls?.length > 0 && (
+                  <div className="mt-2 space-y-1">
+                    {msg.file_urls.map((file, idx) => (
+                      <a
+                        key={idx}
+                        href={file.url || file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-2 text-xs underline truncate ${
+                          msg.sender_type === userType ? 'text-amber-100' : 'text-blue-600'
+                        }`}
+                      >
+                        <File className="w-3 h-3 shrink-0" />
+                        <span className="truncate">{typeof file === 'string' ? file.split('/').pop() : file.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <p className={`text-xs mt-1 ${msg.sender_type === userType ? 'text-amber-100' : 'text-slate-500'}`}>
                   {format(new Date(msg.created_date), 'MMM d, h:mm a')}
                 </p>
@@ -80,27 +103,42 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
       </div>
 
       {/* Input */}
-      <div className="border-t border-slate-200 p-4 bg-white flex gap-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Type a message..."
-          disabled={sendMutation.isPending}
-          className="flex-1 text-sm"
+      <div className="border-t border-slate-200 p-4 bg-white space-y-3">
+        {attachments.length > 0 && (
+          <div className="text-xs text-slate-600 font-medium">
+            {attachments.length} file{attachments.length > 1 ? 's' : ''} ready to send
+          </div>
+        )}
+        <FileUploadZone
+          files={attachments}
+          onChange={setAttachments}
+          label="Add files"
+          hint="Blueprints, photos, documents"
+          color="blue"
+          disabled={uploading || sendMutation.isPending}
         />
-        <Button
-          onClick={handleSend}
-          disabled={sendMutation.isPending || !input.trim()}
-          className="bg-amber-500 hover:bg-amber-600 text-white px-3"
-          size="sm"
-        >
-          {sendMutation.isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Send className="w-4 h-4" />
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+            placeholder="Type a message..."
+            disabled={sendMutation.isPending}
+            className="flex-1 text-sm"
+          />
+          <Button
+            onClick={handleSend}
+            disabled={sendMutation.isPending || (!input.trim() && attachments.length === 0)}
+            className="bg-amber-500 hover:bg-amber-600 text-white px-3"
+            size="sm"
+          >
+            {sendMutation.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );
