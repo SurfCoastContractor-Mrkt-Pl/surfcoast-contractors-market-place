@@ -421,7 +421,6 @@ export default function CustomerAccount() {
                             </div>
                             )}
                             </div>
-                            </div>
                             </React.Fragment>
                             );})}
 
