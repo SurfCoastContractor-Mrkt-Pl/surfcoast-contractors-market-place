@@ -327,7 +327,7 @@ export default function ContractorAccount() {
                         const hasProgressPayments = scopePhases.length > 0;
                         return (
                         <React.Fragment key={s.id}>
-                        <div key={s.id} className="border border-slate-200 rounded-xl overflow-hidden">
+                        <div className="border border-slate-200 rounded-xl overflow-hidden">
                           {hasProgressPayments && s.status === 'approved' && (
                             <div className="p-3 border-b border-slate-100 bg-white">
                               <ProjectProgressBar payments={scopePhases} />
