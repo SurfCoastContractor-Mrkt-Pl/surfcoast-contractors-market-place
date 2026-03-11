@@ -78,13 +78,8 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
     e.preventDefault();
     if (!stripe || !elements) return;
 
-    if (!emailVerified) {
-      setError('Please verify your email first');
-      return;
-    }
-
-    if (!phoneNumber.trim() || phoneNumber.replace(/\D/g, '').length < 10) {
-      setError('Please enter a valid phone number');
+    if (!cardholderName.trim()) {
+      setError('Please enter cardholder name');
       return;
     }
 
@@ -106,7 +101,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       const { setupIntent, error: setupError } = await stripe.confirmCardSetup(clientSecret, {
         payment_method: {
           card: cardNumberElement,
-          billing_details: { name: cardholderName || 'Card', phone: phoneNumber },
+          billing_details: { name: cardholderName },
         },
       });
 
@@ -215,20 +210,7 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         </div>
       </div>
 
-      {/* 4. Phone Number */}
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-        <Input
-          type="tel"
-          placeholder="(555) 000-0000"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          disabled={loading}
-        />
-        <p className="text-xs text-slate-500 mt-1">Used for identity verification with this card</p>
-      </div>
-
-      {/* 5. Card Nickname */}
+      {/* 4. Card Nickname */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-2">Card Nickname <span className="text-slate-400 font-normal">(optional)</span></label>
         <Input
@@ -238,48 +220,6 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           disabled={loading}
         />
       </div>
-
-      {/* 6. Email Verification */}
-      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="text-sm text-blue-900 mb-3">
-          <strong>Email Verification Required:</strong> We'll send a one-time code to <strong>{userEmail}</strong>
-        </p>
-        {!emailVerified ? (
-          <Button
-            type="button"
-            className="w-full"
-            onClick={sendVerificationCode}
-            disabled={loading || verifying}
-          >
-            {verifying ? 'Sending...' : 'Send Verification Code'}
-          </Button>
-        ) : (
-          <p className="text-green-600 text-sm font-medium">✓ Email verified</p>
-        )}
-      </div>
-
-      {showVerification && !emailVerified && (
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <p className="text-sm text-amber-900 mb-3">Check your email ({userEmail}) for the 6-digit code.</p>
-          <div className="flex gap-2">
-            <Input
-              placeholder="Enter 6-digit code"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value.slice(0, 6))}
-              disabled={loading || verifying}
-              maxLength="6"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={verifyCode}
-              disabled={loading || verifying || verificationCode.length < 6}
-            >
-              {verifying ? 'Verifying...' : 'Verify'}
-            </Button>
-          </div>
-        </div>
-      )}
 
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
@@ -305,15 +245,14 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           type="button"
           variant="outline"
           onClick={onCancel}
-          disabled={loading || verifying}
+          disabled={loading}
         >
           Cancel
         </Button>
         <Button
           type="submit"
           className="bg-amber-500 hover:bg-amber-600"
-          disabled={loading || !stripe || !elements || !emailVerified || !cardholderName.trim() || phoneNumber.replace(/\D/g, '').length < 10}
-          title={!emailVerified ? 'Please verify your email before saving' : ''}
+          disabled={loading || !stripe || !elements || !cardholderName.trim()}
         >
           {loading ? (
             <>
