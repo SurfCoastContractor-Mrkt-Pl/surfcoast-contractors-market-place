@@ -596,7 +596,7 @@ export default function BecomeContractor() {
                     className="mt-0.5 w-4 h-4 accent-red-600"
                   />
                   <label htmlFor="solo_confirm" className="text-sm text-red-800 cursor-pointer leading-relaxed">
-                    I confirm that I am a single individual and not a company, crew, partnership, or multi-person entity. I understand that violation of this policy will result in a permanent ban from ContractorHub.
+                    I confirm that I am a single individual and not a company, crew, partnership, or multi-person entity. I understand that violation of this policy will result in a permanent ban from SurfCoast Contractor Market Place.
                   </label>
                 </div>
               </div>

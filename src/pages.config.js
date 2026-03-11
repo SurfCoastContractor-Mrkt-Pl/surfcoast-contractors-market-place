@@ -56,6 +56,7 @@ import ContractorAccount from './pages/ContractorAccount';
 import ContractorProfile from './pages/ContractorProfile';
 import Contractors from './pages/Contractors';
 import CustomerAccount from './pages/CustomerAccount';
+import DisputeCenter from './pages/DisputeCenter';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
@@ -66,7 +67,6 @@ import ProjectManagement from './pages/ProjectManagement';
 import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import DisputeCenter from './pages/DisputeCenter';
 import __Layout from './Layout.jsx';
 
 
@@ -80,6 +80,7 @@ export const PAGES = {
     "ContractorProfile": ContractorProfile,
     "Contractors": Contractors,
     "CustomerAccount": CustomerAccount,
+    "DisputeCenter": DisputeCenter,
     "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
@@ -90,7 +91,6 @@ export const PAGES = {
     "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
-    "DisputeCenter": DisputeCenter,
 }
 
 export const pagesConfig = {

@@ -50,10 +50,10 @@ export default function HeroSection() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-12 border-t border-slate-700">
           {[
-            { value: '2,500+', label: 'Contractors' },
-            { value: '15K+', label: 'Jobs Completed' },
-            { value: '4.8/5', label: 'Avg. Rating' },
-            { value: '50+', label: 'Cities' },
+            { value: 'Verified', label: 'Contractors' },
+            { value: 'Real', label: 'Jobs Posted' },
+            { value: 'Rated', label: 'Professionals' },
+            { value: 'Local', label: 'Talent' },
           ].map((stat, idx) => (
             <div key={idx} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-amber-400">{stat.value}</div>

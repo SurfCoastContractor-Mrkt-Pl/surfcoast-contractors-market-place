@@ -31,7 +31,7 @@ export default function Terms() {
                 We deeply value every transaction and the trust you place in us. Here's why we maintain a no-refund policy:
               </p>
               <p>
-                The $1.50 platform fee grants you immediate access to connect with skilled professionals or potential clients. Once payment is processed, you gain instant communication access, the ability to message, share files, and negotiate directly. These services are delivered immediately and cannot be "returned."
+                The $1.75 quote request fee grants you access to receive a written estimate from a specific contractor. Once payment is processed, the request is delivered immediately and the service cannot be "returned." For the $50/month unlimited communication subscription, cancellation stops future billing but the current billing period is non-refundable.
               </p>
               <p>
                 We understand this may feel strict, and we take that seriously. If you experience a genuine issue—technical problems, fraudulent activity, or service failure on our end—please reach out to our support team. We're committed to making things right.
@@ -56,6 +56,32 @@ export default function Terms() {
                 <li>Comply with all applicable laws and regulations</li>
                 <li>Respect intellectual property and confidentiality</li>
               </ul>
+            </div>
+          </section>
+
+          {/* Fees & Pricing */}
+          <section>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Fees & Pricing</h2>
+            <div className="space-y-4 text-slate-700">
+              <p>SurfCoast Contractor Market Place charges the following platform fees:</p>
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li><strong>Quote Request:</strong> $1.75 one-time fee per quote request sent to a contractor. Each contractor requires a separate fee.</li>
+                <li><strong>Unlimited Communication:</strong> $50.00/month subscription. Allows unlimited messaging across the platform. Auto-renews monthly. Cancel anytime — cancellation takes effect at the end of the current billing period.</li>
+              </ul>
+              <p>All fees are disclosed upfront before payment in compliance with California SB 478 (Honest Pricing Law). Contractor work costs are entirely separate and negotiated directly between you and the contractor — SurfCoast does not process or hold work payments.</p>
+            </div>
+          </section>
+
+          {/* After Photos Policy */}
+          <section>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">After Photos & Account Compliance</h2>
+            <div className="space-y-4 text-slate-700">
+              <p>
+                Contractors are required to upload a minimum of <strong>5 after photos</strong> within <strong>72 hours</strong> of the agreed work date for any completed job. Failure to do so will result in a temporary account lock until the required photos are uploaded.
+              </p>
+              <p>
+                This policy protects customers and maintains platform quality standards. Photos must clearly document the completed work.
+              </p>
             </div>
           </section>
 
@@ -139,11 +165,9 @@ export default function Terms() {
             <p className="text-slate-700 mb-6">
               If you have questions about these policies or need support, please reach out to our team.
             </p>
-            <Link to={createPageUrl('Home')}>
-              <Button className="bg-amber-500 hover:bg-amber-600 text-slate-900">
-                Contact Support
-              </Button>
-            </Link>
+            <p className="text-slate-600 mb-4">
+              Use the <strong>Contact Admin</strong> option found in your account settings, or reach out through the platform's support features.
+            </p>
           </section>
 
         </div>

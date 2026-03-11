@@ -31,7 +31,7 @@ export default function CTASection() {
               Join as a Customer
             </h3>
             <p className="text-slate-300 mb-6">
-              Post your project and receive quotes from qualified contractors in your area. It's free and takes just minutes.
+              Post your project and receive quotes from qualified contractors in your area. A small $1.75 fee applies per quote request.
             </p>
             <Link to={createPageUrl('PostJob')}>
               <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white w-full">

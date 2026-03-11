@@ -64,15 +64,19 @@ export default function SubscriptionModal({ open, onClose, userEmail, userType }
           <ul className="space-y-2">
             <li className="flex items-center gap-2">
               <Check className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-slate-600">Unlimited messaging</span>
+              <span className="text-sm text-slate-600">Unlimited messaging with any contractor or customer</span>
             </li>
             <li className="flex items-center gap-2">
               <Check className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-slate-600">One month access</span>
+              <span className="text-sm text-slate-600">Skip per-message fees for 30 days</span>
             </li>
             <li className="flex items-center gap-2">
               <Check className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-slate-600">Cancel anytime</span>
+              <span className="text-sm text-slate-600">Cancel anytime — no commitment</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-green-600" />
+              <span className="text-sm text-slate-600">Auto-renews monthly until cancelled</span>
             </li>
           </ul>
 

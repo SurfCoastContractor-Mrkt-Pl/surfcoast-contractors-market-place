@@ -114,7 +114,7 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           </p>
 
           <p>
-            <strong>5. Dispute Resolution.</strong> Any disputes arising from a contractor-customer engagement are strictly between those parties. SurfCoast Contractor Market Place is not a party to any such dispute and shall not be involved in resolution, mediation, or arbitration.
+            <strong>5. Dispute Resolution.</strong> Any disputes arising from a contractor-customer engagement are primarily between those parties. While SurfCoast Contractor Market Place provides a Dispute Center as a goodwill resource to help facilitate communication between parties, SurfCoast Contractor Market Place is not liable for the outcome of any dispute and its involvement in any resolution is entirely at its own discretion. Use of the Dispute Center does not constitute mediation, arbitration, or legal representation.
           </p>
 
           <p>
