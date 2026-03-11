@@ -547,14 +547,26 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
                 <div className="text-xs text-slate-500 font-medium">LOCATION</div>
                 <div className="text-sm text-slate-900">{formData.location}</div>
               </div>
+              {formData.property_type && (
+                <div>
+                  <div className="text-xs text-slate-500 font-medium">PROPERTY TYPE</div>
+                  <div className="text-sm text-slate-900">{PROPERTY_TYPES[formData.property_type] || formData.property_type}</div>
+                </div>
+              )}
+              {formData.property_address && (
+                <div>
+                  <div className="text-xs text-slate-500 font-medium">PROPERTY ADDRESS</div>
+                  <div className="text-sm text-slate-900">{formData.property_address}</div>
+                </div>
+              )}
               {formData.bio && (
                 <div>
                   <div className="text-xs text-slate-500 font-medium">ABOUT YOU</div>
                   <div className="text-sm text-slate-900 whitespace-pre-wrap">{formData.bio}</div>
                 </div>
               )}
-            </div>
-          </div>
+              </div>
+              </div>
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Contractor Preferences</h3>
             <div className="space-y-2">
