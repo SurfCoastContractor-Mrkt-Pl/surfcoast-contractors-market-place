@@ -58,8 +58,7 @@ Deno.serve(async (req) => {
         user_type: 'unknown',
         action: 'Delete payment method',
         severity: 'high',
-      }, {
-        'x-internal-key': Deno.env.get('INTERNAL_SERVICE_KEY')
+        isServiceRoleCall: true,
       });
     } catch (logError) {
       console.error('Failed to log error:', logError.message);
