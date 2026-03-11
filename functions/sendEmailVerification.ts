@@ -57,19 +57,30 @@ Deno.serve(async (req) => {
     // Store code in database with 5 minute expiry
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
     
-    await base44.asServiceRole.entities.EmailVerification.create({
-      email: userEmail,
-      code: code,
-      expires_at: expiresAt,
-      verified: false
-    });
+    try {
+      await base44.asServiceRole.entities.EmailVerification.create({
+        email: userEmail,
+        code: code,
+        expires_at: expiresAt,
+        verified: false
+      });
+    } catch (dbError) {
+      console.error('Database error creating verification record:', dbError.message);
+      return Response.json({ error: 'Failed to create verification code' }, { status: 500 });
+    }
 
     // Send email
-    const emailResult = await base44.asServiceRole.integrations.Core.SendEmail({
-      to: userEmail,
-      subject: 'Your Payment Verification Code',
-      body: `Your verification code is: ${code}\n\nThis code will expire in 5 minutes.`
-    });
+    let emailResult;
+    try {
+      emailResult = await base44.integrations.Core.SendEmail({
+        to: userEmail,
+        subject: 'Your Payment Verification Code',
+        body: `Your verification code is: ${code}\n\nThis code will expire in 5 minutes.`
+      });
+    } catch (emailError) {
+      console.error('Email send error:', emailError.message);
+      return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
+    }
 
     if (!emailResult) {
       console.error('Failed to send verification email to', userEmail);
