@@ -43,17 +43,15 @@ Deno.serve(async (req) => {
       }
     });
 
-    console.log(`Identity verification session created: ${verificationSession.id} for ${user.email}`);
-
     return Response.json({
       client_secret: verificationSession.client_secret,
       session_id: verificationSession.id
     });
-  } catch (error) {
-    console.error('Identity verification initialization error:', error);
+    } catch (error) {
+    console.error('Identity verification initialization error');
     return Response.json(
-      { error: error.message },
+      { error: 'Failed to initialize verification' },
       { status: 500 }
     );
-  }
+    }
 });

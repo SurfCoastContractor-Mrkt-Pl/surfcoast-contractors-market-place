@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error);
-    return Response.json({ error: error.message }, { status: 400 });
+    console.error('Webhook error');
+    return Response.json({ error: 'Webhook processing failed' }, { status: 400 });
   }
 });

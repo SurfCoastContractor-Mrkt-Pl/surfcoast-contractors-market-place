@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
         resolved: false,
       });
     } catch (dbError) {
-      console.error('Failed to create error log:', dbError.message);
+      console.error('Failed to create error log');
       // Still return success to avoid cascading errors
       return Response.json({ success: true, message: 'Error logged (deferred)' });
     }
@@ -80,14 +80,13 @@ Deno.serve(async (req) => {
           body: `A ${severity} error was logged on SurfCoast.\n\nUser: ${user_email || user?.email || 'unknown'} (${user_type || 'unknown'})\nAction: ${action}\nError: ${error_message}\nContext: ${typeof context === 'object' ? JSON.stringify(context, null, 2) : (context || 'N/A')}\nTime: ${new Date().toISOString()}\n\nLog ID: ${log?.id || 'pending'}\n\nPlease review at your Admin Dashboard → Error Log tab.`,
         });
       } catch (emailError) {
-        console.error('Failed to send admin alert:', emailError.message);
+        console.error('Failed to send admin alert');
       }
-    }
+      }
 
-    console.log(`[ErrorLog] ${severity} | ${error_type} | ${user_email} | ${action} | ${error_message}`);
-    return Response.json({ success: true, id: log.id });
-  } catch (error) {
-    console.error('Error in logError function:', error);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+      return Response.json({ success: true, id: log.id });
+      } catch (error) {
+      console.error('Error in logError function');
+      return Response.json({ error: 'Failed to log error' }, { status: 500 });
+      }
 });

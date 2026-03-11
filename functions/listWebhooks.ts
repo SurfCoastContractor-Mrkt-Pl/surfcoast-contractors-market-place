@@ -21,6 +21,7 @@ Deno.serve(async (req) => {
     }));
     return Response.json({ webhooks: summary });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('listWebhooks error');
+    return Response.json({ error: 'Failed to list webhooks' }, { status: 500 });
   }
 });
