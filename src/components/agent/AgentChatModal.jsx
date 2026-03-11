@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Send, X, Loader2 } from 'lucide-react';
 
-const GREETING_MESSAGE = `👋 Welcome to SurfCoast Market Place!
+const DEFAULT_GREETING = `👋 Welcome to SurfCoast Market Place!
 
 I'm your AI Assistant, here to help you get started. Let me tell you what we do:
 
@@ -21,9 +21,14 @@ How can I help you today?
 • 👤 Sign up as a Customer
 • ❓ Ask me anything about the platform`;
 
+const getGreetingMessage = () => {
+  // Load from environment variable if available, otherwise use default
+  return window.__AGENT_GREETING_MESSAGE__ || DEFAULT_GREETING;
+};
+
 export default function AgentChatModal({ open, onClose }) {
   const [messages, setMessages] = useState([
-    { role: 'agent', content: GREETING_MESSAGE }
+    { role: 'agent', content: getGreetingMessage() }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
