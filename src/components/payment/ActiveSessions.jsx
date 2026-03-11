@@ -101,18 +101,24 @@ export default function ActiveSessions({ payments }) {
         ))}
 
         {expired.map(p => (
-          <div key={p.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl opacity-60">
-            <div className="flex items-center gap-2">
+          <div key={p.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <div className="flex items-center gap-2 mb-2">
               <AlertCircle className="w-4 h-4 text-slate-400 shrink-0" />
-              <div>
+              <div className="flex-1">
                 <p className="text-sm font-medium text-slate-600">{p.purpose}</p>
                 <p className="text-xs text-slate-400">
                   Session expired {new Date(p.session_expires_at).toLocaleDateString()} at{' '}
                   {new Date(p.session_expires_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>
-              <Badge className="ml-auto bg-slate-100 text-slate-500 text-xs">Expired</Badge>
+              <Badge className="bg-slate-100 text-slate-500 text-xs">Expired</Badge>
             </div>
+            <Link to={createPageUrl('Contractors')}>
+              <Button size="sm" variant="outline" className="w-full text-xs h-7 gap-1.5 border-amber-300 text-amber-700 hover:bg-amber-50">
+                <RefreshCw className="w-3 h-3" />
+                Find a Contractor to Start a New Session
+              </Button>
+            </Link>
           </div>
         ))}
       </div>
