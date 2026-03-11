@@ -39,21 +39,39 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Rate limiting per email
-    const now = Date.now();
-    if (!requestCounts.has(userEmail)) {
-      requestCounts.set(userEmail, []);
-    }
+    // Rate limiting per email with progressive lockout
+     const now = Date.now();
+     if (!requestCounts.has(userEmail)) {
+       requestCounts.set(userEmail, []);
+     }
 
-    const userRequests = requestCounts.get(userEmail);
-    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
-    
-    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
-      return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
-    }
+     const userRequests = requestCounts.get(userEmail);
+     const shortWindowRequests = userRequests.filter(timestamp => now - timestamp < SHORT_WINDOW);
+     const longWindowRequests = userRequests.filter(timestamp => now - timestamp < LONG_WINDOW);
 
-    recentRequests.push(now);
-    requestCounts.set(userEmail, recentRequests);
+     // Check short-window rate limit (2 requests per 5 minutes)
+     if (shortWindowRequests.length >= SHORT_THRESHOLD) {
+       return Response.json({ error: 'Too many verification requests. Please try again in 5 minutes.' }, { status: 429 });
+     }
+
+     // Check long-window rate limit (5 requests per hour)
+     if (longWindowRequests.length >= LONG_THRESHOLD) {
+       return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
+     }
+
+     // Check failed verification attempts
+     if (!failedAttempts.has(userEmail)) {
+       failedAttempts.set(userEmail, []);
+     }
+     const failedAttemptsList = failedAttempts.get(userEmail);
+     const recentFailures = failedAttemptsList.filter(timestamp => now - timestamp < LONG_WINDOW);
+
+     if (recentFailures.length >= FAILED_ATTEMPT_THRESHOLD) {
+       return Response.json({ error: 'Account temporarily locked due to multiple failed verification attempts. Please try again in 1 hour.' }, { status: 429 });
+     }
+
+     longWindowRequests.push(now);
+     requestCounts.set(userEmail, longWindowRequests);
 
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
