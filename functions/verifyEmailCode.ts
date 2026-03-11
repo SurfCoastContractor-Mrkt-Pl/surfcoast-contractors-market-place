@@ -20,10 +20,16 @@ Deno.serve(async (req) => {
     }
 
     // Get stored verification from database
-    const verifications = await base44.asServiceRole.entities.EmailVerification.filter({
-      email: userEmail,
-      verified: false
-    });
+    let verifications;
+    try {
+      verifications = await base44.asServiceRole.entities.EmailVerification.filter({
+        email: userEmail,
+        verified: false
+      });
+    } catch (dbError) {
+      console.error('Database error retrieving verification:', dbError.message);
+      return Response.json({ error: 'Failed to retrieve verification code' }, { status: 500 });
+    }
 
     if (!verifications || verifications.length === 0) {
       return Response.json({ error: 'No verification code found for this email' }, { status: 400 });
@@ -33,7 +39,11 @@ Deno.serve(async (req) => {
 
     // Check expiry
     if (new Date() > new Date(verification.expires_at)) {
-      await base44.asServiceRole.entities.EmailVerification.delete(verification.id);
+      try {
+        await base44.asServiceRole.entities.EmailVerification.delete(verification.id);
+      } catch (e) {
+        console.error('Error deleting expired verification:', e.message);
+      }
       return Response.json({ error: 'Verification code has expired' }, { status: 400 });
     }
 
@@ -43,9 +53,14 @@ Deno.serve(async (req) => {
     }
 
     // Mark as verified
-    await base44.asServiceRole.entities.EmailVerification.update(verification.id, {
-      verified: true
-    });
+    try {
+      await base44.asServiceRole.entities.EmailVerification.update(verification.id, {
+        verified: true
+      });
+    } catch (updateError) {
+      console.error('Error marking verification as verified:', updateError.message);
+      return Response.json({ error: 'Failed to verify code' }, { status: 500 });
+    }
 
     return Response.json({ 
       success: true, 
