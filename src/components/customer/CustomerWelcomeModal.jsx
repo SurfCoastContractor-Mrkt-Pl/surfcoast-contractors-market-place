@@ -36,7 +36,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
-                  <span>Request quotes from contractors ($1.75 per request)</span>
+                  <span>Request estimates from contractors you're not connected with ($1.75 per request)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-0.5">✓</span>
