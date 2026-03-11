@@ -11,7 +11,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ publishableKey: publishableKey.trim(), subscriptionPriceId });
   } catch (error) {
-    console.error('Error fetching Stripe key:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error fetching Stripe key');
+    return Response.json({ error: 'Unable to load payment service' }, { status: 500 });
   }
 });
