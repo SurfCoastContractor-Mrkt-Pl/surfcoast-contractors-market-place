@@ -209,7 +209,7 @@ function CustomerProfileView({ customer }) {
 
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="text-xs text-slate-400">Joined: {new Date(customer.created_date).toLocaleDateString()} · ID: {customer.id}</div>
-        <a href={createPageUrl(`CustomerAccount?admin=true`)} target="_blank" rel="noopener noreferrer">
+        <a href={createPageUrl(`CustomerAccount?email=${customer.email}&admin=true`)} target="_blank" rel="noopener noreferrer">
           <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600 text-white text-xs flex items-center gap-1">
             <ExternalLink className="w-3 h-3" /> Preview Account
           </Button>
