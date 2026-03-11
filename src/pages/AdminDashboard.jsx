@@ -19,6 +19,7 @@ import UserAccountManager from '../components/admin/UserAccountManager';
 import ErrorLogTable from '../components/admin/ErrorLogTable';
 import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
 import DisputesTable from '../components/admin/DisputesTable';
+import AdminQuickTasks from '../components/admin/AdminQuickTasks';
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
@@ -234,6 +235,9 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+        {/* Quick Tasks */}
+        <AdminQuickTasks />
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
