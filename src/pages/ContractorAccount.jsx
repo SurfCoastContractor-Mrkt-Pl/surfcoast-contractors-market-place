@@ -28,6 +28,8 @@ import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar
 import DeleteAccountSection from '@/components/support/DeleteAccountSection';
 import StripePayoutSetup from '@/components/contractor/StripePayoutSetup';
 import IdentityVerification from '@/components/contractor/IdentityVerification';
+import MinorHoursTracker from '@/components/contractor/MinorHoursTracker';
+import MinorComplianceChecklist from '@/components/contractor/MinorComplianceChecklist';
 
 export default function ContractorAccount() {
   const [closeoutScope, setCloseoutScope] = useState(null);
@@ -245,6 +247,12 @@ export default function ContractorAccount() {
 
               <TabsContent value="profile">
                 <div className="space-y-4">
+                   {/* Minor Hours Tracker */}
+                   {contractor?.is_minor && <MinorHoursTracker contractor={contractor} />}
+
+                   {/* Minor Compliance Checklist */}
+                   {contractor?.is_minor && <MinorComplianceChecklist contractor={contractor} />}
+
                    {/* Identity Verification */}
                    <IdentityVerification contractor={contractor} onVerified={() => queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] })} />
 
