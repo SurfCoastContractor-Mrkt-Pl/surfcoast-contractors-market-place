@@ -16,10 +16,10 @@ Deno.serve(async (req) => {
     const userEmail = user.email;
 
     // Create a setup intent for saving the payment method
+    // NOTE: No PII (email) stored in Stripe metadata — user association is tracked internally only
     const setupIntent = await stripeClient.setupIntents.create({
       payment_method_types: ['card'],
       metadata: {
-        user_email: userEmail,
         app_id: Deno.env.get('BASE44_APP_ID'),
       },
       usage: 'off_session',
