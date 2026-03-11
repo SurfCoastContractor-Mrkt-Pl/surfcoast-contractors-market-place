@@ -19,6 +19,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payerEmail)) {
+      return Response.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
     // Check if user is authenticated
     const isAuthenticated = await base44.auth.isAuthenticated();
     let user = null;
@@ -28,8 +33,32 @@ Deno.serve(async (req) => {
       if (user && user.email.toLowerCase() !== payerEmail.toLowerCase()) {
         return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
       }
+    } else {
+      // For unauthenticated requests: validate email exists as a Contractor or CustomerProfile
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: payerEmail });
+      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email: payerEmail });
+      
+      if (contractors.length === 0 && customers.length === 0) {
+        return Response.json({ 
+          error: 'Email not found in system. Please create a profile first.' 
+        }, { status: 404 });
+      }
     }
-    // Allow unauthenticated payments (public app)
+
+    // Rate limiting: check for excessive pending payments from this email in last 5 minutes
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+    const recentPayments = await base44.asServiceRole.entities.Payment.filter({
+      payer_email: payerEmail,
+      status: 'pending',
+      created_date: { '$gte': fiveMinutesAgo }
+    });
+    
+    if (recentPayments.length >= 5) {
+      console.warn(`Rate limit exceeded for ${payerEmail}: ${recentPayments.length} pending payments in 5 minutes`);
+      return Response.json({ 
+        error: 'Too many pending payments. Please wait before creating another checkout session.' 
+      }, { status: 429 });
+    }
 
     // FRAUD CHECK: Run fraud detection before creating payment
     if (payerType === 'customer') {
