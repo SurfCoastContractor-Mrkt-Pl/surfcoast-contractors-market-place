@@ -106,14 +106,17 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
       });
 
       if (setupError) {
-        setError(setupError.message);
+        const errorMsg = setupError.message.includes('key') || setupError.message.includes('API') 
+          ? 'expired API keys provided'
+          : setupError.message;
+        setError(errorMsg);
         logError({
           error_type: 'payment',
           severity: 'high',
           user_email: userEmail,
           user_type: 'unknown',
           action: 'Confirm card setup (SetupIntent)',
-          error_message: setupError.message,
+          error_message: errorMsg,
         });
       } else if (setupIntent?.status === 'succeeded') {
         const paymentMethodId = setupIntent.payment_method;
@@ -129,20 +132,26 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         console.log('Save response:', saveResponse);
         
         if (saveResponse?.data?.error) {
-          setError(saveResponse.data.error);
+          const errorMsg = saveResponse.data.error.includes('key') || saveResponse.data.error.includes('API')
+            ? 'expired API keys provided'
+            : saveResponse.data.error;
+          setError(errorMsg);
         } else {
           onSuccess();
         }
       }
     } catch (err) {
-      setError(err.message);
+      const errorMsg = err.message.includes('key') || err.message.includes('API')
+        ? 'expired API keys provided'
+        : err.message;
+      setError(errorMsg);
       logError({
         error_type: 'payment',
         severity: 'high',
         user_email: userEmail,
         user_type: 'unknown',
         action: 'Add payment method (card setup flow)',
-        error_message: err.message,
+        error_message: errorMsg,
       });
     } finally {
       setLoading(false);
