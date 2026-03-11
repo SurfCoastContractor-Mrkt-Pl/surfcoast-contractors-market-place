@@ -63,7 +63,7 @@ export default function ContractorProfile() {
          .catch(() => setUserAuth(null))
          .finally(() => setAuthLoading(false));
      }
-   }, []);
+   }, [window.location.search]);
   const [disclaimerSigned, setDisclaimerSigned] = useState(false);
   const [signerName, setSignerName] = useState('');
   const [showScopeForm, setShowScopeForm] = useState(false);
@@ -87,10 +87,12 @@ export default function ContractorProfile() {
   const { data: contractor, isLoading } = useQuery({
     queryKey: ['contractor', contractorId],
     queryFn: async () => {
+      if (!contractorId) return null;
       const list = await base44.entities.Contractor.filter({ id: contractorId });
       return list[0];
     },
     enabled: !!contractorId,
+    staleTime: 0,
   });
 
   const { data: services } = useQuery({
