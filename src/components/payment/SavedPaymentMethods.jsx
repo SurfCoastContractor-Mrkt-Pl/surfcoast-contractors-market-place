@@ -261,6 +261,22 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
         </div>
       </div>
 
+      <div className={`p-4 border rounded-lg ${!emailVerified ? 'opacity-50 pointer-events-none bg-slate-50 border-slate-200' : 'bg-white border-slate-300'}`}>
+        <label className="block text-sm font-medium text-slate-700 mb-3">
+          Phone Number for Verification
+        </label>
+        <Input
+          type="tel"
+          placeholder="(555) 000-0000"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          disabled={loading || !emailVerified}
+        />
+        <p className="text-xs text-slate-500 mt-1">
+          Associated with this card and your name for identity verification
+        </p>
+      </div>
+
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
           {error}
