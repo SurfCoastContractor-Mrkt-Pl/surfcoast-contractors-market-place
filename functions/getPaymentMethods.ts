@@ -10,13 +10,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'userEmail required' }, { status: 400 });
     }
 
-    // Check if user is authenticated, if so validate they can access this email
-    const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      const user = await base44.auth.me();
-      if (user.role !== 'admin' && user.email.toLowerCase() !== userEmail.toLowerCase()) {
-        return Response.json({ error: 'Forbidden: You can only access your own payment methods' }, { status: 403 });
-      }
+    // Require authentication
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (user.role !== 'admin' && user.email.toLowerCase() !== userEmail.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: You can only access your own payment methods' }, { status: 403 });
     }
 
     // Fetch saved payment methods from database
