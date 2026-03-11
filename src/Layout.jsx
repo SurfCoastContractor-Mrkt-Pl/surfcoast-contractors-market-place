@@ -16,7 +16,7 @@ const getNavLinks = (isContractor) => {
   if (isContractor === true) {
     baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
   } else if (isContractor === false) {
-    baseLinks.push({ name: 'Find Contractors', page: 'Contractors', icon: Users });
+    baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
   }
   return baseLinks;
 };
@@ -234,7 +234,7 @@ export default function Layout({ children, currentPageName }) {
              <div>
                <h4 className="font-semibold mb-4">For Clients</h4>
                <ul className="space-y-2 text-slate-400">
-                 <li><Link to={createPageUrl('Contractors')} className="hover:text-white">Find Contractors</Link></li>
+                 <li><Link to={createPageUrl('FindContractors')} className="hover:text-white">Find Contractors</Link></li>
                  <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
                  <li><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
                </ul>
