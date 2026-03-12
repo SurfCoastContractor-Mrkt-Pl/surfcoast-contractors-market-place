@@ -62,22 +62,19 @@ export default function ContractorCard({ contractor }) {
                 )}
               </div>
               
-              <div className="flex flex-wrap gap-1.5 mt-1">
+              <div className="flex flex-wrap gap-1 mt-0.5">
                 <Badge 
                   variant="secondary" 
-                  className={`text-xs py-0.5 px-2 ${contractor.contractor_type === 'trade_specific' 
+                  className={`text-xs py-0.5 px-1.5 ${contractor.contractor_type === 'trade_specific' 
                     ? 'bg-blue-100 text-blue-700' 
                     : 'bg-amber-100 text-amber-700'
                   }`}
                 >
                   {contractor.contractor_type === 'trade_specific' 
-                    ? tradeLabels[contractor.trade_specialty] || 'Trade Specialist'
-                    : 'General Contractor'
+                    ? tradeLabels[contractor.trade_specialty] || 'Trade'
+                    : 'General'
                   }
                 </Badge>
-                {contractor.availability_status && (
-                  <StatusBadge status={contractor.availability_status} size="sm" />
-                )}
               </div>
             </div>
           </div>
