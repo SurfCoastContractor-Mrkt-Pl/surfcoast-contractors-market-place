@@ -35,12 +35,26 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(false);
   const [isContractor, setIsContractor] = useState(null);
+  const isBackNav = useRef(false);
 
   const isHome = currentPageName === 'Home';
   useGeoCheck();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const handlePopState = () => {
+      isBackNav.current = true;
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (!isBackNav.current) {
+      window.scrollTo(0, 0);
+    } else {
+      isBackNav.current = false;
+    }
   }, [currentPageName]);
 
   useEffect(() => {
