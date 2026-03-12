@@ -42,8 +42,8 @@ export default function ContractorCard({ contractor }) {
                 )}
               </div>
               {contractor.available && (
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                  <CheckCircle2 className="w-3 h-3 text-white" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <CheckCircle2 className="w-2 h-2 text-white" />
                 </div>
               )}
             </div>
