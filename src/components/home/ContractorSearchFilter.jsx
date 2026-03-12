@@ -70,25 +70,32 @@ export default function ContractorSearchFilter({ contractors = [] }) {
         const matchesName = !searchName || 
           contractor.name.toLowerCase().includes(searchName.toLowerCase());
         
-        const matchesCategory = !selectedCategory || 
-          contractor.trade_specialty === selectedCategory;
+        const matchesRole = !selectedRole || 
+          contractor.line_of_work === selectedRole;
         
         const matchesLocation = !selectedLocation || 
           contractor.location === selectedLocation;
 
-        return matchesName && matchesCategory && matchesLocation;
+        return matchesName && matchesRole && matchesLocation;
       })
       .sort((a, b) => (b.rating || 0) - (a.rating || 0)); // Sort by rating descending
-  }, [contractors, searchName, selectedCategory, selectedLocation]);
+  }, [contractors, searchName, selectedRole, selectedLocation]);
 
-  const hasActiveFilters = searchName || selectedCategory || selectedLocation;
+  const hasActiveFilters = searchName || selectedRole || selectedLocation;
   const resultCount = filteredContractors.length;
 
   const handleClearFilters = () => {
     setSearchName('');
-    setSelectedCategory('');
+    setSelectedIndustry('');
+    setSelectedRole('');
     setSelectedLocation('');
     setShowResults(false);
+  };
+
+  const handleIndustryChange = (e) => {
+    setSelectedIndustry(e.target.value);
+    setSelectedRole(''); // Reset role when industry changes
+    setShowResults(true);
   };
 
   return (
