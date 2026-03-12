@@ -11,6 +11,7 @@ export default function LocationSelector({ onLocationChange }) {
   const [zipCode, setZipCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [manualInput, setManualInput] = useState('');
 
   useEffect(() => {
     detectLocation();
