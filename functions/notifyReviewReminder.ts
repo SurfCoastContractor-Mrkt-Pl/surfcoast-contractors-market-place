@@ -3,6 +3,15 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { scopeId } = await req.json();
 
     if (!scopeId) {
@@ -18,6 +27,14 @@ Deno.serve(async (req) => {
     }
 
     const scopeData = scope[0];
+
+    // Verify user is the customer who owns this scope
+    if (scopeData.customer_email !== user.email) {
+      return Response.json(
+        { error: 'Unauthorized - only the customer can request review reminders' },
+        { status: 403 }
+      );
+    }
 
     // Check if review already exists
     const existingReview = await base44.entities.Review.filter({
