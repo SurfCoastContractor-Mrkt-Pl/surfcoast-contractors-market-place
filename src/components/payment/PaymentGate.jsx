@@ -7,31 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
-import { loadStripe } from '@stripe/stripe-js';
-
-// Initialize Stripe with environment variable or fetch from backend
-let stripePromise = null;
-let stripeInitialized = false;
-
-const initStripe = async () => {
-  if (stripeInitialized) return stripePromise;
-  
-  let stripePubKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-  
-  // If not in env, fetch from backend via SDK
-  if (!stripePubKey) {
-    try {
-      const res = await base44.functions.invoke('getStripePublicKey', {});
-      stripePubKey = res.data?.publishableKey;
-    } catch (error) {
-      console.error('Failed to fetch Stripe key:', error);
-    }
-  }
-  
-  stripePromise = stripePubKey ? loadStripe(stripePubKey) : null;
-  stripeInitialized = true;
-  return stripePromise;
-};
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
