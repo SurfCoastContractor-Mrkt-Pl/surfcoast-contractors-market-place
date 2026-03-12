@@ -27,6 +27,8 @@ export default function AdminDashboard() {
   const [error, setError] = useState('');
   const [loginLoading, setLoginLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginAttempted, setLoginAttempted] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: payments = [], isLoading } = useQuery({
