@@ -523,16 +523,18 @@ export default function AdminDashboard() {
 
               <Card className="p-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-6">Growth Trend (Last 14 Days)</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={getGrowthData()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="contractors" stroke="#a855f7" strokeWidth={2} name="Contractors" />
-                    <Line type="monotone" dataKey="customers" stroke="#6366f1" strokeWidth={2} name="Customers" />
-                  </LineChart>
-                </ResponsiveContainer>
+                <div className="w-full h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={getGrowthData()}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="contractors" stroke="#a855f7" strokeWidth={2} name="Contractors" />
+                      <Line type="monotone" dataKey="customers" stroke="#6366f1" strokeWidth={2} name="Customers" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </Card>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
