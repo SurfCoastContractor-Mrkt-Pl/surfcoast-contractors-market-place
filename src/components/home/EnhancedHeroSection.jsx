@@ -48,7 +48,7 @@ export default function EnhancedHeroSection() {
                 </Button>
               </Link>
               <Link to={createPageUrl('QuickJobPost')}>
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full sm:w-auto">
                   Post a Project
                 </Button>
               </Link>
