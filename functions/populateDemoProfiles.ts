@@ -64,6 +64,7 @@ function generateContractors(cityName, count, dayOffset) {
       id_document_url: 'https://base44.app/api/apps/69a61a047827463e7cdbc1eb/files/public/69a61a047827463e7cdbc1eb/demo-id.jpg',
       face_photo_url: '',
       availability_status: Math.random() > 0.1 ? 'available' : 'booked',
+      is_demo: true,
       created_date: createdDate.toISOString()
     });
   }
