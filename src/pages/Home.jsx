@@ -12,6 +12,7 @@ import FeaturedContractors from '@/components/home/FeaturedContractors';
 import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
 import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
+import SocialShareBar from '@/components/home/SocialShareBar';
 
 export default function Home() {
   const navigate = useNavigate();
