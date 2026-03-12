@@ -125,7 +125,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md" aria-describedby="payment-description">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto" aria-describedby="payment-description">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-amber-500" />
