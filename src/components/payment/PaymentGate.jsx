@@ -45,13 +45,6 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         throw new Error('Failed to create checkout session');
       }
 
-      // Initialize Stripe if not already done
-      const stripeInstance = await initStripe();
-      if (!stripeInstance) {
-        console.error('Stripe publishable key is not configured');
-        throw new Error('Payment processing is not available. Please contact support.');
-      }
-
       // Check if running in iframe (not published)
       if (window.self !== window.top) {
         alert('Stripe checkout is not available in preview mode. Please view this app from a published URL to complete payment.');
