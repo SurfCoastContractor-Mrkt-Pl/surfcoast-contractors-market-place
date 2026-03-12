@@ -39,6 +39,42 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
     }
   }, [open]);
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - (widgetRef.current?.offsetLeft || 0),
+      y: e.clientY - (widgetRef.current?.offsetTop || 0)
+    });
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+      
+      const newRight = window.innerWidth - (e.clientX - dragOffset.x) - 320; // 320 is widget width
+      const newBottom = window.innerHeight - (e.clientY - dragOffset.y) - 448; // 448 is widget height
+      
+      setPosition({
+        bottom: Math.max(0, newBottom),
+        right: Math.max(0, newRight)
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset]);
+
   const initializeConversation = async () => {
     try {
       const conv = await base44.agents.createConversation({
