@@ -63,18 +63,14 @@ export default function LocationSelector({ onLocationChange }) {
         <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-center gap-2 text-sm text-green-700">
             <MapPin className="w-4 h-4" />
-            <span>
-              Location detected{' '}
-              {manualInput ? `(${manualInput})` : '(from your device)'}
-            </span>
+            <span>Searching near {locationDisplay || 'your location'}</span>
           </div>
           <button
             onClick={() => {
               setLocation(null);
               setState('');
               setCity('');
-              setZipCode('');
-              setManualInput('');
+              setLocationDisplay('');
             }}
             className="text-xs text-green-600 hover:text-green-700 mt-1 underline"
           >
@@ -85,21 +81,13 @@ export default function LocationSelector({ onLocationChange }) {
         <div className="space-y-3">
           {error && (
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-              <p className="text-sm text-amber-700 font-medium mb-2">{error}</p>
-              <p className="text-xs text-amber-600">Enter your location details below:</p>
+              <p className="text-sm text-amber-700 font-medium">{error}</p>
             </div>
           )}
           
           <div className="space-y-2">
-            <p className="text-xs font-medium text-slate-600">Enter your location:</p>
-            <div className="grid grid-cols-3 gap-2">
-              <Input
-                placeholder="State"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                disabled={loading}
-                className="text-sm"
-              />
+            <p className="text-xs font-medium text-slate-600">Enter city and state:</p>
+            <div className="grid grid-cols-2 gap-2">
               <Input
                 placeholder="City"
                 value={city}
@@ -108,16 +96,16 @@ export default function LocationSelector({ onLocationChange }) {
                 className="text-sm"
               />
               <Input
-                placeholder="ZIP code"
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
+                placeholder="State"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
                 disabled={loading}
                 className="text-sm"
               />
             </div>
             <Button
               onClick={handleManualLocation}
-              disabled={loading || (!state.trim() && !city.trim() && !zipCode.trim())}
+              disabled={loading || !city.trim() || !state.trim()}
               className="w-full"
               size="sm"
             >
@@ -127,7 +115,7 @@ export default function LocationSelector({ onLocationChange }) {
                   Searching...
                 </>
               ) : (
-                'Search Location'
+                'Find Contractors'
               )}
             </Button>
           </div>
@@ -153,7 +141,7 @@ export default function LocationSelector({ onLocationChange }) {
             ) : (
               <>
                 <MapPin className="w-4 h-4 mr-2" />
-                Use My Current Location
+                Auto-Detect My Location
               </>
             )}
           </Button>
