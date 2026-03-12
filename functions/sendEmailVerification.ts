@@ -7,6 +7,7 @@ const LONG_THRESHOLD = 5; // Max 5 requests per hour
 const FAILED_ATTEMPT_THRESHOLD = 3; // Lock after 3 failed verification attempts
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
     let body;
@@ -130,7 +131,7 @@ Deno.serve(async (req) => {
       message: 'Verification code sent to your email'
     });
   } catch (error) {
-    console.error('Email verification error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error(`[${requestId}] Email verification error:`, error.message);
+    return Response.json({ error: 'Failed to process request', requestId }, { status: 500 });
   }
 });

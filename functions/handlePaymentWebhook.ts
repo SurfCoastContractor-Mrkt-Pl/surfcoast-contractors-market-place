@@ -33,6 +33,7 @@ async function markEventProcessed(base44, eventId, eventType) {
 }
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const signature = req.headers.get('stripe-signature');
     const body = await req.text();
@@ -47,8 +48,8 @@ Deno.serve(async (req) => {
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (sigError) {
-      console.error('Webhook signature verification failed:', sigError.message);
-      return Response.json({ error: 'Invalid signature' }, { status: 400 });
+      console.error(`[${requestId}] Webhook signature verification failed:`, sigError.message);
+      return Response.json({ error: 'Invalid signature', requestId }, { status: 400 });
     }
 
     // Validate event timestamp (prevent replay attacks)
@@ -156,7 +157,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error.message);
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    console.error(`[${requestId}] Webhook error:`, error.message);
+    return Response.json({ error: 'Internal server error', requestId }, { status: 500 });
   }
 });

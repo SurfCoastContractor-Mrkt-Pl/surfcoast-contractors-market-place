@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
 

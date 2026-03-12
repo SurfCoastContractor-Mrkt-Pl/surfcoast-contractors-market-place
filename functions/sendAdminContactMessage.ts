@@ -4,6 +4,7 @@ const RATE_LIMIT_WINDOW = 3600; // 1 hour in seconds
 const RATE_LIMIT_THRESHOLD = 5; // Max 5 messages per hour per user
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
     
@@ -79,7 +80,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('Error sending admin contact message:', error.message);
-    return Response.json({ error: 'Failed to send message' }, { status: 500 });
+    console.error(`[${requestId}] Error sending admin contact message:`, error.message);
+    return Response.json({ error: 'Failed to send message', requestId }, { status: 500 });
   }
 });

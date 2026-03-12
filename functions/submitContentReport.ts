@@ -1,8 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   if (req.method !== 'POST') {
-    return Response.json({ error: 'Method not allowed' }, { status: 405 });
+    return Response.json({ error: 'Method not allowed', requestId }, { status: 405 });
   }
 
   try {
@@ -142,9 +143,9 @@ Please review immediately in the admin dashboard.`,
       status: report.status,
     });
   } catch (error) {
-    console.error('Error submitting content report:', error.message);
+    console.error(`[${requestId}] Error submitting content report:`, error.message);
     return Response.json(
-      { error: 'Failed to submit report' },
+      { error: 'Failed to submit report', requestId },
       { status: 500 }
     );
   }

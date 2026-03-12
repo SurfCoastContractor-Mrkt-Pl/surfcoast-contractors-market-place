@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
     
@@ -114,7 +115,7 @@ Deno.serve(async (req) => {
       dispute_number: dispute.dispute_number
     });
   } catch (error) {
-    console.error('Submit dispute error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error(`[${requestId}] Submit dispute error:`, error.message);
+    return Response.json({ error: 'Failed to submit dispute', requestId }, { status: 500 });
   }
 });
