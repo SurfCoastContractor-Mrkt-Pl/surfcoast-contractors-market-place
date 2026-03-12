@@ -9,32 +9,14 @@ const APP_URL = typeof window !== 'undefined' ? window.location.origin : 'https:
 export default function AppQRCode() {
   const qrRef = useRef(null);
 
-  const handleDownload = () => {
-    const svg = qrRef.current?.querySelector('svg');
-    if (!svg) return;
-
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const size = 400;
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-
-    const img = new Image();
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-
-    img.onload = () => {
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, size, size);
-      ctx.drawImage(img, 0, 0, size, size);
-      URL.revokeObjectURL(url);
-      const a = document.createElement('a');
-      a.download = 'surfcoast-qrcode.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
-    };
-    img.src = url;
+  const handleDownload = async () => {
+    const card = qrRef.current?.querySelector('div');
+    if (!card) return;
+    const canvas = await html2canvas(card, { backgroundColor: null, scale: 2 });
+    const a = document.createElement('a');
+    a.download = 'surfcoast-qrcode.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
   };
 
   return (
