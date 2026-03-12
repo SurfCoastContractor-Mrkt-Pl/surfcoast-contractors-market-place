@@ -242,8 +242,8 @@ export default function Layout({ children, currentPageName }) {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">For Contractors</h4>
-              <ul className="space-y-2 text-slate-400">
+              <h4 className="font-semibold mb-3">For Contractors</h4>
+              <ul className="space-y-1 text-slate-400">
                 <li><Link to={createPageUrl('BecomeContractor')} className="hover:text-white">Create Profile</Link></li>
                 <li><Link to={createPageUrl('Jobs')} className="hover:text-white">Browse Jobs</Link></li>
                 <li><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
