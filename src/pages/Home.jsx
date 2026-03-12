@@ -6,7 +6,7 @@ import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { RotateCw } from 'lucide-react';
 
-import HeroSection from '@/components/home/HeroSection';
+import EnhancedHeroSection from '@/components/home/EnhancedHeroSection';
 import TradeCategories from '@/components/home/TradeCategories';
 import FeaturedContractors from '@/components/home/FeaturedContractors';
 import RecentJobs from '@/components/home/RecentJobs';
@@ -15,13 +15,17 @@ import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
 import SocialShareBar from '@/components/home/SocialShareBar';
 import AppQRCode from '@/components/home/AppQRCode';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
-import SocialProofMetrics from '@/components/home/SocialProofMetrics';
 import HowItWorks from '@/components/home/HowItWorks';
 import RecentJobsCompletedFeed from '@/components/home/RecentJobsCompletedFeed';
+import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
+import FrictionRemovalBanner from '@/components/home/FrictionRemovalBanner';
+import OnboardingGuide from '@/components/onboarding/OnboardingGuide';
 
 export default function Home() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [onboardingOpen, setOnboardingOpen] = React.useState(false);
+  const [onboardingType, setOnboardingType] = React.useState('customer');
 
   // Redirect authenticated users to their dashboard if they're new
   useEffect(() => {
@@ -87,9 +91,10 @@ export default function Home() {
         </Button>
       </div>
 
-      <HeroSection />
+      <FrictionRemovalBanner />
+      <EnhancedHeroSection />
+      <TrustAndSocialProof />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SocialProofMetrics />
         <HowItWorks />
         <RecentJobsCompletedFeed />
       </div>
@@ -101,6 +106,12 @@ export default function Home() {
       <NewsletterSignup />
       <AppQRCode />
       <SocialShareBar />
+
+      <OnboardingGuide 
+        open={onboardingOpen} 
+        onClose={() => setOnboardingOpen(false)}
+        userType={onboardingType}
+      />
     </div>
   );
 }
