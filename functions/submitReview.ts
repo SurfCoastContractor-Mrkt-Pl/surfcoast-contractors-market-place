@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true, review });
   } catch (error) {
-    console.error('submitReview error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error(`[${requestId}] Submit review error:`, error.message);
+    return Response.json({ error: 'Failed to submit review', requestId }, { status: 500 });
   }
 });

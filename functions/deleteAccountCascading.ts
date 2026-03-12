@@ -173,7 +173,7 @@ Deno.serve(async (req) => {
     console.log(`Account deletion cascaded: deleted ${deletedCount} related records`);
     return Response.json({ success: true, deletedRecords: deletedCount });
   } catch (error) {
-    console.error('Account deletion error:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error(`[${requestId}] Account deletion error:`, error.message);
+    return Response.json({ error: 'Failed to delete account', requestId }, { status: 500 });
   }
 });
