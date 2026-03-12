@@ -69,13 +69,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Validate service key for non-authenticated requests
-    if (!isAuthenticatedUser && (!serviceKey || serviceKey !== expectedServiceKey)) {
-      console.warn(`[${requestId}] Unauthorized admin access attempt from ${rateLimitKey}`);
-      return Response.json({ success: false, error: 'Invalid credentials.' }, { status: 401 });
-    }
-
-    // Verify password
+    // Verify password (only password required, no service key needed)
     if (providedPassword !== dashboardPassword) {
       console.warn(`[${requestId}] Invalid admin dashboard password attempt from ${rateLimitKey}`);
       return Response.json({ success: false, error: 'Invalid password.' }, { status: 403 });
