@@ -34,11 +34,11 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-gradient-to-br from-slate-100 to-blue-50 border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">Blog & Resources</h1>
-          <p className="text-lg text-slate-600">
-            Tips, guides, and stories from the SurfCoast community
+          <h1 className="text-4xl font-serif font-bold text-slate-900 mb-3">Resources & Insights</h1>
+          <p className="text-lg text-slate-600 font-light">
+            Expert guides and industry perspectives
           </p>
         </div>
       </div>
