@@ -18,6 +18,43 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields: overall_rating and comment required.' }, { status: 400 });
     }
 
+    // Rate limiting: max 5 reviews per hour per user
+    const REVIEW_RATE_LIMIT = 5;
+    const REVIEW_WINDOW = 3600; // 1 hour in seconds
+    const now = new Date();
+    const windowStart = new Date(now.getTime() - REVIEW_WINDOW * 1000);
+
+    try {
+      const userReviewActivity = await base44.asServiceRole.entities.RateLimitTracker.filter({
+        key: user.email,
+        limit_type: 'review_submission',
+        window_start: { '$gte': windowStart.toISOString() }
+      });
+
+      if (userReviewActivity.length > 0 && userReviewActivity[0].request_count >= REVIEW_RATE_LIMIT) {
+        return Response.json({
+          error: 'Review submission rate limit exceeded. Maximum 5 reviews per hour.'
+        }, { status: 429 });
+      }
+
+      // Update or create rate limit record
+      if (userReviewActivity.length > 0) {
+        await base44.asServiceRole.entities.RateLimitTracker.update(userReviewActivity[0].id, {
+          request_count: userReviewActivity[0].request_count + 1
+        });
+      } else {
+        await base44.asServiceRole.entities.RateLimitTracker.create({
+          key: user.email,
+          limit_type: 'review_submission',
+          request_count: 1,
+          window_start: now.toISOString(),
+          window_duration_seconds: REVIEW_WINDOW
+        });
+      }
+    } catch (rateLimitError) {
+      console.error('Review rate limit check failed:', rateLimitError.message);
+    }
+
     // For non-testimony reviews, contractor_id is required
     if (!is_testimony && !contractor_id) {
       return Response.json({ error: 'contractor_id required for verified reviews.' }, { status: 400 });

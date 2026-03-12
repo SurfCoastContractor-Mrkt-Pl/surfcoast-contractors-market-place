@@ -16,10 +16,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid request: card data not allowed' }, { status: 400 });
     }
 
-    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName } = body;
+    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName, idempotencyKey } = body;
 
     if (!payerEmail || !payerName || !payerType) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Check for duplicate request using idempotency key (if provided)
+    if (idempotencyKey) {
+      try {
+        const existingPayments = await base44.asServiceRole.entities.Payment.filter({
+          payer_email: payerEmail,
+          idempotency_key: idempotencyKey,
+          status: 'pending'
+        });
+        if (existingPayments.length > 0) {
+          console.log(`Duplicate checkout request detected for ${payerEmail}, returning existing payment`);
+          const existingPayment = existingPayments[0];
+          return Response.json({
+            sessionId: existingPayment.stripe_session_id,
+            paymentId: existingPayment.id,
+            url: existingPayment.stripe_checkout_url,
+            duplicate: true
+          });
+        }
+      } catch (idempotencyError) {
+        console.warn('Idempotency check failed:', idempotencyError.message);
+      }
     }
 
     // Validate email format
@@ -98,6 +121,7 @@ Deno.serve(async (req) => {
       purpose: payerType === 'contractor'
         ? 'Contractor platform access fee'
         : `Quote request from contractor ${contractorName}`,
+      idempotency_key: idempotencyKey || null,
     });
 
     // Get Stripe price ID from environment variable
@@ -177,6 +201,12 @@ Deno.serve(async (req) => {
 
       throw stripeError;
     }
+
+    // Store Stripe session info on payment record for idempotency
+    await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
+      stripe_session_id: session.id,
+      stripe_checkout_url: session.url
+    });
 
     return Response.json({
       sessionId: session.id,

@@ -46,12 +46,31 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Helper function to log deletion
+    const logDeletion = async (entityName, entityId) => {
+      try {
+        await base44.asServiceRole.entities.DeletionAuditLog.create({
+          deleted_by_email: user.email,
+          deleted_by_role: user.role || 'user',
+          account_type: accountType,
+          account_email: accountEmail,
+          entity_name: entityName,
+          entity_id: entityId,
+          deletion_reason: 'account_deletion',
+          deleted_at: new Date().toISOString()
+        });
+      } catch (logError) {
+        console.error(`Failed to log deletion of ${entityName}:`, logError.message);
+      }
+    };
+
     // Delete related records based on account type
     if (accountType === 'contractor') {
       // Delete all contractor scope proposals
       const proposals = await base44.asServiceRole.entities.ContractorScopeProposal.filter({ contractor_id: contractorId });
       for (const proposal of proposals) {
         await base44.asServiceRole.entities.ContractorScopeProposal.delete(proposal.id);
+        await logDeletion('ContractorScopeProposal', proposal.id);
         deletedCount++;
       }
 
@@ -59,6 +78,7 @@ Deno.serve(async (req) => {
       const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ contractor_id: contractorId });
       for (const scope of scopes) {
         await base44.asServiceRole.entities.ScopeOfWork.delete(scope.id);
+        await logDeletion('ScopeOfWork', scope.id);
         deletedCount++;
       }
 
@@ -66,6 +86,7 @@ Deno.serve(async (req) => {
       const messages = await base44.asServiceRole.entities.Message.filter({ sender_email: accountEmail });
       for (const msg of messages) {
         await base44.asServiceRole.entities.Message.delete(msg.id);
+        await logDeletion('Message', msg.id);
         deletedCount++;
       }
 
@@ -73,6 +94,7 @@ Deno.serve(async (req) => {
       const reviews = await base44.asServiceRole.entities.Review.filter({ contractor_id: contractorId });
       for (const review of reviews) {
         await base44.asServiceRole.entities.Review.delete(review.id);
+        await logDeletion('Review', review.id);
         deletedCount++;
       }
 
@@ -80,11 +102,13 @@ Deno.serve(async (req) => {
       const payments = await base44.asServiceRole.entities.Payment.filter({ payer_email: accountEmail, payer_type: 'contractor' });
       for (const payment of payments) {
         await base44.asServiceRole.entities.Payment.delete(payment.id);
+        await logDeletion('Payment', payment.id);
         deletedCount++;
       }
 
       // Delete contractor profile
       await base44.asServiceRole.entities.Contractor.delete(contractorId);
+      await logDeletion('Contractor', contractorId);
       deletedCount++;
     } else {
       // Customer account deletion
@@ -92,6 +116,7 @@ Deno.serve(async (req) => {
       const scopeRequests = await base44.asServiceRole.entities.CustomerScopeRequest.filter({ customer_email: accountEmail });
       for (const scopeReq of scopeRequests) {
         await base44.asServiceRole.entities.CustomerScopeRequest.delete(scopeReq.id);
+        await logDeletion('CustomerScopeRequest', scopeReq.id);
         deletedCount++;
       }
 
@@ -99,6 +124,7 @@ Deno.serve(async (req) => {
       const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ customer_email: accountEmail });
       for (const scope of scopes) {
         await base44.asServiceRole.entities.ScopeOfWork.delete(scope.id);
+        await logDeletion('ScopeOfWork', scope.id);
         deletedCount++;
       }
 
@@ -106,6 +132,7 @@ Deno.serve(async (req) => {
       const messages = await base44.asServiceRole.entities.Message.filter({ sender_email: accountEmail });
       for (const msg of messages) {
         await base44.asServiceRole.entities.Message.delete(msg.id);
+        await logDeletion('Message', msg.id);
         deletedCount++;
       }
 
@@ -113,6 +140,7 @@ Deno.serve(async (req) => {
       const payments = await base44.asServiceRole.entities.Payment.filter({ payer_email: accountEmail, payer_type: 'customer' });
       for (const payment of payments) {
         await base44.asServiceRole.entities.Payment.delete(payment.id);
+        await logDeletion('Payment', payment.id);
         deletedCount++;
       }
 
@@ -120,6 +148,7 @@ Deno.serve(async (req) => {
       const disclaimers = await base44.asServiceRole.entities.DisclaimerAcceptance.filter({ customer_email: accountEmail });
       for (const disclaimer of disclaimers) {
         await base44.asServiceRole.entities.DisclaimerAcceptance.delete(disclaimer.id);
+        await logDeletion('DisclaimerAcceptance', disclaimer.id);
         deletedCount++;
       }
 
@@ -127,6 +156,7 @@ Deno.serve(async (req) => {
       const profiles = await base44.asServiceRole.entities.CustomerProfile.filter({ email: accountEmail });
       if (profiles.length > 0) {
         await base44.asServiceRole.entities.CustomerProfile.delete(profiles[0].id);
+        await logDeletion('CustomerProfile', profiles[0].id);
         deletedCount++;
       }
 
@@ -134,6 +164,7 @@ Deno.serve(async (req) => {
       const jobs = await base44.asServiceRole.entities.Job.filter({ poster_email: accountEmail });
       for (const job of jobs) {
         await base44.asServiceRole.entities.Job.delete(job.id);
+        await logDeletion('Job', job.id);
         deletedCount++;
       }
     }
