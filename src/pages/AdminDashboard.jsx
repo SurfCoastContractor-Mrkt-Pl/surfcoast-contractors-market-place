@@ -146,12 +146,14 @@ export default function AdminDashboard() {
         }
 
         const res = await base44.functions.invoke('adminAuth', { password });
-        if (res.data?.success) {
+        if (res?.data?.success) {
           setAuthed(true);
+          setError('');
         } else {
-          setError(res.data?.error || 'Invalid password.');
+          setError(res?.data?.error || 'Invalid password.');
         }
-      } catch {
+      } catch (err) {
+        console.error('Auth error:', err);
         setError('Authentication failed. Please try again.');
       } finally {
         setLoginLoading(false);
