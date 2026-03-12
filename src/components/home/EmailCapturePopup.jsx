@@ -69,11 +69,11 @@ export default function EmailCapturePopup() {
             </div>
 
             <h2 className="text-2xl font-serif font-bold text-slate-900 text-center mb-2">
-              Get 3 Free Contractor Matches
+              Find Vetted Professionals Near You
             </h2>
 
             <p className="text-center text-slate-600 mb-6">
-              We'll send you 3 personalized professional recommendations + your first quote request is FREE.
+              Get job alerts from contractors in your area, plus $1.75 credit toward your first quote request.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
