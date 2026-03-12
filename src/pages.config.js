@@ -71,6 +71,9 @@ import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
 import QuickJobPost from './pages/QuickJobPost';
+import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
+import Referrals from './pages/Referrals';
 import __Layout from './Layout.jsx';
 
 
@@ -99,6 +102,9 @@ export const PAGES = {
     "Success": Success,
     "Terms": Terms,
     "QuickJobPost": QuickJobPost,
+    "Blog": Blog,
+    "BlogDetail": BlogDetail,
+    "Referrals": Referrals,
 }
 
 export const pagesConfig = {
