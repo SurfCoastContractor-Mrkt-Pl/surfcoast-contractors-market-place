@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
+import QRCode from 'qrcode.react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import html2canvas from 'html2canvas';
@@ -53,7 +53,7 @@ export default function AppQRCode() {
 
             {/* QR Code */}
             <div className="bg-white rounded-2xl p-2 border border-amber-100 shadow-sm">
-              <QRCodeSVG
+              <QRCode
                 value={APP_URL}
                 size={180}
                 bgColor="#ffffff"
