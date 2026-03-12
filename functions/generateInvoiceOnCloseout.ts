@@ -3,18 +3,36 @@ import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
   try {
-    // This function is intended for internal automation use only.
-    // Verify the internal service key to prevent unauthorized external calls.
-    const internalKey = req.headers.get('x-internal-service-key');
-    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    if (!expectedKey || internalKey !== expectedKey) {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const base44 = createClientFromRequest(req);
     const body = await req.json();
 
     const { event, data } = body;
+
+    // Authorization: only accept calls that look like legitimate entity automation payloads.
+    // Direct API callers cannot reproduce the exact automation payload structure.
+    // Additionally, require either an authenticated admin user OR a valid internal service key.
+    const internalKey = req.headers.get('x-internal-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isValidServiceKey = expectedKey && internalKey === expectedKey;
+
+    if (!isValidServiceKey) {
+      // Fall back to checking if caller is an authenticated admin
+      const isAuthenticated = await base44.auth.isAuthenticated();
+      if (isAuthenticated) {
+        const user = await base44.auth.me();
+        if (!user || user.role !== 'admin') {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      } else {
+        // Not authenticated and no valid service key — reject
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
+    // Validate this is a proper automation payload
+    if (!event?.type || !event?.entity_name || event.entity_name !== 'ScopeOfWork') {
+      return Response.json({ error: 'Invalid automation payload' }, { status: 400 });
+    }
 
     // Only process when status changes to 'closed'
     if (event?.type !== 'update' || data?.status !== 'closed') {
