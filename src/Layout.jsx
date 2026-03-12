@@ -196,7 +196,7 @@ export default function Layout({ children, currentPageName }) {
                   </Link>
                 )}
                 <Link to={createPageUrl('BecomeContractor')} onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">
                     Join as Contractor
                   </Button>
                 </Link>
