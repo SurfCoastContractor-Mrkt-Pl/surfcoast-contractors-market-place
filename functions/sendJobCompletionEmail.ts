@@ -3,6 +3,15 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { scopeId, contractorEmail, customerEmail } = await req.json();
 
     if (!scopeId || !contractorEmail || !customerEmail) {
@@ -18,6 +27,14 @@ Deno.serve(async (req) => {
     }
 
     const scopeData = scope[0];
+
+    // Verify user is either the contractor or customer involved in this scope
+    if (user.email !== contractorEmail && user.email !== customerEmail) {
+      return Response.json(
+        { error: 'Unauthorized - only involved parties can send completion emails' },
+        { status: 403 }
+      );
+    }
 
     const emailBody = `
 Dear ${scopeData.customer_name},
