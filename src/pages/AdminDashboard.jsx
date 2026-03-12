@@ -139,31 +139,34 @@ export default function AdminDashboard() {
   });
 
   React.useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const password = prompt('Enter admin dashboard password:');
-        if (!password) {
-          setError('Password required.');
-          setLoginLoading(false);
-          return;
-        }
-
-        const res = await base44.functions.invoke('adminAuth', { password });
-        if (res?.data?.success) {
-          setAuthed(true);
-          setError('');
-        } else {
-          setError(res?.data?.error || 'Invalid password.');
-        }
-      } catch (err) {
-        console.error('Auth error:', err);
-        setError('Authentication failed. Please try again.');
-      } finally {
-        setLoginLoading(false);
-      }
-    };
-    checkAuth();
+    setLoginLoading(false);
   }, []);
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!passwordInput.trim()) {
+      setError('Please enter a password.');
+      return;
+    }
+
+    setLoginLoading(true);
+    try {
+      const res = await base44.functions.invoke('adminAuth', { password: passwordInput });
+      if (res?.data?.success) {
+        setAuthed(true);
+        setError('');
+      } else {
+        setError(res?.data?.error || 'Invalid password.');
+        setLoginAttempted(true);
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      setError('Authentication failed. Please try again.');
+      setLoginAttempted(true);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
 
   const totalCollected = payments.filter(p => p.status === 'confirmed').reduce((sum, p) => sum + (p.amount || 0), 0);
   const totalPending = payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + (p.amount || 0), 0);
