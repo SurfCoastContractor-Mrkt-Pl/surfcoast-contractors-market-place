@@ -133,10 +133,15 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   // Always show FAB; expand when open and not minimized
   if (!open || minimized) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div 
+        className="fixed z-50"
+        ref={widgetRef}
+        style={{ bottom: `${position.bottom}px`, right: `${position.right}px` }}
+      >
         <button
           onClick={() => { setMinimized(false); onOpen && onOpen(); }}
-          className="flex items-center gap-2 pl-4 pr-5 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all font-semibold text-sm"
+          onMouseDown={handleMouseDown}
+          className="flex items-center gap-2 pl-4 pr-5 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all font-semibold text-sm cursor-grab active:cursor-grabbing"
           title="Open AI Assistant"
         >
           <MessageSquare className="w-5 h-5 shrink-0" />
