@@ -36,9 +36,12 @@ export default function Layout({ children, currentPageName }) {
   const [agentOpen, setAgentOpen] = useState(false);
   const [isContractor, setIsContractor] = useState(null);
 
-
   const isHome = currentPageName === 'Home';
   useGeoCheck();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPageName]);
 
   useEffect(() => {
     const checkUserType = async () => {
