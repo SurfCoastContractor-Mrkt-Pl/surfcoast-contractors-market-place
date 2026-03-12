@@ -23,7 +23,11 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [loading, setLoading] = useState(false);
   const [conversation, setConversation] = useState(null);
   const [minimized, setMinimized] = useState(false);
+  const [position, setPosition] = useState({ bottom: 24, right: 24 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const messagesEndRef = useRef(null);
+  const widgetRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
