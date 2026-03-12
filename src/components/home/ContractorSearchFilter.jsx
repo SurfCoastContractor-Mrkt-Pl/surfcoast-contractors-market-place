@@ -5,27 +5,63 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ContractorCard from '@/components/contractors/ContractorCard';
 
+const industryOptions = [
+  { category: 'Construction & Trades', items: ['carpenter', 'electrician', 'plumber', 'hvac_technician', 'mason', 'roofer', 'painter', 'welder', 'tiler'] },
+  { category: 'Entertainment & Performance', items: ['actor', 'voice_actor', 'director', 'producer', 'musician', 'singer', 'dancer', 'comedian', 'film_crew', 'cinematographer', 'sound_engineer'] },
+  { category: 'Art & Design', items: ['artist_painter', 'artist_sculptor', 'illustrator', 'animator', 'graphic_designer', 'web_designer', 'ux_designer', 'interior_designer', 'fashion_designer'] },
+  { category: 'Education', items: ['tutor_educator', 'teacher', 'professor', 'instructor', 'academic_coach', 'test_prep_tutor'] },
+  { category: 'Health & Wellness', items: ['personal_trainer', 'fitness_coach', 'yoga_instructor', 'nutritionist', 'wellness_coach', 'therapist', 'counselor', 'massage_therapist'] },
+  { category: 'Business & Consulting', items: ['consultant', 'business_consultant', 'product_manager', 'project_manager', 'marketing_specialist', 'seo_specialist', 'copywriter', 'content_creator', 'social_media_manager'] },
+  { category: 'Finance & Accounting', items: ['accountant', 'bookkeeper', 'financial_advisor', 'tax_specialist'] },
+  { category: 'Technology & IT', items: ['freelance_developer', 'software_engineer', 'it_support', 'cybersecurity_specialist', 'data_analyst', 'computer_repair', 'phone_repair'] },
+  { category: 'Repairs & Maintenance', items: ['handyman', 'locksmith', 'appliance_repair'] },
+  { category: 'Outdoor & Landscape', items: ['landscaper', 'gardener', 'tree_service'] },
+  { category: 'Pet Services', items: ['pet_sitter', 'pet_groomer', 'dog_walker'] },
+  { category: 'Lifestyle & Personal Services', items: ['virtual_assistant', 'translator', 'childcare_provider', 'house_cleaner', 'organizer', 'life_coach'] },
+  { category: 'Moving & Logistics', items: ['moving_service', 'courier'] },
+];
+
+const roleNameMap = {
+  'carpenter': 'Carpenter', 'electrician': 'Electrician', 'plumber': 'Plumber', 'hvac_technician': 'HVAC Technician',
+  'mason': 'Mason', 'roofer': 'Roofer', 'painter': 'Painter', 'welder': 'Welder', 'tiler': 'Tiler',
+  'actor': 'Actor', 'voice_actor': 'Voice Actor', 'director': 'Director', 'producer': 'Producer', 'musician': 'Musician',
+  'singer': 'Singer', 'dancer': 'Dancer', 'comedian': 'Comedian', 'film_crew': 'Film Crew', 'cinematographer': 'Cinematographer',
+  'sound_engineer': 'Sound Engineer', 'artist_painter': 'Painter', 'artist_sculptor': 'Sculptor', 'illustrator': 'Illustrator',
+  'animator': 'Animator', 'graphic_designer': 'Graphic Designer', 'web_designer': 'Web Designer', 'ux_designer': 'UX Designer',
+  'interior_designer': 'Interior Designer', 'fashion_designer': 'Fashion Designer', 'tutor_educator': 'Tutor', 'teacher': 'Teacher',
+  'professor': 'Professor', 'instructor': 'Instructor', 'academic_coach': 'Academic Coach', 'test_prep_tutor': 'Test Prep Tutor',
+  'personal_trainer': 'Personal Trainer', 'fitness_coach': 'Fitness Coach', 'yoga_instructor': 'Yoga Instructor', 'nutritionist': 'Nutritionist',
+  'wellness_coach': 'Wellness Coach', 'therapist': 'Therapist', 'counselor': 'Counselor', 'massage_therapist': 'Massage Therapist',
+  'consultant': 'Consultant', 'business_consultant': 'Business Consultant', 'product_manager': 'Product Manager', 'project_manager': 'Project Manager',
+  'marketing_specialist': 'Marketing Specialist', 'seo_specialist': 'SEO Specialist', 'copywriter': 'Copywriter', 'content_creator': 'Content Creator',
+  'social_media_manager': 'Social Media Manager', 'accountant': 'Accountant', 'bookkeeper': 'Bookkeeper', 'financial_advisor': 'Financial Advisor',
+  'tax_specialist': 'Tax Specialist', 'freelance_developer': 'Developer', 'software_engineer': 'Software Engineer', 'it_support': 'IT Support',
+  'cybersecurity_specialist': 'Cybersecurity Specialist', 'data_analyst': 'Data Analyst', 'computer_repair': 'Computer Repair', 'phone_repair': 'Phone Repair',
+  'handyman': 'Handyman', 'locksmith': 'Locksmith', 'appliance_repair': 'Appliance Repair', 'landscaper': 'Landscaper', 'gardener': 'Gardener',
+  'tree_service': 'Tree Service', 'pet_sitter': 'Pet Sitter', 'pet_groomer': 'Pet Groomer', 'dog_walker': 'Dog Walker', 'virtual_assistant': 'Virtual Assistant',
+  'translator': 'Translator', 'childcare_provider': 'Childcare Provider', 'house_cleaner': 'House Cleaner', 'organizer': 'Organizer', 'life_coach': 'Life Coach',
+  'moving_service': 'Moving Service', 'courier': 'Courier'
+};
+
 export default function ContractorSearchFilter({ contractors = [] }) {
   const [searchName, setSearchName] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedIndustry, setSelectedIndustry] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showResults, setShowResults] = useState(false);
 
-  // Get unique locations and categories from contractors
+  // Get unique locations from contractors
   const locations = useMemo(() => {
     const unique = [...new Set(contractors.map(c => c.location).filter(Boolean))];
     return unique.sort();
   }, [contractors]);
 
-  const categories = useMemo(() => {
-    const unique = [...new Set(
-      contractors
-        .filter(c => c.contractor_type === 'trade_specific')
-        .map(c => c.trade_specialty)
-        .filter(Boolean)
-    )];
-    return unique.sort();
-  }, [contractors]);
+  // Get roles for selected industry
+  const rolesForIndustry = useMemo(() => {
+    if (!selectedIndustry) return [];
+    const industry = industryOptions.find(ind => ind.category === selectedIndustry);
+    return industry?.items || [];
+  }, [selectedIndustry]);
 
   // Filter and sort contractors by rating
   const filteredContractors = useMemo(() => {
