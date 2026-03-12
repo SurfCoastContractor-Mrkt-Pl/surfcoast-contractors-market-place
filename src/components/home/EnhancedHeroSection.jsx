@@ -6,18 +6,18 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 
 export default function EnhancedHeroSection() {
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-blue-50 pt-20 pb-16 border-b border-slate-200/50">
+    <div className="bg-gradient-to-br from-slate-50 to-slate-50 pt-20 pb-16 border-b border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left: Value Proposition */}
           <div>
-            <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
+            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: 'rgba(30, 90, 150, 0.1)', color: '#1E5A96'}}>
               ✓ Verified & Vetted Professionals
             </div>
             
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-900 mb-6 leading-tight">
               Find Premium Contractors,<br />
-              <span className="text-blue-600">Zero Markups</span>
+              <span style={{color: '#1E5A96'}}>No Markups</span>
             </h1>
 
             <p className="text-lg text-slate-600 mb-8 font-light leading-relaxed">
@@ -43,12 +43,12 @@ export default function EnhancedHeroSection() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to={createPageUrl('FindContractors')}>
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold w-full sm:w-auto">
+                <Button size="lg" className="text-white font-semibold w-full sm:w-auto" style={{backgroundColor: '#1E5A96'}}>
                   Browse Contractors (Free) <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               <Link to={createPageUrl('QuickJobPost')}>
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full sm:w-auto">
+                <Button size="lg" className="text-white font-medium w-full sm:w-auto" style={{backgroundColor: '#1E5A96'}}>
                   Post a Project
                 </Button>
               </Link>
@@ -75,10 +75,10 @@ export default function EnhancedHeroSection() {
           </div>
 
           {/* Right: Visual or Image Placeholder */}
-          <div className="bg-gradient-to-br from-blue-100 to-slate-100 rounded-2xl h-96 flex items-center justify-center border border-slate-200/50">
+          <div className="bg-gradient-to-br from-slate-100 to-slate-100 rounded-2xl h-96 flex items-center justify-center border border-slate-200/50">
             <div className="text-center">
               <div className="inline-block p-4 bg-white rounded-xl shadow-sm mb-4">
-                <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{color: '#1E5A96'}}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
