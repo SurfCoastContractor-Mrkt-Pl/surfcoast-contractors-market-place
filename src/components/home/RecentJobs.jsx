@@ -62,9 +62,9 @@ export default function RecentJobs({ jobs, isLoading }) {
           </div>
         )}
         
-        <div className="text-center mt-8 md:hidden">
+        <div className="text-center mt-4 md:hidden">
           <Link to={createPageUrl('Jobs')}>
-            <Button variant="outline" className="border-amber-500 text-amber-600">
+            <Button variant="outline" size="sm" className="border-amber-500 text-amber-600">
               View All Jobs
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
