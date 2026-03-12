@@ -67,6 +67,9 @@ export default function LocationSelector({ onLocationChange }) {
           <button
             onClick={() => {
               setLocation(null);
+              setState('');
+              setCity('');
+              setZipCode('');
               setManualInput('');
             }}
             className="text-xs text-green-600 hover:text-green-700 mt-1 underline"
