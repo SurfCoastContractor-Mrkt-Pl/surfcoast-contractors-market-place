@@ -13,7 +13,15 @@ export default function EmailCapturePopup() {
     const hasSeenPopup = sessionStorage.getItem('emailPopupSeen');
     if (hasSeenPopup) {
       setClosed(true);
+      return;
     }
+    
+    // Delay popup by 20 seconds
+    const timer = setTimeout(() => {
+      setClosed(false);
+    }, 20000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSubmit = async (e) => {
