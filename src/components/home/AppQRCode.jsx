@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import html2canvas from 'html2canvas';
 
 const APP_URL = typeof window !== 'undefined' ? window.location.origin : 'https://surfcoastcontractormarketplace.com';
 
