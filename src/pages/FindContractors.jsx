@@ -121,7 +121,7 @@ export default function FindContractors() {
   const hasActiveFilters = searchQuery || typeFilter || tradeFilter || ratingFilter;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 pt-0">
       {/* Header */}
       <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-16 border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

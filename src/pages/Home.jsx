@@ -20,6 +20,8 @@ import RecentJobsCompletedFeed from '@/components/home/RecentJobsCompletedFeed';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
 import FrictionRemovalBanner from '@/components/home/FrictionRemovalBanner';
 import OnboardingGuide from '@/components/onboarding/OnboardingGuide';
+import EmailCapturePopup from '@/components/home/EmailCapturePopup';
+import FreeTrialBanner from '@/components/home/FreeTrialBanner';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -93,7 +95,9 @@ export default function Home() {
 
       <FrictionRemovalBanner />
       <EnhancedHeroSection />
+      <FreeTrialBanner />
       <TrustAndSocialProof />
+      <EmailCapturePopup />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HowItWorks />
         <RecentJobsCompletedFeed />
