@@ -88,8 +88,8 @@ export default function Layout({ children, currentPageName }) {
                 alt="SurfCoast Logo"
                 className="w-24 h-24 -ml-6 object-contain rounded-lg shadow-lg"
                 style={{
-                  maskImage: 'radial-gradient(circle at center, black 25%, transparent 95%)',
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 95%)'
+                  maskImage: 'radial-gradient(circle at center, black 10%, transparent 98%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 10%, transparent 98%)'
                 }}
               />
               <div className="flex flex-col leading-tight">
