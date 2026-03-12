@@ -90,7 +90,7 @@ export default function EmailCapturePopup() {
                 disabled={loading || !email}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
               >
-                {loading ? 'Sending...' : 'Get Free Matches'}
+                {loading ? 'Signing up...' : 'Get Job Alerts'}
               </Button>
             </form>
 
