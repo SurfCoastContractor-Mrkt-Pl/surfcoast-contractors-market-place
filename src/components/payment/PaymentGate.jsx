@@ -36,16 +36,18 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       }
 
       // Call backend to create Stripe checkout session
-      if (checkingout) return null; // Prevent double-click
-      setCheckingout(true);
-      const response = await base44.functions.invoke('createPaymentCheckout', {
-        payerEmail: data.email,
-        payerName: data.name,
-        payerType: payerType,
-        contractorId: contractorId || null,
-        contractorEmail: contractorEmail || null,
-        contractorName: contractorName || null,
-      });
+       if (checkingout) return null; // Prevent double-click
+       setCheckingout(true);
+       const response = await base44.functions.invoke('createPaymentCheckout', {
+         payerEmail: data.email,
+         payerName: data.name,
+         payerType: payerType,
+         contractorId: contractorId || null,
+         contractorEmail: contractorEmail || null,
+         contractorName: contractorName || null,
+         tier: tier,
+         priceId: priceId,
+       });
 
       if (!response.data?.url) {
         throw new Error('Failed to create checkout session');
