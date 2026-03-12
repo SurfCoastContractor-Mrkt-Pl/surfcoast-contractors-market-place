@@ -16,6 +16,23 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Authentication required' }, { status: 401 });
     }
 
+    // Rate limiting: max 3 disputes per user per day
+    try {
+      const dayAgo = new Date(Date.now() - 86400000).toISOString();
+      const recentDisputes = await base44.asServiceRole.entities.Dispute.filter(
+        { initiator_email: user.email, submitted_at: { $gte: dayAgo } }
+      );
+      
+      if (recentDisputes && recentDisputes.length >= 3) {
+        return Response.json(
+          { error: 'Rate limited: Maximum 3 disputes per 24 hours' },
+          { status: 429 }
+        );
+      }
+    } catch (limitError) {
+      console.warn('Rate limit check failed, proceeding:', limitError.message);
+    }
+
     const body = await req.json();
     const {
       initiator_type,

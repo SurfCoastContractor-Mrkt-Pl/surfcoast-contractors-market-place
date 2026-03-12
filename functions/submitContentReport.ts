@@ -14,6 +14,24 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Rate limiting: max 5 reports per user per hour
+    try {
+      const now = new Date().toISOString();
+      const hourAgo = new Date(Date.now() - 3600000).toISOString();
+      const recentReports = await base44.asServiceRole.entities.ContentReport.filter(
+        { reporter_email: user.email, created_date: { $gte: hourAgo } }
+      );
+      
+      if (recentReports && recentReports.length >= 5) {
+        return Response.json(
+          { error: 'Rate limited: Maximum 5 reports per hour' },
+          { status: 429 }
+        );
+      }
+    } catch (limitError) {
+      console.warn('Rate limit check failed, proceeding:', limitError.message);
+    }
+
     const payload = await req.json();
     const {
       content_type,
