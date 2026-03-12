@@ -117,7 +117,13 @@ export default function ChatWindow({
   }, [timeRemaining, tier]);
 
   const handleSend = async () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !eligibility?.allowed) return;
+
+    // Check session expiration for timed tier
+    if (tier === 'timed' && timeRemaining && !isTimedSessionActive(timeRemaining)) {
+      setEligibility({ allowed: false, reason: 'Session expired' });
+      return;
+    }
 
     try {
       await base44.entities.Message.create({
@@ -126,7 +132,8 @@ export default function ChatWindow({
         sender_type: userType,
         recipient_email: otherUserEmail,
         recipient_name: otherUserName,
-        message: newMessage.trim(),
+        body: newMessage.trim(),
+        payment_id: paymentRecord?.id || null,
         read: false
       });
       setNewMessage('');
