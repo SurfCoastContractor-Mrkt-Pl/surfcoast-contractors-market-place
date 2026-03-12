@@ -18,14 +18,11 @@ const initStripe = async () => {
   
   let stripePubKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
   
-  // If not in env, fetch from backend
+  // If not in env, fetch from backend via SDK
   if (!stripePubKey) {
     try {
-      const res = await fetch('/getStripePublicKey');
-      if (res.ok) {
-        const data = await res.json();
-        stripePubKey = data.publishableKey;
-      }
+      const res = await base44.functions.invoke('getStripePublicKey', {});
+      stripePubKey = res.data?.publishableKey;
     } catch (error) {
       console.error('Failed to fetch Stripe key:', error);
     }
