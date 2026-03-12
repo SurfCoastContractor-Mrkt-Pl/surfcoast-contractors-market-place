@@ -3,10 +3,27 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { referralCode, newUserEmail, newUserName } = await req.json();
 
     if (!referralCode || !newUserEmail) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Verify user is tracking their own referral signup
+    if (user.email !== newUserEmail) {
+      return Response.json(
+        { error: 'Unauthorized - can only track your own referral signup' },
+        { status: 403 }
+      );
     }
 
     // Find referrer from referral code
