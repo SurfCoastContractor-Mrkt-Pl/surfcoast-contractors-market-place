@@ -229,8 +229,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             )}
 
             <p className="text-center text-xs text-slate-400">
-              By proceeding, you authorize a $1.75 USD quote request fee. All fees are non-refundable.
-              {payerType === 'customer' && ' This fee covers the cost of a written estimate from the contractor.'}
+              By proceeding, you authorize a ${tierConfig.amount.toFixed(2)} USD {tierConfig.label.toLowerCase()}. All fees are non-refundable.
             </p>
           </form>
         )}
