@@ -1,0 +1,144 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { otherUserEmail, otherUserType } = await req.json();
+
+    if (!otherUserEmail || !otherUserType) {
+      return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Check user type matching (customer-to-contractor only)
+    const userIsContractor = (await base44.entities.Contractor.filter({ email: user.email }))?.length > 0;
+    const otherIsContractor = otherUserType === 'contractor';
+
+    if (userIsContractor === otherIsContractor) {
+      return Response.json({ 
+        allowed: false, 
+        reason: 'Can only message between customers and contractors' 
+      });
+    }
+
+    // Check for valid, active payment/subscription
+    const payments = await base44.entities.Payment.filter({ 
+      payer_email: user.email,
+      contractor_email: otherUserEmail,
+      status: { $in: ['confirmed', 'work_scheduled'] }
+    });
+
+    if (!payments || payments.length === 0) {
+      return Response.json({ 
+        allowed: false, 
+        reason: 'No active payment for this conversation',
+        tier: null
+      });
+    }
+
+    const latestPayment = payments.sort((a, b) => 
+      new Date(b.confirmed_at) - new Date(a.confirmed_at)
+    )[0];
+
+    // Determine tier based on payment amount
+    let tier = 'quote'; // Default tier for quote requests ($1.75)
+    if (latestPayment.amount === 1.50) {
+      tier = 'timed'; // 10-minute session
+    } else if (latestPayment.amount === 50) {
+      tier = 'subscription'; // Monthly subscription
+    }
+
+    // For timed tier, check if session is still active
+    if (tier === 'timed') {
+      const sessionExpiry = new Date(latestPayment.session_expires_at);
+      if (new Date() > sessionExpiry) {
+        return Response.json({ 
+          allowed: false, 
+          reason: 'Your communication session has expired',
+          tier: 'timed'
+        });
+      }
+    }
+
+    // For subscription tier, validate contact cap and session limits
+    if (tier === 'subscription') {
+      const subscription = await base44.entities.Subscription.filter({
+        user_email: user.email,
+        status: 'active'
+      });
+
+      if (!subscription || subscription.length === 0) {
+        return Response.json({ 
+          allowed: false, 
+          reason: 'No active subscription found',
+          tier: 'subscription'
+        });
+      }
+
+      // Count unique contacts this month
+      const monthStart = new Date();
+      monthStart.setDate(1);
+      
+      const uniqueContacts = new Set();
+      const thisMonthPayments = await base44.entities.Payment.filter({
+        payer_email: user.email,
+        status: { $in: ['confirmed', 'work_scheduled'] }
+      });
+
+      (thisMonthPayments || []).forEach(p => {
+        if (new Date(p.confirmed_at) >= monthStart) {
+          uniqueContacts.add(p.contractor_email);
+        }
+      });
+
+      if (uniqueContacts.size > 15) {
+        return Response.json({ 
+          allowed: false, 
+          reason: 'You have reached your monthly contact limit (15)',
+          tier: 'subscription'
+        });
+      }
+
+      // Count sessions with this specific contractor this month
+      const sessionCount = (thisMonthPayments || []).filter(p => 
+        p.contractor_email === otherUserEmail && 
+        new Date(p.confirmed_at) >= monthStart
+      ).length;
+
+      if (sessionCount >= 5) {
+        return Response.json({ 
+          allowed: false, 
+          reason: 'You have used all 5 sessions with this contractor this month',
+          tier: 'subscription',
+          sessionCount: 5
+        });
+      }
+    }
+
+    return Response.json({
+      allowed: true,
+      tier,
+      paymentId: latestPayment.id,
+      sessionExpiry: latestPayment.session_expires_at,
+      sessionCount: tier === 'subscription' ? 
+        (await base44.entities.Payment.filter({
+          payer_email: user.email,
+          contractor_email: otherUserEmail,
+          status: { $in: ['confirmed', 'work_scheduled'] }
+        }))?.filter(p => {
+          const monthStart = new Date();
+          monthStart.setDate(1);
+          return new Date(p.confirmed_at) >= monthStart;
+        }).length || 0 : null
+    });
+
+  } catch (error) {
+    console.error('Messaging eligibility validation error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+});
