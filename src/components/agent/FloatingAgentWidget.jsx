@@ -41,22 +41,23 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
+    const rect = widgetRef.current?.getBoundingClientRect();
     setDragOffset({
-      x: e.clientX - (widgetRef.current?.offsetLeft || 0),
-      y: e.clientY - (widgetRef.current?.offsetTop || 0)
+      x: e.clientX - (rect?.left || 0),
+      y: e.clientY - (rect?.top || 0)
     });
   };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!isDragging) return;
+      if (!isDragging || !widgetRef.current) return;
       
-      const newRight = window.innerWidth - (e.clientX - dragOffset.x) - 320; // 320 is widget width
-      const newBottom = window.innerHeight - (e.clientY - dragOffset.y) - 448; // 448 is widget height
+      const newLeft = e.clientX - dragOffset.x;
+      const newTop = e.clientY - dragOffset.y;
       
       setPosition({
-        bottom: Math.max(0, newBottom),
-        right: Math.max(0, newRight)
+        bottom: Math.max(0, window.innerHeight - newTop - widgetRef.current.offsetHeight),
+        right: Math.max(0, window.innerWidth - newLeft - widgetRef.current.offsetWidth)
       });
     };
 
