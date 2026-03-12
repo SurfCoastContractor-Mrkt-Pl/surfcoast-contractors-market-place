@@ -114,14 +114,17 @@ export default function Messaging() {
           {/* Chat Window */}
           <div className="md:col-span-2">
             {selectedConversation ? (
-              <ChatWindow
-                otherUserEmail={selectedConversation.email}
-                otherUserName={selectedConversation.name}
-                userEmail={userEmail}
-                userName={userName}
-                userType={userType}
-              />
-            ) : (
+                <ChatWindow
+                  otherUserEmail={selectedConversation.email}
+                  otherUserName={selectedConversation.name}
+                  otherUserType={selectedConversation.userType}
+                  userEmail={userEmail}
+                  userName={userName}
+                  userType={userType}
+                  tier={selectedConversation.tier}
+                  paymentRecord={selectedConversation.paymentRecord}
+                />
+              ) : (
               <Card className="p-8 text-center text-slate-500">
                 <MessageCircle className="w-12 h-12 mx-auto mb-4 text-slate-300" />
                 <p>Select a conversation to start messaging</p>
