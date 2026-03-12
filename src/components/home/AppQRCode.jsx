@@ -32,41 +32,46 @@ export default function AppQRCode() {
           ref={qrRef}
           className="inline-block"
         >
-          <div className="bg-gradient-to-b from-slate-900 to-slate-800 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-5 w-72">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-5 w-72 border border-amber-100">
             {/* Logo + Name */}
             <div className="flex flex-col items-center gap-3">
               <img
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg"
                 alt="SurfCoast Logo"
-                className="w-16 h-16 object-contain rounded-xl"
+                className="w-20 h-20 object-contain rounded-2xl"
               />
               <div>
-                <div className="text-amber-400 font-bold text-xl leading-tight">SurfCoast</div>
-                <div className="text-slate-300 text-xs font-medium tracking-wide leading-snug">
+                <div className="text-amber-500 font-bold text-2xl leading-tight">SurfCoast</div>
+                <div className="text-slate-500 text-xs font-semibold tracking-widest uppercase leading-snug">
                   Contractor Market Place
                 </div>
               </div>
             </div>
 
+            {/* Amber divider */}
+            <div className="w-full h-px bg-amber-200" />
+
             {/* QR Code */}
-            <div className="bg-white rounded-2xl p-3">
+            <div className="bg-white rounded-2xl p-2 border border-amber-100 shadow-sm">
               <QRCodeSVG
                 value={APP_URL}
                 size={180}
                 bgColor="#ffffff"
-                fgColor="#1e293b"
+                fgColor="#92400e"
                 level="H"
                 includeMargin={false}
               />
             </div>
 
             {/* URL */}
-            <p className="text-slate-400 text-xs font-mono break-all text-center">{APP_URL}</p>
+            <p className="text-amber-700 text-xs font-mono break-all text-center">{APP_URL}</p>
 
             {/* Tagline */}
-            <p className="text-slate-300 text-xs text-center">
-              Find skilled contractors or grow your business
-            </p>
+            <div className="w-full bg-amber-500 rounded-xl py-2 px-3">
+              <p className="text-white text-xs text-center font-semibold">
+                Find skilled contractors or grow your business
+              </p>
+            </div>
           </div>
         </div>
 
