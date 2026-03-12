@@ -86,31 +86,25 @@ export default function ContractorCard({ contractor }) {
           </div>
           
           {/* Details */}
-          <div className="mt-4 pt-4 border-t border-slate-100">
-            <div className="flex flex-wrap gap-4 text-sm text-slate-600">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-slate-400" />
+          <div className="mt-3 pt-3 border-t border-slate-100">
+            <div className="flex flex-wrap gap-3 text-xs text-slate-600">
+              <div className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-slate-400" />
                 {contractor.location}
               </div>
               {contractor.years_experience && (
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-slate-400" />
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-slate-400" />
                   {contractor.years_experience} years exp.
                 </div>
               )}
             </div>
             
             {contractor.hourly_rate && (
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-2xl font-bold text-slate-900">${contractor.hourly_rate}</span>
-                <span className="text-slate-500">/hour</span>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-xl font-bold text-slate-900">${contractor.hourly_rate}</span>
+                <span className="text-xs text-slate-500">/hour</span>
               </div>
-            )}
-            
-            {contractor.bio && (
-              <p className="mt-3 text-sm text-slate-600 line-clamp-2">
-                {contractor.bio}
-              </p>
             )}
           </div>
           
