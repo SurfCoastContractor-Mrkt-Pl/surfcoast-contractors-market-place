@@ -66,8 +66,9 @@ Deno.serve(async (req) => {
     
     // Store code in database with 5 minute expiry
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
-    await base44.asServiceRole.entities.EmailVerification.create({
-      email: `${userEmail}-${normalizedPhone}`,
+    await base44.asServiceRole.entities.PhoneVerification.create({
+      email: userEmail,
+      phone: normalizedPhone,
       code: code,
       expires_at: expiresAt,
       verified: false
