@@ -244,9 +244,9 @@ export default function Layout({ children, currentPageName }) {
             <div>
               <h4 className="font-semibold mb-3">For Contractors</h4>
               <ul className="space-y-1 text-slate-400">
-                <li><Link to={createPageUrl('BecomeContractor')} className="hover:text-white">Create Profile</Link></li>
-                <li><Link to={createPageUrl('Jobs')} className="hover:text-white">Browse Jobs</Link></li>
-                <li><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('BecomeContractor')} className="hover:text-white">Create Profile</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('Jobs')} className="hover:text-white">Browse Jobs</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
               </ul>
             </div>
             {isContractor === false && (
