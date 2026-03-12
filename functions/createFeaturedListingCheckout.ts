@@ -3,12 +3,21 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 const stripe = await import('npm:stripe@16.0.0').then(m => new m.default(Deno.env.get('STRIPE_SECRET_KEY')));
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
     const { contractorId, contractorEmail } = await req.json();
 
     if (!contractorId || !contractorEmail) {
+      console.warn(`[${requestId}] Missing required fields`);
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Verify authenticated user matches the contractor email
+    const user = await base44.auth.me();
+    if (!user || user.email !== contractorEmail) {
+      console.warn(`[${requestId}] Unauthorized: user ${user?.email} attempting to create checkout for ${contractorEmail}`);
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
     if (typeof window !== 'undefined') {
