@@ -41,6 +41,9 @@ function generateContractors(cityName, count, dayOffset) {
     const createdDate = new Date();
     createdDate.setDate(createdDate.getDate() - (30 - dayOffset - Math.floor(Math.random() * 5)));
     
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30);
+    
     contractors.push({
       name: `${firstName} ${lastName}`,
       email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_demo@surfcoast.local`,
@@ -65,6 +68,7 @@ function generateContractors(cityName, count, dayOffset) {
       face_photo_url: '',
       availability_status: Math.random() > 0.1 ? 'available' : 'booked',
       is_demo: true,
+      demo_expires_at: expiresAt.toISOString(),
       created_date: createdDate.toISOString()
     });
   }

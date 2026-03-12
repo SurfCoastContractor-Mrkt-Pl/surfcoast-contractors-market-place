@@ -44,6 +44,9 @@ function generateDemoCustomers(count) {
     const createdDate = new Date();
     createdDate.setDate(createdDate.getDate() - randomBetween(5, 30));
     
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30);
+    
     customers.push({
       email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_demo@surfcoast.local`,
       full_name: `${firstName} ${lastName}`,
@@ -52,6 +55,7 @@ function generateDemoCustomers(count) {
       property_type: randomPick(['residential_house', 'residential_apartment', 'residential_condo']),
       bio: 'Demo customer account for testing platform.',
       is_demo: true,
+      demo_expires_at: expiresAt.toISOString(),
       created_date: createdDate.toISOString(),
       completed_jobs_count: randomBetween(1, 15),
     });
