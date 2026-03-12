@@ -146,6 +146,24 @@ export default function ChatWindow({
     return <div className="p-4 text-center text-slate-500">Loading messages...</div>;
   }
 
+  if (!eligibility?.allowed) {
+    return (
+      <Card className="p-6 max-h-96 flex flex-col items-center justify-center">
+        <AlertCircle className="w-12 h-12 text-red-500 mb-3" />
+        <h3 className="font-semibold text-slate-900 mb-2">Cannot Message</h3>
+        <p className="text-sm text-slate-600 text-center">{eligibility?.reason}</p>
+      </Card>
+    );
+  }
+
+  const formatTimeRemaining = (date) => {
+    if (!date) return '';
+    const now = new Date();
+    const mins = Math.floor((date - now) / 60000);
+    const secs = Math.floor(((date - now) % 60000) / 1000);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className="flex flex-col h-full max-h-96 bg-white rounded-lg border border-slate-200">
       {/* Header */}
