@@ -218,7 +218,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                  {mutation.isPending || checkingout ? (
                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{checkingout ? 'Redirecting...' : 'Processing...'}</>
                  ) : (
-                   'Confirm & Pay $1.75'
+                   `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
                  )}
                </Button>
              </div>
