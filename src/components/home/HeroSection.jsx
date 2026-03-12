@@ -27,8 +27,8 @@ export default function HeroSection() {
           </h1>
           
           <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
-            Whether you need a specialized tradesperson or a general contractor, 
-            find the right professional for your project in minutes.
+            Whether you need a specialized professional or a general contractor, 
+            find the right expert for your project in minutes.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
