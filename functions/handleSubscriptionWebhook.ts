@@ -30,15 +30,26 @@ function markEventProcessed(eventId) {
 Deno.serve(async (req) => {
   try {
     const signature = req.headers.get('stripe-signature');
+    if (!signature) {
+      return Response.json({ error: 'Missing signature' }, { status: 400 });
+    }
+
     const body = await req.text();
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
+    if (!webhookSecret) {
+      console.error('STRIPE_WEBHOOK_SECRET is not configured');
+      return Response.json({ error: 'Webhook not configured' }, { status: 500 });
+    }
+
     // Verify webhook signature
-    const event = await stripe.webhooks.constructEventAsync(
-      body,
-      signature,
-      webhookSecret
-    );
+    let event;
+    try {
+      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+    } catch (sigError) {
+      console.error('Webhook signature verification failed');
+      return Response.json({ error: 'Invalid signature' }, { status: 400 });
+    }
 
     // Check idempotency
     if (isEventProcessed(event.id)) {
