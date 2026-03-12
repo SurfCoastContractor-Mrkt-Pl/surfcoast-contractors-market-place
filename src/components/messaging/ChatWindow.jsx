@@ -223,20 +223,21 @@ export default function ChatWindow({
           <Plus className="w-4 h-4" />
         </Button>
         <Input
-          placeholder="Type a message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          className="flex-1"
-        />
-        <Button 
-          size="icon"
-          onClick={handleSend}
-          disabled={!newMessage.trim()}
-          className="bg-amber-500 hover:bg-amber-600"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
+           placeholder="Type a message..."
+           value={newMessage}
+           onChange={(e) => setNewMessage(e.target.value)}
+           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+           disabled={!eligibility?.allowed || (tier === 'timed' && !isTimedSessionActive(timeRemaining))}
+           className="flex-1"
+         />
+         <Button 
+           size="icon"
+           onClick={handleSend}
+           disabled={!newMessage.trim() || !eligibility?.allowed || (tier === 'timed' && !isTimedSessionActive(timeRemaining))}
+           className="bg-amber-500 hover:bg-amber-600"
+         >
+           <Send className="w-4 h-4" />
+         </Button>
       </div>
     </div>
   );
