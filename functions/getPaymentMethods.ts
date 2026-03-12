@@ -24,7 +24,27 @@ Deno.serve(async (req) => {
       user_email: userEmail,
     });
 
-    return Response.json(paymentMethods || []);
+    // Deduplicate by stripe_payment_method_id, keeping the earliest record
+    const seen = new Set();
+    const deduped = [];
+    const duplicateIds = [];
+    for (const method of (paymentMethods || [])) {
+      if (seen.has(method.stripe_payment_method_id)) {
+        duplicateIds.push(method.id);
+      } else {
+        seen.add(method.stripe_payment_method_id);
+        deduped.push(method);
+      }
+    }
+
+    // Clean up duplicates in the background
+    if (duplicateIds.length > 0) {
+      for (const id of duplicateIds) {
+        base44.entities.SavedPaymentMethod.delete(id).catch(() => {});
+      }
+    }
+
+    return Response.json(deduped);
   } catch (error) {
     console.error('Error fetching payment methods:', error);
     return Response.json({ error: error.message }, { status: 500 });
