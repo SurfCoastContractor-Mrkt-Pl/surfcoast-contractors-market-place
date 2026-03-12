@@ -37,6 +37,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Payment method is not a valid card' }, { status: 400 });
     }
 
+    // Prevent duplicate: check if this payment method ID is already saved
+    const existing = await base44.entities.SavedPaymentMethod.filter({
+      user_email: userEmail,
+      stripe_payment_method_id: paymentMethodId,
+    });
+    if (existing && existing.length > 0) {
+      return Response.json({ success: true, data: existing[0], duplicate: true });
+    }
+
     // Save payment method info to database
     const savedMethod = await base44.entities.SavedPaymentMethod.create({
       user_email: userEmail,
