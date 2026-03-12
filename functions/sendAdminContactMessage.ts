@@ -1,8 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Rate limiter per IP/email
-const requestCounts = new Map();
-const RATE_LIMIT_WINDOW = 3600000; // 1 hour
+const RATE_LIMIT_WINDOW = 3600; // 1 hour in seconds
 const RATE_LIMIT_THRESHOLD = 5; // Max 5 messages per hour per user
 
 Deno.serve(async (req) => {
@@ -26,22 +24,40 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Rate limiting per user
-    const now = Date.now();
+    // Database-backed rate limiting
     const userKey = user.email;
-    if (!requestCounts.has(userKey)) {
-      requestCounts.set(userKey, []);
-    }
+    const now = new Date();
+    const windowStart = new Date(now.getTime() - RATE_LIMIT_WINDOW * 1000);
 
-    const userRequests = requestCounts.get(userKey);
-    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
-    
-    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
-      return Response.json({ error: 'Rate limit exceeded: maximum 5 messages per hour' }, { status: 429 });
-    }
+    try {
+      const rateLimitRecords = await base44.asServiceRole.entities.RateLimitTracker.filter({
+        key: userKey,
+        limit_type: 'admin_contact',
+        window_start: { '$gte': windowStart.toISOString() }
+      });
 
-    recentRequests.push(now);
-    requestCounts.set(userKey, recentRequests);
+      if (rateLimitRecords.length >= RATE_LIMIT_THRESHOLD) {
+        return Response.json({ error: 'Rate limit exceeded: maximum 5 messages per hour' }, { status: 429 });
+      }
+
+      // Create/update rate limit record
+      if (rateLimitRecords.length > 0) {
+        await base44.asServiceRole.entities.RateLimitTracker.update(rateLimitRecords[0].id, {
+          request_count: rateLimitRecords[0].request_count + 1
+        });
+      } else {
+        await base44.asServiceRole.entities.RateLimitTracker.create({
+          key: userKey,
+          limit_type: 'admin_contact',
+          request_count: 1,
+          window_start: now.toISOString(),
+          window_duration_seconds: RATE_LIMIT_WINDOW
+        });
+      }
+    } catch (rateLimitError) {
+      console.error('Rate limit check failed:', rateLimitError.message);
+      // Fail open (allow request) if rate limiting fails
+    }
 
     const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL');
     if (!adminEmail) {
@@ -62,8 +78,8 @@ Deno.serve(async (req) => {
     });
 
     return Response.json({ success: true });
-    } catch (error) {
-    console.error('Error sending admin contact message');
+  } catch (error) {
+    console.error('Error sending admin contact message:', error.message);
     return Response.json({ error: 'Failed to send message' }, { status: 500 });
-    }
+  }
 });

@@ -122,13 +122,12 @@ Please review immediately in the admin dashboard.`,
     return Response.json({
       success: true,
       report_id: report.id,
-      risk_score: scanResult.risk_score,
       status: report.status,
     });
   } catch (error) {
-    console.error('Error submitting content report:', error);
+    console.error('Error submitting content report:', error.message);
     return Response.json(
-      { error: 'Failed to submit report', details: error.message },
+      { error: 'Failed to submit report' },
       { status: 500 }
     );
   }

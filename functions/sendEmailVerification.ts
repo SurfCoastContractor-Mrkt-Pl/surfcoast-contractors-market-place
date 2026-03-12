@@ -1,10 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Rate limiter for verification code requests
-const requestCounts = new Map();
-const failedAttempts = new Map();
-const SHORT_WINDOW = 300000; // 5 minutes
-const LONG_WINDOW = 3600000; // 1 hour
+const SHORT_WINDOW = 300; // 5 minutes in seconds
+const LONG_WINDOW = 3600; // 1 hour in seconds
 const SHORT_THRESHOLD = 2; // Max 2 requests per 5 minutes
 const LONG_THRESHOLD = 5; // Max 5 requests per hour
 const FAILED_ATTEMPT_THRESHOLD = 3; // Lock after 3 failed verification attempts
@@ -39,39 +36,52 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Rate limiting per email with progressive lockout
-     const now = Date.now();
-     if (!requestCounts.has(userEmail)) {
-       requestCounts.set(userEmail, []);
-     }
+    // Database-backed rate limiting
+    const now = new Date();
+    const shortWindowStart = new Date(now.getTime() - SHORT_WINDOW * 1000);
+    const longWindowStart = new Date(now.getTime() - LONG_WINDOW * 1000);
 
-     const userRequests = requestCounts.get(userEmail);
-     const shortWindowRequests = userRequests.filter(timestamp => now - timestamp < SHORT_WINDOW);
-     const longWindowRequests = userRequests.filter(timestamp => now - timestamp < LONG_WINDOW);
+    try {
+      // Check short-window requests (5 minutes)
+      const shortWindowRecords = await base44.asServiceRole.entities.RateLimitTracker.filter({
+        key: userEmail,
+        limit_type: 'email_verification',
+        window_start: { '$gte': shortWindowStart.toISOString() }
+      });
 
-     // Check short-window rate limit (2 requests per 5 minutes)
-     if (shortWindowRequests.length >= SHORT_THRESHOLD) {
-       return Response.json({ error: 'Too many verification requests. Please try again in 5 minutes.' }, { status: 429 });
-     }
+      if (shortWindowRecords.length > 0 && shortWindowRecords[0].request_count >= SHORT_THRESHOLD) {
+        return Response.json({ error: 'Too many verification requests. Please try again in 5 minutes.' }, { status: 429 });
+      }
 
-     // Check long-window rate limit (5 requests per hour)
-     if (longWindowRequests.length >= LONG_THRESHOLD) {
-       return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
-     }
+      // Check long-window requests (1 hour)
+      const longWindowRecords = await base44.asServiceRole.entities.RateLimitTracker.filter({
+        key: userEmail,
+        limit_type: 'email_verification',
+        window_start: { '$gte': longWindowStart.toISOString() }
+      });
 
-     // Check failed verification attempts
-     if (!failedAttempts.has(userEmail)) {
-       failedAttempts.set(userEmail, []);
-     }
-     const failedAttemptsList = failedAttempts.get(userEmail);
-     const recentFailures = failedAttemptsList.filter(timestamp => now - timestamp < LONG_WINDOW);
+      if (longWindowRecords.length > 0 && longWindowRecords[0].request_count >= LONG_THRESHOLD) {
+        return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
+      }
 
-     if (recentFailures.length >= FAILED_ATTEMPT_THRESHOLD) {
-       return Response.json({ error: 'Account temporarily locked due to multiple failed verification attempts. Please try again in 1 hour.' }, { status: 429 });
-     }
-
-     longWindowRequests.push(now);
-     requestCounts.set(userEmail, longWindowRequests);
+      // Update or create rate limit record
+      if (longWindowRecords.length > 0) {
+        await base44.asServiceRole.entities.RateLimitTracker.update(longWindowRecords[0].id, {
+          request_count: longWindowRecords[0].request_count + 1
+        });
+      } else {
+        await base44.asServiceRole.entities.RateLimitTracker.create({
+          key: userEmail,
+          limit_type: 'email_verification',
+          request_count: 1,
+          window_start: now.toISOString(),
+          window_duration_seconds: LONG_WINDOW
+        });
+      }
+    } catch (rateLimitError) {
+      console.error('Rate limit check failed:', rateLimitError.message);
+      // Fail open if database unavailable
+    }
 
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();

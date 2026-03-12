@@ -9,28 +9,26 @@ if (!webhookSecret) {
   console.error('STRIPE_WEBHOOK_SECRET is not configured');
 }
 
-// Idempotency tracking
-const processedEvents = new Map();
-const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000;
-
-function isEventProcessed(eventId) {
-  if (processedEvents.has(eventId)) {
-    const timestamp = processedEvents.get(eventId);
-    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
-      return true;
-    }
-    processedEvents.delete(eventId);
+// Database-backed idempotency checking
+async function isEventProcessed(base44, eventId) {
+  try {
+    const processed = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({ event_id: eventId });
+    return processed.length > 0;
+  } catch {
+    return false;
   }
-  return false;
 }
 
-function markEventProcessed(eventId) {
-  processedEvents.set(eventId, Date.now());
-  // Cleanup expired entries
-  for (const [id, ts] of processedEvents.entries()) {
-    if (Date.now() - ts > IDEMPOTENCY_TTL) {
-      processedEvents.delete(id);
-    }
+async function markEventProcessed(base44, eventId, eventType) {
+  try {
+    await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
+      event_id: eventId,
+      event_type: eventType,
+      processed_at: new Date().toISOString(),
+      status: 'success'
+    });
+  } catch (error) {
+    console.error('Failed to mark event as processed:', error.message);
   }
 }
 
@@ -53,15 +51,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
     
-    // Check idempotency
-    if (isEventProcessed(event.id)) {
+    // Create base44 client after auth (webhook may not have auth context)
+    const base44 = createClientFromRequest(req);
+
+    // Check idempotency (database-backed)
+    if (await isEventProcessed(base44, event.id)) {
       console.log(`Skipping duplicate webhook event: ${event.id}`);
       return Response.json({ received: true, duplicate: true }, { status: 200 });
     }
-    markEventProcessed(event.id);
-    
-    // Create base44 client after auth (webhook may not have auth context)
-    const base44 = createClientFromRequest(req);
+    await markEventProcessed(base44, event.id, event.type);
 
     // Handle checkout.session.completed (fast path)
     if (event.type === 'checkout.session.completed') {
