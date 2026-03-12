@@ -94,7 +94,7 @@ export default function Layout({ children, currentPageName }) {
               />
               <div className="flex flex-col leading-tight">
                 <span 
-                  className="font-bold text-lg text-white"
+                  className="font-bold text-lg text-amber-300"
                   style={{
                     WebkitTextStroke: '2px #000000',
                     paintOrder: 'stroke fill'
@@ -103,7 +103,7 @@ export default function Layout({ children, currentPageName }) {
                   SurfCoast
                 </span>
                 <span 
-                  className="text-sm font-semibold text-white"
+                  className="text-sm font-semibold text-amber-300"
                   style={{
                     WebkitTextStroke: '1px #000000',
                     paintOrder: 'stroke fill'
