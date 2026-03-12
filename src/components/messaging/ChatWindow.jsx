@@ -98,6 +98,24 @@ export default function ChatWindow({
     }
   }, [messages]);
 
+  // Timer for timed session
+  useEffect(() => {
+    if (tier !== 'timed' || !timeRemaining) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const remaining = timeRemaining - now;
+      
+      if (remaining <= 0) {
+        setEligibility({ allowed: false, reason: 'Session expired' });
+        clearInterval(interval);
+      }
+      setTimeRemaining(prev => new Date(prev.getTime() - 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeRemaining, tier]);
+
   const handleSend = async () => {
     if (!newMessage.trim()) return;
 
