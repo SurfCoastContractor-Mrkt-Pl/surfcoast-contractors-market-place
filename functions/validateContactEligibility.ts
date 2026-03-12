@@ -16,15 +16,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
     }
 
-    // Check if this is a demo profile
-    if (contractor.is_demo) {
-      return Response.json({
-        eligible: false,
-        reason: 'incomplete_profile',
-        message: 'This profile is still being set up and is not yet accepting inquiries. Please try another contractor.',
-        contractor_name: contractor.name
-      }, { status: 403 });
-    }
+    // Demo profiles are now visible to all users - no restriction
 
     return Response.json({
       eligible: true,
