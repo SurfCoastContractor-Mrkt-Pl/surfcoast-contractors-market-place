@@ -276,27 +276,27 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-slate-900 text-white py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-4">
+      <div className="bg-slate-900 text-white py-5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
-              <ShieldCheck className="w-7 h-7 text-amber-400" />
+            <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+              <ShieldCheck className="w-6 h-6 text-amber-400" />
               Admin Fee Dashboard
             </h1>
-            <p className="text-slate-400 mt-1 text-sm">All platform access fees — SurfCoast Contractor Market Place</p>
+            <p className="text-slate-400 mt-0.5 text-xs">Platform access fees — SurfCoast Contractor Market Place</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Button
               onClick={exportCSV}
               variant="outline"
-              className="border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700"
+              className="border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700 text-xs h-9"
             >
               <Download className="w-4 h-4 mr-2" />
               Export CSV
             </Button>
-            <div className="flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 rounded-lg px-3 py-2 text-sm text-blue-300">
+            <div className="flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 rounded-lg px-2 py-1 text-xs text-blue-300">
               <CreditCard className="w-4 h-4" />
-              Stripe Integration — Upgrade to Builder+
+              Stripe
             </div>
           </div>
         </div>
