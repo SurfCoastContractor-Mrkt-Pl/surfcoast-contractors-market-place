@@ -40,56 +40,46 @@ export default function JobCard({ job }) {
 
   return (
     <Link to={createPageUrl(`JobDetails?id=${job.id}`)}>
-      <Card className="group p-6 hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-amber-400">
-        <div className="flex items-start justify-between gap-4 mb-4">
+      <Card className="group p-3 hover:shadow-md transition-all duration-300 border-slate-200 hover:border-amber-400">
+        <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg text-slate-900 group-hover:text-amber-600 transition-colors">
+            <h3 className="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
               {job.title}
             </h3>
-            <p className="text-sm text-slate-500 mt-1">
-              Posted by {job.poster_name}
-            </p>
           </div>
-          <Badge className={urgencyColors[job.urgency]}>
-            {job.urgency === 'urgent' ? '🔥 Urgent' : job.urgency}
+          <Badge className={`${urgencyColors[job.urgency]} text-xs py-0.5 px-1.5`}>
+            {job.urgency === 'urgent' ? '🔥' : job.urgency.charAt(0).toUpperCase()}
           </Badge>
         </div>
         
-        <p className="text-slate-600 text-sm line-clamp-2 mb-4">
+        <p className="text-slate-600 text-xs line-clamp-1 mb-2">
           {job.description}
         </p>
         
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge variant="outline" className="border-slate-300">
+        <div className="flex flex-wrap gap-1 mb-2">
+          <Badge variant="outline" className="border-slate-300 text-xs py-0.5 px-1.5">
             {job.contractor_type_needed === 'trade_specific' 
-              ? tradeLabels[job.trade_needed] || 'Trade Specific'
+              ? (tradeLabels[job.trade_needed] || 'Trade').split(' ')[0]
               : job.contractor_type_needed === 'general' 
-                ? 'General Contractor'
-                : 'Any Contractor'
+                ? 'General'
+                : 'Any'
             }
           </Badge>
         </div>
         
-        <div className="flex flex-wrap gap-4 text-sm text-slate-600 pt-4 border-t border-slate-100">
-          <div className="flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-slate-400" />
-            {job.location}
+        <div className="flex flex-wrap gap-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
+          <div className="flex items-center gap-0.5">
+            <MapPin className="w-3 h-3 text-slate-400 flex-shrink-0" />
+            <span className="truncate">{job.location}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <DollarSign className="w-4 h-4 text-slate-400" />
-            {formatBudget()}
-            {job.budget_type && <span className="text-slate-400">({job.budget_type})</span>}
+          <div className="flex items-center gap-0.5">
+            <DollarSign className="w-3 h-3 text-slate-400 flex-shrink-0" />
+            <span>{formatBudget()}</span>
           </div>
           {job.start_date && (
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-slate-400" />
-              {format(new Date(job.start_date), 'MMM d, yyyy')}
-            </div>
-          )}
-          {job.duration && (
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-slate-400" />
-              {job.duration}
+            <div className="flex items-center gap-0.5">
+              <Calendar className="w-3 h-3 text-slate-400 flex-shrink-0" />
+              <span>{format(new Date(job.start_date), 'MMM d')}</span>
             </div>
           )}
         </div>
