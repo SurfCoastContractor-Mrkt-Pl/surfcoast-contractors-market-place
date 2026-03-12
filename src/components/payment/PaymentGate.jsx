@@ -102,10 +102,10 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-amber-500" />
-            Quote Request Fee — $1.75
+            {tierConfig.label} — ${tierConfig.amount.toFixed(2)}
           </DialogTitle>
           <DialogDescription id="payment-description">
-            Secure payment to request a written estimate from this contractor.
+            {tierConfig.description}
           </DialogDescription>
         </DialogHeader>
 
