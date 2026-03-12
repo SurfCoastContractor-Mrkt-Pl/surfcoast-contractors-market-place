@@ -247,7 +247,10 @@ export default function SavedPaymentMethods({ userEmail }) {
 
   const { data: paymentMethods, isLoading, refetch } = useQuery({
     queryKey: ['paymentMethods', userEmail],
-    queryFn: () => base44.functions.invoke('getPaymentMethods', { userEmail }),
+    queryFn: async () => {
+      const res = await base44.functions.invoke('getPaymentMethods', { userEmail });
+      return res?.data || [];
+    },
     enabled: !!userEmail,
   });
 
