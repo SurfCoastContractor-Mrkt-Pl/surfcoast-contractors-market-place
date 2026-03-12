@@ -1,0 +1,83 @@
+import React, { useRef } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { Download } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+const APP_URL = typeof window !== 'undefined' ? window.location.origin : 'https://surfcoastcontractormarketplace.com';
+
+export default function AppQRCode() {
+  const qrRef = useRef(null);
+
+  const handleDownload = () => {
+    const svg = qrRef.current?.querySelector('svg');
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const size = 400;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.drawImage(img, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      const a = document.createElement('a');
+      a.download = 'surfcoast-qrcode.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    };
+    img.src = url;
+  };
+
+  return (
+    <section className="py-14 bg-white">
+      <div className="max-w-xl mx-auto px-4 text-center">
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">Scan to Visit</h2>
+        <p className="text-slate-500 mb-8 text-sm">
+          Share this QR code on flyers, business cards, or social media to bring people straight to SurfCoast.
+        </p>
+
+        <div
+          ref={qrRef}
+          className="inline-block p-5 bg-white rounded-2xl shadow-xl border border-slate-100 mb-6"
+        >
+          <QRCodeSVG
+            value={APP_URL}
+            size={200}
+            bgColor="#ffffff"
+            fgColor="#1e293b"
+            level="H"
+            includeMargin={false}
+            imageSettings={{
+              src: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg",
+              x: undefined,
+              y: undefined,
+              height: 36,
+              width: 36,
+              excavate: true,
+            }}
+          />
+        </div>
+
+        <div className="mb-3">
+          <p className="text-xs text-slate-400 font-mono break-all">{APP_URL}</p>
+        </div>
+
+        <Button
+          onClick={handleDownload}
+          className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold gap-2"
+        >
+          <Download className="w-4 h-4" />
+          Download QR Code
+        </Button>
+      </div>
+    </section>
+  );
+}
