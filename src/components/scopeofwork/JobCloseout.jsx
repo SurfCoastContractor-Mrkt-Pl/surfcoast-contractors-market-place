@@ -79,6 +79,15 @@ export default function JobCloseout({ scope, role, open, onClose }) {
       }
 
       await base44.functions.invoke('createReviewFromCloseout', { scopeId: scope.id });
+      
+      // Send job completion email to customer
+      if (scope.customer_email) {
+        await base44.functions.invoke('sendJobCompletionEmail', {
+          scopeId: scope.id,
+          contractorEmail: scope.contractor_email,
+          customerEmail: scope.customer_email,
+        });
+      }
     }
 
     setDone(true);
