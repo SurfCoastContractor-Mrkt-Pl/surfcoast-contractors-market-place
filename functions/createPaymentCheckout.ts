@@ -110,8 +110,15 @@ Deno.serve(async (req) => {
     try {
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
+        payment_method_options: {
+          card: {
+            request_three_d_secure: 'automatic',
+          },
+        },
+        payment_method_collection: 'always',
         mode: 'payment',
         customer_email: payerEmail,
+        link_authentication_element: 'disabled',
         line_items: [
           {
             price: PAYMENT_PRICE_ID,
