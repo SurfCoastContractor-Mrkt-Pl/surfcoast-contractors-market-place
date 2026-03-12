@@ -210,12 +210,44 @@ export default function AdminDashboard() {
   if (!authed) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-sm p-8 text-center">
-          <div className="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center mx-auto mb-4">
-            <ShieldCheck className="w-7 h-7 text-red-500" />
+        <Card className="w-full max-w-sm p-8">
+          <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-7 h-7 text-amber-400" />
           </div>
-          <h1 className="text-xl font-bold text-slate-900 mb-2">Access Denied</h1>
-          <p className="text-sm text-slate-500">{error || 'You must be logged in as an admin to view this page.'}</p>
+          <h1 className="text-xl font-bold text-slate-900 mb-1 text-center">Admin Dashboard</h1>
+          <p className="text-xs text-slate-500 text-center mb-6">Enter your password to continue</p>
+
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter admin password"
+                disabled={loginLoading}
+                className="w-full"
+                autoFocus
+              />
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              disabled={loginLoading || !passwordInput.trim()}
+              className="w-full bg-slate-900 hover:bg-slate-800"
+            >
+              {loginLoading ? 'Verifying...' : 'Access Dashboard'}
+            </Button>
+          </form>
         </Card>
       </div>
     );
