@@ -176,14 +176,17 @@ export default function AdminDashboard() {
       if (res?.data?.success) {
         setAuthed(true);
         setError('');
+        setPasswordInput('');
       } else {
-        setError(res?.data?.error || 'Invalid password.');
+        setError(res?.data?.error || 'Authentication failed. Please try again.');
         setLoginAttempted(true);
+        setPasswordInput('');
       }
     } catch (err) {
       console.error('Auth error:', err);
       setError('Authentication failed. Please try again.');
       setLoginAttempted(true);
+      setPasswordInput('');
     } finally {
       setLoginLoading(false);
     }
