@@ -81,7 +81,7 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
 
       {/* Navigation */}
-      <nav className={`z-50 ${isHome ? 'bg-gradient-to-b from-slate-900/80 to-slate-800/40 backdrop-blur-sm' : 'bg-white/95 backdrop-blur-sm border-b border-slate-200/50'}`}>
+      <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
