@@ -124,7 +124,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="hidden md:flex items-center gap-3">
 
               {isContractor === false && (
-                <Link to={createPageUrl('PostJob')}>
+                <Link to={createPageUrl('QuickJobPost')}>
                   <Button variant="ghost" className={isHome ? "text-white hover:bg-white/10" : "border border-slate-300 text-slate-600"}>
                     Post a Job
                   </Button>
@@ -193,7 +193,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="pt-4 border-t border-slate-100 space-y-2">
 
               {isContractor === false && (
-                  <Link to={createPageUrl('PostJob')} onClick={() => setMobileMenuOpen(false)}>
+                  <Link to={createPageUrl('QuickJobPost')} onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full">Post a Job</Button>
                   </Link>
                 )}
