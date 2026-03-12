@@ -98,11 +98,11 @@ export default function EmailCapturePopup() {
               <div className="flex items-start gap-3 text-sm">
                 <Gift className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-slate-900">What You Get:</p>
+                  <p className="font-semibold text-slate-900">Why Join:</p>
                   <ul className="text-slate-600 mt-2 space-y-1">
-                    <li>✓ 3 curated contractor recommendations</li>
-                    <li>✓ First quote request FREE ($1.75 value)</li>
-                    <li>✓ Exclusive tips & marketplace updates</li>
+                    <li>✓ Job alerts from local contractors</li>
+                    <li>✓ $1.75 credit on first quote</li>
+                    <li>✓ Verified professionals, trusted reviews</li>
                   </ul>
                 </div>
               </div>
