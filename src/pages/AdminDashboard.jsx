@@ -151,10 +151,7 @@ export default function AdminDashboard() {
 
     setLoginLoading(true);
     try {
-      const res = await base44.functions.invoke('adminAuth', { 
-        password: passwordInput,
-        service_key: Deno.env.get('INTERNAL_SERVICE_KEY')
-      });
+      const res = await base44.functions.invoke('adminAuth', { password: passwordInput });
       if (res?.data?.success) {
         setAuthed(true);
         setError('');
