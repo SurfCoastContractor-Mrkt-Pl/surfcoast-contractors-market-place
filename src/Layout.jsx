@@ -159,9 +159,9 @@ export default function Layout({ children, currentPageName }) {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
-                <X className={`w-6 h-6 ${isHome ? 'text-white' : 'text-slate-900'}`} />
+                <X className="w-6 h-6 text-slate-900" />
               ) : (
-                <Menu className={`w-6 h-6 ${isHome ? 'text-white' : 'text-slate-900'}`} />
+                <Menu className="w-6 h-6 text-slate-900" />
               )}
             </button>
           </div>
