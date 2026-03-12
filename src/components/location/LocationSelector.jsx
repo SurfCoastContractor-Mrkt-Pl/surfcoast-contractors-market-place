@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MapPin, Loader2 } from 'lucide-react';
-import { getUserLocation, geocodeLocation } from './geolocationUtils';
+import { getUserLocation, geocodeLocation, reverseGeocodeLocation } from './geolocationUtils';
 
 export default function LocationSelector({ onLocationChange }) {
   const [location, setLocation] = useState(null);
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [locationDisplay, setLocationDisplay] = useState('');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [manualInput, setManualInput] = useState('');
 
   useEffect(() => {
     detectLocation();
@@ -23,32 +22,37 @@ export default function LocationSelector({ onLocationChange }) {
     const userLoc = await getUserLocation();
     if (userLoc) {
       setLocation(userLoc);
+      // Try to get city/state from coordinates
+      const reverseGeo = await reverseGeocodeLocation(userLoc.lat, userLoc.lon);
+      if (reverseGeo) {
+        setLocationDisplay(reverseGeo);
+      }
       onLocationChange(userLoc);
     } else {
-      setError('Unable to detect location. Please enter manually.');
+      setError('Unable to detect location. Please enter your city and state.');
     }
     setLoading(false);
   };
 
   const handleManualLocation = async () => {
-    const locationQuery = [state, city, zipCode].filter(v => v.trim()).join(', ');
-    if (!locationQuery) {
-      setError('Please enter at least a city, state, or ZIP code');
+    if (!city.trim() || !state.trim()) {
+      setError('Please enter both city and state');
       return;
     }
 
+    const locationQuery = `${city}, ${state}`;
     setLoading(true);
     setError('');
     const geocoded = await geocodeLocation(locationQuery);
     if (geocoded) {
       const loc = { lat: geocoded.lat, lon: geocoded.lon };
       setLocation(loc);
+      setLocationDisplay(locationQuery);
       onLocationChange(loc);
       setState('');
       setCity('');
-      setZipCode('');
     } else {
-      setError('Location not found. Try a different combination.');
+      setError('Location not found. Check spelling and try again.');
     }
     setLoading(false);
   };
