@@ -98,6 +98,7 @@ const lineOfWorkOptions = [
 ];
 
 export default function LineOfWorkSelector({ value, customValue, onChange, onCustomChange }) {
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [customInput, setCustomInput] = useState(customValue || '');
 
   const handleCustomChange = (e) => {
@@ -105,45 +106,78 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
     onCustomChange(e.target.value);
   };
 
-  const handleSelectChange = (newValue) => {
-    onChange(newValue);
-    if (newValue !== 'other') {
-      setCustomInput('');
-      onCustomChange('');
-    }
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
+
+  const handleItemSelect = (itemId) => {
+    onChange(itemId);
+    setCustomInput('');
+    onCustomChange('');
+  };
+
+  const handleOtherSelect = () => {
+    onChange('other');
+    setSelectedCategory('');
+  };
+
+  // Find current selection info
+  const currentItem = lineOfWorkOptions
+    .flatMap(g => g.items)
+    .find(item => item.id === value);
+  const currentCategory = lineOfWorkOptions
+    .find(g => g.items.some(item => item.id === value))?.category;
 
   return (
     <div className="space-y-4">
+      {/* Industry Category Selection */}
       <div>
-        <Label htmlFor="line_of_work">Line of Work *</Label>
-        <Select value={value} onValueChange={handleSelectChange}>
-          <SelectTrigger id="line_of_work" className="mt-1.5">
-            <SelectValue placeholder="Select your profession or line of work" />
+        <Label htmlFor="industry_category" className="text-sm font-medium">Select Industry *</Label>
+        <Select value={selectedCategory || currentCategory || ''} onValueChange={handleCategoryChange}>
+          <SelectTrigger id="industry_category" className="mt-1.5">
+            <SelectValue placeholder="Choose an industry" />
           </SelectTrigger>
           <SelectContent className="max-h-72">
             {lineOfWorkOptions.map((group) => (
-              <div key={group.category}>
-                <div className="px-2 py-1.5 text-xs font-semibold text-slate-500 bg-slate-50">
-                  {group.category}
-                </div>
-                {group.items.map((item) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </div>
+              <SelectItem key={group.category} value={group.category}>
+                {group.category}
+              </SelectItem>
             ))}
             <div className="border-t border-slate-200">
-              <SelectItem value="other">Other (Please specify)</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
             </div>
           </SelectContent>
         </Select>
       </div>
 
-      {value === 'other' && (
+      {/* Sub-options based on selected category */}
+      {selectedCategory && selectedCategory !== 'other' && (
         <div>
-          <Label htmlFor="line_of_work_other">Please describe your line of work *</Label>
+          <Label htmlFor="line_of_work" className="text-sm font-medium">Select Role *</Label>
+          <Select value={value} onValueChange={handleItemSelect}>
+            <SelectTrigger id="line_of_work" className="mt-1.5">
+              <SelectValue placeholder="Choose a specific role" />
+            </SelectTrigger>
+            <SelectContent className="max-h-72">
+              {lineOfWorkOptions
+                .find(g => g.category === selectedCategory)
+                ?.items.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              <div className="border-t border-slate-200">
+                <SelectItem value="other">Other (Please specify)</SelectItem>
+              </div>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {/* Other option */}
+      {selectedCategory === 'other' && (
+        <div>
+          <Label htmlFor="line_of_work_other" className="text-sm font-medium">Describe Your Profession *</Label>
           <Input
             id="line_of_work_other"
             value={customInput}
@@ -155,6 +189,13 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
           <p className="text-xs text-slate-500 mt-1">
             Enter your specific profession or trade that wasn't listed above.
           </p>
+        </div>
+      )}
+
+      {/* Selected value display */}
+      {value && value !== 'other' && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 text-sm text-blue-900">
+          ✓ Selected: <strong>{currentItem?.name}</strong>
         </div>
       )}
     </div>
