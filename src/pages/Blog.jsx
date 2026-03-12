@@ -92,13 +92,21 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-slate-100 to-blue-50 border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <h1 className="text-4xl font-serif font-bold text-slate-900 mb-3">Resources & Insights</h1>
-          <p className="text-lg text-slate-600 font-light">
-            Expert guides, contractor spotlights, and real success stories
-          </p>
+      {/* Header with beach theme */}
+      <div className="bg-gradient-to-br from-blue-600 to-cyan-600 border-b border-blue-700/50 py-16 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <svg className="w-full h-full" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,64 Q300,20 600,64 T1200,64 L1200,120 L0,120 Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="text-center">
+            <span className="text-5xl block mb-4">🏄‍♀️</span>
+            <h1 className="text-4xl font-serif font-bold text-white mb-3">Resources & Insights</h1>
+            <p className="text-lg text-blue-50 font-light">
+              Expert guides, contractor spotlights, and real success stories from the SurfCoast community
+            </p>
+          </div>
         </div>
       </div>
 
