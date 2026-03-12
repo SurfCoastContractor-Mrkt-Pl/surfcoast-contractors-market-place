@@ -40,16 +40,16 @@ export default function AppQRCode() {
                 alt="SurfCoast Logo"
                 className="w-20 h-20 object-contain rounded-2xl"
               />
-              <div>
+              <div className="text-center">
                 <div className="text-amber-500 font-bold text-2xl leading-tight">SurfCoast</div>
-                <div className="text-slate-500 text-xs font-semibold tracking-widest uppercase leading-snug">
+                <div className="text-blue-600 text-xs font-semibold tracking-widest uppercase leading-snug">
                   Contractor Market Place
                 </div>
               </div>
             </div>
 
-            {/* Amber divider */}
-            <div className="w-full h-px bg-amber-200" />
+            {/* Gradient divider */}
+            <div className="w-full h-1 bg-gradient-to-r from-amber-500 to-blue-600 rounded-full" />
 
             {/* QR Code */}
             <div className="bg-white rounded-2xl p-2 border border-amber-100 shadow-sm">
