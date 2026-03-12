@@ -207,7 +207,7 @@ export default function ChatWindow({
                   ? 'bg-amber-500 text-white' 
                   : 'bg-slate-100 text-slate-900'
               }`}>
-                <p className="text-sm break-words">{msg.message}</p>
+                <p className="text-sm break-words">{msg.body}</p>
                 <p className={`text-xs mt-1 ${msg.sender_email === userEmail ? 'text-amber-100' : 'text-slate-500'}`}>
                   {new Date(msg.created_date).toLocaleTimeString()}
                 </p>
