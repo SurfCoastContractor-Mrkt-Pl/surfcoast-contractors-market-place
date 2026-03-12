@@ -118,6 +118,24 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    // Validate file sizes (max 5MB per file, max 20MB total)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    const MAX_TOTAL_SIZE = 20 * 1024 * 1024; // 20MB
+    let totalSize = attachments.reduce((sum, f) => sum + (f.size || 0), 0);
+
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`File "${file.name}" exceeds 5MB limit.`);
+        return;
+      }
+      totalSize += file.size;
+    }
+
+    if (totalSize > MAX_TOTAL_SIZE) {
+      alert('Total attachment size exceeds 20MB limit.');
+      return;
+    }
+
     setUploading(true);
     try {
       const newAttachments = [];
@@ -126,7 +144,8 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
         newAttachments.push({
           url: url.file_url,
           name: file.name,
-          type: file.type.startsWith('image/') ? 'image' : 'document'
+          type: file.type.startsWith('image/') ? 'image' : 'document',
+          size: file.size
         });
       }
       setAttachments(prev => [...prev, ...newAttachments]);

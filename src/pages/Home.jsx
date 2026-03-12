@@ -48,7 +48,8 @@ export default function Home() {
           return;
         }
       } catch (error) {
-        // User not authenticated, allow homepage to display
+        // User not authenticated or error checking auth, allow homepage to display
+        console.warn('Auth check failed on homepage:', error.message);
         return;
       }
     };

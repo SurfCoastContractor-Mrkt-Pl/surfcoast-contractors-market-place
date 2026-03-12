@@ -22,23 +22,26 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const mutation = useMutation({
     mutationFn: async (data) => {
-      // Check for duplicate payment before creating a new one
-      const existing = await base44.entities.Payment.filter({
-        payer_email: data.email,
-        payer_type: payerType,
-        contractor_id: contractorId ?? null,
-        status: 'confirmed',
-      });
-      if (existing && existing.length > 0) {
-        setAlreadyPaid(true);
-        onPaid(existing[0]);
-        return existing[0];
-      }
+      // Prevent double-click before any async work
+      if (checkingout) throw new Error('Checkout already in progress');
+      setCheckingout(true);
 
-      // Call backend to create Stripe checkout session
-       if (checkingout) return null; // Prevent double-click
-       setCheckingout(true);
-       const response = await base44.functions.invoke('createPaymentCheckout', {
+      try {
+        // Check for duplicate payment before creating a new one
+        const existing = await base44.entities.Payment.filter({
+          payer_email: data.email,
+          payer_type: payerType,
+          contractor_id: contractorId ?? null,
+          status: 'confirmed',
+        });
+        if (existing && existing.length > 0) {
+          setAlreadyPaid(true);
+          onPaid(existing[0]);
+          return existing[0];
+        }
+
+        // Call backend to create Stripe checkout session
+        const response = await base44.functions.invoke('createPaymentCheckout', {
          payerEmail: data.email,
          payerName: data.name,
          payerType: payerType,
@@ -56,15 +59,17 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       // Check if running in iframe (not published)
       if (window.self !== window.top) {
         alert('Stripe checkout is not available in preview mode. Please view this app from a published URL to complete payment.');
-        setCheckingout(false);
         throw new Error('Checkout not available in iframe');
       }
 
       // Redirect to Stripe checkout
       window.location.href = response.data.url;
-      
+
       return response.data;
-    },
+      } finally {
+      setCheckingout(false);
+      }
+      },
     onSuccess: (record) => {
       setPaid(true);
       onPaid(record);
