@@ -8,7 +8,6 @@ import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle }
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import useGeoCheck from './components/security/useGeoCheck';
-import AppQRCode from './components/home/AppQRCode';
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [
@@ -262,11 +261,8 @@ export default function Layout({ children, currentPageName }) {
              </div>
             )}
             <div className="flex flex-col items-center justify-start">
-              <h4 className="font-semibold mb-4">Share</h4>
-              <div className="bg-slate-700 border border-slate-600 rounded-lg p-3">
-                <AppQRCode />
-              </div>
-              <p className="text-xs text-slate-400 mt-3 text-center">Scan to visit SurfCoast</p>
+              <h4 className="font-semibold mb-4">Connect</h4>
+              <p className="text-xs text-slate-400 text-center">Follow us on social media</p>
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-sm">
