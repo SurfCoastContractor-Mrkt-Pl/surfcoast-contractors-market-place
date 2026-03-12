@@ -167,15 +167,25 @@ export default function ChatWindow({
   return (
     <div className="flex flex-col h-full max-h-96 bg-white rounded-lg border border-slate-200">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200">
-        <div>
-          <h3 className="font-semibold text-slate-900">{otherUserName}</h3>
-          <p className="text-xs text-slate-500">{otherUserEmail}</p>
-        </div>
-        <Button variant="ghost" size="icon" className="text-slate-400">
-          <MoreVertical className="w-4 h-4" />
-        </Button>
-      </div>
+       <div className="flex items-center justify-between p-4 border-b border-slate-200">
+         <div>
+           <h3 className="font-semibold text-slate-900">{otherUserName}</h3>
+           <p className="text-xs text-slate-500">{otherUserEmail}</p>
+           {tier === 'timed' && timeRemaining && (
+             <p className="text-xs text-amber-600 font-semibold mt-1">
+               Time remaining: {formatTimeRemaining(timeRemaining)}
+             </p>
+           )}
+           {tier === 'subscription' && (
+             <p className="text-xs text-slate-500 mt-1">
+               Sessions: {sessionCount}/5
+             </p>
+           )}
+         </div>
+         <Button variant="ghost" size="icon" className="text-slate-400">
+           <MoreVertical className="w-4 h-4" />
+         </Button>
+       </div>
 
       {/* Messages */}
       <div 
