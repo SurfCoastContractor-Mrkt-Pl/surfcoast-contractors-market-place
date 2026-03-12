@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb } from 'lucide-react';
+import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle } from 'lucide-react';
 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
@@ -18,6 +18,7 @@ const getNavLinks = (isContractor) => {
   } else if (isContractor === false) {
     baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
   }
+  baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle });
   return baseLinks;
 };
 
