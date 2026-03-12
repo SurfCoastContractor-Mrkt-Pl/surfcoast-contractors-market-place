@@ -13,6 +13,8 @@ import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
 import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
 import SocialShareBar from '@/components/home/SocialShareBar';
+import AppQRCode from '@/components/home/AppQRCode';
+import NewsletterSignup from '@/components/home/NewsletterSignup';
 
 export default function Home() {
   const navigate = useNavigate();
