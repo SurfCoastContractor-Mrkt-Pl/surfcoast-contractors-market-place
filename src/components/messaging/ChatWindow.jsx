@@ -2,13 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Plus, Paperclip, MoreVertical } from 'lucide-react';
+import { Send, Plus, Paperclip, MoreVertical, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { 
+  validateMessagingEligibility, 
+  isTimedSessionActive, 
+  getSessionCount,
+  getTimedSessionExpiration 
+} from '@/components/utils/sessionManager';
 
-export default function ChatWindow({ otherUserEmail, otherUserName, userEmail, userName, userType }) {
+export default function ChatWindow({ 
+  otherUserEmail, 
+  otherUserName, 
+  userEmail, 
+  userName, 
+  userType,
+  otherUserType,
+  tier = 'subscription',
+  paymentRecord = null 
+}) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [eligibility, setEligibility] = useState(null);
+  const [sessionCount, setSessionCount] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
