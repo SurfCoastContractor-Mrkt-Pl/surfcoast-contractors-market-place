@@ -265,7 +265,7 @@ export default function Layout({ children, currentPageName }) {
               <p className="text-xs text-slate-400 text-center">Follow us on social media</p>
             </div>
           </div>
-          <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-sm">
+          <div className="border-t border-slate-800 mt-6 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-sm">
             <span>© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors">
