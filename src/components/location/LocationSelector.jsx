@@ -30,21 +30,24 @@ export default function LocationSelector({ onLocationChange }) {
   };
 
   const handleManualLocation = async () => {
-    if (!manualInput.trim()) {
-      setError('Please enter a city or ZIP code');
+    const locationQuery = [state, city, zipCode].filter(v => v.trim()).join(', ');
+    if (!locationQuery) {
+      setError('Please enter at least a city, state, or ZIP code');
       return;
     }
 
     setLoading(true);
     setError('');
-    const geocoded = await geocodeLocation(manualInput);
+    const geocoded = await geocodeLocation(locationQuery);
     if (geocoded) {
       const loc = { lat: geocoded.lat, lon: geocoded.lon };
       setLocation(loc);
       onLocationChange(loc);
-      setManualInput('');
+      setState('');
+      setCity('');
+      setZipCode('');
     } else {
-      setError('Location not found. Try a different city or ZIP code.');
+      setError('Location not found. Try a different combination.');
     }
     setLoading(false);
   };
