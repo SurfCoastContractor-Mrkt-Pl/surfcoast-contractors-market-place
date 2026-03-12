@@ -8,6 +8,7 @@ import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle }
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import useGeoCheck from './components/security/useGeoCheck';
+import AppQRCode from './components/home/AppQRCode';
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [
@@ -219,6 +220,13 @@ export default function Layout({ children, currentPageName }) {
 
       <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+
+      {/* Sidebar with QR Code */}
+      <div className="hidden lg:flex fixed right-0 top-20 h-screen flex-col items-center justify-start pt-8 pr-4">
+        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+          <AppQRCode />
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="flex-1">
