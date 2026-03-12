@@ -91,43 +91,23 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           </p>
         </div>
 
-        {/* Disclaimer Text */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm text-slate-700 space-y-4 leading-relaxed max-h-56 overflow-y-auto">
-          <p className="font-bold text-slate-900 uppercase text-xs tracking-wider">
-            SurfCoast Contractor Market Place — Customer Liability & Vetting Disclaimer
-          </p>
-
-          <p>
-            <strong>1. No Contractor Liability for Damages.</strong> Once work has commenced, SurfCoast Contractor Market Place and any contractor listed on this platform shall bear no responsibility or liability for any damages, losses, injuries, defects, or disputes arising from or related to the work performed. All risk associated with work performed after project commencement is assumed entirely by the customer.
-          </p>
-
-          <p>
-            <strong>2. Customer Responsibility to Vet Contractors.</strong> It is the sole responsibility of the customer to thoroughly vet, verify, and evaluate any contractor prior to hiring or accepting work. This includes, but is not limited to: verifying licenses and certifications, checking references, reviewing past work, confirming insurance coverage, and conducting background checks as deemed necessary.
-          </p>
-
-          <p>
-            <strong>3. SurfCoast Contractor Market Place is a Platform Only.</strong> SurfCoast Contractor Market Place acts solely as a marketplace connecting contractors and customers. SurfCoast Contractor Market Place does not employ, endorse, warrant, or guarantee the work, qualifications, conduct, or identity of any contractor listed on the platform. SurfCoast Contractor Market Place assumes no liability whatsoever for any outcome of any engagement between a customer and contractor.
-          </p>
-
-          <p>
-            <strong>4. No Warranty of Workmanship.</strong> SurfCoast Contractor Market Place makes no representations or warranties, express or implied, regarding the quality, safety, legality, or suitability of any contractor's work. Customers engage contractors entirely at their own risk.
-          </p>
-
-          <p>
-            <strong>5. Dispute Resolution.</strong> Any disputes arising from a contractor-customer engagement are primarily between those parties. While SurfCoast Contractor Market Place provides a Dispute Center as a goodwill resource to help facilitate communication between parties, SurfCoast Contractor Market Place is not liable for the outcome of any dispute and its involvement in any resolution is entirely at its own discretion. Use of the Dispute Center does not constitute mediation, arbitration, or legal representation.
-          </p>
-
-          <p>
-            <strong>6. Indemnification.</strong> By accepting this disclaimer, the customer agrees to indemnify and hold harmless SurfCoast Contractor Market Place, its officers, employees, and affiliates from any claims, damages, or expenses arising from the customer's use of the platform or engagement with any contractor.
-          </p>
-
-          <p>
-            <strong>7. Single-Person Contractor Policy.</strong> All contractors registered on SurfCoast Contractor Market Place are individual freelancers only. A "contractor" or "freelancer" on this platform is defined strictly as one (1) individual person. No company, business entity, partnership, crew, or group of two or more persons may register or operate as a contractor on this platform. Any contractor found to be operating with additional workers, employees, subcontractors, or associates working on their behalf will be immediately and permanently banned from SurfCoast Contractor Market Place without notice.
-          </p>
-
-          <p className="text-xs text-slate-500">
-            Last updated: March 2026. This disclaimer is subject to change. Customers are encouraged to review this disclaimer before each engagement.
-          </p>
+        {/* Disclaimer Summary */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-700 space-y-2 leading-relaxed">
+          <ul className="space-y-1.5 text-slate-600">
+            <li className="flex gap-2"><span className="text-slate-400 shrink-0">•</span>SurfCoast is a platform only — we do not employ, endorse, or guarantee any contractor's work.</li>
+            <li className="flex gap-2"><span className="text-slate-400 shrink-0">•</span>You are responsible for vetting contractors before hiring (licenses, insurance, references).</li>
+            <li className="flex gap-2"><span className="text-slate-400 shrink-0">•</span>Once work starts, any damages or disputes are between you and the contractor.</li>
+            <li className="flex gap-2"><span className="text-slate-400 shrink-0">•</span>All contractors are individual freelancers only — no crews, companies, or multi-person entities.</li>
+            <li className="flex gap-2"><span className="text-slate-400 shrink-0">•</span>By signing, you indemnify SurfCoast from all claims arising from your engagement.</li>
+          </ul>
+          <a
+            href="/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-xs text-amber-600 hover:text-amber-700 underline mt-2"
+          >
+            Read full Terms & Acknowledgements →
+          </a>
         </div>
 
         {/* Acknowledgment Checkboxes */}
