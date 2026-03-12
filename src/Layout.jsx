@@ -108,8 +108,8 @@ export default function Layout({ children, currentPageName }) {
                     variant="ghost" 
                     className={`${
                       currentPageName === link.page 
-                        ? isHome ? 'text-white' : 'text-blue-600 bg-blue-50'
-                        : isHome ? 'text-slate-100 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900'
+                        ? 'text-blue-600 bg-blue-50'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     {link.name}
