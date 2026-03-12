@@ -123,7 +123,10 @@ Deno.serve(async (req) => {
           },
         ],
         success_url: `${origin}/success?payment_id=${paymentRecord.id}`,
-        cancel_url: `${origin}/cancel`,
+        cancel_url: `${origin}/cancel?reason=cancelled`,
+        payment_intent_data: {
+          description: `SurfCoast Quote Request Fee - ${contractorName || 'Contractor'}`,
+        },
         metadata: {
           base44_app_id: Deno.env.get("BASE44_APP_ID"),
           payment_id: paymentRecord.id,
