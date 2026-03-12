@@ -70,6 +70,12 @@ export default function LocationSelector({ onLocationChange }) {
         </div>
       ) : (
         <div className="space-y-2">
+          {error && (
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm text-amber-700 font-medium mb-2">{error}</p>
+              <p className="text-xs text-amber-600">Please enter your city or ZIP code below:</p>
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
               placeholder="Enter city or ZIP code"
@@ -77,6 +83,7 @@ export default function LocationSelector({ onLocationChange }) {
               onChange={(e) => setManualInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleManualLocation()}
               disabled={loading}
+              autoFocus={!!error}
             />
             <Button
               onClick={handleManualLocation}
@@ -91,7 +98,7 @@ export default function LocationSelector({ onLocationChange }) {
               )}
             </Button>
           </div>
-          {!manualInput && (
+          {!error && (
             <Button
               onClick={detectLocation}
               disabled={loading}
@@ -112,7 +119,6 @@ export default function LocationSelector({ onLocationChange }) {
               )}
             </Button>
           )}
-          {error && <p className="text-xs text-red-600">{error}</p>}
         </div>
       )}
     </div>
