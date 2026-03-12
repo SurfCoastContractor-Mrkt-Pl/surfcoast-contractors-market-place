@@ -23,12 +23,12 @@ const tradeLabels = {
 export default function ContractorCard({ contractor }) {
   return (
     <Link to={createPageUrl(`ContractorProfile?id=${contractor.id}`)}>
-      <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-amber-400">
-        <div className="p-6">
-          <div className="flex items-start gap-4">
+      <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-slate-200 hover:border-amber-400">
+        <div className="p-4">
+          <div className="flex items-start gap-3">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100">
+              <div className="w-12 h-12 rounded-lg overflow-hidden bg-slate-100">
                 {contractor.photo_url ? (
                   <img 
                     src={contractor.photo_url} 
