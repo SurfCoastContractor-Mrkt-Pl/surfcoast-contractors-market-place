@@ -15,6 +15,9 @@ import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
 import SocialShareBar from '@/components/home/SocialShareBar';
 import AppQRCode from '@/components/home/AppQRCode';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
+import SocialProofMetrics from '@/components/home/SocialProofMetrics';
+import HowItWorks from '@/components/home/HowItWorks';
+import RecentJobsCompletedFeed from '@/components/home/RecentJobsCompletedFeed';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -85,6 +88,11 @@ export default function Home() {
       </div>
 
       <HeroSection />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SocialProofMetrics />
+        <HowItWorks />
+        <RecentJobsCompletedFeed />
+      </div>
       <CTASection />
       <TradeCategories />
       {contractors && <ContractorSearchFilter contractors={contractors} />}
