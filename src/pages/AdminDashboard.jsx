@@ -139,7 +139,28 @@ export default function AdminDashboard() {
   });
 
   React.useEffect(() => {
-    setLoginLoading(false);
+    const checkAdminAuth = async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          const user = await base44.auth.me();
+          if (user?.role === 'admin') {
+            // Auto-submit for authenticated admins (no password needed)
+            const res = await base44.functions.invoke('adminAuth', { password: '' });
+            if (res?.data?.success) {
+              setAuthed(true);
+              setError('');
+              setLoginLoading(false);
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Auto-auth check failed:', err);
+      }
+      setLoginLoading(false);
+    };
+    checkAdminAuth();
   }, []);
 
   const handlePasswordSubmit = async (e) => {
