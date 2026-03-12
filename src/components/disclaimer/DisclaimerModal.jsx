@@ -67,7 +67,7 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
                <DialogTitle className="text-xl font-bold text-slate-900">
                  Customer Liability Disclaimer
                </DialogTitle>
-               <p className="text-sm text-slate-500">You must read and sign before proceeding</p>
+               <p className="text-sm text-slate-500">Please read and check each box to proceed</p>
              </div>
            </div>
            <DialogDescription className="sr-only">Customer liability disclaimer that must be signed before proceeding</DialogDescription>
