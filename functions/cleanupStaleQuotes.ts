@@ -48,8 +48,10 @@ Deno.serve(async (req) => {
       cleaned++;
     }
 
+    console.log(`[${requestId}] Cleanup complete: ${cleaned} stale quotes expired`);
     return Response.json({ cleaned });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error(`[${requestId}] Cleanup error:`, error.message);
+    return Response.json({ error: error.message, requestId }, { status: 500 });
   }
 });
