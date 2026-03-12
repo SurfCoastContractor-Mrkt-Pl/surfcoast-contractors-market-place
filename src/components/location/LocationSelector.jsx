@@ -74,56 +74,81 @@ export default function LocationSelector({ onLocationChange }) {
           </button>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {error && (
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
               <p className="text-sm text-amber-700 font-medium mb-2">{error}</p>
-              <p className="text-xs text-amber-600">Please enter your city or ZIP code below:</p>
+              <p className="text-xs text-amber-600">Enter your location details below:</p>
             </div>
           )}
-          <div className="flex gap-2">
-            <Input
-              placeholder="Enter city or ZIP code"
-              value={manualInput}
-              onChange={(e) => setManualInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleManualLocation()}
-              disabled={loading}
-              autoFocus={!!error}
-            />
+          
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-slate-600">Enter your location:</p>
+            <div className="grid grid-cols-3 gap-2">
+              <Input
+                placeholder="State"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                disabled={loading}
+                className="text-sm"
+              />
+              <Input
+                placeholder="City"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                disabled={loading}
+                className="text-sm"
+              />
+              <Input
+                placeholder="ZIP code"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                disabled={loading}
+                className="text-sm"
+              />
+            </div>
             <Button
               onClick={handleManualLocation}
-              disabled={loading}
-              variant="outline"
-              size="sm"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                'Search'
-              )}
-            </Button>
-          </div>
-          {!error && (
-            <Button
-              onClick={detectLocation}
-              disabled={loading}
-              variant="outline"
+              disabled={loading || (!state.trim() && !city.trim() && !zipCode.trim())}
               className="w-full"
               size="sm"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  Detecting...
+                  Searching...
                 </>
               ) : (
-                <>
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Use My Location
-                </>
+                'Search Location'
               )}
             </Button>
-          )}
+          </div>
+
+          <div className="relative flex items-center gap-2">
+            <div className="flex-1 border-t border-slate-300"></div>
+            <span className="text-xs text-slate-500 px-2">or</span>
+            <div className="flex-1 border-t border-slate-300"></div>
+          </div>
+
+          <Button
+            onClick={detectLocation}
+            disabled={loading}
+            variant="outline"
+            className="w-full"
+            size="sm"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                Detecting...
+              </>
+            ) : (
+              <>
+                <MapPin className="w-4 h-4 mr-2" />
+                Use My Current Location
+              </>
+            )}
+          </Button>
         </div>
       )}
     </div>
