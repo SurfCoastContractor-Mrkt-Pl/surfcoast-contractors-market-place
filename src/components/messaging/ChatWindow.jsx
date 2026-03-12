@@ -30,9 +30,24 @@ export default function ChatWindow({
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Load existing messages
-    const loadMessages = async () => {
+    const validateAndLoad = async () => {
       try {
+        // Validate eligibility
+        const result = await validateMessagingEligibility(
+          userEmail,
+          userType,
+          otherUserEmail,
+          otherUserType,
+          tier
+        );
+        setEligibility(result);
+
+        if (!result.allowed) {
+          setLoading(false);
+          return;
+        }
+
+        // Load existing messages
         const msgs = await base44.entities.Message.filter({
           $or: [
             { sender_email: userEmail, recipient_email: otherUserEmail },
@@ -40,14 +55,26 @@ export default function ChatWindow({
           ]
         });
         setMessages(msgs.sort((a, b) => new Date(a.created_date) - new Date(b.created_date)));
+
+        // Get session count for subscription tier
+        if (tier === 'subscription') {
+          const count = await getSessionCount(userEmail, otherUserEmail);
+          setSessionCount(count);
+        }
+
+        // Get time remaining for timed session
+        if (tier === 'timed' && paymentRecord) {
+          const expiration = getTimedSessionExpiration(paymentRecord);
+          setTimeRemaining(expiration);
+        }
       } catch (error) {
-        console.error('Error loading messages:', error);
+        console.error('Error validating eligibility:', error);
       } finally {
         setLoading(false);
       }
     };
     
-    loadMessages();
+    validateAndLoad();
 
     // Subscribe to new messages
     const unsubscribe = base44.entities.Message.subscribe((event) => {
@@ -62,7 +89,7 @@ export default function ChatWindow({
     });
 
     return () => unsubscribe?.();
-  }, [userEmail, otherUserEmail]);
+  }, [userEmail, otherUserEmail, tier]);
 
   useEffect(() => {
     // Auto-scroll to bottom
