@@ -116,18 +116,18 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                 <Link to={createPageUrl('PostJob')}>
-                  <Button variant="outline" className={isHome ? "border-slate-500 text-white hover:bg-white/10" : ""}>
+                  <Button variant="outline" className={isHome ? "border-white text-white hover:bg-white/10" : ""}>
                     Post a Job
                   </Button>
                 </Link>
               )}
               <Link to={createPageUrl('BecomeContractor')}>
-                <Button className="bg-amber-500 hover:bg-amber-600 text-slate-900">
+                <Button className={isHome ? "bg-amber-500 hover:bg-amber-600 text-slate-900" : "bg-amber-500 hover:bg-amber-600 text-slate-900"}>
                   Join as Contractor
                 </Button>
               </Link>
               <div className="relative group">
-               <Button variant="ghost" className={isHome ? 'text-slate-200 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
+               <Button variant="ghost" className={isHome ? 'text-white hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
                  <UserCircle className="w-5 h-5 mr-1" />
                  My Account
                </Button>
