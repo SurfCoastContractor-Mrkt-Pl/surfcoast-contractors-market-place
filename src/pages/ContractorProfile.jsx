@@ -23,12 +23,14 @@ import {
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
 import ContractorAvailabilityCalendar from '@/components/calendar/ContractorAvailabilityCalendar';
+import MessagingPricingTable from '@/components/messaging/MessagingPricingTable';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
   const contractorId = searchParams.get('id');
   const [contractor, setContractor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [messagingPricingOpen, setMessagingPricingOpen] = useState(false);
 
   useEffect(() => {
     const fetchContractor = async () => {
@@ -163,12 +165,14 @@ export default function ContractorProfile() {
                   Post a Job
                 </Button>
               </Link>
-              <Link to={createPageUrl(`Messaging?contractor=${contractor.id}`)}>
-                <Button variant="outline" className="w-full">
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Message
-                </Button>
-              </Link>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setMessagingPricingOpen(true)}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Message
+              </Button>
             </div>
           </div>
         </div>
@@ -283,6 +287,18 @@ export default function ContractorProfile() {
           </div>
         </div>
       </div>
+
+      <MessagingPricingTable
+        contractorId={contractor.id}
+        contractorName={contractor.name}
+        contractorEmail={contractor.email}
+        open={messagingPricingOpen}
+        onClose={() => setMessagingPricingOpen(false)}
+        onMessagingUnlocked={() => {
+          // Navigate to messaging after payment
+          window.location.href = createPageUrl(`Messaging?contractor=${contractor.id}`);
+        }}
+      />
     </div>
   );
 }
