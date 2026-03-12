@@ -89,15 +89,9 @@ export default function Home() {
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <HowItWorks />
-      </div>
-      <CTASection />
       <TradeCategories />
-      {contractors && <ContractorSearchFilter contractors={contractors} />}
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
-      <NewsletterSignup />
     </div>
   );
 }
