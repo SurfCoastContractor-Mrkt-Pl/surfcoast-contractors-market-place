@@ -88,12 +88,12 @@ export default function Layout({ children, currentPageName }) {
             <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative">
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="w-12 h-12" />
               <div className="flex flex-col leading-tight">
-                <span className="font-serif font-bold text-xl text-blue-600">
+               <span className="font-serif font-bold text-xl" style={{color: '#1E5A96'}}>
                   SurfCoast
-                </span>
-                <span className="text-xs font-medium tracking-widest text-blue-600">
+               </span>
+               <span className="text-xs font-medium tracking-widest" style={{color: '#1E5A96'}}>
                   MARKETPLACE
-                </span>
+               </span>
               </div>
             </Link>
 
