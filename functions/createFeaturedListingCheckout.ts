@@ -14,10 +14,32 @@ Deno.serve(async (req) => {
     }
 
     // Verify authenticated user matches the contractor email
+    const isAuthenticated = await base44.auth.isAuthenticated();
+    if (!isAuthenticated) {
+      console.warn(`[${requestId}] Unauthenticated checkout attempt for ${contractorEmail}`);
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const user = await base44.auth.me();
     if (!user || user.email !== contractorEmail) {
       console.warn(`[${requestId}] Unauthorized: user ${user?.email} attempting to create checkout for ${contractorEmail}`);
       return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    // Verify the contractor profile exists and matches the authenticated user
+    const contractors = await base44.entities.Contractor.filter({ 
+      email: contractorEmail,
+      id: contractorId
+    });
+
+    if (!contractors || contractors.length === 0) {
+      console.warn(`[${requestId}] Contractor not found: ${contractorId} for email ${contractorEmail}`);
+      return Response.json({ error: 'Contractor profile not found' }, { status: 404 });
+    }
+
+    if (contractors[0].id !== contractorId) {
+      console.warn(`[${requestId}] Contractor ID mismatch for ${contractorEmail}`);
+      return Response.json({ error: 'Invalid contractor ID' }, { status: 400 });
     }
 
     if (typeof window !== 'undefined') {
