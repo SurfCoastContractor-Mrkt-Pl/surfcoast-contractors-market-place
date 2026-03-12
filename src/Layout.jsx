@@ -261,7 +261,7 @@ export default function Layout({ children, currentPageName }) {
              </div>
             )}
             <div className="flex flex-col items-center justify-start">
-              <h4 className="font-semibold mb-4">Connect</h4>
+              <h4 className="font-semibold mb-3">Connect</h4>
               <p className="text-xs text-slate-400 text-center">Follow us on social media</p>
             </div>
           </div>
