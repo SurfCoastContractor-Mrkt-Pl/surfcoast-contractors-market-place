@@ -148,6 +148,8 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
           contractorId={contractorId}
           contractorEmail={contractorEmail}
           contractorName={contractorName}
+          tier={selectedPlan.id}
+          priceId={selectedPlan.priceId}
         />
       )}
     </>
