@@ -220,7 +220,7 @@ export default function Layout({ children, currentPageName }) {
                 </div>
               </div>
               <p className="text-slate-400 max-w-sm">
-                Connecting skilled construction professionals with clients who need quality work done right.
+                Connecting skilled professionals with clients who need quality work done right.
               </p>
             </div>
             <div>
