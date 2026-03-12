@@ -86,10 +86,10 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative h-full">
-              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-full w-auto" />
-              <div className="flex flex-col leading-tight">
-               <span className="font-serif font-bold text-xl" style={{color: '#1E5A96'}}>
+            <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative h-full flex-shrink-0">
+              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-full w-auto max-w-[40px]" />
+              <div className="hidden sm:flex flex-col leading-tight">
+               <span className="font-serif font-bold text-lg" style={{color: '#1E5A96'}}>
                   SurfCoast
                </span>
                <span className="text-xs font-medium tracking-widest" style={{color: '#1E5A96'}}>
@@ -99,12 +99,12 @@ export default function Layout({ children, currentPageName }) {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1 flex-shrink">
               {getNavLinks(isContractor).map(link => (
                 <Link key={link.page} to={createPageUrl(link.page)}>
                   <Button 
                   variant="ghost" 
-                  className={`${
+                  className={`text-sm ${
                     currentPageName === link.page 
                       ? 'bg-blue-50'
                       : 'text-slate-600 hover:text-slate-900'
@@ -118,43 +118,43 @@ export default function Layout({ children, currentPageName }) {
             </div>
 
             {/* CTA Buttons */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
-                  <Button className="text-white font-medium" style={{backgroundColor: '#1E5A96'}}>
+                  <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
                     Post a Job
                   </Button>
                 </Link>
               )}
               <Link to={createPageUrl('BecomeContractor')}>
-                <Button className="text-white font-medium" style={{backgroundColor: '#1E5A96'}}>
+                <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
                   Join as Contractor
                 </Button>
               </Link>
               <div className="relative group">
-               <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
+               <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">
                   <UserCircle className="w-5 h-5 mr-1" />
-                  My Account
+                  Account
                 </Button>
-               <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
-                 <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-                   {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
-                 </div>
-                 {(isContractor ? contractorLinks : customerLinks).map(link => (
-                   <Link key={link.page} to={createPageUrl(link.page)}>
-                     <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
-                       {link.name}
-                     </div>
-                   </Link>
-                 ))}
+               <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
+                  <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
+                    {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
+                  </div>
+                  {(isContractor ? contractorLinks : customerLinks).map(link => (
+                    <Link key={link.page} to={createPageUrl(link.page)}>
+                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
+                        {link.name}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
                </div>
-              </div>
             </div>
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden p-2"
+              className="lg:hidden p-2 flex-shrink-0"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -168,7 +168,7 @@ export default function Layout({ children, currentPageName }) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200">
+          <div className="lg:hidden bg-white border-b border-slate-200">
             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
@@ -229,8 +229,8 @@ export default function Layout({ children, currentPageName }) {
       {/* Footer */}
       <footer className="bg-slate-800 text-slate-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-5 gap-8">
-            <div className="md:col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div className="sm:col-span-2 lg:col-span-2">
               <div className="flex items-center gap-2 mb-4">
                 <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="w-10 h-10 flex-shrink-0" />
                 <div>
@@ -269,7 +269,7 @@ export default function Layout({ children, currentPageName }) {
               <p className="text-xs text-slate-400 mt-3 text-center">Scan to visit SurfCoast</p>
             </div>
           </div>
-          <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
+          <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-sm">
             <span>© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors">
