@@ -24,28 +24,28 @@ export default function RecentJobs({ jobs, isLoading }) {
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex items-end justify-between mb-6">
           <div>
-            <div className="inline-flex items-center gap-2 text-amber-600 font-medium mb-2">
-              <Briefcase className="w-5 h-5" />
+            <div className="inline-flex items-center gap-2 text-amber-600 font-medium mb-1">
+              <Briefcase className="w-4 h-4" />
               Open Opportunities
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900">
               Latest Job Postings
             </h2>
           </div>
           <Link to={createPageUrl('Jobs')} className="hidden md:block">
-            <Button variant="ghost" className="text-amber-600 hover:text-amber-700">
+            <Button variant="ghost" size="sm" className="text-amber-600 hover:text-amber-700">
               View All Jobs
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-6">
-          {jobs?.slice(0, 4).map(job => (
+        <div className="grid md:grid-cols-2 gap-4">
+          {jobs?.slice(0, 3).map(job => (
             <JobCard key={job.id} job={job} />
           ))}
         </div>
