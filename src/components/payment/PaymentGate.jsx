@@ -152,17 +152,20 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
              </div>
            )}
 
-           {/* California SB 478 Compliant Fee Disclosure */}
+           {/* Fee Disclosure */}
            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 space-y-2">
               <div className="flex items-start gap-2">
                 <Shield className="w-4 h-4 shrink-0 mt-0.5 text-slate-500" />
                 <div>
-                  <strong className="text-slate-900">Blind Quote Request Fee: $1.75 (USD)</strong>
+                  <strong className="text-slate-900">{tierConfig.label}: ${tierConfig.amount.toFixed(2)} (USD)</strong>
                   <p className="mt-1">
-                    This one-time fee allows {contractorName} to review your posted job or project and provide you with a blind written estimate — no back-and-forth required. A separate $1.75 fee applies for each contractor you request a quote from.
+                    {tier === 'quote' && `This one-time fee allows ${contractorName} to review your posted job or project and provide you with a blind written estimate — no back-and-forth required. A separate $1.75 fee applies for each contractor you request a quote from.`}
+                    {tier === 'timed' && `This one-time fee grants you a 10-minute real-time messaging session with ${contractorName} to discuss and negotiate work terms.`}
+                    {tier === 'subscription' && `This monthly subscription grants you access to message up to 15 unique contacts (customer-contractor pairs only), with up to 5 sessions per relationship and unlimited messaging within each session.`}
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
-                    Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe. A receipt will be emailed to you.
+                    {tier === 'quote' && 'Fee disclosed as required by California SB 478 (Honest Pricing Law). Secure card payment via Stripe. A receipt will be emailed to you.'}
+                    {tier !== 'quote' && 'Secure card payment via Stripe. A receipt will be emailed to you.'}
                   </p>
                 </div>
               </div>
