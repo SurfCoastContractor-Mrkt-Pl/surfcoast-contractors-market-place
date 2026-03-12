@@ -8,11 +8,17 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
 
-export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName }) {
+export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName, tier = 'quote', priceId }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [paid, setPaid] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
   const [checkingout, setCheckingout] = useState(false);
+
+  const tierConfig = {
+    quote: { amount: 1.75, label: 'Quote Request Fee', description: 'Blind written estimate' },
+    timed: { amount: 1.50, label: '10-Minute Chat', description: 'Real-time communication session' },
+    subscription: { amount: 50, label: 'Monthly Subscription', description: 'Up to 15 contacts, 5 sessions each' },
+  }[tier] || tierConfig.quote;
 
   const mutation = useMutation({
     mutationFn: async (data) => {
