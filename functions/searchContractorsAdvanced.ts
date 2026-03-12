@@ -13,22 +13,24 @@ Deno.serve(async (req) => {
       minPrice 
     } = await req.json();
 
-    // Build filter
+    // Build filter - only show publicly available contractors
     const filter = {
-      account_locked: false,
-      minor_hours_locked: false,
+      $and: [
+        { account_locked: false },
+        { minor_hours_locked: false }
+      ]
     };
 
     if (trades.length > 0) {
-      filter.trade_specialty = { $in: trades };
+      filter.$and.push({ trade_specialty: { $in: trades } });
     }
 
     if (minRating > 0) {
-      filter.rating = { $gte: minRating };
+      filter.$and.push({ rating: { $gte: minRating } });
     }
 
-    // Fetch contractors
-    let contractors = await base44.asServiceRole.entities.Contractor.list();
+    // Fetch contractors respecting RLS (public visibility only)
+    let contractors = await base44.entities.Contractor.filter(filter);
 
     // Apply text search
     if (query) {
