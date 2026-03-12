@@ -123,7 +123,7 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
-                  <Button variant="outline" className={isHome ? "border-slate-300 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-50"}>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium">
                     Post a Job
                   </Button>
                 </Link>

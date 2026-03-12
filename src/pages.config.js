@@ -53,6 +53,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AgentDemo from './pages/AgentDemo';
 import BadgeShowcase from './pages/BadgeShowcase';
 import BecomeContractor from './pages/BecomeContractor';
+import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
 import ContractorProfile from './pages/ContractorProfile';
@@ -63,19 +65,17 @@ import FindContractors from './pages/FindContractors';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
+import LocalLanding from './pages/LocalLanding';
+import Messaging from './pages/Messaging';
 import MyJobs from './pages/MyJobs';
 import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
 import ProjectManagement from './pages/ProjectManagement';
+import QuickJobPost from './pages/QuickJobPost';
+import Referrals from './pages/Referrals';
 import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
-import QuickJobPost from './pages/QuickJobPost';
-import Blog from './pages/Blog';
-import BlogDetail from './pages/BlogDetail';
-import Referrals from './pages/Referrals';
-import Messaging from './pages/Messaging';
-import LocalLanding from './pages/LocalLanding';
 import __Layout from './Layout.jsx';
 
 
@@ -86,6 +86,8 @@ export const PAGES = {
     "AgentDemo": AgentDemo,
     "BadgeShowcase": BadgeShowcase,
     "BecomeContractor": BecomeContractor,
+    "Blog": Blog,
+    "BlogDetail": BlogDetail,
     "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
     "ContractorProfile": ContractorProfile,
@@ -96,19 +98,17 @@ export const PAGES = {
     "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
+    "LocalLanding": LocalLanding,
+    "Messaging": Messaging,
     "MyJobs": MyJobs,
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
     "ProjectManagement": ProjectManagement,
+    "QuickJobPost": QuickJobPost,
+    "Referrals": Referrals,
     "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
-    "QuickJobPost": QuickJobPost,
-    "Blog": Blog,
-    "BlogDetail": BlogDetail,
-    "Referrals": Referrals,
-    "Messaging": Messaging,
-    "LocalLanding": LocalLanding,
 }
 
 export const pagesConfig = {
