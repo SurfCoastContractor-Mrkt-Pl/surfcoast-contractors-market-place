@@ -7,13 +7,13 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 export default function EnhancedHeroSection() {
   return (
     <div className="pt-20 pb-16 border-b border-slate-200/50 relative" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
-      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.30)'}}></div>
+      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.40)'}}></div>
       <div className="relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left: Value Proposition */}
           <div>
-            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: 'rgba(30, 90, 150, 0.1)', color: '#1E5A96'}}>
+            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: '#1E5A96', color: 'white'}}>
               ✓ Verified & Vetted Professionals
             </div>
             
@@ -77,15 +77,15 @@ export default function EnhancedHeroSection() {
           </div>
 
           {/* Right: Visual or Image Placeholder */}
-          <div className="rounded-2xl h-96 flex items-center justify-center border border-white/20" style={{backgroundColor: 'rgba(255, 255, 255, 0.08)'}}>
+          <div className="rounded-2xl h-96 flex items-center justify-center border-2 border-white/40" style={{backgroundColor: 'rgba(30, 90, 150, 0.2)'}}>
             <div className="text-center">
-              <div className="inline-block p-4 bg-white/10 rounded-xl shadow-sm mb-4 backdrop-blur-sm">
+              <div className="inline-block p-4 rounded-xl shadow-md mb-4" style={{backgroundColor: '#1E5A96'}}>
                 <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-white">No Hidden Fees</h3>
-              <p className="text-sm text-white/70 mt-2">Direct pricing from professionals</p>
+              <h3 className="text-xl font-semibold text-white">No Hidden Fees</h3>
+              <p className="text-sm text-white/80 mt-2">Direct pricing from professionals</p>
             </div>
           </div>
         </div>
