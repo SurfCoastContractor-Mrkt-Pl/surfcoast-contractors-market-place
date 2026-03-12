@@ -324,8 +324,8 @@ export default function CustomerAccount() {
 
               <TabsContent value="settings">
                 <div className="space-y-4">
-                  {/* Payment Methods */}
-                  {userEmail && <SavedPaymentMethods userEmail={userEmail} />}
+                  {/* Payment Methods — hidden in admin preview to prevent auth conflicts */}
+                  {userEmail && !isAdminPreview && <SavedPaymentMethods userEmail={userEmail} />}
 
                   {/* Privacy & Security Info */}
                   <SecurityInfoPanel />
