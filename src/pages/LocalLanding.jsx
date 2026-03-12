@@ -57,19 +57,14 @@ export default function LocalLanding() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header with beach theme */}
-      <div className="bg-gradient-to-br from-blue-600 to-cyan-600 border-b border-blue-700/50 py-12 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,64 Q300,20 600,64 T1200,64 L1200,120 L0,120 Z" fill="currentColor"/>
-          </svg>
-        </div>
+      <div className="bg-white border-b border-slate-200 py-12 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="mb-6 text-center">
             <span className="inline-block text-5xl mb-4">🏖️</span>
-            <h1 className="text-4xl font-serif font-bold text-white mb-2">
+            <h1 className="text-4xl font-serif font-bold text-blue-600 mb-2">
               Hire Vetted Contractors in {locationData.name}
             </h1>
-            <p className="text-lg text-blue-50">
+            <p className="text-lg text-slate-600">
               {locationData.description}
             </p>
           </div>
