@@ -21,6 +21,7 @@ Deno.serve(async (req) => {
     // Rate limiting key (prioritize authenticated user, fall back to IP)
     let rateLimitKey = clientIP;
     let isAuthenticatedUser = false;
+    let isAdmin = false;
     try {
       const isAuth = await base44.auth.isAuthenticated();
       if (isAuth) {
@@ -28,10 +29,17 @@ Deno.serve(async (req) => {
         if (user?.email) {
           rateLimitKey = user.email;
           isAuthenticatedUser = true;
+          isAdmin = user.role === 'admin';
         }
       }
     } catch {
       // Fall through to IP-based rate limiting
+    }
+
+    // Grant instant access to authenticated admins (no password needed)
+    if (isAdmin) {
+      console.log(`[${requestId}] Admin dashboard access granted for ${rateLimitKey} (authenticated admin)`);
+      return Response.json({ success: true });
     }
 
     // Check rate limit (max 5 attempts per hour)
