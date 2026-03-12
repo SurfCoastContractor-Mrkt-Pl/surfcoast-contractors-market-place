@@ -23,7 +23,7 @@ export default function HeroSection() {
           
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
             Connect with Skilled
-            <span className="block text-amber-400">Construction Contractors</span>
+            <span className="block text-amber-400">Professionals</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
