@@ -13,14 +13,9 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [isOwner, setIsOwner] = useState(true);
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (job?.poster_email !== userEmail) {
-      setIsOwner(false);
-    }
-  }, [job, userEmail]);
+  const isOwner = job?.poster_email === userEmail;
 
   if (!isOwner) {
     return null;
