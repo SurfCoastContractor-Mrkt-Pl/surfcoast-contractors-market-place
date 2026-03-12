@@ -86,7 +86,7 @@ export default function Layout({ children, currentPageName }) {
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg" 
                 alt="SurfCoast Logo"
-                className="w-24 h-24 -ml-2 object-contain rounded-lg shadow-lg"
+                className="w-24 h-24 -ml-6 object-contain rounded-lg shadow-lg"
                 style={{
                   maskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)',
                   WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)'
