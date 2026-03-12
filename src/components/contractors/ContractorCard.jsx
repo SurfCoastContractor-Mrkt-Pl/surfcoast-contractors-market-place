@@ -50,17 +50,14 @@ export default function ContractorCard({ contractor }) {
             
             {/* Info */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition-colors truncate">
+              <div className="flex items-start justify-between gap-1.5">
+                <h3 className="font-semibold text-xs text-slate-900 group-hover:text-amber-600 transition-colors truncate">
                   {contractor.name}
                 </h3>
                 {contractor.rating && (
                   <div className="flex items-center gap-0.5 text-amber-500 shrink-0">
-                    <Star className="w-3 h-3 fill-current" />
+                    <Star className="w-2.5 h-2.5 fill-current" />
                     <span className="font-medium text-xs">{contractor.rating}</span>
-                    {contractor.reviews_count && (
-                      <span className="text-slate-400 text-xs">({contractor.reviews_count})</span>
-                    )}
                   </div>
                 )}
               </div>
