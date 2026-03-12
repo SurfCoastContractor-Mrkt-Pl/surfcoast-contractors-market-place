@@ -96,7 +96,7 @@ export default function Layout({ children, currentPageName }) {
                 <span 
                   className="font-bold text-lg text-white"
                   style={{
-                    WebkitTextStroke: '2px #f59e0b',
+                    WebkitTextStroke: '2px #000000',
                     paintOrder: 'stroke fill'
                   }}
                 >
@@ -105,7 +105,7 @@ export default function Layout({ children, currentPageName }) {
                 <span 
                   className="text-sm font-semibold text-white"
                   style={{
-                    WebkitTextStroke: '1px #f59e0b',
+                    WebkitTextStroke: '1px #000000',
                     paintOrder: 'stroke fill'
                   }}
                 >
