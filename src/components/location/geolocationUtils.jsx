@@ -57,3 +57,24 @@ export async function getUserLocation() {
     );
   });
 }
+
+// Reverse geocode coordinates to city, state
+export async function reverseGeocodeLocation(lat, lon) {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+    );
+    const data = await response.json();
+    if (data.address) {
+      const city = data.address.city || data.address.town || data.address.village || '';
+      const state = data.address.state || '';
+      if (city && state) {
+        return `${city}, ${state}`;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Reverse geocoding error:', error);
+    return null;
+  }
+}
