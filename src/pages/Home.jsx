@@ -71,6 +71,13 @@ export default function Home() {
     await refetchJobs();
   };
 
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
   return (
     <div className="min-h-screen">
       {/* Refresh Button */}
