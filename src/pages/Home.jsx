@@ -16,6 +16,7 @@ import NewsletterSignup from '@/components/home/NewsletterSignup';
 import HowItWorks from '@/components/home/HowItWorks';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
 import EmailCapturePopup from '@/components/home/EmailCapturePopup';
+import DemoProfiles from '@/components/home/DemoProfiles';
 
 export default function Home() {
   const navigate = useNavigate();
