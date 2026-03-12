@@ -153,8 +153,8 @@ export default function Jobs() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Job Listings</h1>
-              <p className="text-lg text-slate-300">
-                {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
+              <p className="text-lg text-slate-600">
+               {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
               </p>
             </div>
             {!isContractor && (
