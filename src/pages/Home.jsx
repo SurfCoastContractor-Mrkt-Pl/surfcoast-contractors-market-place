@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
@@ -24,8 +24,8 @@ import OnboardingGuide from '@/components/onboarding/OnboardingGuide';
 export default function Home() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [onboardingOpen, setOnboardingOpen] = React.useState(false);
-  const [onboardingType, setOnboardingType] = React.useState('customer');
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingType, setOnboardingType] = useState('customer');
 
   // Redirect authenticated users to their dashboard if they're new
   useEffect(() => {
