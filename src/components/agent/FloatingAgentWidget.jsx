@@ -146,9 +146,16 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   }
 
   return (
-    <div className="fixed bottom-24 right-6 z-50 w-80 max-w-[calc(100vw-3rem)] h-[28rem] flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto">
+    <div 
+      ref={widgetRef}
+      className="fixed z-50 w-80 max-w-[calc(100vw-3rem)] h-[28rem] flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto transition-shadow"
+      style={{ bottom: `${position.bottom}px`, right: `${position.right}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0">
+      <div 
+        className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0 cursor-grab active:cursor-grabbing select-none"
+        onMouseDown={handleMouseDown}
+      >
         <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
         <div className="flex gap-1">
           <button
