@@ -82,14 +82,14 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to={createPageUrl('Home')} className="flex items-center gap-2">
+            <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/1984e69ad_IMG_8260.jpeg" 
                 alt="SurfCoast Logo"
-                className="w-16 h-16 object-contain rounded-lg shadow-lg"
+                className="w-40 h-40 -ml-8 object-contain rounded-lg shadow-lg"
                 style={{
-                  maskImage: 'radial-gradient(circle at center, black 85%, transparent 100%)',
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 85%, transparent 100%)'
+                  maskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)'
                 }}
               />
               <div className="flex flex-col leading-tight">
