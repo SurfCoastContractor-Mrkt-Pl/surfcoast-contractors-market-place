@@ -93,23 +93,11 @@ export default function Layout({ children, currentPageName }) {
                 }}
               />
               <div className="flex flex-col leading-tight">
-                <span 
-                  className="font-bold text-lg text-amber-300"
-                  style={{
-                    WebkitTextStroke: '2px #000000',
-                    paintOrder: 'stroke fill'
-                  }}
-                >
+                <span className="font-bold text-lg text-amber-500">
                   SurfCoast
                 </span>
-                <span 
-                  className="text-sm font-semibold text-amber-300"
-                  style={{
-                    WebkitTextStroke: '1px #000000',
-                    paintOrder: 'stroke fill'
-                  }}
-                >
-                  Contractor Market Place
+                <span className="text-xs font-semibold text-slate-600 tracking-wide">
+                  CONTRACTOR MARKETPLACE
                 </span>
               </div>
             </Link>
