@@ -7,7 +7,7 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 export default function EnhancedHeroSection() {
   return (
     <div className="pt-20 pb-16 border-b border-slate-200/50 relative" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
-      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}}></div>
+      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.65)'}}></div>
       <div className="relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -29,16 +29,16 @@ export default function EnhancedHeroSection() {
             {/* Trust Badges */}
             <div className="space-y-3 mb-8">
               <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
                 <span className="text-white">98% 5-star rated by customers</span>
-                </div>
-                <div className="flex items-center gap-3">
-                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                 <span className="text-white">12-hour average response time</span>
-                </div>
-                <div className="flex items-center gap-3">
-                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                 <span className="text-white">All contractors identity-verified</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-white">12-hour average response time</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-white">All contractors identity-verified</span>
               </div>
             </div>
 
