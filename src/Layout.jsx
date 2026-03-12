@@ -192,7 +192,7 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                   <Link to={createPageUrl('QuickJobPost')} onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" className="w-full">Post a Job</Button>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">Post a Job</Button>
                   </Link>
                 )}
                 <Link to={createPageUrl('BecomeContractor')} onClick={() => setMobileMenuOpen(false)}>
