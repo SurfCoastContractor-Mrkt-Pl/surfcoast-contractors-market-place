@@ -100,6 +100,89 @@ export default function Home() {
       <TradeCategories />
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
+
+      {/* Expandable Sections */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
+        {/* How It Works */}
+        <div className="border border-slate-200 rounded-lg">
+          <button
+            onClick={() => toggleSection('howItWorks')}
+            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+          >
+            <span className="font-semibold text-slate-900">How It Works</span>
+            {expandedSections['howItWorks'] ? (
+              <ChevronUp className="w-5 h-5 text-slate-600" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+          {expandedSections['howItWorks'] && (
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <HowItWorks />
+            </div>
+          )}
+        </div>
+
+        {/* CTA Section */}
+        <div className="border border-slate-200 rounded-lg">
+          <button
+            onClick={() => toggleSection('cta')}
+            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+          >
+            <span className="font-semibold text-slate-900">Ready to Get Started?</span>
+            {expandedSections['cta'] ? (
+              <ChevronUp className="w-5 h-5 text-slate-600" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+          {expandedSections['cta'] && (
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <CTASection />
+            </div>
+          )}
+        </div>
+
+        {/* Contractor Search */}
+        <div className="border border-slate-200 rounded-lg">
+          <button
+            onClick={() => toggleSection('search')}
+            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+          >
+            <span className="font-semibold text-slate-900">Search All Contractors</span>
+            {expandedSections['search'] ? (
+              <ChevronUp className="w-5 h-5 text-slate-600" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+          {expandedSections['search'] && contractors && (
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <ContractorSearchFilter contractors={contractors} />
+            </div>
+          )}
+        </div>
+
+        {/* Newsletter */}
+        <div className="border border-slate-200 rounded-lg">
+          <button
+            onClick={() => toggleSection('newsletter')}
+            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+          >
+            <span className="font-semibold text-slate-900">Subscribe to Updates</span>
+            {expandedSections['newsletter'] ? (
+              <ChevronUp className="w-5 h-5 text-slate-600" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+          {expandedSections['newsletter'] && (
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <NewsletterSignup />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
