@@ -77,39 +77,14 @@ export const isTimedSessionActive = (expirationTime) => {
 };
 
 export const validateMessagingEligibility = async (userEmail, userType, otherUserEmail, otherUserType, tier) => {
-  if (!canCommunicate(userType, otherUserType)) {
-    return { allowed: false, reason: 'Can only message users of different types' };
+  try {
+    const response = await base44.functions.invoke('validateMessagingEligibility', {
+      otherUserEmail,
+      otherUserType
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error validating messaging eligibility:', error);
+    return { allowed: false, reason: 'Unable to validate eligibility' };
   }
-
-  if (tier === 'quote') {
-    if (userType !== 'customer') {
-      return { allowed: false, reason: 'Only customers can request quotes' };
-    }
-    return { allowed: true };
-  }
-
-  if (tier === 'timed') {
-    return { allowed: true };
-  }
-
-  if (tier === 'subscription') {
-    const sub = await getUserSubscription(userEmail);
-    if (!sub) {
-      return { allowed: false, reason: 'No active subscription' };
-    }
-
-    const contactCount = await getUniqueContactCount(userEmail);
-    if (contactCount >= 15) {
-      return { allowed: false, reason: 'Contact limit reached (15 per month)' };
-    }
-
-    const canStart = await canStartNewSession(userEmail, otherUserEmail);
-    if (!canStart) {
-      return { allowed: false, reason: 'Session limit reached (5 per contact)' };
-    }
-
-    return { allowed: true };
-  }
-
-  return { allowed: false, reason: 'Unknown tier' };
 };
