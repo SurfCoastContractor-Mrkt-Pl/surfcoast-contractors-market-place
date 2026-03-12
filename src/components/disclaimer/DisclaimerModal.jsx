@@ -46,10 +46,14 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!signature.trim()) {
+      alert('Please enter your signature');
+      return;
+    }
     mutation.mutate({
       customer_name: user?.full_name || user?.email || 'Unknown',
       customer_email: user?.email || '',
-      signature: user?.full_name || user?.email || 'Acknowledged',
+      signature: signature.trim(),
       accepted_at: new Date().toISOString(),
       ip_acknowledged: true,
     });
