@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -11,11 +10,7 @@ import {
 import { AlertTriangle, ShieldAlert, Loader2, CheckCircle } from 'lucide-react';
 
 export default function DisclaimerModal({ open, onAccepted, onClose }) {
-  const [formData, setFormData] = useState({
-    customer_name: '',
-    customer_email: '',
-    signature: '',
-  });
+  const [user, setUser] = useState(null);
   const [checks, setChecks] = useState({
     damages: false,
     vetting: false,
@@ -23,15 +18,15 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
     solo: false,
     legal: false,
   });
-  const [signatureError, setSignatureError] = useState('');
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
 
   const allChecked = Object.values(checks).every(Boolean);
-  const formValid = formData.customer_name && formData.customer_email && formData.signature && allChecked;
 
   const resetForm = () => {
-    setFormData({ customer_name: '', customer_email: '', signature: '' });
     setChecks({ damages: false, vetting: false, responsibility: false, solo: false, legal: false });
-    setSignatureError('');
   };
 
   const handleClose = () => {
@@ -49,15 +44,10 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (formData.signature.trim().toLowerCase() !== formData.customer_name.trim().toLowerCase()) {
-      setSignatureError('Your signature must match your full name exactly.');
-      return;
-    }
-    setSignatureError('');
-
     mutation.mutate({
-      ...formData,
+      customer_name: user?.full_name || user?.email || 'Unknown',
+      customer_email: user?.email || '',
+      signature: user?.full_name || user?.email || 'Acknowledged',
       accepted_at: new Date().toISOString(),
       ip_acknowledged: true,
     });
