@@ -38,6 +38,23 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Validate evidence URLs (prevent SSRF)
+    const allowedDomains = ['surfcoast.com', 'supabase.co', 'qtrypzzcjebvfcihiynt.supabase.co'];
+    const validatedUrls = [];
+    for (const url of evidence_urls) {
+      try {
+        const urlObj = new URL(url);
+        const isAllowed = allowedDomains.some(domain => urlObj.hostname.endsWith(domain));
+        if (isAllowed) {
+          validatedUrls.push(url);
+        } else {
+          console.warn(`Rejected evidence URL from unauthorized domain: ${urlObj.hostname}`);
+        }
+      } catch {
+        console.warn(`Invalid evidence URL provided: ${url}`);
+      }
+    }
+
     // Scan content for violations
     const scanResult = await base44.integrations.Core.InvokeLLM({
       prompt: `You are a content moderation expert. Analyze the following reported content for policy violations:
@@ -87,7 +104,7 @@ Be thorough and conservative in flagging potential illegal activity.`,
       ai_violations: scanResult.violations || [],
       status: scanResult.risk_score > 70 ? 'escalated' : 'new',
       severity: scanResult.recommended_severity || 'medium',
-      evidence_urls: evidence_urls || [],
+      evidence_urls: validatedUrls,
     });
 
     // If high risk, notify admin

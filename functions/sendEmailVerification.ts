@@ -84,7 +84,11 @@ Deno.serve(async (req) => {
     }
 
     // Generate 6-digit code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate 8-digit alphanumeric code (10M+ combinations vs 1M for 6-digit)
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const randomBytes = new Uint8Array(8);
+    crypto.getRandomValues(randomBytes);
+    const code = Array.from(randomBytes).map(b => chars[b % chars.length]).join('');
     
     // Store code in database with 5 minute expiry
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();

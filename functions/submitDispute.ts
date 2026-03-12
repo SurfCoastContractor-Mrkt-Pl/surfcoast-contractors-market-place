@@ -51,19 +51,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Description too long (max 3000 characters)' }, { status: 400 });
     }
 
-    // Generate dispute number
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 10000);
-    const dispute_number = `DSP-${new Date().getFullYear()}-${String(random).padStart(5, '0')}`;
+    // Generate cryptographically secure dispute number
+    const randomBytes = new Uint8Array(8);
+    crypto.getRandomValues(randomBytes);
+    const randomHex = Array.from(randomBytes).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 8);
+    const dispute_number = `DSP-${new Date().getFullYear()}-${randomHex.toUpperCase()}`;
 
-    // Use provided initiator_type or infer from respondent
-    if (!finalInitiatorType && !initiator_type) {
-      const initiatorTypes = {
-        'contractor': 'customer',
-        'customer': 'contractor'
-      };
-      finalInitiatorType = initiatorTypes[respondent_type] || 'customer';
-    }
+
 
     // Create dispute (service role required — RLS restricts user-scoped create)
     const dispute = await base44.asServiceRole.entities.Dispute.create({

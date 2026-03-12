@@ -47,8 +47,17 @@ Deno.serve(async (req) => {
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (sigError) {
-      console.error('Webhook signature verification failed');
+      console.error('Webhook signature verification failed:', sigError.message);
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
+    }
+
+    // Validate event timestamp (prevent replay attacks)
+    const eventTimestamp = event.created * 1000; // Convert to milliseconds
+    const now = Date.now();
+    const maxAge = 5 * 60 * 1000; // 5 minutes
+    if (now - eventTimestamp > maxAge) {
+      console.warn(`Webhook event too old: ${Math.round((now - eventTimestamp) / 1000)}s ago`);
+      return Response.json({ error: 'Event too old' }, { status: 400 });
     }
     
     // Create base44 client after auth (webhook may not have auth context)
@@ -147,7 +156,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error('Webhook error');
+    console.error('Webhook error:', error.message);
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 });
