@@ -88,9 +88,10 @@ export default function Layout({ children, currentPageName }) {
                 alt="SurfCoast Logo"
                 className="w-10 h-10 object-contain"
               />
-              <span className="font-bold text-lg text-amber-600">
-                SurfCoast<br/><span className="text-sm font-semibold">Contractor Market Place</span>
-              </span>
+              <div className="flex flex-col leading-tight">
+                <span className="font-bold text-lg text-white">SurfCoast</span>
+                <span className="text-sm font-semibold text-white">Contractor Market Place</span>
+              </div>
             </Link>
 
             {/* Desktop Nav */}
