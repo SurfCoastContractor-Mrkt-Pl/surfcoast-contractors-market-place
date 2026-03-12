@@ -75,6 +75,7 @@ import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Referrals from './pages/Referrals';
 import Messaging from './pages/Messaging';
+import LocalLanding from './pages/LocalLanding';
 import __Layout from './Layout.jsx';
 
 
@@ -107,6 +108,7 @@ export const PAGES = {
     "BlogDetail": BlogDetail,
     "Referrals": Referrals,
     "Messaging": Messaging,
+    "LocalLanding": LocalLanding,
 }
 
 export const pagesConfig = {
