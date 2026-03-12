@@ -3,6 +3,14 @@ import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
   try {
+    // This function is intended for internal automation use only.
+    // Verify the internal service key to prevent unauthorized external calls.
+    const internalKey = req.headers.get('x-internal-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!expectedKey || internalKey !== expectedKey) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
     const body = await req.json();
 
