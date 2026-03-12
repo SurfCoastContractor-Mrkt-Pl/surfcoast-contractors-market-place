@@ -1,14 +1,26 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
 
-    // Allow admin users or unauthenticated scheduled automation calls
+    // Verify internal service key for unauthenticated requests (scheduled tasks)
     const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
+      const body = await req.json().catch(() => ({}));
+      const serviceKey = body.service_key;
+      const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+      
+      if (!expectedKey || !serviceKey || serviceKey !== expectedKey) {
+        console.warn(`[${requestId}] Unauthorized cleanup attempt - invalid service key`);
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    } else {
+      // Authenticated users must be admins
       const user = await base44.auth.me();
       if (user?.role !== 'admin') {
+        console.warn(`[${requestId}] Forbidden: user ${user?.email} attempted cleanup`);
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
