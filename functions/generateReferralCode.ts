@@ -3,10 +3,28 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { userEmail, userName } = await req.json();
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { userEmail, userName } = body;
 
     if (!userEmail || !userName) {
       return Response.json({ error: 'Missing email or name' }, { status: 400 });
+    }
+
+    // Verify user is creating referral for their own email
+    if (user.email !== userEmail) {
+      return Response.json(
+        { error: 'Can only create referral codes for your own account' },
+        { status: 403 }
+      );
     }
 
     // Generate unique referral code
