@@ -102,12 +102,13 @@ export default function Layout({ children, currentPageName }) {
               {getNavLinks(isContractor).map(link => (
                 <Link key={link.page} to={createPageUrl(link.page)}>
                   <Button 
-                    variant="ghost" 
-                    className={`${
-                      currentPageName === link.page 
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                  variant="ghost" 
+                  className={`${
+                    currentPageName === link.page 
+                      ? 'bg-blue-50'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  style={currentPageName === link.page ? {color: '#1E5A96'} : {}}
                   >
                     {link.name}
                   </Button>
@@ -120,13 +121,13 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                  <Button className="text-white font-medium" style={{backgroundColor: '#1E5A96'}}>
                     Post a Job
                   </Button>
                 </Link>
               )}
               <Link to={createPageUrl('BecomeContractor')}>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                <Button className="text-white font-medium" style={{backgroundColor: '#1E5A96'}}>
                   Join as Contractor
                 </Button>
               </Link>
@@ -189,11 +190,11 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                   <Link to={createPageUrl('QuickJobPost')} onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">Post a Job</Button>
+                    <Button className="w-full text-white font-medium" style={{backgroundColor: '#1E5A96'}}>Post a Job</Button>
                   </Link>
                 )}
                 <Link to={createPageUrl('BecomeContractor')} onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                  <Button className="w-full text-white font-medium" style={{backgroundColor: '#1E5A96'}}>
                     Join as Contractor
                   </Button>
                 </Link>
@@ -232,7 +233,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="flex items-center gap-2 mb-4">
                 <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="w-10 h-10 flex-shrink-0" />
                 <div>
-                  <span className="font-serif font-bold text-xl text-blue-400">SurfCoast</span><br/>
+                  <span className="font-serif font-bold text-xl" style={{color: '#1E5A96'}}>SurfCoast</span><br/>
                   <span className="text-xs font-semibold text-slate-400">MARKETPLACE</span>
                 </div>
               </div>
