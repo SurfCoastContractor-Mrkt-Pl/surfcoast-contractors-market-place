@@ -86,10 +86,7 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative">
-              <div className="relative w-12 h-12 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg opacity-20"></div>
-                <span className="text-2xl">🌴</span>
-              </div>
+              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/58b7e3652_generated_image.png" alt="SurfCoast" className="w-12 h-12" />
               <div className="flex flex-col leading-tight">
                 <span className="font-serif font-bold text-xl text-blue-600">
                   SurfCoast
@@ -233,10 +230,7 @@ export default function Layout({ children, currentPageName }) {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="relative w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg opacity-20"></div>
-                  <span className="text-xl">🌴</span>
-                </div>
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/58b7e3652_generated_image.png" alt="SurfCoast" className="w-10 h-10 flex-shrink-0" />
                 <div>
                   <span className="font-serif font-bold text-xl text-blue-400">SurfCoast</span><br/>
                   <span className="text-xs font-semibold text-slate-400">MARKETPLACE</span>
