@@ -267,16 +267,16 @@ export default function Layout({ children, currentPageName }) {
           </div>
           <div className="border-t border-slate-800 mt-3 pt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
             <span className="text-xs">© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
-            <div className="flex items-center gap-4">
-              <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors">
+            <div className="flex items-center gap-3">
+              <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors text-xs">
                 Terms & Policies
               </Link>
               <button
                 onClick={() => setSuggestionOpen(true)}
-                className="flex items-center gap-1.5 text-slate-400 hover:text-amber-400 transition-colors"
+                className="flex items-center gap-1 text-slate-400 hover:text-amber-400 transition-colors text-xs"
               >
-                <Lightbulb className="w-4 h-4" />
-                Share a Suggestion
+                <Lightbulb className="w-3 h-3" />
+                Feedback
               </button>
             </div>
           </div>
