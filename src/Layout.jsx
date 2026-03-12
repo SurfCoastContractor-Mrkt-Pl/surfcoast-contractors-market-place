@@ -81,7 +81,7 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
 
       {/* Navigation */}
-      <nav className={`z-50 ${isHome ? 'bg-gradient-to-b from-black/60 to-black/20' : 'bg-white border-b border-slate-200'}`}>
+      <nav className={`z-50 ${isHome ? 'bg-gradient-to-b from-slate-900/80 to-slate-800/40 backdrop-blur-sm' : 'bg-white/95 backdrop-blur-sm border-b border-slate-200/50'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -96,11 +96,11 @@ export default function Layout({ children, currentPageName }) {
                 }}
               />
               <div className="flex flex-col leading-tight">
-                <span className="font-bold text-lg text-amber-500">
+                <span className="font-serif font-bold text-xl text-blue-600">
                   SurfCoast
                 </span>
-                <span className={`text-xs font-semibold tracking-wide ${isHome ? 'text-white' : 'text-slate-600'}`}>
-                  CONTRACTOR MARKETPLACE
+                <span className={`text-xs font-medium tracking-widest ${isHome ? 'text-slate-200' : 'text-slate-500'}`}>
+                  MARKETPLACE
                 </span>
               </div>
             </Link>
@@ -113,8 +113,8 @@ export default function Layout({ children, currentPageName }) {
                     variant="ghost" 
                     className={`${
                       currentPageName === link.page 
-                        ? isHome ? 'text-white' : 'text-amber-600 bg-amber-50'
-                        : isHome ? 'text-white hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'
+                        ? isHome ? 'text-white' : 'text-blue-600 bg-blue-50'
+                        : isHome ? 'text-slate-100 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     {link.name}
@@ -128,23 +128,23 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
-                  <Button variant="ghost" className={isHome ? "text-white hover:bg-white/10" : "border border-slate-300 text-slate-600"}>
+                  <Button variant="outline" className={isHome ? "border-slate-300 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-50"}>
                     Post a Job
                   </Button>
                 </Link>
               )}
               <Link to={createPageUrl('BecomeContractor')}>
-                <Button className={isHome ? "bg-amber-500 hover:bg-amber-600 text-slate-900" : "bg-amber-500 hover:bg-amber-600 text-slate-900"}>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium">
                   Join as Contractor
                 </Button>
               </Link>
               <div className="relative group">
-               <Button variant="ghost" className={isHome ? 'text-white hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900'}>
+               <Button variant="ghost" className={isHome ? 'text-slate-100 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900'}>
                  <UserCircle className="w-5 h-5 mr-1" />
                  My Account
                </Button>
                <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
-                 <div className="px-4 py-2 border-b border-slate-100 text-xs font-semibold text-slate-500 bg-slate-50">
+                 <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
                    {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                  </div>
                  {(isContractor ? contractorLinks : customerLinks).map(link => (
@@ -233,7 +233,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12">
+      <footer className="bg-slate-800 text-slate-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
@@ -244,12 +244,12 @@ export default function Layout({ children, currentPageName }) {
                   className="w-10 h-10 object-contain"
                 />
                 <div>
-                  <span className="font-bold text-xl text-amber-400">SurfCoast</span><br/>
-                  <span className="text-xs font-semibold text-amber-400">Contractor Market Place</span>
+                  <span className="font-serif font-bold text-xl text-blue-400">SurfCoast</span><br/>
+                  <span className="text-xs font-semibold text-slate-400">MARKETPLACE</span>
                 </div>
               </div>
-              <p className="text-slate-400 max-w-sm">
-                Connecting skilled professionals with clients who need quality work done right.
+              <p className="text-slate-300 max-w-sm text-sm">
+                Premium marketplace connecting exceptional professionals with discerning clients.
               </p>
             </div>
             <div>
