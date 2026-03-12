@@ -8,25 +8,13 @@ Deno.serve(async (req) => {
 
     const { event, data } = body;
 
-    // Authorization: only accept calls that look like legitimate entity automation payloads.
-    // Direct API callers cannot reproduce the exact automation payload structure.
-    // Additionally, require either an authenticated admin user OR a valid internal service key.
+    // Authorization: internal automation only. Require valid internal service key.
     const internalKey = req.headers.get('x-internal-service-key');
     const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    const isValidServiceKey = expectedKey && internalKey === expectedKey;
-
-    if (!isValidServiceKey) {
-      // Fall back to checking if caller is an authenticated admin
-      const isAuthenticated = await base44.auth.isAuthenticated();
-      if (isAuthenticated) {
-        const user = await base44.auth.me();
-        if (!user || user.role !== 'admin') {
-          return Response.json({ error: 'Forbidden' }, { status: 403 });
-        }
-      } else {
-        // Not authenticated and no valid service key — reject
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
+    
+    if (!expectedKey || !internalKey || internalKey !== expectedKey) {
+      console.warn('Unauthorized invoice generation attempt - invalid or missing service key');
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Validate this is a proper automation payload
