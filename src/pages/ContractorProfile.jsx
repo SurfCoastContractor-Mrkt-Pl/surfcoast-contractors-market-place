@@ -158,15 +158,17 @@ export default function ContractorProfile() {
                   <span className="text-lg text-slate-600">/hr</span>
                 </p>
               </div>
-              <Link to={createPageUrl('PostJob')}>
+              <Link to={createPageUrl('QuickJobPost')}>
                 <Button className="w-full bg-amber-500 hover:bg-amber-600 mb-3">
                   Post a Job
                 </Button>
               </Link>
-              <Button variant="outline" className="w-full">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Message
-              </Button>
+              <Link to={createPageUrl(`Messaging?contractor=${contractor.id}`)}>
+                <Button variant="outline" className="w-full">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Message
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
