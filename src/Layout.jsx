@@ -134,10 +134,10 @@ export default function Layout({ children, currentPageName }) {
                 </Button>
               </Link>
               <div className="relative group">
-               <Button variant="ghost" className={isHome ? 'text-slate-100 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900'}>
-                 <UserCircle className="w-5 h-5 mr-1" />
-                 My Account
-               </Button>
+               <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
+                  <UserCircle className="w-5 h-5 mr-1" />
+                  My Account
+                </Button>
                <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
                  <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
                    {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
