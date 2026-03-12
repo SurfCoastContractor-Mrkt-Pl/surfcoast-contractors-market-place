@@ -96,7 +96,7 @@ export default function Layout({ children, currentPageName }) {
                 <span className="font-bold text-lg text-amber-500">
                   SurfCoast
                 </span>
-                <span className="text-xs font-semibold text-slate-600 tracking-wide">
+                <span className="text-xs font-semibold text-slate-500 tracking-wide">
                   CONTRACTOR MARKETPLACE
                 </span>
               </div>
