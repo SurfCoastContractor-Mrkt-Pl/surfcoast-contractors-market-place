@@ -19,7 +19,11 @@ export default function useGeoCheck() {
           path: window.location.pathname,
         });
         if (data && data.allowed === false) {
-          window.location.href = createPageUrl('RegionBlocked');
+          const params = new URLSearchParams({
+            country: data.countryName || data.country || 'Unknown',
+            code: data.country || '',
+          });
+          window.location.href = createPageUrl('RegionBlocked') + '&' + params.toString();
         }
       } catch {
         // Fail open — don't block if check errors
