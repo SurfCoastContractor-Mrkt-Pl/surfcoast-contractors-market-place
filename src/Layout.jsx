@@ -88,7 +88,7 @@ export default function Layout({ children, currentPageName }) {
             <Link to={createPageUrl('Home')} className="flex items-center gap-2 relative">
               <div className="relative w-12 h-12 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg opacity-20"></div>
-                <span className="text-2xl">🏄‍♂️</span>
+                <span className="text-2xl">🌴</span>
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="font-serif font-bold text-xl text-blue-600">
@@ -235,7 +235,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="flex items-center gap-2 mb-4">
                 <div className="relative w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg opacity-20"></div>
-                  <span className="text-xl">🏄‍♂️</span>
+                  <span className="text-xl">🌴</span>
                 </div>
                 <div>
                   <span className="font-serif font-bold text-xl text-blue-400">SurfCoast</span><br/>
