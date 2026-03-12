@@ -107,7 +107,7 @@ export default function ContractorSearchFilter({ contractors = [] }) {
         </div>
 
         {/* Search and Filter Cards */}
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
+        <div className="grid md:grid-cols-4 gap-4 mb-6">
           {/* Name Search */}
           <div className="relative">
             <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400 pointer-events-none" />
@@ -122,21 +122,39 @@ export default function ContractorSearchFilter({ contractors = [] }) {
             />
           </div>
 
-          {/* Category Filter */}
+          {/* Industry Filter */}
           <div className="relative">
             <Briefcase className="absolute left-3 top-3 w-5 h-5 text-slate-400 pointer-events-none" />
             <select
-              value={selectedCategory}
-              onChange={(e) => {
-                setSelectedCategory(e.target.value);
-                setShowResults(true);
-              }}
+              value={selectedIndustry}
+              onChange={handleIndustryChange}
               className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             >
-              <option value="">All Services</option>
-              {categories.map(cat => (
-                <option key={cat} value={cat}>
-                  {cat.replace(/_/g, ' ').charAt(0).toUpperCase() + cat.replace(/_/g, ' ').slice(1)}
+              <option value="">All Industries</option>
+              {industryOptions.map(ind => (
+                <option key={ind.category} value={ind.category}>
+                  {ind.category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Role Filter */}
+          <div className="relative">
+            <Briefcase className="absolute left-3 top-3 w-5 h-5 text-slate-400 pointer-events-none" />
+            <select
+              value={selectedRole}
+              onChange={(e) => {
+                setSelectedRole(e.target.value);
+                setShowResults(true);
+              }}
+              disabled={!selectedIndustry}
+              className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            >
+              <option value="">{selectedIndustry ? 'All Roles' : 'Select Industry First'}</option>
+              {rolesForIndustry.map(role => (
+                <option key={role} value={role}>
+                  {roleNameMap[role] || role.replace(/_/g, ' ')}
                 </option>
               ))}
             </select>
