@@ -67,7 +67,7 @@ export default function AppQRCode() {
             <p className="text-amber-700 text-xs font-mono break-all text-center">{APP_URL}</p>
 
             {/* Tagline */}
-            <div className="w-full bg-amber-500 rounded-xl py-2 px-3">
+            <div className="w-full bg-gradient-to-r from-amber-500 to-blue-600 rounded-xl py-2 px-3">
               <p className="text-white text-xs text-center font-semibold">
                 Find skilled contractors or grow your business
               </p>
