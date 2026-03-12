@@ -226,7 +226,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-800 text-slate-50 py-6">
+      <footer className="bg-slate-800 text-slate-50 py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="sm:col-span-2 lg:col-span-2">
