@@ -22,7 +22,7 @@ export default function PortfolioGalleryViewer({ images = [] }) {
     if (e.key === 'Escape') setLightboxOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (lightboxOpen) {
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
