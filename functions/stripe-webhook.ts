@@ -225,11 +225,52 @@ async function handleDisputeCreated(charge, base44) {
 
 async function handleChargeFailed(charge, base44) {
   try {
-    console.log(`Charge failed: ${charge.id} - Reason: ${charge.failure_reason}`);
-    // Implement failed charge handling
-    } catch (error) {
-    console.error('Error handling failed charge');
+    const failureCode = charge.failure_code || 'card_declined';
+    const failureMessage = charge.failure_message || 'Card declined';
+    console.log(`Charge failed: ${charge.id} - Code: ${failureCode} - Reason: ${failureMessage}`);
+
+    // Map Stripe failure codes to user-friendly reasons
+    const declineReasonMap = {
+      insufficient_funds: 'insufficient_funds',
+      card_declined: 'card_declined',
+      expired_card: 'expired_card',
+      incorrect_cvc: 'card_declined',
+      processing_error: 'card_declined',
+      do_not_honor: 'card_declined',
+    };
+    const reason = declineReasonMap[failureCode] || 'declined';
+
+    // Update any pending payment records associated with this charge
+    const email = charge.billing_details?.email || charge.metadata?.payer_email;
+    if (email) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: email,
+        status: 'pending',
+      });
+      if (payments && payments.length > 0) {
+        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+          status: 'expired',
+        });
+      }
     }
+
+    // Send user notification email
+    if (email) {
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: email,
+          from_name: 'SurfCoast Payments',
+          subject: 'Payment Unsuccessful — Action Required',
+          body: `Your payment of $1.75 could not be processed.\n\nReason: ${failureMessage}\n\nPlease return to SurfCoast Contractor Market Place and try again with a different card or ensure your card has sufficient funds.\n\nIf you believe this is an error, please contact your bank.\n\n— SurfCoast Contractor Market Place`,
+        });
+      } catch (emailErr) {
+        console.warn('Failed to send decline notification email');
+      }
+    }
+  } catch (error) {
+    console.error('Error handling failed charge');
+  }
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent, base44) {
