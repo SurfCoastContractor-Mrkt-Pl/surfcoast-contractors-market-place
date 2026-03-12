@@ -14,7 +14,7 @@ export default function Terms() {
             <ChevronLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          <h1 className="text-4xl font-bold">Terms & Policies</h1>
+          <h1 className="text-4xl font-bold">Terms, Policies & Acknowledgements</h1>
           <p className="text-slate-400 mt-2">Last updated: March 3, 2026</p>
         </div>
       </div>
