@@ -20,6 +20,7 @@ import EmailCapturePopup from '@/components/home/EmailCapturePopup';
 export default function Home() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [expandedSections, setExpandedSections] = useState({});
 
 
   // Redirect authenticated users to their dashboard if they're new
