@@ -98,6 +98,7 @@ export default function Home() {
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
+      <DemoProfiles />
       <TradeCategories />
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
