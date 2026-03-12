@@ -53,7 +53,6 @@ Deno.serve(async (req) => {
       window_duration_seconds: 300
     });
 
-    const now = new Date();
     const staleThreshold = new Date(now.getTime() - 48 * 60 * 60 * 1000); // 48 hours ago
 
     // Find pending quotes older than 48 hours
