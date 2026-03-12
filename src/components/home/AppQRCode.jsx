@@ -57,7 +57,7 @@ export default function AppQRCode() {
                 value={APP_URL}
                 size={180}
                 bgColor="#ffffff"
-                fgColor="#92400e"
+                fgColor="#000000"
                 level="H"
                 includeMargin={false}
               />
