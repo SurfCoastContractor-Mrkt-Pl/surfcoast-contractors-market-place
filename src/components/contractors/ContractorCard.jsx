@@ -104,16 +104,16 @@ export default function ContractorCard({ contractor }) {
           
           {/* Certifications Preview */}
           {contractor.certifications?.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {contractor.certifications.slice(0, 2).map((cert, idx) => (
-                <span key={idx} className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
-                  <CheckCircle2 className="w-2 h-2 text-green-500" />
-                  {cert}
+            <div className="mt-1 flex flex-wrap gap-0.5">
+              {contractor.certifications.slice(0, 1).map((cert, idx) => (
+                <span key={idx} className="inline-flex items-center gap-0.5 text-xs bg-slate-100 text-slate-600 px-1 py-0.5 rounded text-ellipsis overflow-hidden max-w-full">
+                  <CheckCircle2 className="w-2 h-2 text-green-500 flex-shrink-0" />
+                  <span className="truncate">{cert}</span>
                 </span>
               ))}
-              {contractor.certifications.length > 2 && (
-                <span className="text-xs text-slate-500 px-1.5 py-0.5">
-                  +{contractor.certifications.length - 2} more
+              {contractor.certifications.length > 1 && (
+                <span className="text-xs text-slate-500">
+                  +{contractor.certifications.length - 1}
                 </span>
               )}
             </div>
