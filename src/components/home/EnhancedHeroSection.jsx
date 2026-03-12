@@ -7,7 +7,7 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 export default function EnhancedHeroSection() {
   return (
     <div className="pt-20 pb-16 border-b border-slate-200/50 relative" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
-      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.60)'}}></div>
+      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.40)'}}></div>
       <div className="relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
