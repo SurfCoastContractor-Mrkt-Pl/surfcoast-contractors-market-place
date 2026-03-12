@@ -125,75 +125,31 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           ))}
         </div>
 
-        {/* Signature Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 pt-2 border-t border-slate-200">
-          <p className="text-sm font-semibold text-slate-700">Sign to confirm your agreement:</p>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="customer_name">Full Legal Name *</Label>
-              <Input
-                id="customer_name"
-                value={formData.customer_name}
-                onChange={(e) => setFormData(p => ({ ...p, customer_name: e.target.value }))}
-                placeholder="Your full name"
-                required
-                className="mt-1.5"
-              />
-            </div>
-            <div>
-              <Label htmlFor="customer_email">Email Address *</Label>
-              <Input
-                id="customer_email"
-                type="email"
-                value={formData.customer_email}
-                onChange={(e) => setFormData(p => ({ ...p, customer_email: e.target.value }))}
-                placeholder="your@email.com"
-                required
-                className="mt-1.5"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="signature">
-              Electronic Signature *{' '}
-              <span className="text-slate-400 font-normal">(Type your full name exactly as entered above)</span>
-            </Label>
-            <Input
-              id="signature"
-              value={formData.signature}
-              onChange={(e) => { setFormData(p => ({ ...p, signature: e.target.value })); setSignatureError(''); }}
-              placeholder="Type your full name to sign"
-              required
-              className={`mt-1.5 font-serif text-lg ${signatureError ? 'border-red-400' : ''}`}
-            />
-            {signatureError && (
-              <p className="text-red-500 text-xs mt-1">{signatureError}</p>
-            )}
-            <p className="text-xs text-slate-400 mt-1">
-              By typing your name, you are electronically signing this disclaimer and agreeing to all terms.
+        {/* Confirm Button */}
+        <form onSubmit={handleSubmit} className="pt-2 border-t border-slate-200 space-y-3">
+          {user && (
+            <p className="text-xs text-slate-500">
+              Confirming as: <strong className="text-slate-700">{user.full_name || user.email}</strong>
             </p>
-          </div>
-
-          <div className="flex gap-3 pt-2">
+          )}
+          <div className="flex gap-3">
             <Button type="button" variant="outline" onClick={handleClose} className="flex-1">
               Cancel
             </Button>
             <Button
               type="submit"
-              disabled={!formValid || mutation.isPending}
+              disabled={!allChecked || mutation.isPending}
               className="flex-1 bg-red-600 hover:bg-red-700 text-white"
             >
               {mutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Signing...
+                  Saving...
                 </>
               ) : (
                 <>
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  I Agree & Sign Disclaimer
+                  I Agree & Proceed
                 </>
               )}
             </Button>
