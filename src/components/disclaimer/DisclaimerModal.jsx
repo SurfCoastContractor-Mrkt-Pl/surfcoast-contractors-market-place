@@ -131,6 +131,22 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
           ))}
         </div>
 
+        {/* Signature Input */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+          <Label htmlFor="signature" className="text-sm font-semibold text-slate-700">
+            Your Signature
+          </Label>
+          <input
+            id="signature"
+            type="text"
+            placeholder="Type your full name as signature"
+            value={signature}
+            onChange={(e) => setSignature(e.target.value)}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          />
+          <p className="text-xs text-slate-500">By typing your name, you are electronically signing this disclaimer.</p>
+        </div>
+
         {/* Confirm Button */}
         <form onSubmit={handleSubmit} className="pt-2 border-t border-slate-200 space-y-3">
           {user && (
