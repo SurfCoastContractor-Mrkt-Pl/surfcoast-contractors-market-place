@@ -54,7 +54,7 @@ export default function TrustAndSocialProof() {
           </div>
           <div className="text-center">
             <div className="flex justify-center mb-3">
-              <Clock className="w-8 h-8 text-blue-600" />
+              <Clock className="w-8 h-8" style={{color: '#1E5A96'}} />
             </div>
             <p className="text-3xl font-bold text-slate-900">12 hrs</p>
             <p className="text-sm text-slate-600 mt-1">Avg Response Time</p>
@@ -94,7 +94,7 @@ export default function TrustAndSocialProof() {
         </div>
 
         {/* Before/After */}
-        <div className="mt-16 grid md:grid-cols-2 gap-8 bg-blue-50 rounded-xl p-8 border border-blue-200">
+        <div className="mt-16 grid md:grid-cols-2 gap-8 rounded-xl p-8" style={{backgroundColor: 'rgba(30, 90, 150, 0.05)', borderColor: 'rgba(30, 90, 150, 0.2)', borderWidth: '1px'}}>
           <div>
             <p className="text-sm font-semibold text-slate-600 mb-2">BEFORE SURFCOAST</p>
             <ul className="space-y-2 text-slate-700">
