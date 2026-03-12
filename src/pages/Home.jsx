@@ -12,22 +12,15 @@ import FeaturedContractors from '@/components/home/FeaturedContractors';
 import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
 import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
-import SocialShareBar from '@/components/home/SocialShareBar';
-import AppQRCode from '@/components/home/AppQRCode';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import HowItWorks from '@/components/home/HowItWorks';
-import RecentJobsCompletedFeed from '@/components/home/RecentJobsCompletedFeed';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
-import FrictionRemovalBanner from '@/components/home/FrictionRemovalBanner';
-import OnboardingGuide from '@/components/onboarding/OnboardingGuide';
 import EmailCapturePopup from '@/components/home/EmailCapturePopup';
-import FreeTrialBanner from '@/components/home/FreeTrialBanner';
 
 export default function Home() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [onboardingOpen, setOnboardingOpen] = useState(false);
-  const [onboardingType, setOnboardingType] = useState('customer');
+
 
   // Redirect authenticated users to their dashboard if they're new
   useEffect(() => {
@@ -93,14 +86,11 @@ export default function Home() {
         </Button>
       </div>
 
-      <FrictionRemovalBanner />
       <EnhancedHeroSection />
-      <FreeTrialBanner />
       <TrustAndSocialProof />
       <EmailCapturePopup />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HowItWorks />
-        <RecentJobsCompletedFeed />
       </div>
       <CTASection />
       <TradeCategories />
@@ -108,14 +98,6 @@ export default function Home() {
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
       <NewsletterSignup />
-      <AppQRCode />
-      <SocialShareBar />
-
-      <OnboardingGuide 
-        open={onboardingOpen} 
-        onClose={() => setOnboardingOpen(false)}
-        userType={onboardingType}
-      />
     </div>
   );
 }
