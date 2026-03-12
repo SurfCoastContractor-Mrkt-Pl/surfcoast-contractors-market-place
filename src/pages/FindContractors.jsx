@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Users, MapPin, Star, X } from 'lucide-react';
 import ContractorCard from '@/components/contractors/ContractorCard';
 import LocationSelector from '@/components/location/LocationSelector';
+import SavedSearches from '@/components/search/SavedSearches';
 import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
@@ -35,6 +36,19 @@ export default function FindContractors() {
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
+  const [userEmail, setUserEmail] = useState(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const user = await base44.auth.me();
+        setUserEmail(user?.email || null);
+      } catch {
+        setUserEmail(null);
+      }
+    };
+    loadUser();
+  }, []);
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ['all-contractors'],
@@ -117,7 +131,25 @@ export default function FindContractors() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Location Selector */}
+         {/* Saved Searches */}
+         {userEmail && (
+           <div className="mb-8">
+             <SavedSearches 
+               userEmail={userEmail}
+               userType="customer"
+               onLoadSearch={(search) => {
+                 setSearchQuery(search.query || '');
+                 if (search.filters) {
+                   if (search.filters.trades) setTradeFilter(search.filters.trades[0] || '');
+                   if (search.filters.minRating) setRatingFilter(search.filters.minRating?.toString() || '');
+                   if (search.filters.radius) setSearchRadius(search.filters.radius);
+                 }
+               }}
+             />
+           </div>
+         )}
+
+         {/* Location Selector */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <MapPin className="w-5 h-5 text-slate-500" />
