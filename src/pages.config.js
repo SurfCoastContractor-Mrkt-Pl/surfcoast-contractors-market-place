@@ -74,6 +74,7 @@ import QuickJobPost from './pages/QuickJobPost';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Referrals from './pages/Referrals';
+import Messaging from './pages/Messaging';
 import __Layout from './Layout.jsx';
 
 
@@ -105,6 +106,7 @@ export const PAGES = {
     "Blog": Blog,
     "BlogDetail": BlogDetail,
     "Referrals": Referrals,
+    "Messaging": Messaging,
 }
 
 export const pagesConfig = {
