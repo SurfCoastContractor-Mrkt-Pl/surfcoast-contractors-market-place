@@ -19,7 +19,7 @@ export default function EnhancedHeroSection() {
             
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
               Find Premium Contractors,<br />
-              <span style={{color: '#1E5A96'}}>No Markups</span>
+              <span style={{color: '#FCD34D'}}>No Markups</span>
             </h1>
 
             <p className="text-lg text-slate-100 mb-8 font-light leading-relaxed">
