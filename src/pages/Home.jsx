@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { RotateCw } from 'lucide-react';
+import { RotateCw, ChevronDown, ChevronUp } from 'lucide-react';
 
 import EnhancedHeroSection from '@/components/home/EnhancedHeroSection';
 import TradeCategories from '@/components/home/TradeCategories';
