@@ -78,7 +78,7 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
 
       {/* Navigation */}
-      <nav className={`sticky top-0 z-50 ${isHome ? 'bg-gradient-to-b from-black/40 to-transparent' : 'bg-white border-b border-slate-200'}`}>
+      <nav className={`sticky top-0 z-50 ${isHome ? 'bg-gradient-to-b from-black/60 to-black/20' : 'bg-white border-b border-slate-200'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -116,7 +116,7 @@ export default function Layout({ children, currentPageName }) {
 
               {isContractor === false && (
                 <Link to={createPageUrl('PostJob')}>
-                  <Button variant="outline" className={isHome ? "border-white text-white hover:bg-white/10" : ""}>
+                  <Button variant="ghost" className={isHome ? "text-white hover:bg-white/10" : "border border-slate-300 text-slate-600"}>
                     Post a Job
                   </Button>
                 </Link>
