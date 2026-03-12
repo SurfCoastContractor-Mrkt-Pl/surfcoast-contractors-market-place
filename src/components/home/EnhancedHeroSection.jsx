@@ -13,7 +13,7 @@ export default function EnhancedHeroSection() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left: Value Proposition */}
           <div>
-            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: '#1E5A96', color: 'white'}}>
+            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: 'white', color: '#1E5A96'}}>
               ✓ Verified & Vetted Professionals
             </div>
             
