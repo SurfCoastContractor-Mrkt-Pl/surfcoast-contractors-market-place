@@ -9,8 +9,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Contractor ID required' }, { status: 400 });
     }
 
-    // Get contractor profile
-    const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
+    // Get contractor profile respecting RLS (only public profiles)
+    const contractor = await base44.entities.Contractor.get(contractor_id);
     
     if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
