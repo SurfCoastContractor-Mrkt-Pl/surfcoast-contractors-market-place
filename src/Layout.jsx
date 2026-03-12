@@ -94,7 +94,7 @@ export default function Layout({ children, currentPageName }) {
                 <span className="font-serif font-bold text-xl text-blue-600">
                   SurfCoast
                 </span>
-                <span className={`text-xs font-medium tracking-widest ${isHome ? 'text-slate-200' : 'text-blue-600'}`}>
+                <span className="text-xs font-medium tracking-widest text-blue-600">
                   MARKETPLACE
                 </span>
               </div>
