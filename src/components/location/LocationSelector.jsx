@@ -6,7 +6,9 @@ import { getUserLocation, geocodeLocation } from './geolocationUtils';
 
 export default function LocationSelector({ onLocationChange }) {
   const [location, setLocation] = useState(null);
-  const [manualInput, setManualInput] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
