@@ -8,7 +8,7 @@ Deno.serve(async (req) => {
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (!isAuthenticated) {
       const internalKey = req.headers.get('x-internal-key');
-      const expectedKey = Deno.env.get('INTERNAL_AUTOMATION_KEY');
+      const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
       if (expectedKey && internalKey !== expectedKey) {
         console.warn('Unauthorized sendCustomerWelcomeEmail request');
         return Response.json({ success: false, error: 'Unauthorized' }, { status: 401 });

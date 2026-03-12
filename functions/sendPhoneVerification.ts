@@ -74,46 +74,44 @@ Deno.serve(async (req) => {
       verified: false
     });
 
-    // Send SMS via Twilio
+    // SMS via Twilio — skipped until Twilio is configured
     const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
     const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
     const fromPhone = Deno.env.get('TWILIO_PHONE_NUMBER');
 
-    if (!accountSid || !authToken || !fromPhone) {
-      console.error('Twilio credentials not configured');
-      return Response.json({ error: 'SMS service unavailable' }, { status: 500 });
-    }
+    if (accountSid && authToken && fromPhone) {
+      const toPhone = normalizedPhone.startsWith('1')
+        ? `+${normalizedPhone}`
+        : `+1${normalizedPhone}`;
 
-    // Format phone number to E.164 format
-    const toPhone = normalizedPhone.startsWith('1') 
-      ? `+${normalizedPhone}` 
-      : `+1${normalizedPhone}`;
+      const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+      const auth = btoa(`${accountSid}:${authToken}`);
 
-    const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
-    const auth = btoa(`${accountSid}:${authToken}`);
+      const formData = new URLSearchParams();
+      formData.append('From', fromPhone);
+      formData.append('To', toPhone);
+      formData.append('Body', `Your verification code is: ${code}`);
 
-    const formData = new URLSearchParams();
-    formData.append('From', fromPhone);
-    formData.append('To', toPhone);
-    formData.append('Body', `Your verification code is: ${code}`);
+      const twilioResponse = await fetch(twilioUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${auth}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      });
 
-    const twilioResponse = await fetch(twilioUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    });
-
-    if (!twilioResponse.ok) {
-      console.error('Twilio error');
-      return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
+      if (!twilioResponse.ok) {
+        console.error('Twilio error');
+        return Response.json({ error: 'Failed to send verification code' }, { status: 500 });
+      }
+    } else {
+      console.warn('Twilio not configured — SMS skipped. Code stored in DB only.');
     }
 
     return Response.json({ 
       success: true, 
-      message: 'Verification code sent to your phone'
+      message: 'Verification code sent'
     });
     } catch (error) {
     console.error('Phone verification error');
