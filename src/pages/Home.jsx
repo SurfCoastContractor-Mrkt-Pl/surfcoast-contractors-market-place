@@ -88,6 +88,7 @@ export default function Home() {
       {contractors && <ContractorSearchFilter contractors={contractors} />}
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />
+      <SocialShareBar />
     </div>
   );
 }
