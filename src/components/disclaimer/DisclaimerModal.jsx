@@ -11,6 +11,7 @@ import { AlertTriangle, ShieldAlert, Loader2, CheckCircle } from 'lucide-react';
 
 export default function DisclaimerModal({ open, onAccepted, onClose }) {
   const [user, setUser] = useState(null);
+  const [signature, setSignature] = useState('');
   const [checks, setChecks] = useState({
     damages: false,
     vetting: false,
@@ -26,6 +27,7 @@ export default function DisclaimerModal({ open, onAccepted, onClose }) {
   const allChecked = Object.values(checks).every(Boolean);
 
   const resetForm = () => {
+    setSignature('');
     setChecks({ damages: false, vetting: false, responsibility: false, solo: false, legal: false });
   };
 
