@@ -24,10 +24,12 @@ const getNavLinks = (isContractor) => {
 const customerLinks = [
   { name: 'My Account', page: 'CustomerAccount' },
   { name: 'My Job Postings', page: 'MyJobs' },
+  { name: 'Earn Credits', page: 'Referrals' },
 ];
 
 const contractorLinks = [
   { name: 'My Account', page: 'ContractorAccount' },
+  { name: 'Earn Credits', page: 'Referrals' },
 ];
 
 export default function Layout({ children, currentPageName }) {
@@ -254,6 +256,7 @@ export default function Layout({ children, currentPageName }) {
               <ul className="space-y-2 text-slate-400">
                 <li><Link to={createPageUrl('BecomeContractor')} className="hover:text-white">Create Profile</Link></li>
                 <li><Link to={createPageUrl('Jobs')} className="hover:text-white">Browse Jobs</Link></li>
+                <li><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
               </ul>
             </div>
             {isContractor === false && (
@@ -263,6 +266,7 @@ export default function Layout({ children, currentPageName }) {
                  <li><Link to={createPageUrl('FindContractors')} className="hover:text-white">Find Contractors</Link></li>
                  <li><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
                  <li><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
+                 <li><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
                </ul>
              </div>
             )}

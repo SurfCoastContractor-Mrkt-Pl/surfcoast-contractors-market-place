@@ -35,6 +35,8 @@ import AvailabilityStatusManager from '@/components/contractor/AvailabilityStatu
 import FeaturedBadgeToggle from '@/components/contractor/FeaturedBadgeToggle';
 import ContractorJobDashboard from '@/components/contractor/ContractorJobDashboard';
 import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailabilityManager';
+import FeaturedListingManager from '@/components/featured/FeaturedListingManager';
+import ReferralDashboard from '@/components/referral/ReferralDashboard';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -256,10 +258,12 @@ export default function ContractorAccount() {
             </Card>
 
             <Tabs defaultValue="profile">
-              <TabsList className="w-full grid-cols-7">
+              <TabsList className="w-full grid-cols-9">
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
                  <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
                  <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
+                 <TabsTrigger value="featured" className="text-xs sm:text-sm">Featured</TabsTrigger>
+                 <TabsTrigger value="referrals" className="text-xs sm:text-sm">Referrals</TabsTrigger>
                  <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
                  <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
                    <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
@@ -436,6 +440,14 @@ export default function ContractorAccount() {
 
               <TabsContent value="badges" className="min-h-96 w-full">
                 <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
+              </TabsContent>
+
+              <TabsContent value="featured">
+                <FeaturedListingManager contractorEmail={userEmail} contractorId={contractor?.id} />
+              </TabsContent>
+
+              <TabsContent value="referrals">
+                <ReferralDashboard userEmail={userEmail} />
               </TabsContent>
 
               <TabsContent value="fees">

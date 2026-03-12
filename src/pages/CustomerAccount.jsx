@@ -30,6 +30,7 @@ import QuickJobPostForm from '@/components/customer/QuickJobPostForm';
 import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
+import ReferralDashboard from '@/components/referral/ReferralDashboard';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -220,7 +221,7 @@ export default function CustomerAccount() {
 
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
-              <TabsList className="w-full grid grid-cols-8">
+              <TabsList className="w-full grid grid-cols-9">
                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
                 <TabsTrigger value="quotes" className="text-xs sm:text-sm">Quotes</TabsTrigger>
                 <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
@@ -228,6 +229,7 @@ export default function CustomerAccount() {
                 </TabsTrigger>
                 <TabsTrigger value="history" className="text-xs sm:text-sm">History</TabsTrigger>
                 <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
+                <TabsTrigger value="referrals" className="text-xs sm:text-sm">Referrals</TabsTrigger>
                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1">
                   Scopes
                   {scopes?.filter(s => s.status === 'pending_approval').length > 0 && (
@@ -258,6 +260,10 @@ export default function CustomerAccount() {
 
               <TabsContent value="badges" className="min-h-96 w-full">
                 <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count ?? 0} />
+              </TabsContent>
+
+              <TabsContent value="referrals">
+                <ReferralDashboard userEmail={userEmail} />
               </TabsContent>
 
               <TabsContent value="post-job" className="w-full min-h-screen p-6">
