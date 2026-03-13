@@ -155,9 +155,13 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   return (
     <div 
       ref={widgetRef}
-      className="fixed z-50 w-32 max-w-[calc(100vw-3rem)] h-40 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto transition-shadow"
-      style={{ bottom: `${position.bottom}px`, left: `${position.left}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
-      onMouseDown={handleMouseDown}
+      className={`fixed z-50 flex flex-col bg-white shadow-2xl border border-slate-200 pointer-events-auto transition-shadow ${
+        expanded 
+          ? 'inset-0 rounded-none' 
+          : 'w-32 max-w-[calc(100vw-3rem)] h-40 rounded-xl'
+      }`}
+      style={expanded ? {} : { bottom: `${position.bottom}px`, left: `${position.left}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
+      onMouseDown={!expanded ? handleMouseDown : undefined}
     >
       {/* Header */}
       <div 
