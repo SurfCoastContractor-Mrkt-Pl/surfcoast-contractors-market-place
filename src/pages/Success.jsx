@@ -23,23 +23,26 @@ export default function Success() {
     }
 
     const verifyAndFinalize = async () => {
-      try {
-        // Poll for confirmed status (webhook may take a moment)
-        let payment = null;
-        let maxAttempts = 10;
-        for (let i = 0; i < maxAttempts; i++) {
-          const payments = await base44.entities.Payment.filter({ id: paymentId });
-          if (payments.length > 0) {
-            payment = payments[0];
-            // Accept either 'confirmed' status OR webhook still processing (show success anyway)
-            if (payment.status === 'confirmed' || payment.status === 'pending') {
-              break;
-            }
-          }
-          if (i < maxAttempts - 1) {
-            await new Promise(r => setTimeout(r, 1500));
-          }
-        }
+       try {
+         console.log(`[Success] Starting payment verification for ID: ${paymentId}`);
+         // Poll for confirmed status (webhook may take a moment)
+         let payment = null;
+         let maxAttempts = 10;
+         for (let i = 0; i < maxAttempts; i++) {
+           const payments = await base44.entities.Payment.filter({ id: paymentId });
+           console.log(`[Success] Attempt ${i + 1}/${maxAttempts}: Found ${payments.length} payment(s), status: ${payments[0]?.status || 'none'}`);
+           if (payments.length > 0) {
+             payment = payments[0];
+             // Accept either 'confirmed' status OR webhook still processing (show success anyway)
+             if (payment.status === 'confirmed' || payment.status === 'pending') {
+               console.log(`[Success] Payment found with status: ${payment.status}`);
+               break;
+             }
+           }
+           if (i < maxAttempts - 1) {
+             await new Promise(r => setTimeout(r, 1500));
+           }
+         }
 
         if (!payment) {
           setError('Payment not found. Please contact support with payment ID: ' + paymentId);
