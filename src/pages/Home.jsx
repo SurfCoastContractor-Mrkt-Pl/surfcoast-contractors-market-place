@@ -88,14 +88,12 @@ export default function Home() {
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
-      <HomeschoolPromoPopup />
       <RecentActivityBanner />
       <DemoProfiles />
-      <div className="pt-16">
-        <TradeCategories />
-        <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
-        <RecentJobs jobs={jobs} isLoading={jobsLoading} />
-      </div>
+      <TradeCategories />
+      <HomeschoolPromoPopup />
+      <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
+      <RecentJobs jobs={jobs} isLoading={jobsLoading} />
 
       {/* Expandable Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
