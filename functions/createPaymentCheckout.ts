@@ -22,27 +22,31 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Check for duplicate request using idempotency key (if provided)
-    if (idempotencyKey) {
-      try {
-        const existingPayments = await base44.asServiceRole.entities.Payment.filter({
-          payer_email: payerEmail,
-          idempotency_key: idempotencyKey,
-          status: 'pending'
+    // Check for duplicate request using idempotency key (REQUIRED)
+    if (!idempotencyKey) {
+      return Response.json({ 
+        error: 'Missing idempotency key. Please reload the page and try again.' 
+      }, { status: 400 });
+    }
+    
+    try {
+      const existingPayments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: payerEmail,
+        idempotency_key: idempotencyKey,
+        status: { '$in': ['pending', 'confirmed'] }
+      });
+      if (existingPayments.length > 0) {
+        console.log(`Duplicate checkout request detected for ${payerEmail}, returning existing payment`);
+        const existingPayment = existingPayments[0];
+        return Response.json({
+          sessionId: existingPayment.stripe_session_id,
+          paymentId: existingPayment.id,
+          url: existingPayment.stripe_checkout_url,
+          duplicate: true
         });
-        if (existingPayments.length > 0) {
-          console.log(`Duplicate checkout request detected for ${payerEmail}, returning existing payment`);
-          const existingPayment = existingPayments[0];
-          return Response.json({
-            sessionId: existingPayment.stripe_session_id,
-            paymentId: existingPayment.id,
-            url: existingPayment.stripe_checkout_url,
-            duplicate: true
-          });
-        }
-      } catch (idempotencyError) {
-        console.warn('Idempotency check failed:', idempotencyError.message);
       }
+    } catch (idempotencyError) {
+      console.warn('Idempotency check failed:', idempotencyError.message);
     }
 
     // Validate email format
