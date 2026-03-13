@@ -122,35 +122,35 @@ export default function LegalResourcesHub({ userLocation = null, userTrade = nul
         </TabsContent>
       </Tabs>
 
-      <Card className="border-green-200 bg-green-50">
+      <Card className="border-slate-300 bg-slate-50">
         <CardHeader>
-          <CardTitle className="text-lg">Common Legal Pitfalls to Avoid</CardTitle>
+          <CardTitle className="text-lg">Things for Customers to Consider</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-3 text-sm text-green-900">
+          <ul className="space-y-3 text-sm text-slate-900">
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>Cash-only deals without documentation:</strong> Always get written agreements, even for small jobs.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Get agreements in writing:</strong> Even informal jobs are clearer when documented with scope and cost.</span>
             </li>
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>Paying 100% upfront:</strong> Link payments to completed milestones to protect both parties.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Milestone-based payment:</strong> Consider linking payments to completed phases rather than paying upfront.</span>
             </li>
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>Verbal agreements on scope changes:</strong> Always document changes in writing with updated pricing.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Document scope changes:</strong> If the project scope changes, update the agreement and pricing in writing.</span>
             </li>
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>Skipping permits:</strong> Many jurisdictions require permits for major work—verify with your local building dept.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Understand local permit requirements:</strong> Verify with your local building department if permits are needed for the work.</span>
             </li>
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>No insurance/licensing verification:</strong> Both contractors and customers should verify credentials upfront.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Verify contractor credentials:</strong> For licensed or sole proprietor work, ask to see proof of licensing and insurance.</span>
             </li>
             <li className="flex gap-3">
-              <span className="font-bold text-green-600">❌</span>
-              <span><strong>Ignoring warranty obligations:</strong> Know what you're required to warrant and for how long.</span>
+              <span className="font-bold text-slate-600">💡</span>
+              <span><strong>Understand warranty terms:</strong> Ask what the contractor warrants and for how long before work begins.</span>
             </li>
           </ul>
         </CardContent>
