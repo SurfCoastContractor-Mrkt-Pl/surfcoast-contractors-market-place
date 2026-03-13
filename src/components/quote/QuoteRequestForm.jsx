@@ -42,6 +42,18 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
     });
   };
 
+  // Build the quote metadata to pass through Stripe redirect
+  const quoteMetaParam = workDescription.trim()
+    ? `&quote_meta=${encodeURIComponent(JSON.stringify({
+        contractor_id: contractor.id,
+        contractor_name: contractor.name,
+        contractor_email: contractor.email,
+        customer_email: customer?.email || '',
+        customer_name: customer?.full_name || '',
+        work_description: workDescription,
+      }))}`
+    : '';
+
   if (!paymentRecord) {
     return (
       <Dialog open={open} onOpenChange={onClose}>
