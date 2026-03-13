@@ -1,10 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Rate limiter for verification code requests
-const requestCounts = new Map();
-const RATE_LIMIT_WINDOW = 3600000; // 1 hour
-const RATE_LIMIT_THRESHOLD = 3; // Max 3 requests per hour per user
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -24,22 +19,29 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Rate limiting per user/phone combo
-    const now = Date.now();
-    const requestKey = `${userEmail}-${phone}`;
-    if (!requestCounts.has(requestKey)) {
-      requestCounts.set(requestKey, []);
-    }
-
-    const userRequests = requestCounts.get(requestKey);
-    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
+    // SECURITY: Database-backed rate limiting per user/phone combo
+    const normalizedPhone = phone.replace(/\D/g, '');
+    const requestKey = `${userEmail}:${normalizedPhone}`;
+    const now = new Date();
+    const oneHourAgo = new Date(Date.now() - 3600000);
     
-    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
+    const recentAttempts = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: requestKey,
+      created_date: { $gte: oneHourAgo.toISOString() }
+    });
+    
+    const RATE_LIMIT_THRESHOLD = 3;
+    if (recentAttempts && recentAttempts.length >= RATE_LIMIT_THRESHOLD) {
       return Response.json({ error: 'Too many verification requests. Please try again in 1 hour.' }, { status: 429 });
     }
 
-    recentRequests.push(now);
-    requestCounts.set(requestKey, recentRequests);
+    // Log this attempt
+    await base44.asServiceRole.entities.RateLimitTracker.create({
+      key: requestKey,
+      action: 'send_phone_verification',
+      ip_address: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown',
+      user_email: userEmail
+    });
 
     const normalizedPhone = phone.replace(/\D/g, '');
 
