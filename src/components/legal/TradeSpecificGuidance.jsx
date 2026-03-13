@@ -227,7 +227,7 @@ export default function TradeSpecificGuidance({
       {/* State-Specific Resources */}
       {stateResource && (
         <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h4 className="font-semibold text-blue-900 mb-2">📋 {stateResource.name} Home Improvement Contract Requirements</h4>
+          <h4 className="font-semibold text-blue-900 mb-2">📋 {stateResource.name} — Helpful Contract Resources</h4>
           <p className="text-sm text-blue-800 mb-3">{stateResource.description}</p>
           <a 
             href={stateResource.homeImprovementLink}
@@ -236,20 +236,20 @@ export default function TradeSpecificGuidance({
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm"
           >
             <FileText className="w-4 h-4" />
-            View {stateResource.name} Official Guidelines
+            View {stateResource.name} Guidelines
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
       )}
 
-      {/* Trade-Specific Requirements */}
+      {/* Trade-Specific Guidance */}
       <div className="space-y-3">
         <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-          <h4 className="font-semibold text-amber-900 mb-2">⚙️ {tradeGuidance.name} — Recommended Contract Elements</h4>
+          <h4 className="font-semibold text-amber-900 mb-2">⚙️ {tradeGuidance.name} — Helpful Contract Elements</h4>
           
           <div className="space-y-2">
             <div>
-              <p className="text-xs font-semibold text-amber-800 mb-1">Legal Requirements:</p>
+              <p className="text-xs font-semibold text-amber-800 mb-1">Items to consider discussing:</p>
               <ul className="space-y-1">
                 {tradeGuidance.requirements.map((req, idx) => (
                   <li key={idx} className="text-xs text-amber-700 flex items-start gap-2">
@@ -261,7 +261,7 @@ export default function TradeSpecificGuidance({
             </div>
 
             <div className="mt-3 pt-3 border-t border-amber-200">
-              <p className="text-xs font-semibold text-amber-800 mb-1">Documentation to Agree Upon:</p>
+              <p className="text-xs font-semibold text-amber-800 mb-1">Suggested documentation:</p>
               <ul className="space-y-1">
                 {tradeGuidance.documentation.map((doc, idx) => (
                   <li key={idx} className="text-xs text-amber-700 flex items-start gap-2">
@@ -277,27 +277,27 @@ export default function TradeSpecificGuidance({
 
       {/* Best Practices */}
       <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-        <h4 className="font-semibold text-green-900 mb-2">✓ Best Practices for Both Parties</h4>
+        <h4 className="font-semibold text-green-900 mb-2">✓ Safeguards That Help Protect Both Parties</h4>
         <ul className="text-xs text-green-800 space-y-1">
           <li className="flex items-start gap-2">
             <CheckCircle className="w-3 h-3 mt-0.5 flex-shrink-0 text-green-600" />
-            <span><strong>Written Agreement:</strong> Always document the scope, costs, timeline, and responsibilities in writing.</span>
+            <span><strong>Written Agreement:</strong> Documenting the scope, costs, timeline, and responsibilities helps both parties stay aligned.</span>
           </li>
           <li className="flex items-start gap-2">
             <CheckCircle className="w-3 h-3 mt-0.5 flex-shrink-0 text-green-600" />
-            <span><strong>Payment Schedule:</strong> Link payments to completed milestones, not full upfront.</span>
+            <span><strong>Milestone-Based Payments:</strong> Linking payments to completed work can provide security for both sides.</span>
           </li>
           <li className="flex items-start gap-2">
             <CheckCircle className="w-3 h-3 mt-0.5 flex-shrink-0 text-green-600" />
-            <span><strong>Insurance & Licensing:</strong> Verify contractor licensing and insurance before work begins.</span>
+            <span><strong>Verify Credentials:</strong> Confirming contractor licensing and insurance can be valuable due diligence.</span>
           </li>
           <li className="flex items-start gap-2">
             <CheckCircle className="w-3 h-3 mt-0.5 flex-shrink-0 text-green-600" />
-            <span><strong>Photo Documentation:</strong> Take before/after photos and keep records throughout the project.</span>
+            <span><strong>Photo Documentation:</strong> Before/after photos create a clear record of the work completed.</span>
           </li>
           <li className="flex items-start gap-2">
             <CheckCircle className="w-3 h-3 mt-0.5 flex-shrink-0 text-green-600" />
-            <span><strong>Change Orders:</strong> Document any changes to scope or cost in writing.</span>
+            <span><strong>Change Documentation:</strong> Recording any changes to scope or costs in writing helps avoid disputes.</span>
           </li>
         </ul>
       </div>
