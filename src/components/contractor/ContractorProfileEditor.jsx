@@ -233,7 +233,8 @@ export default function ContractorProfileEditor({ contractor }) {
           <div className="flex gap-2 pt-2">
             <Button
               onClick={handleSave}
-              className="bg-amber-500 hover:bg-amber-600"
+              className="text-white"
+              style={{backgroundColor: '#1E5A96'}}
               disabled={updateMutation.isPending}
             >
               {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
