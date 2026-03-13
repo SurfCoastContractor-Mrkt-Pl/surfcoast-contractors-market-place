@@ -137,6 +137,26 @@ export default function Home() {
           )}
         </div>
 
+        {/* Job Feed with Filters */}
+        <div className="border border-slate-200 rounded-lg">
+          <button
+            onClick={() => toggleSection('jobFeed')}
+            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+          >
+            <span className="font-semibold text-slate-900">Browse All Jobs</span>
+            {expandedSections['jobFeed'] ? (
+              <ChevronUp className="w-5 h-5 text-slate-600" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+          {expandedSections['jobFeed'] && jobs && (
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <JobFeedFilter jobs={jobs} />
+            </div>
+          )}
+        </div>
+
         {/* Contractor Search */}
         <div className="border border-slate-200 rounded-lg">
           <button
