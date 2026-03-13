@@ -17,6 +17,7 @@ import HowItWorks from '@/components/home/HowItWorks';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
 import EmailCapturePopup from '@/components/home/EmailCapturePopup';
 import DemoProfiles from '@/components/home/DemoProfiles';
+import RecentActivityBanner from '@/components/home/RecentActivityBanner';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -99,6 +100,7 @@ export default function Home() {
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
+      <RecentActivityBanner />
       <DemoProfiles />
       <TradeCategories />
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
