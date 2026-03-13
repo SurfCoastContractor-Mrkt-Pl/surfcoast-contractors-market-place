@@ -58,7 +58,8 @@ Deno.serve(async (req) => {
     }
 
     // Validate evidence URLs (prevent SSRF)
-    const allowedDomains = ['surfcoast.com', 'supabase.co', 'qtrypzzcjebvfcihiynt.supabase.co'];
+    const allowedDomainsEnv = Deno.env.get('ALLOWED_EVIDENCE_DOMAINS') || 'surfcoast.com,supabase.co,qtrypzzcjebvfcihiynt.supabase.co';
+    const allowedDomains = allowedDomainsEnv.split(',').map(d => d.trim());
     const validatedUrls = [];
     for (const url of evidence_urls) {
       try {
