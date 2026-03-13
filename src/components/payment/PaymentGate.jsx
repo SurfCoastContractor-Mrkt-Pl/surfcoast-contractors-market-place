@@ -105,6 +105,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
   const handleClose = () => {
     setPaid(false);
     setFormData({ name: '', email: '' });
+    setShowConfirmation(false);
     onClose();
   };
 
