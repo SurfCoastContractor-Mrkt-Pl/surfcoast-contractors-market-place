@@ -44,6 +44,18 @@ export default function CustomerDashboard() {
     enabled: !!user?.email,
   });
 
+  const { data: quoteRequests = [], isLoading: quotesLoading } = useQuery({
+    queryKey: ['customer-quotes', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const quotes = await base44.entities.QuoteRequest.filter({
+        customer_email: user.email
+      });
+      return quotes || [];
+    },
+    enabled: !!user?.email,
+  });
+
   const { data: recentMessages = [], isLoading: messagesLoading } = useQuery({
     queryKey: ['customer-messages', user?.email],
     queryFn: async () => {
