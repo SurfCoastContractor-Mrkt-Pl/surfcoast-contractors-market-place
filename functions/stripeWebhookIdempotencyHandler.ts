@@ -1,36 +1,44 @@
-// In-memory store for processed webhook event IDs (with 24-hour TTL)
-// In production, this should use Redis or a database
-const processedEvents = new Map();
-const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000; // 24 hours
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-export function isWebhookProcessed(eventId) {
-  if (processedEvents.has(eventId)) {
-    const timestamp = processedEvents.get(eventId);
-    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
-      return true;
-    } else {
-      processedEvents.delete(eventId);
-      return false;
-    }
-  }
-  return false;
-}
+// SECURITY: Database-backed idempotency for webhook processing
+// Uses ProcessedWebhookEvent entity instead of in-memory storage
 
-export function markWebhookProcessed(eventId) {
-  processedEvents.set(eventId, Date.now());
-  // Cleanup old entries
-  for (const [id, timestamp] of processedEvents.entries()) {
-    if (Date.now() - timestamp > IDEMPOTENCY_TTL) {
-      processedEvents.delete(id);
-    }
+export async function isWebhookProcessed(base44, eventId) {
+  try {
+    const events = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({
+      stripe_event_id: eventId
+    });
+    return events && events.length > 0;
+  } catch (error) {
+    console.error('Error checking webhook idempotency:', error.message);
+    return false; // Assume not processed on error, let it retry
   }
 }
 
-export function getProcessedEventStats() {
-  return {
-    totalEvents: processedEvents.size,
-    oldestEventAge: processedEvents.size > 0 
-      ? Date.now() - Math.min(...Array.from(processedEvents.values()))
-      : 0,
-  };
+export async function markWebhookProcessed(base44, eventId, eventType, eventData) {
+  try {
+    await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
+      stripe_event_id: eventId,
+      event_type: eventType,
+      event_data: JSON.stringify(eventData),
+      processed_at: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error marking webhook as processed:', error.message);
+  }
+}
+
+export async function getProcessedEventStats(base44) {
+  try {
+    const events = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({});
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const recent = events?.filter(e => e.created_date >= oneDayAgo) || [];
+    return {
+      totalEvents: events?.length || 0,
+      recentEvents: recent.length
+    };
+  } catch (error) {
+    console.error('Error getting webhook stats:', error.message);
+    return { totalEvents: 0, recentEvents: 0 };
+  }
 }
