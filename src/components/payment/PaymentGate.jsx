@@ -110,7 +110,8 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <>
+    <Dialog open={open && !showConfirmation} onOpenChange={handleClose}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto" aria-describedby="payment-description">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
