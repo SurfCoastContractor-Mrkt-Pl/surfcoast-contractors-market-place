@@ -34,6 +34,9 @@ Deno.serve(async (req) => {
       customer_name,
       work_description,
       payment_id,
+      ...(job_id ? { job_id } : {}),
+      ...(job_title ? { job_title } : {}),
+      status: 'pending',
       created_at: new Date().toISOString(),
       response_deadline: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
     });
