@@ -198,7 +198,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50">
+      <div className={`flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50 ${expanded ? 'max-h-[calc(100vh-120px)]' : ''}`}>
         {messages.map((msg, idx) => (
           <div
             key={idx}
