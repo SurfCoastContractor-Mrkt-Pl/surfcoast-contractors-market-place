@@ -6,33 +6,37 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const body = await req.json();
+    const user = await base44.auth.me();
     
-    const { email, payment_id } = body;
+    // SECURITY: Require authentication — user can only cancel their own payments
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!email && !payment_id) {
+    const body = await req.json();
+    const { payment_id } = body;
+
+    if (!payment_id) {
       return Response.json({ 
-        error: 'Missing email or payment_id' 
+        error: 'Missing payment_id' 
       }, { status: 400 });
     }
 
-    // Query for pending payment
-    let payment;
-    if (payment_id) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
-      payment = payments?.[0];
-    } else {
-      const payments = await base44.asServiceRole.entities.Payment.filter({ 
-        payer_email: email,
-        status: 'pending'
-      });
-      payment = payments?.[0];
-    }
+    // Query for payment and verify ownership
+    const payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
+    const payment = payments?.[0];
 
     if (!payment) {
       return Response.json({ 
-        error: 'No pending payment found for this email' 
+        error: 'Payment not found' 
       }, { status: 404 });
+    }
+
+    // SECURITY: Verify user owns this payment
+    if (payment.payer_email !== user.email) {
+      return Response.json({ 
+        error: 'Forbidden: you can only cancel your own payments' 
+      }, { status: 403 });
     }
 
     // Expire the Stripe checkout session if it exists
