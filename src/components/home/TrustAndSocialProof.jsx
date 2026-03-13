@@ -108,7 +108,7 @@ export default function TrustAndSocialProof() {
               </li>
               <li className="flex gap-2">
                 <span className="text-red-500">✗</span>
-                <span>30% markup through agencies</span>
+                <span>Overpriced agencies with no accountability</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-red-500">✗</span>
