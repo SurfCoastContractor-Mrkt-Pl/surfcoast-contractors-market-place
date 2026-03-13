@@ -136,16 +136,18 @@ export default function BecomeContractor() {
       }
     }
     
-    // Verify user is authenticated before submitting
-    try {
-      const user = await base44.auth.me();
-      if (!user?.email) {
-        setDobError('You must be logged in to create a contractor profile');
+    if (!isPreview) {
+      // Verify user is authenticated before submitting
+      try {
+        const user = await base44.auth.me();
+        if (!user?.email) {
+          setDobError('You must be logged in to create a contractor profile');
+          return;
+        }
+      } catch (err) {
+        setDobError('Failed to verify your account');
         return;
       }
-    } catch (err) {
-      setDobError('Failed to verify your account');
-      return;
     }
     
     setDobError('');
