@@ -153,7 +153,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
           <SelectTrigger id="industry_category" className="mt-1.5">
             <SelectValue placeholder="Choose an industry" />
           </SelectTrigger>
-          <SelectContent className="max-h-72 overflow-y-auto">
+          <SelectContent className="max-h-72 overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
             {lineOfWorkOptions.map((group) => (
               <SelectItem key={group.category} value={group.category}>
                 {group.category}
@@ -174,7 +174,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
             <SelectTrigger id="line_of_work" className="mt-1.5">
               <SelectValue placeholder="Choose a specific role" />
             </SelectTrigger>
-            <SelectContent className="max-h-72 overflow-y-auto">
+            <SelectContent className="max-h-72 overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
               {lineOfWorkOptions
                 .find(g => g.category === selectedCategory)
                 ?.items.map((item) => (
