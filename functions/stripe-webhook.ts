@@ -66,8 +66,6 @@ Deno.serve(async (req) => {
       console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
       return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
     }
-
-    const base44 = createClientFromRequest(req);
     
     console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
 
