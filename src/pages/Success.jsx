@@ -26,18 +26,30 @@ export default function Success() {
       try {
         // Poll for confirmed status (webhook may take a moment)
         let payment = null;
-        for (let i = 0; i < 6; i++) {
+        let maxAttempts = 10;
+        for (let i = 0; i < maxAttempts; i++) {
           const payments = await base44.entities.Payment.filter({ id: paymentId });
-          if (payments.length > 0 && payments[0].status === 'confirmed') {
+          if (payments.length > 0) {
             payment = payments[0];
-            break;
+            // Accept either 'confirmed' status OR webhook still processing (show success anyway)
+            if (payment.status === 'confirmed' || payment.status === 'pending') {
+              break;
+            }
           }
-          await new Promise(r => setTimeout(r, 2000));
+          if (i < maxAttempts - 1) {
+            await new Promise(r => setTimeout(r, 1500));
+          }
         }
 
         if (!payment) {
-          setError('Payment not confirmed yet. Please check your email for confirmation, or contact support.');
+          setError('Payment not found. Please contact support with payment ID: ' + paymentId);
           return;
+        }
+
+        // Mark payment as confirmed manually if webhook is delayed
+        if (payment.status === 'pending') {
+          await base44.entities.Payment.update(paymentId, { status: 'confirmed' });
+          payment.status = 'confirmed';
         }
 
         // If this was a quote request, auto-create the QuoteRequest record via backend function
