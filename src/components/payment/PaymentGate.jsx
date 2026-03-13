@@ -249,5 +249,75 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         )}
       </DialogContent>
     </Dialog>
+
+    {/* Confirmation Modal */}
+    <Dialog open={showConfirmation} onOpenChange={(state) => !state && setShowConfirmation(false)}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-amber-500" />
+            Confirm Payment
+          </DialogTitle>
+          <DialogDescription>
+            Please review the details below before completing your payment.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+              <span className="text-slate-600 font-medium">Amount</span>
+              <span className="text-2xl font-bold text-slate-900">${tierConfig.amount.toFixed(2)}</span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Fee Type:</span>
+                <span className="font-semibold text-slate-900">{tierConfig.label}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Name:</span>
+                <span className="font-semibold text-slate-900">{formData.name}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Email:</span>
+                <span className="font-semibold text-slate-900 break-all">{formData.email}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 space-y-2">
+            <p><strong>⚠️ Please confirm:</strong></p>
+            <ul className="space-y-1.5 list-disc list-inside">
+              <li>You understand this is a one-time, non-refundable charge</li>
+              <li>Your card details will be processed securely via Stripe</li>
+              <li>A receipt will be sent to your email address</li>
+            </ul>
+          </div>
+
+          <div className="flex gap-3 justify-end">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setShowConfirmation(false)}
+              disabled={mutation.isPending || checkingout}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleConfirmPayment}
+              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+              disabled={mutation.isPending || checkingout}
+            >
+              {mutation.isPending || checkingout ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+              ) : (
+                `Yes, Pay $${tierConfig.amount.toFixed(2)}`
+              )}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
