@@ -38,7 +38,7 @@ export default function StickyCTA({ isContractor, currentPageName }) {
     : { text: 'Post a Job', page: 'QuickJobPost' };
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 md:bottom-8 md:right-8">
+    <div className="fixed bottom-20 right-5 z-40 md:bottom-16 md:right-8">
       <style>
         {`
           @keyframes fade-in-up-sticky {
