@@ -12,6 +12,7 @@ import FeaturedContractors from '@/components/home/FeaturedContractors';
 import RecentJobs from '@/components/home/RecentJobs';
 import CTASection from '@/components/home/CTASection';
 import ContractorSearchFilter from '@/components/home/ContractorSearchFilter';
+import JobFeedFilter from '@/components/home/JobFeedFilter';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import HowItWorks from '@/components/home/HowItWorks';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
