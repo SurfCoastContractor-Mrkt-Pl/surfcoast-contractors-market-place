@@ -23,7 +23,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [loading, setLoading] = useState(false);
   const [conversation, setConversation] = useState(null);
   const [minimized, setMinimized] = useState(false);
-  const [position, setPosition] = useState({ bottom: 24, right: 24 });
+  const [position, setPosition] = useState({ bottom: 24, left: 24 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const messagesEndRef = useRef(null);
@@ -57,7 +57,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
       
       setPosition({
         bottom: Math.max(0, window.innerHeight - newTop - widgetRef.current.offsetHeight),
-        right: Math.max(0, window.innerWidth - newLeft - widgetRef.current.offsetWidth)
+        left: Math.max(0, newLeft)
       });
     };
 
@@ -136,15 +136,15 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
       <div 
         className="fixed z-50"
         ref={widgetRef}
-        style={{ bottom: `${position.bottom}px`, right: `${position.right}px` }}
+        style={{ bottom: `${position.bottom}px`, left: `${position.left}px` }}
       >
         <button
           onClick={() => { setMinimized(false); onOpen && onOpen(); }}
           onMouseDown={handleMouseDown}
-          className="flex items-center gap-2 pl-4 pr-5 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all font-semibold text-sm cursor-grab active:cursor-grabbing"
+          className="flex items-center gap-1 pl-2 pr-3 h-7 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl transition-all font-semibold text-xs cursor-grab active:cursor-grabbing"
           title="Open AI Assistant"
         >
-          <MessageSquare className="w-5 h-5 shrink-0" />
+          <MessageSquare className="w-3 h-3 shrink-0" />
           AI Assistant
         </button>
       </div>
@@ -154,8 +154,8 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   return (
     <div 
       ref={widgetRef}
-      className="fixed z-50 w-64 max-w-[calc(100vw-3rem)] h-80 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto transition-shadow"
-      style={{ bottom: `${position.bottom}px`, right: `${position.right}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
+      className="fixed z-50 w-32 max-w-[calc(100vw-3rem)] h-40 flex flex-col bg-white rounded-xl shadow-2xl border border-slate-200 pointer-events-auto transition-shadow"
+      style={{ bottom: `${position.bottom}px`, left: `${position.left}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
       onMouseDown={handleMouseDown}
     >
       {/* Header */}
