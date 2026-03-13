@@ -5,7 +5,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description } = body;
+    const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
 
     if (!payment_id || !contractor_id || !contractor_email || !customer_email || !work_description) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
