@@ -53,6 +53,23 @@ Deno.serve(async (req) => {
       tier = 'subscription'; // Monthly subscription
     }
 
+    // Check if contractor is trying to message about a job with an accepted scope
+    if (userIsContractor) {
+      const acceptedScopes = await base44.entities.ScopeOfWork.filter({
+        job_id: latestPayment.job_id,
+        status: 'approved',
+        contractor_email: { $ne: user.email }
+      });
+
+      if (acceptedScopes && acceptedScopes.length > 0) {
+        return Response.json({ 
+          allowed: false, 
+          reason: 'This job has already been accepted by another contractor',
+          tier
+        });
+      }
+    }
+
     // For timed tier, check if session is still active
     if (tier === 'timed') {
       const sessionExpiry = new Date(latestPayment.session_expires_at);
