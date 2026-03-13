@@ -84,7 +84,11 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
               Which project is this for? *
             </label>
 
-            {jobs.length > 0 ? (
+            {loadingJobs ? (
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-600 text-center">
+                Loading your projects...
+              </div>
+            ) : jobs.length > 0 ? (
               <div className="space-y-2">
                 {jobs.map(job => (
                   <button
