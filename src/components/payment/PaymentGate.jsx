@@ -13,6 +13,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
   const [paid, setPaid] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
   const [checkingout, setCheckingout] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const tierConfig = {
     quote: { amount: 1.75, label: 'Quote Request Fee', description: 'Blind written estimate' },
