@@ -53,11 +53,13 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
       const emailBody = `
 Dear ${data.customer_name},
 
-A Scope of Work has been submitted by contractor ${data.contractor_name} for your review and approval.
+A Scope of Work with an Estimate has been submitted by contractor ${data.contractor_name} for your review and approval.
 
---- SCOPE OF WORK AGREEMENT ---
+--- SCOPE OF WORK & ESTIMATE AGREEMENT ---
 
-What is "Scope of Work"? It is a detailed summary of all the work the contractor will perform and may do to complete the project. It includes tasks, materials provided, what's not included, and any key assumptions.
+Scope of Work: A detailed summary of all the work the contractor will perform and may do to complete the project. It includes tasks, materials provided, what's not included, and any key assumptions.
+
+Estimate: The cost or price for the work defined in the scope of work.
 
 Job Title: ${data.job_title}
 Contractor: ${data.contractor_name}
@@ -66,7 +68,7 @@ ${workDateLine ? workDateLine + '\n' : ''}
 SCOPE SUMMARY:
 ${data.scope_summary}
 
-AGREED COST:
+ESTIMATE:
 ${costLine}
 ${afterPhotoDeadline ? '\nAFTER PHOTOS:\n' + afterPhotoDeadline + '\nThe contractor is required to upload after photos within 72 hours of the agreed work date as a completion record.\n' : ''}
 --- IMPORTANT ---
