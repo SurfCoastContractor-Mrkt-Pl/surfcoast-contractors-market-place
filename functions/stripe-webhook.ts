@@ -269,7 +269,7 @@ async function handleChargeFailed(charge, base44) {
       }
     }
   } catch (error) {
-    console.error('Error handling failed charge');
+    console.error('Error handling failed charge:', error.message);
   }
 }
 
