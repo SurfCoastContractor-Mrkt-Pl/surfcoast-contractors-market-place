@@ -162,12 +162,25 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
             </p>
           </div>
 
+          {jobs.length > 0 && !selectedJobId && (
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+              <strong>⚠️ Please select a project above to continue.</strong>
+            </div>
+          )}
+          
+          {!workDescription.trim() && selectedJobId && (
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+              <strong>⚠️ Please describe the work above to continue.</strong>
+            </div>
+          )}
+
           <div className="flex gap-3 justify-end">
             <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>
             <Button
               onClick={() => setShowPayment(true)}
               disabled={!canProceed}
               className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+              title={!canProceed ? 'Please select a project and describe the work' : 'Proceed to payment'}
             >
               <DollarSign className="w-4 h-4 mr-1" />
               Pay $1.75 &amp; Send Request
