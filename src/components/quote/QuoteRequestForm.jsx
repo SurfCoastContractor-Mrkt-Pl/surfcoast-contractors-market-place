@@ -97,6 +97,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
               contractorId={contractor.id}
               contractorEmail={contractor.email}
               contractorName={contractor.name}
+              quoteMetaParam={quoteMetaParam}
             />
           </div>
         </DialogContent>
