@@ -132,8 +132,8 @@ async function handleSubscriptionCreated(subscription, base44) {
     });
 
     } catch (error) {
-      console.error('Error handling subscription creation');
-    }
+       console.error('Error handling subscription creation:', error.message);
+     }
 }
 
 async function handleSubscriptionUpdated(subscription, base44) {
