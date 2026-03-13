@@ -16,6 +16,7 @@ import NewsletterSignup from '@/components/home/NewsletterSignup';
 import HowItWorks from '@/components/home/HowItWorks';
 import TrustAndSocialProof from '@/components/home/TrustAndSocialProof';
 import EmailCapturePopup from '@/components/home/EmailCapturePopup';
+import HomeschoolPromoPopup from '@/components/home/HomeschoolPromoPopup';
 import DemoProfiles from '@/components/home/DemoProfiles';
 import RecentActivityBanner from '@/components/home/RecentActivityBanner';
 
@@ -100,6 +101,7 @@ export default function Home() {
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
+      <HomeschoolPromoPopup />
       <RecentActivityBanner />
       <DemoProfiles />
       <TradeCategories />
