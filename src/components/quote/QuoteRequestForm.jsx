@@ -42,7 +42,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
     });
   };
 
-  // Build the quote metadata to pass through Stripe redirect
+  // quoteMetaParam is built from workDescription — used to pass data through Stripe redirect
   const quoteMetaParam = workDescription.trim()
     ? `&quote_meta=${encodeURIComponent(JSON.stringify({
         contractor_id: contractor.id,
@@ -54,114 +54,64 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
       }))}`
     : '';
 
-  if (!paymentRecord) {
-    return (
-      <Dialog open={open} onOpenChange={onClose}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Request Quick Quote</DialogTitle>
-            <DialogDescription>Pay a small fee to request a written estimate from this contractor.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex gap-3">
-              <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-blue-900">$1.75 Fee</p>
-                <p className="text-xs text-blue-700 mt-1">A one-time $1.75 fee gives you a written estimate from this contractor, no communication required.</p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-slate-700 mb-2">Contractor</p>
-                <p className="text-slate-600">{contractor.name}</p>
-              </div>
-            </div>
-
-            <Button
-              onClick={() => setShowPayment(true)}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900"
-            >
-              <DollarSign className="w-4 h-4 mr-2" />
-              Pay $1.75 to Continue
-            </Button>
-
-            <PaymentGate
-              open={showPayment}
-              onClose={() => setShowPayment(false)}
-              onPaid={(record) => {
-                setPaymentRecord(record);
-                setShowPayment(false);
-              }}
-              payerType="customer"
-              contractorId={contractor.id}
-              contractorEmail={contractor.email}
-              contractorName={contractor.name}
-              quoteMetaParam={quoteMetaParam}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
+  // Step 1: Describe work. Step 2: Pay (redirects to Stripe with quote_meta in success URL).
+  // After returning from Stripe, Success page auto-creates the QuoteRequest.
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Request Quick Quote from {contractor.name}</DialogTitle>
-          <DialogDescription>Describe the work needed so the contractor can provide an accurate quote.</DialogDescription>
+          <DialogTitle>Request a Quote from {contractor.name}</DialogTitle>
+          <DialogDescription>Describe the work, then pay the $1.75 fee to send your request.</DialogDescription>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-xs text-green-700">
-              ✓ $1.75 fee paid · Ready to request quote
-            </p>
-          </div>
 
+        <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Describe the work needed
+              Describe the work needed *
             </label>
             <Textarea
               placeholder="Example: Need to repair a leaky kitchen faucet and replace the cartridge. Also need to fix a loose toilet seat in the bathroom."
               value={workDescription}
               onChange={(e) => setWorkDescription(e.target.value)}
-              disabled={submitQuoteMutation.isPending}
               className="resize-none"
-              rows={6}
+              rows={5}
             />
             <p className="text-xs text-slate-500 mt-1">
-              Be specific about what you need done so the contractor can provide an accurate quote.
+              Be specific so the contractor can provide an accurate quote.
             </p>
           </div>
 
+          <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg flex gap-2">
+            <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <p className="text-xs text-blue-700">A one-time $1.75 fee unlocks this quote request. You'll be redirected to Stripe to pay securely.</p>
+          </div>
+
           <div className="flex gap-3 justify-end">
+            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
             <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={submitQuoteMutation.isPending}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
+              onClick={() => setShowPayment(true)}
+              disabled={!workDescription.trim()}
               className="bg-amber-500 hover:bg-amber-600 text-slate-900"
-              disabled={submitQuoteMutation.isPending || !workDescription.trim()}
             >
-              {submitQuoteMutation.isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                'Send Quote Request'
-              )}
+              <DollarSign className="w-4 h-4 mr-2" />
+              Pay $1.75 &amp; Send Request
             </Button>
           </div>
-        </form>
+        </div>
+
+        <PaymentGate
+          open={showPayment}
+          onClose={() => setShowPayment(false)}
+          onPaid={(record) => {
+            setPaymentRecord(record);
+            setShowPayment(false);
+          }}
+          payerType="customer"
+          contractorId={contractor.id}
+          contractorEmail={contractor.email}
+          contractorName={contractor.name}
+          quoteMetaParam={quoteMetaParam}
+        />
       </DialogContent>
     </Dialog>
   );
