@@ -128,6 +128,7 @@ Deno.serve(async (req) => {
     doc.text('Amount:', tableLeft, yPos);
     doc.text(`$${scope.cost_amount?.toFixed(2) || '0.00'}`, tableLeft + colWidth, yPos);
 
+    let totalCost = scope.cost_amount;
     if (scope.cost_type === 'hourly' && scope.estimated_hours) {
       yPos += 8;
       doc.text('Estimated Hours:', tableLeft, yPos);
@@ -135,8 +136,8 @@ Deno.serve(async (req) => {
 
       yPos += 8;
       doc.text('Total Cost:', tableLeft, yPos);
-      const totalCost = scope.cost_amount * scope.estimated_hours;
-      doc.setTextColor(220, 78, 0); // Orange for total
+      totalCost = scope.cost_amount * scope.estimated_hours;
+      doc.setTextColor(220, 78, 0);
       doc.setFontSize(11);
       doc.text(`$${totalCost.toFixed(2)}`, tableLeft + colWidth, yPos);
     } else {
@@ -144,8 +145,25 @@ Deno.serve(async (req) => {
       doc.text('Total Cost:', tableLeft, yPos);
       doc.setTextColor(220, 78, 0);
       doc.setFontSize(11);
-      doc.text(`$${scope.cost_amount?.toFixed(2) || '0.00'}`, tableLeft + colWidth, yPos);
+      doc.text(`$${totalCost.toFixed(2)}`, tableLeft + colWidth, yPos);
     }
+
+    // Platform fee
+    yPos += 8;
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    const platformFeePercentage = scope.platform_fee_percentage || 3;
+    const platformFee = (totalCost * platformFeePercentage) / 100;
+    doc.text('Platform Facilitation Fee:', tableLeft, yPos);
+    doc.text(`-$${platformFee.toFixed(2)} (${platformFeePercentage}%)`, tableLeft + colWidth, yPos);
+
+    // Contractor payout
+    yPos += 8;
+    const contractorPayout = totalCost - platformFee;
+    doc.setFontSize(11);
+    doc.setTextColor(34, 197, 94); // Green for payout
+    doc.text('Contractor Payout:', tableLeft, yPos);
+    doc.text(`$${contractorPayout.toFixed(2)}`, tableLeft + colWidth, yPos);
 
     // Work date
     yPos += 12;
@@ -176,10 +194,14 @@ Deno.serve(async (req) => {
 
     // Send email to contractor
     try {
+      const jobCost = scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount;
+      const platformFeePercentage = scope.platform_fee_percentage || 3;
+      const platformFee = (jobCost * platformFeePercentage) / 100;
+      const payoutAmount = jobCost - platformFee;
       await base44.integrations.Core.SendEmail({
         to: scope.contractor_email,
         subject: `Invoice: ${scope.job_title}`,
-        body: `Hello ${scope.contractor_name},\n\nYour job "${scope.job_title}" has been closed out. Please find the invoice attached or available for download.\n\nTotal Amount: $${(scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount).toFixed(2)}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
+        body: `Hello ${scope.contractor_name},\n\nYour job "${scope.job_title}" has been closed out.\n\nJob Amount: $${jobCost.toFixed(2)}\nPlatform Facilitation Fee (${platformFeePercentage}%): -$${platformFee.toFixed(2)}\nYour Payout: $${payoutAmount.toFixed(2)}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
       });
     } catch (e) {
       console.error('Error sending email to contractor:', e.message);
@@ -187,10 +209,11 @@ Deno.serve(async (req) => {
 
     // Send email to customer
     try {
+      const jobCost = scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount;
       await base44.integrations.Core.SendEmail({
         to: scope.customer_email,
         subject: `Invoice: ${scope.job_title}`,
-        body: `Hello ${scope.customer_name},\n\nYour job "${scope.job_title}" has been completed. Please find the invoice attached or available for download.\n\nTotal Amount: $${(scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount).toFixed(2)}\n\nThank you for using SurfCoast!\n\nSurfCoast Contractor Market Place`,
+        body: `Hello ${scope.customer_name},\n\nYour job "${scope.job_title}" has been completed.\n\nTotal Amount: $${jobCost.toFixed(2)}\n\nThank you for using SurfCoast!\n\nSurfCoast Contractor Market Place`,
       });
     } catch (e) {
       console.error('Error sending email to customer:', e.message);
