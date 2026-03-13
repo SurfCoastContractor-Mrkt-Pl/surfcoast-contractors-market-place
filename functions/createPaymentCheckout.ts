@@ -126,10 +126,21 @@ Deno.serve(async (req) => {
       idempotency_key: idempotencyKey || null,
     });
 
-    // Get Stripe price ID from environment variable
+    // Validate Stripe configuration
+    const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY');
+    const BASE44_APP_ID = Deno.env.get('BASE44_APP_ID');
     const PAYMENT_PRICE_ID = Deno.env.get('STRIPE_QUOTE_PRICE_ID');
+    
+    if (!STRIPE_SECRET_KEY) {
+      console.error('CRITICAL: STRIPE_SECRET_KEY environment variable not configured');
+      throw new Error('Payment service misconfigured: missing API key');
+    }
     if (!PAYMENT_PRICE_ID) {
-      throw new Error('STRIPE_QUOTE_PRICE_ID environment variable not configured');
+      console.error('CRITICAL: STRIPE_QUOTE_PRICE_ID environment variable not configured');
+      throw new Error('Payment service misconfigured: missing price ID');
+    }
+    if (!BASE44_APP_ID) {
+      console.warn('WARNING: BASE44_APP_ID environment variable not set - transaction tracking disabled');
     }
     const origin = req.headers.get('origin') || 'https://localhost:3000';
     let session;
