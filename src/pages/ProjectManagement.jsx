@@ -165,6 +165,11 @@ function ProjectCard({ project, onSelect, userType }) {
           <div>
             <p className="text-slate-600">Cost</p>
             <p className="font-semibold">${project.cost_amount}</p>
+            {userType === 'contractor' && (
+              <p className="text-xs text-slate-500 mt-1">
+                Payout: ${(project.cost_amount - (project.cost_amount * (project.platform_fee_percentage || 3) / 100)).toFixed(2)}
+              </p>
+            )}
           </div>
           <div>
             <p className="text-slate-600">Start Date</p>
