@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { RotateCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import EnhancedHeroSection from '@/components/home/EnhancedHeroSection';
 import TradeCategories from '@/components/home/TradeCategories';
@@ -84,20 +84,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Refresh Button */}
-      <div className="fixed top-20 right-4 z-40 sm:top-auto sm:bottom-6 sm:right-6">
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={handleRefresh}
-          className="gap-2 rounded-full shadow-lg hover:shadow-xl"
-          title="Refresh homepage data"
-        >
-          <RotateCw className="w-4 h-4" />
-          <span className="hidden sm:inline">Refresh</span>
-        </Button>
-      </div>
-
       <EnhancedHeroSection />
       <TrustAndSocialProof />
       <EmailCapturePopup />
