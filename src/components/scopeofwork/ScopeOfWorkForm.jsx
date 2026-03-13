@@ -57,6 +57,8 @@ A Scope of Work has been submitted by contractor ${data.contractor_name} for you
 
 --- SCOPE OF WORK AGREEMENT ---
 
+What is "Scope of Work"? It is a detailed summary of all the work the contractor will perform and may do to complete the project. It includes tasks, materials provided, what's not included, and any key assumptions.
+
 Job Title: ${data.job_title}
 Contractor: ${data.contractor_name}
 Customer: ${data.customer_name}
