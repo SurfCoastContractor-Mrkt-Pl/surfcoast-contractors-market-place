@@ -50,10 +50,11 @@ export default function Success() {
         }
 
         // Mark payment as confirmed manually if webhook is delayed
-        if (payment.status === 'pending') {
-          await base44.entities.Payment.update(paymentId, { status: 'confirmed' });
-          payment.status = 'confirmed';
-        }
+         if (payment.status === 'pending') {
+           console.log(`[Success] Payment still pending, marking as confirmed manually`);
+           await base44.entities.Payment.update(paymentId, { status: 'confirmed' });
+           payment.status = 'confirmed';
+         }
 
         // If this was a quote request, auto-create the QuoteRequest record via backend function
         if (quoteMetaRaw) {
