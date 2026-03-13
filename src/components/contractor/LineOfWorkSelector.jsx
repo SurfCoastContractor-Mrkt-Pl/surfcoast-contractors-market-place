@@ -224,7 +224,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
             <div>
               <p className="font-bold text-amber-900 text-sm">Homeschool Educators — You're in High Demand!</p>
               <p className="text-amber-800 text-xs mt-1 leading-relaxed">
-                Families across Australia are choosing homeschooling and need qualified, passionate educators. 
+                Families across the US are choosing homeschooling and need qualified, passionate educators. 
                 <strong> Investing in our children's education today shapes tomorrow's world.</strong> 
                 Create your profile and connect with families who value personalised learning.
               </p>
