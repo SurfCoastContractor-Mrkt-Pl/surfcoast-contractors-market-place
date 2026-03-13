@@ -252,7 +252,6 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
     {/* Confirmation Modal */}
     <Dialog open={showConfirmation} onOpenChange={(state) => !state && setShowConfirmation(false)}>
-    <Dialog open={showConfirmation} onOpenChange={(state) => !state && setShowConfirmation(false)}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
