@@ -222,26 +222,28 @@ export default function CustomerAccount() {
 
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
-              <TabsList className="w-full grid grid-cols-9">
-                <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
-                <TabsTrigger value="quotes" className="text-xs sm:text-sm">Quotes</TabsTrigger>
-                <TabsTrigger value="post-job" className="text-xs sm:text-sm flex items-center gap-1.5">
-                  <Plus className="w-3 h-3 sm:w-4 sm:h-4" />Job
-                </TabsTrigger>
-                <TabsTrigger value="history" className="text-xs sm:text-sm">History</TabsTrigger>
-                <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
-                <TabsTrigger value="referrals" className="text-xs sm:text-sm">Referrals</TabsTrigger>
-                <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1">
-                  Scopes
-                  {scopes?.filter(s => s.status === 'pending_approval').length > 0 && (
-                    <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">
-                      {scopes.filter(s => s.status === 'pending_approval').length}
-                    </span>
-                  )}
-                </TabsTrigger>
-                <TabsTrigger value="payments" className="text-xs sm:text-sm">Payments</TabsTrigger>
-                <TabsTrigger value="settings" className="text-xs sm:text-sm"><Settings className="w-3 h-3 sm:w-4 sm:h-4" /></TabsTrigger>
-              </TabsList>
+               <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                 <TabsList className="flex w-max min-w-full sm:w-full sm:grid sm:grid-cols-9 h-auto p-1 gap-0.5">
+                   <TabsTrigger value="profile" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Profile</TabsTrigger>
+                   <TabsTrigger value="quotes" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Quotes</TabsTrigger>
+                   <TabsTrigger value="post-job" className="text-xs px-2.5 py-1.5 whitespace-nowrap flex items-center gap-1">
+                     <Plus className="w-3 h-3" />Job
+                   </TabsTrigger>
+                   <TabsTrigger value="history" className="text-xs px-2.5 py-1.5 whitespace-nowrap">History</TabsTrigger>
+                   <TabsTrigger value="badges" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Badges</TabsTrigger>
+                   <TabsTrigger value="referrals" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Referrals</TabsTrigger>
+                   <TabsTrigger value="scopes" className="text-xs px-2.5 py-1.5 whitespace-nowrap flex items-center gap-1">
+                     Scopes
+                     {scopes?.filter(s => s.status === 'pending_approval').length > 0 && (
+                       <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">
+                         {scopes.filter(s => s.status === 'pending_approval').length}
+                       </span>
+                     )}
+                   </TabsTrigger>
+                   <TabsTrigger value="payments" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Payments</TabsTrigger>
+                   <TabsTrigger value="settings" className="text-xs px-2.5 py-1.5 whitespace-nowrap"><Settings className="w-3.5 h-3.5" /></TabsTrigger>
+                 </TabsList>
+               </div>
 
               <TabsContent value="profile">
                 <CustomerProfileEditor
