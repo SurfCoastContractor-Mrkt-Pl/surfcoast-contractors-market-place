@@ -312,6 +312,13 @@ export default function ContractorAccount() {
                    {/* Profile Information Editor */}
                    <ContractorProfileEditor contractor={contractor} />
 
+                   {/* Credentials & Certifications */}
+                   <CredentialDocumentsManager
+                     credentials={contractor?.credential_documents || []}
+                     onChange={(creds) => base44.entities.Contractor.update(contractor.id, { credential_documents: creds })}
+                     legalName={contractor?.name}
+                   />
+
                    {/* About Me Section */}
                    <Card className="p-6">
                     <div className="flex items-center justify-between mb-4">
