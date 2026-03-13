@@ -65,43 +65,44 @@ function generateDemoCustomers(count) {
 }
 
 function generateReviews(contractorIds, customerIds) {
-  const reviews = [];
-  const contractorArray = Array.from(contractorIds);
-  const customerArray = Array.from(customerIds);
-  
-  // Generate 3-8 reviews per contractor
-  for (const contractorId of contractorArray) {
-    const contractor = contractorId; // Will get full details in function
-    const reviewCount = randomBetween(3, 8);
-    
-    for (let i = 0; i < reviewCount; i++) {
-      const customer = randomPick(customerArray);
-      const rating = randomBetween(4, 5);
-      
-      reviews.push({
-        contractor_id: contractorId,
-        contractor_name: '', // Will set in loop
-        reviewer_name: '', // Will set in loop
-        reviewer_email: customer.email,
-        reviewer_type: 'customer',
-        overall_rating: rating,
-        quality_rating: rating,
-        punctuality_rating: randomBetween(4, 5),
-        communication_rating: randomBetween(4, 5),
-        professionalism_rating: randomBetween(4, 5),
-        comment: randomPick(REVIEW_COMMENTS),
-        verified: true,
-        is_testimony: false,
-        work_date: (() => {
-          const d = new Date();
-          d.setDate(d.getDate() - randomBetween(10, 60));
-          return d.toISOString().split('T')[0];
-        })(),
-      });
-    }
-  }
-  
-  return reviews;
+   const reviews = [];
+   const contractorArray = Array.from(contractorIds);
+   const customerArray = Array.from(customerIds);
+
+   // Generate 3-8 reviews per contractor
+   for (const contractorId of contractorArray) {
+     const contractor = contractorId; // Will get full details in function
+     const reviewCount = randomBetween(3, 8);
+
+     for (let i = 0; i < reviewCount; i++) {
+       const customer = randomPick(customerArray);
+       // Mix of 3, 4, and 5 star ratings (weighted towards 4-5)
+       const rating = randomBetween(1, 10) <= 2 ? 3 : randomBetween(4, 5);
+
+       reviews.push({
+         contractor_id: contractorId,
+         contractor_name: '', // Will set in loop
+         reviewer_name: '', // Will set in loop
+         reviewer_email: customer.email,
+         reviewer_type: 'customer',
+         overall_rating: rating,
+         quality_rating: randomBetween(3, 5),
+         punctuality_rating: randomBetween(3, 5),
+         communication_rating: randomBetween(3, 5),
+         professionalism_rating: randomBetween(3, 5),
+         comment: randomPick(REVIEW_COMMENTS),
+         verified: true,
+         is_testimony: false,
+         work_date: (() => {
+           const d = new Date();
+           d.setDate(d.getDate() - randomBetween(10, 60));
+           return d.toISOString().split('T')[0];
+         })(),
+       });
+     }
+   }
+
+   return reviews;
 }
 
 function generateTestimonies(count) {
