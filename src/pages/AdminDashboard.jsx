@@ -493,6 +493,7 @@ export default function AdminDashboard() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="sales">Sales Overview</TabsTrigger>
             </TabsList>
 
           {/* Sales Overview Tab */}
