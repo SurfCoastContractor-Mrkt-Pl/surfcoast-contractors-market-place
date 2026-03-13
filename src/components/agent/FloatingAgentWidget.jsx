@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare } from 'lucide-react';
+import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare, Expand } from 'lucide-react';
 
 const DEFAULT_GREETING = `👋 Welcome to SurfCoast Contractors Market Place!
 
