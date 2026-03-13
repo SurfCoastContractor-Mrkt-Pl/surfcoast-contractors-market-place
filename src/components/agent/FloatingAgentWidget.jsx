@@ -165,16 +165,27 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
     >
       {/* Header */}
       <div 
-        className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-xl p-3 flex items-center justify-between gap-2 shrink-0 select-none"
+        className={`bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3 flex items-center justify-between gap-2 shrink-0 select-none ${
+          expanded ? '' : 'rounded-t-xl'
+        }`}
       >
         <h3 className="font-semibold text-sm">SurfCoast Assistant</h3>
         <div className="flex gap-1">
+          {!expanded && (
+            <button
+              onClick={() => setExpanded(true)}
+              className="p-1 hover:bg-amber-700 rounded transition-colors lg:hidden"
+              title="Expand"
+            >
+              <Expand className="w-4 h-4" />
+            </button>
+          )}
           <button
-            onClick={() => setMinimized(true)}
+            onClick={() => expanded ? setExpanded(false) : setMinimized(true)}
             className="p-1 hover:bg-amber-700 rounded transition-colors"
-            title="Minimize"
+            title={expanded ? "Collapse" : "Minimize"}
           >
-            <span className="text-lg font-light">−</span>
+            {expanded ? <Minimize2 className="w-4 h-4" /> : <span className="text-lg font-light">−</span>}
           </button>
           <button
             onClick={() => onClose()}
