@@ -38,8 +38,9 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
     setSelectedJobTitle('');
   };
 
+  const jobSelected = jobs.length === 0 || selectedJobId === 'none' || (selectedJobId && selectedJobId !== '');
   const canProceed = 
-    (selectedJobId === 'none' || selectedJobId) && 
+    jobSelected && 
     workDescription.trim() && 
     contractor?.id && 
     contractor?.email && 
