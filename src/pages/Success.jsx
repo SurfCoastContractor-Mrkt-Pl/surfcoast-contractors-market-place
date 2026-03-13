@@ -40,25 +40,19 @@ export default function Success() {
           return;
         }
 
-        // If this was a quote request, auto-create the QuoteRequest record
+        // If this was a quote request, auto-create the QuoteRequest record via backend function
         if (quoteMetaRaw) {
           try {
             const quoteMeta = JSON.parse(decodeURIComponent(quoteMetaRaw));
-            // Check it wasn't already created (idempotency)
-            const existing = await base44.entities.QuoteRequest.filter({ payment_id: paymentId });
-            if (existing.length === 0) {
-              await base44.entities.QuoteRequest.create({
-                contractor_id: quoteMeta.contractor_id,
-                contractor_name: quoteMeta.contractor_name,
-                contractor_email: quoteMeta.contractor_email,
-                customer_email: quoteMeta.customer_email,
-                customer_name: quoteMeta.customer_name,
-                work_description: quoteMeta.work_description,
-                payment_id: paymentId,
-                created_at: new Date().toISOString(),
-                response_deadline: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
-              });
-            }
+            await base44.functions.invoke('createQuoteRequest', {
+              payment_id: paymentId,
+              contractor_id: quoteMeta.contractor_id,
+              contractor_name: quoteMeta.contractor_name,
+              contractor_email: quoteMeta.contractor_email,
+              customer_email: quoteMeta.customer_email,
+              customer_name: quoteMeta.customer_name,
+              work_description: quoteMeta.work_description,
+            });
             setIsQuote(true);
           } catch (qErr) {
             console.error('Failed to create quote request:', qErr);
