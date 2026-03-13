@@ -41,6 +41,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
           return existing[0];
         }
 
+        // Generate idempotency key to prevent duplicate charges
+        const idempotencyKey = `${data.email}_${contractorId}_${tier}_${Date.now()}`;
+
         // Call backend to create Stripe checkout session
         const response = await base44.functions.invoke('createPaymentCheckout', {
          payerEmail: data.email,
@@ -52,6 +55,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
          tier: tier,
          priceId: priceId,
          quoteMetaParam: quoteMetaParam,
+         idempotencyKey: idempotencyKey,
        });
 
       if (!response.data?.url) {
