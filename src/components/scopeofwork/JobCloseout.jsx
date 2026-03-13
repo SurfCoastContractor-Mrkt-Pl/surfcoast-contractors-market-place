@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import JobTogetherPhoto from './JobTogetherPhoto';
+import TradeSpecificGuidance from '@/components/legal/TradeSpecificGuidance';
 
 const RATINGS = [
   { value: 'unsatisfactory', label: 'Unsatisfactory', color: 'bg-red-100 text-red-700 border-red-200' },
