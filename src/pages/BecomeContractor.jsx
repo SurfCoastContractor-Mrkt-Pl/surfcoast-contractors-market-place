@@ -76,6 +76,10 @@ export default function BecomeContractor() {
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      if (isPreview) {
+        // Preview mode: don't submit, just simulate success
+        return new Promise(resolve => setTimeout(resolve, 800));
+      }
       // Verify authenticated user and link to their User account
       try {
         const user = await base44.auth.me();
