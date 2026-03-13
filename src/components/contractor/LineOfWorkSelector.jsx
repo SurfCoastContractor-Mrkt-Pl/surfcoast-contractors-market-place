@@ -152,7 +152,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
           <SelectTrigger id="industry_category" className="mt-1.5">
             <SelectValue placeholder="Choose an industry" />
           </SelectTrigger>
-          <SelectContent className="max-h-72">
+          <SelectContent className="max-h-72 overflow-y-auto">
             {lineOfWorkOptions.map((group) => (
               <SelectItem key={group.category} value={group.category}>
                 {group.category}
