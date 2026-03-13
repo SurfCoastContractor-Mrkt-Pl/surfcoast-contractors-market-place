@@ -183,20 +183,26 @@ export default function PostJob() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to={createPageUrl('Jobs')} className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-4">
+      <div className="relative py-14 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.58)'}}></div>
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-5">
             <ArrowLeft className="w-4 h-4" />
-            Back to Jobs
+            Back
           </Link>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-slate-900" />
+          <div className="flex items-center gap-4">
+            <div className="rounded-xl flex items-center justify-center p-3" style={{backgroundColor: '#1E5A96'}}>
+              <Briefcase className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Post a Job</h1>
-              <p className="text-slate-300">Find the right contractor for your project</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">Post a Job</h1>
+              <p className="text-white/75 mt-1">Find the right contractor for your project</p>
             </div>
+          </div>
+          <div className="flex flex-wrap gap-6 mt-8 pt-6 border-t border-white/20">
+            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Free to post</div>
+            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Contractors reach out to you</div>
+            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> All professionals verified</div>
           </div>
         </div>
       </div>
