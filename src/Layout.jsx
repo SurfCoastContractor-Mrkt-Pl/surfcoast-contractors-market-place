@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle } from 'lucide-react';
+import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
@@ -262,8 +262,21 @@ export default function Layout({ children, currentPageName }) {
              </div>
             )}
             <div className="flex flex-col items-center justify-start">
-              <h4 className="font-semibold mb-2 text-sm">Connect</h4>
-              <p className="text-xs text-slate-400 text-center">Follow us on social media</p>
+              <h4 className="font-semibold mb-3 text-sm">Connect</h4>
+              <div className="flex items-center gap-3">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </div>
           <div className="border-t border-slate-800 mt-3 pt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
