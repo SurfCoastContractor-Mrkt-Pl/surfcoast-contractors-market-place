@@ -31,21 +31,26 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       setCheckingout(true);
 
       try {
-        // Check for duplicate payment before creating a new one
-        const existing = await base44.entities.Payment.filter({
-          payer_email: data.email,
-          payer_type: payerType,
-          contractor_id: contractorId ?? null,
-          status: 'confirmed',
-        });
-        if (existing && existing.length > 0) {
-          setAlreadyPaid(true);
-          onPaid(existing[0]);
-          return existing[0];
-        }
+        // Validate quote data is present for quote requests
+          if (tier === 'quote' && !quoteMetaParam) {
+            throw new Error('Quote details are missing. Please go back and select a project.');
+          }
 
-        // Generate idempotency key to prevent duplicate charges
-        const idempotencyKey = `${data.email}_${contractorId}_${tier}_${Date.now()}`;
+          // Check for duplicate payment before creating a new one
+          const existing = await base44.entities.Payment.filter({
+            payer_email: data.email,
+            payer_type: payerType,
+            contractor_id: contractorId ?? null,
+            status: 'confirmed',
+          });
+          if (existing && existing.length > 0) {
+            setAlreadyPaid(true);
+            onPaid(existing[0]);
+            return existing[0];
+          }
+
+          // Generate idempotency key to prevent duplicate charges
+          const idempotencyKey = `${data.email}_${contractorId}_${tier}_${Date.now()}`;
 
         // Call backend to create Stripe checkout session
         const response = await base44.functions.invoke('createPaymentCheckout', {
