@@ -103,7 +103,11 @@ export default function Success() {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Successful!</h1>
-            <p className="text-slate-600 mb-6">Your platform access fee has been processed. A confirmation email has been sent to you.</p>
+            <p className="text-slate-600 mb-6">
+              {isQuote
+                ? 'Your quote request has been submitted! The contractor will respond within 48 hours. You can track it in your account under the Quotes tab.'
+                : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
+            </p>
             <Button onClick={() => navigate('/')} className="bg-green-600 hover:bg-green-700 text-white w-full">
               Return to Home
             </Button>
