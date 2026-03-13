@@ -84,7 +84,8 @@ export default function UserAccountManager({ user, userType, onClose }) {
 
   const openEdit = () => {
     setEditData({
-      name: user.name || user.full_name || '',
+      name: userType === 'contractor' ? (user.name || '') : '',
+      full_name: userType === 'customer' ? (user.full_name || '') : '',
       email: user.email || '',
       phone: user.phone || '',
       location: user.location || '',
@@ -288,8 +289,8 @@ export default function UserAccountManager({ user, userType, onClose }) {
             <div>
               <Label className="text-sm font-medium">{userType === 'contractor' ? 'Name' : 'Full Name'}</Label>
               <Input
-                value={editData.name || ''}
-                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                value={userType === 'contractor' ? (editData.name || '') : (editData.full_name || '')}
+                onChange={(e) => setEditData({ ...editData, [userType === 'contractor' ? 'name' : 'full_name']: e.target.value })}
                 className="mt-1"
               />
             </div>
