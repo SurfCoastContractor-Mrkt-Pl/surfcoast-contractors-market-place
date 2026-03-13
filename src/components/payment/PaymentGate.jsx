@@ -248,6 +248,12 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   )}
                 </Button>
               </div>
+            {!hasRequiredQuoteData && tier === 'quote' && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                <strong>Error:</strong> Project details are missing. Please close this and select a project before paying.
+              </div>
+            )}
+            
             {mutation.isError && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> {mutation.error?.message || 'Payment failed. Please try again.'}
