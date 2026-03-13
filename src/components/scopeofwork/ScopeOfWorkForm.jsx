@@ -215,6 +215,9 @@ This is an official copy of the agreement submitted through ContractorHub.
 
             <div>
               <Label htmlFor="scope_summary">Detailed Scope of Work *</Label>
+              <p className="text-xs text-slate-600 mb-2">
+                <strong>Scope of Work:</strong> All the work you will perform and may do to complete the project. Include tasks, materials you'll provide, what's not included, and any key assumptions.
+              </p>
               <Textarea
                 id="scope_summary"
                 value={formData.scope_summary}
@@ -228,7 +231,7 @@ This is an official copy of the agreement submitted through ContractorHub.
               {formData.scope_summary && formData.scope_summary.length < 20 && (
                 <p className="text-xs text-red-600 mt-1">Scope must be at least 20 characters</p>
               )}
-              <p className="text-xs text-slate-500 mt-1">Be thorough — this is a binding description of the work you will perform.</p>
+              <p className="text-xs text-slate-500 mt-1">Be thorough — define everything you will and won't do so the customer knows exactly what to expect.</p>
             </div>
 
             {/* Cost Type */}
