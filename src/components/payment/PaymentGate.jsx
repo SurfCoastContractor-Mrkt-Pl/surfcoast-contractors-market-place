@@ -221,19 +221,19 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             </div>
 
             <div className="flex gap-3">
-               <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={mutation.isPending || checkingout}>Cancel</Button>
-               <Button
-                 type="submit"
-                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                 disabled={mutation.isPending || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
-               >
-                 {mutation.isPending || checkingout ? (
-                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{checkingout ? 'Redirecting...' : 'Processing...'}</>
-                 ) : (
-                   `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
-                 )}
-               </Button>
-             </div>
+                <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation}>Cancel</Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
+                >
+                  {showConfirmation ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+                  ) : (
+                    `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
+                  )}
+                </Button>
+              </div>
             {mutation.isError && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> {mutation.error?.message || 'Payment failed. Please try again.'}
