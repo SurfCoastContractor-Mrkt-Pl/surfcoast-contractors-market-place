@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
             quantity: 1,
           },
         ],
-        success_url: `${origin}/success?payment_id=${paymentRecord.id}`,
+        success_url: `${origin}/success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}`,
         cancel_url: `${origin}/cancel?reason=cancelled`,
         payment_intent_data: {
           description: `SurfCoast Quote Request Fee - ${contractorName || 'Contractor'}`,
