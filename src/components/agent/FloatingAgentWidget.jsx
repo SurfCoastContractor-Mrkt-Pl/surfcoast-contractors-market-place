@@ -23,6 +23,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   const [loading, setLoading] = useState(false);
   const [conversation, setConversation] = useState(null);
   const [minimized, setMinimized] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [position, setPosition] = useState({ bottom: 24, left: 24 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
