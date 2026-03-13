@@ -10,8 +10,10 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Validate internal key for service-to-service calls
-    const providedKey = req.headers.get('x-internal-key');
+    const body = await req.json();
+
+    // Validate internal key — accept from header or body (for service-to-service SDK calls)
+    const providedKey = req.headers.get('x-internal-key') || body._internal_service_key;
     const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
     
     const isValidInternalCall = providedKey && expectedKey && providedKey === expectedKey;
@@ -20,7 +22,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    const { customer_email, contractor_id, amount } = await req.json();
+    const { customer_email, contractor_id, amount } = body;
 
     if (!customer_email || !contractor_id || !amount) {
       return Response.json(
