@@ -208,6 +208,26 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
         </div>
       )}
 
+      {/* Education spotlight banner */}
+      {(selectedCategory === 'Education' || currentCategory === 'Education') && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">🎓</span>
+            <div>
+              <p className="font-bold text-amber-900 text-sm">Homeschool Educators — You're in High Demand!</p>
+              <p className="text-amber-800 text-xs mt-1 leading-relaxed">
+                Families across Australia are choosing homeschooling and need qualified, passionate educators. 
+                <strong> Investing in our children's education today shapes tomorrow's world.</strong> 
+                Create your profile and connect with families who value personalised learning.
+              </p>
+              <p className="text-amber-700 text-xs mt-2 font-medium">
+                📚 List your subjects · Set your schedule · Empower young minds
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Selected value display */}
       {value && value !== 'other' && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 text-sm text-blue-900">
