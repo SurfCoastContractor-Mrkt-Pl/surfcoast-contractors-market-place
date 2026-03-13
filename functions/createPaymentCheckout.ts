@@ -166,7 +166,7 @@ Deno.serve(async (req) => {
           description: `SurfCoast Quote Request Fee - ${contractorName || 'Contractor'}`,
         },
         metadata: {
-          base44_app_id: Deno.env.get("BASE44_APP_ID"),
+          base44_app_id: BASE44_APP_ID || 'unknown',
           payment_id: paymentRecord.id,
           payer_email: payerEmail,
           payer_type: payerType,
