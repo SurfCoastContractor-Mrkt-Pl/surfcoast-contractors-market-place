@@ -322,7 +322,7 @@ This is an official copy of the agreement submitted through ContractorHub.
                 className="mt-1.5"
               />
               <p className="text-xs text-slate-500 mt-1">
-                The date agreed between you and the customer for work to take place. After photos will be required 72 hours after this date.
+                The date you've agreed on for the work. After photos help document completion.
               </p>
             </div>
 
