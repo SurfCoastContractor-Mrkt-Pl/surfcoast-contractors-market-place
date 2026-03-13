@@ -1,31 +1,32 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
-// In-memory idempotency tracking (24-hour TTL)
-const processedEvents = new Map();
-const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000;
-
-function isEventProcessed(eventId) {
-  if (processedEvents.has(eventId)) {
-    const timestamp = processedEvents.get(eventId);
-    if (Date.now() - timestamp < IDEMPOTENCY_TTL) {
-      return true;
-    }
-    processedEvents.delete(eventId);
+// SECURITY: Database-backed idempotency for webhook processing (no in-memory storage)
+async function isEventProcessed(base44, eventId) {
+  try {
+    const events = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({
+      stripe_event_id: eventId
+    });
+    return events && events.length > 0;
+  } catch (error) {
+    console.error('Error checking webhook idempotency:', error.message);
+    return false; // Fail open on DB error, let it retry
   }
-  return false;
 }
 
-function markEventProcessed(eventId) {
-  processedEvents.set(eventId, Date.now());
-  // Cleanup expired entries
-  for (const [id, ts] of processedEvents.entries()) {
-    if (Date.now() - ts > IDEMPOTENCY_TTL) {
-      processedEvents.delete(id);
-    }
+async function markEventProcessed(base44, eventId, eventType) {
+  try {
+    await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
+      stripe_event_id: eventId,
+      event_type: eventType,
+      processed_at: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error marking webhook as processed:', error.message);
   }
 }
 
