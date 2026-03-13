@@ -14,7 +14,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
   const [showPayment, setShowPayment] = useState(false);
 
   // Fetch customer's job postings
-  const { data: jobs = [] } = useQuery({
+  const { data: jobs = [], isLoading: loadingJobs } = useQuery({
     queryKey: ['customer-jobs-for-quote', customer?.email],
     queryFn: () => base44.entities.Job.filter({ poster_email: customer?.email }),
     enabled: !!customer?.email && open,
