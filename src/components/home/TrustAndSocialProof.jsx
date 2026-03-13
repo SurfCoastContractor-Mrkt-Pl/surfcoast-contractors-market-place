@@ -13,7 +13,7 @@ export default function TrustAndSocialProof() {
     {
       name: "James Chen",
       role: "Electrician, San Francisco",
-      text: "I've been on other platforms for years, but SurfCoast is different. Hector, the founder, built this for real tradespeople — you can tell he genuinely cares. My plumbing business, SurfCoast Plumbing, has never been busier. Customers here are serious about hiring.",
+      text: "Been in the trades for a long time and tried a lot of platforms. SurfCoast just feels different — you can tell Hector built this for working people, not just to cash in. The clients I've found here are legit and easy to work with. Highly recommend.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
     },
