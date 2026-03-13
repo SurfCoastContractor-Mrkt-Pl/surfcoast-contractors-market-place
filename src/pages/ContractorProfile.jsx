@@ -108,10 +108,11 @@ export default function ContractorProfile() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="relative text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.62)'}}></div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link to={createPageUrl('FindContractors')}>
-            <Button variant="ghost" className="mb-4">
+            <Button variant="ghost" className="mb-5 text-white/80 hover:text-white hover:bg-white/10">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Search
             </Button>
@@ -120,19 +121,23 @@ export default function ContractorProfile() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Profile Info */}
             <div className="md:col-span-2">
-              <div className="flex items-start gap-4 mb-4">
-                {contractor.photo_url && (
+              <div className="flex items-start gap-5 mb-5">
+                {contractor.photo_url ? (
                   <img
                     src={contractor.photo_url}
                     alt={contractor.name}
-                    className="w-24 h-24 rounded-xl object-cover"
+                    className="w-24 h-24 rounded-xl object-cover border-2 border-white/30"
                   />
+                ) : (
+                  <div className="w-24 h-24 rounded-xl flex items-center justify-center text-white text-3xl font-bold border-2 border-white/30" style={{backgroundColor: '#1E5A96'}}>
+                    {contractor.name?.[0]}
+                  </div>
                 )}
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-slate-900">{contractor.name}</h1>
-                  <p className="text-slate-600 mt-1">{contractor.years_experience} years experience</p>
+                  <h1 className="text-3xl font-bold text-white">{contractor.name}</h1>
+                  {contractor.years_experience && <p className="text-white/75 mt-1">{contractor.years_experience} years experience</p>}
                   {contractor.identity_verified && (
-                    <div className="flex items-center gap-2 mt-2 text-green-600">
+                    <div className="flex items-center gap-2 mt-2 text-green-400">
                       <Shield className="w-4 h-4" />
                       <span className="text-sm font-semibold">Identity Verified</span>
                     </div>
@@ -140,20 +145,20 @@ export default function ContractorProfile() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {contractor.rating && (
-                  <Badge className="bg-amber-100 text-amber-800">
-                    <Star className="w-3 h-3 mr-1 fill-current" />
+                  <Badge className="bg-white/15 text-white border-white/20">
+                    <Star className="w-3 h-3 mr-1 fill-current text-yellow-400" />
                     {contractor.rating.toFixed(1)} ({contractor.reviews_count} reviews)
                   </Badge>
                 )}
-                {contractor.completed_jobs_count && (
-                  <Badge className="bg-blue-100 text-blue-800">
+                {contractor.completed_jobs_count > 0 && (
+                  <Badge className="bg-white/15 text-white border-white/20">
                     <CheckCircle2 className="w-3 h-3 mr-1" />
                     {contractor.completed_jobs_count} Jobs Completed
                   </Badge>
                 )}
-                <Badge className="bg-slate-100 text-slate-800">
+                <Badge className="bg-white/15 text-white border-white/20">
                   <MapPin className="w-3 h-3 mr-1" />
                   {contractor.location}
                 </Badge>
@@ -161,22 +166,22 @@ export default function ContractorProfile() {
             </div>
 
             {/* CTA */}
-            <div className="bg-amber-50 p-6 rounded-xl h-fit">
-              <div className="mb-6">
-                <p className="text-slate-600 mb-2 text-sm">Hourly Rate</p>
+            <div className="bg-white p-6 rounded-xl h-fit shadow-xl">
+              <div className="mb-5">
+                <p className="text-slate-500 mb-1 text-sm">Hourly Rate</p>
                 <p className="text-3xl font-bold text-slate-900">
-                  ${contractor.hourly_rate}
-                  <span className="text-lg text-slate-600">/hr</span>
+                  {contractor.hourly_rate ? `$${contractor.hourly_rate}` : 'Request Quote'}
+                  {contractor.hourly_rate && <span className="text-lg text-slate-500">/hr</span>}
                 </p>
               </div>
               <Link to={createPageUrl('QuickJobPost')}>
-                <Button className="w-full bg-amber-500 hover:bg-amber-600 mb-3">
+                <Button className="w-full text-white mb-3" style={{backgroundColor: '#1E5A96'}}>
                   Post a Job
                 </Button>
               </Link>
               <Button 
                 variant="outline" 
-                className="w-full"
+                className="w-full border-slate-300"
                 onClick={() => setMessagingPricingOpen(true)}
               >
                 <MessageSquare className="w-4 h-4 mr-2" />
