@@ -134,10 +134,15 @@ export default function JobCloseout({ scope, role, open, onClose }) {
               onChange={setTogetherPhoto}
             />
 
-            <div className="p-3 bg-slate-50 rounded-lg text-sm text-slate-600">
+            <div className="p-3 bg-slate-50 rounded-lg text-sm text-slate-600 space-y-2">
               <p><span className="font-medium">Job:</span> {scope.job_title}</p>
               <p><span className="font-medium">{role === 'contractor' ? 'Customer' : 'Contractor'}:</span> {role === 'contractor' ? scope.customer_name : scope.contractor_name}</p>
               <p><span className="font-medium">Cost:</span> {scope.cost_type === 'fixed' ? `$${scope.cost_amount} fixed` : `$${scope.cost_amount}/hr`}</p>
+              {role === 'contractor' && (
+                <div className="border-t border-slate-300 pt-2 text-xs text-slate-700">
+                  <p><span className="font-medium">Platform Facilitation Fee:</span> {scope.platform_fee_percentage || 3}%</p>
+                </div>
+              )}
             </div>
 
             <div>
