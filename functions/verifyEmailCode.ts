@@ -1,11 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// In-memory tracking for failed verification attempts
-const failedAttempts = new Map();
-const FAILED_ATTEMPT_THRESHOLD = 3; // Lock after 3 failed attempts
-const LOCKOUT_DURATION = 3600000; // 1 hour lockout
-const ATTEMPT_WINDOW = 3600000; // 1 hour window for counting attempts
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -16,19 +10,20 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Code and email required' }, { status: 400 });
     }
 
-    // Check if email is locked due to failed attempts
-    const now = Date.now();
-    if (failedAttempts.has(userEmail)) {
-      const { count, lockedUntil } = failedAttempts.get(userEmail);
-      if (now < lockedUntil) {
-        const remainingMinutes = Math.ceil((lockedUntil - now) / 60000);
-        return Response.json({ 
-          error: `Account locked due to multiple failed attempts. Try again in ${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''}.` 
-        }, { status: 429 });
-      } else {
-        // Reset failed attempts after lockout expires
-        failedAttempts.delete(userEmail);
-      }
+    // SECURITY: Database-backed brute-force protection
+    const attemptKey = `email_verification:${userEmail}`;
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+    const recentFailures = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: attemptKey,
+      action: 'failed_email_verification',
+      created_date: { $gte: oneHourAgo }
+    });
+    
+    const FAILED_ATTEMPT_THRESHOLD = 3;
+    if (recentFailures && recentFailures.length >= FAILED_ATTEMPT_THRESHOLD) {
+      return Response.json({ 
+        error: 'Account locked due to multiple failed attempts. Try again in 1 hour.' 
+      }, { status: 429 });
     }
 
     // If authenticated, ensure userEmail matches the session
