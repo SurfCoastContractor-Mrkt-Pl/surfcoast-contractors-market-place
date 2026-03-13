@@ -11,13 +11,27 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Verify the payment exists and is confirmed
+    // Verify the payment exists, is confirmed, and belongs to this customer
     const payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
     if (!payments || payments.length === 0) {
       return Response.json({ error: 'Payment not found' }, { status: 404 });
     }
-    if (payments[0].status !== 'confirmed') {
+    const payment = payments[0];
+    if (payment.status !== 'confirmed') {
       return Response.json({ error: 'Payment not confirmed' }, { status: 402 });
+    }
+    if (payment.payer_email.toLowerCase() !== customer_email.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: Payment does not match customer email' }, { status: 403 });
+    }
+
+    // Verify contractor exists and is not locked
+    const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
+    if (!contractors || contractors.length === 0) {
+      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+    const contractor = contractors[0];
+    if (contractor.account_locked || contractor.minor_hours_locked) {
+      return Response.json({ error: 'Contractor is not available for quotes' }, { status: 403 });
     }
 
     // Idempotency: don't create duplicate
@@ -44,6 +58,6 @@ Deno.serve(async (req) => {
     return Response.json({ success: true, quote });
   } catch (error) {
     console.error('createQuoteRequest error:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: 'Failed to create quote request' }, { status: 500 });
   }
 });
