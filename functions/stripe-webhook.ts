@@ -108,6 +108,10 @@ Deno.serve(async (req) => {
         await handleCheckoutSessionCompleted(event.data.object, base44);
         break;
       
+      case 'checkout.session.expired':
+        await handleCheckoutSessionExpired(event.data.object, base44);
+        break;
+      
       default:
         // Log unhandled events but still mark as processed
         console.debug(`Unhandled Stripe event type: ${eventType}`);
