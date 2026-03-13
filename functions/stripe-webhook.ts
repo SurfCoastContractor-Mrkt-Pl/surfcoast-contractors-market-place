@@ -62,6 +62,15 @@ Deno.serve(async (req) => {
     
     console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
 
+    // CRITICAL: Authenticate before processing any events
+    const base44 = createClientFromRequest(req);
+    
+    // Verify webhook secret before processing
+    if (!webhookSecret) {
+      console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
+      return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
+    }
+    
     // Process events in order of priority
     const eventType = event.type;
     
