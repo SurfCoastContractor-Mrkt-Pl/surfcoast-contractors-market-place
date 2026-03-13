@@ -38,8 +38,8 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
       const record = await base44.entities.ScopeOfWork.create(data);
 
       const costLine = data.cost_type === 'fixed'
-        ? `Fixed Total Cost: $${data.cost_amount.toFixed(2)}`
-        : `Hourly Rate: $${data.cost_amount.toFixed(2)}/hr${data.estimated_hours ? ` (Est. ${data.estimated_hours} hours = $${(data.cost_amount * data.estimated_hours).toFixed(2)} total)` : ''}`;
+         ? `Estimate: $${data.cost_amount.toFixed(2)}`
+         : `Hourly Rate: $${data.cost_amount.toFixed(2)}/hr${data.estimated_hours ? ` (Est. ${data.estimated_hours} hours = $${(data.cost_amount * data.estimated_hours).toFixed(2)} total)` : ''}`;
 
       const workDateLine = data.agreed_work_date
         ? `Agreed Work Date: ${new Date(data.agreed_work_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
