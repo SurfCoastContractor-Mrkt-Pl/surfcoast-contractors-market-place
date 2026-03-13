@@ -141,6 +141,49 @@ export default function CustomerDashboard() {
               </CardContent>
             </Card>
 
+            {/* Quote Requests */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5" />
+                  Quote Requests
+                </CardTitle>
+                <CardDescription>Pending contractor quotes</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {quotesLoading ? (
+                  <div className="text-center py-8 text-slate-500">Loading quotes...</div>
+                ) : quoteRequests.length === 0 ? (
+                  <p className="text-center py-8 text-slate-500">No quote requests</p>
+                ) : (
+                  <div className="space-y-4">
+                    {quoteRequests.map((quote) => (
+                      <div key={quote.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h3 className="font-semibold text-slate-900">{quote.job_title}</h3>
+                            <p className="text-sm text-slate-600">From: {quote.contractor_name}</p>
+                          </div>
+                          <Badge className={quote.status === 'quoted' ? 'bg-green-100 text-green-800' : quote.status === 'view_denied' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}>
+                            {quote.status.replace(/_/g, ' ')}
+                          </Badge>
+                        </div>
+                        {quote.quote_amount && (
+                          <p className="text-sm font-medium text-slate-900 mb-2">Quote: ${quote.quote_amount}</p>
+                        )}
+                        {quote.quote_message && (
+                          <p className="text-sm text-slate-600 mb-3">{quote.quote_message}</p>
+                        )}
+                        <Link to={`/MyJobs?jobId=${quote.job_id}`}>
+                          <Button variant="outline" size="sm">View Details</Button>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Active Scopes */}
             <Card>
               <CardHeader>
