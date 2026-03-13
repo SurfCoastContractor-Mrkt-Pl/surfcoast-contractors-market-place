@@ -50,6 +50,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
          contractorName: contractorName || null,
          tier: tier,
          priceId: priceId,
+         quoteMetaParam: quoteMetaParam,
        });
 
       if (!response.data?.url) {
