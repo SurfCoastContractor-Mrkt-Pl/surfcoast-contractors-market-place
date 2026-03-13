@@ -168,9 +168,8 @@ This is an official copy of the agreement submitted through ContractorHub.
                showAsCard={true}
              />
 
-             <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
-               <strong>Required:</strong> You must provide a detailed scope of work and either an hourly rate or a fixed total cost. 
-               The customer must approve this before any work can begin.
+             <div className="p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 leading-relaxed">
+               <strong>Note:</strong> Providing a detailed scope of work and clear pricing helps ensure both you and the customer have a shared understanding before work begins.
              </div>
 
             {/* Customer Info */}
