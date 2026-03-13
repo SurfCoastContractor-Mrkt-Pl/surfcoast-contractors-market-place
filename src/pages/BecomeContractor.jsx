@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle } from 'lucide-react';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
