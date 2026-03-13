@@ -55,21 +55,22 @@ Deno.serve(async (req) => {
     }
 
     // Check if contractor is trying to message about a job with an accepted scope
-    if (userIsContractor) {
-      const acceptedScopes = await base44.entities.ScopeOfWork.filter({
-        job_id: latestPayment.job_id,
-        status: 'approved',
-        contractor_email: { $ne: user.email }
-      });
+     if (userIsContractor && latestPayment.job_id) {
+       const acceptedScopes = await base44.entities.ScopeOfWork.filter({
+         job_id: latestPayment.job_id,
+         status: 'approved',
+         contractor_email: { $ne: user.email }
+       });
 
-      if (acceptedScopes && acceptedScopes.length > 0) {
-        return Response.json({ 
-          allowed: false, 
-          reason: 'This job has already been accepted by another contractor',
-          tier
-        });
-      }
-    }
+       if (acceptedScopes && acceptedScopes.length > 0) {
+         console.warn('Job already has accepted scope. Job:', latestPayment.job_id, 'Contractor:', user.email);
+         return Response.json({ 
+           allowed: false, 
+           reason: 'This job has already been accepted by another contractor',
+           tier
+         });
+       }
+     }
 
     // For timed tier, check if session is still active
     if (tier === 'timed') {
