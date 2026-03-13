@@ -30,20 +30,31 @@ Deno.serve(async (req) => {
     let cleanedUp = 0;
     for (const payment of pendingPayments || []) {
       try {
-        // Check if checkout session still exists in Stripe
-        const sessions = await stripe.checkout.sessions.list({
-          limit: 100,
-        });
-
-        const sessionExists = sessions.data.some(
-          s => s.metadata?.payment_id === payment.id && s.payment_status === 'paid'
-        );
-
-        if (!sessionExists) {
-          // Payment was not completed - clean up record
-          await base44.asServiceRole.entities.Payment.delete(payment.id);
-          cleanedUp++;
-          console.log(`Cleaned up stale pending payment: ${payment.id}`);
+        // Only check if this specific session exists and is paid
+        if (payment.stripe_session_id) {
+          const session = await stripe.checkout.sessions.retrieve(payment.stripe_session_id);
+          
+          // If session is paid, update payment status instead of deleting
+          if (session.payment_status === 'paid') {
+            await base44.asServiceRole.entities.Payment.update(payment.id, {
+              status: 'confirmed',
+              confirmed_at: new Date().toISOString()
+            });
+            console.log(`Updated stale payment to confirmed: ${payment.id}`);
+          } else {
+            // Expire the session if payment wasn't completed
+            try {
+              await stripe.checkout.sessions.expire(payment.stripe_session_id);
+            } catch (stripeErr) {
+              console.warn(`Could not expire session ${payment.stripe_session_id}:`, stripeErr.message);
+            }
+            // Mark as expired instead of deleting to preserve audit trail
+            await base44.asServiceRole.entities.Payment.update(payment.id, {
+              status: 'expired'
+            });
+            cleanedUp++;
+            console.log(`Marked stale pending payment as expired: ${payment.id}`);
+          }
         }
       } catch (e) {
         console.error(`Error reconciling payment ${payment.id}:`, e.message);
