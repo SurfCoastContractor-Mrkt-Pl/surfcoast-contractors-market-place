@@ -160,15 +160,16 @@ export default function CustomerAccount() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center">
-              <User className="w-6 h-6 text-slate-900" />
+      <div className="relative py-12 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.60)'}}></div>
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: '#1E5A96'}}>
+              <User className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Customer Account</h1>
-              <p className="text-slate-300">Manage your activity and data</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">Customer Account</h1>
+              <p className="text-white/70">Manage your activity and data</p>
             </div>
           </div>
         </div>
