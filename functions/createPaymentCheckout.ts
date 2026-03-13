@@ -137,7 +137,6 @@ Deno.serve(async (req) => {
             request_three_d_secure: 'automatic',
           },
         },
-        payment_method_collection: 'always',
         mode: 'payment',
         customer_email: payerEmail,
         line_items: [
