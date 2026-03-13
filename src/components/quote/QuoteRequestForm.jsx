@@ -136,8 +136,8 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
             )}
           </div>
 
-          {/* Step 2: Work Description — shown after job selection */}
-          {(selectedJobId || jobs.length === 0) && (
+          {/* Step 2: Work Description — shown after job selection OR if no jobs */}
+          {(selectedJobId || jobs.length === 0) && !loadingJobs && (
             <div>
               <label className="block text-sm font-semibold text-slate-800 mb-2">
                 Describe the work needed *
