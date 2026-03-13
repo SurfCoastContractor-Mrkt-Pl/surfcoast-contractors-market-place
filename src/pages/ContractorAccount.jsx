@@ -37,6 +37,7 @@ import ContractorJobDashboard from '@/components/contractor/ContractorJobDashboa
 import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailabilityManager';
 import FeaturedListingManager from '@/components/featured/FeaturedListingManager';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
+import ServicePackageManager from '@/components/contractor/ServicePackageManager';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
