@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid request: card data not allowed' }, { status: 400 });
     }
 
-    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName, idempotencyKey } = body;
+    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName, idempotencyKey, quoteMetaParam } = body;
 
     if (!payerEmail || !payerName || !payerType) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
