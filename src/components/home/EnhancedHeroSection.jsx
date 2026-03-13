@@ -4,7 +4,30 @@ import { createPageUrl } from '@/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Search, Briefcase, ChevronRight } from 'lucide-react';
 
+const TRADE_OPTIONS = [
+  'Electrician', 'Plumber', 'Carpenter', 'HVAC', 'Painter',
+  'Roofer', 'Landscaper', 'Mason', 'Handyman', 'Other'
+];
+
 export default function EnhancedHeroSection() {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('find'); // 'find' | 'post'
+  const [trade, setTrade] = useState('');
+  const [location, setLocation] = useState('');
+
+  const handleFind = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (trade) params.set('trade', trade);
+    if (location) params.set('location', location);
+    navigate(`${createPageUrl('FindContractors')}?${params.toString()}`);
+  };
+
+  const handlePost = (e) => {
+    e.preventDefault();
+    navigate(createPageUrl('QuickJobPost'));
+  };
+
   return (
     <div className="pt-20 pb-16 border-b border-slate-200/50 relative" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
       <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.55)'}}></div>
