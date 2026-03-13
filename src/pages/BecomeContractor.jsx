@@ -614,7 +614,8 @@ export default function BecomeContractor() {
           <Button 
             type="submit" 
             size="lg" 
-            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold disabled:opacity-50"
+            className="w-full text-white font-semibold disabled:opacity-50"
+            style={{backgroundColor: '#1E5A96'}}
             disabled={mutation.isPending}
           >
             {mutation.isPending ? (
