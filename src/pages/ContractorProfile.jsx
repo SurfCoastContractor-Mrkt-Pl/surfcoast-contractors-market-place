@@ -168,11 +168,26 @@ export default function ContractorProfile() {
             {/* CTA */}
             <div className="bg-white p-6 rounded-xl h-fit shadow-xl">
               <div className="mb-5">
-                <p className="text-slate-500 mb-1 text-sm">Hourly Rate</p>
-                <p className="text-3xl font-bold text-slate-900">
-                  {contractor.hourly_rate ? `$${contractor.hourly_rate}` : 'Request Quote'}
-                  {contractor.hourly_rate && <span className="text-lg text-slate-500">/hr</span>}
-                </p>
+                {contractor.rate_type === 'fixed' ? (
+                  <>
+                    <p className="text-slate-500 mb-1 text-sm">Fixed Rate</p>
+                    <p className="text-3xl font-bold text-slate-900">
+                      {contractor.fixed_rate ? `$${contractor.fixed_rate}` : 'Request Quote'}
+                      <span className="text-lg text-slate-500 ml-1">fixed</span>
+                    </p>
+                    {contractor.fixed_rate_details && (
+                      <p className="text-xs text-slate-500 mt-2 leading-relaxed">{contractor.fixed_rate_details}</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-slate-500 mb-1 text-sm">Hourly Rate</p>
+                    <p className="text-3xl font-bold text-slate-900">
+                      {contractor.hourly_rate ? `$${contractor.hourly_rate}` : 'Request Quote'}
+                      {contractor.hourly_rate && <span className="text-lg text-slate-500">/hr</span>}
+                    </p>
+                  </>
+                )}
               </div>
               <Link to={createPageUrl('QuickJobPost')}>
                 <Button className="w-full text-white mb-3" style={{backgroundColor: '#1E5A96'}}>
