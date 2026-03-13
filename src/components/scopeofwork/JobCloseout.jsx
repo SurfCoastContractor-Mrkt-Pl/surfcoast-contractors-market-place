@@ -128,12 +128,18 @@ export default function JobCloseout({ scope, role, open, onClose }) {
             <Button onClick={handleClose} className="mt-2 bg-amber-500 hover:bg-amber-600">Done</Button>
           </div>
         ) : (
-          <div className="space-y-4">
-            <JobTogetherPhoto
-              scopeId={scope.id}
-              value={togetherPhoto}
-              onChange={setTogetherPhoto}
-            />
+           <div className="space-y-4">
+             <TradeSpecificGuidance 
+               tradeType={scope.trade_specialty || scope.line_of_work}
+               location={scope.location}
+               showAsCard={true}
+             />
+
+             <JobTogetherPhoto
+               scopeId={scope.id}
+               value={togetherPhoto}
+               onChange={setTogetherPhoto}
+             />
 
             <div className="p-3 bg-slate-50 rounded-lg text-sm text-slate-600 space-y-2">
               <p><span className="font-medium">Job:</span> {scope.job_title}</p>
