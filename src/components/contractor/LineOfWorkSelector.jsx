@@ -40,6 +40,7 @@ const lineOfWorkOptions = [
     { id: 'fashion_designer', name: 'Fashion Designer' },
   ]},
   { category: 'Education', items: [
+    { id: 'homeschool_educator', name: 'Homeschool Educator' },
     { id: 'tutor_educator', name: 'Tutor' },
     { id: 'teacher', name: 'Teacher' },
     { id: 'professor', name: 'Professor' },
