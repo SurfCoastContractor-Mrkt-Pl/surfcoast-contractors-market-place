@@ -239,7 +239,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 <Button
                   type="submit"
                   className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
+                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData}
                 >
                   {showConfirmation ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
