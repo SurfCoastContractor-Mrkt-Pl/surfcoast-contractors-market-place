@@ -56,26 +56,36 @@ Deno.serve(async (req) => {
       console.warn(`GEO BLOCK: ${ip} from ${countryName} (${country}) tried to access ${path}`);
       
       try {
-        await base44.asServiceRole.entities.SecurityAlert.create({
-          alert_type: 'geo_block',
-          severity: isBlocked ? 'high' : 'medium',
+        // SECURITY: Rate-limit security alerts per IP to prevent alert flooding
+        const rateKey = `geo_block_${ip}`;
+        const existingAlerts = await base44.asServiceRole.entities.SecurityAlert.filter({
           ip_address: ip,
-          country: country,
-          country_name: countryName,
-          user_agent: userAgent.substring(0, 300),
-          path: path,
-          details: isBlocked ? `Blocked country access from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}` : `Non-US access attempt from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}`,
+          alert_type: 'geo_block',
+          created_date: { $gte: new Date(Date.now() - 3600000).toISOString() } // Last 1 hour
         });
+        
+        if (!existingAlerts || existingAlerts.length < 5) {
+          await base44.asServiceRole.entities.SecurityAlert.create({
+            alert_type: 'geo_block',
+            severity: isBlocked ? 'high' : 'medium',
+            ip_address: ip,
+            country: country,
+            country_name: countryName,
+            user_agent: userAgent.substring(0, 300),
+            path: path,
+            details: isBlocked ? `Blocked country access from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}` : `Non-US access attempt from ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}`,
+          });
 
-        // Send admin email alert for geo blocks
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
-          from_name: 'SurfCoast Security',
-          subject: `[SECURITY] Geo Block — ${countryName} (${country})`,
-          body: `A non-US access attempt was blocked.\n\nIP: ${ip}\nCountry: ${countryName} (${country})\nProxy/VPN: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis is an automated security alert from SurfCoast Contractor Market Place.`,
-        });
+          // Send admin email alert for geo blocks (only if under limit)
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: Deno.env.get('ADMIN_ALERT_EMAIL'),
+            from_name: 'SurfCoast Security',
+            subject: `[SECURITY] Geo Block — ${countryName} (${country})`,
+            body: `A non-US access attempt was blocked.\n\nIP: ${ip}\nCountry: ${countryName} (${country})\nProxy/VPN: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis is an automated security alert from SurfCoast Contractor Market Place.`,
+          });
+        }
       } catch (logErr) {
-        console.error('Failed to log geo block');
+        console.error('Failed to log geo block:', logErr.message);
       }
 
       return Response.json({ allowed: false, country, countryName, reason: 'geo_blocked' });
