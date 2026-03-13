@@ -45,9 +45,11 @@ Deno.serve(async (req) => {
     }
     const payment = payments[0];
     if (payment.status !== 'confirmed') {
+      console.error('Payment not confirmed. Status:', payment.status, 'Payment ID:', payment_id);
       return Response.json({ error: 'Payment not confirmed' }, { status: 402 });
     }
     if (payment.payer_email.toLowerCase() !== customer_email.toLowerCase()) {
+      console.error('Payment email mismatch. Expected:', customer_email, 'Got:', payment.payer_email);
       return Response.json({ error: 'Forbidden: Payment does not match customer email' }, { status: 403 });
     }
 
