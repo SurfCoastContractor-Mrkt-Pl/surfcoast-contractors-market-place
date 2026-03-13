@@ -1,4 +1,3 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
@@ -14,7 +13,7 @@ async function isEventProcessed(base44, eventId) {
     return events && events.length > 0;
   } catch (error) {
     console.error('Error checking webhook idempotency:', error.message);
-    return false; // Fail open on DB error, let it retry
+    return false;
   }
 }
 
@@ -52,7 +51,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
+    // CRITICAL: Verify webhook secret is configured
+    if (!webhookSecret) {
+      console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
+      return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
+    }
+
     const base44 = createClientFromRequest(req);
+    
+    console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
 
     // Check idempotency: prevent duplicate processing (database-backed)
     if (await isEventProcessed(base44, event.id)) {
@@ -60,14 +67,6 @@ Deno.serve(async (req) => {
       return Response.json({ received: true, duplicate: true }, { status: 200 });
     }
     await markEventProcessed(base44, event.id, event.type);
-
-    // CRITICAL: Verify webhook secret is configured
-    if (!webhookSecret) {
-      console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
-      return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
-    }
-    
-    console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
 
     // Process events in order of priority
     const eventType = event.type;
@@ -114,7 +113,6 @@ Deno.serve(async (req) => {
         break;
       
       default:
-        // Log unhandled events but still mark as processed
         console.debug(`Unhandled Stripe event type: ${eventType}`);
     }
 
@@ -127,7 +125,6 @@ Deno.serve(async (req) => {
 
 async function handleSubscriptionCreated(subscription, base44) {
   try {
-    // Note: email is NOT stored in Stripe metadata (PII policy) — retrieve from customer object instead
     const email = subscription.metadata?.user_email || subscription.customer_email;
     if (!email) {
       console.warn('Subscription created without resolvable email — skipping record creation');
@@ -145,15 +142,13 @@ async function handleSubscriptionCreated(subscription, base44) {
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       amount_paid: subscription.items.data[0]?.plan?.amount || 0,
     });
-
-    } catch (error) {
-       console.error('Error handling subscription creation:', error.message);
-     }
+  } catch (error) {
+    console.error('Error handling subscription creation:', error.message);
+  }
 }
 
 async function handleSubscriptionUpdated(subscription, base44) {
   try {
-    // Match by stripe_subscription_id only — no email needed
     const subscriptions = await base44.asServiceRole.entities.Subscription.filter({
       stripe_subscription_id: subscription.id
     });
@@ -167,11 +162,10 @@ async function handleSubscriptionUpdated(subscription, base44) {
         status: newStatus,
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       });
-
-      }
-      } catch (error) {
-       console.error('Error handling subscription update:', error.message);
-       }
+    }
+  } catch (error) {
+    console.error('Error handling subscription update:', error.message);
+  }
 }
 
 async function handleSubscriptionDeleted(subscription, base44) {
@@ -184,10 +178,10 @@ async function handleSubscriptionDeleted(subscription, base44) {
       await base44.asServiceRole.entities.Subscription.update(subscriptions[0].id, {
         status: 'cancelled',
       });
-      }
-      } catch (error) {
-      console.error('Error handling subscription deletion:', error.message);
-      }
+    }
+  } catch (error) {
+    console.error('Error handling subscription deletion:', error.message);
+  }
 }
 
 async function handleInvoicePaid(invoice, base44) {
@@ -197,11 +191,9 @@ async function handleInvoicePaid(invoice, base44) {
       console.warn('Invoice paid without customer email');
       return;
     }
-
-    // Additional invoice processing can be added here
-    } catch (error) {
-     console.error('Error handling invoice paid:', error.message);
-     }
+  } catch (error) {
+    console.error('Error handling invoice paid:', error.message);
+  }
 }
 
 async function handleInvoicePaymentFailed(invoice, base44) {
@@ -212,7 +204,6 @@ async function handleInvoicePaymentFailed(invoice, base44) {
       return;
     }
 
-    // Update subscription status to past_due
     const subscriptions = await base44.asServiceRole.entities.Subscription.filter({
       stripe_subscription_id: invoice.subscription
     });
@@ -222,20 +213,17 @@ async function handleInvoicePaymentFailed(invoice, base44) {
         status: 'past_due',
       });
     }
-
-    } catch (error) {
-      console.error('Error handling invoice payment failed:', error.message);
-    }
+  } catch (error) {
+    console.error('Error handling invoice payment failed:', error.message);
+  }
 }
 
 async function handleDisputeCreated(charge, base44) {
   try {
     console.log(`Dispute created for charge: ${charge.id}`);
-    // Implement dispute handling logic here
-    // Could notify admins, update order status, etc.
-    } catch (error) {
+  } catch (error) {
     console.error('Error handling dispute:', error.message);
-    }
+  }
 }
 
 async function handleChargeFailed(charge, base44) {
@@ -244,7 +232,6 @@ async function handleChargeFailed(charge, base44) {
     const failureMessage = charge.failure_message || 'Card declined';
     console.log(`Charge failed: ${charge.id} - Code: ${failureCode} - Reason: ${failureMessage}`);
 
-    // Map Stripe failure codes to user-friendly reasons
     const declineReasonMap = {
       insufficient_funds: 'insufficient_funds',
       card_declined: 'card_declined',
@@ -255,7 +242,6 @@ async function handleChargeFailed(charge, base44) {
     };
     const reason = declineReasonMap[failureCode] || 'declined';
 
-    // Update any pending payment records associated with this charge
     const email = charge.billing_details?.email || charge.metadata?.payer_email;
     if (email) {
       const payments = await base44.asServiceRole.entities.Payment.filter({
@@ -270,7 +256,6 @@ async function handleChargeFailed(charge, base44) {
       }
     }
 
-    // Send user notification email
     if (email) {
       try {
         await base44.asServiceRole.integrations.Core.SendEmail({
@@ -289,124 +274,116 @@ async function handleChargeFailed(charge, base44) {
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent, base44) {
-   try {
-     console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
+  try {
+    console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
 
-     // Try to match by payment_id in metadata first
-     if (paymentIntent.metadata?.payment_id) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         id: paymentIntent.metadata.payment_id
-       });
-       if (payments && payments.length > 0) {
-         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-           status: 'confirmed',
-           confirmed_at: new Date().toISOString(),
-         });
-         return;
-       }
-     }
+    if (paymentIntent.metadata?.payment_id) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        id: paymentIntent.metadata.payment_id
+      });
+      if (payments && payments.length > 0) {
+        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+          status: 'confirmed',
+          confirmed_at: new Date().toISOString(),
+        });
+        return;
+      }
+    }
 
-     // Fallback: match by payer_email if available
-     const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
-     if (email) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         payer_email: email,
-         status: 'pending',
-       });
-       if (payments && payments.length > 0) {
-         // Update the most recent pending payment
-         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-           status: 'confirmed',
-           confirmed_at: new Date().toISOString(),
-         });
-         }
-         }
-         } catch (error) {
-         console.error('Error handling payment intent success:', error.message);
-         }
- }
+    const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
+    if (email) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: email,
+        status: 'pending',
+      });
+      if (payments && payments.length > 0) {
+        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+          status: 'confirmed',
+          confirmed_at: new Date().toISOString(),
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error handling payment intent success:', error.message);
+  }
+}
 
 async function handleCheckoutSessionCompleted(session, base44) {
-   try {
-     console.log(`Checkout session completed: ${session.id}, payment status: ${session.payment_status}`);
+  try {
+    console.log(`Checkout session completed: ${session.id}, payment status: ${session.payment_status}`);
 
-     // Only process if payment succeeded
-     if (session.payment_status !== 'paid') {
-       console.warn(`Session ${session.id} payment status is ${session.payment_status}, skipping`);
-       return;
-     }
+    if (session.payment_status !== 'paid') {
+      console.warn(`Session ${session.id} payment status is ${session.payment_status}, skipping`);
+      return;
+    }
 
-     // Match payment by payment_id in metadata
-     if (session.metadata?.payment_id) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         id: session.metadata.payment_id
-       });
-       if (payments && payments.length > 0) {
-         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-           status: 'confirmed',
-           confirmed_at: new Date().toISOString(),
-         });
-         console.log(`Payment ${session.metadata.payment_id} confirmed from checkout session`);
-         return;
-       }
-     }
+    if (session.metadata?.payment_id) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        id: session.metadata.payment_id
+      });
+      if (payments && payments.length > 0) {
+        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+          status: 'confirmed',
+          confirmed_at: new Date().toISOString(),
+        });
+        console.log(`Payment ${session.metadata.payment_id} confirmed from checkout session`);
+        return;
+      }
+    }
 
-     // Fallback: match by customer email
-     const email = session.customer_email || session.metadata?.payer_email;
-     if (email) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         payer_email: email,
-         status: 'pending',
-       });
-       if (payments && payments.length > 0) {
-         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-           status: 'confirmed',
-           confirmed_at: new Date().toISOString(),
-         });
-         console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
-       }
-     }
-   } catch (error) {
-     console.error('Error handling checkout session completed:', error.message);
-   }
- }
+    const email = session.customer_email || session.metadata?.payer_email;
+    if (email) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: email,
+        status: 'pending',
+      });
+      if (payments && payments.length > 0) {
+        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+          status: 'confirmed',
+          confirmed_at: new Date().toISOString(),
+        });
+        console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
+      }
+    }
+  } catch (error) {
+    console.error('Error handling checkout session completed:', error.message);
+  }
+}
 
 async function handleCheckoutSessionExpired(session, base44) {
-   try {
-     console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
+  try {
+    console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
 
-     // Match payment by payment_id in metadata
-     if (session.metadata?.payment_id) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         id: session.metadata.payment_id
-       });
-       if (payments && payments.length > 0) {
-         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-           status: 'expired',
-         });
-         console.log(`Payment ${session.metadata.payment_id} marked as expired (session expired)`);
-         return;
-       }
-     }
+    if (session.metadata?.payment_id) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        id: session.metadata.payment_id
+      });
+      if (payments && payments.length > 0) {
+        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+          status: 'expired',
+        });
+        console.log(`Payment ${session.metadata.payment_id} marked as expired (session expired)`);
+        return;
+      }
+    }
 
-     // Fallback: match by customer email
-     const email = session.customer_email || session.metadata?.payer_email;
-     if (email) {
-       const payments = await base44.asServiceRole.entities.Payment.filter({
-         payer_email: email,
-         status: 'pending',
-       });
-       if (payments && payments.length > 0) {
-         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-           status: 'expired',
-         });
-         console.log(`Payment ${sorted[0].id} marked as expired (session expired, email match)`);
-       }
-     }
-   } catch (error) {
-     console.error('Error handling checkout session expired:', error.message);
-   }
- }
+    const email = session.customer_email || session.metadata?.payer_email;
+    if (email) {
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        payer_email: email,
+        status: 'pending',
+      });
+      if (payments && payments.length > 0) {
+        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+          status: 'expired',
+        });
+        console.log(`Payment ${sorted[0].id} marked as expired (session expired, email match)`);
+      }
+    }
+  } catch (error) {
+    console.error('Error handling checkout session expired:', error.message);
+  }
+}
