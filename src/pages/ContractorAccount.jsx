@@ -30,6 +30,7 @@ import StripePayoutSetup from '@/components/contractor/StripePayoutSetup';
 import IdentityVerification from '@/components/contractor/IdentityVerification';
 import MinorHoursTracker from '@/components/contractor/MinorHoursTracker';
 import MinorComplianceChecklist from '@/components/contractor/MinorComplianceChecklist';
+import CredentialDocumentsManager from '@/components/contractor/CredentialDocumentsManager';
 import ContractorAnalyticsDashboard from '@/components/contractor/ContractorAnalyticsDashboard';
 import AvailabilityStatusManager from '@/components/contractor/AvailabilityStatusManager';
 import FeaturedBadgeToggle from '@/components/contractor/FeaturedBadgeToggle';
