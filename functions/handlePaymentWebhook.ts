@@ -52,14 +52,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature', requestId }, { status: 400 });
     }
 
-    // Validate event timestamp (prevent replay attacks)
-    const eventTimestamp = event.created * 1000; // Convert to milliseconds
-    const now = Date.now();
-    const maxAge = 5 * 60 * 1000; // 5 minutes
-    if (now - eventTimestamp > maxAge) {
-      console.warn(`Webhook event too old: ${Math.round((now - eventTimestamp) / 1000)}s ago`);
-      return Response.json({ error: 'Event too old' }, { status: 400 });
-    }
+    // Note: Stripe's own signature verification already prevents replay attacks
+    // within its 5-minute tolerance window. We do not add our own timestamp check
+    // here because it would reject legitimate delayed/retried webhook deliveries.
     
     // Create base44 client after auth (webhook may not have auth context)
     const base44 = createClientFromRequest(req);
