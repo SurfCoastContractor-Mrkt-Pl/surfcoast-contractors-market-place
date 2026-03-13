@@ -52,12 +52,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    // Check idempotency: prevent duplicate processing
-    if (isEventProcessed(event.id)) {
+    const base44 = createClientFromRequest(req);
+
+    // Check idempotency: prevent duplicate processing (database-backed)
+    if (await isEventProcessed(base44, event.id)) {
       console.log(`Skipping duplicate event: ${event.id} (${event.type})`);
       return Response.json({ received: true, duplicate: true }, { status: 200 });
     }
-    markEventProcessed(event.id);
+    await markEventProcessed(base44, event.id, event.type);
 
     // CRITICAL: Verify webhook secret is configured
     if (!webhookSecret) {
