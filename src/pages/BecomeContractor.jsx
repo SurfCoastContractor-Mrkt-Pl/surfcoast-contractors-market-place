@@ -278,10 +278,11 @@ export default function BecomeContractor() {
             </div>
           </div>
           <div className="flex flex-wrap gap-6 mt-8 pt-6 border-t border-white/20">
-            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Free to join</div>
-            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Identity verified platform</div>
-            <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Direct client connections</div>
-          </div>
+             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Free to join</div>
+             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Identity verified platform</div>
+             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Direct client connections</div>
+             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> 3% platform facilitation fee</div>
+           </div>
         </div>
       </div>
 
@@ -628,6 +629,16 @@ export default function BecomeContractor() {
                   age={age}
                 />
               )}
+
+              {/* Platform Fee Disclosure */}
+              <div className="p-5 rounded-xl border-2 border-amber-200 bg-amber-50 space-y-3">
+                <div>
+                  <h3 className="font-bold text-amber-900 mb-2">Platform Facilitation Fee</h3>
+                  <p className="text-sm text-amber-800 leading-relaxed">
+                    We charge a 3% facilitation fee on completed jobs. This covers payment processing, dispute resolution, review verification, and customer support that protects both you and your clients. When you complete a $1,000 job, you'll receive $970 after the fee.
+                  </p>
+                </div>
+              </div>
 
               {/* Single-Person Policy */}
               <div className="p-5 rounded-xl border-2 border-red-200 bg-red-50 space-y-4">
