@@ -316,10 +316,10 @@ export default function TradeSpecificGuidance({
   }
 
   return (
-    <Card className="border-amber-200 bg-amber-50">
+    <Card className="border-slate-300 bg-slate-50">
       <CardHeader>
-        <CardTitle className="text-lg">📋 Legal Guidance & Contract Requirements</CardTitle>
-        <CardDescription>Important information to protect both parties</CardDescription>
+        <CardTitle className="text-lg">📋 Helpful Contract & Legal Safeguards</CardTitle>
+        <CardDescription>Optional resources to help both parties understand home improvement agreements</CardDescription>
       </CardHeader>
       <CardContent>
         {content}
