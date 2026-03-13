@@ -106,24 +106,26 @@ function generateReviews(contractorIds, customerIds) {
 }
 
 function generateTestimonies(count) {
-  const testimonies = [];
-  
-  for (let i = 0; i < count; i++) {
-    const firstName = randomPick(FIRST_NAMES);
-    const lastName = randomPick(LAST_NAMES);
-    
-    testimonies.push({
-      reviewer_name: `${firstName} ${lastName}`,
-      reviewer_email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_testimony@surfcoast.local`,
-      reviewer_type: 'customer',
-      overall_rating: randomBetween(4, 5),
-      comment: randomPick(TESTIMONY_COMMENTS),
-      is_testimony: true,
-      verified: true,
-    });
-  }
-  
-  return testimonies;
+   const testimonies = [];
+
+   for (let i = 0; i < count; i++) {
+     const firstName = randomPick(FIRST_NAMES);
+     const lastName = randomPick(LAST_NAMES);
+     // Mix of 3, 4, and 5 star ratings for testimonies
+     const rating = randomBetween(1, 10) <= 2 ? 3 : randomBetween(4, 5);
+
+     testimonies.push({
+       reviewer_name: `${firstName} ${lastName}`,
+       reviewer_email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_testimony@surfcoast.local`,
+       reviewer_type: 'customer',
+       overall_rating: rating,
+       comment: randomPick(TESTIMONY_COMMENTS),
+       is_testimony: true,
+       verified: true,
+     });
+   }
+
+   return testimonies;
 }
 
 Deno.serve(async (req) => {
