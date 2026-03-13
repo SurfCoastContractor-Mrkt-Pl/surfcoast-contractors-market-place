@@ -337,7 +337,8 @@ export default function ContractorAccount() {
                         <div className="flex gap-2">
                           <Button
                             onClick={handleBioSave}
-                            className="bg-amber-500 hover:bg-amber-600"
+                            className="text-white"
+                            style={{backgroundColor: '#1E5A96'}}
                             disabled={updateBioMutation.isPending}
                           >
                             {updateBioMutation.isPending ? 'Saving...' : 'Save'}
