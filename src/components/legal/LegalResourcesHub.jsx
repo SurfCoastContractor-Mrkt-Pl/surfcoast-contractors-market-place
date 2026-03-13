@@ -92,8 +92,8 @@ export default function LegalResourcesHub({ userLocation = null, userTrade = nul
         <TabsContent value="trade" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Select Your Trade</CardTitle>
-              <CardDescription>View specific legal requirements for your profession</CardDescription>
+              <CardTitle className="text-lg">Select a Trade</CardTitle>
+              <CardDescription>Reference guide for understanding what customers should know about each trade</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
