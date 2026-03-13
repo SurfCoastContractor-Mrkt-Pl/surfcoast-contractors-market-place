@@ -225,14 +225,16 @@ Deno.serve(async (req) => {
       url: session.url,
     });
   } catch (error) {
-    console.error('Checkout error');
+    console.error('Checkout error:', error.message, error.code || '', error.statusCode || '');
     
-    // Clean up payment record
+    // Mark payment as failed instead of deleting to preserve audit trail
     if (paymentRecord?.id) {
       try {
-        await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
-      } catch (deleteError) {
-        console.error('Failed to clean up payment record');
+        await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
+          status: 'expired'
+        });
+      } catch (updateError) {
+        console.error('Failed to mark payment as failed:', updateError.message);
       }
     }
 
