@@ -36,6 +36,15 @@ export default function ContractorProfile() {
     const fetchContractor = async () => {
       try {
         if (!contractorId) {
+          // No ID provided — load first available contractor as a preview
+          const data = await base44.entities.Contractor.filter({ available: true }, '-rating', 1);
+          if (data && data.length > 0) {
+            setContractor(data[0]);
+          } else {
+            // Fallback: try any contractor
+            const all = await base44.entities.Contractor.list('-created_date', 1);
+            if (all && all.length > 0) setContractor(all[0]);
+          }
           setLoading(false);
           return;
         }
