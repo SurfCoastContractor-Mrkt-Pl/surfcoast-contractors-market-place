@@ -31,21 +31,21 @@ export default function LegalResourcesHub({ userLocation = null, userTrade = nul
 
   return (
     <div className="w-full space-y-6">
-      <Card className="border-blue-200 bg-blue-50">
+      <Card className="border-slate-300 bg-slate-50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-blue-600" />
-            Legal Resources & Contract Guidelines
+            <FileText className="w-5 h-5 text-slate-600" />
+            Home Improvement Contract Resources
           </CardTitle>
           <CardDescription>
-            Understand your state's requirements and what's expected in home improvement contracts
+            Optional guidance to help customers protect themselves and ensure clarity with contractors
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="p-4 bg-blue-100 border border-blue-300 rounded-lg text-sm text-blue-900">
-            <p className="font-semibold mb-1">ℹ️ Important Legal Note</p>
+          <div className="p-4 bg-slate-100 border border-slate-300 rounded-lg text-sm text-slate-900">
+            <p className="font-semibold mb-1">ℹ️ Customer Responsibility</p>
             <p>
-              While SurfCoast Contractor Marketplace facilitates connections, <strong>both contractors and customers are responsible for complying with all local, state, and federal laws</strong>. These resources are provided for informational purposes only and are not legal advice. Consult with a legal professional if you have questions about contract requirements in your state.
+              <strong>Customers are responsible</strong> for understanding home improvement laws and ensuring proper documentation with contractors. These resources are provided for informational purposes only and are not legal advice. Many states have specific requirements for contracts when working with sole proprietors or licensed professionals—consult with a legal professional or your local building department if you have questions.
             </p>
           </div>
         </CardContent>
