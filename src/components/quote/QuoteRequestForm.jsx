@@ -130,7 +130,8 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
             ) : (
               // No jobs posted — go straight to description
               <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-600">
-                You have no job postings yet. Describe the work below.
+                <p className="font-medium mb-1">You have no job postings yet.</p>
+                <p>Describe the work below so the contractor can understand your project.</p>
               </div>
             )}
           </div>
