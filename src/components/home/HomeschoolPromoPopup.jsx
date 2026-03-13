@@ -51,7 +51,7 @@ export default function HomeschoolPromoPopup() {
         {/* Body */}
         <div className="px-6 py-5">
           <p className="text-slate-700 text-sm leading-relaxed text-center mb-4">
-            <strong className="text-slate-900">The future starts with education.</strong> Thousands of Australian families 
+            <strong className="text-slate-900">The future starts with education.</strong> Thousands of U.S. families 
             are choosing homeschooling and actively searching for qualified educators to guide their children.
           </p>
 
