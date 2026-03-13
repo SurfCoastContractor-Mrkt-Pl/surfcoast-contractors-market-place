@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createPageUrl } from '@/utils';
-import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, CheckCircle, Search, Briefcase, ChevronRight } from 'lucide-react';
 
 export default function EnhancedHeroSection() {
   return (
