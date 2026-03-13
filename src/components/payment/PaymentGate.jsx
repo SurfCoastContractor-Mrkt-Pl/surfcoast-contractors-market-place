@@ -94,6 +94,11 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmPayment = () => {
+    setShowConfirmation(false);
     mutation.mutate(formData);
   };
 
