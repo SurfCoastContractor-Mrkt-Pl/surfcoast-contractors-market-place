@@ -171,7 +171,7 @@ async function handleSubscriptionDeleted(subscription, base44) {
       });
       }
       } catch (error) {
-      console.error('Error handling subscription deletion');
+      console.error('Error handling subscription deletion:', error.message);
       }
 }
 
