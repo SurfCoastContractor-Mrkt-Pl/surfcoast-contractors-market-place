@@ -92,6 +92,7 @@ Deno.serve(async (req) => {
       });
 
       if (!subscription || subscription.length === 0) {
+        console.warn('No active subscription found for tier validation. User:', user.email);
         return Response.json({ 
           allowed: false, 
           reason: 'No active subscription found',
