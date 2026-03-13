@@ -195,8 +195,8 @@ export default function PostJob() {
               <Briefcase className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Post a Job</h1>
-              <p className="text-white/75 mt-1">Find the right contractor for your project</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">Post as Customer</h1>
+              <p className="text-white/75 mt-1">Post a job and find the right contractor for your project</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-6 mt-8 pt-6 border-t border-white/20">
