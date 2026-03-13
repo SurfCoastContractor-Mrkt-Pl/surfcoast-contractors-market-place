@@ -70,7 +70,9 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
           cardholderName: cardholderName,
         });
 
-        if (saveResponse?.data?.error) {
+        const saveData = saveResponse?.data || saveResponse;
+
+        if (saveData?.error) {
           setError('Failed to save payment method. Please try again.');
           logError({
             error_type: 'payment',
@@ -78,10 +80,12 @@ function CardInputForm({ userEmail, cardName, setCardName, onSuccess, onCancel }
             user_email: userEmail,
             user_type: 'unknown',
             action: 'Save payment method',
-            error_message: saveResponse.data.error,
+            error_message: saveData.error,
           });
-        } else {
+        } else if (saveData?.success) {
           onSuccess();
+        } else {
+          setError('Failed to save payment method. Please try again.');
         }
       }
     } catch (err) {
