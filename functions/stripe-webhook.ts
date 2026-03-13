@@ -284,40 +284,86 @@ async function handleChargeFailed(charge, base44) {
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent, base44) {
-  try {
-    console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
+   try {
+     console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
 
-    // Try to match by payment_id in metadata first
-    if (paymentIntent.metadata?.payment_id) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        id: paymentIntent.metadata.payment_id
-      });
-      if (payments && payments.length > 0) {
-        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString(),
-        });
-        return;
-      }
-    }
+     // Try to match by payment_id in metadata first
+     if (paymentIntent.metadata?.payment_id) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         id: paymentIntent.metadata.payment_id
+       });
+       if (payments && payments.length > 0) {
+         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+           status: 'confirmed',
+           confirmed_at: new Date().toISOString(),
+         });
+         return;
+       }
+     }
 
-    // Fallback: match by payer_email if available
-    const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
-    if (email) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        payer_email: email,
-        status: 'pending',
-      });
-      if (payments && payments.length > 0) {
-        // Update the most recent pending payment
-        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString(),
-        });
-        }
-        }
-        } catch (error) {
-        console.error('Error handling payment intent success:', error.message);
-        }
-}
+     // Fallback: match by payer_email if available
+     const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
+     if (email) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         payer_email: email,
+         status: 'pending',
+       });
+       if (payments && payments.length > 0) {
+         // Update the most recent pending payment
+         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+           status: 'confirmed',
+           confirmed_at: new Date().toISOString(),
+         });
+         }
+         }
+         } catch (error) {
+         console.error('Error handling payment intent success:', error.message);
+         }
+ }
+
+async function handleCheckoutSessionCompleted(session, base44) {
+   try {
+     console.log(`Checkout session completed: ${session.id}, payment status: ${session.payment_status}`);
+
+     // Only process if payment succeeded
+     if (session.payment_status !== 'paid') {
+       console.warn(`Session ${session.id} payment status is ${session.payment_status}, skipping`);
+       return;
+     }
+
+     // Match payment by payment_id in metadata
+     if (session.metadata?.payment_id) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         id: session.metadata.payment_id
+       });
+       if (payments && payments.length > 0) {
+         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+           status: 'confirmed',
+           confirmed_at: new Date().toISOString(),
+         });
+         console.log(`Payment ${session.metadata.payment_id} confirmed from checkout session`);
+         return;
+       }
+     }
+
+     // Fallback: match by customer email
+     const email = session.customer_email || session.metadata?.payer_email;
+     if (email) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         payer_email: email,
+         status: 'pending',
+       });
+       if (payments && payments.length > 0) {
+         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+           status: 'confirmed',
+           confirmed_at: new Date().toISOString(),
+         });
+         console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
+       }
+     }
+   } catch (error) {
+     console.error('Error handling checkout session completed:', error.message);
+   }
+ }
