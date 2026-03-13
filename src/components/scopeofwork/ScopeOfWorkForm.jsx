@@ -340,9 +340,8 @@ This is an official copy of the agreement submitted through ContractorHub.
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 space-y-1">
-              <p><strong>No itemized breakdowns.</strong> Only a fixed total or hourly rate is permitted.</p>
-              <p>The customer must approve all agreed costs and pricing before any work begins.</p>
-              <p>Upon submission, copies of this agreement will be automatically emailed to both the customer and the contractor.</p>
+              <p>Clear pricing—either a fixed total or hourly rate—helps both parties understand the agreement.</p>
+              <p>The customer will receive a copy of this scope for review. Copies will be emailed to both parties.</p>
             </div>
 
             <div className="flex gap-3 pt-2">
