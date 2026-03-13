@@ -6,7 +6,7 @@ export default function TrustAndSocialProof() {
     {
       name: "Sarah Martinez",
       role: "Homeowner, Los Angeles",
-      text: "Found a plumber in 2 hours. He was verified, professional, and $800 cheaper than the big chains. Best platform out there.",
+      text: "Found a plumber in 2 hours. He was verified, professional, and worth every dollar. The quality of work was outstanding — best platform out there.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
     },
