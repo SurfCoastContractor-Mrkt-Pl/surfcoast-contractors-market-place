@@ -161,11 +161,17 @@ This is an official copy of the agreement submitted through ContractorHub.
             <Button onClick={handleClose} className="bg-amber-500 hover:bg-amber-600 text-slate-900">Done</Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5 mt-2">
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
-              <strong>Required:</strong> You must provide a detailed scope of work and either an hourly rate or a fixed total cost. 
-              The customer must approve this before any work can begin.
-            </div>
+           <form onSubmit={handleSubmit} className="space-y-5 mt-2">
+             <TradeSpecificGuidance 
+               tradeType={contractor?.line_of_work || contractor?.trade_specialty}
+               location={contractor?.location}
+               showAsCard={true}
+             />
+
+             <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
+               <strong>Required:</strong> You must provide a detailed scope of work and either an hourly rate or a fixed total cost. 
+               The customer must approve this before any work can begin.
+             </div>
 
             {/* Customer Info */}
             <div className="grid sm:grid-cols-2 gap-4">
