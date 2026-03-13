@@ -9,10 +9,12 @@ export default function Success() {
   const navigate = useNavigate();
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState(null);
+  const [isQuote, setIsQuote] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentId = urlParams.get('payment_id');
+    const quoteMetaRaw = urlParams.get('quote_meta');
 
     if (!paymentId) {
       setError('No payment ID found. Please contact support.');
@@ -20,16 +22,48 @@ export default function Success() {
       return;
     }
 
-    // Verify payment status from database
-    const verifyPayment = async () => {
+    const verifyAndFinalize = async () => {
       try {
-        const payments = await base44.entities.Payment.filter({ id: paymentId });
-        if (payments.length === 0) {
-          setError('Payment not found. Please contact support.');
-        } else if (payments[0].status !== 'confirmed') {
-          setError('Payment not confirmed. Please try again or contact support.');
+        // Poll for confirmed status (webhook may take a moment)
+        let payment = null;
+        for (let i = 0; i < 6; i++) {
+          const payments = await base44.entities.Payment.filter({ id: paymentId });
+          if (payments.length > 0 && payments[0].status === 'confirmed') {
+            payment = payments[0];
+            break;
+          }
+          await new Promise(r => setTimeout(r, 2000));
         }
-        // If confirmed, success is shown
+
+        if (!payment) {
+          setError('Payment not confirmed yet. Please check your email for confirmation, or contact support.');
+          return;
+        }
+
+        // If this was a quote request, auto-create the QuoteRequest record
+        if (quoteMetaRaw) {
+          try {
+            const quoteMeta = JSON.parse(decodeURIComponent(quoteMetaRaw));
+            // Check it wasn't already created (idempotency)
+            const existing = await base44.entities.QuoteRequest.filter({ payment_id: paymentId });
+            if (existing.length === 0) {
+              await base44.entities.QuoteRequest.create({
+                contractor_id: quoteMeta.contractor_id,
+                contractor_name: quoteMeta.contractor_name,
+                contractor_email: quoteMeta.contractor_email,
+                customer_email: quoteMeta.customer_email,
+                customer_name: quoteMeta.customer_name,
+                work_description: quoteMeta.work_description,
+                payment_id: paymentId,
+                created_at: new Date().toISOString(),
+                response_deadline: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+              });
+            }
+            setIsQuote(true);
+          } catch (qErr) {
+            console.error('Failed to create quote request:', qErr);
+          }
+        }
       } catch (err) {
         console.error('Payment verification error:', err);
         setError('Failed to verify payment. Please check your email for confirmation.');
@@ -38,7 +72,7 @@ export default function Success() {
       }
     };
 
-    verifyPayment();
+    verifyAndFinalize();
   }, []);
 
   return (
