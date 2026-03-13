@@ -8,7 +8,7 @@ import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle }
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import useGeoCheck from './components/security/useGeoCheck';
-import StickyCTA from './components/home/StickyCTA';
+
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [
@@ -225,8 +225,6 @@ export default function Layout({ children, currentPageName }) {
       <main className="flex-1">
         {children}
       </main>
-
-      <StickyCTA isContractor={isContractor} currentPageName={currentPageName} />
 
       {/* Footer */}
       <footer className="bg-slate-800 text-slate-50 py-5">
