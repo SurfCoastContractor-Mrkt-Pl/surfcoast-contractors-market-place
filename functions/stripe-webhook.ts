@@ -209,7 +209,7 @@ async function handleInvoicePaymentFailed(invoice, base44) {
     }
 
     } catch (error) {
-      console.error('Error handling invoice payment failed');
+      console.error('Error handling invoice payment failed:', error.message);
     }
 }
 
