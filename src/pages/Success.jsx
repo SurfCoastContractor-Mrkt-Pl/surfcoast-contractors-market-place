@@ -60,7 +60,8 @@ export default function Success() {
         if (quoteMetaRaw) {
           try {
             const quoteMeta = JSON.parse(decodeURIComponent(quoteMetaRaw));
-            await base44.functions.invoke('createQuoteRequest', {
+            console.log(`[Success] Creating quote request with meta:`, quoteMeta);
+            const quoteResult = await base44.functions.invoke('createQuoteRequest', {
               payment_id: paymentId,
               contractor_id: quoteMeta.contractor_id,
               contractor_name: quoteMeta.contractor_name,
@@ -71,9 +72,10 @@ export default function Success() {
               job_id: quoteMeta.job_id || '',
               job_title: quoteMeta.job_title || '',
             });
+            console.log(`[Success] Quote request created:`, quoteResult);
             setIsQuote(true);
           } catch (qErr) {
-            console.error('Failed to create quote request:', qErr);
+            console.error('[Success] Failed to create quote request:', qErr.message);
           }
         }
       } catch (err) {
