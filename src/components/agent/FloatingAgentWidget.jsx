@@ -227,7 +227,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
       </div>
 
       {/* Input */}
-      <div className="border-t border-slate-200 p-3 bg-white rounded-b-xl flex gap-2 shrink-0">
+      <div className={`border-t border-slate-200 p-3 bg-white flex gap-2 shrink-0 ${expanded ? '' : 'rounded-b-xl'}`}>
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
