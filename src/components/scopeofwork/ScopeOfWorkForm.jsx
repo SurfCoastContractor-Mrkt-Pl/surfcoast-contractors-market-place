@@ -131,10 +131,10 @@ This is an official copy of the agreement submitted through ContractorHub.
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-amber-500" />
-            Submit Scope of Work
+            Submit Scope of Work & Estimate
           </DialogTitle>
           <DialogDescription>
-            Submit a detailed scope of work for customer review and approval.
+            Define the scope of work and provide a cost estimate for customer review and approval.
           </DialogDescription>
         </DialogHeader>
 
