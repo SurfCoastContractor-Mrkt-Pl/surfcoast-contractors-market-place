@@ -451,7 +451,8 @@ export default function PostJob() {
           <Button 
             type="submit" 
             size="lg" 
-            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+            className="w-full text-white font-semibold"
+            style={{backgroundColor: '#1E5A96'}}
             disabled={mutation.isPending || beforePhotos.length < 5}
           >
             {mutation.isPending ? (
