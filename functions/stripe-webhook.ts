@@ -185,8 +185,8 @@ async function handleInvoicePaid(invoice, base44) {
 
     // Additional invoice processing can be added here
     } catch (error) {
-    console.error('Error handling invoice paid');
-    }
+     console.error('Error handling invoice paid:', error.message);
+     }
 }
 
 async function handleInvoicePaymentFailed(invoice, base44) {
