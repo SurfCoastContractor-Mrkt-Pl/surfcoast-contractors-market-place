@@ -71,22 +71,29 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Create Stripe transfer to contractor
+    // Calculate platform facilitation fee (3% default)
+    const platformFeePercentage = payment.platform_fee_percentage || 3;
+    const platformFeeAmount = (payment.amount * platformFeePercentage) / 100;
+    const contractorPayoutAmount = payment.amount - platformFeeAmount;
+
+    // Create Stripe transfer to contractor (after platform fee)
     let transferId = null;
     try {
       const transfer = await stripe.transfers.create({
-        amount: Math.round(payment.amount * 100), // Convert to cents
+        amount: Math.round(contractorPayoutAmount * 100), // Convert to cents, minus platform fee
         currency: 'usd',
         destination: contractor.stripe_connected_account_id,
-        description: `Phase ${payment.phase_number} - ${payment.phase_title} for ${payment.job_id}`,
+        description: `Phase ${payment.phase_number} - ${payment.phase_title} for ${payment.job_id} (after ${platformFeePercentage}% platform fee)`,
         metadata: {
           progress_payment_id: paymentId,
           scope_id: payment.scope_id,
-          app_id: Deno.env.get('BASE44_APP_ID')
+          app_id: Deno.env.get('BASE44_APP_ID'),
+          platform_fee_amount: platformFeeAmount.toFixed(2),
+          platform_fee_percentage: platformFeePercentage
         }
       });
       transferId = transfer.id;
-      console.log(`Stripe transfer created: ${transferId} for $${payment.amount} to contractor ${contractor.id}`);
+      console.log(`Stripe transfer created: ${transferId} for $${contractorPayoutAmount} (after ${platformFeePercentage}% fee = $${platformFeeAmount}) to contractor ${contractor.id}`);
     } catch (stripeError) {
       console.error('Stripe transfer failed');
       return Response.json({
@@ -95,14 +102,17 @@ Deno.serve(async (req) => {
       }, { status: 500 });
     }
 
-    // Mark payment as paid with Stripe reference
+    // Mark payment as paid with Stripe reference and fee tracking
     const approvedAt = new Date().toISOString();
     const updated = await base44.asServiceRole.entities.ProgressPayment.update(paymentId, {
       status: 'paid',
       customer_approved_date: approvedAt,
       customer_approval_notes: approvalNotes || '',
       paid_date: approvedAt,
-      stripe_payout_id: transferId
+      stripe_payout_id: transferId,
+      platform_fee_percentage: platformFeePercentage,
+      platform_fee_amount: platformFeeAmount,
+      contractor_payout_amount: contractorPayoutAmount
     });
 
     console.log(`Phase ${payment.phase_number} approved and payout released for scope ${payment.scope_id}`);
