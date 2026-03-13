@@ -1,87 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { X, BookOpen, Star, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function HomeschoolPromoPopup() {
   const [visible, setVisible] = useState(false);
-  const [closed, setClosed] = useState(false);
 
   useEffect(() => {
-    const hasSeen = sessionStorage.getItem('homeschoolPromoSeen');
-    if (hasSeen) return;
-
-    // Show after 35 seconds, giving the email popup space
-    const timer = setTimeout(() => setVisible(true), 35000);
+    const dismissed = sessionStorage.getItem("homeschool_popup_dismissed");
+    if (dismissed) return;
+    const timer = setTimeout(() => setVisible(true), 3000);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClose = () => {
-    setClosed(true);
-    sessionStorage.setItem('homeschoolPromoSeen', 'true');
+  const dismiss = () => {
+    setVisible(false);
+    sessionStorage.setItem("homeschool_popup_dismissed", "true");
   };
 
-  if (closed || !visible) return null;
+  if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden relative">
-        {/* Header banner */}
-        <div className="relative py-8 px-6 text-center" style={{ background: 'linear-gradient(135deg, #1E5A96 0%, #1a4a7a 100%)' }}>
-          <button
-            onClick={handleClose}
-            className="absolute top-3 right-3 text-white/70 hover:text-white"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <div className="flex justify-center mb-3">
-            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-              <span className="text-3xl">🎓</span>
-            </div>
-          </div>
-          <h2 className="text-2xl font-serif font-bold text-white leading-tight">
-            Homeschool Educators<br />Wanted!
-          </h2>
-          <p className="text-white/80 text-sm mt-2">
-            Connect with families who value personalised learning
-          </p>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={dismiss}
+    >
+      <div
+        className="relative bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={dismiss}
+          className="absolute top-3 right-3 z-10 bg-white/80 hover:bg-white rounded-full p-1 text-gray-500 hover:text-gray-800 transition-colors shadow"
+          aria-label="Close"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Header */}
+        <div className="bg-blue-700 text-white px-5 pt-6 pb-4 text-center">
+          <div className="text-3xl mb-1">🎓</div>
+          <h2 className="text-lg font-bold">Homeschool Educators Wanted!</h2>
+          <p className="text-blue-200 text-xs mt-1">Connect with U.S. families who value personalised learning</p>
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5">
-          <p className="text-slate-700 text-sm leading-relaxed text-center mb-4">
-            <strong className="text-slate-900">The future starts with education.</strong> Thousands of U.S. families 
-            are choosing homeschooling and actively searching for qualified educators to guide their children.
+        <div className="px-5 py-4">
+          <p className="text-gray-700 text-sm mb-3">
+            <span className="font-semibold">The future starts with education.</span> Thousands of U.S. families are choosing homeschooling and actively searching for qualified educators.
           </p>
 
-          <div className="space-y-2.5 mb-5">
-            <div className="flex items-start gap-3 bg-amber-50 rounded-xl p-3">
-              <BookOpen className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-800"><strong>Set your own curriculum</strong> — tailor lessons to each child's unique learning style</p>
-            </div>
-            <div className="flex items-start gap-3 bg-green-50 rounded-xl p-3">
-              <Star className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-green-800"><strong>Highly sought-after</strong> — homeschool educators are among our fastest-growing category</p>
-            </div>
-            <div className="flex items-start gap-3 bg-blue-50 rounded-xl p-3">
-              <Heart className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-blue-800"><strong>Make a real difference</strong> — investing in children's education shapes tomorrow's world</p>
-            </div>
-          </div>
+          <ul className="space-y-2 mb-4">
+            <li className="flex items-start gap-2 bg-orange-50 rounded-lg p-2 text-sm">
+              <span className="text-orange-400 mt-0.5">📋</span>
+              <span><span className="font-semibold text-orange-700">Set your own curriculum</span> — tailor lessons to each child's unique learning style</span>
+            </li>
+            <li className="flex items-start gap-2 bg-green-50 rounded-lg p-2 text-sm">
+              <span className="text-green-500 mt-0.5">⭐</span>
+              <span><span className="font-semibold text-green-700">Highly sought-after</span> — homeschool educators are among our fastest-growing category</span>
+            </li>
+            <li className="flex items-start gap-2 bg-blue-50 rounded-lg p-2 text-sm">
+              <span className="text-blue-400 mt-0.5">🤍</span>
+              <span><span className="font-semibold text-blue-700">Make a real difference</span> — investing in children's education shapes tomorrow's world</span>
+            </li>
+          </ul>
 
-          <Link to={createPageUrl('BecomeContractor')} onClick={handleClose}>
-            <Button className="w-full text-white font-semibold text-sm py-3" style={{ backgroundColor: '#1E5A96' }}>
-              📚 Join as a Homeschool Educator
-            </Button>
-          </Link>
-
-          <button
-            onClick={handleClose}
-            className="w-full text-center text-xs text-slate-400 hover:text-slate-600 mt-3"
+          <Link
+            to="/ContractorSignup"
+            onClick={dismiss}
+            className="block w-full bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold text-center py-2.5 rounded-lg transition-colors"
           >
-            Maybe later
-          </button>
+            🎓 Join as a Homeschool Educator
+          </Link>
         </div>
       </div>
     </div>
