@@ -379,6 +379,21 @@ export default function BecomeContractor() {
                   />
                 </div>
                 <div>
+                  <Label htmlFor="rate_type">Rate Type</Label>
+                  <Select value={formData.rate_type} onValueChange={(v) => handleChange('rate_type', v)}>
+                    <SelectTrigger id="rate_type" className="mt-1.5">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="hourly">Hourly Rate</SelectItem>
+                      <SelectItem value="fixed">Fixed Rate</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {formData.rate_type === 'hourly' && (
+                <div>
                   <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
                   <Input
                     id="hourly_rate"
@@ -389,7 +404,34 @@ export default function BecomeContractor() {
                     className="mt-1.5"
                   />
                 </div>
-              </div>
+              )}
+
+              {formData.rate_type === 'fixed' && (
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="fixed_rate">Fixed Rate ($)</Label>
+                    <Input
+                      id="fixed_rate"
+                      type="number"
+                      value={formData.fixed_rate}
+                      onChange={(e) => handleChange('fixed_rate', e.target.value)}
+                      placeholder="e.g., 500"
+                      className="mt-1.5"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="fixed_rate_details">Fixed Rate Details</Label>
+                    <Textarea
+                      id="fixed_rate_details"
+                      value={formData.fixed_rate_details}
+                      onChange={(e) => handleChange('fixed_rate_details', e.target.value)}
+                      placeholder="Describe what your fixed rate covers (e.g., full bathroom renovation, includes materials and labor...)"
+                      rows={3}
+                      className="mt-1.5"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div>
                 <Label htmlFor="bio">About You</Label>
