@@ -158,18 +158,64 @@ export default function ContractorProfileEditor({ contractor }) {
             />
           </div>
 
-          {/* Hourly Rate */}
+          {/* Rate Type */}
           <div>
-            <Label className="text-sm font-medium">Hourly Rate ($)</Label>
-            <Input
-              type="number"
-              value={editData.hourly_rate || ''}
-              onChange={(e) => setEditData({ ...editData, hourly_rate: parseFloat(e.target.value) })}
-              className="mt-1"
-              min="0"
-              step="5"
-            />
+            <Label className="text-sm font-medium">Rate Type</Label>
+            <Select
+              value={editData.rate_type || 'hourly'}
+              onValueChange={(v) => setEditData({ ...editData, rate_type: v })}
+            >
+              <SelectTrigger className="mt-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="hourly">Hourly Rate</SelectItem>
+                <SelectItem value="fixed">Fixed Rate</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+
+          {/* Hourly Rate */}
+          {editData.rate_type !== 'fixed' && (
+            <div>
+              <Label className="text-sm font-medium">Hourly Rate ($)</Label>
+              <Input
+                type="number"
+                value={editData.hourly_rate || ''}
+                onChange={(e) => setEditData({ ...editData, hourly_rate: parseFloat(e.target.value) })}
+                className="mt-1"
+                min="0"
+                step="5"
+              />
+            </div>
+          )}
+
+          {/* Fixed Rate */}
+          {editData.rate_type === 'fixed' && (
+            <div className="space-y-3">
+              <div>
+                <Label className="text-sm font-medium">Fixed Rate ($)</Label>
+                <Input
+                  type="number"
+                  value={editData.fixed_rate || ''}
+                  onChange={(e) => setEditData({ ...editData, fixed_rate: parseFloat(e.target.value) })}
+                  className="mt-1"
+                  min="0"
+                  placeholder="e.g., 500"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium">Fixed Rate Details</Label>
+                <Textarea
+                  value={editData.fixed_rate_details || ''}
+                  onChange={(e) => setEditData({ ...editData, fixed_rate_details: e.target.value })}
+                  placeholder="Describe what your fixed rate covers (e.g., full bathroom renovation, includes materials and labor...)"
+                  rows={3}
+                  className="mt-1 resize-none"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Bio */}
           <div>
