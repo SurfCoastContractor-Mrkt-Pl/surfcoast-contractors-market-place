@@ -27,19 +27,20 @@ Deno.serve(async (req) => {
     }
 
     // Check for valid, active payment/subscription
-    const payments = await base44.entities.Payment.filter({ 
-      payer_email: user.email,
-      contractor_email: otherUserEmail,
-      status: { $in: ['confirmed', 'work_scheduled'] }
-    });
+     const payments = await base44.entities.Payment.filter({ 
+       payer_email: user.email,
+       contractor_email: otherUserEmail,
+       status: { $in: ['confirmed', 'work_scheduled'] }
+     });
 
-    if (!payments || payments.length === 0) {
-      return Response.json({ 
-        allowed: false, 
-        reason: 'No active payment for this conversation',
-        tier: null
-      });
-    }
+     if (!payments || payments.length === 0) {
+       console.warn('No active payment found. Payer:', user.email, 'Contractor:', otherUserEmail);
+       return Response.json({ 
+         allowed: false, 
+         reason: 'No active payment for this conversation',
+         tier: null
+       });
+     }
 
     const latestPayment = payments.sort((a, b) => 
       new Date(b.confirmed_at) - new Date(a.confirmed_at)
