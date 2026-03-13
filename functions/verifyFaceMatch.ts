@@ -10,11 +10,8 @@ async function fetchAndReupload(base44, imageUrl) {
   }
 
   // Only allow HTTPS and approved domains (Base44 storage, image services)
-  const allowedDomains = [
-    'qtrypzzcjebvfcihiynt.supabase.co',
-    'cdn.example.com',
-    'images.example.com'
-  ];
+  const allowedDomainsEnv = Deno.env.get('ALLOWED_IMAGE_DOMAINS') || 'qtrypzzcjebvfcihiynt.supabase.co,cdn.example.com,images.example.com';
+  const allowedDomains = allowedDomainsEnv.split(',').map(d => d.trim());
   
   const isDomainAllowed = allowedDomains.some(domain => url.hostname.endsWith(domain)) || url.hostname === 'localhost';
   
