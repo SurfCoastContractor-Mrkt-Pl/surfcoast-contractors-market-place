@@ -197,6 +197,14 @@ export default function AdminDashboard() {
   const confirmedCount = payments.filter(p => p.status === 'confirmed').length;
   const pendingCount = payments.filter(p => p.status === 'pending').length;
 
+  // Today's analytics
+  const today = new Date().toLocaleDateString('en-US');
+  const todayPayments = payments.filter(p => new Date(p.created_date).toLocaleDateString('en-US') === today);
+  const todayRevenue = todayPayments.filter(p => p.status === 'confirmed').reduce((sum, p) => sum + (p.amount || 0), 0);
+  const todayTransactions = todayPayments.length;
+  const todayConfirmed = todayPayments.filter(p => p.status === 'confirmed').length;
+  const todayCustomers = new Set(todayPayments.filter(p => p.payer_type === 'customer').map(p => p.payer_email)).size;
+
   const exportCSV = () => {
     const headers = ['Date', 'Name', 'Email', 'Type', 'Amount', 'Status', 'Purpose', 'ID'];
     const rows = payments.map(p => [
