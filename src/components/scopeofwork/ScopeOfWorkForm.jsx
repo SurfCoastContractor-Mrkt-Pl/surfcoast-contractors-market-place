@@ -282,7 +282,7 @@ This is an official copy of the agreement submitted through ContractorHub.
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="cost_amount">
-                    {costType === 'fixed' ? 'Fixed Total Cost ($) *' : costType === 'hourly' ? 'Hourly Rate ($/hr) *' : 'Estimated Quote ($) *'}
+                    {costType === 'fixed' ? 'Fixed Total Estimate ($) *' : costType === 'hourly' ? 'Hourly Rate ($/hr) *' : 'Estimated Cost ($) *'}
                   </Label>
                 <Input
                   id="cost_amount"
