@@ -272,8 +272,17 @@ export default function ContractorProfileEditor({ contractor }) {
             <div className="text-sm text-slate-900">{contractor.location || '—'}</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500 font-medium">HOURLY RATE</div>
-            <div className="text-sm text-slate-900">${contractor.hourly_rate || '—'}/hr</div>
+            <div className="text-xs text-slate-500 font-medium">RATE</div>
+            {contractor.rate_type === 'fixed' ? (
+              <div>
+                <div className="text-sm text-slate-900">${contractor.fixed_rate || '—'} (fixed)</div>
+                {contractor.fixed_rate_details && (
+                  <div className="text-xs text-slate-500 mt-1 whitespace-pre-wrap">{contractor.fixed_rate_details}</div>
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-slate-900">${contractor.hourly_rate || '—'}/hr</div>
+            )}
           </div>
           {contractor.bio && (
             <div>
