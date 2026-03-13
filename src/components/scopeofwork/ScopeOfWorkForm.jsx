@@ -335,7 +335,7 @@ This is an official copy of the agreement submitted through ContractorHub.
                 agreedWorkDate={formData.agreed_work_date}
               />
               <p className="text-xs text-slate-500 mt-1">
-                After photos can be added now or updated later. They are <strong>mandatory</strong> within 72 hours of the agreed work date.
+                After photos help document the completed work. They can be added now or updated later.
               </p>
             </div>
 
