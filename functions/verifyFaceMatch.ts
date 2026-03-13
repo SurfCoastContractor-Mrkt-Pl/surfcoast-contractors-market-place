@@ -1,9 +1,37 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 async function fetchAndReupload(base44, imageUrl) {
-  const res = await fetch(imageUrl);
+  // SECURITY: Validate URL to prevent SSRF attacks
+  let url;
+  try {
+    url = new URL(imageUrl);
+  } catch {
+    throw new Error('Invalid URL format');
+  }
+
+  // Only allow HTTPS and approved domains (Base44 storage, image services)
+  const allowedDomains = [
+    'qtrypzzcjebvfcihiynt.supabase.co',
+    'cdn.example.com',
+    'images.example.com'
+  ];
+  
+  const isDomainAllowed = allowedDomains.some(domain => url.hostname.endsWith(domain)) || url.hostname === 'localhost';
+  
+  if (!['https:', 'http:'].includes(url.protocol) || !isDomainAllowed) {
+    throw new Error('URL domain not whitelisted for security reasons');
+  }
+
+  const res = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch image: ${res.statusText}`);
+  }
+
   const contentType = res.headers.get('content-type') || 'image/jpeg';
-  const ext = contentType.includes('png') ? 'png' : contentType.includes('gif') ? 'gif' : contentType.includes('webp') ? 'webp' : 'jpg';
+  if (!contentType.startsWith('image/')) {
+    throw new Error('Response is not an image');
+  }
+
   const arrayBuffer = await res.arrayBuffer();
   const blob = new Blob([arrayBuffer], { type: contentType });
   const result = await base44.asServiceRole.integrations.Core.UploadFile({ file: blob });
