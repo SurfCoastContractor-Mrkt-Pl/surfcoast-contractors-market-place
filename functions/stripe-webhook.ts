@@ -219,7 +219,7 @@ async function handleDisputeCreated(charge, base44) {
     // Implement dispute handling logic here
     // Could notify admins, update order status, etc.
     } catch (error) {
-    console.error('Error handling dispute');
+    console.error('Error handling dispute:', error.message);
     }
 }
 
