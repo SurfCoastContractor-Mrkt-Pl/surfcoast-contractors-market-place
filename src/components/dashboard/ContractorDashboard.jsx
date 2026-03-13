@@ -105,6 +105,11 @@ export default function ContractorDashboard() {
                           <div>
                             <p className="text-slate-600">Scope:</p>
                             <p className="font-medium text-slate-900">${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
+                            {scope.platform_fee_percentage && (
+                              <p className="text-xs text-slate-500 mt-1">
+                                Payout: ${(scope.contractor_payout_amount || scope.cost_amount - (scope.cost_amount * scope.platform_fee_percentage / 100)).toFixed(2)}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <p className="text-slate-600">Work Date:</p>
