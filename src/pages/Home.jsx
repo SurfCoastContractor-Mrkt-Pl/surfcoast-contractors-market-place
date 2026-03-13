@@ -20,6 +20,7 @@ import EmailCapturePopup from '@/components/home/EmailCapturePopup';
 import HomeschoolPromoPopup from '@/components/home/HomeschoolPromoPopup';
 import DemoProfiles from '@/components/home/DemoProfiles';
 import RecentActivityBanner from '@/components/home/RecentActivityBanner';
+import IndustryCategories from '@/components/home/IndustryCategories';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -91,6 +92,7 @@ export default function Home() {
       <RecentActivityBanner />
       <DemoProfiles />
       <TradeCategories />
+      <IndustryCategories />
       <HomeschoolPromoPopup />
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
       <RecentJobs jobs={jobs} isLoading={jobsLoading} />

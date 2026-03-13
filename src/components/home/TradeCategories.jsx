@@ -41,8 +41,8 @@ export default function TradeCategories() {
                 to={createPageUrl(`Contractors?trade=${trade.id}`)}
                 className="group flex flex-col items-center p-6 rounded-2xl border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all duration-300 bg-white"
               >
-                <div className={`w-14 h-14 rounded-xl ${trade.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-7 h-7 text-white" />
+                <div className={`w-12 h-12 rounded-xl ${trade.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <Icon className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-medium text-slate-700 group-hover:text-slate-900">
                   {trade.name}
