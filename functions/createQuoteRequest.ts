@@ -7,8 +7,35 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
 
+    // Strict validation: all core fields required
     if (!payment_id || !contractor_id || !contractor_email || !customer_email || !work_description) {
-      return Response.json({ error: 'Missing required fields' }, { status: 400 });
+      const missingFields = [];
+      if (!payment_id) missingFields.push('payment_id');
+      if (!contractor_id) missingFields.push('contractor_id');
+      if (!contractor_email) missingFields.push('contractor_email');
+      if (!customer_email) missingFields.push('customer_email');
+      if (!work_description) missingFields.push('work_description');
+      
+      console.error('Missing required fields:', missingFields);
+      return Response.json({ 
+        error: 'Missing required fields', 
+        missingFields 
+      }, { status: 400 });
+    }
+    
+    // Validate email formats
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contractor_email) || 
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer_email)) {
+      return Response.json({ 
+        error: 'Invalid email format' 
+      }, { status: 400 });
+    }
+    
+    // Validate work description is not just whitespace
+    if (work_description.trim().length === 0) {
+      return Response.json({ 
+        error: 'Work description cannot be empty' 
+      }, { status: 400 });
     }
 
     // Verify the payment exists, is confirmed, and belongs to this customer
