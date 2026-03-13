@@ -308,6 +308,6 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
         }
         }
         } catch (error) {
-        console.error('Error handling payment intent success');
+        console.error('Error handling payment intent success:', error.message);
         }
 }
