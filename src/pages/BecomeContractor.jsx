@@ -159,7 +159,9 @@ export default function BecomeContractor() {
       ...formData,
       is_minor: isMinor,
       years_experience: formData.years_experience ? Number(formData.years_experience) : null,
-      hourly_rate: formData.hourly_rate ? Number(formData.hourly_rate) : null,
+      hourly_rate: formData.rate_type === 'hourly' && formData.hourly_rate ? Number(formData.hourly_rate) : null,
+      fixed_rate: formData.rate_type === 'fixed' && formData.fixed_rate ? Number(formData.fixed_rate) : null,
+      fixed_rate_details: formData.rate_type === 'fixed' ? formData.fixed_rate_details : null,
       line_of_work_other: formData.line_of_work === 'other' ? formData.line_of_work_other : null,
     };
     mutation.mutate(data);
