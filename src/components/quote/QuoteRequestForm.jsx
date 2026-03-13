@@ -1,46 +1,14 @@
 import React, { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DollarSign, Loader2, AlertCircle } from 'lucide-react';
+import { DollarSign, AlertCircle } from 'lucide-react';
 import PaymentGate from '@/components/payment/PaymentGate';
 
 export default function QuoteRequestForm({ contractor, customer, open, onClose }) {
   const [workDescription, setWorkDescription] = useState('');
   const [showPayment, setShowPayment] = useState(false);
   const [paymentRecord, setPaymentRecord] = useState(null);
-
-  const submitQuoteMutation = useMutation({
-    mutationFn: async (data) => {
-      return await base44.entities.QuoteRequest.create(data);
-    },
-    onSuccess: () => {
-      setWorkDescription('');
-      onClose();
-    },
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!workDescription.trim()) {
-      alert('Please describe the work needed');
-      return;
-    }
-
-    submitQuoteMutation.mutate({
-      contractor_id: contractor.id,
-      contractor_name: contractor.name,
-      contractor_email: contractor.email,
-      customer_email: customer.email,
-      customer_name: customer.full_name,
-      work_description: workDescription,
-      payment_id: paymentRecord.id,
-    });
-  };
 
   // quoteMetaParam is built from workDescription — used to pass data through Stripe redirect
   const quoteMetaParam = workDescription.trim()
