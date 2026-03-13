@@ -22,7 +22,10 @@ export default function ContractorProfileEditor({ contractor }) {
         phone: contractor.phone || '',
         location: contractor.location || '',
         bio: contractor.bio || '',
+        rate_type: contractor.rate_type || 'hourly',
         hourly_rate: contractor.hourly_rate || '',
+        fixed_rate: contractor.fixed_rate || '',
+        fixed_rate_details: contractor.fixed_rate_details || '',
         photo_url: contractor.photo_url || '',
       });
     }
