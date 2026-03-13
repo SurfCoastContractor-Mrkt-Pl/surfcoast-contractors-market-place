@@ -24,6 +24,7 @@ import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
 import ContractorAvailabilityCalendar from '@/components/calendar/ContractorAvailabilityCalendar';
 import MessagingPricingTable from '@/components/messaging/MessagingPricingTable';
+import ContractorServices from '@/components/contractor/ContractorServices';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
@@ -65,6 +66,12 @@ export default function ContractorProfile() {
     queryKey: ['contractor-reviews', contractorId],
     queryFn: () =>
       base44.entities.Review.filter({ contractor_id: contractorId, verified: true }, '-created_date', 10),
+    enabled: !!contractorId,
+  });
+
+  const { data: services } = useQuery({
+    queryKey: ['contractor-services', contractorId],
+    queryFn: () => base44.entities.ServiceOffering.filter({ contractor_id: contractorId }),
     enabled: !!contractorId,
   });
 
@@ -249,6 +256,11 @@ export default function ContractorProfile() {
                   </div>
                 )}
               </Card>
+            )}
+
+            {/* Services */}
+            {services && services.length > 0 && (
+              <ContractorServices services={services} />
             )}
 
             {/* Portfolio */}
