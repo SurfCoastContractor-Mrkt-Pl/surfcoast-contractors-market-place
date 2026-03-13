@@ -107,7 +107,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
             </p>
 
             <div className="grid md:grid-cols-3 gap-4">
-              {plans.map((plan) => {
+              {getPlansWithPriceIds().map((plan) => {
                 const Icon = plan.icon;
                 return (
                   <Card
