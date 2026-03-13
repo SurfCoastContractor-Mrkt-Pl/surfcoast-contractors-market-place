@@ -50,25 +50,23 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
-    // Check if payer email exists in system (Contractor or CustomerProfile)
-    const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: payerEmail });
-    const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email: payerEmail });
-    const emailExists = contractors.length > 0 || customers.length > 0;
-
-    // If email exists in system, require authentication matching that email
-    if (emailExists) {
-      const isAuthenticated = await base44.auth.isAuthenticated();
-      if (!isAuthenticated) {
-        return Response.json({ 
-          error: 'Authentication required for this email address.' 
-        }, { status: 401 });
-      }
-
-      const user = await base44.auth.me();
-      if (!user || user.email.toLowerCase() !== payerEmail.toLowerCase()) {
-        return Response.json({ 
-          error: 'Unauthorized: email does not match authenticated user' 
-        }, { status: 403 });
+    // Only enforce auth check for contractors to prevent impersonation
+    // Customers can pay without being logged in (they enter their email manually)
+    if (payerType === 'contractor') {
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: payerEmail });
+      if (contractors.length > 0) {
+        const isAuthenticated = await base44.auth.isAuthenticated();
+        if (!isAuthenticated) {
+          return Response.json({ 
+            error: 'Authentication required for this email address.' 
+          }, { status: 401 });
+        }
+        const user = await base44.auth.me();
+        if (!user || user.email.toLowerCase() !== payerEmail.toLowerCase()) {
+          return Response.json({ 
+            error: 'Unauthorized: email does not match authenticated user' 
+          }, { status: 403 });
+        }
       }
     }
 
