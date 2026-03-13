@@ -14,13 +14,13 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
 
-    // If user is authenticated, validate email matches their session
-    const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      const user = await base44.auth.me();
-      if (user.email.toLowerCase() !== email.toLowerCase()) {
-        return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
-      }
+    // Require authentication
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (user.email.toLowerCase() !== email.toLowerCase()) {
+      return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
     }
 
     // Check if user already has active subscription
