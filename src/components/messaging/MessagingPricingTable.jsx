@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Check, MessageCircle, Zap, Star } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 import PaymentGate from '@/components/payment/PaymentGate';
 
 export default function MessagingPricingTable({ contractorId, contractorName, contractorEmail, open, onClose, onMessagingUnlocked }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [priceIds, setPriceIds] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPriceIds = async () => {
+      try {
+        const response = await base44.functions.invoke('getStripePrices', {});
+        setPriceIds(response.data || {});
+      } catch (error) {
+        console.error('Failed to load price IDs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPriceIds();
+  }, []);
 
   const plans = [
     {
@@ -22,7 +39,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
         'Contractor reviews at own pace',
       ],
       icon: MessageCircle,
-      priceId: process.env.REACT_APP_STRIPE_QUOTE_PRICE_ID,
+      priceKey: 'quote',
       badge: 'Most Popular',
       customerOnly: true,
     },
@@ -37,7 +54,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
         'For agreed work only',
       ],
       icon: Zap,
-      priceId: process.env.REACT_APP_STRIPE_LIMITED_COMM_PRICE_ID,
+      priceKey: 'limited',
     },
     {
       id: 'subscription',
@@ -50,10 +67,17 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
         'Unlimited messaging within sessions',
       ],
       icon: Star,
-      priceId: process.env.REACT_APP_STRIPE_SUBSCRIPTION_PRICE_ID,
+      priceKey: 'subscription',
       badge: 'Best Value',
     },
   ];
+
+  const getPlansWithPriceIds = () => {
+    return plans.map(plan => ({
+      ...plan,
+      priceId: priceIds[plan.priceKey] || null
+    }));
+  };
 
   const handleSelectPlan = (plan) => {
     setSelectedPlan(plan);
