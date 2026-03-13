@@ -155,8 +155,8 @@ async function handleSubscriptionUpdated(subscription, base44) {
 
       }
       } catch (error) {
-      console.error('Error handling subscription update');
-      }
+       console.error('Error handling subscription update:', error.message);
+       }
 }
 
 async function handleSubscriptionDeleted(subscription, base44) {
