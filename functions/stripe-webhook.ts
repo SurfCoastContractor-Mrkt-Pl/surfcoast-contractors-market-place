@@ -371,3 +371,41 @@ async function handleCheckoutSessionCompleted(session, base44) {
      console.error('Error handling checkout session completed:', error.message);
    }
  }
+
+async function handleCheckoutSessionExpired(session, base44) {
+   try {
+     console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
+
+     // Match payment by payment_id in metadata
+     if (session.metadata?.payment_id) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         id: session.metadata.payment_id
+       });
+       if (payments && payments.length > 0) {
+         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
+           status: 'expired',
+         });
+         console.log(`Payment ${session.metadata.payment_id} marked as expired (session expired)`);
+         return;
+       }
+     }
+
+     // Fallback: match by customer email
+     const email = session.customer_email || session.metadata?.payer_email;
+     if (email) {
+       const payments = await base44.asServiceRole.entities.Payment.filter({
+         payer_email: email,
+         status: 'pending',
+       });
+       if (payments && payments.length > 0) {
+         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+           status: 'expired',
+         });
+         console.log(`Payment ${sorted[0].id} marked as expired (session expired, email match)`);
+       }
+     }
+   } catch (error) {
+     console.error('Error handling checkout session expired:', error.message);
+   }
+ }
