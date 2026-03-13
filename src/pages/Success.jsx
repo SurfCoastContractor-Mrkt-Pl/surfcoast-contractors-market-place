@@ -52,6 +52,8 @@ export default function Success() {
               customer_email: quoteMeta.customer_email,
               customer_name: quoteMeta.customer_name,
               work_description: quoteMeta.work_description,
+              job_id: quoteMeta.job_id || '',
+              job_title: quoteMeta.job_title || '',
             });
             setIsQuote(true);
           } catch (qErr) {
