@@ -65,30 +65,18 @@ Deno.serve(async (req) => {
 
     // Check code
     if (verification.code !== code.toString()) {
-      // Track failed attempt
-      if (!failedAttempts.has(userEmail)) {
-        failedAttempts.set(userEmail, { count: 0, lockedUntil: 0 });
-      }
-      const attempt = failedAttempts.get(userEmail);
-      attempt.count += 1;
+      // Track failed attempt in database
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: attemptKey,
+        action: 'failed_email_verification',
+        ip_address: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown',
+        user_email: userEmail
+      });
 
-      // Lock account after threshold
-      if (attempt.count >= FAILED_ATTEMPT_THRESHOLD) {
-        attempt.lockedUntil = now + LOCKOUT_DURATION;
-        return Response.json({ 
-          error: 'Account locked due to multiple failed attempts. Please try again in 1 hour.' 
-        }, { status: 429 });
-      }
-
-      const remainingAttempts = FAILED_ATTEMPT_THRESHOLD - attempt.count;
+      const remainingAttempts = FAILED_ATTEMPT_THRESHOLD - (recentFailures?.length || 0) - 1;
       return Response.json({ 
-        error: `Invalid verification code. ${remainingAttempts} attempt${remainingAttempts > 1 ? 's' : ''} remaining.`
+        error: `Invalid verification code. ${Math.max(0, remainingAttempts)} attempt${remainingAttempts !== 1 ? 's' : ''} remaining.`
       }, { status: 400 });
-    }
-
-    // Clear failed attempts on success
-    if (failedAttempts.has(userEmail)) {
-      failedAttempts.delete(userEmail);
     }
 
     // Mark as verified
