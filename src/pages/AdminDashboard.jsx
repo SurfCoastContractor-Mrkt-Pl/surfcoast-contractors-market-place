@@ -494,8 +494,83 @@ export default function AdminDashboard() {
             </TabsTrigger>
             </TabsList>
 
+          {/* Sales Overview Tab */}
+          <TabsContent value="sales">
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">
+                      <DollarSign className="w-5 h-5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Today's Revenue</span>
+                  </div>
+                  <div className="text-2xl font-bold text-slate-900">${todayRevenue.toFixed(2)}</div>
+                  <div className="text-xs text-slate-400 mt-1">confirmed payments</div>
+                </Card>
+
+                <Card className="p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <CreditCard className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Transactions</span>
+                  </div>
+                  <div className="text-2xl font-bold text-slate-900">{todayTransactions}</div>
+                  <div className="text-xs text-slate-400 mt-1">today's activity</div>
+                </Card>
+
+                <Card className="p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Customers</span>
+                  </div>
+                  <div className="text-2xl font-bold text-slate-900">{todayCustomers}</div>
+                  <div className="text-xs text-slate-400 mt-1">new payers today</div>
+                </Card>
+
+                <Card className="p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-slate-600" />
+                    </div>
+                    <span className="text-sm text-slate-500 font-medium">Confirmed</span>
+                  </div>
+                  <div className="text-2xl font-bold text-slate-900">{todayConfirmed}</div>
+                  <div className="text-xs text-slate-400 mt-1">processed today</div>
+                </Card>
+              </div>
+
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Payments (Today)</h3>
+                {todayPayments.length === 0 ? (
+                  <div className="text-center py-6 text-slate-400">No payments today yet.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {todayPayments.slice(0, 20).map(p => (
+                      <div key={p.id} className="p-3 bg-slate-50 rounded-lg flex items-center justify-between text-sm">
+                        <div>
+                          <div className="font-medium text-slate-900">{p.payer_name}</div>
+                          <div className="text-xs text-slate-500">{p.payer_email}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold text-slate-900">${(p.amount || 0).toFixed(2)}</div>
+                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700 text-xs' : 'bg-amber-100 text-amber-700 text-xs'}>
+                            {p.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            </div>
+          </TabsContent>
+
           {/* Signups & Growth Tab */}
-          <TabsContent value="signups">
+           <TabsContent value="signups">
             <div className="space-y-6">
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 <Card className="p-5">
