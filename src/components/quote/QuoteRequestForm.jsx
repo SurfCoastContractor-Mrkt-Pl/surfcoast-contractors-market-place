@@ -38,7 +38,13 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
     setSelectedJobTitle('');
   };
 
-  const canProceed = (selectedJobId === 'none' || selectedJobId) && workDescription.trim();
+  const canProceed = 
+    (selectedJobId === 'none' || selectedJobId) && 
+    workDescription.trim() && 
+    contractor?.id && 
+    contractor?.email && 
+    customer?.email && 
+    customer?.full_name;
 
   const quoteMetaParam = canProceed
     ? `&quote_meta=${encodeURIComponent(JSON.stringify({
