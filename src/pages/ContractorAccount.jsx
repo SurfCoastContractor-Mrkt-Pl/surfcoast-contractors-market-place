@@ -119,6 +119,12 @@ export default function ContractorAccount() {
     enabled: !!userEmail,
   });
 
+  const { data: contractorServices, refetch: refetchServices } = useQuery({
+    queryKey: ['contractor-services', contractor?.id],
+    queryFn: () => base44.entities.ServiceOffering.filter({ contractor_id: contractor?.id }),
+    enabled: !!contractor?.id,
+  });
+
   const updateBioMutation = useMutation({
     mutationFn: async (bioData) => {
       return base44.entities.Contractor.update(contractor.id, bioData);
