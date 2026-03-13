@@ -370,6 +370,7 @@ export default function ContractorAccount() {
                     )}
                   </Card>
 
+                  <ServicePackageManager contractorId={contractor?.id} services={contractorServices || []} onRefresh={refetchServices} />
                   <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
                   <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
                 </div>
