@@ -249,6 +249,11 @@ export default function BecomeContractor() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {isPreview && (
+        <div className="bg-blue-600 text-white text-sm font-medium px-4 py-2 flex items-center justify-center gap-2">
+          👁 <strong>Admin Preview Mode</strong> — Form interactions work normally but submission will not save any data.
+        </div>
+      )}
       {/* Header */}
       <div className="bg-gradient-to-br from-amber-500 to-amber-600 text-slate-900 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
