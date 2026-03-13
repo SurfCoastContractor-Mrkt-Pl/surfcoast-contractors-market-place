@@ -160,7 +160,7 @@ Deno.serve(async (req) => {
         },
       });
     } catch (stripeError) {
-      console.error('Stripe checkout error');
+      console.error('Stripe checkout error:', stripeError.message, stripeError.statusCode, stripeError.code);
 
       // Clean up payment record
       if (paymentRecord?.id) {
