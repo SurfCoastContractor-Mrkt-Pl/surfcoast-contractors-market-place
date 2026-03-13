@@ -61,7 +61,7 @@ export default function LegalResourcesHub({ userLocation = null, userTrade = nul
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Select Your State</CardTitle>
-              <CardDescription>View home improvement contract requirements</CardDescription>
+              <CardDescription>Explore optional guidance specific to your state</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
