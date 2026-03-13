@@ -43,8 +43,6 @@ Deno.serve(async (req) => {
       user_email: userEmail
     });
 
-    const normalizedPhone = phone.replace(/\D/g, '');
-
     // Check if customer profile exists and if phone matches (optional, not required for new users)
     const profiles = await base44.entities.CustomerProfile.filter({
       email: userEmail
