@@ -53,8 +53,8 @@ export default function LegalResourcesHub({ userLocation = null, userTrade = nul
 
       <Tabs defaultValue="state" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="state">State Requirements</TabsTrigger>
-          <TabsTrigger value="trade">Trade-Specific Guidance</TabsTrigger>
+          <TabsTrigger value="state">State Resources</TabsTrigger>
+          <TabsTrigger value="trade">Trade Reference Guide</TabsTrigger>
         </TabsList>
 
         <TabsContent value="state" className="space-y-4">
