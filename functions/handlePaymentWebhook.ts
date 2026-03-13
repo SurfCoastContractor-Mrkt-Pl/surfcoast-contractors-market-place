@@ -93,16 +93,21 @@ Deno.serve(async (req) => {
           session_expires_at: sessionExpiresAt.toISOString(),
         });
 
-        // Send confirmation email
-        const payment = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
-        if (payment && payment.length > 0) {
-          const p = payment[0];
-          await base44.asServiceRole.integrations.Core.SendEmail({
-            to: p.payer_email,
-            from_name: 'SurfCoast Contractor Market Place',
-            subject: 'Payment Confirmed — SurfCoast',
-            body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using SurfCoast Contractor Market Place!\n\n(Do not reply to this automated email)`,
-          });
+        // Send confirmation email (with retry)
+        try {
+          const payment = await base44.asServiceRole.entities.Payment.filter({ id: paymentId });
+          if (payment && payment.length > 0) {
+            const p = payment[0];
+            await base44.asServiceRole.integrations.Core.SendEmail({
+              to: p.payer_email,
+              from_name: 'SurfCoast Contractor Market Place',
+              subject: 'Payment Confirmed — SurfCoast',
+              body: `Hello ${p.payer_name},\n\nYour platform access fee of $${(p.amount || 0).toFixed(2)} has been confirmed.\n\nPayment ID: ${p.id}\nDate: ${new Date().toLocaleDateString()}\nPurpose: ${p.purpose}\n\nThank you for using SurfCoast Contractor Market Place!\n\n(Do not reply to this automated email)`,
+            });
+            console.log(`Confirmation email sent for payment ${paymentId}`);
+          }
+        } catch (emailError) {
+          console.warn(`Failed to send confirmation email for ${paymentId}:`, emailError.message);
         }
 
         console.log(`Payment ${paymentId} confirmed successfully`);
