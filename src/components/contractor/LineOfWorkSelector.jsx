@@ -88,6 +88,14 @@ const lineOfWorkOptions = [
     { id: 'handyman', name: 'Handyman' },
     { id: 'locksmith', name: 'Locksmith' },
     { id: 'appliance_repair', name: 'Appliance Repair' },
+    { id: 'auto_mechanic', name: 'Auto Mechanic' },
+    { id: 'auto_electrician', name: 'Auto Electrician' },
+    { id: 'auto_body_repair', name: 'Auto Body & Panel Repair' },
+    { id: 'auto_detailing', name: 'Auto Detailing' },
+    { id: 'windscreen_repair', name: 'Windscreen Repair' },
+    { id: 'tyre_service', name: 'Tyre Service' },
+    { id: 'roadside_assistance', name: 'Roadside Assistance' },
+    { id: 'auto_ac_service', name: 'Auto A/C Service' },
   ]},
   { category: 'Outdoor & Landscape', items: [
     { id: 'landscaper', name: 'Landscaper' },
@@ -153,7 +161,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
           <SelectTrigger id="industry_category" className="mt-1.5">
             <SelectValue placeholder="Choose an industry" />
           </SelectTrigger>
-          <SelectContent className="max-h-72 overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
+          <SelectContent className="max-h-72 overflow-y-scroll" style={{scrollbarWidth: 'thin'}} onWheel={(e) => e.stopPropagation()}>
             {lineOfWorkOptions.map((group) => (
               <SelectItem key={group.category} value={group.category}>
                 {group.category}
@@ -174,7 +182,7 @@ export default function LineOfWorkSelector({ value, customValue, onChange, onCus
             <SelectTrigger id="line_of_work" className="mt-1.5">
               <SelectValue placeholder="Choose a specific role" />
             </SelectTrigger>
-            <SelectContent className="max-h-72 overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
+            <SelectContent className="max-h-72 overflow-y-scroll" style={{scrollbarWidth: 'thin'}} onWheel={(e) => e.stopPropagation()}>
               {lineOfWorkOptions
                 .find(g => g.category === selectedCategory)
                 ?.items.map((item) => (
