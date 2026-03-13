@@ -171,8 +171,8 @@ This is an official copy of the agreement submitted through ContractorHub.
              />
 
              <div className="p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 leading-relaxed">
-               <strong>Note:</strong> Providing a detailed scope of work and clear pricing helps ensure both you and the customer have a shared understanding before work begins.
-             </div>
+                <strong>Note:</strong> A scope of work defines all the work you'll perform. An estimate is the cost/price for that work. Together, they form the agreement.
+              </div>
 
             {/* Customer Info */}
             <div className="grid sm:grid-cols-2 gap-4">
