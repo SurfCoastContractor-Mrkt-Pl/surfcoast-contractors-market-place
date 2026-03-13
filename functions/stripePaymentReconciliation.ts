@@ -61,33 +61,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Check for Stripe payments not in database (orphaned charges)
-    try {
-      const stripeCharges = await stripe.charges.list({
-        limit: 100,
-      });
-
-      const dbPayments = await base44.asServiceRole.entities.Payment.filter({
-        status: { '$in': ['confirmed', 'work_scheduled'] }
-      });
-
-      const dbPaymentIds = new Set((dbPayments || []).map(p => p.id));
-      let orphaned = 0;
-
-      for (const charge of stripeCharges.data) {
-        const paymentId = charge.metadata?.payment_id;
-        if (paymentId && !dbPaymentIds.has(paymentId)) {
-          console.warn(`Orphaned Stripe charge detected: ${charge.id} (payment_id: ${paymentId})`);
-          orphaned++;
-        }
-      }
-
-      if (orphaned > 0) {
-        console.warn(`Found ${orphaned} orphaned Stripe charges - manual review needed`);
-      }
-    } catch (e) {
-      console.error('Error checking for orphaned charges:', e.message);
-    }
+    // Skip orphaned charge check - too expensive and rarely needed
+    // Orphaned charges will be caught when they attempt to create duplicate payments
 
     return Response.json({
       success: true,
