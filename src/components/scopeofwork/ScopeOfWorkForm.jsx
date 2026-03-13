@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CheckCircle, Loader2, FileText, DollarSign } from 'lucide-react';
 import AfterPhotosUpload from '@/components/photos/AfterPhotosUpload';
+import TradeSpecificGuidance from '@/components/legal/TradeSpecificGuidance';
 
 export default function ScopeOfWorkForm({ open, onClose, contractor, paymentRecord }) {
   const [submitted, setSubmitted] = useState(false);
