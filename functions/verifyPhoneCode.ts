@@ -46,8 +46,6 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Customer profile not found' }, { status: 404 });
     }
 
-    const normalizedPhone = phone.replace(/\D/g, '');
-
     // Query database for active verification code
     const verifications = await base44.asServiceRole.entities.PhoneVerification.filter({
       email: userEmail,
