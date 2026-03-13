@@ -140,7 +140,6 @@ Deno.serve(async (req) => {
         payment_method_collection: 'always',
         mode: 'payment',
         customer_email: payerEmail,
-        link_authentication_element: 'disabled',
         line_items: [
           {
             price: PAYMENT_PRICE_ID,
