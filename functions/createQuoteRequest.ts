@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
+  // Only allow internal service calls (from other backend functions)
+  const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+  const providedKey = req.headers.get('x-internal-service-key');
+  if (!internalKey || providedKey !== internalKey) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   try {
     const body = await req.json();
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
