@@ -59,6 +59,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden: Payment does not match customer email' }, { status: 403 });
     }
 
+    // Ensure the authenticated user is the actual customer on this request
+    if (user.email.toLowerCase() !== customer_email.toLowerCase()) {
+      console.error('Auth user mismatch. Auth:', user.email, 'Requested customer:', customer_email);
+      return Response.json({ error: 'Forbidden: Authenticated user does not match customer email' }, { status: 403 });
+    }
+
     // Verify contractor exists and is not locked
     const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
     if (!contractors || contractors.length === 0) {
