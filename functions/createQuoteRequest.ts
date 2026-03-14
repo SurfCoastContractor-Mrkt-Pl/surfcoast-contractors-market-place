@@ -4,6 +4,12 @@ Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
   try {
+    // Require authentication — prevents unauthenticated direct invocations
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
 
