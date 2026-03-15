@@ -61,7 +61,11 @@ export default function ContractorProfileEditor({ contractor }) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    // Sync name to the User entity so the Users table stays consistent
+    if (editData.name?.trim()) {
+      await base44.auth.updateMe({ full_name: editData.name.trim() });
+    }
     updateMutation.mutate(editData);
   };
 
