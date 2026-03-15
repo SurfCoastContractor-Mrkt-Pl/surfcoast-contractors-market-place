@@ -142,6 +142,10 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         setSaveError('You must be logged in to save your profile');
         return;
       }
+      // Sync full_name to the User entity so the Users table stays consistent
+      if (formData.full_name.trim()) {
+        await base44.auth.updateMe({ full_name: formData.full_name.trim() });
+      }
       // Pass authenticated email to ensure proper linkage
       updateMutation.mutate({ ...formData, email: user.email });
     } catch (err) {
