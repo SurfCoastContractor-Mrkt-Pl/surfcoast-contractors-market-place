@@ -344,7 +344,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 <strong>Error:</strong> Project details are missing. Please close this and select a project before paying.
               </div>
             )}
-            
+
             {mutation.isError && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> {mutation.error?.message || 'Payment failed. Please try again.'}
@@ -354,8 +354,8 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             <p className="text-center text-xs text-slate-400">
               By proceeding, you authorize a ${tierConfig.amount.toFixed(2)} USD {tierConfig.label.toLowerCase()}. All fees are non-refundable.
             </p>
-          </form>
-        )}
+            </form>
+            )}
       </DialogContent>
     </Dialog>
 
