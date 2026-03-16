@@ -58,8 +58,11 @@ Deno.serve(async (req) => {
     }
 
     // Validate evidence URLs (prevent SSRF)
-    const allowedDomainsEnv = Deno.env.get('ALLOWED_EVIDENCE_DOMAINS') || 'surfcoast.com,supabase.co,qtrypzzcjebvfcihiynt.supabase.co';
-    const allowedDomains = allowedDomainsEnv.split(',').map(d => d.trim());
+    const allowedDomainsEnv = Deno.env.get('ALLOWED_EVIDENCE_DOMAINS');
+    if (!allowedDomainsEnv) {
+      console.warn('ALLOWED_EVIDENCE_DOMAINS not configured — all evidence URLs will be rejected');
+    }
+    const allowedDomains = allowedDomainsEnv ? allowedDomainsEnv.split(',').map(d => d.trim()).filter(Boolean) : [];
     const validatedUrls = [];
     for (const url of evidence_urls) {
       try {
