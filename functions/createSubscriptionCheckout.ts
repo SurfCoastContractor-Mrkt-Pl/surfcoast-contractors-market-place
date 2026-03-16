@@ -33,6 +33,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'You already have an active subscription' }, { status: 400 });
     }
 
+    // Check for existing pending checkout sessions (prevents duplicates within 2 minutes)
+    const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+    const pendingCheckouts = await base44.asServiceRole.entities.Subscription.filter({
+      user_email: email,
+      status: 'pending',
+      created_date: { '$gt': twoMinutesAgo },
+    });
+
+    if (pendingCheckouts && pendingCheckouts.length > 0) {
+      const pendingCheckout = pendingCheckouts[0];
+      if (pendingCheckout.stripe_session_id) {
+        try {
+          const existingSession = await stripe.checkout.sessions.retrieve(pendingCheckout.stripe_session_id);
+          if (existingSession && existingSession.status !== 'expired') {
+            console.log(`Returning existing checkout session: ${pendingCheckout.stripe_session_id}`);
+            return Response.json({
+              sessionId: existingSession.id,
+              url: existingSession.url,
+              isExisting: true,
+            });
+          }
+        } catch (e) {
+          console.warn(`Could not retrieve existing session, creating new one: ${e.message}`);
+        }
+      }
+    }
+
     const origin = req.headers.get('origin') || 'https://localhost:3000';
 
     const session = await stripe.checkout.sessions.create({
@@ -44,14 +71,13 @@ Deno.serve(async (req) => {
       cancel_url: `${origin}/Cancel`,
       metadata: {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),
-        // NOTE: No PII (email) in Stripe metadata — user association tracked internally only
         user_type: userType,
       },
     });
 
     return Response.json({ sessionId: session.id, url: session.url });
-    } catch (error) {
-    console.error('Subscription checkout error');
+  } catch (error) {
+    console.error('Subscription checkout error:', error.message);
     return Response.json({ error: 'Failed to create subscription checkout' }, { status: 500 });
-    }
+  }
 });
