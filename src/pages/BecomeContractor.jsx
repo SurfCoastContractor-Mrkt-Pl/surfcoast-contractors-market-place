@@ -11,10 +11,11 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle, MapPin } from 'lucide-react';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
+import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -65,6 +66,7 @@ export default function BecomeContractor() {
     parental_consent_docs: {},
   });
   const [dobError, setDobError] = useState('');
+  const [detectionLoading, setDetectionLoading] = useState(false);
 
   const getAge = (dob) => {
     if (!dob) return null;
@@ -205,6 +207,23 @@ export default function BecomeContractor() {
     }));
   };
 
+  const detectLocation = async () => {
+    setDetectionLoading(true);
+    try {
+      const userLoc = await getUserLocation();
+      if (userLoc) {
+        const locationStr = await reverseGeocodeLocation(userLoc.lat, userLoc.lon);
+        if (locationStr) {
+          handleChange('location', locationStr);
+        }
+      }
+    } catch (error) {
+      console.error('Location detection error:', error);
+    } finally {
+      setDetectionLoading(false);
+    }
+  };
+
   const [uploadingFace, setUploadingFace] = useState(false);
 
   const handleIdUpload = async (e) => {
@@ -342,7 +361,29 @@ export default function BecomeContractor() {
                 </div>
               </div>
               <div>
-                <Label htmlFor="location">Location *</Label>
+                <div className="flex items-center justify-between mb-2">
+                  <Label htmlFor="location">Location *</Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={detectLocation}
+                    disabled={detectionLoading}
+                    className="text-xs text-blue-600 hover:text-blue-700"
+                  >
+                    {detectionLoading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                        Detecting...
+                      </>
+                    ) : (
+                      <>
+                        <MapPin className="w-3 h-3 mr-1" />
+                        Auto-Detect
+                      </>
+                    )}
+                  </Button>
+                </div>
                 <Input
                   id="location"
                   value={formData.location}
