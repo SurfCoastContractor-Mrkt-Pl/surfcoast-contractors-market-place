@@ -238,6 +238,21 @@ async function handleInvoicePaid(invoice, base44) {
       console.warn('Invoice paid without customer email');
       return;
     }
+    // Update subscription period end if this is a renewal
+    if (invoice.subscription) {
+      const subscriptions = await base44.asServiceRole.entities.Subscription.filter({
+        stripe_subscription_id: invoice.subscription
+      });
+      if (subscriptions && subscriptions.length > 0) {
+        await base44.asServiceRole.entities.Subscription.update(subscriptions[0].id, {
+          status: 'active',
+          current_period_end: invoice.period_end
+            ? new Date(invoice.period_end * 1000).toISOString()
+            : subscriptions[0].current_period_end,
+        });
+        console.log(`Subscription renewed for ${email} (${invoice.subscription})`);
+      }
+    }
   } catch (error) {
     console.error('Error handling invoice paid:', error.message);
   }
