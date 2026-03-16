@@ -208,6 +208,14 @@ function CustomerProfileView({ customer }) {
         </div>
       )}
 
+      {/* Job Postings */}
+      <div>
+        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-1">
+          <Briefcase className="w-3.5 h-3.5" /> Job Postings
+        </div>
+        <CustomerJobsManager userEmail={customer.email} isAdminView={true} />
+      </div>
+
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="text-xs text-slate-400">Joined: {new Date(customer.created_date).toLocaleDateString()} · ID: {customer.id}</div>
         <a href={createPageUrl(`CustomerAccount?email=${customer.email}&admin=true`)} target="_blank" rel="noopener noreferrer">
