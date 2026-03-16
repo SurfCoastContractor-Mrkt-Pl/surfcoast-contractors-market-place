@@ -14,7 +14,7 @@ export default function Success() {
   const [timedContractorEmail, setTimedContractorEmail] = useState('');
   const [timedContractorName, setTimedContractorName] = useState('');
   const [paymentId, setPaymentId] = useState('');
-  const [countdown, setCountdown] = useState(null);
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -104,27 +104,13 @@ export default function Success() {
         // Don't show an error — Stripe already redirected us here meaning payment went through
       } finally {
        setIsVerifying(false);
-
-       // Auto-redirect timed sessions after 3 seconds
-       if (tierParam === 'timed' && contractorEmail) {
-         setCountdown(3);
-         const timer = setTimeout(() => {
-           navigate(`/Messaging?with=${encodeURIComponent(contractorEmail)}&name=${encodeURIComponent(contractorName || '')}&tier=timed&payment_id=${pId}`);
-         }, 3000);
-         return () => clearTimeout(timer);
-       }
       }
       };
 
       verifyAndFinalize();
-      }, [navigate]);
+      }, []);
 
-  // Countdown effect for timed sessions
-  useEffect(() => {
-    if (countdown === null || countdown === 0) return;
-    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [countdown]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
@@ -162,19 +148,12 @@ export default function Success() {
                   : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
             </p>
             {isTimed && timedContractorEmail ? (
-              <>
-                <Button
-                  onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`)}
-                  className="bg-green-600 hover:bg-green-700 text-white w-full text-lg py-6 font-semibold"
-                >
-                  {countdown && countdown > 0 
-                    ? `Go to Chat (${countdown}s)` 
-                    : `Start Messaging ${timedContractorName || 'Contractor'}`}
-                </Button>
-                {countdown && countdown > 0 && (
-                  <p className="text-sm text-slate-500 mt-4">Redirecting to chat in {countdown} seconds...</p>
-                )}
-              </>
+              <Button
+                onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`)}
+                className="bg-green-600 hover:bg-green-700 text-white w-full text-lg py-6 font-semibold"
+              >
+                Start Messaging {timedContractorName || 'Contractor'}
+              </Button>
             ) : (
               <Button
                 onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')}
