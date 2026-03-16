@@ -5,18 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName, tier = 'quote', priceId, quoteMetaParam = '' }) {
    const [formData, setFormData] = useState({ name: '', email: '' });
+   const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '', saveCard: false });
    const [paid, setPaid] = useState(false);
    const [alreadyPaid, setAlreadyPaid] = useState(false);
    const [checkingout, setCheckingout] = useState(false);
    const [showConfirmation, setShowConfirmation] = useState(false);
    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-   const [useNewCard, setUseNewCard] = useState(false);
 
    // For quote requests, validate that quote metadata is present
     const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
