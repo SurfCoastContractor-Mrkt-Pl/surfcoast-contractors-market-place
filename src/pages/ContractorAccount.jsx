@@ -124,6 +124,12 @@ export default function ContractorAccount() {
     enabled: !!userEmail,
   });
 
+  const { data: incomingQuotes } = useQuery({
+    queryKey: ['contractor-quotes', userEmail],
+    queryFn: () => base44.entities.QuoteRequest.filter({ contractor_email: userEmail }),
+    enabled: !!userEmail,
+  });
+
   const { data: contractorServices, refetch: refetchServices } = useQuery({
     queryKey: ['contractor-services', contractor?.id],
     queryFn: () => base44.entities.ServiceOffering.filter({ contractor_id: contractor?.id }),
