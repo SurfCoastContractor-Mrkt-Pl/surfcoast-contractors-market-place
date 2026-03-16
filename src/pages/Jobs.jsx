@@ -82,10 +82,17 @@ export default function Jobs() {
     return jobs.filter(job => {
       if (scheduledJobIds.has(job.id)) return false;
 
-      const matchesSearch = !activeSearchQuery || 
-        job.title?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
-        job.location?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
-        job.description?.toLowerCase().includes(activeSearchQuery.toLowerCase());
+      // Fuzzy matching - includes query in title, location, or description
+      let matchesSearch = !activeSearchQuery;
+      if (activeSearchQuery && !matchesSearch) {
+        const query = activeSearchQuery.toLowerCase();
+        const searchFields = [
+          job.title?.toLowerCase() || '',
+          job.location?.toLowerCase() || '',
+          job.description?.toLowerCase() || ''
+        ].join(' ');
+        matchesSearch = searchFields.includes(query);
+      }
       
       const matchesType = !activeTypeFilter || 
         activeTypeFilter === 'all' ||
@@ -99,9 +106,9 @@ export default function Jobs() {
         activeUrgencyFilter === 'all' ||
         job.urgency === activeUrgencyFilter;
 
-      // Filter by radius if user location is set
+      // Show jobs with calculated distance OR those still being calculated
       const distance = jobDistances[job.id];
-      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
+      const matchesRadius = !userLocation || (distance === undefined || distance <= searchRadius);
       
       return matchesSearch && matchesType && matchesTrade && matchesUrgency && matchesRadius;
     });
