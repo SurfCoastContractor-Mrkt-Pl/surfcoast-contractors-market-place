@@ -11,6 +11,7 @@ export default function Messaging() {
   const [userType, setUserType] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [timedData, setTimedData] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
