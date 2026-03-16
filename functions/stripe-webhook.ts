@@ -380,33 +380,52 @@ async function handleCheckoutSessionCompleted(session, base44) {
       return;
     }
 
+    let confirmedPayment = null;
+
     if (session.metadata?.payment_id) {
       const payments = await base44.asServiceRole.entities.Payment.filter({
-        id: session.metadata.payment_id
+        stripe_session_id: session.id
       });
       if (payments && payments.length > 0) {
+        confirmedPayment = payments[0];
         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
         });
-        console.log(`Payment ${session.metadata.payment_id} confirmed from checkout session`);
-        return;
+        console.log(`Payment ${payments[0].id} confirmed from checkout session`);
       }
     }
 
-    const email = session.customer_email || session.metadata?.payer_email;
-    if (email) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        payer_email: email,
-        status: 'pending',
-      });
-      if (payments && payments.length > 0) {
-        const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-        await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString(),
+    if (!confirmedPayment) {
+      const email = session.customer_email || session.metadata?.payer_email;
+      if (email) {
+        const payments = await base44.asServiceRole.entities.Payment.filter({
+          payer_email: email,
+          status: 'pending',
         });
-        console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
+        if (payments && payments.length > 0) {
+          const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+          confirmedPayment = sorted[0];
+          await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
+            status: 'confirmed',
+            confirmed_at: new Date().toISOString(),
+          });
+          console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
+        }
+      }
+    }
+
+    // Send confirmation email
+    if (confirmedPayment) {
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: confirmedPayment.payer_email,
+          from_name: 'SurfCoast Payments',
+          subject: 'Payment Confirmed — Thank You!',
+          body: `Thank you for your payment!\n\nAmount: $${confirmedPayment.amount}\nPurpose: ${confirmedPayment.purpose}\n\nYour payment has been successfully processed. A receipt is attached to this email.\n\nIf you have any questions, please contact support.\n\n— SurfCoast Contractor Market Place`,
+        });
+      } catch (emailErr) {
+        console.warn('Failed to send confirmation email:', emailErr.message);
       }
     }
   } catch (error) {
