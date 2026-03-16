@@ -34,6 +34,12 @@ Deno.serve(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
+  // CRITICAL: Verify webhook secret is configured before anything else
+  if (!webhookSecret) {
+    console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
+    return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
+  }
+
   try {
     const signature = req.headers.get('stripe-signature');
     if (!signature) {
@@ -51,12 +57,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    // CRITICAL: Verify webhook secret is configured
-    if (!webhookSecret) {
-      console.error('CRITICAL: STRIPE_WEBHOOK_SECRET not configured');
-      return Response.json({ error: 'Webhook secret not configured' }, { status: 500 });
-    }
-
+    // SDK init only AFTER signature is verified
     const base44 = createClientFromRequest(req);
     
     console.log(`Processing Stripe event: ${event.type} (ID: ${event.id})`);
