@@ -38,6 +38,10 @@ export default function FindContractors() {
   const [searchRadius, setSearchRadius] = useState(35);
   const [userEmail, setUserEmail] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [activeSearchQuery, setActiveSearchQuery] = useState('');
+  const [activeTypeFilter, setActiveTypeFilter] = useState('');
+  const [activeTradeFilter, setActiveTradeFilter] = useState('');
+  const [activeRatingFilter, setActiveRatingFilter] = useState('');
 
   useEffect(() => {
     const loadUser = async () => {
@@ -99,14 +103,14 @@ export default function FindContractors() {
 
   const filterContractors = (list) => {
     return list.filter(c => {
-      const matchesSearch = !searchQuery ||
-        c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.bio?.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = !activeSearchQuery ||
+        c.name?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+        c.location?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+        c.bio?.toLowerCase().includes(activeSearchQuery.toLowerCase());
 
-      const matchesType = !typeFilter || typeFilter === 'all' || c.contractor_type === typeFilter;
-      const matchesTrade = !tradeFilter || tradeFilter === 'all' || c.trade_specialty === tradeFilter;
-      const matchesRating = !ratingFilter || (c.rating || 0) >= parseInt(ratingFilter);
+      const matchesType = !activeTypeFilter || activeTypeFilter === 'all' || c.contractor_type === activeTypeFilter;
+      const matchesTrade = !activeTradeFilter || activeTradeFilter === 'all' || c.trade_specialty === activeTradeFilter;
+      const matchesRating = !activeRatingFilter || (c.rating || 0) >= parseInt(activeRatingFilter);
 
       const distance = contractorDistances[c.id];
       const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
@@ -118,14 +122,25 @@ export default function FindContractors() {
   const filteredFeatured = filterContractors(featured);
   const filteredRegular = filterContractors(regular);
 
+  const applyFilters = () => {
+    setActiveSearchQuery(searchQuery);
+    setActiveTypeFilter(typeFilter);
+    setActiveTradeFilter(tradeFilter);
+    setActiveRatingFilter(ratingFilter);
+  };
+
   const clearFilters = () => {
     setSearchQuery('');
     setTypeFilter('');
     setTradeFilter('');
     setRatingFilter('');
+    setActiveSearchQuery('');
+    setActiveTypeFilter('');
+    setActiveTradeFilter('');
+    setActiveRatingFilter('');
   };
 
-  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || ratingFilter;
+  const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeRatingFilter;
 
   return (
     <div className="min-h-screen bg-slate-50 pt-0">
@@ -209,7 +224,7 @@ export default function FindContractors() {
             <span className="font-medium text-slate-700">Filters</span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
@@ -255,6 +270,12 @@ export default function FindContractors() {
               </SelectContent>
             </Select>
           </div>
+          <Button 
+            onClick={applyFilters}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-medium"
+          >
+            Apply Filters
+          </Button>
 
           {hasActiveFilters && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
