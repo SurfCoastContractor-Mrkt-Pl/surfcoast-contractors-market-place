@@ -297,7 +297,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               </Tabs>
             ) : (
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                <p><strong>Note:</strong> You'll enter your card details in the next step.</p>
+                <p><strong>Note:</strong> You can choose your payment method, or skip this step and enter your card details in the next step.</p>
               </div>
             )}
 
@@ -311,7 +311,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   {showConfirmation ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
                   ) : (
-                    `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
+                    'Continue to Payment'
                   )}
                 </Button>
               </div>
@@ -396,7 +396,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               {mutation.isPending || checkingout ? (
                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
               ) : (
-                `Yes, Pay $${tierConfig.amount.toFixed(2)}`
+                'Submit Payment'
               )}
             </Button>
           </div>
