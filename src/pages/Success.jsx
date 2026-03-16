@@ -17,11 +17,13 @@ export default function Success() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const paymentId = urlParams.get('payment_id');
+    const pId = urlParams.get('payment_id');
     const quoteMetaRaw = urlParams.get('quote_meta');
     const tierParam = urlParams.get('tier');
     const contractorEmail = urlParams.get('contractor_email');
     const contractorName = urlParams.get('contractor_name');
+
+    setPaymentId(pId || '');
 
     if (tierParam === 'timed') {
       setIsTimed(true);
