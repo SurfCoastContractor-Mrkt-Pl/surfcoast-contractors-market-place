@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Plus, MapPin, DollarSign, Users, AlertCircle } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 
 export default function MyJobs() {
   const navigate = useNavigate();
