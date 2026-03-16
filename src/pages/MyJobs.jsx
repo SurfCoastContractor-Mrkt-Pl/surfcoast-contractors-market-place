@@ -31,23 +31,6 @@ export default function MyJobs() {
     checkUserType();
   }, []);
 
-  // Fetch posted jobs
-  const { data: postedJobs, isLoading: jobsLoading } = useQuery({
-    queryKey: ['my-jobs', userEmail],
-    queryFn: () => userEmail ? base44.entities.Job.filter({ poster_email: userEmail }, '-created_date') : Promise.resolve([]),
-    enabled: !!userEmail && !isContractor,
-  });
-
-  const activeJobs = useMemo(() => 
-    postedJobs?.filter(j => j.status === 'open') || [], 
-    [postedJobs]
-  );
-
-  const closedJobs = useMemo(() => 
-    postedJobs?.filter(j => j.status !== 'open') || [], 
-    [postedJobs]
-  );
-
   if (isContractor === null) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
