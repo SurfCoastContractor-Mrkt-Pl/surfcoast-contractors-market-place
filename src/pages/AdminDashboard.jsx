@@ -83,6 +83,13 @@ export default function AdminDashboard() {
     refetchInterval: 30000,
   });
 
+  const { data: agentReports = [] } = useQuery({
+    queryKey: ['agent-reports'],
+    queryFn: () => base44.entities.AgentReport.list('-created_date', 200),
+    enabled: authed,
+    refetchInterval: 30000,
+  });
+
   const unresolvedErrors = errorLogs.filter(l => !l.resolved);
   const criticalErrors = unresolvedErrors.filter(l => l.severity === 'critical' || l.severity === 'high');
   const unresolvedAlerts = securityAlerts.filter(a => !a.resolved);
