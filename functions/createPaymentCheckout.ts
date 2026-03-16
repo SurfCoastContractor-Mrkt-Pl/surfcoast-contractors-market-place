@@ -63,7 +63,8 @@ Deno.serve(async (req) => {
         });
       }
     } catch (idempotencyError) {
-      console.warn('Idempotency check failed:', idempotencyError.message);
+      console.error('Idempotency check failed:', idempotencyError.message);
+      throw idempotencyError;
     }
 
     // Validate email format
