@@ -339,11 +339,14 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
   try {
     console.log(`Payment intent succeeded: ${paymentIntent.id}, metadata: ${JSON.stringify(paymentIntent.metadata)}`);
 
+    let confirmedPayment = null;
+
     if (paymentIntent.metadata?.payment_id) {
       const payments = await base44.asServiceRole.entities.Payment.filter({
-        id: paymentIntent.metadata.payment_id
+        stripe_session_id: paymentIntent.metadata.payment_id
       });
       if (payments && payments.length > 0) {
+        confirmedPayment = payments[0];
         await base44.asServiceRole.entities.Payment.update(payments[0].id, {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
@@ -352,7 +355,7 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
       }
     }
 
-    const email = paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
+    const email = paymentIntent.metadata?.payer_email || paymentIntent.metadata?.user_email || paymentIntent.receipt_email;
     if (email) {
       const payments = await base44.asServiceRole.entities.Payment.filter({
         payer_email: email,
@@ -360,10 +363,25 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
       });
       if (payments && payments.length > 0) {
         const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+        confirmedPayment = sorted[0];
         await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
           status: 'confirmed',
           confirmed_at: new Date().toISOString(),
         });
+      }
+    }
+
+    // Send confirmation email
+    if (confirmedPayment) {
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: confirmedPayment.payer_email,
+          from_name: 'SurfCoast Payments',
+          subject: 'Payment Confirmed — Thank You!',
+          body: `Thank you for your payment!\n\nAmount: $${confirmedPayment.amount}\nPurpose: ${confirmedPayment.purpose}\n\nYour payment has been successfully processed. A receipt is attached to this email.\n\nIf you have any questions, please contact support.\n\n— SurfCoast Contractor Market Place`,
+        });
+      } catch (emailErr) {
+        console.warn('Failed to send confirmation email:', emailErr.message);
       }
     }
   } catch (error) {
