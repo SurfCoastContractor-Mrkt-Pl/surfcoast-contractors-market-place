@@ -26,6 +26,14 @@ export default function Messaging() {
         // Determine user type
         const contractors = await base44.entities.Contractor.filter({ email: user.email });
         setUserType(contractors?.length > 0 ? 'contractor' : 'customer');
+
+        // Auto-select conversation from URL params (e.g. after timed payment)
+        const urlParams = new URLSearchParams(window.location.search);
+        const withEmail = urlParams.get('with');
+        const withName = urlParams.get('name');
+        if (withEmail) {
+          setSelectedConversation({ email: withEmail, name: withName || withEmail });
+        }
       } catch (error) {
         console.error('Error loading user:', error);
       } finally {
