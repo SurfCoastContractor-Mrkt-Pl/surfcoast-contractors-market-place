@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const stalePendingPayments = await base44.asServiceRole.entities.Payment.filter({
       status: 'pending',
-      created_date: { '$lt': oneDayAgo }
+      created_date: { $lt: oneDayAgo }
     });
 
     console.log(`Found ${stalePendingPayments?.length || 0} stale pending payments (older than 24h)`);
