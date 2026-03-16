@@ -5,6 +5,8 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   let paymentRecord = null;
+  let payerEmail = null;
+  let payerType = null;
   const base44 = createClientFromRequest(req);
 
   try {
@@ -16,19 +18,34 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid request: card data not allowed' }, { status: 400 });
     }
 
-    const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName, idempotencyKey, quoteMetaParam } = body;
+    ({ payerEmail, payerType } = body);
+    const { payerName, contractorId, contractorEmail, contractorName, idempotencyKey, quoteMetaParam, tier } = body;
 
     if (!payerEmail || !payerName || !payerType) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Check for duplicate request using idempotency key (REQUIRED)
     if (!idempotencyKey) {
       return Response.json({ 
         error: 'Missing idempotency key. Please reload the page and try again.' 
       }, { status: 400 });
     }
-    
+
+    // Resolve the correct Stripe price ID based on tier
+    const PRICE_ID_MAP = {
+      quote: Deno.env.get('STRIPE_QUOTE_PRICE_ID'),
+      timed: Deno.env.get('STRIPE_LIMITED_COMM_PRICE_ID'),
+    };
+    const PAYMENT_PRICE_ID = PRICE_ID_MAP[tier] || PRICE_ID_MAP.quote;
+
+    if (!PAYMENT_PRICE_ID) {
+      console.error(`CRITICAL: No price ID found for tier "${tier}". Check environment variables.`);
+      return Response.json({ error: 'Payment service misconfigured: missing price ID' }, { status: 500 });
+    }
+
+    console.log(`Creating checkout for tier="${tier}", price="${PAYMENT_PRICE_ID}", payer="${payerEmail}"`);
+
+    // Check for duplicate request using idempotency key
     try {
       const existingPayments = await base44.asServiceRole.entities.Payment.filter({
         payer_email: payerEmail,
@@ -55,7 +72,6 @@ Deno.serve(async (req) => {
     }
 
     // Only enforce auth check for contractors to prevent impersonation
-    // Customers can pay without being logged in (they enter their email manually)
     if (payerType === 'contractor') {
       const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: payerEmail });
       if (contractors.length > 0) {
@@ -89,13 +105,13 @@ Deno.serve(async (req) => {
       }, { status: 429 });
     }
 
-    // FRAUD CHECK: Run fraud detection before creating payment
+    // FRAUD CHECK (customers only)
     if (payerType === 'customer') {
       try {
         const fraudResult = await base44.asServiceRole.functions.invoke('fraudCheck', {
           customer_email: payerEmail,
           contractor_id: contractorId,
-          amount: 1.75,
+          amount: tier === 'timed' ? 1.50 : 1.75,
           _internal_service_key: Deno.env.get('INTERNAL_SERVICE_KEY'),
         });
 
@@ -106,52 +122,34 @@ Deno.serve(async (req) => {
           );
         }
       } catch (fraudError) {
-        // Fraud check failure should not block the payment — log and continue
         console.warn('Fraud check unavailable, proceeding:', fraudError.message);
       }
     }
 
-    // Create a Payment record first (service role to avoid RLS issues with unauthed users)
+    // Create a Payment record first
     paymentRecord = await base44.asServiceRole.entities.Payment.create({
       payer_email: payerEmail,
       payer_name: payerName,
       payer_type: payerType,
       contractor_id: contractorId || null,
       contractor_email: contractorEmail || null,
-      amount: 1.75,
+      amount: tier === 'timed' ? 1.50 : 1.75,
       status: 'pending',
       purpose: payerType === 'contractor'
         ? 'Contractor platform access fee'
-        : `Quote request from contractor ${contractorName}`,
+        : tier === 'timed'
+          ? `10-minute chat session with ${contractorName}`
+          : `Quote request from contractor ${contractorName}`,
       idempotency_key: idempotencyKey || null,
     });
 
-    // Validate Stripe configuration
-    const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY');
     const BASE44_APP_ID = Deno.env.get('BASE44_APP_ID');
-    const PAYMENT_PRICE_ID = Deno.env.get('STRIPE_QUOTE_PRICE_ID');
-    
-    if (!STRIPE_SECRET_KEY) {
-      console.error('CRITICAL: STRIPE_SECRET_KEY environment variable not configured');
-      throw new Error('Payment service misconfigured: missing API key');
-    }
-    if (!PAYMENT_PRICE_ID) {
-      console.error('CRITICAL: STRIPE_QUOTE_PRICE_ID environment variable not configured');
-      throw new Error('Payment service misconfigured: missing price ID');
-    }
-    if (!BASE44_APP_ID) {
-      console.warn('WARNING: BASE44_APP_ID environment variable not set - transaction tracking disabled');
-    }
     const origin = req.headers.get('origin') || 'https://localhost:3000';
+
     let session;
     try {
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        payment_method_options: {
-          card: {
-            request_three_d_secure: 'automatic',
-          },
-        },
         mode: 'payment',
         customer_email: payerEmail,
         line_items: [
@@ -160,64 +158,55 @@ Deno.serve(async (req) => {
             quantity: 1,
           },
         ],
-        success_url: `${origin}/success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}`,
-        cancel_url: `${origin}/cancel?reason=cancelled`,
+        success_url: `${origin}/Success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}`,
+        cancel_url: `${origin}/Cancel?reason=cancelled`,
         payment_intent_data: {
-          description: `SurfCoast Quote Request Fee - ${contractorName || 'Contractor'}`,
+          description: `SurfCoast ${tier === 'timed' ? '10-Min Chat' : 'Quote Request'} Fee - ${contractorName || 'Contractor'}`,
+          metadata: {
+            base44_app_id: BASE44_APP_ID || 'unknown',
+            payment_id: paymentRecord.id,
+            payer_email: payerEmail,
+            payer_type: payerType,
+            tier: tier || 'quote',
+          },
         },
         metadata: {
           base44_app_id: BASE44_APP_ID || 'unknown',
           payment_id: paymentRecord.id,
           payer_email: payerEmail,
           payer_type: payerType,
+          tier: tier || 'quote',
         },
       });
     } catch (stripeError) {
-      console.error('Stripe checkout error:', stripeError.message, stripeError.statusCode, stripeError.code);
+      console.error('Stripe checkout session creation failed:', stripeError.message, 'code:', stripeError.code, 'status:', stripeError.statusCode);
 
-      // Clean up payment record
       if (paymentRecord?.id) {
         try {
           await base44.asServiceRole.entities.Payment.delete(paymentRecord.id);
         } catch (deleteError) {
-            console.error('Failed to clean up payment record');
-          }
+          console.error('Failed to clean up payment record:', deleteError.message);
         }
+      }
 
-        // Log to ErrorLog with detailed context
-        try {
-          await base44.asServiceRole.functions.invoke('logError', {
-            error_type: 'payment',
-            error_message: stripeError.message || 'Stripe error',
-            user_email: payerEmail.substring(0, 3) + '***', // Anonymize
-            user_type: payerType,
-            action: 'Create checkout session',
-            severity: stripeError.statusCode === 429 ? 'medium' : 'high',
-            context: JSON.stringify({
-              statusCode: stripeError.statusCode,
-              code: stripeError.code,
-              amount: 1.75,
-            }),
-          });
-        } catch (logError) {
-          console.error('Failed to log error');
-        }
-
-      // Handle specific error types
       if (stripeError.statusCode === 429) {
         return Response.json({ 
           error: 'Service temporarily unavailable. Please try again in a moment.' 
         }, { status: 429 });
       }
 
-      throw stripeError;
+      return Response.json({
+        error: stripeError.message || 'Failed to create checkout session',
+      }, { status: stripeError.statusCode || 500 });
     }
 
-    // Store Stripe session info on payment record for idempotency
+    // Store Stripe session info on payment record
     await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
       stripe_session_id: session.id,
       stripe_checkout_url: session.url
     });
+
+    console.log(`Checkout session created: ${session.id} for payment ${paymentRecord.id}`);
 
     return Response.json({
       sessionId: session.id,
@@ -227,7 +216,6 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Checkout error:', error.message, error.code || '', error.statusCode || '');
     
-    // Mark payment as failed instead of deleting to preserve audit trail
     if (paymentRecord?.id) {
       try {
         await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
@@ -238,25 +226,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Log to ErrorLog with detailed context
-    try {
-      await base44.asServiceRole.functions.invoke('logError', {
-        error_type: 'payment',
-        error_message: error.message || 'Checkout error',
-        user_email: payerEmail ? payerEmail.substring(0, 3) + '***' : 'unknown',
-        user_type: payerType || 'unknown',
-        action: 'Create checkout session',
-        severity: 'high',
-        context: JSON.stringify({
-          amount: 1.75,
-        }),
-      });
-    } catch (logError) {
-      console.error('Failed to log error');
-    }
-
     return Response.json({ 
-      error: 'An error occurred during checkout',
+      error: error.message || 'An error occurred during checkout',
     }, { status: error.statusCode || 500 });
   }
 });
