@@ -18,11 +18,12 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
    // For quote requests, validate that quote metadata is present
    const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
 
-  const tierConfig = {
+  const tierConfigs = {
     quote: { amount: 1.75, label: 'Quote Request Fee', description: 'Blind written estimate' },
     timed: { amount: 1.50, label: '10-Minute Chat', description: 'Real-time communication session' },
     subscription: { amount: 50, label: 'Monthly Subscription', description: 'Up to 15 contacts, 5 sessions each' },
-  }[tier] || tierConfig.quote;
+  };
+  const tierConfig = tierConfigs[tier] || tierConfigs.quote;
 
   const mutation = useMutation({
     mutationFn: async (data) => {
