@@ -40,7 +40,7 @@ export default function PayoutBreakdown({ scope, role }) {
         <div className="flex gap-2 text-xs text-slate-600 bg-slate-100 p-3 rounded-lg">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <p>
-            The platform facilitation fee (2.5-3.5%) covers payment processing, dispute resolution, review verification, and support—ensuring safe, reliable transactions for both parties.
+            The 3% platform facilitation fee covers payment processing, dispute resolution, review verification, and support — ensuring safe, reliable transactions for both parties.
           </p>
         </div>
       </CardContent>

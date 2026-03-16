@@ -62,9 +62,9 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
       price: '$50',
       duration: '/month',
       features: [
-        'Up to 15 unique contacts',
-        '5 sessions per contact',
-        'Unlimited messaging within sessions',
+        'Unlimited messaging with any contractor or customer',
+        'Skip per-message fees for 30 days',
+        'Cancel anytime — no commitment',
       ],
       icon: Star,
       priceKey: 'subscription',

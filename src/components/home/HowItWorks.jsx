@@ -80,7 +80,7 @@ export default function HowItWorks() {
 
       <div className="mt-12 text-center">
         <p className="text-slate-600 mb-4">
-          ✓ All work is verified | ✓ Transparent pricing | ✓ Secure payments | ✓ Buyer protection
+          ✓ All work is verified | ✓ Transparent pricing | ✓ Secure communication | ✓ Buyer protection
         </p>
       </div>
     </div>

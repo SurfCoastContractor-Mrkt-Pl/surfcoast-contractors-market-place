@@ -77,7 +77,7 @@ No work may begin and no payment is due until you have reviewed and approved thi
 
 Please reply to confirm your approval or rejection of this scope of work.
 
-This is an official copy of the agreement submitted through ContractorHub.
+This is an official copy of the agreement submitted through SurfCoast Contractor Market Place.
       `.trim();
 
       await Promise.all([

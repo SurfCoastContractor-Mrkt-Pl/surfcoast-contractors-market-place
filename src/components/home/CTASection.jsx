@@ -53,7 +53,7 @@ export default function CTASection() {
                 Create your profile and start getting hired today.
               </p>
               <ul className="space-y-2 mb-8">
-                {['Free profile creation', 'Direct client contact', 'Build your reputation'].map((item, idx) => (
+                {['Free profile creation', 'Direct client contact', 'Only 3% fee per completed job'].map((item, idx) => (
                   <li key={idx} className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center">
                       <span className="text-amber-500 text-xs">✓</span>
