@@ -928,6 +928,20 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* AI Reports Tab */}
+          <TabsContent value="agent_reports">
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Bot className="w-5 h-5 text-amber-500" />
+                <h2 className="text-lg font-semibold text-slate-900">AI Assistant Reports</h2>
+              </div>
+              <p className="text-sm text-slate-500 mb-4">
+                Platform issues, bugs, and escalations reported by users and guests through the AI assistant.
+              </p>
+              <AgentReportsTable />
+            </Card>
+          </TabsContent>
+
           {/* Disputes Tab */}
           <TabsContent value="disputes">
             <Card className="p-6">
