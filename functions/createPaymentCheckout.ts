@@ -48,17 +48,11 @@ Deno.serve(async (req) => {
 
     // Check for duplicate request using idempotency key
     try {
-      const pendingPayments = await base44.asServiceRole.entities.Payment.filter({
+      const allPayments = await base44.asServiceRole.entities.Payment.filter({
         payer_email: payerEmail,
-        idempotency_key: idempotencyKey,
-        status: "pending"
+        idempotency_key: idempotencyKey
       });
-      const confirmedPayments = await base44.asServiceRole.entities.Payment.filter({
-        payer_email: payerEmail,
-        idempotency_key: idempotencyKey,
-        status: "confirmed"
-      });
-      const existingPayments = [...pendingPayments, ...confirmedPayments];
+      const existingPayments = allPayments.filter(p => p.status === 'pending' || p.status === 'confirmed');
       if (existingPayments.length > 0) {
         console.log(`Duplicate checkout request detected for ${payerEmail}, returning existing payment`);
         const existingPayment = existingPayments[0];
