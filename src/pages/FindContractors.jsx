@@ -112,6 +112,8 @@ export default function FindContractors() {
       const matchesTrade = !activeTradeFilter || activeTradeFilter === 'all' || c.trade_specialty === activeTradeFilter;
       const matchesRating = !activeRatingFilter || (c.rating || 0) >= parseInt(activeRatingFilter);
 
+      // If user location is set, check distance. If no distance calculated yet, exclude (don't show until calculated)
+      // But if no user location, show all contractors that match other filters
       const distance = contractorDistances[c.id];
       const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
 
