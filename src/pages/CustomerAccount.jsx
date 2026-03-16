@@ -275,6 +275,14 @@ export default function CustomerAccount() {
                 <QuoteComparisonDashboard customerEmail={userEmail} />
               </TabsContent>
 
+              <TabsContent value="my-jobs">
+                <Card className="p-6">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-1">My Job Postings</h2>
+                  <p className="text-sm text-slate-500 mb-4">View, edit, or delete your posted jobs. Expand any job to see details and manage it.</p>
+                  <CustomerJobsManager userEmail={userEmail} />
+                </Card>
+              </TabsContent>
+
               <TabsContent value="history">
                 <JobHistory userEmail={userEmail} />
               </TabsContent>
