@@ -32,8 +32,13 @@ export default function Messaging() {
         const urlParams = new URLSearchParams(window.location.search);
         const withEmail = urlParams.get('with');
         const withName = urlParams.get('name');
+        const tier = urlParams.get('tier');
+        const paymentId = urlParams.get('payment_id');
         if (withEmail) {
-          setSelectedConversation({ email: withEmail, name: withName || withEmail });
+          setSelectedConversation({ email: withEmail, name: withName || withEmail, tier, paymentId });
+          if (tier === 'timed' && paymentId) {
+            setTimedData({ tier, paymentId });
+          }
         }
       } catch (error) {
         console.error('Error loading user:', error);
