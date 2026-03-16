@@ -316,6 +316,16 @@ export default function Jobs() {
           )}
         </div>
 
+        {/* Enter Button */}
+        <div className="mb-8">
+          <Button 
+            onClick={applyFilters}
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-lg"
+          >
+            Enter
+          </Button>
+        </div>
+
         {/* Results */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2 text-slate-600">
