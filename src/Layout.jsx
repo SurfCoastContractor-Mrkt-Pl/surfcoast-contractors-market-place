@@ -88,7 +88,7 @@ export default function Layout({ children, currentPageName }) {
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-0 relative flex-shrink-0">
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-[69px] w-[69px] object-contain" />
-              <div className="hidden sm:flex flex-col leading-tight">
+              <div className="flex flex-col leading-tight">
                <span className="font-serif font-bold text-lg" style={{color: '#1E5A96'}}>
                   SurfCoast
                </span>
