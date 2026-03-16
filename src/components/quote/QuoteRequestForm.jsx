@@ -158,7 +158,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg flex gap-2">
             <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-700">
-              A one-time $1.75 fee sends this request. The contractor will review and either approve (provide a quote) or decline. You'll see the status in your account.
+              A one-time $1.75 fee sends your quote request. The contractor will review and either respond with a Scope of Work &amp; Estimate, or decline. You'll see the status in your account.
             </p>
           </div>
 
