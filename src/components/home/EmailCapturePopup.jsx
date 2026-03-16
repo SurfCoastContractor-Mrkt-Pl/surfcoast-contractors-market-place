@@ -34,7 +34,7 @@ export default function EmailCapturePopup() {
       });
       setSubmitted(true);
       sessionStorage.setItem('emailPopupSeen', 'true');
-      setTimeout(() => setClosed(true), 2000);
+      setTimeout(() => setVisible(false), 2000);
     } catch (error) {
       console.error('Newsletter signup error:', error);
     } finally {
@@ -42,14 +42,14 @@ export default function EmailCapturePopup() {
     }
   };
 
-  if (closed) return null;
+  if (!visible) return null;
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 pointer-events-auto">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative pointer-events-auto">
         <button
           onClick={() => {
-            setClosed(true);
+            setVisible(false);
             sessionStorage.setItem('emailPopupSeen', 'true');
           }}
           className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
