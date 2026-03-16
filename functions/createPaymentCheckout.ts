@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
           customer_email: payerEmail,
           contractor_id: contractorId,
           amount: 1.75,
-          _internal_service_key: Deno.env.get('INTERNAL_SERVICE_KEY') || '',
+          _internal_service_key: Deno.env.get('INTERNAL_SERVICE_KEY'),
         });
 
         if (fraudResult && (fraudResult.blocked === true)) {
