@@ -173,7 +173,7 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
              />
 
              <div className="p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 leading-relaxed">
-                <strong>Note:</strong> A scope of work defines all the work you'll perform. An estimate is the cost/price for that work. Together, they form the agreement.
+                <strong>Scope of Work:</strong> A detailed description explaining what work will be done, why, how, and when — including any materials, tasks, and limitations.<br className="mb-1" /><strong>Estimate:</strong> The total cost/price for all work defined in the Scope of Work. Together, they form the binding agreement.
               </div>
 
             {/* Customer Info */}
