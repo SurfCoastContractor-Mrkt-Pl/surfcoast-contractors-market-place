@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminPreview from './pages/AdminPreview';
 import Dashboard from './pages/Dashboard';
+import TimedChat from './pages/TimedChat';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
