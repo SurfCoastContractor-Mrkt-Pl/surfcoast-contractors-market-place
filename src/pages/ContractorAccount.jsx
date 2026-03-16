@@ -12,7 +12,9 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell } from 'lucide-react';
+import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell, MessageCircle, InboxIcon } from 'lucide-react';
+import QuoteReplyDialog from '@/components/quote/QuoteReplyDialog';
+import { useNavigate } from 'react-router-dom';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Textarea } from '@/components/ui/textarea';
 import AccountLockedBanner from '@/components/contractor/AccountLockedBanner';
