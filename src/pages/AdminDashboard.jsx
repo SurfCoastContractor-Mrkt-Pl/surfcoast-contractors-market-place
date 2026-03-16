@@ -21,6 +21,7 @@ import ErrorLogTable from '../components/admin/ErrorLogTable';
 import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
 import DisputesTable from '../components/admin/DisputesTable';
 import AdminQuickTasks from '../components/admin/AdminQuickTasks';
+import AgentReportsTable from '../components/admin/AgentReportsTable';
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
