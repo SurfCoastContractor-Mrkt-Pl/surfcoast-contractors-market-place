@@ -14,7 +14,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus, Bell, AlertCircle } from 'lucide-react';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import JobCloseout from '@/components/scopeofwork/JobCloseout.jsx';
 import CustomerProfileDisplay from '@/components/customer/CustomerProfileDisplay';
 import CustomerWelcomeModal from '@/components/customer/CustomerWelcomeModal';

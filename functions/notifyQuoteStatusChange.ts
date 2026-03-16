@@ -16,7 +16,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required parameters' }, { status: 400 });
     }
 
-    const quote = await base44.asServiceRole.entities.QuoteRequest.get(quote_id);
+    const quoteResults = await base44.asServiceRole.entities.QuoteRequest.filter({ id: quote_id });
+    const quote = quoteResults?.[0];
     if (!quote) {
       return Response.json({ error: 'Quote not found' }, { status: 404 });
     }

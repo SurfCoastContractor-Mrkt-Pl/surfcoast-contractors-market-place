@@ -39,7 +39,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['quoteRequests'] });
+      queryClient.invalidateQueries({ queryKey: ['contractor-quotes'] });
       setStep('quote');
     },
   });
@@ -54,7 +54,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['quoteRequests'] });
+      queryClient.invalidateQueries({ queryKey: ['contractor-quotes'] });
       onClose();
     },
   });
@@ -69,7 +69,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['quoteRequests'] });
+      queryClient.invalidateQueries({ queryKey: ['contractor-quotes'] });
       onClose();
     },
   });
