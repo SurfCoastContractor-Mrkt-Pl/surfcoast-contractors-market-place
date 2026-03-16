@@ -10,7 +10,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 import { 
   DollarSign, Users, CheckCircle2, Clock, 
   CreditCard, TrendingUp, ShieldCheck, Download,
-  MessageSquare, ShieldAlert, Eye, EyeOff, AlertTriangle
+  MessageSquare, ShieldAlert, Eye, EyeOff, AlertTriangle, Bot
 } from 'lucide-react';
 import AdminProfileViewer from '../components/admin/AdminProfileViewer';
 import AdminTableFilters from '../components/admin/AdminTableFilters';
