@@ -246,11 +246,20 @@ export default function CustomerAccount() {
                </div>
 
               <TabsContent value="profile">
-                <CustomerProfileEditor
-                  profile={customerProfile}
-                  userEmail={userEmail}
-                  onAskAgent={() => setAgentOpen(true)}
-                />
+                <div className="space-y-6">
+                  <CustomerProfileEditor
+                    profile={customerProfile}
+                    userEmail={userEmail}
+                    onAskAgent={() => setAgentOpen(true)}
+                  />
+                  {customerProfile && (
+                    <div className="space-y-6">
+                      <h3 className="text-lg font-semibold text-slate-900">Profile Summary</h3>
+                      <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
+                      <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
+                    </div>
+                  )}
+                </div>
               </TabsContent>
 
               <TabsContent value="quotes">
