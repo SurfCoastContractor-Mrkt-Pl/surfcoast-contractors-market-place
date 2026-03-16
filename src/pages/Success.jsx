@@ -80,7 +80,7 @@ export default function Success() {
             const quoteMeta = JSON.parse(decodeURIComponent(quoteMetaRaw));
             console.log(`[Success] Creating quote request with meta:`, quoteMeta);
             const quoteResult = await base44.functions.invoke('createQuoteRequest', {
-              payment_id: paymentId,
+              payment_id: pId,
               contractor_id: quoteMeta.contractor_id,
               contractor_name: quoteMeta.contractor_name,
               contractor_email: quoteMeta.contractor_email,
