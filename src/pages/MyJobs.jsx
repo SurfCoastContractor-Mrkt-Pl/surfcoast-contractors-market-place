@@ -94,95 +94,10 @@ export default function MyJobs() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {jobsLoading ? (
-          <div className="grid md:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-48 bg-white rounded-xl animate-pulse" />
-            ))}
-          </div>
-        ) : (postedJobs?.length || 0) === 0 ? (
-          <Card className="p-12 text-center">
-            <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No Jobs Posted Yet</h3>
-            <p className="text-slate-600 mb-6">Start by posting your first job to connect with contractors</p>
-            <Button onClick={() => navigate(createPageUrl('PostJob'))} className="bg-amber-500 hover:bg-amber-600">
-              Post Your First Job
-            </Button>
-          </Card>
-        ) : (
-          <Tabs defaultValue="active" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="active">
-                Active Jobs ({activeJobs.length})
-              </TabsTrigger>
-              <TabsTrigger value="closed">
-                Closed ({closedJobs.length})
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="active" className="space-y-4">
-              {activeJobs.length === 0 ? (
-                <Card className="p-8 text-center">
-                  <p className="text-slate-600">No active jobs</p>
-                </Card>
-              ) : (
-                activeJobs.map(job => (
-                  <Card key={job.id} className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-900 mb-2">{job.title}</h3>
-                        <p className="text-slate-600 line-clamp-2 mb-3">{job.description}</p>
-                        
-                        <div className="flex flex-wrap gap-3 mb-4 text-sm">
-                          <div className="flex items-center gap-1 text-slate-600">
-                            <MapPin className="w-4 h-4" />
-                            {job.location}
-                          </div>
-                          <div className="flex items-center gap-1 text-slate-600">
-                            <DollarSign className="w-4 h-4" />
-                            ${job.budget_min?.toLocaleString()} - ${job.budget_max?.toLocaleString()}
-                          </div>
-                        </div>
-
-                        <Badge variant="secondary">{job.urgency} urgency</Badge>
-                      </div>
-
-                      <Button 
-                        onClick={() => navigate(createPageUrl(`JobDetails?id=${job.id}`))}
-                        variant="outline"
-                        className="text-amber-600 border-amber-600 hover:bg-amber-50"
-                      >
-                        View Details
-                      </Button>
-                    </div>
-                  </Card>
-                ))
-              )}
-            </TabsContent>
-
-            <TabsContent value="closed" className="space-y-4">
-              {closedJobs.length === 0 ? (
-                <Card className="p-8 text-center">
-                  <p className="text-slate-600">No closed jobs</p>
-                </Card>
-              ) : (
-                closedJobs.map(job => (
-                  <Card key={job.id} className="p-6 opacity-75">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">{job.title}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{job.status}</Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              )}
-            </TabsContent>
-          </Tabs>
-        )}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Card className="p-6">
+          <CustomerJobsManager userEmail={userEmail} />
+        </Card>
       </div>
     </div>
   );
