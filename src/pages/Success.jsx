@@ -14,6 +14,7 @@ export default function Success() {
   const [timedContractorEmail, setTimedContractorEmail] = useState('');
   const [timedContractorName, setTimedContractorName] = useState('');
   const [paymentId, setPaymentId] = useState('');
+  const [countdown, setCountdown] = useState(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
