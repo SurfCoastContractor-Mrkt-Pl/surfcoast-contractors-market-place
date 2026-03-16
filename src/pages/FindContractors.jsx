@@ -107,19 +107,27 @@ export default function FindContractors() {
 
   const filterContractors = (list) => {
     return list.filter(c => {
-      const matchesSearch = !activeSearchQuery ||
-        c.name?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
-        c.location?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
-        c.bio?.toLowerCase().includes(activeSearchQuery.toLowerCase());
+      // Fuzzy matching - split query into words and match any word in name, location, bio, or trade
+      let matchesSearch = !activeSearchQuery;
+      if (activeSearchQuery && !matchesSearch) {
+        const query = activeSearchQuery.toLowerCase();
+        const searchFields = [
+          c.name?.toLowerCase() || '',
+          c.location?.toLowerCase() || '',
+          c.bio?.toLowerCase() || '',
+          c.trade_specialty?.toLowerCase() || '',
+          c.line_of_work?.toLowerCase() || ''
+        ].join(' ');
+        matchesSearch = searchFields.includes(query);
+      }
 
       const matchesType = !activeTypeFilter || activeTypeFilter === 'all' || c.contractor_type === activeTypeFilter;
       const matchesTrade = !activeTradeFilter || activeTradeFilter === 'all' || c.trade_specialty === activeTradeFilter;
       const matchesRating = !activeRatingFilter || (c.rating || 0) >= parseInt(activeRatingFilter);
 
-      // If user location is set, check distance. If no distance calculated yet, exclude (don't show until calculated)
-      // But if no user location, show all contractors that match other filters
+      // If user location is set, show contractors with calculated distance OR those still being calculated
       const distance = contractorDistances[c.id];
-      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
+      const matchesRadius = !userLocation || (distance === undefined || distance <= searchRadius);
 
       return matchesSearch && matchesType && matchesTrade && matchesRating && matchesRadius;
     });
@@ -133,6 +141,10 @@ export default function FindContractors() {
     setActiveTypeFilter(typeFilter);
     setActiveTradeFilter(tradeFilter);
     setActiveRatingFilter(ratingFilter);
+    // Auto-scroll to results
+    setTimeout(() => {
+      document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const clearFilters = () => {
@@ -332,7 +344,7 @@ export default function FindContractors() {
         )}
 
         {/* All Contractors */}
-        <div>
+        <div id="results-section">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2 text-slate-600">
               <Users className="w-5 h-5" />
