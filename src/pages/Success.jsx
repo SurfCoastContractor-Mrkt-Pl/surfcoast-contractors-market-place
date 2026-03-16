@@ -13,6 +13,7 @@ export default function Success() {
   const [isTimed, setIsTimed] = useState(false);
   const [timedContractorEmail, setTimedContractorEmail] = useState('');
   const [timedContractorName, setTimedContractorName] = useState('');
+  const [paymentId, setPaymentId] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
