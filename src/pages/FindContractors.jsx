@@ -86,9 +86,13 @@ export default function FindContractors() {
                 contractorCoords.lon
               );
               distances[c.id] = dist;
+            } else {
+              // If geocoding fails, set a very high distance so contractor still shows but not near top
+              distances[c.id] = 999;
             }
           } catch (error) {
-            console.error('Distance calc error:', error);
+            console.error('Distance calc error for', c.location, error);
+            distances[c.id] = 999;
           }
         }
       }
