@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
     const recentPayments = await base44.asServiceRole.entities.Payment.filter({
       payer_email: payerEmail,
       status: 'pending',
-      created_date: { '$gte': fiveMinutesAgo }
+      created_date: { $gte: fiveMinutesAgo }
     });
     
     if (recentPayments.length >= 5) {
