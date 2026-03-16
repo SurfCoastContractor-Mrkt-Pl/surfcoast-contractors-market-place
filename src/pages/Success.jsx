@@ -135,12 +135,21 @@ export default function Success() {
                 ? 'Your quote request has been submitted! The contractor will respond within 48 hours. You can track it in your account.'
                 : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
             </p>
-            <Button 
-              onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')} 
-              className="bg-green-600 hover:bg-green-700 text-white w-full"
-            >
-              {isQuote ? 'View Your Quotes' : 'Return to Home'}
-            </Button>
+            {isTimed && timedContractorEmail ? (
+              <Button
+                onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}`)}
+                className="bg-green-600 hover:bg-green-700 text-white w-full"
+              >
+                Message {timedContractorName || 'Contractor'}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')}
+                className="bg-green-600 hover:bg-green-700 text-white w-full"
+              >
+                {isQuote ? 'View Your Quotes' : 'Return to Home'}
+              </Button>
+            )}
           </>
         )}
       </Card>
