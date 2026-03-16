@@ -4,7 +4,8 @@ import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, DollarSign, AlertCircle, ChevronDown, ChevronUp, CheckCircle, XCircle, Hourglass } from 'lucide-react';
+import { Clock, DollarSign, AlertCircle, ChevronDown, ChevronUp, CheckCircle, XCircle, Hourglass, MessageCircle } from 'lucide-react';
+import PaymentGate from '@/components/payment/PaymentGate';
 
 const STATUS_CONFIG = {
   pending: {
