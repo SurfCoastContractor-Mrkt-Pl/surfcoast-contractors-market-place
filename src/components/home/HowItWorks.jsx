@@ -18,20 +18,20 @@ const steps = [
   },
   {
     icon: MessageSquare,
-    title: 'Get Quotes',
-    description: 'Receive proposals from qualified professionals. Compare pricing, experience, and reviews.',
+    title: 'Request Quotes',
+    description: 'Ask contractors for a quote — they\'ll respond with a Scope of Work and Estimate detailing how the work will be done and the total cost.',
     color: 'from-purple-500 to-purple-600',
   },
   {
     icon: Handshake,
-    title: 'Hire & Manage',
-    description: 'Agree on terms, schedule work, and communicate securely. Track progress every step.',
+    title: 'Approve & Schedule',
+    description: 'Review the Scope of Work and Estimate. Once approved, work is scheduled and can begin.',
     color: 'from-pink-500 to-pink-600',
   },
   {
     icon: CheckCircle2,
     title: 'Complete & Review',
-    description: 'Contractor submits work with photos. You approve and leave a verified review.',
+    description: 'Contractor completes the work and submits after photos. You confirm completion and leave a verified review.',
     color: 'from-green-500 to-green-600',
   },
 ];
