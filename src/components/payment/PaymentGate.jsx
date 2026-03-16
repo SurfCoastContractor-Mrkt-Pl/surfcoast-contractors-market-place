@@ -266,46 +266,89 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               )}
             </div>
 
-            {/* Card Selection (always visible) */}
-            {paymentMethods && paymentMethods.length > 0 ? (
-              <Tabs defaultValue={useNewCard ? "new" : "saved"} onValueChange={(val) => setUseNewCard(val === "new")} className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="saved">Saved Cards</TabsTrigger>
-                  <TabsTrigger value="new">New Card</TabsTrigger>
-                </TabsList>
+            {/* Payment Method Selection */}
+            <div>
+              <Label htmlFor="payment-method">Payment Method *</Label>
+              <Select value={selectedPaymentMethod || ''} onValueChange={(value) => {
+                if (value === 'new') {
+                  setSelectedPaymentMethod(null);
+                  setCardData({ number: '', expiry: '', cvc: '', saveCard: false });
+                } else {
+                  setSelectedPaymentMethod(value);
+                  setCardData({ number: '', expiry: '', cvc: '', saveCard: false });
+                }
+              }}>
+                <SelectTrigger id="payment-method" className="mt-1.5">
+                  <SelectValue placeholder="Select a payment method" />
+                </SelectTrigger>
+                <SelectContent>
+                  {paymentMethods && paymentMethods.length > 0 && (
+                    <>
+                      {paymentMethods.map((method) => (
+                        <SelectItem key={method.id} value={method.stripe_payment_method_id}>
+                          {method.card_brand?.toUpperCase()} ending in {method.card_last4}
+                        </SelectItem>
+                      ))}
+                      <div className="border-t my-1" />
+                    </>
+                  )}
+                  <SelectItem value="new">+ Enter New Card</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-                <TabsContent value="saved" className="mt-4">
-                  <div className="space-y-2">
-                    {paymentMethods.map((method) => (
-                      <label key={method.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50">
-                        <input
-                          type="radio"
-                          name="payment-method"
-                          value={method.stripe_payment_method_id}
-                          checked={selectedPaymentMethod === method.stripe_payment_method_id}
-                          onChange={(e) => setSelectedPaymentMethod(e.target.value)}
-                          className="w-4 h-4"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium text-slate-900">{method.card_name || 'Unnamed Card'}</p>
-                          <p className="text-sm text-slate-600">{method.card_brand?.toUpperCase()} ending in {method.card_last4}</p>
-                        </div>
-                      </label>
-                    ))}
+            {/* Card Input Fields (shown when "Enter New Card" is selected) */}
+            {selectedPaymentMethod === null && paymentMethods && paymentMethods.length > 0 ? (
+              <div className="space-y-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700"><strong>Enter Card Details</strong></p>
+                <div>
+                  <Label htmlFor="card_number" className="text-xs">Card Number</Label>
+                  <Input
+                    id="card_number"
+                    placeholder="1234 5678 9012 3456"
+                    value={cardData.number}
+                    onChange={(e) => setCardData(p => ({ ...p, number: e.target.value }))}
+                    className="mt-1 text-sm"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="card_expiry" className="text-xs">Expiry (MM/YY)</Label>
+                    <Input
+                      id="card_expiry"
+                      placeholder="12/25"
+                      value={cardData.expiry}
+                      onChange={(e) => setCardData(p => ({ ...p, expiry: e.target.value }))}
+                      className="mt-1 text-sm"
+                    />
                   </div>
-                </TabsContent>
-
-                <TabsContent value="new" className="mt-4">
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                    <p><strong>Note:</strong> Your card details will not be saved. You'll enter them in the next step.</p>
+                  <div>
+                    <Label htmlFor="card_cvc" className="text-xs">CVC</Label>
+                    <Input
+                      id="card_cvc"
+                      placeholder="123"
+                      type="password"
+                      value={cardData.cvc}
+                      onChange={(e) => setCardData(p => ({ ...p, cvc: e.target.value }))}
+                      className="mt-1 text-sm"
+                    />
                   </div>
-                </TabsContent>
-              </Tabs>
-            ) : (
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={cardData.saveCard}
+                    onChange={(e) => setCardData(p => ({ ...p, saveCard: e.target.checked }))}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs text-blue-900">Save this card for future payments</span>
+                </label>
+              </div>
+            ) : selectedPaymentMethod === null ? (
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
                 <p><strong>Note:</strong> You can choose your payment method, or skip this step and enter your card details in the next step.</p>
               </div>
-            )}
+            ) : null}
 
             <div className="flex gap-3">
                 <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation}>Cancel</Button>
