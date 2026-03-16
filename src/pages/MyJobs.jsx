@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Briefcase, Plus, MapPin, DollarSign, Users, AlertCircle } from 'lucide-react';
+import { AlertCircle, Plus, Briefcase } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 
