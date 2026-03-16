@@ -501,7 +501,14 @@ export default function AdminDashboard() {
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="sales">Sales Overview</TabsTrigger>
+            <TabsTrigger value="agent_reports" className="relative">
+              AI Reports
+              {agentReports.filter(r => r.status === 'new').length > 0 && (
+                <span className="ml-1.5 bg-blue-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                  {agentReports.filter(r => r.status === 'new').length}
+                </span>
+              )}
+            </TabsTrigger>
             </TabsList>
 
           {/* Sales Overview Tab */}
