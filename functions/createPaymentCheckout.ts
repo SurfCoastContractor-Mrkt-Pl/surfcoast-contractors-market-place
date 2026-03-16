@@ -8,6 +8,7 @@ Deno.serve(async (req) => {
   let payerEmail = null;
   let payerType = null;
   const base44 = createClientFromRequest(req);
+  // Force cache refresh
 
   try {
     const body = await req.json();
