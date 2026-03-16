@@ -123,18 +123,18 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 Decline
               </Button>
               <Button
-                type="button"
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                onClick={() => approveMutation.mutate()}
-                disabled={approveMutation.isPending}
-              >
-                {approveMutation.isPending ? (
-                  <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-                ) : (
-                  <CheckCircle className="w-4 h-4 mr-1" />
-                )}
-                Provide Quote
-              </Button>
+                 type="button"
+                 className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                 onClick={() => approveMutation.mutate()}
+                 disabled={approveMutation.isPending}
+               >
+                 {approveMutation.isPending ? (
+                   <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                 ) : (
+                   <CheckCircle className="w-4 h-4 mr-1" />
+                 )}
+                 Accept &amp; Provide Estimate
+               </Button>
             </div>
           </div>
         )}
