@@ -31,7 +31,7 @@ export default function Success() {
       setTimedContractorName(contractorName || '');
     }
 
-    if (!paymentId) {
+    if (!pId) {
       setError('No payment ID found. Please contact support.');
       setIsVerifying(false);
       return;
@@ -39,7 +39,7 @@ export default function Success() {
 
     const verifyAndFinalize = async () => {
       try {
-        console.log(`[Success] Starting payment verification for ID: ${paymentId}`);
+        console.log(`[Success] Starting payment verification for ID: ${pId}`);
 
         // Poll for confirmed status — the webhook fires asynchronously
          let payment = null;
