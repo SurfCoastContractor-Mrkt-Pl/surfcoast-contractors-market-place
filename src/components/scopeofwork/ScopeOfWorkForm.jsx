@@ -348,8 +348,8 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 space-y-1">
-              <p>A clear estimate—either a fixed total or hourly rate—paired with the scope of work forms the complete agreement.</p>
-              <p>The customer will receive a copy for review. Copies will be emailed to both parties.</p>
+              <p>The Scope of Work and Estimate together form the complete agreement. No work may begin until the customer approves both.</p>
+              <p>A copy will be emailed to both you and the customer for their records.</p>
             </div>
 
             <div className="flex gap-3 pt-2">
