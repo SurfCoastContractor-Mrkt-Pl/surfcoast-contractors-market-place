@@ -46,7 +46,7 @@ export default function EnhancedHeroSection() {
             </h1>
 
             <p className="text-lg text-slate-100 mb-8 font-light leading-relaxed">
-              Skip middlemen & inflated prices. Connect directly with verified professionals. Same-day quotes, transparent pricing, zero hidden fees.
+              Skip middlemen & inflated prices. Connect directly with verified professionals. Request quotes, get a full Scope of Work &amp; Estimate, transparent pricing, zero hidden fees.
             </p>
 
             {/* Trust Badges */}
