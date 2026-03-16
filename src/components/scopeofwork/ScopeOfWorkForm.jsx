@@ -133,10 +133,10 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-amber-500" />
-            Submit Scope of Work & Estimate
+            Submit Scope of Work &amp; Estimate
           </DialogTitle>
           <DialogDescription>
-            Define the scope of work and provide a cost estimate for customer review and approval.
+            Define the full Scope of Work — what will be done, how, and when — and provide your Estimate (total cost/price) for the customer to review and approve.
           </DialogDescription>
         </DialogHeader>
 
