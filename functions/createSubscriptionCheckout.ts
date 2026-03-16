@@ -12,10 +12,6 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields: priceId, email, userType' }, { status: 400 });
     }
 
-    if (priceId.trim() === '') {
-      return Response.json({ error: 'Invalid priceId. STRIPE_SUBSCRIPTION_PRICE_ID must be set correctly.' }, { status: 400 });
-    }
-
     const base44 = createClientFromRequest(req);
 
     // Require authentication

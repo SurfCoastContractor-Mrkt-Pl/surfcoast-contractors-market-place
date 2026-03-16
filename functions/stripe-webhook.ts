@@ -133,16 +133,53 @@ async function handleSubscriptionCreated(subscription, base44) {
     }
 
     const userType = subscription.metadata?.user_type || 'customer';
-    
+    const newStatus = subscription.status === 'active' ? 'active' : subscription.status;
+
+    // Check for existing pending record created by createSubscriptionCheckout (dedup by stripe_subscription_id or pending for this user)
+    const existing = await base44.asServiceRole.entities.Subscription.filter({
+      stripe_subscription_id: subscription.id,
+    });
+
+    if (existing && existing.length > 0) {
+      // Update the existing record instead of creating a duplicate
+      await base44.asServiceRole.entities.Subscription.update(existing[0].id, {
+        status: newStatus,
+        start_date: new Date(subscription.start_date * 1000).toISOString(),
+        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        amount_paid: subscription.items.data[0]?.plan?.amount || 0,
+      });
+      console.log(`Updated existing subscription record for ${email} (${subscription.id})`);
+      return;
+    }
+
+    // Also check for a pending record without stripe_subscription_id set yet
+    const pendingRecords = await base44.asServiceRole.entities.Subscription.filter({
+      user_email: email,
+      status: 'pending',
+    });
+
+    if (pendingRecords && pendingRecords.length > 0) {
+      await base44.asServiceRole.entities.Subscription.update(pendingRecords[0].id, {
+        stripe_subscription_id: subscription.id,
+        status: newStatus,
+        start_date: new Date(subscription.start_date * 1000).toISOString(),
+        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        amount_paid: subscription.items.data[0]?.plan?.amount || 0,
+      });
+      console.log(`Promoted pending subscription record for ${email} (${subscription.id})`);
+      return;
+    }
+
     await base44.asServiceRole.entities.Subscription.create({
       user_email: email,
       user_type: userType,
       stripe_subscription_id: subscription.id,
-      status: subscription.status === 'active' ? 'active' : subscription.status,
+      status: newStatus,
       start_date: new Date(subscription.start_date * 1000).toISOString(),
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       amount_paid: subscription.items.data[0]?.plan?.amount || 0,
     });
+    console.log(`Created new subscription record for ${email} (${subscription.id})`);
   } catch (error) {
     console.error('Error handling subscription creation:', error.message);
   }
