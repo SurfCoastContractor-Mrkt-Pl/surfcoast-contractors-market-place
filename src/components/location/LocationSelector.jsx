@@ -115,7 +115,7 @@ export default function LocationSelector({ onLocationChange }) {
                   Searching...
                 </>
               ) : (
-                'Find Contractors'
+                'Set Location'
               )}
             </Button>
           </div>
