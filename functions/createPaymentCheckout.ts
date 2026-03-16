@@ -99,15 +99,19 @@ Deno.serve(async (req) => {
     }
 
     // Rate limiting: check for excessive pending payments from this email in last 5 minutes
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+    const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     const recentPayments = await base44.asServiceRole.entities.Payment.filter({
       payer_email: payerEmail,
-      status: 'pending',
-      created_date: { $gte: fiveMinutesAgo }
+      status: 'pending'
     });
     
-    if (recentPayments.length >= 5) {
-      console.warn(`Rate limit exceeded for ${payerEmail}: ${recentPayments.length} pending payments in 5 minutes`);
+    const recentFiltered = recentPayments.filter(p => {
+      const createdTime = p.created_date ? new Date(p.created_date).getTime() : 0;
+      return createdTime > fiveMinutesAgo;
+    });
+    
+    if (recentFiltered.length >= 5) {
+      console.warn(`Rate limit exceeded for ${payerEmail}: ${recentFiltered.length} pending payments in 5 minutes`);
       return Response.json({ 
         error: 'Too many pending payments. Please wait before creating another checkout session.' 
       }, { status: 429 });
