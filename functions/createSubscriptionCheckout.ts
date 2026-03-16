@@ -6,7 +6,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const body = await req.json();
-    const { priceId, email, userType } = body;
+    const { priceId, email, userType, paymentMethodId } = body;
 
     if (!priceId || !email || !userType) {
       return Response.json({ error: 'Missing required fields: priceId, email, userType' }, { status: 400 });
@@ -62,9 +62,8 @@ Deno.serve(async (req) => {
 
     const origin = req.headers.get('origin') || 'https://localhost:3000';
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig = {
       mode: 'subscription',
-      payment_method_types: ['card'],
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}`,
@@ -73,7 +72,19 @@ Deno.serve(async (req) => {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),
         user_type: userType,
       },
-    });
+    };
+
+    // If using a saved payment method, set it directly (no payment form needed)
+    if (paymentMethodId) {
+      sessionConfig.payment_method_types = ['card'];
+      sessionConfig.payment_method_collection = 'if_required';
+      sessionConfig.payment_method = paymentMethodId;
+    } else {
+      // Otherwise allow card entry without saving
+      sessionConfig.payment_method_types = ['card'];
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     // Persist pending record so deduplication check has data to query against
     await base44.asServiceRole.entities.Subscription.create({
