@@ -46,10 +46,6 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const mutation = useMutation({
     mutationFn: async (data, paymentMethodId = null) => {
-      // Prevent double-click before any async work
-      if (checkingout) throw new Error('Checkout already in progress');
-      setCheckingout(true);
-
       try {
         // Validate quote data is present for quote requests
           if (tier === 'quote' && !quoteMetaParam) {
