@@ -133,7 +133,9 @@ export default function Success() {
             <p className="text-slate-600 mb-6">
               {isQuote
                 ? 'Your quote request has been submitted! The contractor will respond within 48 hours. You can track it in your account.'
-                : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
+                : isTimed
+                  ? `Your 10-minute chat session with ${timedContractorName || 'the contractor'} is now active. Click below to start messaging.`
+                  : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
             </p>
             {isTimed && timedContractorEmail ? (
               <Button
