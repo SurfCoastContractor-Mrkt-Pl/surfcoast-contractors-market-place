@@ -73,7 +73,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Request a Quote from {contractor.name}</DialogTitle>
-          <DialogDescription>Select the project and describe the work, then pay the $1.75 fee.</DialogDescription>
+          <DialogDescription>Describe the work needed and submit your quote request. The contractor will respond with a Scope of Work and Estimate.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5">
