@@ -269,7 +269,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             {/* Payment Method Selection */}
             <div>
               <Label htmlFor="payment-method">Payment Method *</Label>
-              <Select value={selectedPaymentMethod || ''} onValueChange={(value) => {
+              <Select value={selectedPaymentMethod === null ? 'new' : selectedPaymentMethod || ''} onValueChange={(value) => {
                 if (value === 'new') {
                   setSelectedPaymentMethod(null);
                   setCardData({ number: '', expiry: '', cvc: '', saveCard: false });
@@ -298,7 +298,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             </div>
 
             {/* Card Input Fields (shown when "Enter New Card" is selected) */}
-            {selectedPaymentMethod === null && paymentMethods && paymentMethods.length > 0 ? (
+            {selectedPaymentMethod === null ? (
               <div className="space-y-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-700"><strong>Enter Card Details</strong></p>
                 <div>
@@ -344,9 +344,9 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   <span className="text-xs text-blue-900">Save this card for future payments</span>
                 </label>
               </div>
-            ) : selectedPaymentMethod === null ? (
+            ) : !selectedPaymentMethod ? (
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                <p><strong>Note:</strong> You can choose your payment method, or skip this step and enter your card details in the next step.</p>
+                <p><strong>Note:</strong> Select a payment method above.</p>
               </div>
             ) : null}
 
