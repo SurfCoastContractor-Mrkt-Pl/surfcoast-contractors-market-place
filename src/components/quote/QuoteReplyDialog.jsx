@@ -156,7 +156,8 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
             </div>
 
             <div>
-              <Label htmlFor="quote-amount" className="text-slate-700">Quote Amount ($) *</Label>
+              <Label htmlFor="quote-amount" className="text-slate-700">Your Estimate — Total Cost ($) *</Label>
+              <p className="text-xs text-slate-500 mb-1">The total price/cost for all the work you'll perform.</p>
               <Input
                 id="quote-amount"
                 type="number"
@@ -171,12 +172,12 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
             </div>
 
             <div>
-              <Label htmlFor="quote-message" className="text-slate-700">Message (Optional)</Label>
+              <Label htmlFor="quote-message" className="text-slate-700">Note to Customer (Optional)</Label>
               <Textarea
                 id="quote-message"
                 value={quoteMessage}
                 onChange={(e) => setQuoteMessage(e.target.value)}
-                placeholder="Add details about your quote, timeline, materials, etc."
+                placeholder="Add details about your Estimate — timeline, materials, what's included, etc."
                 className="mt-1 resize-none"
                 rows={3}
               />
@@ -192,7 +193,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 {quoteMutation.isPending ? (
                   <><Loader2 className="w-4 h-4 mr-1 animate-spin" />Sending...</>
                 ) : (
-                  <><DollarSign className="w-4 h-4 mr-1" />Send Quote</>
+                  <><DollarSign className="w-4 h-4 mr-1" />Send Estimate</>
                 )}
               </Button>
             </div>
