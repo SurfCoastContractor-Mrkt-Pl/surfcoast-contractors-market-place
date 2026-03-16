@@ -38,6 +38,7 @@ export default function Jobs() {
   const [userLocation, setUserLocation] = useState(null);
   const [jobDistances, setJobDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
+  const [isSearching, setIsSearching] = useState(false);
 
   // Check if user is a contractor
   useEffect(() => {
@@ -104,6 +105,7 @@ export default function Jobs() {
 
   const handleLocationChange = async (location) => {
     setUserLocation(location);
+    setIsSearching(false); // Clear search flag when location changes
     if (jobs) {
       const distances = {};
       for (const j of jobs) {
@@ -126,6 +128,11 @@ export default function Jobs() {
       }
       setJobDistances(distances);
     }
+  };
+
+  const handleFindClosest = () => {
+    setSearchRadius(15);
+    setIsSearching(true);
   };
 
   const clearFilters = () => {
@@ -179,25 +186,39 @@ export default function Jobs() {
           <LocationSelector onLocationChange={handleLocationChange} />
           
           {userLocation && (
-            <div className="mt-6 p-4 bg-slate-50 rounded-xl">
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-sm font-medium text-slate-700">
-                  Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
-                </label>
+            <div className="mt-6 space-y-4">
+              <div className="p-4 bg-slate-50 rounded-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-sm font-medium text-slate-700">
+                    Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
+                  </label>
+                </div>
+                <input
+                  type="range"
+                  min="5"
+                  max="100"
+                  step="5"
+                  value={searchRadius}
+                  onChange={(e) => setSearchRadius(Number(e.target.value))}
+                  className="w-full accent-amber-500"
+                />
+                <div className="flex justify-between text-xs text-slate-500 mt-2">
+                  <span>5 mi</span>
+                  <span>100 mi</span>
+                </div>
+                <Button 
+                  onClick={() => setIsSearching(true)}
+                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
+                >
+                  Search
+                </Button>
               </div>
-              <input
-                type="range"
-                min="5"
-                max="100"
-                step="5"
-                value={searchRadius}
-                onChange={(e) => setSearchRadius(Number(e.target.value))}
-                className="w-full accent-amber-500"
-              />
-              <div className="flex justify-between text-xs text-slate-500 mt-2">
-                <span>5 mi</span>
-                <span>100 mi</span>
-              </div>
+              <Button 
+                onClick={handleFindClosest}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Find Closest Jobs (15 mi)
+              </Button>
             </div>
           )}
         </div>
