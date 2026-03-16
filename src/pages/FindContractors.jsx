@@ -200,21 +200,9 @@ export default function FindContractors() {
                   <span>5 mi</span>
                   <span>100 mi</span>
                 </div>
-                <Button 
-                  onClick={() => setIsSearching(true)}
-                  className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900"
-                >
-                  Search
-                </Button>
-              </div>
-              <Button 
-                onClick={handleFindClosest}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Find Closest Contractors (15 mi)
-              </Button>
-            </div>
-          )}
+                </div>
+                </div>
+                )}
         </div>
 
         {/* Filters */}
@@ -270,12 +258,6 @@ export default function FindContractors() {
               </SelectContent>
             </Select>
           </div>
-          <Button 
-            onClick={applyFilters}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-medium"
-          >
-            Apply Filters
-          </Button>
 
           {hasActiveFilters && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
@@ -309,6 +291,16 @@ export default function FindContractors() {
               </Button>
             </div>
           )}
+        </div>
+
+        {/* Enter Button */}
+        <div className="mb-8">
+          <Button 
+            onClick={applyFilters}
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-lg"
+          >
+            Enter
+          </Button>
         </div>
 
         {/* Featured Contractors */}
