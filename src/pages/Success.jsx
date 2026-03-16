@@ -49,7 +49,7 @@ export default function Success() {
          for (let i = 0; i < maxAttempts; i++) {
            try {
              // Use service-role via backend function to read the payment regardless of auth state
-             const result = await base44.functions.invoke('verifyPayment', { payment_id: paymentId });
+             const result = await base44.functions.invoke('verifyPayment', { payment_id: pId });
              const p = result?.data?.payment;
              console.log(`[Success] Attempt ${i + 1}/${maxAttempts}: status=${p?.status || 'not found'}`);
              if (p) {
