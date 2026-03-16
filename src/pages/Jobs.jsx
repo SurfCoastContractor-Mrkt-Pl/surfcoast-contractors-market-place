@@ -124,9 +124,12 @@ export default function Jobs() {
                 jobCoords.lon
               );
               distances[j.id] = dist;
+            } else {
+              distances[j.id] = 999;
             }
           } catch (error) {
-            console.error('Distance calc error:', error);
+            console.error('Distance calc error for', j.location, error);
+            distances[j.id] = 999;
           }
         }
       }
