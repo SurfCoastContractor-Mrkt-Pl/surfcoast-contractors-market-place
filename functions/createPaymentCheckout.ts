@@ -158,7 +158,7 @@ Deno.serve(async (req) => {
             quantity: 1,
           },
         ],
-        success_url: `${origin}/Success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}`,
+        success_url: `${origin}/Success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}${tier === 'timed' ? `&tier=timed&contractor_email=${encodeURIComponent(contractorEmail || '')}&contractor_name=${encodeURIComponent(contractorName || '')}` : ''}`,
         cancel_url: `${origin}/Cancel?reason=cancelled`,
         payment_intent_data: {
           description: `SurfCoast ${tier === 'timed' ? '10-Min Chat' : 'Quote Request'} Fee - ${contractorName || 'Contractor'}`,
