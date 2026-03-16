@@ -39,25 +39,29 @@ export default function Success() {
         console.log(`[Success] Starting payment verification for ID: ${paymentId}`);
 
         // Poll for confirmed status — the webhook fires asynchronously
-        let payment = null;
-        const maxAttempts = 12;
-        for (let i = 0; i < maxAttempts; i++) {
-          try {
-            // Use service-role via backend function to read the payment regardless of auth state
-            const result = await base44.functions.invoke('verifyPayment', { payment_id: paymentId });
-            const p = result?.data?.payment;
-            console.log(`[Success] Attempt ${i + 1}/${maxAttempts}: status=${p?.status || 'not found'}`);
-            if (p) {
-              payment = p;
-              if (p.status === 'confirmed') break;
-            }
-          } catch (fetchErr) {
-            console.warn(`[Success] Fetch attempt ${i + 1} error:`, fetchErr.message);
-          }
-          if (i < maxAttempts - 1) {
-            await new Promise(r => setTimeout(r, 1500));
-          }
-        }
+         let payment = null;
+         const maxAttempts = 15;
+         let delayMs = 500; // Start with shorter delay
+
+         for (let i = 0; i < maxAttempts; i++) {
+           try {
+             // Use service-role via backend function to read the payment regardless of auth state
+             const result = await base44.functions.invoke('verifyPayment', { payment_id: paymentId });
+             const p = result?.data?.payment;
+             console.log(`[Success] Attempt ${i + 1}/${maxAttempts}: status=${p?.status || 'not found'}`);
+             if (p) {
+               payment = p;
+               if (p.status === 'confirmed') break;
+             }
+           } catch (fetchErr) {
+             console.warn(`[Success] Fetch attempt ${i + 1} error:`, fetchErr.message);
+           }
+           if (i < maxAttempts - 1) {
+             // Progressive backoff: 500ms, 750ms, 1000ms, then cap at 1000ms
+             await new Promise(r => setTimeout(r, delayMs));
+             delayMs = Math.min(delayMs + 250, 1000);
+           }
+         }
 
         if (!payment) {
           // Payment record not accessible — likely RLS. Show success anyway since Stripe redirected here.
