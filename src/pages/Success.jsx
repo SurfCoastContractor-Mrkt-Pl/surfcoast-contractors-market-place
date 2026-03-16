@@ -143,7 +143,7 @@ export default function Success() {
             </p>
             {isTimed && timedContractorEmail ? (
               <Button
-                onClick={() => navigate(`/TimedChat?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}`)}
+                onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${urlParams.get('payment_id')}`)}
                 className="bg-green-600 hover:bg-green-700 text-white w-full"
               >
                 Message {timedContractorName || 'Contractor'}
