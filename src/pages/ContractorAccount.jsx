@@ -278,6 +278,28 @@ export default function ContractorAccount() {
 
               <TabsContent value="profile">
                  <div className="space-y-4">
+                    {/* Profile Summary */}
+                    <Card className="p-6">
+                      <h2 className="text-lg font-semibold text-slate-900 mb-4">Your Profile</h2>
+                      <div className="flex items-center gap-4">
+                        {contractor.photo_url ? (
+                          <img src={contractor.photo_url} alt={contractor.name} className="w-16 h-16 rounded-xl object-cover" />
+                        ) : (
+                          <div className="w-16 h-16 rounded-xl bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-500">
+                            {contractor.name?.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-bold text-slate-900 text-lg">{contractor.name}</div>
+                          <div className="text-slate-500 text-sm">{contractor.email}</div>
+                          <div className="text-slate-500 text-sm">{contractor.location}</div>
+                          <Badge className={contractor.available ? 'bg-green-100 text-green-700 mt-1' : 'bg-slate-100 text-slate-500 mt-1'}>
+                            {contractor.available ? 'Available' : 'Not Available'}
+                          </Badge>
+                        </div>
+                      </div>
+                    </Card>
+
                     {/* Minor Hours Tracker */}
                     {contractor?.is_minor && <MinorHoursTracker contractor={contractor} />}
 
