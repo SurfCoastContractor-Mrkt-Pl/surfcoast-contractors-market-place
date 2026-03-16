@@ -60,18 +60,32 @@ export default function AgentChatModal({ open, onClose }) {
     setInput('');
     setLoading(true);
 
+    const unsubscribe = base44.agents.subscribeToConversation(conversation.id, (data) => {
+      const agentMessages = (data.messages || []).filter(m => m.role === 'agent' || m.role === 'assistant');
+      const lastAgent = agentMessages[agentMessages.length - 1];
+      if (lastAgent?.content) {
+        setMessages(prev => {
+          const last = prev[prev.length - 1];
+          if (last?.role === 'agent' && last?._streaming) {
+            return [...prev.slice(0, -1), { role: 'agent', content: lastAgent.content, _streaming: true }];
+          }
+          return [...prev, { role: 'agent', content: lastAgent.content, _streaming: true }];
+        });
+        setLoading(false);
+      }
+    });
+
     try {
       await base44.agents.addMessage(conversation, userMessage);
-
-      // Subscribe to get agent response
-      const unsubscribe = base44.agents.subscribeToConversation(conversation.id, (data) => {
-        setMessages(data.messages);
+      setTimeout(() => {
+        setMessages(prev => prev.map(m => m._streaming ? { ...m, _streaming: false } : m));
         setLoading(false);
-      });
-
-      return () => unsubscribe();
+        unsubscribe();
+      }, 1000);
     } catch (error) {
       console.error('Failed to send message:', error);
+      unsubscribe();
+      setMessages(prev => [...prev, { role: 'agent', content: "Sorry, I couldn't process that. Please try again." }]);
       setLoading(false);
     }
   };
