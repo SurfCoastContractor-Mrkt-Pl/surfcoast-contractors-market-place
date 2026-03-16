@@ -260,47 +260,45 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               )}
             </div>
 
-            {/* Card Selection (if saved cards exist) */}
-            {formData.email && (
-              paymentMethods && paymentMethods.length > 0 ? (
-                <Tabs defaultValue={useNewCard ? "new" : "saved"} onValueChange={(val) => setUseNewCard(val === "new")} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="saved">Saved Cards</TabsTrigger>
-                    <TabsTrigger value="new">New Card</TabsTrigger>
-                  </TabsList>
+            {/* Card Selection (always visible) */}
+            {paymentMethods && paymentMethods.length > 0 ? (
+              <Tabs defaultValue={useNewCard ? "new" : "saved"} onValueChange={(val) => setUseNewCard(val === "new")} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="saved">Saved Cards</TabsTrigger>
+                  <TabsTrigger value="new">New Card</TabsTrigger>
+                </TabsList>
 
-                  <TabsContent value="saved" className="mt-4">
-                    <div className="space-y-2">
-                      {paymentMethods.map((method) => (
-                        <label key={method.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50">
-                          <input
-                            type="radio"
-                            name="payment-method"
-                            value={method.stripe_payment_method_id}
-                            checked={selectedPaymentMethod === method.stripe_payment_method_id}
-                            onChange={(e) => setSelectedPaymentMethod(e.target.value)}
-                            className="w-4 h-4"
-                          />
-                          <div className="flex-1">
-                            <p className="font-medium text-slate-900">{method.card_name || 'Unnamed Card'}</p>
-                            <p className="text-sm text-slate-600">{method.card_brand?.toUpperCase()} ending in {method.card_last4}</p>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                  </TabsContent>
+                <TabsContent value="saved" className="mt-4">
+                  <div className="space-y-2">
+                    {paymentMethods.map((method) => (
+                      <label key={method.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50">
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          value={method.stripe_payment_method_id}
+                          checked={selectedPaymentMethod === method.stripe_payment_method_id}
+                          onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                          className="w-4 h-4"
+                        />
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-900">{method.card_name || 'Unnamed Card'}</p>
+                          <p className="text-sm text-slate-600">{method.card_brand?.toUpperCase()} ending in {method.card_last4}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </TabsContent>
 
-                  <TabsContent value="new" className="mt-4">
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                      <p><strong>Note:</strong> Your card details will not be saved. You'll enter them in the next step.</p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              ) : (
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                  <p><strong>Note:</strong> You'll enter your card details in the next step.</p>
-                </div>
-              )
+                <TabsContent value="new" className="mt-4">
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                    <p><strong>Note:</strong> Your card details will not be saved. You'll enter them in the next step.</p>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                <p><strong>Note:</strong> You'll enter your card details in the next step.</p>
+              </div>
             )}
 
             <div className="flex gap-3">
