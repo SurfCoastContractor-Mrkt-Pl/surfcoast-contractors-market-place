@@ -7,18 +7,15 @@ export default function EmailCapturePopup() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [closed, setClosed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem('emailPopupSeen');
-    if (hasSeenPopup) {
-      setClosed(true);
-      return;
-    }
+    if (hasSeenPopup) return;
     
     // Delay popup by 20 seconds
     const timer = setTimeout(() => {
-      setClosed(false);
+      setVisible(true);
     }, 20000);
     
     return () => clearTimeout(timer);
