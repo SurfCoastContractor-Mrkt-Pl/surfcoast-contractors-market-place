@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
     // Also clean up pending subscriptions older than 24 hours
     const stalePendingSubscriptions = await base44.asServiceRole.entities.Subscription.filter({
       status: 'pending',
-      created_date: { '$lt': oneDayAgo }
+      created_date: { $lt: oneDayAgo }
     });
 
     console.log(`Found ${stalePendingSubscriptions?.length || 0} stale pending subscriptions`);
