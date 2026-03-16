@@ -160,8 +160,8 @@ function QuoteCard({ quote }) {
 
       {/* Quote amount — only when quoted */}
       {quote.status === 'quoted' && (
-        <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-xs text-slate-500 font-semibold uppercase mb-1">Estimated Cost</p>
+      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+        <p className="text-xs text-slate-500 font-semibold uppercase mb-1">Estimate (Total Cost)</p>
           <p className="text-2xl font-bold text-slate-900">${quote.quote_amount?.toFixed(2)}</p>
           {quote.responded_at && (
             <p className="text-xs text-slate-500 mt-1">Quoted {new Date(quote.responded_at).toLocaleDateString()}</p>
