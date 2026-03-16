@@ -234,8 +234,8 @@ export default function ContractorJobDashboard({ contractorId, contractorEmail }
                 </Badge>
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">Cost</p>
-                <p className="text-sm font-medium text-slate-900 mt-1">${selectedJob.cost_amount} {selectedJob.cost_type === 'hourly' ? '/hour' : 'fixed'}</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase">Estimate</p>
+                <p className="text-sm font-medium text-slate-900 mt-1">${selectedJob.cost_amount} {selectedJob.cost_type === 'hourly' ? '/hour' : 'fixed total'}</p>
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase">Work Date</p>
