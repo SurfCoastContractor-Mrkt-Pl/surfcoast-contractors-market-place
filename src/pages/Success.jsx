@@ -119,6 +119,13 @@ export default function Success() {
       verifyAndFinalize();
       }, [navigate]);
 
+  // Countdown effect for timed sessions
+  useEffect(() => {
+    if (countdown === null || countdown === 0) return;
+    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full p-8 text-center">
@@ -146,21 +153,28 @@ export default function Success() {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Successful!</h1>
-            <p className="text-slate-600 mb-6">
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Successful! ✓</h1>
+            <p className="text-slate-600 mb-8">
               {isQuote
                 ? 'Your quote request has been submitted! The contractor will respond within 48 hours. You can track it in your account.'
                 : isTimed
-                  ? `Your 10-minute chat session with ${timedContractorName || 'the contractor'} is now active. Click below to start messaging.`
+                  ? `Your 10-minute chat session with ${timedContractorName || 'the contractor'} is now active!`
                   : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
             </p>
             {isTimed && timedContractorEmail ? (
-              <Button
-                onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`)}
-                className="bg-green-600 hover:bg-green-700 text-white w-full"
-              >
-                Message {timedContractorName || 'Contractor'}
-              </Button>
+              <>
+                <Button
+                  onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`)}
+                  className="bg-green-600 hover:bg-green-700 text-white w-full text-lg py-6 font-semibold"
+                >
+                  {countdown && countdown > 0 
+                    ? `Go to Chat (${countdown}s)` 
+                    : `Start Messaging ${timedContractorName || 'Contractor'}`}
+                </Button>
+                {countdown && countdown > 0 && (
+                  <p className="text-sm text-slate-500 mt-4">Redirecting to chat in {countdown} seconds...</p>
+                )}
+              </>
             ) : (
               <Button
                 onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')}
