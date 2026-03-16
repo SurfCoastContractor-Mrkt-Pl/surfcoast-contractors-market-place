@@ -47,7 +47,9 @@ export default function ContractorAccount() {
    const adminPreviewId = urlParams.get('id');
    const isAdminPreview = urlParams.get('admin') === 'true';
 
+   const navigate = useNavigate();
    const [closeoutScope, setCloseoutScope] = useState(null);
+   const [selectedQuote, setSelectedQuote] = useState(null);
    const queryClient = useQueryClient();
    const [loading, setLoading] = useState(true);
    const [userEmail, setUserEmail] = useState(null);
