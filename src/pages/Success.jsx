@@ -103,12 +103,21 @@ export default function Success() {
         console.error('Payment verification error:', err);
         // Don't show an error — Stripe already redirected us here meaning payment went through
       } finally {
-        setIsVerifying(false);
-      }
-    };
+       setIsVerifying(false);
 
-    verifyAndFinalize();
-  }, []);
+       // Auto-redirect timed sessions after 3 seconds
+       if (tierParam === 'timed' && contractorEmail) {
+         setCountdown(3);
+         const timer = setTimeout(() => {
+           navigate(`/Messaging?with=${encodeURIComponent(contractorEmail)}&name=${encodeURIComponent(contractorName || '')}&tier=timed&payment_id=${pId}`);
+         }, 3000);
+         return () => clearTimeout(timer);
+       }
+      }
+      };
+
+      verifyAndFinalize();
+      }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
