@@ -126,7 +126,16 @@ Deno.serve(async (req) => {
 
 async function handleSubscriptionCreated(subscription, base44) {
   try {
-    const email = subscription.metadata?.user_email || subscription.customer_email;
+    // Try metadata first, then fetch customer from Stripe to get email
+    let email = subscription.metadata?.user_email;
+    if (!email && subscription.customer) {
+      try {
+        const customer = await stripe.customers.retrieve(subscription.customer);
+        email = customer.email;
+      } catch (customerErr) {
+        console.warn('Could not retrieve Stripe customer for email:', customerErr.message);
+      }
+    }
     if (!email) {
       console.warn('Subscription created without resolvable email — skipping record creation');
       return;
