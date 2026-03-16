@@ -135,8 +135,8 @@ export default function Messaging() {
                   userEmail={userEmail}
                   userName={userName}
                   userType={userType}
-                  tier={selectedConversation.tier}
-                  paymentRecord={selectedConversation.paymentRecord}
+                  tier={selectedConversation.tier || timedData?.tier}
+                  paymentId={selectedConversation.paymentId || timedData?.paymentId}
                 />
               ) : (
               <Card className="p-8 text-center text-slate-500">
