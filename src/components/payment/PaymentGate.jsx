@@ -132,6 +132,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const handleConfirmPayment = () => {
     setShowConfirmation(false);
+    setCheckingout(true);
     mutation.mutate(formData, selectedPaymentMethod || null);
   };
 
