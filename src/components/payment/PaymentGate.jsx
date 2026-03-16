@@ -355,7 +355,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                 <Button
                   type="submit"
                   className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || !selectedPaymentMethod || (selectedPaymentMethod === null && (!cardData.number || !cardData.expiry || !cardData.cvc))}
+                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || (selectedPaymentMethod !== null ? false : (!cardData.number || !cardData.expiry || !cardData.cvc)) || (selectedPaymentMethod === undefined)}
                 >
                   {showConfirmation ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
