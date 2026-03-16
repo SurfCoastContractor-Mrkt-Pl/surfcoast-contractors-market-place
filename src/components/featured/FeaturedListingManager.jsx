@@ -26,12 +26,12 @@ export default function FeaturedListingManager({ contractorEmail, contractorId }
 
   const handleUpgrade = async () => {
     try {
-      const session = await base44.functions.invoke('createFeaturedListingCheckout', {
+      const response = await base44.functions.invoke('createFeaturedListingCheckout', {
         contractorId,
         contractorEmail,
       });
-      if (session?.url) {
-        window.location.href = session.url;
+      if (response?.data?.url) {
+        window.location.href = response.data.url;
       }
     } catch (error) {
       console.error('Error:', error);
