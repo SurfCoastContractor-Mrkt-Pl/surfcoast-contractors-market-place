@@ -201,6 +201,19 @@ function QuoteCard({ quote }) {
         </div>
       )}
 
+      {/* Message contractor button — shown when a quote has been received */}
+      {(quote.status === 'quoted' || quote.status === 'accepted') && (
+        <Button
+          size="sm"
+          variant="outline"
+          className="w-full border-blue-300 text-blue-700 hover:bg-blue-50 gap-2"
+          onClick={handleMessageContractor}
+        >
+          <MessageCircle className="w-4 h-4" />
+          Message {quote.contractor_name} ($1.50 for 10-min session)
+        </Button>
+      )}
+
       {/* Response deadline for pending/view_approved */}
       {(quote.status === 'pending' || quote.status === 'view_approved') && quote.response_deadline && (
         <p className="text-xs text-slate-400">
