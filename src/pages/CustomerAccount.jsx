@@ -224,11 +224,19 @@ export default function CustomerAccount() {
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
                <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-                 <TabsList className="flex w-max min-w-full sm:w-full sm:grid sm:grid-cols-9 h-auto p-1 gap-0.5">
+                 <TabsList className="flex w-max min-w-full sm:w-full sm:grid sm:grid-cols-10 h-auto p-1 gap-0.5">
                    <TabsTrigger value="profile" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Profile</TabsTrigger>
                    <TabsTrigger value="quotes" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Quotes</TabsTrigger>
                    <TabsTrigger value="post-job" className="text-xs px-2.5 py-1.5 whitespace-nowrap flex items-center gap-1">
-                     <Plus className="w-3 h-3" />Job
+                     <Plus className="w-3 h-3" />Post
+                   </TabsTrigger>
+                   <TabsTrigger value="my-jobs" className="text-xs px-2.5 py-1.5 whitespace-nowrap flex items-center gap-1">
+                     My Jobs
+                     {postedJobs?.length > 0 && (
+                       <span className="bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">
+                         {postedJobs.length}
+                       </span>
+                     )}
                    </TabsTrigger>
                    <TabsTrigger value="history" className="text-xs px-2.5 py-1.5 whitespace-nowrap">History</TabsTrigger>
                    <TabsTrigger value="badges" className="text-xs px-2.5 py-1.5 whitespace-nowrap">Badges</TabsTrigger>
