@@ -245,9 +245,10 @@ export default function ContractorJobDashboard({ contractorId, contractorEmail }
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase mb-2">Scope Details</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Scope of Work</p>
+              <p className="text-xs text-slate-400 mb-2">Detailed description of what will be done, how, when, and the agreed Estimate.</p>
               <p className="text-sm text-slate-700 whitespace-pre-wrap bg-slate-50 p-3 rounded-lg">
-                {selectedJob.scope_summary || selectedJob.customer_scope_details || 'No scope details provided'}
+                {selectedJob.scope_summary || selectedJob.customer_scope_details || 'No scope of work provided'}
               </p>
             </div>
           </CardContent>
