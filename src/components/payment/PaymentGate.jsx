@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DollarSign, Loader2, CheckCircle, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
 
@@ -14,9 +15,21 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
    const [alreadyPaid, setAlreadyPaid] = useState(false);
    const [checkingout, setCheckingout] = useState(false);
    const [showConfirmation, setShowConfirmation] = useState(false);
+   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+   const [useNewCard, setUseNewCard] = useState(false);
 
    // For quote requests, validate that quote metadata is present
-   const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
+    const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
+
+   const { data: paymentMethods } = useQuery({
+    queryKey: ['paymentMethods', formData.email],
+    queryFn: async () => {
+      if (!formData.email) return [];
+      const res = await base44.functions.invoke('getPaymentMethods', { userEmail: formData.email });
+      return res?.data || [];
+    },
+    enabled: !!formData.email && open && !paid && !alreadyPaid,
+   });
 
   const tierConfigs = {
     quote: { amount: 1.75, label: 'Quote Request Fee', description: 'Blind written estimate' },
@@ -26,7 +39,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
   const tierConfig = tierConfigs[tier] || tierConfigs.quote;
 
   const mutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data, paymentMethodId = null) => {
       // Prevent double-click before any async work
       if (checkingout) throw new Error('Checkout already in progress');
       setCheckingout(true);
@@ -65,6 +78,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
          priceId: priceId,
          quoteMetaParam: quoteMetaParam,
          idempotencyKey: idempotencyKey,
+         paymentMethodId: paymentMethodId,
        });
 
       if (!response.data?.url) {
@@ -112,7 +126,18 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
   const handleConfirmPayment = () => {
     setShowConfirmation(false);
-    mutation.mutate(formData);
+    mutation.mutate(formData, selectedPaymentMethod || null);
+  };
+
+  const handlePayWithSavedCard = () => {
+    if (selectedPaymentMethod) {
+      setShowConfirmation(true);
+    }
+  };
+
+  const handlePayWithNewCard = () => {
+    setShowConfirmation(true);
+    setSelectedPaymentMethod(null);
   };
 
   const handleClose = () => {
@@ -235,7 +260,71 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               )}
             </div>
 
-            <div className="flex gap-3">
+            {/* Card Selection (if saved cards exist) */}
+            {paymentMethods && paymentMethods.length > 0 ? (
+              <Tabs defaultValue="saved" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="saved">Saved Cards</TabsTrigger>
+                  <TabsTrigger value="new">New Card</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="saved" className="space-y-4">
+                  <div className="space-y-2">
+                    {paymentMethods.map((method) => (
+                      <label key={method.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50">
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          value={method.stripe_payment_method_id}
+                          checked={selectedPaymentMethod === method.stripe_payment_method_id}
+                          onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                          className="w-4 h-4"
+                        />
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-900">{method.card_name || 'Unnamed Card'}</p>
+                          <p className="text-sm text-slate-600">{method.card_brand?.toUpperCase()} ending in {method.card_last4}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  <div className="flex gap-3">
+                    <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={checkingout}>Cancel</Button>
+                    <Button
+                      onClick={handlePayWithSavedCard}
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                      disabled={!selectedPaymentMethod || !hasRequiredQuoteData || checkingout}
+                    >
+                      {checkingout ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+                      ) : (
+                        `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
+                      )}
+                    </Button>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="new" className="space-y-4">
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                    <p><strong>Note:</strong> Your card details will not be saved. You'll enter them in the next step.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={checkingout}>Cancel</Button>
+                    <Button
+                      onClick={handlePayWithNewCard}
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                      disabled={!hasRequiredQuoteData || checkingout}
+                    >
+                      {checkingout ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+                      ) : (
+                        'Continue with New Card'
+                      )}
+                    </Button>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <div className="flex gap-3">
                 <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation}>Cancel</Button>
                 <Button
                   type="submit"
@@ -249,6 +338,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   )}
                 </Button>
               </div>
+            )}
             {!hasRequiredQuoteData && tier === 'quote' && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> Project details are missing. Please close this and select a project before paying.
