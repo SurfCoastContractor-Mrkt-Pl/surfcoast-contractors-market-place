@@ -82,13 +82,13 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
         <DialogHeader>
           <DialogTitle>
             {step === 'review' && `Quote Request from ${request.customer_name}`}
-            {step === 'quote' && `Provide Quote to ${request.customer_name}`}
+            {step === 'quote' && `Provide Estimate to ${request.customer_name}`}
             {step === 'deny' && `Decline Quote Request`}
           </DialogTitle>
           <DialogDescription>
-            {step === 'review' && 'Review the request and choose to provide a quote or decline.'}
-            {step === 'quote' && 'Enter your estimated cost and an optional message.'}
-            {step === 'deny' && 'Let the customer know you\'re unable to quote this job.'}
+            {step === 'review' && 'Review the customer\'s quote request. If you accept, you\'ll provide your Estimate (total cost).'}
+            {step === 'quote' && 'Enter your Estimate — the total cost/price for the work described. This is what the customer requested a quote for.'}
+            {step === 'deny' && 'Let the customer know you\'re unable to provide a quote for this job.'}
           </DialogDescription>
         </DialogHeader>
 
