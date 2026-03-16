@@ -11,7 +11,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'payment_id required' }, { status: 400 });
     }
 
-    const payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
+    let payments;
+    try {
+      payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
+    } catch (lookupErr) {
+      console.warn('Payment lookup failed:', lookupErr.message);
+      return Response.json({ payment: null });
+    }
 
     if (!payments || payments.length === 0) {
       return Response.json({ payment: null });
