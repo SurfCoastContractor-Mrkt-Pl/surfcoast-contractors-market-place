@@ -156,7 +156,7 @@ export default function EnhancedHeroSection() {
               ) : (
                 <form onSubmit={handlePost} className="space-y-4">
                   <div className="rounded-lg p-4 space-y-3" style={{backgroundColor: 'rgba(30, 90, 150, 0.05)'}}>
-                    {['Get same-day quotes from local pros', 'Compare prices & reviews side-by-side', 'Hire with confidence — all verified'].map((item, i) => (
+                    {['Request quotes — get a Scope of Work & Estimate', 'Compare pricing & reviews side-by-side', 'Hire with confidence — all verified'].map((item, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
                         <span className="text-sm text-slate-700">{item}</span>
