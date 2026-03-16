@@ -262,13 +262,13 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
 
             {/* Card Selection (if saved cards exist) */}
             {paymentMethods && paymentMethods.length > 0 ? (
-              <Tabs defaultValue="saved" className="w-full">
+              <Tabs defaultValue={useNewCard ? "new" : "saved"} onValueChange={(val) => setUseNewCard(val === "new")} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="saved">Saved Cards</TabsTrigger>
                   <TabsTrigger value="new">New Card</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="saved" className="space-y-4">
+                <TabsContent value="saved" className="mt-4">
                   <div className="space-y-2">
                     {paymentMethods.map((method) => (
                       <label key={method.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50">
@@ -287,49 +287,22 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                       </label>
                     ))}
                   </div>
-                  <div className="flex gap-3">
-                    <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={checkingout}>Cancel</Button>
-                    <Button
-                      onClick={handlePayWithSavedCard}
-                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                      disabled={!selectedPaymentMethod || !hasRequiredQuoteData || checkingout}
-                    >
-                      {checkingout ? (
-                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
-                      ) : (
-                        `Confirm & Pay $${tierConfig.amount.toFixed(2)}`
-                      )}
-                    </Button>
-                  </div>
                 </TabsContent>
 
-                <TabsContent value="new" className="space-y-4">
+                <TabsContent value="new" className="mt-4">
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
                     <p><strong>Note:</strong> Your card details will not be saved. You'll enter them in the next step.</p>
                   </div>
-                  <div className="flex gap-3">
-                    <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={checkingout}>Cancel</Button>
-                    <Button
-                      onClick={handlePayWithNewCard}
-                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                      disabled={!hasRequiredQuoteData || checkingout}
-                    >
-                      {checkingout ? (
-                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
-                      ) : (
-                        'Continue with New Card'
-                      )}
-                    </Button>
-                  </div>
                 </TabsContent>
               </Tabs>
-            ) : (
-              <div className="flex gap-3">
+            ) : null}
+
+            <div className="flex gap-3">
                 <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation}>Cancel</Button>
                 <Button
                   type="submit"
                   className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData}
+                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || (paymentMethods?.length > 0 && !useNewCard && !selectedPaymentMethod)}
                 >
                   {showConfirmation ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
@@ -338,7 +311,6 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                   )}
                 </Button>
               </div>
-            )}
             {!hasRequiredQuoteData && tier === 'quote' && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> Project details are missing. Please close this and select a project before paying.
