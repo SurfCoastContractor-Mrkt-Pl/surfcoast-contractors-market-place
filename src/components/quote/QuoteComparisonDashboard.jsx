@@ -86,6 +86,7 @@ export default function QuoteComparisonDashboard({ customerEmail }) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-slate-900">Your Quote Requests ({quoteRequests.length})</h2>
+      <p className="text-xs text-slate-500 -mt-2">A quote request asks a contractor to provide a Scope of Work and Estimate for your project.</p>
 
       {Object.entries(groupedQuotes).map(([key, group]) => {
         const isExpanded = expandedJob === key;
