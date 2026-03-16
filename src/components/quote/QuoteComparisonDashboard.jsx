@@ -136,9 +136,24 @@ export default function QuoteComparisonDashboard({ customerEmail }) {
 function QuoteCard({ quote }) {
   const cfg = STATUS_CONFIG[quote.status] || STATUS_CONFIG.pending;
   const Icon = cfg.icon;
+  const [showPaymentGate, setShowPaymentGate] = useState(false);
+
+  const handleMessageContractor = () => setShowPaymentGate(true);
 
   return (
     <div className="p-4 space-y-3">
+      {showPaymentGate && (
+        <PaymentGate
+          open={showPaymentGate}
+          onClose={() => setShowPaymentGate(false)}
+          onPaid={() => setShowPaymentGate(false)}
+          payerType="customer"
+          contractorId={quote.contractor_id}
+          contractorEmail={quote.contractor_email}
+          contractorName={quote.contractor_name}
+          tier="timed"
+        />
+      )}
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-semibold text-slate-900 text-sm">{quote.contractor_name}</p>
