@@ -45,12 +45,14 @@ export default function ScopeApprovalCard({ scope, onApprovalSuccess }) {
           {/* Scope Summary */}
           <div>
             <h4 className="text-sm font-semibold text-slate-900 mb-2">Scope of Work</h4>
+            <p className="text-xs text-slate-500 mb-2">A detailed description of all work to be performed — what will be done, how, and when.</p>
             <p className="text-sm text-slate-700 leading-relaxed">{scope.scope_summary}</p>
           </div>
 
           {/* Estimate */}
           <div className="bg-slate-50 p-3 rounded-lg">
-            <h4 className="text-sm font-semibold text-slate-900 mb-2">Estimate</h4>
+            <h4 className="text-sm font-semibold text-slate-900 mb-1">Estimate (Total Cost)</h4>
+            <p className="text-xs text-slate-500 mb-2">The total price/cost for all work defined in the Scope of Work above.</p>
             <div className="text-lg font-bold text-slate-900">
               {scope.cost_type === 'hourly'
                 ? `$${scope.cost_amount}/hr`
