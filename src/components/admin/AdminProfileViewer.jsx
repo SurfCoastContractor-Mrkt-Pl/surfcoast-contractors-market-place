@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Users, HardHat, Search, MapPin, Phone, Mail, Star, CheckCircle2, Briefcase, ShieldCheck, ChevronLeft, ExternalLink } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 
 function ContractorProfileView({ contractor }) {
   return (

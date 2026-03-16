@@ -31,6 +31,7 @@ import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
+import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
