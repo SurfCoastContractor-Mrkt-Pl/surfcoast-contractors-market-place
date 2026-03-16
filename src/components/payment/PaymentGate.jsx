@@ -97,8 +97,11 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       window.location.href = response.data.url;
 
       return response.data;
+      } catch (error) {
+        throw error;
+      }
       },
-    onSuccess: (record) => {
+      onSuccess: (record) => {
       setPaid(true);
       onPaid(record);
       setCheckingout(false);
