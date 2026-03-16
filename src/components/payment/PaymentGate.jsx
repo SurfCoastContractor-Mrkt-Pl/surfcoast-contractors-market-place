@@ -352,13 +352,13 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
             ) : null}
 
             <div className="flex gap-3">
-                <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation}>Cancel</Button>
+                <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation || checkingout}>Cancel</Button>
                 <Button
                   type="submit"
                   className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                  disabled={showConfirmation || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || (selectedPaymentMethod !== null ? false : (!cardData.number || !cardData.expiry || !cardData.cvc)) || (selectedPaymentMethod === undefined)}
+                  disabled={showConfirmation || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || (selectedPaymentMethod !== null ? false : (!cardData.number || !cardData.expiry || !cardData.cvc)) || (selectedPaymentMethod === undefined)}
                 >
-                  {showConfirmation ? (
+                  {checkingout ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
                   ) : (
                     'Continue to Payment'
