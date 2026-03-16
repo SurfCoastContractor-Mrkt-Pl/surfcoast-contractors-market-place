@@ -39,6 +39,10 @@ export default function Jobs() {
   const [jobDistances, setJobDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
   const [isSearching, setIsSearching] = useState(false);
+  const [activeSearchQuery, setActiveSearchQuery] = useState('');
+  const [activeTypeFilter, setActiveTypeFilter] = useState('');
+  const [activeTradeFilter, setActiveTradeFilter] = useState('');
+  const [activeUrgencyFilter, setActiveUrgencyFilter] = useState('');
 
   // Check if user is a contractor
   useEffect(() => {
@@ -78,22 +82,22 @@ export default function Jobs() {
     return jobs.filter(job => {
       if (scheduledJobIds.has(job.id)) return false;
 
-      const matchesSearch = !searchQuery || 
-        job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = !activeSearchQuery || 
+        job.title?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+        job.location?.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+        job.description?.toLowerCase().includes(activeSearchQuery.toLowerCase());
       
-      const matchesType = !typeFilter || 
-        typeFilter === 'all' ||
-        job.contractor_type_needed === typeFilter;
+      const matchesType = !activeTypeFilter || 
+        activeTypeFilter === 'all' ||
+        job.contractor_type_needed === activeTypeFilter;
       
-      const matchesTrade = !tradeFilter || 
-        tradeFilter === 'all' ||
-        job.trade_needed === tradeFilter;
+      const matchesTrade = !activeTradeFilter || 
+        activeTradeFilter === 'all' ||
+        job.trade_needed === activeTradeFilter;
       
-      const matchesUrgency = !urgencyFilter || 
-        urgencyFilter === 'all' ||
-        job.urgency === urgencyFilter;
+      const matchesUrgency = !activeUrgencyFilter || 
+        activeUrgencyFilter === 'all' ||
+        job.urgency === activeUrgencyFilter;
 
       // Filter by radius if user location is set
       const distance = jobDistances[job.id];
@@ -101,7 +105,7 @@ export default function Jobs() {
       
       return matchesSearch && matchesType && matchesTrade && matchesUrgency && matchesRadius;
     });
-  }, [jobs, scheduledJobIds, searchQuery, typeFilter, tradeFilter, urgencyFilter, userLocation, jobDistances, searchRadius]);
+  }, [jobs, scheduledJobIds, activeSearchQuery, activeTypeFilter, activeTradeFilter, activeUrgencyFilter, userLocation, jobDistances, searchRadius]);
 
   const handleLocationChange = async (location) => {
     setUserLocation(location);
@@ -135,14 +139,25 @@ export default function Jobs() {
     setIsSearching(true);
   };
 
+  const applyFilters = () => {
+    setActiveSearchQuery(searchQuery);
+    setActiveTypeFilter(typeFilter);
+    setActiveTradeFilter(tradeFilter);
+    setActiveUrgencyFilter(urgencyFilter);
+  };
+
   const clearFilters = () => {
     setSearchQuery('');
     setTypeFilter('');
     setTradeFilter('');
     setUrgencyFilter('');
+    setActiveSearchQuery('');
+    setActiveTypeFilter('');
+    setActiveTradeFilter('');
+    setActiveUrgencyFilter('');
   };
 
-  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || urgencyFilter;
+  const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeUrgencyFilter;
 
   if (isContractor === null) {
     return (
@@ -230,7 +245,7 @@ export default function Jobs() {
             <span className="font-medium text-slate-700">Filters</span>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
@@ -278,6 +293,12 @@ export default function Jobs() {
               </SelectContent>
             </Select>
           </div>
+          <Button 
+            onClick={applyFilters}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-medium"
+          >
+            Apply Filters
+          </Button>
           
           {hasActiveFilters && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
