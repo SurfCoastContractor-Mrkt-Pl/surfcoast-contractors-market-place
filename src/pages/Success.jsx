@@ -10,11 +10,23 @@ export default function Success() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState(null);
   const [isQuote, setIsQuote] = useState(false);
+  const [isTimed, setIsTimed] = useState(false);
+  const [timedContractorEmail, setTimedContractorEmail] = useState('');
+  const [timedContractorName, setTimedContractorName] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentId = urlParams.get('payment_id');
     const quoteMetaRaw = urlParams.get('quote_meta');
+    const tierParam = urlParams.get('tier');
+    const contractorEmail = urlParams.get('contractor_email');
+    const contractorName = urlParams.get('contractor_name');
+
+    if (tierParam === 'timed') {
+      setIsTimed(true);
+      setTimedContractorEmail(contractorEmail || '');
+      setTimedContractorName(contractorName || '');
+    }
 
     if (!paymentId) {
       setError('No payment ID found. Please contact support.');
