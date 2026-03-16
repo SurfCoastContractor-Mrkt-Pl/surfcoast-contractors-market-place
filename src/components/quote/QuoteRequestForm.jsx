@@ -150,7 +150,7 @@ export default function QuoteRequestForm({ contractor, customer, open, onClose }
                 rows={4}
               />
               <p className="text-xs text-slate-500 mt-1">
-                Be specific so the contractor can provide an accurate estimate.
+                Be specific so the contractor can provide an accurate Scope of Work and Estimate.
               </p>
             </div>
           )}
