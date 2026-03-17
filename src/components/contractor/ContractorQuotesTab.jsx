@@ -258,8 +258,11 @@ export default function ContractorQuotesTab({ contractorId }) {
                 <Button
                   size="sm"
                   className="text-xs h-8 px-3"
-                  style={{ backgroundColor: '#B8860B', color: 'white' }}
-                  onClick={() => setExpandedForm(expandedForm === q.id ? null : q.id)}
+                  style={ratingBlocked ? {} : { backgroundColor: '#B8860B', color: 'white' }}
+                  variant={ratingBlocked ? 'outline' : undefined}
+                  disabled={ratingBlocked}
+                  title={ratingBlocked ? 'Submit your pending rating before accepting new work.' : undefined}
+                  onClick={() => !ratingBlocked && setExpandedForm(expandedForm === q.id ? null : q.id)}
                 >
                   Submit Quote
                 </Button>
