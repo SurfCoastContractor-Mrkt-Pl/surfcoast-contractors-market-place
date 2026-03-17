@@ -138,8 +138,18 @@ Thank you for using SurfCoast Marketplace.
     verifyAndFinalize();
   }, []);
 
+  // Redirect back to contractor profile with paid flag — profile page will auto-open chat
   const handleGoToChat = () => {
-    navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`);
+    // We need the contractor ID too — it's in the URL payment_id param isn't enough
+    // Navigate to ContractorProfile with paid=timed so it auto-opens the chat
+    const urlParams = new URLSearchParams(window.location.search);
+    const contractorId = urlParams.get('contractor_id');
+    if (contractorId) {
+      navigate(`/ContractorProfile?id=${contractorId}&paid=timed&payment_id=${paymentId}&contractor_email=${encodeURIComponent(timedContractorEmail)}&contractor_name=${encodeURIComponent(timedContractorName)}`);
+    } else {
+      // Fallback: open messaging directly
+      navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`);
+    }
   };
 
   return (

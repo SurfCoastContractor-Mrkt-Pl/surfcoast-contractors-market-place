@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
 
     // Create Stripe checkout session
     const origin = req.headers.get('origin') || 'https://localhost:3000';
-    const successUrl = `${origin}/Success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}${tier === 'timed' ? `&tier=timed&contractor_email=${encodeURIComponent(contractorEmail || '')}&contractor_name=${encodeURIComponent(contractorName || '')}` : ''}`;
+    const successUrl = `${origin}/Success?payment_id=${paymentRecord.id}${quoteMetaParam || ''}${tier === 'timed' ? `&tier=timed&contractor_id=${encodeURIComponent(contractorId || '')}&contractor_email=${encodeURIComponent(contractorEmail || '')}&contractor_name=${encodeURIComponent(contractorName || '')}` : ''}`;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
