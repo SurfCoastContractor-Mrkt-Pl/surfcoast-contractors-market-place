@@ -119,7 +119,7 @@ export default function Messaging() {
                     >
                       <div className="font-medium text-sm text-slate-900">{convo.name}</div>
                       <div className="text-xs text-slate-500 truncate mt-1">
-                        {convo.lastMessage.message}
+                        {convo.lastMessage.body}
                       </div>
                     </button>
                   ))}

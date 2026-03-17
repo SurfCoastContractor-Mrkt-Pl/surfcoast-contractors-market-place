@@ -27,14 +27,26 @@ Deno.serve(async (req) => {
     }
 
     // Check for valid, active payment/subscription
-     const payments = await base44.entities.Payment.filter({ 
-       payer_email: user.email,
-       contractor_email: otherUserEmail,
-       status: { $in: ['confirmed', 'work_scheduled'] }
-     });
+    // For customers: they are the payer. For contractors: the customer is the payer and contractor_email matches them.
+    let payments;
+    if (!userIsContractor) {
+      // User is customer — look for payments they made to this contractor
+      payments = await base44.asServiceRole.entities.Payment.filter({ 
+        payer_email: user.email,
+        contractor_email: otherUserEmail,
+        status: { $in: ['confirmed', 'work_scheduled'] }
+      });
+    } else {
+      // User is contractor — look for payments where this contractor is the recipient
+      payments = await base44.asServiceRole.entities.Payment.filter({ 
+        contractor_email: user.email,
+        payer_email: otherUserEmail,
+        status: { $in: ['confirmed', 'work_scheduled'] }
+      });
+    }
 
      if (!payments || payments.length === 0) {
-       console.warn('No active payment found. Payer:', user.email, 'Contractor:', otherUserEmail);
+       console.warn('No active payment found. User:', user.email, 'Other:', otherUserEmail);
        return Response.json({ 
          allowed: false, 
          reason: 'No active payment for this conversation',
