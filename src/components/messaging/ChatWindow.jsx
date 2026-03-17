@@ -30,7 +30,9 @@ export default function ChatWindow({
   const [eligibility, setEligibility] = useState(null);
   const [sessionCount, setSessionCount] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(null);
+  const [timerPaused, setTimerPaused] = useState(false); // paused while waiting for other party
   const scrollRef = useRef(null);
+  const timerPausedRef = useRef(false); // ref for use inside interval
 
   useEffect(() => {
     const validateAndLoad = async () => {
