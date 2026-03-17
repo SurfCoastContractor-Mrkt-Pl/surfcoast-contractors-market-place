@@ -25,75 +25,100 @@ export default function JobCloseout({ scope, role, open, onClose }) {
     if (!rating) return;
     setSubmitting(true);
 
-    const updateData = role === 'contractor'
-      ? { contractor_closeout_confirmed: true, contractor_satisfaction_rating: rating }
-      : { customer_closeout_confirmed: true, customer_satisfaction_rating: rating };
+    try {
+      const updateData = role === 'contractor'
+        ? { contractor_closeout_confirmed: true, contractor_satisfaction_rating: rating }
+        : { customer_closeout_confirmed: true, customer_satisfaction_rating: rating };
 
-    await base44.entities.ScopeOfWork.update(scope.id, updateData);
+      // Step 1: Update ScopeOfWork with rating and closeout confirmation directly
+      await base44.entities.ScopeOfWork.update(scope.id, updateData);
 
-    const fresh = await base44.entities.ScopeOfWork.filter({ id: scope.id });
-    const updated = fresh?.[0] || { ...scope, ...updateData };
+      // Step 2: Fetch fresh scope data to check if both parties confirmed
+      const fresh = await base44.entities.ScopeOfWork.filter({ id: scope.id });
+      const updated = fresh?.[0] || { ...scope, ...updateData };
 
-    if (
-      (updated.contractor_closeout_confirmed || (role === 'contractor')) &&
-      (updated.customer_closeout_confirmed || (role === 'customer'))
-    ) {
-      const closedDate = new Date().toISOString().split('T')[0];
-      await base44.entities.ScopeOfWork.update(scope.id, { status: 'closed', closed_date: closedDate });
+      if (
+        (updated.contractor_closeout_confirmed || (role === 'contractor')) &&
+        (updated.customer_closeout_confirmed || (role === 'customer'))
+      ) {
+        const closedDate = new Date().toISOString().split('T')[0];
+        
+        // Step 3: Close the scope directly
+        await base44.entities.ScopeOfWork.update(scope.id, { status: 'closed', closed_date: closedDate });
 
-      const contractorRating = role === 'contractor' ? rating : updated.contractor_satisfaction_rating;
-      const customerRating = role === 'customer' ? rating : updated.customer_satisfaction_rating;
-      const satisfactoryRatings = ['satisfactory', 'good', 'excellent'];
+        const contractorRating = role === 'contractor' ? rating : updated.contractor_satisfaction_rating;
+        const customerRating = role === 'customer' ? rating : updated.customer_satisfaction_rating;
+        const satisfactoryRatings = ['satisfactory', 'good', 'excellent'];
 
-      if (satisfactoryRatings.includes(contractorRating) && satisfactoryRatings.includes(customerRating)) {
-      if (scope.contractor_id) {
-        const contractors = await base44.entities.Contractor.filter({ id: scope.contractor_id });
-        const contractor = contractors?.[0];
-        if (contractor) {
-          const newCount = (contractor.completed_jobs_count || 0) + 1;
-          await base44.entities.Contractor.update(contractor.id, {
-            completed_jobs_count: newCount,
-          });
-          if (newCount === 300) {
-            await base44.functions.invoke('notifyAdminBadgeMilestone', {
-              name: contractor.name, email: contractor.email, count: newCount, type: 'contractor',
-            });
+        if (satisfactoryRatings.includes(contractorRating) && satisfactoryRatings.includes(customerRating)) {
+          // Update contractor completed jobs count
+          if (scope.contractor_id) {
+            const contractors = await base44.entities.Contractor.filter({ id: scope.contractor_id });
+            const contractor = contractors?.[0];
+            if (contractor) {
+              const newCount = (contractor.completed_jobs_count || 0) + 1;
+              await base44.entities.Contractor.update(contractor.id, { completed_jobs_count: newCount });
+              if (newCount === 300) {
+                await base44.functions.invoke('notifyAdminBadgeMilestone', {
+                  name: contractor.name, email: contractor.email, count: newCount, type: 'contractor',
+                });
+              }
+            }
+          }
+
+          // Update customer completed jobs count
+          if (scope.customer_email) {
+            const profiles = await base44.entities.CustomerProfile.filter({ email: scope.customer_email });
+            const profile = profiles?.[0];
+            if (profile) {
+              const newCount = (profile.completed_jobs_count || 0) + 1;
+              await base44.entities.CustomerProfile.update(profile.id, { completed_jobs_count: newCount });
+              if (newCount === 300) {
+                await base44.functions.invoke('notifyAdminBadgeMilestone', {
+                  name: profile.full_name, email: profile.email, count: newCount, type: 'customer',
+                });
+              }
+            }
           }
         }
-      }
 
-      if (scope.customer_email) {
-        const profiles = await base44.entities.CustomerProfile.filter({ email: scope.customer_email });
-        const profile = profiles?.[0];
-        if (profile) {
-          const newCount = (profile.completed_jobs_count || 0) + 1;
-          await base44.entities.CustomerProfile.update(profile.id, {
-            completed_jobs_count: newCount,
-          });
-          if (newCount === 300) {
-            await base44.functions.invoke('notifyAdminBadgeMilestone', {
-              name: profile.full_name, email: profile.email, count: newCount, type: 'customer',
-            });
-          }
-        }
-      }
-      }
+        // Step 4: Create Review record directly
+        await base44.entities.Review.create({
+          scope_id: scope.id,
+          contractor_id: scope.contractor_id,
+          contractor_name: scope.contractor_name,
+          customer_name: scope.customer_name,
+          reviewer_name: role === 'contractor' ? scope.contractor_name : scope.customer_name,
+          reviewer_email: role === 'contractor' ? scope.contractor_email : scope.customer_email,
+          reviewer_type: role,
+          job_title: scope.job_title,
+          overall_rating: rating === 'unsatisfactory' ? 1 : rating === 'satisfactory' ? 3 : rating === 'good' ? 4 : 5,
+          verified: true,
+          work_date: scope.agreed_work_date,
+        });
 
-      await base44.functions.invoke('createReviewFromCloseout', { scopeId: scope.id });
-      
-      // Send job completion email to customer
-      if (scope.customer_email) {
-        await base44.functions.invoke('sendJobCompletionEmail', {
-          scopeId: scope.id,
-          contractorEmail: scope.contractor_email,
-          customerEmail: scope.customer_email,
+        // Step 5: Call backend function for email notification only
+        await fetch('https://sage-c5f01224.base44.app/functions/submitRating', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'email_only',
+            scope_id: scope.id,
+            rater_type: role,
+            rater_email: role === 'contractor' ? scope.contractor_email : scope.customer_email,
+            job_title: scope.job_title,
+            scope: updated,
+          }),
         });
       }
-    }
 
-    setDone(true);
-    setSubmitting(false);
-    queryClient.invalidateQueries();
+      setDone(true);
+    } catch (err) {
+      console.error('Closeout error:', err);
+    } finally {
+      setSubmitting(false);
+      queryClient.invalidateQueries();
+    }
   };
 
   const handleClose = () => {
