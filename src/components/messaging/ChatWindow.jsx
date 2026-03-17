@@ -206,8 +206,10 @@ export default function ChatWindow({
            <h3 className="font-semibold text-slate-900">{otherUserName}</h3>
            <p className="text-xs text-slate-500">{otherUserEmail}</p>
            {tier === 'timed' && timeRemaining && (
-             <p className="text-xs text-amber-600 font-semibold mt-1">
-               Time remaining: {formatTimeRemaining(timeRemaining)}
+             <p className={`text-xs font-semibold mt-1 ${timerPaused ? 'text-blue-500' : 'text-amber-600'}`}>
+               {timerPaused
+                 ? `⏸ Paused — waiting for reply (${formatTimeRemaining(timeRemaining)} left)`
+                 : `▶ Time remaining: ${formatTimeRemaining(timeRemaining)}`}
              </p>
            )}
            {tier === 'subscription' && (
