@@ -168,15 +168,35 @@ export default function ContractorProfile() {
                   </div>
                 )}
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-white">{contractor.name}</h1>
-                  {contractor.years_experience && <p className="text-white/75 mt-1">{contractor.years_experience} years experience</p>}
-                  {contractor.identity_verified && (
-                    <div className="flex items-center gap-2 mt-2 text-green-400">
-                      <Shield className="w-4 h-4" />
-                      <span className="text-sm font-semibold">Identity Verified</span>
-                    </div>
-                  )}
-                </div>
+                   <h1 className="text-3xl font-bold text-white">{contractor.name}</h1>
+                   {contractor.years_experience && <p className="text-white/75 mt-1">{contractor.years_experience} years experience</p>}
+                   <div className="flex items-center gap-2 mt-2 flex-wrap">
+                     {contractor.identity_verified && (
+                       <div className="flex items-center gap-2 text-green-400">
+                         <Shield className="w-4 h-4" />
+                         <span className="text-sm font-semibold">Identity Verified</span>
+                       </div>
+                     )}
+                     {contractor.is_licensed_sole_proprietor && contractor.license_verified && contractor.license_status === 'active' && (
+                       <div className="flex items-center gap-2 text-green-400">
+                         <CheckCircle2 className="w-4 h-4" />
+                         <span className="text-sm font-semibold">License Verified</span>
+                       </div>
+                     )}
+                     {contractor.is_licensed_sole_proprietor && (contractor.license_status === 'inactive' || contractor.license_status === 'expired') && (
+                       <div className="flex items-center gap-2 text-orange-300">
+                         <Clock className="w-4 h-4" />
+                         <span className="text-sm font-semibold">Inactive License</span>
+                       </div>
+                     )}
+                     {contractor.is_licensed_sole_proprietor && contractor.license_status === 'pending_review' && (
+                       <div className="flex items-center gap-2 text-yellow-300">
+                         <Clock className="w-4 h-4" />
+                         <span className="text-sm font-semibold">License Pending</span>
+                       </div>
+                     )}
+                   </div>
+                 </div>
               </div>
 
               <div className="flex flex-wrap gap-2">
