@@ -105,11 +105,18 @@ export default function BecomeContractor() {
       }
       return base44.entities.Contractor.create(data);
     },
-    onSuccess: () => {
-      setSuccess(true);
-      setTimeout(() => {
-        navigate(createPageUrl('ContractorAccount'));
-      }, 2000);
+    onSuccess: (data) => {
+      setCreatedContractor(data);
+      // If compliance_acknowledged is already true, skip to dashboard
+      if (data?.compliance_acknowledged) {
+        setSuccess(true);
+        setTimeout(() => {
+          navigate(createPageUrl('ContractorAccount'));
+        }, 2000);
+      } else {
+        // Show compliance acknowledgment screen
+        setSuccess(true);
+      }
     },
   });
 
