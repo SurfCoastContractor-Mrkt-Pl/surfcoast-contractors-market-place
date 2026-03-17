@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Check, MessageCircle, Zap, Star } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import PaymentGate from '@/components/payment/PaymentGate';
+import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
 
 export default function MessagingPricingTable({ contractorId, contractorName, contractorEmail, open, onClose, onMessagingUnlocked }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
