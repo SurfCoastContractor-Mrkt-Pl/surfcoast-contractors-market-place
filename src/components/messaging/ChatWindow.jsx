@@ -166,6 +166,11 @@ export default function ChatWindow({
         read: false
       });
       setNewMessage('');
+      // Pause timer — waiting for the other party to respond
+      if (tier === 'timed') {
+        timerPausedRef.current = true;
+        setTimerPaused(true);
+      }
     } catch (error) {
       console.error('Error sending message:', error);
     }
