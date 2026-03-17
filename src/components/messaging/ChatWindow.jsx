@@ -19,8 +19,11 @@ export default function ChatWindow({
   userType,
   otherUserType,
   tier = 'subscription',
+  paymentId = null,
   paymentRecord = null 
 }) {
+  // Normalise: accept either paymentId string or paymentRecord object
+  const resolvedPaymentId = paymentId || paymentRecord?.id || null;
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -32,19 +35,22 @@ export default function ChatWindow({
   useEffect(() => {
     const validateAndLoad = async () => {
       try {
-        // Validate eligibility
-        const result = await validateMessagingEligibility(
-          userEmail,
-          userType,
-          otherUserEmail,
-          otherUserType,
-          tier
-        );
-        setEligibility(result);
-
-        if (!result.allowed) {
-          setLoading(false);
-          return;
+        // For timed tier with a payment ID, skip eligibility check — trust the payment
+        if (tier === 'timed' && resolvedPaymentId) {
+          setEligibility({ allowed: true, tier: 'timed' });
+        } else {
+          const result = await validateMessagingEligibility(
+            userEmail,
+            userType,
+            otherUserEmail,
+            otherUserType,
+            tier
+          );
+          setEligibility(result);
+          if (!result.allowed) {
+            setLoading(false);
+            return;
+          }
         }
 
         // Load existing messages
@@ -62,10 +68,20 @@ export default function ChatWindow({
           setSessionCount(count);
         }
 
-        // Get time remaining for timed session
-        if (tier === 'timed' && paymentRecord) {
-          const expiration = getTimedSessionExpiration(paymentRecord);
-          setTimeRemaining(expiration);
+        // Get time remaining for timed session — look up the payment record by ID
+        if (tier === 'timed' && resolvedPaymentId) {
+          try {
+            const result = await base44.functions.invoke('verifyPayment', { payment_id: resolvedPaymentId });
+            const p = result?.data?.payment;
+            if (p?.session_expires_at) {
+              setTimeRemaining(new Date(p.session_expires_at));
+            } else {
+              // No expiry set yet (webhook pending) — grant 10 minutes from now
+              setTimeRemaining(new Date(Date.now() + 10 * 60 * 1000));
+            }
+          } catch {
+            setTimeRemaining(new Date(Date.now() + 10 * 60 * 1000));
+          }
         }
       } catch (error) {
         console.error('Error validating eligibility:', error);
@@ -133,7 +149,7 @@ export default function ChatWindow({
         recipient_email: otherUserEmail,
         recipient_name: otherUserName,
         body: newMessage.trim(),
-        payment_id: paymentRecord?.id || null,
+        payment_id: resolvedPaymentId,
         read: false
       });
       setNewMessage('');
