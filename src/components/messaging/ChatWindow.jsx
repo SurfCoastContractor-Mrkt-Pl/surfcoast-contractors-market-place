@@ -18,7 +18,7 @@ export default function ChatWindow({
   userName, 
   userType,
   otherUserType,
-  tier = 'subscription',
+  tier = null,
   paymentId = null,
   paymentRecord = null 
 }) {
