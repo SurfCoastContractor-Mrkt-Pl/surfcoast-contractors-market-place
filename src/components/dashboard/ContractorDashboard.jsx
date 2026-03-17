@@ -71,6 +71,14 @@ export default function ContractorDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      {pendingRatingScopes.length > 0 && (
+        <PendingRatingModal
+          scope={pendingRatingScopes[0]}
+          raterType="contractor"
+          raterEmail={user?.email}
+          onDone={() => {}}
+        />
+      )}
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
