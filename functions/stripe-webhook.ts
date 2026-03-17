@@ -455,6 +455,46 @@ async function handleCheckoutSessionCompleted(session, base44) {
   }
 }
 
+async function handlePaymentMethodAttached(paymentMethod, base44) {
+  try {
+    if (paymentMethod.type !== 'card') return;
+    const card = paymentMethod.card;
+    if (!card) return;
+
+    // Get customer email from Stripe
+    let email = null;
+    if (paymentMethod.customer) {
+      try {
+        const customer = await stripe.customers.retrieve(paymentMethod.customer);
+        email = customer.email;
+      } catch (e) {
+        console.warn('Could not retrieve customer for payment method:', e.message);
+      }
+    }
+    if (!email) return;
+
+    // Don't save duplicates
+    const existing = await base44.asServiceRole.entities.SavedPaymentMethod.filter({
+      user_email: email,
+      stripe_payment_method_id: paymentMethod.id,
+    });
+    if (existing && existing.length > 0) return;
+
+    await base44.asServiceRole.entities.SavedPaymentMethod.create({
+      user_email: email,
+      stripe_customer_id: paymentMethod.customer,
+      stripe_payment_method_id: paymentMethod.id,
+      card_brand: card.brand,
+      card_last4: card.last4,
+      card_exp_month: card.exp_month,
+      card_exp_year: card.exp_year,
+    });
+    console.log(`Saved payment method ${paymentMethod.id} for ${email}`);
+  } catch (error) {
+    console.error('Error handling payment method attached:', error.message);
+  }
+}
+
 async function handleCheckoutSessionExpired(session, base44) {
   try {
     console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
