@@ -17,12 +17,12 @@ import {
 
 export default function PaymentGate({ open, onClose, onPaid, payerType, contractorId, contractorEmail, contractorName, tier = 'quote', priceId, quoteMetaParam = '' }) {
    const [formData, setFormData] = useState({ name: '', email: '' });
-   const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '', saveCard: false });
    const [paid, setPaid] = useState(false);
    const [alreadyPaid, setAlreadyPaid] = useState(false);
    const [checkingout, setCheckingout] = useState(false);
    const [showConfirmation, setShowConfirmation] = useState(false);
-   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(undefined); // undefined = not yet resolved
+   const [useNewCard, setUseNewCard] = useState(false);
 
    // For quote requests, validate that quote metadata is present
     const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
