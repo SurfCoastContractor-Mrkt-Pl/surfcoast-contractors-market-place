@@ -53,12 +53,20 @@ export default function ContractorProfileEditor({ contractor }) {
     },
   });
 
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoError, setPhotoError] = useState('');
+
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const response = await base44.integrations.Core.UploadFile({ file });
-      setEditData({ ...editData, photo_url: response.file_url });
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) {
+      setPhotoError('File is too large. Maximum size is 8MB.');
+      return;
     }
+    setPhotoError('');
+    setPhotoPreview(URL.createObjectURL(file));
+    const response = await base44.integrations.Core.UploadFile({ file });
+    setEditData(prev => ({ ...prev, photo_url: response.file_url }));
   };
 
   const handleSave = () => {
