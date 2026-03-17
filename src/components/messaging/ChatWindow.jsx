@@ -124,23 +124,26 @@ export default function ChatWindow({
     }
   }, [messages]);
 
-  // Timer for timed session
+  // Timer for timed session — pauses when waiting for other party's reply
   useEffect(() => {
     if (tier !== 'timed' || !timeRemaining) return;
 
     const interval = setInterval(() => {
-      const now = new Date();
-      const remaining = timeRemaining - now;
-      
-      if (remaining <= 0) {
-        setEligibility({ allowed: false, reason: 'Session expired' });
-        clearInterval(interval);
-      }
-      setTimeRemaining(prev => new Date(prev.getTime() - 1000));
+      // If paused (waiting for other party), don't count down
+      if (timerPausedRef.current) return;
+
+      setTimeRemaining(prev => {
+        const next = new Date(prev.getTime() - 1000);
+        if (next <= new Date()) {
+          setEligibility({ allowed: false, reason: 'Session expired' });
+          clearInterval(interval);
+        }
+        return next;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeRemaining, tier]);
+  }, [tier, timeRemaining !== null]); // only re-run when timer is first set
 
   const handleSend = async () => {
     if (!newMessage.trim() || !eligibility?.allowed) return;
