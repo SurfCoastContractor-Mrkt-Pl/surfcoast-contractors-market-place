@@ -62,7 +62,16 @@ export default function ChatWindow({
             { sender_email: otherUserEmail, recipient_email: userEmail }
           ]
         });
-        setMessages(msgs.sort((a, b) => new Date(a.created_date) - new Date(b.created_date)));
+        const sorted = msgs.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
+        setMessages(sorted);
+        // If the last message was sent by the current user, start paused
+        if (tier === 'timed' && sorted.length > 0) {
+          const lastMsg = sorted[sorted.length - 1];
+          if (lastMsg.sender_email === userEmail) {
+            timerPausedRef.current = true;
+            setTimerPaused(true);
+          }
+        }
 
         // Get session count for subscription tier
         if (tier === 'subscription') {
