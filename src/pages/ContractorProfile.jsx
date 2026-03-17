@@ -27,6 +27,7 @@ import MessagingPricingTable from '@/components/messaging/MessagingPricingTable'
 import ContractorServices from '@/components/contractor/ContractorServices';
 import ChatWindow from '@/components/messaging/ChatWindow';
 import PublicCredentialsDisplay from '@/components/contractor/PublicCredentialsDisplay';
+import AuthTopBar from '@/components/auth/AuthTopBar';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
@@ -143,6 +144,7 @@ export default function ContractorProfile() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="relative text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <AuthTopBar />
         <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.62)'}}></div>
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link to={createPageUrl('FindContractors')}>
