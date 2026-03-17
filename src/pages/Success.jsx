@@ -10,6 +10,7 @@ export default function Success() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState(null);
   const [isQuote, setIsQuote] = useState(false);
+  const [quoteContractorName, setQuoteContractorName] = useState('');
   const [isTimed, setIsTimed] = useState(false);
   const [timedContractorEmail, setTimedContractorEmail] = useState('');
   const [timedContractorName, setTimedContractorName] = useState('');
