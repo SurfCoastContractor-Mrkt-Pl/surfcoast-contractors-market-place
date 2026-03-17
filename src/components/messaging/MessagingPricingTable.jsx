@@ -11,8 +11,16 @@ import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
 export default function MessagingPricingTable({ contractorId, contractorName, contractorEmail, open, onClose, onMessagingUnlocked }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [quoteFormOpen, setQuoteFormOpen] = useState(false);
+  const [customer, setCustomer] = useState(null);
   const [priceIds, setPriceIds] = useState({});
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    base44.auth.me().then(user => {
+      if (user) setCustomer({ email: user.email, full_name: user.full_name });
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const loadPriceIds = async () => {
