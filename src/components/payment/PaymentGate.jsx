@@ -230,11 +230,6 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700">
-              <CreditCard className="w-4 h-4 shrink-0" />
-              <span>Secure Stripe card payment is ready. Your payment will be processed when you click "Confirm".</span>
-            </div>
-
             <div>
               <Label htmlFor="pay_name">Your Full Name *</Label>
               <Input
@@ -267,104 +262,92 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               )}
             </div>
 
-            {/* Payment Method Selection */}
-            <div>
-              <Label htmlFor="payment-method">Payment Method *</Label>
-              <Select value={selectedPaymentMethod === null ? 'new' : selectedPaymentMethod || ''} onValueChange={(value) => {
-                if (value === 'new') {
-                  setSelectedPaymentMethod(null);
-                  setCardData({ number: '', expiry: '', cvc: '', saveCard: false });
-                } else {
-                  setSelectedPaymentMethod(value);
-                  setCardData({ number: '', expiry: '', cvc: '', saveCard: false });
-                }
-              }}>
-                <SelectTrigger id="payment-method" className="mt-1.5">
-                  <SelectValue placeholder="Select a payment method" />
-                </SelectTrigger>
-                <SelectContent>
-                  {paymentMethods && paymentMethods.length > 0 && (
-                    <>
-                      {paymentMethods.map((method) => (
-                        <SelectItem key={method.id} value={method.stripe_payment_method_id}>
-                          {method.card_brand?.toUpperCase()} ending in {method.card_last4}
-                        </SelectItem>
-                      ))}
-                      <div className="border-t my-1" />
-                    </>
-                  )}
-                  <SelectItem value="new">+ Enter New Card</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* Payment Method */}
+            <div className="rounded-xl border border-blue-200 bg-blue-50 overflow-hidden">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-blue-200 bg-blue-100/60">
+                <CreditCard className="w-4 h-4 text-blue-600 shrink-0" />
+                <span className="text-sm font-semibold text-blue-800">Payment Method</span>
+              </div>
+
+              <div className="p-4 space-y-3">
+                {hasSavedCards ? (
+                  <>
+                    {/* Saved card — auto selected */}
+                    {paymentMethods.map((method) => (
+                      <label
+                        key={method.stripe_payment_method_id}
+                        className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          !useNewCard && selectedPaymentMethod === method.stripe_payment_method_id
+                            ? 'border-blue-500 bg-white'
+                            : 'border-slate-200 bg-white/70'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="payment_method"
+                          checked={!useNewCard && selectedPaymentMethod === method.stripe_payment_method_id}
+                          onChange={() => { setSelectedPaymentMethod(method.stripe_payment_method_id); setUseNewCard(false); }}
+                          className="w-4 h-4 accent-blue-600"
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-slate-800">
+                            {method.card_brand?.toUpperCase()} •••• {method.card_last4}
+                          </p>
+                          <p className="text-xs text-slate-500">Expires {method.card_exp_month}/{method.card_exp_year}</p>
+                        </div>
+                        {!useNewCard && selectedPaymentMethod === method.stripe_payment_method_id && (
+                          <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Selected</span>
+                        )}
+                      </label>
+                    ))}
+
+                    {/* Use a different / new card */}
+                    <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      useNewCard ? 'border-blue-500 bg-white' : 'border-dashed border-slate-300 bg-white/50'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={useNewCard}
+                        onChange={(e) => setUseNewCard(e.target.checked)}
+                        className="w-4 h-4 accent-blue-600"
+                      />
+                      <span className="text-sm text-slate-700 font-medium">Use a different or new card</span>
+                    </label>
+
+                    {useNewCard && (
+                      <p className="text-xs text-blue-700 px-1">
+                        You'll enter your card details securely on the next Stripe checkout page.
+                      </p>
+                    )}
+
+                    {!useNewCard && (
+                      <p className="text-xs text-blue-700 px-1">
+                        Your saved card above will be used. You'll confirm the charge on the next page via Stripe.
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-sm text-blue-700">
+                    No saved cards on file. You'll enter your card details securely on the Stripe checkout page after clicking <strong>Continue to Payment</strong>.
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Card Input Fields (shown when "Enter New Card" is selected) */}
-            {selectedPaymentMethod === null ? (
-              <div className="space-y-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-700"><strong>Enter Card Details</strong></p>
-                <div>
-                  <Label htmlFor="card_number" className="text-xs">Card Number</Label>
-                  <Input
-                    id="card_number"
-                    placeholder="1234 5678 9012 3456"
-                    value={cardData.number}
-                    onChange={(e) => setCardData(p => ({ ...p, number: e.target.value }))}
-                    className="mt-1 text-sm"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label htmlFor="card_expiry" className="text-xs">Expiry (MM/YY)</Label>
-                    <Input
-                      id="card_expiry"
-                      placeholder="12/25"
-                      value={cardData.expiry}
-                      onChange={(e) => setCardData(p => ({ ...p, expiry: e.target.value }))}
-                      className="mt-1 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="card_cvc" className="text-xs">CVC</Label>
-                    <Input
-                      id="card_cvc"
-                      placeholder="123"
-                      type="password"
-                      value={cardData.cvc}
-                      onChange={(e) => setCardData(p => ({ ...p, cvc: e.target.value }))}
-                      className="mt-1 text-sm"
-                    />
-                  </div>
-                </div>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={cardData.saveCard}
-                    onChange={(e) => setCardData(p => ({ ...p, saveCard: e.target.checked }))}
-                    className="w-4 h-4"
-                  />
-                  <span className="text-xs text-blue-900">Save this card for future payments</span>
-                </label>
-              </div>
-            ) : !selectedPaymentMethod ? (
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                <p><strong>Note:</strong> Select a payment method above.</p>
-              </div>
-            ) : null}
-
             <div className="flex gap-3">
-                <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={showConfirmation || checkingout}>Cancel</Button>
-                <Button
-                  type="submit"
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                  disabled={showConfirmation || checkingout || !formData.name || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData || (selectedPaymentMethod !== null ? false : (!cardData.number || !cardData.expiry || !cardData.cvc)) || (selectedPaymentMethod === undefined)}
-                >
-                  {checkingout ? (
-                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
-                  ) : (
-                    'Continue to Payment'
-                  )}
-                </Button>
-              </div>
+              <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={checkingout}>Cancel</Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+                disabled={checkingout || !formData.name || formData.name.length < 2 || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData}
+              >
+                {checkingout ? (
+                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
+                ) : (
+                  'Continue to Payment'
+                )}
+              </Button>
+            </div>
             {!hasRequiredQuoteData && tier === 'quote' && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                 <strong>Error:</strong> Project details are missing. Please close this and select a project before paying.
