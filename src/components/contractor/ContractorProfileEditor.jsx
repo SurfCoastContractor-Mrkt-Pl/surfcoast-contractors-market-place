@@ -96,14 +96,30 @@ export default function ContractorProfileEditor({ contractor }) {
         <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
           {/* Profile Photo */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">Profile Photo</Label>
-            <div className="mt-2 flex items-center gap-4">
-              {editData.photo_url && (
-                <div className="relative">
-                  <img src={editData.photo_url} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
+            <Label className="text-sm font-medium mb-2 block">Profile Photo</Label>
+
+            {/* Guidance Card */}
+            <div className="mb-3 rounded-lg p-3 bg-amber-50 text-xs text-slate-700 space-y-1" style={{ border: '1px solid #d4a843' }}>
+              <div className="font-semibold text-slate-800 mb-1">📸 Photo requirements</div>
+              <div className="flex items-start gap-1.5"><span className="text-green-600 font-bold shrink-0">✓</span><span>Full face visible — no sunglasses, no hat, no obstructions</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-600 font-bold shrink-0">✓</span><span>Face-only or full body both accepted</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-600 font-bold shrink-0">✓</span><span>Professional headshot style — good lighting, clean background</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-600 font-bold shrink-0">✓</span><span>Work uniform is great — clean and professional</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-red-500 font-bold shrink-0">✗</span><span>No group photos, blurry shots, or tool-only images</span></div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Square preview */}
+              {(photoPreview || editData.photo_url) && (
+                <div className="relative shrink-0">
+                  <img
+                    src={photoPreview || editData.photo_url}
+                    alt="Profile preview"
+                    className="w-20 h-20 rounded-lg object-cover border border-slate-200"
+                  />
                   <button
                     type="button"
-                    onClick={() => setEditData({ ...editData, photo_url: '' })}
+                    onClick={() => { setEditData(prev => ({ ...prev, photo_url: '' })); setPhotoPreview(null); }}
                     className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
                   >
                     <X className="w-3 h-3" />
@@ -111,17 +127,18 @@ export default function ContractorProfileEditor({ contractor }) {
                 </div>
               )}
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors flex-1">
-                <Upload className="w-5 h-5 text-slate-400 mb-2" />
+                <Upload className="w-5 h-5 text-slate-400 mb-1.5" />
                 <span className="text-sm font-medium text-slate-700">{editData.photo_url ? 'Change' : 'Upload'} Photo</span>
-                <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
+                <span className="text-xs text-slate-500">JPG, PNG, WEBP — max 8MB</span>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   onChange={handlePhotoUpload}
                   className="hidden"
                 />
               </label>
             </div>
+            {photoError && <p className="text-xs text-red-500 mt-1">{photoError}</p>}
           </div>
 
           {/* Name */}
