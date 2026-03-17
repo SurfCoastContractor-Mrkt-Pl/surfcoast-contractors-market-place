@@ -321,9 +321,20 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                     )}
                   </>
                 ) : (
-                  <p className="text-sm text-blue-700">
-                    No saved cards on file. You'll enter your card details securely on the Stripe checkout page after clicking <strong>Continue to Payment</strong>.
-                  </p>
+                  <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                    useNewCard ? 'border-blue-500 bg-white' : 'border-dashed border-slate-300 bg-white/50'
+                  }`}>
+                    <input
+                      type="checkbox"
+                      checked={useNewCard}
+                      onChange={(e) => setUseNewCard(e.target.checked)}
+                      className="w-4 h-4 accent-blue-600 shrink-0"
+                    />
+                    <div>
+                      <p className="text-sm text-slate-700 font-medium">Enter card details on Stripe checkout</p>
+                      <p className="text-xs text-slate-500 mt-0.5">No saved cards on file. Check this to proceed securely.</p>
+                    </div>
+                  </label>
                 )}
               </div>
             </div>
