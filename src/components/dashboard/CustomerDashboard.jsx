@@ -19,6 +19,16 @@ export default function CustomerDashboard() {
     getUser();
   }, []);
 
+  const { data: pendingRatingScopes = [] } = useQuery({
+    queryKey: ['customer-pending-ratings', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const scopes = await base44.entities.ScopeOfWork.filter({ customer_email: user.email, status: 'pending_ratings' });
+      return (scopes || []).filter(s => !s.customer_satisfaction_rating);
+    },
+    enabled: !!user?.email,
+  });
+
   const { data: myJobs = [], isLoading: jobsLoading } = useQuery({
     queryKey: ['customer-jobs', user?.email],
     queryFn: async () => {
