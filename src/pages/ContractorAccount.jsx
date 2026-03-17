@@ -283,8 +283,8 @@ export default function ContractorAccount() {
                  </TabsTrigger>
                  <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1">
                    Quotes
-                   {incomingQuotes?.filter(q => q.status === 'pending').length > 0 && (
-                     <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending').length}</span>
+                   {incomingQuotes?.filter(q => q.status === 'pending' || q.status === 'sent').length > 0 && (
+                     <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
                    )}
                  </TabsTrigger>
                  <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
