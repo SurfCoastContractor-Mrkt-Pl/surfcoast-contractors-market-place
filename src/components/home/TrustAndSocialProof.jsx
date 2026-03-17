@@ -45,31 +45,6 @@ export default function TrustAndSocialProof() {
           </div>
         </div>
 
-        {/* Video Testimonials */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, idx) => (
-            <div key={idx} className="bg-slate-50 rounded-xl p-6 border border-slate-200/50">
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-slate-700 mb-6 font-light leading-relaxed">"{testimonial.text}"</p>
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-200">
-                <img 
-                  src={testimonial.image} 
-                  alt={testimonial.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-semibold text-slate-900 text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-slate-500">{testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Before/After */}
         <div className="mt-16 grid md:grid-cols-2 gap-8 rounded-xl p-8" style={{backgroundColor: 'rgba(30, 90, 150, 0.05)', borderColor: 'rgba(30, 90, 150, 0.2)', borderWidth: '1px'}}>
           <div>

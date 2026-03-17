@@ -89,8 +89,7 @@ export default function Home() {
       <TrustAndSocialProof />
       <EmailCapturePopup />
       <RecentActivityBanner />
-      <DemoProfiles />
-      <TradeCategories />
+<TradeCategories />
       <IndustryCategories />
       <HomeschoolPromoPopup />
       <FeaturedContractors contractors={contractors?.slice(0, 6)} isLoading={contractorsLoading} />
