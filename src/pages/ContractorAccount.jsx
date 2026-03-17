@@ -43,6 +43,7 @@ import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import ServicePackageManager from '@/components/contractor/ServicePackageManager';
 import LiveSessions from '@/components/contractor/LiveSessions';
 import TrialStatusBanner from '@/components/contractor/TrialStatusBanner';
+import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWidget';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
