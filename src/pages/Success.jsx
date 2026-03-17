@@ -93,6 +93,27 @@ export default function Success() {
           }
         }
 
+        // Create TimedChatSession for timed payments
+        if (tierParam === 'timed' && payment?.status === 'confirmed') {
+          try {
+            const sessionRes = await base44.functions.invoke('createTimedChatSession', {
+              payment_id: pId,
+              contractor_id: urlParams.get('contractor_id') || '',
+              contractor_name: contractorName || '',
+              contractor_email: contractorEmail || '',
+              customer_email: payment.payer_email,
+              customer_name: payment.payer_name || '',
+            });
+            const sessionId = sessionRes?.data?.session?.id;
+            if (sessionId) {
+              // Store for redirect
+              window.__timedChatSessionId = sessionId;
+            }
+          } catch (sessionErr) {
+            console.warn('Could not create timed chat session:', sessionErr.message);
+          }
+        }
+
         // Send receipt email for timed sessions
         if (tierParam === 'timed' && payment?.payer_email) {
           try {
@@ -138,16 +159,12 @@ Thank you for using SurfCoast Marketplace.
     verifyAndFinalize();
   }, []);
 
-  // Redirect back to contractor profile with paid flag — profile page will auto-open chat
   const handleGoToChat = () => {
-    // We need the contractor ID too — it's in the URL payment_id param isn't enough
-    // Navigate to ContractorProfile with paid=timed so it auto-opens the chat
-    const urlParams = new URLSearchParams(window.location.search);
-    const contractorId = urlParams.get('contractor_id');
-    if (contractorId) {
-      navigate(`/ContractorProfile?id=${contractorId}&paid=timed&payment_id=${paymentId}&contractor_email=${encodeURIComponent(timedContractorEmail)}&contractor_name=${encodeURIComponent(timedContractorName)}`);
+    const sessionId = window.__timedChatSessionId;
+    if (sessionId) {
+      navigate(`/timed-chat/${sessionId}`);
     } else {
-      // Fallback: open messaging directly
+      // Fallback
       navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`);
     }
   };
