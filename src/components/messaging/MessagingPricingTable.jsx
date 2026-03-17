@@ -177,7 +177,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
         </DialogContent>
       </Dialog>
 
-      {selectedPlan && (
+      {selectedPlan && selectedPlan.id !== 'quote' && (
         <PaymentGate
           open={paymentOpen}
           onClose={() => setPaymentOpen(false)}
@@ -188,6 +188,18 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
           contractorName={contractorName}
           tier={selectedPlan.id}
           priceId={selectedPlan.priceId}
+        />
+      )}
+
+      {quoteFormOpen && (
+        <QuoteRequestForm
+          contractor={{ id: contractorId, name: contractorName, email: contractorEmail }}
+          customer={customer}
+          open={quoteFormOpen}
+          onClose={() => {
+            setQuoteFormOpen(false);
+            onClose();
+          }}
         />
       )}
     </>
