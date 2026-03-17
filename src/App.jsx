@@ -9,6 +9,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AdminPreview from './pages/AdminPreview';
 import Dashboard from './pages/Dashboard';
 import TimedChat from './pages/TimedChat';
+import TimedChatPage from './pages/TimedChatPage';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -63,6 +64,7 @@ const AuthenticatedApp = () => {
       <Route path="/AdminPreview" element={<LayoutWrapper currentPageName="AdminPreview"><AdminPreview /></LayoutWrapper>} />
       <Route path="/Dashboard" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
       <Route path="/TimedChat" element={<LayoutWrapper currentPageName="TimedChat"><TimedChat /></LayoutWrapper>} />
+      <Route path="/timed-chat/:sessionId" element={<TimedChatPage />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

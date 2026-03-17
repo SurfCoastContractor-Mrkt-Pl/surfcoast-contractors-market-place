@@ -41,6 +41,7 @@ import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailab
 import FeaturedListingManager from '@/components/featured/FeaturedListingManager';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import ServicePackageManager from '@/components/contractor/ServicePackageManager';
+import LiveSessions from '@/components/contractor/LiveSessions';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -128,6 +129,13 @@ export default function ContractorAccount() {
     queryKey: ['contractor-quotes', userEmail],
     queryFn: () => base44.entities.QuoteRequest.filter({ contractor_email: userEmail }),
     enabled: !!userEmail,
+  });
+
+  const { data: liveSessions } = useQuery({
+    queryKey: ['contractor-live-sessions-count', userEmail],
+    queryFn: () => base44.entities.TimedChatSession.filter({ contractor_email: userEmail, status: 'active' }),
+    enabled: !!userEmail,
+    refetchInterval: 15000,
   });
 
   const { data: contractorServices, refetch: refetchServices } = useQuery({
@@ -255,8 +263,14 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="profile">
-              <TabsList className="w-full grid-cols-9">
+             <TabsList className="w-full grid-cols-10">
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
+                 <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1">
+                   Live
+                   {liveSessions?.length > 0 && (
+                     <span className="bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{liveSessions.length}</span>
+                   )}
+                 </TabsTrigger>
                  <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1">
                    Quotes
                    {incomingQuotes?.filter(q => q.status === 'pending').length > 0 && (
@@ -290,6 +304,10 @@ export default function ContractorAccount() {
                    <ContractorAnalyticsDashboard contractor={contractor} />
                    <FeaturedBadgeToggle contractor={contractor} />
                  </div>
+               </TabsContent>
+
+               <TabsContent value="live-sessions">
+                 <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
 
                <TabsContent value="quotes">
