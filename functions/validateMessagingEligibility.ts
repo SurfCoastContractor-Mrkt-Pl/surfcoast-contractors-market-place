@@ -96,9 +96,9 @@ Deno.serve(async (req) => {
       }
     }
 
-    // For subscription tier, validate contact cap and session limits
+    // For subscription tier, verify active subscription exists
     if (tier === 'subscription') {
-      const subscription = await base44.entities.Subscription.filter({
+      const subscription = await base44.asServiceRole.entities.Subscription.filter({
         user_email: user.email,
         status: 'active'
       });
@@ -109,45 +109,6 @@ Deno.serve(async (req) => {
           allowed: false, 
           reason: 'No active subscription found',
           tier: 'subscription'
-        });
-      }
-
-      // Count unique contacts this month
-      const monthStart = new Date();
-      monthStart.setDate(1);
-      
-      const uniqueContacts = new Set();
-      const thisMonthPayments = await base44.entities.Payment.filter({
-        payer_email: user.email,
-        status: { $in: ['confirmed', 'work_scheduled'] }
-      });
-
-      (thisMonthPayments || []).forEach(p => {
-        if (new Date(p.confirmed_at) >= monthStart) {
-          uniqueContacts.add(p.contractor_email);
-        }
-      });
-
-      if (uniqueContacts.size > 15) {
-        return Response.json({ 
-          allowed: false, 
-          reason: 'You have reached your monthly contact limit (15)',
-          tier: 'subscription'
-        });
-      }
-
-      // Count sessions with this specific contractor this month
-      const sessionCount = (thisMonthPayments || []).filter(p => 
-        p.contractor_email === otherUserEmail && 
-        new Date(p.confirmed_at) >= monthStart
-      ).length;
-
-      if (sessionCount >= 5) {
-        return Response.json({ 
-          allowed: false, 
-          reason: 'You have used all 5 sessions with this contractor this month',
-          tier: 'subscription',
-          sessionCount: 5
         });
       }
     }
