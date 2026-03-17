@@ -224,8 +224,8 @@ Thank you for using SurfCoast Marketplace.
                   <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment Confirmed!</h2>
                   <p className="text-slate-600 text-sm mb-6">
                     {isQuote
-                      ? 'Your quote request has been submitted. The contractor will respond within 48 hours.'
-                      : isTimed
+                    ? `Your estimate request has been sent to ${quoteContractorName || 'the contractor'}. You'll receive their quote within 7 days.`
+                    : isTimed
                         ? `Your 10-minute chat session with ${timedContractorName} is ready. A receipt has been sent to your email.`
                         : 'Your access has been activated. A receipt has been sent to your email.'}
                   </p>
