@@ -37,26 +37,61 @@ function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
     if (!form.quote_amount) return;
     setSubmitting(true);
     setError(null);
-    const res = await fetch(SUBMIT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        quote_request_id: quote.id,
-        contractor_id: contractorId,
-        action: 'submit_quote',
-        quote_amount: parseFloat(form.quote_amount),
-        cost_type: form.cost_type,
-        estimated_hours: form.estimated_hours ? parseFloat(form.estimated_hours) : undefined,
-        proposed_work_date: form.proposed_work_date || undefined,
+
+    try {
+      const respondedAt = new Date().toISOString();
+      const quoteAmount = parseFloat(form.quote_amount);
+
+      // Step 1: Update QuoteRequest entity directly
+      await base44.entities.QuoteRequest.update(quote.id, {
+        status: 'quoted',
+        quote_amount: quoteAmount,
         quote_message: form.quote_message || undefined,
-      }),
-    });
-    setSubmitting(false);
-    if (res.ok) {
+        responded_at: respondedAt,
+      });
+
+      // Step 2: Create ContractorScopeProposal directly
+      const contractor = await base44.entities.Contractor.filter({ id: contractorId }).then(r => r?.[0]);
+      if (contractor) {
+        await base44.entities.ContractorScopeProposal.create({
+          quote_request_id: quote.id,
+          contractor_id: contractorId,
+          contractor_name: contractor.name,
+          contractor_email: contractor.email,
+          customer_email: quote.customer_email,
+          customer_name: quote.customer_name,
+          job_title: quote.job_title,
+          quote_amount: quoteAmount,
+          cost_type: form.cost_type,
+          estimated_hours: form.estimated_hours ? parseFloat(form.estimated_hours) : undefined,
+          proposed_work_date: form.proposed_work_date || undefined,
+          quote_message: form.quote_message || undefined,
+          status: 'pending_customer_review',
+        });
+      }
+
+      // Step 3: Call backend function for email notification only
+      await fetch(SUBMIT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'email_only',
+          quote_request_id: quote.id,
+          contractor_id: contractorId,
+          quote_amount: quoteAmount,
+          quote_message: form.quote_message || undefined,
+          customer_email: quote.customer_email,
+          customer_name: quote.customer_name,
+          contractor_name: contractor?.name,
+          job_title: quote.job_title,
+        }),
+      });
+
       onSuccess();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data?.error || 'Failed to send quote. Please try again.');
+    } catch (err) {
+      setError(err.message || 'Failed to send quote. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -161,19 +196,11 @@ export default function ContractorQuotesTab({ contractorId }) {
   const handleDecline = async (quote) => {
     setDeclining(quote.id);
     setDeclineError(null);
-    const res = await fetch(SUBMIT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        quote_request_id: quote.id,
-        contractor_id: contractorId,
-        action: 'deny',
-      }),
-    });
-    setDeclining(null);
-    if (res.ok) {
+    try {
+      // Update QuoteRequest status directly
+      await base44.entities.QuoteRequest.update(quote.id, { status: 'declined' });
       queryClient.invalidateQueries({ queryKey: ['contractor-quotes-by-id', contractorId] });
-    } else {
+    } catch (err) {
       setDeclineError(quote.id);
     }
   };
