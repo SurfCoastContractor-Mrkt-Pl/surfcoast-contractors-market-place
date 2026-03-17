@@ -47,6 +47,7 @@ import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWi
 import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfessionalDocuments';
 import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilityManager';
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
+import AuthTopBar from '@/components/auth/AuthTopBar';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -216,6 +217,7 @@ export default function ContractorAccount() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="relative py-12 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <AuthTopBar />
         <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.60)'}}></div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
