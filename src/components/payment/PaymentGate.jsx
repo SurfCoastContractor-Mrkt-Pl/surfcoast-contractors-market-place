@@ -32,10 +32,23 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
     queryFn: async () => {
       if (!formData.email) return [];
       const res = await base44.functions.invoke('getPaymentMethods', { userEmail: formData.email });
-      return res?.data || [];
+      const methods = res?.data || [];
+      // Auto-select the first saved card when methods load
+      if (methods.length > 0) {
+        setSelectedPaymentMethod(methods[0].stripe_payment_method_id);
+        setUseNewCard(false);
+      } else {
+        setSelectedPaymentMethod(null);
+        setUseNewCard(false);
+      }
+      return methods;
     },
     enabled: !!formData.email && open && !paid && !alreadyPaid,
    });
+
+   // Derived: the effective payment method to use
+   const hasSavedCards = paymentMethods && paymentMethods.length > 0;
+   const effectivePaymentMethod = useNewCard ? null : (selectedPaymentMethod || null);
 
   const tierConfigs = {
     quote: { amount: 1.75, label: 'Quote Request Fee', description: 'Blind written estimate' },
