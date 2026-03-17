@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 
 export default function ContractorDashboard() {
   const [user, setUser] = useState(null);
