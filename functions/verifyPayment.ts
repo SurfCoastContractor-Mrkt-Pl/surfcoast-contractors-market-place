@@ -23,7 +23,6 @@ Deno.serve(async (req) => {
       return Response.json({ payment: null });
     }
 
-    // Only return safe fields — never return card data or sensitive identifiers
     return Response.json({
       payment: {
         id: payment.id,
