@@ -346,16 +346,18 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
     let confirmedPayment = null;
 
     if (paymentIntent.metadata?.payment_id) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        stripe_session_id: paymentIntent.metadata.payment_id
-      });
-      if (payments && payments.length > 0) {
-        confirmedPayment = payments[0];
-        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString(),
-        });
-        return;
+      try {
+        const payment = await base44.asServiceRole.entities.Payment.get(paymentIntent.metadata.payment_id);
+        if (payment) {
+          confirmedPayment = payment;
+          await base44.asServiceRole.entities.Payment.update(payment.id, {
+            status: 'confirmed',
+            confirmed_at: new Date().toISOString(),
+          });
+          return;
+        }
+      } catch (e) {
+        console.warn('Could not get payment by ID for confirmation:', e.message);
       }
     }
 
@@ -405,16 +407,21 @@ async function handleCheckoutSessionCompleted(session, base44) {
     let confirmedPayment = null;
 
     if (session.metadata?.payment_id) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        stripe_session_id: session.id
-      });
-      if (payments && payments.length > 0) {
-        confirmedPayment = payments[0];
-        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString(),
-        });
-        console.log(`Payment ${payments[0].id} confirmed from checkout session`);
+      try {
+        const payment = await base44.asServiceRole.entities.Payment.get(session.metadata.payment_id);
+        if (payment) {
+          confirmedPayment = payment;
+          // Set timed session expiry (10 min from now) for timed tier
+          const updateData = { status: 'confirmed', confirmed_at: new Date().toISOString() };
+          const tier = payment.amount === 1.50 ? 'timed' : payment.amount === 1.75 ? 'quote' : 'subscription';
+          if (tier === 'timed' && !payment.session_expires_at) {
+            updateData.session_expires_at = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+          }
+          await base44.asServiceRole.entities.Payment.update(payment.id, updateData);
+          console.log(`Payment ${payment.id} confirmed from checkout session (tier: ${tier})`);
+        }
+      } catch (e) {
+        console.warn('Could not get payment by ID for session completion:', e.message);
       }
     }
 
@@ -500,15 +507,15 @@ async function handleCheckoutSessionExpired(session, base44) {
     console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
 
     if (session.metadata?.payment_id) {
-      const payments = await base44.asServiceRole.entities.Payment.filter({
-        id: session.metadata.payment_id
-      });
-      if (payments && payments.length > 0) {
-        await base44.asServiceRole.entities.Payment.update(payments[0].id, {
-          status: 'expired',
-        });
-        console.log(`Payment ${session.metadata.payment_id} marked as expired (session expired)`);
-        return;
+      try {
+        const payment = await base44.asServiceRole.entities.Payment.get(session.metadata.payment_id);
+        if (payment) {
+          await base44.asServiceRole.entities.Payment.update(payment.id, { status: 'expired' });
+          console.log(`Payment ${payment.id} marked as expired (session expired)`);
+          return;
+        }
+      } catch (e) {
+        console.warn('Could not get payment by ID for expiry:', e.message);
       }
     }
 
