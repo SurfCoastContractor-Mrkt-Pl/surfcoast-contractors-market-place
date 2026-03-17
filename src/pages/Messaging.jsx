@@ -134,12 +134,12 @@ export default function Messaging() {
                 <ChatWindow
                   otherUserEmail={selectedConversation.email}
                   otherUserName={selectedConversation.name}
-                  otherUserType={selectedConversation.userType}
+                  otherUserType={selectedConversation.userType || (userType === 'contractor' ? 'customer' : 'contractor')}
                   userEmail={userEmail}
                   userName={userName}
                   userType={userType}
-                  tier={selectedConversation.tier || timedData?.tier}
-                  paymentId={selectedConversation.paymentId || timedData?.paymentId}
+                  tier={selectedConversation.tier || timedData?.tier || null}
+                  paymentId={selectedConversation.paymentId || timedData?.paymentId || null}
                 />
               ) : (
               <Card className="p-8 text-center text-slate-500">
