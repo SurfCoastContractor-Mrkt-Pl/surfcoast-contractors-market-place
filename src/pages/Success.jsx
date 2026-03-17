@@ -88,6 +88,7 @@ export default function Success() {
               job_id: quoteMeta.job_id || '',
               job_title: quoteMeta.job_title || '',
             });
+            setQuoteContractorName(quoteMeta.contractor_name || '');
             setIsQuote(true);
           } catch {
             setIsQuote(true);
