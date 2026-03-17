@@ -31,6 +31,7 @@ import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar
 import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
+import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
