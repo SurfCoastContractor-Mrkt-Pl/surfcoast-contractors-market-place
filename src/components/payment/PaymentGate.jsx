@@ -142,24 +142,15 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
   const handleConfirmPayment = () => {
     setShowConfirmation(false);
     setCheckingout(true);
-    mutation.mutate(formData, selectedPaymentMethod || null);
-  };
-
-  const handlePayWithSavedCard = () => {
-    if (selectedPaymentMethod) {
-      setShowConfirmation(true);
-    }
-  };
-
-  const handlePayWithNewCard = () => {
-    setShowConfirmation(true);
-    setSelectedPaymentMethod(null);
+    mutation.mutate(formData, effectivePaymentMethod);
   };
 
   const handleClose = () => {
     setPaid(false);
     setFormData({ name: '', email: '' });
     setShowConfirmation(false);
+    setSelectedPaymentMethod(undefined);
+    setUseNewCard(false);
     onClose();
   };
 
