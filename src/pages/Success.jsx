@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, Loader2, MessageCircle } from 'lucide-react';
 
 export default function Success() {
   const navigate = useNavigate();
@@ -14,7 +14,8 @@ export default function Success() {
   const [timedContractorEmail, setTimedContractorEmail] = useState('');
   const [timedContractorName, setTimedContractorName] = useState('');
   const [paymentId, setPaymentId] = useState('');
-
+  const [payerEmail, setPayerEmail] = useState('');
+  const [confirmed, setConfirmed] = useState(false); // user clicked OK
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -40,47 +41,42 @@ export default function Success() {
 
     const verifyAndFinalize = async () => {
       try {
-        console.log(`[Success] Starting payment verification for ID: ${pId}`);
+        // Poll for confirmed status
+        let payment = null;
+        const maxAttempts = 15;
+        let delayMs = 500;
 
-        // Poll for confirmed status — the webhook fires asynchronously
-         let payment = null;
-         const maxAttempts = 15;
-         let delayMs = 500; // Start with shorter delay
+        for (let i = 0; i < maxAttempts; i++) {
+          try {
+            const result = await base44.functions.invoke('verifyPayment', { payment_id: pId });
+            const p = result?.data?.payment;
+            if (p) {
+              payment = p;
+              if (p.status === 'confirmed') break;
+            }
+          } catch (fetchErr) {
+            console.warn(`Attempt ${i + 1} error:`, fetchErr.message);
+          }
+          if (i < maxAttempts - 1) {
+            await new Promise(r => setTimeout(r, delayMs));
+            delayMs = Math.min(delayMs + 250, 1000);
+          }
+        }
 
-         for (let i = 0; i < maxAttempts; i++) {
-           try {
-             // Use service-role via backend function to read the payment regardless of auth state
-             const result = await base44.functions.invoke('verifyPayment', { payment_id: pId });
-             const p = result?.data?.payment;
-             console.log(`[Success] Attempt ${i + 1}/${maxAttempts}: status=${p?.status || 'not found'}`);
-             if (p) {
-               payment = p;
-               if (p.status === 'confirmed') break;
-             }
-           } catch (fetchErr) {
-             console.warn(`[Success] Fetch attempt ${i + 1} error:`, fetchErr.message);
-           }
-           if (i < maxAttempts - 1) {
-             // Progressive backoff: 500ms, 750ms, 1000ms, then cap at 1000ms
-             await new Promise(r => setTimeout(r, delayMs));
-             delayMs = Math.min(delayMs + 250, 1000);
-           }
-         }
+        if (payment?.payer_email) {
+          setPayerEmail(payment.payer_email);
+        }
 
-        if (!payment) {
-          // Payment record not accessible — likely RLS. Show success anyway since Stripe redirected here.
-          console.warn('[Success] Could not read payment record — showing success based on Stripe redirect.');
-        } else if (payment.status === 'expired') {
+        if (payment?.status === 'expired') {
           setError('This payment session has expired. Please try again.');
           return;
         }
 
-        // If this was a quote request, auto-create the QuoteRequest record
+        // Handle quote request creation
         if (quoteMetaRaw) {
           try {
             const quoteMeta = JSON.parse(decodeURIComponent(quoteMetaRaw));
-            console.log(`[Success] Creating quote request with meta:`, quoteMeta);
-            const quoteResult = await base44.functions.invoke('createQuoteRequest', {
+            await base44.functions.invoke('createQuoteRequest', {
               payment_id: pId,
               contractor_id: quoteMeta.contractor_id,
               contractor_name: quoteMeta.contractor_name,
@@ -91,30 +87,64 @@ export default function Success() {
               job_id: quoteMeta.job_id || '',
               job_title: quoteMeta.job_title || '',
             });
-            console.log(`[Success] Quote request result:`, quoteResult?.data);
             setIsQuote(true);
-          } catch (qErr) {
-            console.error('[Success] Failed to create quote request:', qErr.message);
-            // Don't block success — quote may have already been created
+          } catch {
             setIsQuote(true);
           }
         }
+
+        // Send receipt email for timed sessions
+        if (tierParam === 'timed' && payment?.payer_email) {
+          try {
+            await base44.integrations.Core.SendEmail({
+              to: payment.payer_email,
+              subject: 'Your SurfCoast Payment Receipt – 10-Minute Chat Session',
+              body: `
+Hi ${payment.payer_name || 'there'},
+
+Thank you for your payment! Here is your receipt:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAYMENT RECEIPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Service: 10-Minute Chat Session
+Contractor: ${contractorName || 'Contractor'}
+Amount Charged: $1.50 USD
+Payment ID: ${pId}
+Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your 10-minute messaging session is now active. You can begin chatting with ${contractorName || 'the contractor'} immediately.
+
+This fee is non-refundable. All payment arrangements for work performed are solely between you and the contractor.
+
+Thank you for using SurfCoast Marketplace.
+
+– The SurfCoast Team
+              `.trim(),
+            });
+          } catch (emailErr) {
+            console.warn('Receipt email failed:', emailErr.message);
+          }
+        }
+
       } catch (err) {
-        console.error('Payment verification error:', err);
-        // Don't show an error — Stripe already redirected us here meaning payment went through
+        console.error('Verification error:', err);
       } finally {
-       setIsVerifying(false);
+        setIsVerifying(false);
       }
-      };
+    };
 
-      verifyAndFinalize();
-      }, []);
+    verifyAndFinalize();
+  }, []);
 
-
+  const handleGoToChat = () => {
+    navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
-      <Card className="max-w-md w-full p-8 text-center">
+      <Card className="max-w-md w-full p-8 text-center shadow-xl">
         {isVerifying ? (
           <>
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
@@ -126,38 +156,88 @@ export default function Success() {
         ) : error ? (
           <>
             <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">❌</span>
+              <span className="text-3xl">❌</span>
             </div>
             <h1 className="text-2xl font-bold text-red-900 mb-2">Payment Error</h1>
             <p className="text-red-700 mb-6">{error}</p>
-            <Button onClick={() => navigate(-1)} className="bg-red-600 hover:bg-red-700 text-white">
+            <Button onClick={() => navigate(-1)} className="bg-red-600 hover:bg-red-700 text-white w-full">
               Go Back
             </Button>
           </>
-        ) : (
+        ) : !confirmed ? (
+          // ── CONFIRMATION POP-UP STATE ──
           <>
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+              <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Successful! ✓</h1>
-            <p className="text-slate-600 mb-8">
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Confirmed!</h1>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-left space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Service:</span>
+                <span className="font-semibold text-slate-900">
+                  {isQuote ? 'Quote Request' : isTimed ? '10-Minute Chat Session' : 'Platform Access'}
+                </span>
+              </div>
+              {isTimed && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Contractor:</span>
+                  <span className="font-semibold text-slate-900">{timedContractorName}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Amount:</span>
+                <span className="font-bold text-green-700">{isTimed ? '$1.50' : isQuote ? '$1.75' : '$50.00'} USD</span>
+              </div>
+              {payerEmail && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Receipt sent to:</span>
+                  <span className="font-semibold text-slate-900 break-all">{payerEmail}</span>
+                </div>
+              )}
+            </div>
+            <p className="text-slate-600 text-sm mb-6">
               {isQuote
-                ? 'Your quote request has been submitted! The contractor will respond within 48 hours. You can track it in your account.'
+                ? 'Your quote request has been submitted. The contractor will respond within 48 hours.'
                 : isTimed
-                  ? `Your 10-minute chat session with ${timedContractorName || 'the contractor'} is now active!`
-                  : 'Your platform access fee has been processed. A confirmation email has been sent to you.'}
+                  ? `Your 10-minute chat session with ${timedContractorName} is ready. A receipt has been sent to your email.`
+                  : 'Your access has been activated. A receipt has been sent to your email.'}
+            </p>
+            <Button
+              onClick={() => setConfirmed(true)}
+              className="bg-green-600 hover:bg-green-700 text-white w-full text-base py-5 font-semibold"
+            >
+              OK
+            </Button>
+          </>
+        ) : (
+          // ── AFTER OK — show chat button or navigation ──
+          <>
+            <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-5">
+              <MessageCircle className="w-10 h-10 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">
+              {isTimed ? 'Start Your Chat' : 'You\'re All Set!'}
+            </h1>
+            <p className="text-slate-600 mb-6">
+              {isTimed
+                ? `Click below to open your 10-minute messaging session with ${timedContractorName}.`
+                : isQuote
+                  ? 'Your quote request is submitted. Track it in your account.'
+                  : 'Your access is now active.'}
             </p>
             {isTimed && timedContractorEmail ? (
               <Button
-                onClick={() => navigate(`/Messaging?with=${encodeURIComponent(timedContractorEmail)}&name=${encodeURIComponent(timedContractorName)}&tier=timed&payment_id=${paymentId}`)}
-                className="bg-green-600 hover:bg-green-700 text-white w-full text-lg py-6 font-semibold"
+                onClick={handleGoToChat}
+                className="w-full text-white text-base py-5 font-semibold"
+                style={{ backgroundColor: '#1E5A96' }}
               >
-                Start Messaging {timedContractorName || 'Contractor'}
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Chat with {timedContractorName}
               </Button>
             ) : (
               <Button
                 onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')}
-                className="bg-green-600 hover:bg-green-700 text-white w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full"
               >
                 {isQuote ? 'View Your Quotes' : 'Return to Home'}
               </Button>

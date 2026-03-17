@@ -34,12 +34,15 @@ export default function Messaging() {
         const withName = urlParams.get('name');
         const tier = urlParams.get('tier');
         const paymentId = urlParams.get('payment_id');
+        // Also support legacy ?contractor= param used elsewhere in the app
+        const contractorId = urlParams.get('contractor');
         if (withEmail) {
           setSelectedConversation({ email: withEmail, name: withName || withEmail, tier, paymentId });
           if (tier === 'timed' && paymentId) {
             setTimedData({ tier, paymentId });
           }
         }
+        // Do NOT auto-select based on contractor ID alone — requires a paid session
       } catch (error) {
         console.error('Error loading user:', error);
       } finally {
