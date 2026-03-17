@@ -285,8 +285,8 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="quotes">
-                <QuoteComparisonDashboard customerEmail={userEmail} />
-              </TabsContent>
+                 <CustomerQuotesTab customerEmail={userEmail} />
+               </TabsContent>
 
               <TabsContent value="my-jobs">
                 <Card className="p-6">
