@@ -321,70 +321,7 @@ export default function ContractorAccount() {
                </TabsContent>
 
                <TabsContent value="quotes">
-                 <QuoteReplyDialog
-                   request={selectedQuote}
-                   open={!!selectedQuote}
-                   onClose={() => { setSelectedQuote(null); queryClient.invalidateQueries({ queryKey: ['contractor-quotes', userEmail] }); }}
-                 />
-                 <Card className="p-6">
-                   <h2 className="text-lg font-semibold text-slate-900 mb-1">Incoming Quote Requests</h2>
-                   <p className="text-xs text-slate-500 mb-4">Customers who have paid to request a Scope of Work & Estimate from you.</p>
-                   {!incomingQuotes || incomingQuotes.length === 0 ? (
-                     <div className="text-center py-10 text-slate-500">
-                       <InboxIcon className="w-10 h-10 mx-auto mb-3 text-slate-300" />
-                       <p className="text-sm">No quote requests yet.</p>
-                     </div>
-                   ) : (
-                     <div className="space-y-3">
-                       {incomingQuotes.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)).map(q => {
-                         const statusColors = {
-                           pending: 'bg-amber-100 text-amber-700',
-                           view_approved: 'bg-blue-100 text-blue-700',
-                           view_denied: 'bg-red-100 text-red-700',
-                           quoted: 'bg-green-100 text-green-700',
-                           accepted: 'bg-green-100 text-green-700',
-                           rejected: 'bg-slate-100 text-slate-600',
-                         };
-                         return (
-                           <div key={q.id} className="border border-slate-200 rounded-xl p-4 space-y-3">
-                             <div className="flex items-start justify-between gap-3">
-                               <div>
-                                 <p className="font-semibold text-slate-900 text-sm">{q.customer_name}</p>
-                                 <p className="text-xs text-slate-500">{q.job_title || 'No project title'}</p>
-                                 <p className="text-xs text-slate-400 mt-0.5">{new Date(q.created_date).toLocaleDateString()}</p>
-                               </div>
-                               <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${statusColors[q.status] || 'bg-slate-100 text-slate-600'}`}>
-                                 {q.status === 'pending' ? 'Needs Review' : q.status === 'view_approved' ? 'Preparing Estimate' : q.status === 'view_denied' ? 'Declined' : q.status === 'quoted' ? 'Estimate Sent' : q.status}
-                               </span>
-                             </div>
-                             <p className="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg line-clamp-2">{q.work_description}</p>
-                             {q.quote_amount && (
-                               <p className="text-sm font-bold text-slate-900">Estimate Sent: ${q.quote_amount?.toFixed(2)}</p>
-                             )}
-                             <div className="flex gap-2">
-                               {(q.status === 'pending' || q.status === 'view_approved') && (
-                                 <Button size="sm" className="flex-1 text-xs h-8" onClick={() => setSelectedQuote(q)}>
-                                   {q.status === 'pending' ? 'Review & Respond' : 'Provide Estimate'}
-                                 </Button>
-                               )}
-                               {(q.status === 'quoted' || q.status === 'accepted') && (
-                                 <Button
-                                   size="sm"
-                                   variant="outline"
-                                   className="flex-1 text-xs h-8 border-blue-300 text-blue-700 hover:bg-blue-50 gap-1"
-                                   onClick={() => navigate(`/Messaging?with=${encodeURIComponent(q.customer_email)}&name=${encodeURIComponent(q.customer_name)}`)}
-                                 >
-                                   <MessageCircle className="w-3 h-3" />
-                                   Go to Messages
-                                 </Button>
-                               )}
-                             </div>
-                           </div>
-                         );
-                       })}
-                     </div>
-                   )}
-                 </Card>
+                 <ContractorQuotesTab contractorId={contractor?.id} />
                </TabsContent>
 
               <TabsContent value="profile">
