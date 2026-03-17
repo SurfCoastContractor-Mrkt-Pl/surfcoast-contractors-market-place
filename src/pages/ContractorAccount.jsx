@@ -42,6 +42,7 @@ import FeaturedListingManager from '@/components/featured/FeaturedListingManager
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import ServicePackageManager from '@/components/contractor/ServicePackageManager';
 import LiveSessions from '@/components/contractor/LiveSessions';
+import TrialStatusBanner from '@/components/contractor/TrialStatusBanner';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
