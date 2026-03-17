@@ -17,6 +17,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
    const [showConfirmation, setShowConfirmation] = useState(false);
    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(undefined); // undefined = not yet resolved
    const [useNewCard, setUseNewCard] = useState(false);
+   const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '' });
 
    // For quote requests, validate that quote metadata is present
     const hasRequiredQuoteData = tier === 'quote' ? !!quoteMetaParam : true;
