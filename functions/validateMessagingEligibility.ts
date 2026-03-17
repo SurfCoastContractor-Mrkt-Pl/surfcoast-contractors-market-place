@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
     }
 
     // For subscription tier, verify active subscription exists
-    if (tier === 'subscription') {
+    if (tier === 'subscription' && tier !== 'any') {
       const subscription = await base44.asServiceRole.entities.Subscription.filter({
         user_email: user.email,
         status: 'active'
