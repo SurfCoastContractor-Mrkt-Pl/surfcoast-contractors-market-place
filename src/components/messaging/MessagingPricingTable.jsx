@@ -39,7 +39,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
   const plans = [
     {
       id: 'quote',
-      name: 'Quote Request',
+      name: 'Request an Estimate — $1.75',
       price: '$1.75',
       duration: 'per contractor',
       features: [
@@ -54,7 +54,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
     },
     {
       id: 'timed',
-      name: '10-Minute Chat',
+      name: 'Live Chat with a Contractor — $1.50',
       price: '$1.50',
       duration: 'one-time',
       features: [
