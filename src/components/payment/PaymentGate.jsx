@@ -344,7 +344,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
               <Button
                 type="submit"
                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                disabled={checkingout || !formData.name || formData.name.length < 2 || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !hasRequiredQuoteData}
+                disabled={checkingout || !formData.name || formData.name.length < 2 || !formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
               >
                 {checkingout ? (
                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</>
