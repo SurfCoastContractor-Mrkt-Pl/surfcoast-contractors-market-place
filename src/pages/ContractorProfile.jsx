@@ -362,10 +362,45 @@ export default function ContractorProfile() {
         open={messagingPricingOpen}
         onClose={() => setMessagingPricingOpen(false)}
         onMessagingUnlocked={() => {
-          // Navigate to messaging after payment
-          window.location.href = createPageUrl(`Messaging?contractor=${contractor.id}`);
+          // Payment handled by Stripe redirect — Success page will redirect back here
+          setMessagingPricingOpen(false);
         }}
       />
+
+      {/* Inline chat modal — opens after successful timed payment redirect */}
+      {chatOpen && contractor && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col" style={{ height: '80vh' }}>
+            <div className="flex items-center justify-between p-4 border-b border-slate-200">
+              <div>
+                <h2 className="font-bold text-slate-900 text-lg">Chat with {contractor.name}</h2>
+                <p className="text-xs text-amber-600 font-semibold">10-minute session active</p>
+              </div>
+              <button
+                onClick={() => setChatOpen(false)}
+                className="text-slate-400 hover:text-slate-700 transition-colors p-1"
+                aria-label="Close chat"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <ChatWindow
+                otherUserEmail={contractor.email}
+                otherUserName={contractor.name}
+                otherUserType="contractor"
+                userEmail={chatUserEmail}
+                userName={chatUserName}
+                userType="customer"
+                tier="timed"
+                paymentId={chatPaymentId}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
