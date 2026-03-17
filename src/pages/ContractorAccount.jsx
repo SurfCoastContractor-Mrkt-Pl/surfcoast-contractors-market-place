@@ -385,7 +385,8 @@ export default function ContractorAccount() {
                </TabsContent>
 
               <TabsContent value="profile">
-                 <div className="space-y-4">
+                 <div className="flex gap-6 items-start">
+                 <div className="flex-1 min-w-0 space-y-4">
                     {/* Profile Summary */}
                     <Card className="p-6">
                       <h2 className="text-lg font-semibold text-slate-900 mb-4">Your Profile</h2>
