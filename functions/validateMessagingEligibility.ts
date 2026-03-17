@@ -118,16 +118,6 @@ Deno.serve(async (req) => {
       tier,
       paymentId: latestPayment.id,
       sessionExpiry: latestPayment.session_expires_at,
-      sessionCount: tier === 'subscription' ? 
-        (await base44.entities.Payment.filter({
-          payer_email: user.email,
-          contractor_email: otherUserEmail,
-          status: { $in: ['confirmed', 'work_scheduled'] }
-        }))?.filter(p => {
-          const monthStart = new Date();
-          monthStart.setDate(1);
-          return new Date(p.confirmed_at) >= monthStart;
-        }).length || 0 : null
     });
 
   } catch (error) {
