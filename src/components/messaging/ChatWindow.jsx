@@ -101,7 +101,15 @@ export default function ChatWindow({
         (event.data.sender_email === otherUserEmail && event.data.recipient_email === userEmail)
       ) {
         if (event.type === 'create') {
-          setMessages(prev => [...prev, event.data]);
+          setMessages(prev => {
+            const updated = [...prev, event.data];
+            // If the other party just replied, resume the timer
+            if (event.data.sender_email === otherUserEmail) {
+              timerPausedRef.current = false;
+              setTimerPaused(false);
+            }
+            return updated;
+          });
         }
       }
     });
