@@ -25,6 +25,7 @@ import ReviewsSection from '@/components/contractor/ReviewsSection';
 import ContractorAvailabilityCalendar from '@/components/calendar/ContractorAvailabilityCalendar';
 import MessagingPricingTable from '@/components/messaging/MessagingPricingTable';
 import ContractorServices from '@/components/contractor/ContractorServices';
+import ChatWindow from '@/components/messaging/ChatWindow';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
@@ -32,6 +33,10 @@ export default function ContractorProfile() {
   const [contractor, setContractor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [messagingPricingOpen, setMessagingPricingOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatPaymentId, setChatPaymentId] = useState(null);
+  const [chatUserEmail, setChatUserEmail] = useState(null);
+  const [chatUserName, setChatUserName] = useState(null);
 
   useEffect(() => {
     const fetchContractor = async () => {
@@ -61,6 +66,27 @@ export default function ContractorProfile() {
     };
     fetchContractor();
   }, [contractorId]);
+
+  // Auto-open chat if redirected here after successful timed payment
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paid = urlParams.get('paid');
+    const pId = urlParams.get('payment_id');
+    if (paid === 'timed' && pId) {
+      setChatPaymentId(pId);
+      // Load current user for chat
+      base44.auth.me().then(user => {
+        if (user) {
+          setChatUserEmail(user.email);
+          setChatUserName(user.full_name);
+        }
+        setChatOpen(true);
+      }).catch(() => {
+        // Even if not logged in, open the chat — ChatWindow handles anon too
+        setChatOpen(true);
+      });
+    }
+  }, []);
 
   const { data: reviews } = useQuery({
     queryKey: ['contractor-reviews', contractorId],
