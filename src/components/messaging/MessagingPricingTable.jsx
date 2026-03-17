@@ -90,7 +90,12 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
 
   const handleSelectPlan = (plan) => {
     setSelectedPlan(plan);
-    setPaymentOpen(true);
+    if (plan.id === 'quote') {
+      // Quote flow requires project details — open QuoteRequestForm instead
+      setQuoteFormOpen(true);
+    } else {
+      setPaymentOpen(true);
+    }
   };
 
   const handlePaymentSuccess = () => {
