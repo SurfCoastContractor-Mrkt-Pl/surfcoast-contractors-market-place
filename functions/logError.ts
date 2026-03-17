@@ -53,14 +53,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized to log errors' }, { status: 403 });
     }
 
-    // Use a fresh service-role client (not bound to the incoming user request)
-    // so the write always has service_role privileges regardless of auth state
-    const { createClient } = await import('npm:@base44/sdk@0.8.20');
-    const serviceBase44 = createClient({ appId: Deno.env.get('BASE44_APP_ID') });
-
     let log;
     try {
-      log = await serviceBase44.asServiceRole.entities.ErrorLog.create({
+      log = await base44.asServiceRole.entities.ErrorLog.create({
         error_type: ['profile_setup', 'payment', 'job_posting', 'verification', 'messaging', 'other'].includes(error_type) ? error_type : 'other',
         severity: severity || 'medium',
         user_email: user_email || user?.email || 'unknown',
