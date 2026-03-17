@@ -2,29 +2,6 @@ import React from 'react';
 import { Star, Shield, Clock, Users } from 'lucide-react';
 
 export default function TrustAndSocialProof() {
-  const testimonials = [
-    {
-      name: "Sarah Martinez",
-      role: "Homeowner, Los Angeles",
-      text: "Found a plumber in 2 hours. He was verified, professional, and worth every dollar. The quality of work was outstanding — best platform out there.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
-    },
-    {
-      name: "James Chen",
-      role: "Electrician, San Francisco",
-      text: "Been in the trades for a long time and tried a lot of platforms. SurfCoast just feels different — you can tell Hector built this for working people, not just to cash in. The clients I've found here are legit and easy to work with. Highly recommend.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
-    },
-    {
-      name: "Emma Thompson",
-      role: "Homeowner, Seattle",
-      text: "The identity verification makes me feel safe. No flakes, no scams. Worth every penny for peace of mind.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
-    }
-  ];
 
   return (
     <div className="bg-white py-16 border-t border-b border-slate-200/50">
