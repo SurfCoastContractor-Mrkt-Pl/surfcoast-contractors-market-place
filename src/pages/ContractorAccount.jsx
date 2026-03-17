@@ -656,6 +656,9 @@ export default function ContractorAccount() {
 
               <TabsContent value="settings">
                 <div className="space-y-4">
+                  {/* Document Visibility */}
+                  <DocumentVisibilityManager contractor={contractor} />
+
                   {/* Payment Methods */}
                   {userEmail && <SavedPaymentMethods userEmail={userEmail} />}
 
