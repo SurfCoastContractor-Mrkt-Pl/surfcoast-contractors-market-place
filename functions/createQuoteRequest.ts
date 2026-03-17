@@ -4,12 +4,6 @@ Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
   try {
-    // Require authentication — prevents unauthenticated direct invocations
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = await req.json();
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
 
@@ -45,11 +39,15 @@ Deno.serve(async (req) => {
     }
 
     // Verify the payment exists, is confirmed, and belongs to this customer
-    const payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
-    if (!payments || payments.length === 0) {
+    let payment;
+    try {
+      payment = await base44.asServiceRole.entities.Payment.get(payment_id);
+    } catch (e) {
       return Response.json({ error: 'Payment not found' }, { status: 404 });
     }
-    const payment = payments[0];
+    if (!payment) {
+      return Response.json({ error: 'Payment not found' }, { status: 404 });
+    }
     if (payment.status !== 'confirmed') {
       console.error('Payment not confirmed. Status:', payment.status, 'Payment ID:', payment_id);
       return Response.json({ error: 'Payment not confirmed' }, { status: 402 });
@@ -57,12 +55,6 @@ Deno.serve(async (req) => {
     if (payment.payer_email.toLowerCase() !== customer_email.toLowerCase()) {
       console.error('Payment email mismatch. Expected:', customer_email, 'Got:', payment.payer_email);
       return Response.json({ error: 'Forbidden: Payment does not match customer email' }, { status: 403 });
-    }
-
-    // Ensure the authenticated user is the actual customer on this request
-    if (user.email.toLowerCase() !== customer_email.toLowerCase()) {
-      console.error('Auth user mismatch. Auth:', user.email, 'Requested customer:', customer_email);
-      return Response.json({ error: 'Forbidden: Authenticated user does not match customer email' }, { status: 403 });
     }
 
     // Verify contractor exists and is not locked
