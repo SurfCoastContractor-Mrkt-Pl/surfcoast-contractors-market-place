@@ -36,6 +36,7 @@ export default function BecomeContractor() {
   const navigate = useNavigate();
   const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true';
   const [success, setSuccess] = useState(false);
+  const [createdContractor, setCreatedContractor] = useState(null);
   const [newCert, setNewCert] = useState('');
   const [newSkill, setNewSkill] = useState('');
   const [uploadingId, setUploadingId] = useState(false);
