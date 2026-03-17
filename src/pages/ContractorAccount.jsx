@@ -423,6 +423,7 @@ export default function ContractorAccount() {
                    <ContractorProfileEditor contractor={contractor} />
 
                    {/* Credentials & Certifications */}
+                   <LicensedProfessionalDocuments contractor={contractor} />
                    <CredentialDocumentsManager
                      credentials={contractor?.credential_documents || []}
                      onChange={(creds) => base44.entities.Contractor.update(contractor.id, { credential_documents: creds })}
