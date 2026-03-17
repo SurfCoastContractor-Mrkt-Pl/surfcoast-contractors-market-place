@@ -84,8 +84,9 @@ Deno.serve(async (req) => {
       ...(job_id ? { job_id } : {}),
       ...(job_title ? { job_title } : {}),
       status: 'pending',
+      read_by_contractor: false,
       created_at: new Date().toISOString(),
-      response_deadline: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+      response_deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     });
 
     return Response.json({ success: true, quote });
