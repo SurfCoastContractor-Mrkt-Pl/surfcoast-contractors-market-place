@@ -12,13 +12,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Loader2, CheckCircle, XCircle, DollarSign } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, DollarSign, AlertTriangle } from 'lucide-react';
+
+const REDACT_URL = 'https://sage-c5f01224.base44.app/functions/redactMessage';
+
+async function redactText(text) {
+  try {
+    const res = await fetch(REDACT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+    });
+    if (!res.ok) return { message: text, was_redacted: false };
+    const data = await res.json();
+    return { message: data.message ?? text, was_redacted: data.was_redacted ?? false };
+  } catch {
+    return { message: text, was_redacted: false };
+  }
+}
 
 export default function QuoteReplyDialog({ request, open, onClose }) {
   const [step, setStep] = useState('review'); // 'review' | 'quote' | 'deny'
   const [quoteAmount, setQuoteAmount] = useState('');
   const [quoteMessage, setQuoteMessage] = useState('');
   const [denyReason, setDenyReason] = useState('');
+  const [redactWarning, setRedactWarning] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -61,16 +79,31 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
 
   const quoteMutation = useMutation({
     mutationFn: async () => {
+      setRedactWarning(false);
+      // Redact both the scope message and note before saving
+      const scopeRedact = quoteMessage ? await redactText(quoteMessage) : { message: '', was_redacted: false };
+      if (scopeRedact.was_redacted) setRedactWarning(true);
+
       await base44.entities.QuoteRequest.update(request.id, {
         quote_amount: parseFloat(quoteAmount),
-        quote_message: quoteMessage,
+        quote_message: scopeRedact.message,
         status: 'quoted',
         responded_at: new Date().toISOString(),
       });
+
+      // Notify customer by email
+      try {
+        await base44.integrations.Core.SendEmail({
+          to: request.customer_email,
+          from_name: 'SurfCoast Marketplace',
+          subject: `Your Quote is Ready — ${request.job_title || 'Project Quote'}`,
+          body: `Hi ${request.customer_name},\n\nYour quote request has been answered!\n\nContractor: ${request.contractor_name}\nProject: ${request.job_title || 'Your project'}\nEstimate: $${parseFloat(quoteAmount).toFixed(2)}\n${scopeRedact.message ? `\nNote from contractor:\n${scopeRedact.message}\n` : ''}\nLog in to SurfCoast Marketplace to review and respond.\n\n— SurfCoast Team`,
+        });
+      } catch {}
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contractor-quotes'] });
-      onClose();
+      if (!redactWarning) onClose();
     },
   });
 
@@ -182,6 +215,13 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 rows={3}
               />
             </div>
+
+            {redactWarning && (
+              <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>Personal contact information was automatically removed from your response per platform policy.</span>
+              </div>
+            )}
 
             <div className="flex gap-2 justify-end pt-2">
               <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
