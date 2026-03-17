@@ -133,8 +133,6 @@ Deno.serve(async (req) => {
 
     if (customerId) {
       sessionParams.customer = customerId;
-      // This tells Stripe to show saved payment methods for this customer
-      sessionParams.customer_update = { payment_method: 'auto' };
     } else {
       sessionParams.customer_email = payerEmail;
     }
