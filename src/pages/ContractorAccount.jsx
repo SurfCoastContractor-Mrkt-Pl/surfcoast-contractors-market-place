@@ -229,6 +229,11 @@ export default function ContractorAccount() {
       <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+         {/* Trial Status Banner */}
+         {contractor && !isAdminPreview && (
+           <TrialStatusBanner contractor={contractor} />
+         )}
+
          {/* Admin Preview Banner */}
          {isAdminPreview && (
            <Card className="p-5 bg-blue-50 border-blue-200">
