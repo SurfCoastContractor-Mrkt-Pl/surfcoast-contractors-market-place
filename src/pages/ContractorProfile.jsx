@@ -26,6 +26,7 @@ import ContractorAvailabilityCalendar from '@/components/calendar/ContractorAvai
 import MessagingPricingTable from '@/components/messaging/MessagingPricingTable';
 import ContractorServices from '@/components/contractor/ContractorServices';
 import ChatWindow from '@/components/messaging/ChatWindow';
+import PublicCredentialsDisplay from '@/components/contractor/PublicCredentialsDisplay';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
