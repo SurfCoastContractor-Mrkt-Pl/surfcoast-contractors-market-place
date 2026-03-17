@@ -435,10 +435,11 @@ async function handleCheckoutSessionCompleted(session, base44) {
         if (payments && payments.length > 0) {
           const sorted = payments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
           confirmedPayment = sorted[0];
-          await base44.asServiceRole.entities.Payment.update(sorted[0].id, {
-            status: 'confirmed',
-            confirmed_at: new Date().toISOString(),
-          });
+          const updateData = { status: 'confirmed', confirmed_at: new Date().toISOString() };
+          if (confirmedPayment.amount === 1.50 && !confirmedPayment.session_expires_at) {
+            updateData.session_expires_at = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+          }
+          await base44.asServiceRole.entities.Payment.update(sorted[0].id, updateData);
           console.log(`Payment ${sorted[0].id} confirmed from checkout session (email match)`);
         }
       }
