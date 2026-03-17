@@ -203,6 +203,26 @@ export default function ContractorQuotesTab({ contractorId }) {
 
   return (
     <div className="space-y-3">
+      {/* Rating block banner */}
+      {ratingBlocked && (
+        <Card className="p-4 border-amber-300 bg-amber-50">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="font-semibold text-amber-900 text-sm">Pending Rating Required</p>
+              <p className="text-sm text-amber-800 mt-1">
+                You have a pending rating from your last job. Please rate your customer before accepting new work. Your account will be unblocked the moment you submit your rating.
+              </p>
+              <Link to="/ContractorAccount">
+                <Button size="sm" className="mt-3 bg-amber-600 hover:bg-amber-700 text-white text-xs h-8 gap-1.5">
+                  Go Rate Now <ArrowRight className="w-3 h-3" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {sorted.map(q => {
         const isPending = q.status === 'pending' || q.status === 'sent';
         const statusLabel = q.status === 'pending' ? 'Pending' : q.status === 'sent' ? 'Pending' : q.status.charAt(0).toUpperCase() + q.status.slice(1);
