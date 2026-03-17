@@ -15,6 +15,7 @@ import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangl
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
+import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
