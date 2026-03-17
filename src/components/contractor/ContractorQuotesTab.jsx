@@ -139,6 +139,17 @@ export default function ContractorQuotesTab({ contractorId }) {
   const [declining, setDeclining] = useState(null);
   const [declineError, setDeclineError] = useState(null);
 
+  const { data: contractorData } = useQuery({
+    queryKey: ['contractor-rating-block', contractorId],
+    queryFn: async () => {
+      const results = await base44.entities.Contractor.filter({ id: contractorId });
+      return results?.[0] || null;
+    },
+    enabled: !!contractorId,
+  });
+
+  const ratingBlocked = contractorData?.rating_block_active === true;
+
   const { data: quotes, isLoading } = useQuery({
     queryKey: ['contractor-quotes-by-id', contractorId],
     queryFn: () => base44.entities.QuoteRequest.filter({ contractor_id: contractorId }),
