@@ -46,8 +46,12 @@ export default function ChatWindow({
             userType,
             otherUserEmail,
             otherUserType,
-            tier
+            tier || 'any'
           );
+          // Use tier from backend response if we didn't have one
+          if (result.allowed && !tier && result.tier) {
+            result.tier = result.tier;
+          }
           setEligibility(result);
           if (!result.allowed) {
             setLoading(false);
