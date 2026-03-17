@@ -265,13 +265,16 @@ export default function ContractorProfile() {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="md:col-span-2 space-y-8">
+            {/* Professional Credentials */}
+             <PublicCredentialsDisplay contractor={contractor} />
+
             {/* About */}
-            {contractor.bio && (
-              <Card className="p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-4">About</h2>
-                <p className="text-slate-700 leading-relaxed">{contractor.bio}</p>
-              </Card>
-            )}
+             {contractor.bio && (
+               <Card className="p-6">
+                 <h2 className="text-xl font-bold text-slate-900 mb-4">About</h2>
+                 <p className="text-slate-700 leading-relaxed">{contractor.bio}</p>
+               </Card>
+             )}
 
             {/* Specialties */}
             {(contractor.skills || contractor.certifications) && (
