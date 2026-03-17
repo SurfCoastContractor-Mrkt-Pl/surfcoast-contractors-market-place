@@ -183,6 +183,23 @@ export default function EnhancedHeroSection() {
                 <span>⭐ 4.9 Avg Rating</span>
               </div>
             </div>
+
+            {/* Signup Options */}
+            <div className="px-6 py-5 border-t border-slate-100 space-y-3">
+              <p className="text-xs text-slate-500 text-center font-medium">Don't have an account?</p>
+              <div className="grid grid-cols-2 gap-2">
+                <Link to={createPageUrl('ContractorSignup')}>
+                  <Button className="w-full text-sm h-9 font-semibold text-white hover:opacity-90" style={{backgroundColor: '#1E5A96'}}>
+                    Join as Contractor →
+                  </Button>
+                </Link>
+                <Link to={createPageUrl('CustomerSignup')}>
+                  <Button className="w-full text-sm h-9 font-semibold" variant="outline" style={{color: '#1E5A96', borderColor: '#1E5A96'}}>
+                    Find Contractor →
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
