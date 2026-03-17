@@ -282,7 +282,7 @@ export default function ContractorQuotesTab({ contractorId }) {
             )}
 
             {/* Inline quote form */}
-            {expandedForm === q.id && (
+            {expandedForm === q.id && !ratingBlocked && (
               <QuoteForm
                 quote={q}
                 contractorId={contractorId}
