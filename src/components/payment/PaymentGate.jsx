@@ -322,20 +322,63 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
                     )}
                   </>
                 ) : (
-                  <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                    useNewCard ? 'border-blue-500 bg-white' : 'border-dashed border-slate-300 bg-white/50'
-                  }`}>
-                    <input
-                      type="checkbox"
-                      checked={useNewCard}
-                      onChange={(e) => setUseNewCard(e.target.checked)}
-                      className="w-4 h-4 accent-blue-600 shrink-0"
-                    />
-                    <div>
-                      <p className="text-sm text-slate-700 font-medium">Enter card details on Stripe checkout</p>
-                      <p className="text-xs text-slate-500 mt-0.5">No saved cards on file. Check this to proceed securely.</p>
-                    </div>
-                  </label>
+                  <div className="space-y-3">
+                    <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      useNewCard ? 'border-blue-500 bg-white' : 'border-dashed border-slate-300 bg-white/50'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={useNewCard}
+                        onChange={(e) => { setUseNewCard(e.target.checked); if (!e.target.checked) setCardData({ number: '', expiry: '', cvc: '' }); }}
+                        className="w-4 h-4 accent-blue-600 shrink-0"
+                      />
+                      <div>
+                        <p className="text-sm text-slate-700 font-medium">Enter card details</p>
+                        <p className="text-xs text-slate-500 mt-0.5">No saved cards on file. Check to enter your card.</p>
+                      </div>
+                    </label>
+
+                    {useNewCard && (
+                      <div className="space-y-3 p-3 bg-white border border-blue-200 rounded-lg">
+                        <div>
+                          <Label htmlFor="card_number" className="text-xs font-semibold text-slate-700">Card Number *</Label>
+                          <Input
+                            id="card_number"
+                            placeholder="1234 5678 9012 3456"
+                            value={cardData.number}
+                            onChange={(e) => setCardData(p => ({ ...p, number: e.target.value }))}
+                            className="mt-1 text-sm"
+                            required
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <Label htmlFor="card_expiry" className="text-xs font-semibold text-slate-700">Expiry (MM/YY) *</Label>
+                            <Input
+                              id="card_expiry"
+                              placeholder="12/25"
+                              value={cardData.expiry}
+                              onChange={(e) => setCardData(p => ({ ...p, expiry: e.target.value }))}
+                              className="mt-1 text-sm"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="card_cvc" className="text-xs font-semibold text-slate-700">CVC *</Label>
+                            <Input
+                              id="card_cvc"
+                              placeholder="123"
+                              type="password"
+                              value={cardData.cvc}
+                              onChange={(e) => setCardData(p => ({ ...p, cvc: e.target.value }))}
+                              className="mt-1 text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
