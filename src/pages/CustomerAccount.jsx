@@ -106,6 +106,12 @@ export default function CustomerAccount() {
     select: (data) => data[0],
   });
 
+  const { data: proposals } = useQuery({
+    queryKey: ['customer-proposals', userEmail],
+    queryFn: () => base44.entities.ContractorScopeProposal.filter({ customer_email: userEmail }),
+    enabled: !!userEmail,
+  });
+
   const { data: postedJobs } = useQuery({
     queryKey: ['customer-jobs', userEmail],
     queryFn: () => base44.entities.Job.filter({ poster_email: userEmail }),
