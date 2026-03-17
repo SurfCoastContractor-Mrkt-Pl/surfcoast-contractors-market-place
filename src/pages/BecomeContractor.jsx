@@ -266,7 +266,24 @@ export default function BecomeContractor() {
   };
 
 
-  if (success) {
+  if (success && createdContractor) {
+    // Show compliance acknowledgment if not already acknowledged
+    if (!createdContractor.compliance_acknowledged) {
+      return (
+        <ComplianceAcknowledgment
+          contractorId={createdContractor.id}
+          contractorLocation={createdContractor.location}
+          onComplete={() => {
+            setSuccess(false);
+            setTimeout(() => {
+              navigate(createPageUrl('ContractorAccount'));
+            }, 1000);
+          }}
+        />
+      );
+    }
+
+    // Show success screen if already compliant
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <Card className="max-w-md w-full p-8 text-center">
