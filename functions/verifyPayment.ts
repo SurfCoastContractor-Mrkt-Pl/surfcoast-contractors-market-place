@@ -11,19 +11,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'payment_id required' }, { status: 400 });
     }
 
-    let payments;
+    let payment;
     try {
-      payments = await base44.asServiceRole.entities.Payment.filter({ id: payment_id });
+      payment = await base44.asServiceRole.entities.Payment.get(payment_id);
     } catch (lookupErr) {
       console.warn('Payment lookup failed:', lookupErr.message);
       return Response.json({ payment: null });
     }
 
-    if (!payments || payments.length === 0) {
+    if (!payment) {
       return Response.json({ payment: null });
     }
-
-    const payment = payments[0];
 
     // Only return safe fields — never return card data or sensitive identifiers
     return Response.json({

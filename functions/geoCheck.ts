@@ -96,7 +96,8 @@ Deno.serve(async (req) => {
       console.warn(`SUSPICIOUS: US IP ${ip} using proxy/VPN/hosting. Path: ${path}`);
       
       try {
-        await base44.asServiceRole.entities.SecurityAlert.create({
+        // Fire-and-forget: don't let SecurityAlert write block the response
+        base44.asServiceRole.entities.SecurityAlert.create({
           alert_type: 'suspicious_request',
           severity: 'high',
           ip_address: ip,
@@ -105,7 +106,7 @@ Deno.serve(async (req) => {
           user_agent: userAgent.substring(0, 300),
           path: path,
           details: `US IP using Proxy/VPN or hosting provider. Potential geo-bypass attempt. Proxy: ${isProxy}, Hosting: ${isHosting}`,
-        });
+        }).catch(e => console.warn('SecurityAlert create failed:', e.message));
 
         // Email admin for high-severity suspicious proxy
         await base44.asServiceRole.integrations.Core.SendEmail({
