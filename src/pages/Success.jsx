@@ -174,84 +174,92 @@ Thank you for using SurfCoast Marketplace.
               Go Back
             </Button>
           </>
-        ) : !confirmed ? (
-          // ── CONFIRMATION POP-UP STATE ──
+        ) : (
+          // ── CONFIRMATION — stays on page until user clicks X ──
+          // Fixed overlay modal on top of the success page
           <>
-            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+            {/* Background page content (blurred) */}
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5 opacity-30">
               <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Confirmed!</h1>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-left space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Service:</span>
-                <span className="font-semibold text-slate-900">
-                  {isQuote ? 'Quote Request' : isTimed ? '10-Minute Chat Session' : 'Platform Access'}
-                </span>
-              </div>
-              {isTimed && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Contractor:</span>
-                  <span className="font-semibold text-slate-900">{timedContractorName}</span>
+            <p className="text-slate-400 text-sm opacity-30">Processing complete</p>
+
+            {/* Fixed confirmation modal overlay */}
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+                {/* X close button */}
+                <button
+                  onClick={() => setConfirmed(true)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors"
+                  aria-label="Close"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                <div className="text-center">
+                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+                    <CheckCircle className="w-10 h-10 text-green-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment Confirmed!</h2>
+                  <p className="text-slate-600 text-sm mb-6">
+                    {isQuote
+                      ? 'Your quote request has been submitted. The contractor will respond within 48 hours.'
+                      : isTimed
+                        ? `Your 10-minute chat session with ${timedContractorName} is ready. A receipt has been sent to your email.`
+                        : 'Your access has been activated. A receipt has been sent to your email.'}
+                  </p>
                 </div>
-              )}
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Amount:</span>
-                <span className="font-bold text-green-700">{isTimed ? '$1.50' : isQuote ? '$1.75' : '$50.00'} USD</span>
-              </div>
-              {payerEmail && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Receipt sent to:</span>
-                  <span className="font-semibold text-slate-900 break-all">{payerEmail}</span>
+
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-left space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-600">Service:</span>
+                    <span className="font-semibold text-slate-900">
+                      {isQuote ? 'Quote Request' : isTimed ? '10-Minute Chat Session' : 'Platform Access'}
+                    </span>
+                  </div>
+                  {isTimed && timedContractorName && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600">Contractor:</span>
+                      <span className="font-semibold text-slate-900">{timedContractorName}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-600">Amount Charged:</span>
+                    <span className="font-bold text-green-700">{isTimed ? '$1.50' : isQuote ? '$1.75' : '$50.00'} USD</span>
+                  </div>
+                  {payerEmail && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600">Receipt sent to:</span>
+                      <span className="font-semibold text-slate-900 break-all">{payerEmail}</span>
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {isTimed && timedContractorEmail ? (
+                  <Button
+                    onClick={() => { setConfirmed(true); setTimeout(handleGoToChat, 50); }}
+                    className="w-full text-white text-base font-semibold py-5"
+                    style={{ backgroundColor: '#1E5A96' }}
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Start Messaging {timedContractorName}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setConfirmed(true)}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-5"
+                  >
+                    {isQuote ? 'View Your Quotes' : 'Continue'}
+                  </Button>
+                )}
+
+                <p className="text-center text-xs text-slate-400 mt-4">
+                  Click the ✕ or the button above to dismiss this message
+                </p>
+              </div>
             </div>
-            <p className="text-slate-600 text-sm mb-6">
-              {isQuote
-                ? 'Your quote request has been submitted. The contractor will respond within 48 hours.'
-                : isTimed
-                  ? `Your 10-minute chat session with ${timedContractorName} is ready. A receipt has been sent to your email.`
-                  : 'Your access has been activated. A receipt has been sent to your email.'}
-            </p>
-            <Button
-              onClick={() => setConfirmed(true)}
-              className="bg-green-600 hover:bg-green-700 text-white w-full text-base py-5 font-semibold"
-            >
-              OK
-            </Button>
-          </>
-        ) : (
-          // ── AFTER OK — show chat button or navigation ──
-          <>
-            <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-5">
-              <MessageCircle className="w-10 h-10 text-blue-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">
-              {isTimed ? 'Start Your Chat' : 'You\'re All Set!'}
-            </h1>
-            <p className="text-slate-600 mb-6">
-              {isTimed
-                ? `Click below to open your 10-minute messaging session with ${timedContractorName}.`
-                : isQuote
-                  ? 'Your quote request is submitted. Track it in your account.'
-                  : 'Your access is now active.'}
-            </p>
-            {isTimed && timedContractorEmail ? (
-              <Button
-                onClick={handleGoToChat}
-                className="w-full text-white text-base py-5 font-semibold"
-                style={{ backgroundColor: '#1E5A96' }}
-              >
-                <MessageCircle className="w-5 h-5 mr-2" />
-                Chat with {timedContractorName}
-              </Button>
-            ) : (
-              <Button
-                onClick={() => navigate(isQuote ? '/CustomerAccount?tab=quotes' : '/')}
-                className="bg-blue-600 hover:bg-blue-700 text-white w-full"
-              >
-                {isQuote ? 'View Your Quotes' : 'Return to Home'}
-              </Button>
-            )}
           </>
         )}
       </Card>
