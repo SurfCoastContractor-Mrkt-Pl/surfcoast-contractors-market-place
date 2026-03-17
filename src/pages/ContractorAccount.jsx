@@ -490,8 +490,13 @@ export default function ContractorAccount() {
                   <ServicePackageManager contractorId={contractor?.id} services={contractorServices || []} onRefresh={refetchServices} />
                   <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
                   <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
-                </div>
-              </TabsContent>
+                  </div>
+                  {/* Completion Widget */}
+                  <div className="hidden lg:block w-64 shrink-0">
+                  <ProfileCompletionWidget contractor={contractor} />
+                  </div>
+                  </div>
+                  </TabsContent>
 
               <TabsContent value="scopes">
                 <Card className="p-6">
