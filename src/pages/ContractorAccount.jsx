@@ -46,6 +46,7 @@ import TrialStatusBanner from '@/components/contractor/TrialStatusBanner';
 import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWidget';
 import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfessionalDocuments';
 import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilityManager';
+import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
