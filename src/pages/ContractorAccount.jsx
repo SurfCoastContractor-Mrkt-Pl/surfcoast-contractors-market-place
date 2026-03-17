@@ -44,6 +44,7 @@ import ServicePackageManager from '@/components/contractor/ServicePackageManager
 import LiveSessions from '@/components/contractor/LiveSessions';
 import TrialStatusBanner from '@/components/contractor/TrialStatusBanner';
 import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWidget';
+import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfessionalDocuments';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
