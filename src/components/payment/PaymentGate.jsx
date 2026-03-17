@@ -146,6 +146,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
     setShowConfirmation(false);
     setSelectedPaymentMethod(undefined);
     setUseNewCard(false);
+    setCardData({ number: '', expiry: '', cvc: '' });
     onClose();
   };
 
