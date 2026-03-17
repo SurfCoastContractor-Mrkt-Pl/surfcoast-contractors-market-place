@@ -36,34 +36,68 @@ function ProposalCard({ proposal, customerEmail, onReload }) {
   const handleAccept = async () => {
     setLoading('accept');
     setError(null);
-    const res = await fetch(RESPOND_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ proposal_id: proposal.id, customer_email: customerEmail, action: 'accept' }),
-    });
-    setLoading(null);
-    if (res.ok) {
+    try {
+      // Step 1: Update ContractorScopeProposal status directly
+      await base44.entities.ContractorScopeProposal.update(proposal.id, { status: 'accepted' });
+
+      // Step 2: Create ScopeOfWork directly
+      await base44.entities.ScopeOfWork.create({
+        job_id: proposal.job_id || '',
+        contractor_id: proposal.contractor_id,
+        contractor_name: proposal.contractor_name,
+        contractor_email: proposal.contractor_email,
+        customer_name: proposal.customer_name,
+        customer_email: proposal.customer_email,
+        job_title: proposal.job_title,
+        customer_scope_details: proposal.work_description || '',
+        scope_summary: proposal.quote_message || '',
+        cost_type: proposal.cost_type,
+        cost_amount: proposal.quote_amount,
+        estimated_hours: proposal.estimated_hours,
+        agreed_work_date: proposal.proposed_work_date,
+        status: 'approved',
+      });
+
+      // Step 3: Update QuoteRequest status directly
+      if (proposal.quote_request_id) {
+        await base44.entities.QuoteRequest.update(proposal.quote_request_id, { status: 'accepted' });
+      }
+
+      // Step 4: Call backend function for email notification only
+      await fetch(RESPOND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'email_only',
+          proposal_id: proposal.id,
+          customer_email: customerEmail,
+          contractor_email: proposal.contractor_email,
+          job_title: proposal.job_title,
+          cost_amount: proposal.quote_amount,
+          contractor_name: proposal.contractor_name,
+          customer_name: proposal.customer_name,
+        }),
+      });
+
       setSuccess(true);
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data?.error || 'Failed to accept. Please try again.');
+    } catch (err) {
+      setError(err.message || 'Failed to accept. Please try again.');
+    } finally {
+      setLoading(null);
     }
   };
 
   const handleDeny = async () => {
     setLoading('deny');
     setError(null);
-    const res = await fetch(RESPOND_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ proposal_id: proposal.id, customer_email: customerEmail, action: 'deny', deny_reason: denyReason || undefined }),
-    });
-    setLoading(null);
-    if (res.ok) {
+    try {
+      // Update ContractorScopeProposal status directly
+      await base44.entities.ContractorScopeProposal.update(proposal.id, { status: 'declined' });
       onReload();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data?.error || 'Failed to decline. Please try again.');
+    } catch (err) {
+      setError(err.message || 'Failed to decline. Please try again.');
+    } finally {
+      setLoading(null);
     }
   };
 
