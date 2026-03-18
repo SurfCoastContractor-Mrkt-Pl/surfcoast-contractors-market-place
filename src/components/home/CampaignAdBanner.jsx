@@ -3,7 +3,7 @@ import { getAppBaseUrl } from '@/lib/env';
 
 export default function CampaignAdBanner() {
   const handleClick = () => {
-    window.location.href = `${getAppBaseUrl()}/Referrals`;
+    window.location.href = `${getAppBaseUrl()}/ReferralSignup`;
   };
 
   return (
