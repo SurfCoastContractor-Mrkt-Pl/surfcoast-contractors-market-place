@@ -18,6 +18,7 @@ import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
 import MarketDirectory from './pages/MarketDirectory';
 import MarketShopProfile from './pages/MarketShopProfile';
+import Terms from './pages/Terms';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -79,6 +80,7 @@ const AuthenticatedApp = () => {
       <Route path="/MarketShopSignup" element={<LayoutWrapper currentPageName="MarketShopSignup"><MarketShopSignup /></LayoutWrapper>} />
       <Route path="/MarketDirectory" element={<LayoutWrapper currentPageName="MarketDirectory"><MarketDirectory /></LayoutWrapper>} />
       <Route path="/MarketShopProfile/:id" element={<LayoutWrapper currentPageName="MarketShopProfile"><MarketShopProfile /></LayoutWrapper>} />
+      <Route path="/Terms" element={<LayoutWrapper currentPageName="Terms"><Terms /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
