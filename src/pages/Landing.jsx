@@ -101,7 +101,7 @@ export default function Landing() {
             buttonLabel="Find a Pro →"
             buttonColor="#0ea5e9"
             hoverColor="rgba(14,165,233,0.28)"
-            onClick={() => navigate('/CustomerDashboard')}
+            onClick={() => navigate('/CustomerSignup')}
           />
 
           {/* OR divider */}
@@ -130,7 +130,7 @@ export default function Landing() {
             buttonLabel="Join as a Pro →"
             buttonColor="#f59e0b"
             hoverColor="rgba(245,158,11,0.25)"
-            onClick={() => navigate('/ContractorDashboard')}
+            onClick={() => navigate('/BecomeContractor')}
           />
         </div>
 
