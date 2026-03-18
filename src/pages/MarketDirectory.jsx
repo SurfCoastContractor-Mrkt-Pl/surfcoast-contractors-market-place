@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag } from 'lucide-react';
+import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag, CheckCircle } from 'lucide-react';
 
 const SHOP_TYPE_LABELS = {
   farmers_market: 'Farmers Market',
