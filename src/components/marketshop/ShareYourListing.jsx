@@ -64,7 +64,8 @@ export default function ShareYourListing({ shop }) {
             onClick={handleFacebookShare}
             className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors flex items-center gap-2"
           >
-            📘 Facebook
+            <Facebook className="w-4 h-4" />
+            Facebook
           </button>
 
           {/* Instagram */}
@@ -73,7 +74,8 @@ export default function ShareYourListing({ shop }) {
               className="px-4 py-2.5 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
               style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
             >
-              📸 Instagram
+              <Instagram className="w-4 h-4" />
+              Instagram
             </button>
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 whitespace-nowrap z-10">
               Copy your link and paste it in your Instagram bio or story
@@ -85,7 +87,8 @@ export default function ShareYourListing({ shop }) {
             <button
               className="px-4 py-2.5 rounded-lg bg-black hover:bg-slate-900 text-white font-medium transition-colors flex items-center gap-2"
             >
-              🎵 TikTok
+              <Music className="w-4 h-4" />
+              TikTok
             </button>
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 whitespace-nowrap z-10">
               Copy your link and add it to your TikTok bio
@@ -97,7 +100,8 @@ export default function ShareYourListing({ shop }) {
             onClick={handleTwitterShare}
             className="px-4 py-2.5 rounded-lg bg-black hover:bg-slate-900 text-white font-medium transition-colors flex items-center gap-2"
           >
-            🐦 Twitter/X
+            <Twitter className="w-4 h-4" />
+            Twitter/X
           </button>
         </div>
       </div>
