@@ -407,6 +407,16 @@ export default function MarketShopSignup() {
               </div>
             </div>
 
+            {/* Photo Gallery Upload */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-3">Show off your booth & products (optional)</label>
+              <PhotoGalleryUpload
+                images={formData.gallery_images}
+                onImagesChange={(images) => setFormData(prev => ({ ...prev, gallery_images: images }))}
+                maxPhotos={6}
+              />
+            </div>
+
             {/* Social URLs */}
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">Instagram URL (optional)</label>
