@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Lightbulb } from 'lucide-react';
+import { Copy, Lightbulb, Facebook, Instagram, Music, Twitter } from 'lucide-react';
 
 export default function ShareYourListing({ shop }) {
   const [copied, setCopied] = useState(false);
