@@ -335,6 +335,38 @@ export default function MarketShopProfile() {
           )}
         </div>
 
+        {/* Photo Gallery Section */}
+        {(shop.gallery_images || []).length > 0 && (
+          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <ImageIcon className="w-5 h-5" />
+              Photos
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {shop.gallery_images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setLightboxIndex(idx);
+                    setLightboxOpen(true);
+                  }}
+                  className="aspect-square rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+                >
+                  <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Lightbox */}
+        <PhotoGalleryLightbox
+          images={shop.gallery_images || []}
+          isOpen={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          initialIndex={lightboxIndex}
+        />
+
         {/* Market Schedule */}
         {(shop.market_events || []).length > 0 && (
           <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
