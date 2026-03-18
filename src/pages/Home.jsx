@@ -37,49 +37,52 @@ export default function Home() {
         </nav>
       </header>
 
-      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"clamp(24px, 8vw, 56px) 16px 24px", minHeight:"100svh" }}>
-        <div style={{ textAlign:"center", marginBottom:"clamp(24px, 6vw, 44px)", maxWidth:"680px" }}>
-          <h1 style={{ fontSize:"clamp(28px, 6vw, 68px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
-          <p style={{ fontSize:"clamp(13px, 3vw, 18px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
+      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"clamp(24px, 4vw, 48px) 16px clamp(16px, 2vw, 24px)", minHeight:"100svh" }}>
+        <div style={{ textAlign:"center", marginBottom:"clamp(16px, 4vw, 28px)", maxWidth:"680px" }}>
+          <h1 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
+          <p style={{ fontSize:"clamp(13px, 3vw, 16px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </div>
 
-        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", width:"100%", maxWidth:"780px", gap:"clamp(12px, 4vw, 20px)", justifyContent:"center" }}>
+        <div style={{ display:"flex", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:"clamp(16px, 4vw, 32px)", justifyContent:"center", minHeight:"500px" }}>
+          {/* Left Card - Find a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("customer")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ width:"100%", borderRadius:"clamp(12px, 3vw, 18px)", padding:"clamp(20px, 5vw, 30px)", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="customer"?"linear-gradient(145deg,rgba(29,111,164,0.95),rgba(14,80,130,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="customer"?"1.5px solid rgba(45,140,200,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="customer"?"translateY(-4px)":"none", boxShadow:hoveredCard==="customer"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
+            style={{ flex:1, display:"flex", flexDirection:"column", borderRadius:"clamp(12px, 3vw, 18px)", padding:"clamp(20px, 5vw, 30px)", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="customer"?"linear-gradient(145deg,rgba(29,111,164,0.95),rgba(14,80,130,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="customer"?"1.5px solid rgba(45,140,200,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="customer"?"translateY(-4px)":"none", boxShadow:hoveredCard==="customer"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
           >
             <HomeIcon size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#1d6fa4" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"clamp(18px, 4vw, 21px)", fontWeight:"700", margin:"0 0 clamp(8px, 2vw, 10px)", color:"#fff" }}>I Need a Contractor</h2>
-            <p style={{ fontSize:"clamp(13px, 2vw, 14px)", color:"rgba(255,255,255,0.68)", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:"1.6" }}>Post your project, receive competitive quotes, and hire vetted tradespeople near you.</p>
+            <p style={{ fontSize:"clamp(13px, 2vw, 14px)", color:"rgba(255,255,255,0.68)", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:"1.6", flex:1 }}>Post your project, receive competitive quotes, and hire vetted tradespeople near you.</p>
             <ul style={{ listStyle:"none", padding:0, margin:"0 0 clamp(16px, 4vw, 22px)", display:"flex", flexDirection:"column", gap:"6px", fontSize:"clamp(12px, 2vw, 13px)", color:"rgba(255,255,255,0.78)" }}>
               <li>✓ Verified & licensed pros only</li>
               <li>✓ Free 2-week trial</li>
               <li>✓ Secure payments</li>
             </ul>
-            <button onClick={() => handleAuth("customer")} style={{ width:"100%", padding:"clamp(12px, 3vw, 13px)", borderRadius:"12px", border:"none", fontSize:"clamp(13px, 2vw, 15px)", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:hoveredCard==="customer"?"#ffffff":"#1d6fa4", color:hoveredCard==="customer"?"#0e5082":"#fff" }}>Find a Pro →</button>
+            <button onClick={() => handleAuth("customer")} style={{ width:"100%", padding:"clamp(12px, 3vw, 13px)", borderRadius:"12px", border:"none", fontSize:"clamp(13px, 2vw, 15px)", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:hoveredCard==="customer"?"#ffffff":"#1d6fa4", color:hoveredCard==="customer"?"#0e5082":"#fff", marginTop:"auto" }}>Find a Pro →</button>
           </div>
 
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", width:"100%", padding:"8px 0" }}>
-            <div style={{ background:"rgba(255,255,255,0.12)", flex:1, height:"1px" }} />
-            <span style={{ color:"rgba(255,255,255,0.35)", fontSize:"12px", fontWeight:"600", whiteSpace:"nowrap" }}>OR</span>
-            <div style={{ background:"rgba(255,255,255,0.12)", flex:1, height:"1px" }} />
+          {/* Vertical OR Divider */}
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
+            <span style={{ color:"rgba(255,255,255,0.35)", fontSize:"clamp(11px, 2vw, 12px)", fontWeight:"600", whiteSpace:"nowrap", margin:"0 clamp(8px, 2vw, 12px)", transform:"translateZ(0)" }}>OR</span>
+            <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
           </div>
 
+          {/* Right Card - Join as a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("contractor")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ width:"100%", borderRadius:"clamp(12px, 3vw, 18px)", padding:"clamp(20px, 5vw, 30px)", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="contractor"?"linear-gradient(145deg,rgba(217,119,6,0.95),rgba(180,90,0,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="contractor"?"1.5px solid rgba(245,158,11,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="contractor"?"translateY(-4px)":"none", boxShadow:hoveredCard==="contractor"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
+            style={{ flex:1, display:"flex", flexDirection:"column", borderRadius:"clamp(12px, 3vw, 18px)", padding:"clamp(20px, 5vw, 30px)", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="contractor"?"linear-gradient(145deg,rgba(217,119,6,0.95),rgba(180,90,0,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="contractor"?"1.5px solid rgba(245,158,11,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="contractor"?"translateY(-4px)":"none", boxShadow:hoveredCard==="contractor"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
           >
             <Wrench size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#d97706" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"clamp(18px, 4vw, 21px)", fontWeight:"700", margin:"0 0 clamp(8px, 2vw, 10px)", color:"#fff" }}>I'm a Contractor</h2>
-            <p style={{ fontSize:"clamp(13px, 2vw, 14px)", color:"rgba(255,255,255,0.68)", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:"1.6" }}>Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
+            <p style={{ fontSize:"clamp(13px, 2vw, 14px)", color:"rgba(255,255,255,0.68)", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:"1.6", flex:1 }}>Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
             <ul style={{ listStyle:"none", padding:0, margin:"0 0 clamp(16px, 4vw, 22px)", display:"flex", flexDirection:"column", gap:"6px", fontSize:"clamp(12px, 2vw, 13px)", color:"rgba(255,255,255,0.78)" }}>
               <li>✓ Free 2-week trial</li>
               <li>✓ Get paid securely via Stripe</li>
               <li>✓ Build your reputation</li>
             </ul>
-            <button onClick={() => handleAuth("contractor")} style={{ width:"100%", padding:"clamp(12px, 3vw, 13px)", borderRadius:"12px", border:"none", fontSize:"clamp(13px, 2vw, 15px)", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:hoveredCard==="contractor"?"#ffffff":"#d97706", color:hoveredCard==="contractor"?"#92400e":"#fff" }}>Join as a Pro →</button>
+            <button onClick={() => handleAuth("contractor")} style={{ width:"100%", padding:"clamp(12px, 3vw, 13px)", borderRadius:"12px", border:"none", fontSize:"clamp(13px, 2vw, 15px)", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:hoveredCard==="contractor"?"#ffffff":"#d97706", color:hoveredCard==="contractor"?"#92400e":"#fff", marginTop:"auto" }}>Join as a Pro →</button>
           </div>
         </div>
 
