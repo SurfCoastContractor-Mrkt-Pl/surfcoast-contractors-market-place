@@ -176,7 +176,10 @@ export default function Layout({ children, currentPageName }) {
                   <Link 
                     key={link.page} 
                     to={createPageUrl(link.page)}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setMobileMenuOpen(false);
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     <div className={`flex items-center gap-3 p-3 rounded-lg ${
                       currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'
@@ -204,7 +207,10 @@ export default function Layout({ children, currentPageName }) {
                     {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                   </div>
                   {(isContractor ? contractorLinks : customerLinks).map(link => (
-                    <Link key={link.page} to={createPageUrl(link.page)} onClick={() => setMobileMenuOpen(false)}>
+                    <Link key={link.page} to={createPageUrl(link.page)} onClick={() => {
+                      setMobileMenuOpen(false);
+                      window.scrollTo(0, 0);
+                    }}>
                       <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                         <UserCircle className="w-5 h-5" />
                         {link.name}
