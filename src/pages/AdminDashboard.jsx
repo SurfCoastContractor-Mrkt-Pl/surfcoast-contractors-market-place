@@ -199,16 +199,16 @@ export default function AdminDashboard() {
         {activeTab === 'overview' && (
           <div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-              <StatCard label="Active Vendors" value={activeVendors} color="text-green-400" />
-              <StatCard label="Pending" value={pendingVendors} color="text-yellow-400" />
-              <StatCard label="Suspended" value={suspendedVendors} color="text-red-400" />
-              <StatCard label="Farmers Market" value={farmersMarketVendors} color="text-blue-400" />
-              <StatCard label="Swap Meet" value={swapMeetVendors} color="text-purple-400" />
-              <StatCard label="Monthly Revenue" value={`$${monthlyRevenue}`} color="text-amber-400" />
+              <StatCard label="Active Vendors" value={activeVendors} color="text-green-400" icon={Store} />
+              <StatCard label="Pending" value={pendingVendors} color="text-yellow-400" icon={Clock} />
+              <StatCard label="Farmers Market" value={farmersMarketVendors} color="text-blue-400" icon={Leaf} />
+              <StatCard label="Swap Meet" value={swapMeetVendors} color="text-purple-400" icon={Tag} />
+              <StatCard label="Monthly Revenue" value={`$${monthlyRevenue}`} color="text-amber-400" icon={DollarSign} />
+              <StatCard label="Suspended" value={suspendedVendors} color="text-red-400" icon={AlertTriangle} />
             </div>
 
             <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Recent Activity</h2>
+              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-5 h-5" />Recent Activity</h2>
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {vendors.slice(0, 10).map(v => (
                   <div key={v.id} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
