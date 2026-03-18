@@ -3,9 +3,30 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const body = await req.json();
 
+    // Verify authenticated user or internal service key
+    const internalKey = req.headers.get('x-internal-key');
+    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isInternalCall = internalKey && validInternalKey && internalKey === validInternalKey;
+
+    if (!isInternalCall) {
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
+    const body = await req.json();
     const { action, proposal_id, customer_email, contractor_email, job_title, cost_amount, contractor_name, customer_name } = body;
+
+    // If called by an authenticated user, verify they are a party to this communication
+    if (!isInternalCall) {
+      const user = await base44.auth.me();
+      const userEmail = user.email.toLowerCase();
+      if (userEmail !== customer_email?.toLowerCase() && userEmail !== contractor_email?.toLowerCase()) {
+        return Response.json({ error: 'Forbidden: You are not a party to this quote' }, { status: 403 });
+      }
+    }
 
     if (action !== 'email_only') {
       return Response.json({ error: 'Only email_only action supported' }, { status: 400 });
