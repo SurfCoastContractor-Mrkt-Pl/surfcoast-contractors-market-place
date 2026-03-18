@@ -98,6 +98,8 @@ export default function MarketShopProfile() {
   const [loading, setLoading] = useState(true);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [submittingInquiry, setSubmittingInquiry] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   
   const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 0, title: '', body: '' });
   const [inquiryForm, setInquiryForm] = useState({ name: '', email: '', message: '' });
