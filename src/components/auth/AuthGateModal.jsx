@@ -1,63 +1,72 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import { LogIn, UserPlus, Shield } from 'lucide-react';
+import { Sparkles, LogIn } from 'lucide-react';
 
 /**
- * Shows a login/signup prompt when a guest tries to use an action that requires auth.
- * Usage: <AuthGateModal open={open} onClose={() => setOpen(false)} action="request a quote" />
+ * Auth gate modal shown when a guest tries to use an action requiring an account.
+ * Usage: <AuthGateModal open={open} onClose={() => setOpen(false)} />
  */
-export default function AuthGateModal({ open, onClose, action = 'continue' }) {
+export default function AuthGateModal({ open, onClose }) {
   const handleLogin = () => {
     base44.auth.redirectToLogin(window.location.href);
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm">
-        <DialogHeader>
-          <div className="flex justify-center mb-3">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(30,90,150,0.1)' }}>
-              <Shield className="w-6 h-6" style={{ color: '#1E5A96' }} />
+      <DialogContent className="max-w-md p-0 overflow-hidden border-0 bg-transparent shadow-2xl">
+        <div className="bg-slate-900 rounded-2xl overflow-hidden">
+          {/* Top accent bar */}
+          <div className="h-1 w-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500" />
+
+          <div className="p-8">
+            {/* Icon */}
+            <div className="flex justify-center mb-5">
+              <div className="w-14 h-14 rounded-2xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center">
+                <Sparkles className="w-7 h-7 text-amber-400" />
+              </div>
             </div>
-          </div>
-          <DialogTitle className="text-center text-lg">Sign in to {action}</DialogTitle>
-          <DialogDescription className="text-center text-slate-500 text-sm">
-            Create a free account or log in to get started. It only takes a minute.
-          </DialogDescription>
-        </DialogHeader>
 
-        <div className="space-y-3 mt-2">
-          <Button
-            className="w-full text-white font-semibold gap-2"
-            style={{ backgroundColor: '#1E5A96' }}
-            onClick={handleLogin}
-          >
-            <LogIn className="w-4 h-4" />
-            Log In
-          </Button>
+            {/* Title */}
+            <h2 className="text-2xl font-bold text-white text-center mb-3">
+              Create Your Free Account to Connect
+            </h2>
 
-          <div className="grid grid-cols-2 gap-2">
-            <Link to={createPageUrl('CustomerSignup')} onClick={onClose}>
-              <Button variant="outline" className="w-full text-sm gap-1.5" style={{ borderColor: '#1E5A96', color: '#1E5A96' }}>
-                <UserPlus className="w-3.5 h-3.5" />
-                As Customer
-              </Button>
+            {/* Body */}
+            <p className="text-slate-300 text-sm text-center leading-relaxed mb-7">
+              Browsing is always free. To request quotes, chat with contractors, or book jobs — create a free account. Your 2-week trial starts automatically the moment you sign up. No credit card required.
+            </p>
+
+            {/* Primary CTA */}
+            <Link to="/CustomerSignup" onClick={onClose}>
+              <button className="w-full bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold py-3.5 rounded-xl transition-colors text-sm mb-3">
+                Sign Up Free →
+              </button>
             </Link>
-            <Link to={createPageUrl('ContractorSignup')} onClick={onClose}>
-              <Button variant="outline" className="w-full text-sm gap-1.5">
-                <UserPlus className="w-3.5 h-3.5" />
-                As Contractor
-              </Button>
-            </Link>
-          </div>
 
-          <button onClick={onClose} className="w-full text-xs text-slate-400 hover:text-slate-600 py-1">
-            Maybe later
-          </button>
+            {/* Secondary CTA */}
+            <button
+              onClick={handleLogin}
+              className="w-full border border-slate-600 hover:border-slate-400 text-white font-semibold py-3 rounded-xl transition-colors text-sm flex items-center justify-center gap-2"
+            >
+              <LogIn className="w-4 h-4" />
+              Log In
+            </button>
+
+            {/* Dismiss */}
+            <button
+              onClick={onClose}
+              className="w-full mt-3 text-xs text-slate-500 hover:text-slate-300 transition-colors py-1"
+            >
+              Maybe later
+            </button>
+
+            {/* Bottom note */}
+            <p className="text-center text-xs text-slate-500 mt-4 border-t border-slate-700/60 pt-4">
+              Already browsing? Your trial starts the moment you create an account.
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
