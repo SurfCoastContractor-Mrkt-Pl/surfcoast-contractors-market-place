@@ -30,7 +30,7 @@ export default function Home() {
           <span style={{ fontSize:'10px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'10px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"12px", alignItems:"center" }}>
-          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"14px", fontWeight:"600", padding:"8px 16px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)" }}>🛍️ Markets & Vendors</a>
+          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"14px", fontWeight:"600", padding:"8px 16px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"6px" }}><ShoppingBag size={16} /> Markets & Vendors</a>
           <a href={`${BASE_URL}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"14px", fontWeight:"700", padding:"8px 22px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap" }}>Sign In</a>
         </nav>
       </header>
@@ -47,7 +47,7 @@ export default function Home() {
             onMouseLeave={() => setHoveredCard(null)}
             style={{ flex:1, maxWidth:isMobile?"420px":"340px", width:isMobile?"100%":undefined, borderRadius:"18px", padding:"30px 26px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="customer"?"linear-gradient(145deg,rgba(29,111,164,0.95),rgba(14,80,130,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="customer"?"1.5px solid rgba(45,140,200,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="customer"?"translateY(-4px)":"none", boxShadow:hoveredCard==="customer"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
           >
-            <div style={{ fontSize:"34px", marginBottom:"14px" }}>🏠</div>
+            <Home size={32} style={{ marginBottom:"14px", color:"#1d6fa4" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"21px", fontWeight:"700", margin:"0 0 10px", color:"#fff" }}>I Need a Contractor</h2>
             <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.68)", margin:"0 0 16px", lineHeight:"1.6" }}>Post your project, receive competitive quotes, and hire vetted tradespeople near you.</p>
             <ul style={{ listStyle:"none", padding:0, margin:"0 0 22px", display:"flex", flexDirection:"column", gap:"8px", fontSize:"13px", color:"rgba(255,255,255,0.78)" }}>
@@ -69,7 +69,7 @@ export default function Home() {
             onMouseLeave={() => setHoveredCard(null)}
             style={{ flex:1, maxWidth:isMobile?"420px":"340px", width:isMobile?"100%":undefined, borderRadius:"18px", padding:"30px 26px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="contractor"?"linear-gradient(145deg,rgba(217,119,6,0.95),rgba(180,90,0,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="contractor"?"1.5px solid rgba(245,158,11,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="contractor"?"translateY(-4px)":"none", boxShadow:hoveredCard==="contractor"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
           >
-            <div style={{ fontSize:"34px", marginBottom:"14px" }}>🔧</div>
+            <Wrench size={32} style={{ marginBottom:"14px", color:"#d97706" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"21px", fontWeight:"700", margin:"0 0 10px", color:"#fff" }}>I'm a Contractor</h2>
             <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.68)", margin:"0 0 16px", lineHeight:"1.6" }}>Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
             <ul style={{ listStyle:"none", padding:0, margin:"0 0 22px", display:"flex", flexDirection:"column", gap:"8px", fontSize:"13px", color:"rgba(255,255,255,0.78)" }}>
@@ -83,7 +83,7 @@ export default function Home() {
 
         <div onClick={() => window.location.href=`${BASE_URL}/MarketDirectory`} style={{ marginTop:"32px", width:"100%", maxWidth:"780px", background:"rgba(79,46,150,0.22)", border:"1px solid rgba(124,58,237,0.35)", borderRadius:"16px", padding:isMobile?"18px 20px":"20px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"16px", flexDirection:isMobile?"column":"row", backdropFilter:"blur(12px)", cursor:"pointer" }}>
           <div style={{ display:"flex", alignItems:"center", gap:"14px" }}>
-            <span style={{ fontSize:"30px" }}>🛍️</span>
+             <ShoppingBag size={28} style={{ color:"#7c3aed" }} strokeWidth={1.5} />
             <div>
               <div style={{ color:"#c4b5fd", fontWeight:"700", fontSize:"15px" }}>Farmers Markets & Swap Meets</div>
               <div style={{ color:"rgba(255,255,255,0.5)", fontSize:"13px", marginTop:"2px" }}>Browse local vendors or create your own MarketShop</div>
@@ -93,9 +93,15 @@ export default function Home() {
         </div>
 
         <div style={{ marginTop:"28px", display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"6px 4px" }}>
-          {["🔒 Secure payments","✅ Identity verified pros","📋 Licensed & insured","🇺🇸 Nationwide coverage"].map((t,i,a) => (
+          {[
+            { icon: Shield, label: "Secure payments" },
+            { icon: CheckCircle, label: "Identity verified pros" },
+            { icon: Shield, label: "Licensed & insured" },
+            { icon: ShoppingBag, label: "Nationwide coverage" }
+          ].map(({ icon: Icon, label }, i, a) => (
             <span key={i} style={{ display:"flex", alignItems:"center", gap:"6px" }}>
-              <span style={{ fontSize:"13px", color:"rgba(255,255,255,0.48)" }}>{t}</span>
+              <Icon size={14} style={{ color:"rgba(255,255,255,0.48)" }} strokeWidth={1.5} />
+              <span style={{ fontSize:"13px", color:"rgba(255,255,255,0.48)" }}>{label}</span>
               {i < a.length-1 && <span style={{ color:"rgba(255,255,255,0.18)", margin:"0 2px" }}>·</span>}
             </span>
           ))}
