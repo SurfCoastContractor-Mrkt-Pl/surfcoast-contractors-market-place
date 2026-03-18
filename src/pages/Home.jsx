@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ShoppingBag, Home, Wrench, Shield, CheckCircle } from "lucide-react";
+import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "lucide-react";
 
 const BASE_URL = "https://surfcoastcmp.base44.app";
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
@@ -48,7 +48,7 @@ export default function Home() {
             onMouseLeave={() => setHoveredCard(null)}
             style={{ width:"100%", borderRadius:"clamp(12px, 3vw, 18px)", padding:"clamp(20px, 5vw, 30px)", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:hoveredCard==="customer"?"linear-gradient(145deg,rgba(29,111,164,0.95),rgba(14,80,130,0.97))":"rgba(10,22,40,0.68)", border:hoveredCard==="customer"?"1.5px solid rgba(45,140,200,0.8)":"1.5px solid rgba(255,255,255,0.15)", transform:hoveredCard==="customer"?"translateY(-4px)":"none", boxShadow:hoveredCard==="customer"?"0 24px 56px rgba(0,0,0,0.55)":"0 8px 32px rgba(0,0,0,0.4)" }}
           >
-            <Home size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#1d6fa4" }} strokeWidth={1.5} />
+            <HomeIcon size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#1d6fa4" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"clamp(18px, 4vw, 21px)", fontWeight:"700", margin:"0 0 clamp(8px, 2vw, 10px)", color:"#fff" }}>I Need a Contractor</h2>
             <p style={{ fontSize:"clamp(13px, 2vw, 14px)", color:"rgba(255,255,255,0.68)", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:"1.6" }}>Post your project, receive competitive quotes, and hire vetted tradespeople near you.</p>
             <ul style={{ listStyle:"none", padding:0, margin:"0 0 clamp(16px, 4vw, 22px)", display:"flex", flexDirection:"column", gap:"6px", fontSize:"clamp(12px, 2vw, 13px)", color:"rgba(255,255,255,0.78)" }}>
