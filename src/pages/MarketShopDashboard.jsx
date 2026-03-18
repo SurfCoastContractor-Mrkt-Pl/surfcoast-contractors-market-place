@@ -159,12 +159,40 @@ export default function MarketShopDashboard() {
         <ShareYourListing shop={shop} />
       </div>
 
+      {/* Subscription Warning */}
+      {shop.subscription_status !== 'active' && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+            <div className="text-xl flex-shrink-0">⚠️</div>
+            <div>
+              <h3 className="font-semibold text-amber-900">Subscription Inactive</h3>
+              <p className="text-sm text-amber-800 mt-1">Your MarketShop subscription is not active. Upgrade your subscription to access full features.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
           {activeTab === 'listings' && <MarketShopListings />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
-          {activeTab === 'reviews' && <MarketShopReviews />}
+          {activeTab === 'reviews' && (
+            shop.subscription_status === 'active' ? (
+              <MarketShopReviews shop={shop} />
+            ) : (
+              <div className="text-center py-12">
+                <Star className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-500 mb-4">Reviews are only available with an active subscription.</p>
+                <button
+                  onClick={() => setActiveTab('settings')}
+                  className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                >
+                  Upgrade Now →
+                </button>
+              </div>
+            )
+          )}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
         </div>
       </div>
