@@ -92,7 +92,7 @@ export default function Landing() {
           <RoleCard
             icon="🏠"
             title="I Need a Contractor"
-            description="Post a job, get quotes, and hire vetted tradespeople in your area. Free to join."
+            description="Post your project, receive competitive quotes, and hire vetted tradespeople near you."
             bullets={[
               'Verified & licensed pros only',
               'Free 2-week trial',
