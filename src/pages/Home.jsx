@@ -83,10 +83,6 @@ export default function Home() {
           </div>
         </div>
 
-      </main>
-
-      <MarketsVendorsSection />
-
         <div style={{ marginTop:"clamp(20px, 6vw, 28px)", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"clamp(8px, 2vw, 12px)", justifyContent:"center", alignItems:"center", maxWidth:"100%", px:"16px" }}>
            {[
              { icon: Shield, label: "Secure payments" },
@@ -100,9 +96,9 @@ export default function Home() {
              </span>
            ))}
         </div>
-        </main>
+      </main>
 
-        <MarketsVendorsSection />
+      <MarketsVendorsSection />
 
       <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)" }}>
         <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
