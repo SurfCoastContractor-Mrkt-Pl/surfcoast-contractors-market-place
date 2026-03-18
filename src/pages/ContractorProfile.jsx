@@ -400,6 +400,8 @@ export default function ContractorProfile() {
         </div>
       </div>
 
+      <AuthGateModal open={authGateOpen} onClose={() => setAuthGateOpen(false)} action={authGateAction} />
+
       <MessagingPricingTable
         contractorId={contractor.id}
         contractorName={contractor.name}
