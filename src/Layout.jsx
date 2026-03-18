@@ -81,8 +81,8 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex flex-col">
 
-      {/* Navigation */}
-      <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50">
+      {/* Navigation - Hidden on Home page */}
+      {!isHome && <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -228,9 +228,9 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
         )}
-      </nav>
+        </nav>}
 
-      <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
+        <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
       {/* Main Content */}
@@ -238,8 +238,8 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-800 text-slate-50 py-5">
+      {/* Footer - Hidden on Home page */}
+      {!isHome && <footer className="bg-slate-800 text-slate-50 py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="sm:col-span-2 lg:col-span-2">
@@ -321,7 +321,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
         </div>
-      </footer>
-    </div>
-  );
-}
+        </footer>}
+        </div>
+        );
+        }
