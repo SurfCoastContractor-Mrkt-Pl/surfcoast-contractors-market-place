@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: adminEmail,
       from_name: 'SurfCoast Contractor Market Place',
-      subject: `🌊 SurfCoast Legend Achieved — ${type === 'contractor' ? 'Contractor' : 'Customer'}`,
+      subject: `SurfCoast Legend Achieved - ${type === 'contractor' ? 'Contractor' : 'Customer'}`,
       body: `${type === 'contractor' ? 'Contractor' : 'Customer'} ${name} (${email}) has just reached ${count} verified completed jobs and earned the SurfCoast Legend badge!\n\nConsider reaching out to congratulate them.`,
     });
 

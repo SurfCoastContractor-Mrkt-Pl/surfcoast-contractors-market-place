@@ -83,7 +83,7 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
       await Promise.all([
         base44.integrations.Core.SendEmail({
           to: data.customer_email,
-          subject: `[Action Required] Scope of Work for "${data.job_title}" — Please Approve`,
+          subject: `[Action Required] Scope of Work for "${data.job_title}" - Please Approve`,
           body: emailBody,
         }),
         base44.integrations.Core.SendEmail({
