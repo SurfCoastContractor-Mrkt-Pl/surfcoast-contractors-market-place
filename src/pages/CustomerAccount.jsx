@@ -217,7 +217,7 @@ export default function CustomerAccount() {
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"#0a1628", minHeight:"100vh"}}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"transparent", minHeight:"100vh"}}>
          {/* Admin Preview Banner */}
          {isAdminPreview && (
            <Card className="p-5 bg-blue-50 border-blue-200/60 rounded-2xl">
