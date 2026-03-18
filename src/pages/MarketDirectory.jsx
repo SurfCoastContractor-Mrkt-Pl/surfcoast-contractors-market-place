@@ -167,6 +167,71 @@ export default function MarketDirectory() {
         )}
       </div>
 
+      {/* Vendor Signup Cards */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h2 className="text-lg font-semibold text-slate-800 mb-5">Are you a vendor? Get listed for free.</h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* Farmers Market Card */}
+          <div className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-2xl">
+                🌽
+              </div>
+              <div>
+                <h3 className="font-bold text-green-900 text-lg">Farmers Market Vendor</h3>
+              </div>
+            </div>
+            
+            <p className="text-sm text-green-800">
+              Set up your market booth and start selling fresh produce, goods, and homemade products
+            </p>
+            
+            <ul className="space-y-2 text-sm text-green-800">
+              <li>✓ List your products</li>
+              <li>✓ Show your market location & schedule</li>
+              <li>✓ Get discovered by local shoppers</li>
+            </ul>
+            
+            <button
+              onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
+              className="mt-auto px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors text-sm w-full"
+            >
+              Set Up My Market Booth →
+            </button>
+          </div>
+
+          {/* Swap Meet Card */}
+          <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center text-2xl">
+                🏷️
+              </div>
+              <div>
+                <h3 className="font-bold text-amber-900 text-lg">Swap Meet Vendor</h3>
+              </div>
+            </div>
+            
+            <p className="text-sm text-amber-800">
+              Claim your space, list your goods, and connect with buyers at your local swap meet
+            </p>
+            
+            <ul className="space-y-2 text-sm text-amber-800">
+              <li>✓ Advertise your space</li>
+              <li>✓ List what you're selling</li>
+              <li>✓ Build your buyer following</li>
+            </ul>
+            
+            <button
+              onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
+              className="mt-auto px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-colors text-sm w-full"
+            >
+              Claim My Space →
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Grid */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {loading ? (
