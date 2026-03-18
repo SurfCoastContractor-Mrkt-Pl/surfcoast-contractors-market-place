@@ -109,12 +109,29 @@ export default function EnhancedHeroSection() {
               >
                 Browse Contractors →
               </Link>
-              <button
-                onClick={() => handleGuestCTA('/CustomerSignup')}
-                className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-              >
-                Get Free Quotes
-              </button>
+              {isLoggedIn ? (
+                <Link
+                  to="/Dashboard"
+                  className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                >
+                  Go to Dashboard →
+                </Link>
+              ) : (
+                <>
+                  <button
+                    onClick={() => base44.auth.redirectToLogin()}
+                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-semibold px-6 py-3 rounded-lg transition-colors border border-white/30"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => handleGuestCTA('/CustomerSignup')}
+                    className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                  >
+                    Get Free Quotes
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Stats */}
