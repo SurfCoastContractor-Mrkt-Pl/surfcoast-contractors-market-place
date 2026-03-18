@@ -56,22 +56,6 @@ export default function CustomerSignup() {
         throw new Error(data.error || 'Signup failed');
       }
 
-      // Auto-activate trial: create CustomerProfile with trial fields
-      try {
-        const trialStartedAt = new Date().toISOString();
-        const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
-        await fetch('https://sage-c5f01224.base44.app/functions/customerSignup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'activate_trial',
-            email: formData.email,
-            trial_started_at: trialStartedAt,
-            trial_ends_at: trialEndsAt,
-          }),
-        });
-      } catch (_) { /* trial activation is best-effort */ }
-
       // Redirect to customer dashboard
       navigate(createPageUrl('CustomerAccount'));
     } catch (err) {
