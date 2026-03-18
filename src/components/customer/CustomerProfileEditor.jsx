@@ -79,9 +79,15 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
       if (profile?.id) {
         return base44.entities.CustomerProfile.update(profile.id, data);
       } else {
+        // First-time profile creation — auto-activate 14-day trial
+        const trialStartedAt = new Date().toISOString();
+        const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         return base44.entities.CustomerProfile.create({
           email: userEmail,
           ...data,
+          trial_started_at: trialStartedAt,
+          trial_ends_at: trialEndsAt,
+          trial_active: true,
         });
       }
     },
