@@ -88,11 +88,11 @@ export default function Layout({ children, currentPageName }) {
             {/* Logo */}
             <Link to="/Landing" className="flex items-center gap-0 relative flex-shrink-0">
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-[69px] w-[69px] object-contain" />
-              <div className="flex flex-col items-center leading-tight">
-               <span className="font-serif font-bold text-lg" style={{color: '#1E5A96'}}>
+              <div className="flex flex-col items-center justify-center gap-0.5" style={{lineHeight: 1}}>
+               <span className="font-serif font-bold" style={{fontSize: '22px', fontWeight: 800, color: '#ffffff'}}>
                   SurfCoast
                </span>
-               <span className="text-xs font-medium tracking-widest" style={{color: '#1E5A96'}}>
+               <span className="font-medium" style={{fontSize: '9px', letterSpacing: '3px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase'}}>
                   MARKETPLACE
                </span>
               </div>
