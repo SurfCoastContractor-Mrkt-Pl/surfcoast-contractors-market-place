@@ -55,10 +55,12 @@ export default function FindContractors() {
     loadUser();
   }, []);
 
-  const { data: contractors, isLoading } = useQuery({
+  const { data: contractorData, isLoading } = useQuery({
     queryKey: ['all-contractors'],
     queryFn: () => base44.entities.Contractor.filter({ account_locked: false, minor_hours_locked: false }),
   });
+
+  const contractors = contractorData;
 
   // Separate featured contractors
   const { featured, regular } = useMemo(() => {
@@ -336,6 +338,18 @@ export default function FindContractors() {
                       {contractorDistances[contractor.id].toFixed(1)} mi
                     </div>
                   )}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {contractor.identity_verified && (
+                      <div className="bg-dcfce7 text-166534 border-radius-6 px-2 py-1 text-xs font-bold bg-emerald-100 text-emerald-800 rounded-md">
+                        ✅ Verified
+                      </div>
+                    )}
+                    {contractor.is_featured && (
+                      <div className="bg-fef3c7 text-92400e border-radius-6 px-2 py-1 text-xs font-bold bg-amber-100 text-amber-900 rounded-md">
+                        ⭐ Featured
+                      </div>
+                    )}
+                  </div>
                   <ContractorCard contractor={contractor} featured />
                 </div>
               ))}
@@ -367,6 +381,18 @@ export default function FindContractors() {
                       {contractorDistances[contractor.id].toFixed(1)} mi
                     </div>
                   )}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {contractor.identity_verified && (
+                      <div className="bg-emerald-100 text-emerald-800 rounded-md px-2 py-1 text-xs font-bold">
+                        ✅ Verified
+                      </div>
+                    )}
+                    {contractor.is_featured && (
+                      <div className="bg-amber-100 text-amber-900 rounded-md px-2 py-1 text-xs font-bold">
+                        ⭐ Featured
+                      </div>
+                    )}
+                  </div>
                   <ContractorCard contractor={contractor} />
                 </div>
               ))}

@@ -61,6 +61,8 @@ export default function JobDetails() {
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [isCustomer, setIsCustomer] = useState(null);
 
+  const [contractor, setContractor] = useState(null);
+
   const { data: job, isLoading } = useQuery({
     queryKey: ['job', jobId],
     queryFn: async () => {
@@ -69,6 +71,18 @@ export default function JobDetails() {
     },
     enabled: !!jobId,
   });
+
+  useEffect(() => {
+    const fetchContractor = async () => {
+      if (job?.poster_email) {
+        const contractors = await base44.entities.Contractor.filter({ email: job.poster_email });
+        if (contractors && contractors.length > 0) {
+          setContractor(contractors[0]);
+        }
+      }
+    };
+    fetchContractor();
+  }, [job?.poster_email]);
 
   const { data: customerScope } = useQuery({
     queryKey: ['customer-scope-request', jobId],
@@ -156,10 +170,22 @@ export default function JobDetails() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 pb-16">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="p-6 md:p-8">
+         {contractor?.account_locked && (
+           <div style={{ background: '#fee2e2', border: '1px solid #f87171', borderRadius: '10px', padding: '12px 20px', color: '#991b1b', fontSize: '14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+             <AlertCircle className="w-5 h-5" />
+             ⚠️ This contractor's account has been suspended. Please contact support.
+           </div>
+         )}
+         {contractor && !contractor.stripe_account_charges_enabled && (
+           <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '10px', padding: '12px 20px', color: '#92400e', fontSize: '14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+             <AlertCircle className="w-5 h-5" />
+             ⚠️ This contractor cannot currently receive payments via Stripe. Payments may be delayed.
+           </div>
+         )}
+         <div className="grid lg:grid-cols-3 gap-8">
+           {/* Main Content */}
+           <div className="lg:col-span-2 space-y-6">
+             <Card className="p-6 md:p-8">
               <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">{job.title}</h1>

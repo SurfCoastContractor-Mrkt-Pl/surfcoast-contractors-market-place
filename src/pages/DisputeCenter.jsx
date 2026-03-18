@@ -16,10 +16,17 @@ const statusColors = {
 };
 
 const severityColors = {
-  low: 'bg-blue-100 text-blue-800',
-  medium: 'bg-yellow-100 text-yellow-800',
-  high: 'bg-orange-100 text-orange-800',
-  critical: 'bg-red-100 text-red-800'
+   low: 'bg-slate-100 text-slate-700',
+   medium: 'bg-amber-100 text-amber-900',
+   high: 'bg-red-100 text-red-900',
+   critical: 'bg-red-100 text-red-900'
+};
+
+const severityEmoji = {
+   low: '⚪',
+   medium: '🟡',
+   high: '🔴',
+   critical: '🔴'
 };
 
 export default function DisputeCenter() {
@@ -44,7 +51,19 @@ export default function DisputeCenter() {
           ]
         });
 
-        setDisputes(userDisputes || []);
+        // Auto-set severity based on category if not already set
+        const enrichedDisputes = (userDisputes || []).map(dispute => {
+          if (!dispute.severity) {
+            if (['payment', 'fraud'].includes(dispute.category)) {
+              return { ...dispute, severity: 'high' };
+            } else {
+              return { ...dispute, severity: 'medium' };
+            }
+          }
+          return dispute;
+        });
+
+        setDisputes(enrichedDisputes || []);
       } catch (error) {
         console.error('Error fetching disputes:', error);
       } finally {
@@ -125,14 +144,14 @@ export default function DisputeCenter() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-semibold text-slate-900">{dispute.title}</h3>
-                          <Badge className={statusColors[dispute.status]}>
-                            {dispute.status.replace(/_/g, ' ')}
-                          </Badge>
-                          <Badge className={severityColors[dispute.severity]}>
-                            {dispute.severity}
-                          </Badge>
-                        </div>
+                           <h3 className="font-semibold text-slate-900">{dispute.title}</h3>
+                           <Badge className={severityColors[dispute.severity]} style={{ borderRadius: '6px', padding: '2px 8px', fontSize: '11px', fontWeight: '700' }}>
+                             {severityEmoji[dispute.severity]} {dispute.severity}
+                           </Badge>
+                           <Badge className={statusColors[dispute.status]}>
+                             {dispute.status.replace(/_/g, ' ')}
+                           </Badge>
+                         </div>
                         <p className="text-sm text-slate-600 mb-3">{dispute.description}</p>
                         <div className="flex flex-wrap gap-4 text-sm text-slate-500">
                           <span>
