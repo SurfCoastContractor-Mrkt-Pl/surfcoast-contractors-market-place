@@ -262,19 +262,21 @@ export default function ContractorProfile() {
                   </>
                 )}
               </div>
-              <Link to={createPageUrl('QuickJobPost')}>
-                <Button className="w-full text-white mb-3" style={{backgroundColor: '#1E5A96'}}>
-                  Post a Job
-                </Button>
-              </Link>
-              <Button 
-                variant="outline" 
-                className="w-full border-slate-300"
-                onClick={() => setMessagingPricingOpen(true)}
-              >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Message
-              </Button>
+              <Button
+                 className="w-full text-white mb-3"
+                 style={{backgroundColor: '#1E5A96'}}
+                 onClick={() => requireAuth('post a job', () => window.location.href = createPageUrl('QuickJobPost'))}
+               >
+                 Post a Job
+               </Button>
+               <Button 
+                 variant="outline" 
+                 className="w-full border-slate-300"
+                 onClick={() => requireAuth('message this contractor', () => setMessagingPricingOpen(true))}
+               >
+                 <MessageSquare className="w-4 h-4 mr-2" />
+                 Message
+               </Button>
             </div>
           </div>
         </div>
