@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -6,46 +6,43 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
 
     if (!user) {
-      return Response.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await req.json();
-    const { userEmail, userName } = body;
+    // Check if user already has an active referral code
+    const existing = await base44.entities.Referral.filter({
+      referrer_email: user.email
+    });
 
-    if (!userEmail || !userName) {
-      return Response.json({ error: 'Missing email or name' }, { status: 400 });
+    if (existing.length > 0) {
+      const active = existing[0];
+      return Response.json({
+        referral_code: active.referral_code,
+        referrer_email: active.referrer_email,
+        referrer_name: active.referrer_name,
+        created_date: active.created_date
+      });
     }
 
-    // Verify user is creating referral for their own email
-    if (user.email !== userEmail) {
-      return Response.json(
-        { error: 'Can only create referral codes for your own account' },
-        { status: 403 }
-      );
-    }
+    // Generate unique referral code (8 chars alphanumeric)
+    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-    // Generate unique referral code
-    const code = `REF_${Math.random().toString(36).substring(2, 8).toUpperCase()}_${Date.now().toString(36).toUpperCase()}`;
-
-    // Create referral record for tracking own code
+    // Create referral record
     const referral = await base44.entities.Referral.create({
-      referrer_email: userEmail,
-      referrer_name: userName,
+      referrer_email: user.email,
+      referrer_name: user.full_name || user.email.split('@')[0],
       referral_code: code,
-      status: 'pending',
-      referred_at: new Date().toISOString(),
+      referred_at: new Date().toISOString()
     });
 
     return Response.json({
-      success: true,
       referral_code: code,
-      referral_id: referral.id,
+      referrer_email: user.email,
+      referrer_name: user.full_name,
+      created_date: referral.created_date
     });
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Generate referral code error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
