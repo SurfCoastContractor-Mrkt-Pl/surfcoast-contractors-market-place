@@ -118,7 +118,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
 
             {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
@@ -132,6 +132,12 @@ export default function Layout({ children, currentPageName }) {
                   Join as Contractor
                 </Button>
               </Link>
+              <button
+                onClick={() => base44.auth.redirectToLogin()}
+                className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
+              >
+                Login
+              </button>
               <div className="relative group">
                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">
                   <UserCircle className="w-5 h-5 mr-1" />
