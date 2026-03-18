@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const BG_IMAGE = 'https://media.base44.com/images/public/69b5d136d5baa9e2c5f01224/a4e716013_istockphoto-515071286-1024x1024.jpg';

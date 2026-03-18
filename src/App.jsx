@@ -13,6 +13,7 @@ import TimedChat from './pages/TimedChat';
 import TimedChatPage from './pages/TimedChatPage';
 import ContractorSignup from './pages/ContractorSignup';
 import CustomerSignup from './pages/CustomerSignup';
+import Landing from './pages/Landing';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
