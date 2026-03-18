@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Briefcase, MessageSquare, Users, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
+import TrialBadge from '@/components/customer/TrialBadge';
 
 export default function CustomerDashboard() {
   const [user, setUser] = useState(null);
