@@ -66,10 +66,9 @@ export default function Landing() {
     >
       {/* Header */}
       <header className="flex items-center px-6 py-5">
-        <div className="flex items-center gap-2">
-          <span style={{ fontSize: 26 }}>🌊</span>
-          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: '#ffffff', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>SurfCoast</span>
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>Marketplace</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+          <span style={{ fontSize: 22, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px', textShadow: '0 1px 8px rgba(0,0,0,0.5)', lineHeight: 1 }}>SurfCoast</span>
+          <span style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '2.5px', textTransform: 'uppercase', lineHeight: 1 }}>Marketplace</span>
         </div>
       </header>
 
