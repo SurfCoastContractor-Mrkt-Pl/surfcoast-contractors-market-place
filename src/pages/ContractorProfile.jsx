@@ -28,6 +28,7 @@ import ContractorServices from '@/components/contractor/ContractorServices';
 import ChatWindow from '@/components/messaging/ChatWindow';
 import PublicCredentialsDisplay from '@/components/contractor/PublicCredentialsDisplay';
 import AuthTopBar from '@/components/auth/AuthTopBar';
+import AuthGateModal from '@/components/auth/AuthGateModal';
 
 export default function ContractorProfile() {
   const [searchParams] = useSearchParams();
@@ -39,6 +40,22 @@ export default function ContractorProfile() {
   const [chatPaymentId, setChatPaymentId] = useState(null);
   const [chatUserEmail, setChatUserEmail] = useState(null);
   const [chatUserName, setChatUserName] = useState(null);
+  const [authGateOpen, setAuthGateOpen] = useState(false);
+  const [authGateAction, setAuthGateAction] = useState('continue');
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    base44.auth.isAuthenticated().then(setIsAuthenticated).catch(() => setIsAuthenticated(false));
+  }, []);
+
+  const requireAuth = (action, onAuthed) => {
+    if (isAuthenticated) {
+      onAuthed();
+    } else {
+      setAuthGateAction(action);
+      setAuthGateOpen(true);
+    }
+  };
 
   useEffect(() => {
     const fetchContractor = async () => {
