@@ -35,7 +35,21 @@ const trades = [
 export default function BecomeContractor() {
   const navigate = useNavigate();
   const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true';
+  const [authChecked, setAuthChecked] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isPreview) { setAuthChecked(true); return; }
+    base44.auth.me().then(user => {
+      if (!user) {
+        base44.auth.redirectToLogin(window.location.href);
+      } else {
+        setAuthChecked(true);
+      }
+    }).catch(() => {
+      base44.auth.redirectToLogin(window.location.href);
+    });
+  }, [isPreview]);
   const [createdContractor, setCreatedContractor] = useState(null);
   const [newCert, setNewCert] = useState('');
   const [newSkill, setNewSkill] = useState('');

@@ -88,8 +88,8 @@ export default function ContractorSignup() {
               <HardHat className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Join as a Contractor</h1>
-              <p className="text-white/75 mt-1">Create your account and start earning</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">Join SurfCoast as a Contractor</h1>
+              <p className="text-white/75 mt-1">Build your verified profile and get your first jobs free — 2-week trial included.</p>
             </div>
           </div>
         </div>
