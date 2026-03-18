@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <ProfileSwitcher activeProfile={activeProfile} profiles={profiles} />
+      <ProfileSwitcher activeProfile={activeProfile} primaryType={profiles.primaryType} hasMarketShop={profiles.hasMarketShop} />
       {activeProfile === 'contractor' && <ContractorDashboard />}
       {activeProfile === 'customer' && <CustomerDashboard />}
     </div>
