@@ -25,9 +25,9 @@ export default function Home() {
       <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
 
       <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"16px 28px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'3px' }}>
-          <span style={{ fontSize:'20px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1 }}>SurfCoast</span>
-          <span style={{ fontSize:'11px', fontWeight:'700', letterSpacing:'2px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1 }}>MARKETPLACE</span>
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', width:'120px' }}>
+          <span style={{ fontSize:'20px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'center', display:'block', width:'100%' }}>SurfCoast</span>
+          <span style={{ fontSize:'11px', fontWeight:'700', letterSpacing:'2px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'center', display:'block', width:'100%' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"12px", alignItems:"center" }}>
           <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"14px", fontWeight:"600", padding:"8px 16px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)" }}>🛍️ Markets & Vendors</a>
