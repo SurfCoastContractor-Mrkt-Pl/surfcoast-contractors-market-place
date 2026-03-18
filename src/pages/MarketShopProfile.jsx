@@ -245,25 +245,25 @@ export default function MarketShopProfile() {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
       {/* Banner */}
-      <div className="relative h-64 sm:h-72 md:h-80" style={bannerBg}>
+      <div className="relative h-40 sm:h-64 md:h-80" style={bannerBg}>
         <div className="absolute inset-0 bg-black/40" />
         
         {/* Back Button */}
         <button
           onClick={() => navigate('/MarketDirectory')}
-          className="absolute top-4 left-4 z-10 flex items-center gap-1 px-3 py-1.5 bg-black/50 hover:bg-black/70 rounded-lg transition-colors"
+          className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-black/50 hover:bg-black/70 rounded-lg transition-colors text-xs sm:text-sm"
         >
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-3 sm:w-4 h-3 sm:h-4" /> <span className="hidden sm:inline">Back</span>
         </button>
       </div>
 
       {/* Content */}
-      <div className="relative -mt-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="relative -mt-8 sm:-mt-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
         {/* Profile Header */}
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
-          <div className="flex flex-col sm:flex-row gap-6">
+        <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Logo */}
-            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl flex-shrink-0">
+            <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
               {shop.logo_url ? (
                 <img src={shop.logo_url} alt={shop.shop_name} className="w-full h-full object-cover rounded-xl" />
               ) : (
@@ -273,8 +273,8 @@ export default function MarketShopProfile() {
 
             {/* Info */}
             <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-3 mb-2">
-                <h1 className="text-3xl sm:text-4xl font-bold">{shop.shop_name}</h1>
+              <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3 mb-2">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">{shop.shop_name}</h1>
                 {shop.verified_vendor && (
                   <CheckCircle className="w-6 h-6 text-green-400" />
                 )}
@@ -319,10 +319,10 @@ export default function MarketShopProfile() {
 
           {/* About */}
           {shop.description && (
-            <div className="mt-6 pt-6 border-t border-slate-700">
-              <h3 className="text-sm font-semibold text-slate-300 mb-2">About</h3>
-              <p className="text-slate-400 leading-relaxed">{shop.description}</p>
-            </div>
+          <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-700">
+            <h3 className="text-xs sm:text-sm font-semibold text-slate-300 mb-2">About</h3>
+            <p className="text-sm sm:text-base text-slate-400 leading-relaxed">{shop.description}</p>
+          </div>
           )}
 
           {(shop.categories || []).length > 0 && (
@@ -338,12 +338,12 @@ export default function MarketShopProfile() {
 
         {/* Photo Gallery Section */}
         {(shop.gallery_images || []).length > 0 && (
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <ImageIcon className="w-5 h-5" />
+          <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-2">
+              <ImageIcon className="w-4 sm:w-5 h-4 sm:h-5" />
               Photos
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {shop.gallery_images.map((img, idx) => (
                 <button
                   key={idx}
@@ -374,22 +374,22 @@ export default function MarketShopProfile() {
         </div>
 
         {/* Reviews Section */}
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
-          <h2 className="text-xl font-bold mb-6">Reviews & Feedback</h2>
+        <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Reviews & Feedback</h2>
 
           {/* Reviews Summary */}
           {reviews.length > 0 && (
-            <div className="mb-8 pb-8 border-b border-slate-700">
+            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-slate-700">
               <div className="text-center">
-                <div className="text-5xl font-bold text-amber-400 mb-2">{avgRating}</div>
+                <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">{avgRating}</div>
                 <StarRating rating={Math.round(parseFloat(avgRating))} />
-                <p className="text-slate-400 mt-2">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs sm:text-sm text-slate-400 mt-2">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
           )}
 
           {/* Reviews List */}
-          <div className="space-y-5 mb-8">
+          <div className="space-y-3 sm:space-y-5 mb-6 sm:mb-8">
             {reviews.map(review => (
               <div key={review.id} className="bg-slate-700 rounded-xl p-5 border border-slate-600">
                 <div className="flex items-start justify-between mb-2">
@@ -420,10 +420,10 @@ export default function MarketShopProfile() {
           </div>
 
           {/* Leave a Review Form */}
-          <div className="bg-slate-700 rounded-xl p-6 border border-slate-600 mb-8">
-            <h3 className="text-lg font-semibold mb-4">Leave a Review</h3>
-            <form onSubmit={handleReviewSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-600 mb-6 sm:mb-8">
+            <h3 className="text-base sm:text-lg font-semibold mb-4">Leave a Review</h3>
+            <form onSubmit={handleReviewSubmit} className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 gap-3 sm:gap-4">
                 <input
                   type="text"
                   placeholder="Your Name"
@@ -478,9 +478,9 @@ export default function MarketShopProfile() {
         </div>
 
         {/* Contact Vendor Form */}
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
-          <h2 className="text-xl font-bold mb-4">Contact Vendor</h2>
-          <form onSubmit={handleInquirySubmit} className="space-y-4">
+        <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Vendor</h2>
+          <form onSubmit={handleInquirySubmit} className="space-y-3 sm:space-y-4">
             <input
               type="text"
               placeholder="Your Name"
