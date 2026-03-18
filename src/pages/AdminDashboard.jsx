@@ -436,8 +436,10 @@ export default function AdminDashboard() {
                   {filteredReviews.map(r => (
                     <tr key={r.id} className="hover:bg-slate-700 transition-colors">
                       <td className="px-6 py-4 text-white">{r.shop_name}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">{r.reviewer_name}</td>
-                      <td className="px-6 py-4 text-yellow-400">{'⭐'.repeat(r.rating)}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs flex items-center gap-1"><User className="w-4 h-4" />{r.reviewer_name}</td>
+                      <td className="px-6 py-4 text-yellow-400 flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`w-4 h-4 ${i < r.rating ? 'fill-amber-400' : ''}`} />
+                      ))}</td>
                       <td className="px-6 py-4 text-slate-300">{r.title}</td>
                       <td className="px-6 py-4"><StatusBadge status={r.status} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
@@ -446,24 +448,27 @@ export default function AdminDashboard() {
                           {r.status === 'visible' && (
                             <button
                               onClick={() => handleReviewHide(r.id)}
-                              className="px-2 py-1 bg-red-700 hover:bg-red-600 text-xs font-medium text-white rounded"
+                              className="p-1.5 bg-red-700 hover:bg-red-600 rounded transition-colors"
+                              title="Hide Review"
                             >
-                              Hide
+                              <EyeOff className="w-4 h-4 text-white" />
                             </button>
                           )}
                           {r.status === 'hidden' && (
                             <button
                               onClick={() => handleReviewShow(r.id)}
-                              className="px-2 py-1 bg-green-700 hover:bg-green-600 text-xs font-medium text-white rounded"
+                              className="p-1.5 bg-green-700 hover:bg-green-600 rounded transition-colors"
+                              title="Show Review"
                             >
-                              Show
+                              <Eye className="w-4 h-4 text-white" />
                             </button>
                           )}
                           <button
                             onClick={() => handleReviewFlag(r.id, r.flagged)}
-                            className={`px-2 py-1 text-xs font-medium text-white rounded ${r.flagged ? 'bg-orange-700' : 'bg-slate-600'}`}
+                            className={`p-1.5 rounded transition-colors ${r.flagged ? 'bg-orange-700' : 'bg-slate-600'}`}
+                            title={r.flagged ? 'Flagged' : 'Flag Review'}
                           >
-                            {r.flagged ? 'Flagged' : 'Flag'}
+                            <Flag className="w-4 h-4 text-white" />
                           </button>
                         </div>
                       </td>
