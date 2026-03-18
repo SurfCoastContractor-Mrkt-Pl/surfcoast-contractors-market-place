@@ -111,14 +111,14 @@ export default function MarketShopDashboard() {
 
       {/* Shop Header */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
-             <Store className="w-7 h-7 text-white" strokeWidth={1.5} />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+             <Store className="w-5 sm:w-7 h-5 sm:h-7 text-white" strokeWidth={1.5} />
             </div>
-            <div>
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
+            <div className="flex-1">
+              <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
                 <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
                   {status}
                 </span>
@@ -142,14 +142,15 @@ export default function MarketShopDashboard() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
                   activeTab === key
                     ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-slate-500 hover:text-slate-700'
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                {label}
+                <span className="hidden sm:inline">{label}</span>
+                <span className="sm:hidden">{label.split(' ')[0]}</span>
               </button>
             ))}
           </div>
@@ -157,23 +158,23 @@ export default function MarketShopDashboard() {
       </div>
 
       {/* Share Your Listing Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <ShareYourListing shop={shop} />
       </div>
 
       {/* Photo Gallery Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
       </div>
 
       {/* Market Schedule Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
       </div>
 
       {/* Subscription Warning */}
       {shop.subscription_status !== 'active' && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" strokeWidth={1.5} />
             <div>
@@ -185,8 +186,8 @@ export default function MarketShopDashboard() {
       )}
 
       {/* Tab Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 lg:p-8">
           {activeTab === 'listings' && <MarketShopListings />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
