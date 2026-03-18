@@ -168,11 +168,14 @@ export default function CustomerAccount() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="relative py-12 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
+      <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
+      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
+
+      <div className="relative py-12 text-white overflow-hidden" style={{position:"relative", zIndex:10}}>
         <AuthTopBar />
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.60)'}}></div>
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8" style={{position:"relative", zIndex:2}}>
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: '#1E5A96'}}>
               <User className="w-6 h-6 text-white" />
@@ -205,7 +208,7 @@ export default function CustomerAccount() {
 
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"#0a1628", minHeight:"100vh"}}>
          {/* Admin Preview Banner */}
          {isAdminPreview && (
            <Card className="p-5 bg-blue-50 border-blue-200">
