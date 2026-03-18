@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Libre+Baskerville:ital,wght@0,400;0,700&family=Montserrat:wght@400;500;600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;0,700&family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -84,5 +86,33 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Contractor Profile Fonts - Premium Serif */
+  .contractor-profile {
+    h1, h2 { font-family: 'Playfair Display', serif; }
+    h3, h4 { font-family: 'Libre Baskerville', serif; }
+    p { font-family: 'Lora', serif; }
+  }
+
+  /* Customer Profile Fonts - Clean Sans */
+  .customer-profile {
+    h1, h2, h3, h4 { font-family: 'Inter', sans-serif; }
+    p { font-family: 'Inter', sans-serif; }
+  }
+
+  /* Market Shop Profile Fonts - Modern Bold */
+  .marketshop-profile {
+    h1, h2 { font-family: 'Montserrat', sans-serif; }
+    h3, h4 { font-family: 'Poppins', sans-serif; }
+    p { font-family: 'Poppins', sans-serif; }
+  }
+
+  /* Vendor Profile Fonts - Elegant Serif */
+  .vendor-profile {
+    h1, h2 { font-family: 'Crimson Text', serif; }
+    h3, h4 { font-family: 'Crimson Text', serif; }
+    p { font-family: 'Crimson Text', serif; }
   }
 }
