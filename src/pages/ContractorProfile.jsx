@@ -158,12 +158,15 @@ export default function ContractorProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
+      <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
+      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
+
       {/* Header */}
-      <div className="relative text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <div className="relative text-white overflow-hidden" style={{position:"relative", zIndex:10}}>
         <AuthTopBar />
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.62)'}}></div>
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{position:"relative", zIndex:2}}>
           <Link to={createPageUrl('FindContractors')}>
             <Button variant="ghost" className="mb-5 text-white/80 hover:text-white hover:bg-white/10">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -282,7 +285,7 @@ export default function ContractorProfile() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{position:"relative", zIndex:2, background:"#0a1628", minHeight:"100vh"}}>
         <div className="grid md:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="md:col-span-2 space-y-8">
@@ -416,7 +419,7 @@ export default function ContractorProfile() {
 
       {/* Inline chat modal — opens after successful timed payment redirect */}
       {chatOpen && contractor && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
+        <div style={{position:"fixed", inset:0, zIndex:50, display:"flex", alignItems:"flex-end", justifyContent:"center", background:"rgba(0,0,0,0.6)", padding:"16px"}} className="sm:items-center">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col" style={{ height: '80vh' }}>
             <div className="flex items-center justify-between p-4 border-b border-slate-200">
               <div>
