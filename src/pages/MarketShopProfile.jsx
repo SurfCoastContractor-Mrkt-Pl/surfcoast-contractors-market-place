@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { MapPin, Star, ChevronLeft, CalendarDays, Instagram, Facebook, Music, Twitter, Loader2, Send } from 'lucide-react';
+import { MapPin, Star, ChevronLeft, CalendarDays, Loader2, Send, Leaf, Tag, CheckCircle, Clock, User, Store, MessageSquare, ArrowLeft } from 'lucide-react';
 
 const SHOP_TYPE_ICONS = {
-  farmers_market: '🌽',
-  swap_meet: '🏷️',
-  both: '🌽🏷️',
+  farmers_market: Leaf,
+  swap_meet: Tag,
 };
 
 const SHOP_TYPE_LABELS = {
   farmers_market: 'Farmers Market',
   swap_meet: 'Swap Meet',
   both: 'Farmers Market & Swap Meet',
+};
+
+const SHOP_TYPE_COLORS = {
+  farmers_market: { bg: 'bg-green-900', text: 'text-green-200', icon: '#16a34a' },
+  swap_meet: { bg: 'bg-amber-900', text: 'text-amber-200', icon: '#d97706' },
 };
 
 const StarRating = ({ rating, interactive = false, onSelect = null }) => (
@@ -30,6 +34,60 @@ const StarRating = ({ rating, interactive = false, onSelect = null }) => (
     ))}
   </div>
 );
+
+const SocialIcon = ({ platform, url }) => {
+  if (!url) return null;
+
+  const iconProps = { className: 'w-5 h-5', target: '_blank', rel: 'noopener noreferrer' };
+
+  switch (platform) {
+    case 'instagram':
+      return (
+        <a href={url} {...iconProps} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+            <defs>
+              <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#feda75" />
+                <stop offset="5%" stopColor="#fa7e1e" />
+                <stop offset="45%" stopColor="#d92e7f" />
+                <stop offset="60%" stopColor="#9b36b7" />
+                <stop offset="90%" stopColor="#515bd4" />
+              </linearGradient>
+            </defs>
+            <rect width="24" height="24" rx="5.5" fill="url(#ig-gradient)" />
+            <circle cx="12" cy="12" r="3.5" fill="white" />
+            <circle cx="18.5" cy="5.5" r="1.5" fill="white" />
+          </svg>
+        </a>
+      );
+    case 'facebook':
+      return (
+        <a href={url} {...iconProps} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" fill="#1877f2" className="w-5 h-5">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </a>
+      );
+    case 'tiktok':
+      return (
+        <a href={url} {...iconProps} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 5.1-1.82V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.36-.04z" />
+          </svg>
+        </a>
+      );
+    case 'twitter':
+      return (
+        <a href={url} {...iconProps} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+            <path d="M23.953 4.57a10 10 0 002.856-5.638 9.88 9.88 0 01-2.828.856 4.904 4.904 0 00-8.564-4.27c-1.344 1.681-2.138 3.692-2.138 5.805 0 .399.045.794.14 1.173a13.978 13.978 0 01-10.147-5.14 4.928 4.928 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+          </svg>
+        </a>
+      );
+    default:
+      return null;
+  }
+};
 
 export default function MarketShopProfile() {
   const { id } = useParams();
@@ -93,7 +151,6 @@ export default function MarketShopProfile() {
       
       await base44.entities.VendorReview.create(newReview);
       
-      // Call backend function
       await base44.functions.invoke('submitVendorReview', {
         shop_id: shop.id,
         reviewer_name: reviewForm.name,
@@ -156,18 +213,22 @@ export default function MarketShopProfile() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4">🛍️</div>
+          <Tag className="w-12 h-12 text-slate-400 mx-auto mb-4" />
           <p className="font-medium text-slate-300 text-lg">Vendor not found</p>
           <button
             onClick={() => navigate('/MarketDirectory')}
-            className="mt-6 text-blue-400 hover:text-blue-300 underline font-medium"
+            className="mt-6 text-blue-400 hover:text-blue-300 underline font-medium flex items-center justify-center gap-2 mx-auto"
           >
+            <ArrowLeft className="w-4 h-4" />
             Back to Directory
           </button>
         </div>
       </div>
     );
   }
+
+  const TypeIcon = SHOP_TYPE_ICONS[shop.shop_type];
+  const typeColor = SHOP_TYPE_COLORS[shop.shop_type] || SHOP_TYPE_COLORS.swap_meet;
 
   const bannerBg = shop.banner_url 
     ? { backgroundImage: `url(${shop.banner_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
@@ -188,7 +249,7 @@ export default function MarketShopProfile() {
           onClick={() => navigate('/MarketDirectory')}
           className="absolute top-4 left-4 z-10 flex items-center gap-1 px-3 py-1.5 bg-black/50 hover:bg-black/70 rounded-lg transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> Back
         </button>
       </div>
 
@@ -199,7 +260,11 @@ export default function MarketShopProfile() {
           <div className="flex flex-col sm:flex-row gap-6">
             {/* Logo */}
             <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl flex-shrink-0">
-              🛍️
+              {shop.logo_url ? (
+                <img src={shop.logo_url} alt={shop.shop_name} className="w-full h-full object-cover rounded-xl" />
+              ) : (
+                <Tag className="w-10 h-10 text-slate-500" />
+              )}
             </div>
 
             {/* Info */}
@@ -207,20 +272,17 @@ export default function MarketShopProfile() {
               <div className="flex flex-wrap items-center gap-3 mb-2">
                 <h1 className="text-3xl sm:text-4xl font-bold">{shop.shop_name}</h1>
                 {shop.verified_vendor && (
-                  <span className="text-lg">✅</span>
+                  <CheckCircle className="w-6 h-6 text-green-400" />
                 )}
               </div>
 
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                  shop.shop_type === 'farmers_market'
-                    ? 'bg-green-900 text-green-200'
-                    : shop.shop_type === 'swap_meet'
-                      ? 'bg-amber-900 text-amber-200'
-                      : 'bg-blue-900 text-blue-200'
-                }`}>
-                  {SHOP_TYPE_ICONS[shop.shop_type] || '🛍️'} {SHOP_TYPE_LABELS[shop.shop_type] || shop.shop_type}
-                </span>
+                {TypeIcon && (
+                  <span className={`text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2 ${typeColor.bg} ${typeColor.text}`}>
+                    <TypeIcon className="w-4 h-4" />
+                    {SHOP_TYPE_LABELS[shop.shop_type] || shop.shop_type}
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center gap-1 text-slate-300 mb-3">
@@ -242,26 +304,10 @@ export default function MarketShopProfile() {
               {/* Social Icons */}
               {shop.social_links && Object.keys(shop.social_links).some(k => shop.social_links[k]) && (
                 <div className="flex gap-3 mt-4">
-                  {shop.social_links.instagram && (
-                    <a href={shop.social_links.instagram} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-                      <Instagram className="w-5 h-5" />
-                    </a>
-                  )}
-                  {shop.social_links.facebook && (
-                    <a href={shop.social_links.facebook} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-                      <Facebook className="w-5 h-5" />
-                    </a>
-                  )}
-                  {shop.social_links.tiktok && (
-                    <a href={shop.social_links.tiktok} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-                      <Music className="w-5 h-5" />
-                    </a>
-                  )}
-                  {shop.social_links.twitter && (
-                    <a href={shop.social_links.twitter} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                  )}
+                  <SocialIcon platform="instagram" url={shop.social_links.instagram} />
+                  <SocialIcon platform="facebook" url={shop.social_links.facebook} />
+                  <SocialIcon platform="tiktok" url={shop.social_links.tiktok} />
+                  <SocialIcon platform="twitter" url={shop.social_links.twitter} />
                 </div>
               )}
             </div>
@@ -294,10 +340,25 @@ export default function MarketShopProfile() {
               {shop.market_events.map((event, i) => (
                 <div key={i} className="bg-slate-700 rounded-xl p-4 border border-slate-600">
                   <p className="font-semibold text-slate-100 mb-2">{event.market_name}</p>
-                  <div className="space-y-1 text-sm text-slate-300">
-                    {event.date && <p className="flex items-center gap-2"><CalendarDays className="w-4 h-4" /> {event.date}</p>}
-                    {event.location && <p className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {event.location}</p>}
-                    {event.hours && <p>Hours: {event.hours}</p>}
+                  <div className="space-y-2 text-sm text-slate-300">
+                    {event.date && (
+                      <p className="flex items-center gap-2">
+                        <CalendarDays className="w-4 h-4 flex-shrink-0" />
+                        {event.date}
+                      </p>
+                    )}
+                    {event.location && (
+                      <p className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 flex-shrink-0" />
+                        {event.location}
+                      </p>
+                    )}
+                    {event.hours && (
+                      <p className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 flex-shrink-0" />
+                        {event.hours}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -335,14 +396,22 @@ export default function MarketShopProfile() {
                   <div>
                     <StarRating rating={review.rating} />
                     <p className="font-semibold text-slate-100 mt-2">{review.title}</p>
-                    <p className="text-sm text-slate-400">{review.reviewer_name} • {new Date(review.created_date).toLocaleDateString()}</p>
+                    <p className="text-sm text-slate-400 flex items-center gap-2 mt-1">
+                      <User className="w-4 h-4" />
+                      {review.reviewer_name} • 
+                      <CalendarDays className="w-4 h-4 ml-2" />
+                      {new Date(review.created_date).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
                 <p className="text-slate-300 text-sm leading-relaxed">{review.body}</p>
                 
                 {review.vendor_reply && (
-                  <div className="bg-slate-600 rounded-lg p-4 mt-4">
-                    <p className="text-xs font-semibold text-slate-300 flex items-center gap-1.5 mb-2">🏪 Vendor Reply</p>
+                  <div className="bg-slate-600 rounded-lg p-4 mt-4 border-l-4 border-blue-500">
+                    <p className="text-xs font-semibold text-slate-300 flex items-center gap-1.5 mb-2">
+                      <Store className="w-4 h-4" />
+                      Vendor Reply
+                    </p>
                     <p className="text-slate-300 text-sm">{review.vendor_reply}</p>
                   </div>
                 )}
@@ -441,7 +510,7 @@ export default function MarketShopProfile() {
               disabled={submittingInquiry}
               className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
             >
-              {submittingInquiry ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              {submittingInquiry ? <Loader2 className="w-4 h-4 animate-spin" /> : <MessageSquare className="w-4 h-4" />}
               Send Message
             </button>
           </form>
@@ -451,9 +520,10 @@ export default function MarketShopProfile() {
         <div className="text-center py-8 border-t border-slate-700">
           <button
             onClick={() => navigate('/MarketDirectory')}
-            className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+            className="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center justify-center gap-2 mx-auto"
           >
-            ← Back to Vendor Directory
+            <ArrowLeft className="w-4 h-4" />
+            Back to Vendor Directory
           </button>
         </div>
       </div>
