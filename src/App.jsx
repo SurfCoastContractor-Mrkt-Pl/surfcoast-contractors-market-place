@@ -13,7 +13,7 @@ import TimedChat from './pages/TimedChat';
 import TimedChatPage from './pages/TimedChatPage';
 import ContractorSignup from './pages/ContractorSignup';
 import CustomerSignup from './pages/CustomerSignup';
-import Landing from './pages/Landing';
+
 import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
 import MarketDirectory from './pages/MarketDirectory';
@@ -56,7 +56,6 @@ const AuthenticatedApp = () => {
    return (
      <Routes>
        <Route path="/" element={<Navigate to="/Home" replace />} />
-      <Route path="/Landing" element={<Landing />} />
       <Route path="/Home" element={<LayoutWrapper currentPageName="Home"><Home /></LayoutWrapper>} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
