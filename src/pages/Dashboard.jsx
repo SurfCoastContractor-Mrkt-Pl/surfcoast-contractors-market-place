@@ -3,37 +3,39 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import ContractorDashboard from '@/components/dashboard/ContractorDashboard';
 import CustomerDashboard from '@/components/dashboard/CustomerDashboard';
+import ProfileSwitcher from '@/components/dashboard/ProfileSwitcher';
 import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const [userType, setUserType] = useState(null);
+  const [activeProfile, setActiveProfile] = useState(null);
+  const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: false });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkUserType = async () => {
+    const load = async () => {
       try {
         const user = await base44.auth.me();
-        if (!user) {
-          navigate('/');
-          return;
-        }
+        if (!user) { navigate('/'); return; }
 
-        const contractors = await base44.entities.Contractor.filter({ email: user.email });
-        if (contractors && contractors.length > 0) {
-          setUserType('contractor');
-        } else {
-          setUserType('customer');
-        }
+        const [contractors, customers] = await Promise.all([
+          base44.entities.Contractor.filter({ email: user.email }),
+          base44.entities.CustomerProfile.filter({ email: user.email }),
+        ]);
+
+        const hasContractor = contractors && contractors.length > 0;
+        const hasCustomer = customers && customers.length > 0;
+
+        setProfiles({ customer: hasCustomer, contractor: hasContractor, marketshop: false });
+        setActiveProfile(hasContractor ? 'contractor' : 'customer');
       } catch (error) {
-        console.error('Error checking user type:', error);
+        console.error('Dashboard load error:', error);
         navigate('/');
       } finally {
         setLoading(false);
       }
     };
-
-    checkUserType();
+    load();
   }, [navigate]);
 
   if (loading) {
@@ -45,9 +47,10 @@ export default function Dashboard() {
   }
 
   return (
-    <>
-      {userType === 'contractor' && <ContractorDashboard />}
-      {userType === 'customer' && <CustomerDashboard />}
-    </>
+    <div className="min-h-screen bg-slate-50">
+      <ProfileSwitcher activeProfile={activeProfile} profiles={profiles} />
+      {activeProfile === 'contractor' && <ContractorDashboard />}
+      {activeProfile === 'customer' && <CustomerDashboard />}
+    </div>
   );
 }
