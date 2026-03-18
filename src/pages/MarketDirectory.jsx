@@ -202,7 +202,7 @@ export default function MarketDirectory() {
           </div>
 
           {/* Swap Meet Card */}
-          <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
+          <div className="rounded-xl sm:rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-4">
            <div className="flex items-center gap-3">
              <div className="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
                <Tag className="w-6 h-6 text-amber-700" strokeWidth={1.5} />
