@@ -41,27 +41,41 @@ export default function EnhancedHeroSection() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
-              Find Premium Contractors,<br />
-              <span style={{color: '#60A5FA'}}>No Markups</span>
+              Hire Verified Contractors.<br />
+              <span style={{color: '#60A5FA'}}>Direct. No Markups.</span>
             </h1>
 
-            <p className="text-lg text-slate-100 mb-8 font-light leading-relaxed">
-              Skip middlemen & inflated prices. Connect directly with verified professionals. Request quotes, get a full Scope of Work &amp; Estimate, transparent pricing, zero hidden fees.
+            <p className="text-lg text-slate-100 mb-6 font-light leading-relaxed">
+              Skip the middlemen. Connect directly with identity-verified professionals — get a full Scope of Work, transparent pricing, and zero hidden fees.
             </p>
 
+            {/* Trust Bar */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              {[
+                '🔒 Identity-Verified Pros',
+                '⭐ 4.9 Avg Rating',
+                '📋 Scope of Work Guarantee',
+                '💳 No Subscription Required',
+              ].map(item => (
+                <span key={item} className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20">
+                  {item}
+                </span>
+              ))}
+            </div>
+
             {/* Trust Badges */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-2.5 mb-8">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-white">98% 5-star rated by customers</span>
+                <span className="text-white">Every contractor is identity & license verified</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-white">Receive a detailed Scope of Work before any payment</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
                 <span className="text-white">12-hour average response time</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-white">All contractors identity-verified</span>
               </div>
             </div>
 
@@ -69,19 +83,19 @@ export default function EnhancedHeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to={createPageUrl('FindContractors')}>
                 <Button size="lg" className="text-white font-semibold w-full sm:w-auto" style={{backgroundColor: '#1E5A96'}}>
-                  Browse Contractors (Free) <ArrowRight className="w-5 h-5" />
+                  Browse Contractors <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
-              <Link to={createPageUrl('QuickJobPost')}>
-                <Button size="lg" className="text-white font-medium w-full sm:w-auto" style={{backgroundColor: '#1E5A96'}}>
-                  Post a Project
+              <Link to={createPageUrl('CustomerSignup')}>
+                <Button size="lg" className="font-semibold w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100">
+                  Get Free Quotes
                 </Button>
               </Link>
             </div>
 
             {/* Social Proof */}
             <div className="mt-10 pt-8 border-t border-white/20">
-              <p className="text-sm text-white/70 mb-3 font-medium">TRUSTED BY</p>
+              <p className="text-sm text-white/70 mb-3 font-medium">TRUSTED BY HOMEOWNERS &amp; BUSINESSES</p>
               <div className="flex flex-wrap gap-6">
                 <div>
                   <p className="text-2xl font-bold text-white">2,500+</p>
