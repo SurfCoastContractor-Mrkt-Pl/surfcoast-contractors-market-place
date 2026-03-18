@@ -363,11 +363,11 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="px-6 py-3 text-left font-semibold text-slate-300">Name</th>
                     <th className="px-6 py-3 text-left font-semibold text-slate-300">Email</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Trade</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">City/State</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Sub Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Account</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Stripe Connected</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><Wrench className="w-4 h-4" />Trade</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><MapPin className="w-4 h-4" />City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><CreditCard className="w-4 h-4" />Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><Shield className="w-4 h-4" />Account</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><LinkIcon className="w-4 h-4" />Stripe Connected</th>
                     <th className="px-6 py-3 text-left font-semibold text-slate-300">Created</th>
                   </tr>
                 </thead>
@@ -380,7 +380,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-slate-400">{c.location}</td>
                       <td className="px-6 py-4"><StatusBadge status={c.subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4">{c.account_locked ? <StatusBadge status="locked" /> : <StatusBadge status="active" />}</td>
-                      <td className="px-6 py-4">{c.stripe_account_setup_complete ? '✅' : '❌'}</td>
+                      <td className="px-6 py-4">{c.stripe_account_setup_complete ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Ban className="w-4 h-4 text-red-400" />}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(c.created_date).toLocaleDateString()}</td>
                     </tr>
                   ))}
