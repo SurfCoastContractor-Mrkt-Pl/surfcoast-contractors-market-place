@@ -10,7 +10,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 640);
+    const check = () => setIsMobile(window.innerWidth < 600);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -32,23 +32,23 @@ export default function Home() {
           <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"8px", alignItems:"center", flexWrap:"wrap" }}>
-          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> Markets & Vendors</a>
+          {!isMobile && <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> Markets & Vendors</a>}
           <a href={`${BASE_URL}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"700", padding:"6px 16px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", minHeight:"32px", display:"flex", alignItems:"center" }}>Sign In</a>
         </nav>
       </header>
 
-      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"clamp(24px, 4vw, 48px) 16px clamp(8px, 2vw, 12px)", minHeight:"100svh" }}>
-        <div style={{ textAlign:"center", marginBottom:"clamp(16px, 4vw, 24px)", maxWidth:"680px" }}>
+      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px clamp(6px, 1vw, 8px)" : "clamp(24px, 4vw, 48px) 16px clamp(8px, 2vw, 12px)", minHeight:"100svh" }}>
+        <div style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 24px)", maxWidth:"680px" }}>
           <h1 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
           <p style={{ fontSize:"clamp(13px, 3vw, 16px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </div>
 
-        <div style={{ display:"flex", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:"clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"clamp(6px, 1vw, 8px)" }}>
+        <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"clamp(6px, 1vw, 8px)" }}>
           {/* Left Card - Find a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("customer")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ flex:1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:"32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(45,140,200,0.4)", transform:hoveredCard==="customer"?"translateY(-2px)":"none", boxShadow:hoveredCard==="customer"?"0 12px 32px rgba(29,111,164,0.25)":"0 4px 16px rgba(0,0,0,0.3)" }}
+            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(45,140,200,0.4)", transform:hoveredCard==="customer"?"translateY(-2px)":"none", boxShadow:hoveredCard==="customer"?"0 12px 32px rgba(29,111,164,0.25)":"0 4px 16px rgba(0,0,0,0.3)" }}
           >
             <HomeIcon size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#1d6fa4" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"20px", fontWeight:"700", margin:"0 0 12px", color:"#fff" }}>Find a Pro</h2>
@@ -61,18 +61,26 @@ export default function Home() {
             <button onClick={() => handleAuth("customer")} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
           </div>
 
-          {/* Vertical OR Divider */}
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
-            <span style={{ color:"rgba(255,255,255,0.35)", fontSize:"clamp(11px, 2vw, 12px)", fontWeight:"600", whiteSpace:"nowrap", margin:"0 clamp(8px, 2vw, 12px)", transform:"translateZ(0)" }}>OR</span>
-            <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
-          </div>
+          {/* Horizontal/Vertical OR Divider */}
+          {isMobile ? (
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", width:"100%" }}>
+              <div style={{ background:"rgba(255,255,255,0.12)", width:"100%", height:"1px" }} />
+              <span style={{ color:"rgba(255,255,255,0.35)", fontSize:"clamp(11px, 2vw, 12px)", fontWeight:"600", whiteSpace:"nowrap", margin:"0 clamp(8px, 2vw, 12px)", transform:"translateZ(0)" }}>OR</span>
+              <div style={{ background:"rgba(255,255,255,0.12)", width:"100%", height:"1px" }} />
+            </div>
+          ) : (
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
+              <span style={{ color:"rgba(255,255,255,0.35)", fontSize:"clamp(11px, 2vw, 12px)", fontWeight:"600", whiteSpace:"nowrap", margin:"0 clamp(8px, 2vw, 12px)", transform:"translateZ(0)" }}>OR</span>
+              <div style={{ background:"rgba(255,255,255,0.12)", width:"1px", height:"60%", minHeight:"100px" }} />
+            </div>
+          )}
 
           {/* Right Card - Join as a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("contractor")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ flex:1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:"32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(217,119,6,0.4)", transform:hoveredCard==="contractor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="contractor"?"0 12px 32px rgba(217,119,6,0.2)":"0 4px 16px rgba(0,0,0,0.3)" }}
+            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(217,119,6,0.4)", transform:hoveredCard==="contractor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="contractor"?"0 12px 32px rgba(217,119,6,0.2)":"0 4px 16px rgba(0,0,0,0.3)" }}
           >
             <Wrench size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#d97706" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"20px", fontWeight:"700", margin:"0 0 12px", color:"#fff" }}>Join as a Pro</h2>

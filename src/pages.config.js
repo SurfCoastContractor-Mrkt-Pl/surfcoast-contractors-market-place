@@ -50,6 +50,7 @@
 import AccountRecovery from './pages/AccountRecovery';
 import Admin from './pages/Admin';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPreview from './pages/AdminPreview';
 import AgentDemo from './pages/AgentDemo';
 import BadgeShowcase from './pages/BadgeShowcase';
 import BecomeContractor from './pages/BecomeContractor';
@@ -58,24 +59,33 @@ import BlogDetail from './pages/BlogDetail';
 import Cancel from './pages/Cancel';
 import ContractorAccount from './pages/ContractorAccount';
 import ContractorProfile from './pages/ContractorProfile';
+import ContractorSignup from './pages/ContractorSignup';
 import Contractors from './pages/Contractors';
 import CustomerAccount from './pages/CustomerAccount';
+import CustomerSignup from './pages/CustomerSignup';
+import Dashboard from './pages/Dashboard';
 import DisputeCenter from './pages/DisputeCenter';
 import FindContractors from './pages/FindContractors';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
-
+import MarketDirectory from './pages/MarketDirectory';
+import MarketShopDashboard from './pages/MarketShopDashboard';
+import MarketShopProfile from './pages/MarketShopProfile';
+import MarketShopSignup from './pages/MarketShopSignup';
 import Messaging from './pages/Messaging';
 import MyJobs from './pages/MyJobs';
 import PaymentHistory from './pages/PaymentHistory';
 import PostJob from './pages/PostJob';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProjectManagement from './pages/ProjectManagement';
 import QuickJobPost from './pages/QuickJobPost';
 import Referrals from './pages/Referrals';
 import RegionBlocked from './pages/RegionBlocked';
 import Success from './pages/Success';
 import Terms from './pages/Terms';
+import TimedChat from './pages/TimedChat';
+import TimedChatPage from './pages/TimedChatPage';
 import __Layout from './Layout.jsx';
 
 
@@ -83,6 +93,7 @@ export const PAGES = {
     "AccountRecovery": AccountRecovery,
     "Admin": Admin,
     "AdminDashboard": AdminDashboard,
+    "AdminPreview": AdminPreview,
     "AgentDemo": AgentDemo,
     "BadgeShowcase": BadgeShowcase,
     "BecomeContractor": BecomeContractor,
@@ -91,23 +102,33 @@ export const PAGES = {
     "Cancel": Cancel,
     "ContractorAccount": ContractorAccount,
     "ContractorProfile": ContractorProfile,
+    "ContractorSignup": ContractorSignup,
     "Contractors": Contractors,
     "CustomerAccount": CustomerAccount,
+    "CustomerSignup": CustomerSignup,
+    "Dashboard": Dashboard,
     "DisputeCenter": DisputeCenter,
     "FindContractors": FindContractors,
     "Home": Home,
     "JobDetails": JobDetails,
-     "Jobs": Jobs,
-     "Messaging": Messaging,
+    "Jobs": Jobs,
+    "MarketDirectory": MarketDirectory,
+    "MarketShopDashboard": MarketShopDashboard,
+    "MarketShopProfile": MarketShopProfile,
+    "MarketShopSignup": MarketShopSignup,
+    "Messaging": Messaging,
     "MyJobs": MyJobs,
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
+    "PrivacyPolicy": PrivacyPolicy,
     "ProjectManagement": ProjectManagement,
     "QuickJobPost": QuickJobPost,
     "Referrals": Referrals,
     "RegionBlocked": RegionBlocked,
     "Success": Success,
     "Terms": Terms,
+    "TimedChat": TimedChat,
+    "TimedChatPage": TimedChatPage,
 }
 
 export const pagesConfig = {
