@@ -79,27 +79,43 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
   const updateMutation = useMutation({
     mutationFn: async (data) => {
       if (profile?.id) {
-        return base44.entities.CustomerProfile.update(profile.id, data);
+        return { record: await base44.entities.CustomerProfile.update(profile.id, data), isNew: false };
       } else {
-        // First-time profile creation — auto-activate 14-day trial
-        const trialStartedAt = new Date().toISOString();
-        const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
-        return base44.entities.CustomerProfile.create({
+        // First-time profile creation
+        const record = await base44.entities.CustomerProfile.create({
           email: userEmail,
           ...data,
-          trial_started_at: trialStartedAt,
-          trial_ends_at: trialEndsAt,
-          trial_active: true,
         });
+        return { record, isNew: true };
       }
     },
-    onSuccess: () => {
+    onSuccess: async ({ record, isNew }) => {
       setSaveSuccess(true);
       setSaveError('');
       setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ['customer-profile', userEmail] });
       queryClient.invalidateQueries({ queryKey: ['verified-profile', userEmail] });
       setTimeout(() => setSaveSuccess(false), 5000);
+
+      // On first-time creation, call activateCustomerTrial and show welcome toast
+      if (isNew && record?.id) {
+        try {
+          await fetch('https://sage-c5f01224.base44.app/functions/activateCustomerTrial', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ customer_profile_id: record.id }),
+          });
+          toast({
+            title: '🎉 Welcome to SurfCoast!',
+            description: 'Your free 2-week trial is now active.',
+            duration: 6000,
+          });
+          queryClient.invalidateQueries({ queryKey: ['customer-profile', userEmail] });
+          queryClient.invalidateQueries({ queryKey: ['verified-profile', userEmail] });
+        } catch (_) {
+          // Non-blocking — trial activation failure doesn't block the user
+        }
+      }
     },
     onError: (error) => {
       setSaveError(error.message || 'Failed to save profile');
