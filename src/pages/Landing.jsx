@@ -139,7 +139,7 @@ export default function Landing() {
           <span>🔒 Secure payments</span>
           <span>✅ Identity verified pros</span>
           <span>📋 Licensed &amp; insured</span>
-          <span>🤝 Built in San Diego</span>
+          <span>🇺🇸 Nationwide coverage</span>
         </div>
       </main>
 
