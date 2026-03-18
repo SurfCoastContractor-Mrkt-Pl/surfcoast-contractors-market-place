@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 import Stripe from 'npm:stripe@17.5.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
@@ -16,12 +16,12 @@ Deno.serve(async (req) => {
 
     console.log('Starting stale payment cleanup...');
 
-    // Get all pending payments older than 24 hours
+    // Get all pending payments older than 24 hours (limit to 100 to prevent CPU timeout)
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const stalePendingPayments = await base44.asServiceRole.entities.Payment.filter({
       status: 'pending',
       created_date: { $lt: oneDayAgo }
-    });
+    }, '-created_date', 100);
 
     console.log(`Found ${stalePendingPayments?.length || 0} stale pending payments (older than 24h)`);
 
@@ -52,11 +52,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Also clean up pending subscriptions older than 24 hours
+    // Also clean up pending subscriptions older than 24 hours (limit to 100)
     const stalePendingSubscriptions = await base44.asServiceRole.entities.Subscription.filter({
       status: 'pending',
       created_date: { $lt: oneDayAgo }
-    });
+    }, '-created_date', 100);
 
     console.log(`Found ${stalePendingSubscriptions?.length || 0} stale pending subscriptions`);
 
