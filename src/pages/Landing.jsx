@@ -67,11 +67,9 @@ export default function Landing() {
       {/* Header */}
       <header className="flex items-center px-6 py-5">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">🌊</span>
-          <div>
-            <span className="text-white font-bold text-xl tracking-tight">SurfCoast</span>
-            <div className="text-white/40 text-[10px] uppercase tracking-widest leading-none">Marketplace</div>
-          </div>
+          <span style={{ fontSize: 26 }}>🌊</span>
+          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: '#ffffff', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>SurfCoast</span>
+          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>Marketplace</span>
         </div>
       </header>
 
