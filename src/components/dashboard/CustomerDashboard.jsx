@@ -20,6 +20,15 @@ export default function CustomerDashboard() {
     getUser();
   }, []);
 
+  const { data: customerProfile } = useQuery({
+    queryKey: ['customer-profile-dashboard', user?.email],
+    queryFn: async () => {
+      const results = await base44.entities.CustomerProfile.filter({ email: user.email });
+      return results?.[0] || null;
+    },
+    enabled: !!user?.email,
+  });
+
   const { data: pendingRatingScopes = [] } = useQuery({
     queryKey: ['customer-pending-ratings', user?.email],
     queryFn: async () => {
