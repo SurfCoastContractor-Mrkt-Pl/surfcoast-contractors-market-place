@@ -70,20 +70,16 @@ function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
       }
 
       // Step 3: Call backend function for email notification only
-      await fetch(SUBMIT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'email_only',
-          quote_request_id: quote.id,
-          contractor_id: contractorId,
-          quote_amount: quoteAmount,
-          quote_message: form.quote_message || undefined,
-          customer_email: quote.customer_email,
-          customer_name: quote.customer_name,
-          contractor_name: contractor?.name,
-          job_title: quote.job_title,
-        }),
+      await base44.functions.invoke('submitQuote', {
+        action: 'email_only',
+        quote_request_id: quote.id,
+        contractor_id: contractorId,
+        quote_amount: quoteAmount,
+        quote_message: form.quote_message || undefined,
+        customer_email: quote.customer_email,
+        customer_name: quote.customer_name,
+        contractor_name: contractor?.name,
+        job_title: quote.job_title,
       });
 
       onSuccess();

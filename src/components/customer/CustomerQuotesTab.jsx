@@ -63,19 +63,15 @@ function ProposalCard({ proposal, customerEmail, onReload }) {
       }
 
       // Step 4: Call backend function for email notification only
-      await fetch(RESPOND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'email_only',
-          proposal_id: proposal.id,
-          customer_email: customerEmail,
-          contractor_email: proposal.contractor_email,
-          job_title: proposal.job_title,
-          cost_amount: proposal.quote_amount,
-          contractor_name: proposal.contractor_name,
-          customer_name: proposal.customer_name,
-        }),
+      await base44.functions.invoke('respondToQuote', {
+        action: 'email_only',
+        proposal_id: proposal.id,
+        customer_email: customerEmail,
+        contractor_email: proposal.contractor_email,
+        job_title: proposal.job_title,
+        cost_amount: proposal.quote_amount,
+        contractor_name: proposal.contractor_name,
+        customer_name: proposal.customer_name,
       });
 
       setSuccess(true);
