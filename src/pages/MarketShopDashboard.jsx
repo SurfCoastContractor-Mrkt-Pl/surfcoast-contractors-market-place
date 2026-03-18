@@ -10,6 +10,8 @@ import MarketShopSettings from '@/components/marketshop/MarketShopSettings';
 import ShareYourListing from '@/components/marketshop/ShareYourListing';
 import PhotoGalleryManager from '@/components/marketshop/PhotoGalleryManager';
 import MarketShopSchedule from '@/components/marketshop/MarketShopSchedule';
+import MarketShopSubscription from '@/components/marketshop/MarketShopSubscription';
+import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
@@ -160,6 +162,16 @@ export default function MarketShopDashboard() {
       {/* Share Your Listing Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <ShareYourListing shop={shop} />
+      </div>
+
+      {/* Subscription Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <MarketShopSubscription shop={shop} />
+      </div>
+
+      {/* Inquiries Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <MarketShopInquiries shop={shop} />
       </div>
 
       {/* Photo Gallery Section */}
