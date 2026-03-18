@@ -37,13 +37,13 @@ export default function Home() {
         </nav>
       </header>
 
-      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"clamp(24px, 4vw, 48px) 16px 0", minHeight:"100svh" }}>
-        <div style={{ textAlign:"center", marginBottom:"clamp(16px, 4vw, 28px)", maxWidth:"680px" }}>
+      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"clamp(24px, 4vw, 48px) 16px clamp(8px, 2vw, 12px)", minHeight:"100svh" }}>
+        <div style={{ textAlign:"center", marginBottom:"clamp(16px, 4vw, 24px)", maxWidth:"680px" }}>
           <h1 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
           <p style={{ fontSize:"clamp(13px, 3vw, 16px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </div>
 
-        <div style={{ display:"flex", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:"clamp(16px, 4vw, 32px)", justifyContent:"center" }}>
+        <div style={{ display:"flex", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:"clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"clamp(6px, 1vw, 8px)" }}>
           {/* Left Card - Find a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("customer")}
@@ -90,7 +90,7 @@ export default function Home() {
 
       <MarketsVendorsSection />
 
-      <div style={{ position:"relative", zIndex:2, width:"100%", padding:"12px 16px", background:"rgba(10,22,40,0.5)" }}>
+      <div style={{ position:"relative", zIndex:2, width:"100%", padding:"8px 16px", background:"rgba(10,22,40,0.5)" }}>
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:"16px", justifyContent:"center", alignItems:"center", maxWidth:"900px", margin:"0 auto", px:"16px" }}>
            {[
              { icon: Shield, label: "Secure payments" },
