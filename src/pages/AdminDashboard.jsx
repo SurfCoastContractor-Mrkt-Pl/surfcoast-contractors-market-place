@@ -176,17 +176,23 @@ export default function AdminDashboard() {
       <div className="bg-slate-800 border-b border-slate-700">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex gap-1">
-            {['overview', 'vendors', 'contractors', 'reviews'].map(tab => (
+            {[
+              { key: 'overview', label: 'Overview', icon: BarChart2 },
+              { key: 'vendors', label: 'Vendors', icon: Store },
+              { key: 'contractors', label: 'Contractors', icon: HardHat },
+              { key: 'reviews', label: 'Reviews', icon: Star },
+            ].map(({ key, label, icon: Icon }) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors capitalize ${
-                  activeTab === tab
+                key={key}
+                onClick={() => setActiveTab(key)}
+                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+                  activeTab === key
                     ? 'border-blue-500 text-blue-400'
                     : 'border-transparent text-slate-400 hover:text-slate-300'
                 }`}
               >
-                {tab}
+                <Icon className="w-4 h-4" />
+                {label}
               </button>
             ))}
           </div>
