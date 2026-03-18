@@ -6,11 +6,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
  */
 Deno.serve(async (req) => {
   try {
-    const internalKey = req.headers.get('x-internal-service-key');
-    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const base44 = createClientFromRequest(req);
 
     // Find all active campaigns
