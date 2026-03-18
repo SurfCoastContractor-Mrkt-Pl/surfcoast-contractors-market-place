@@ -25,6 +25,7 @@ const TRADE_LABELS = {
 
 export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }) {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
