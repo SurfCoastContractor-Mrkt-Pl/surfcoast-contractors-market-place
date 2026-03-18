@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Verify authenticated user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name } = await req.json();
 
     if (!payment_id || !contractor_email || !customer_email) {
@@ -13,6 +20,17 @@ Deno.serve(async (req) => {
     const payment = await base44.asServiceRole.entities.Payment.get(payment_id);
     if (!payment || payment.status !== 'confirmed') {
       return Response.json({ error: 'Payment not confirmed' }, { status: 402 });
+    }
+
+    // Verify the authenticated user is a party to the payment (payer or contractor)
+    const userEmail = user.email.toLowerCase();
+    const isParty =
+      payment.payer_email?.toLowerCase() === userEmail ||
+      contractor_email?.toLowerCase() === userEmail ||
+      customer_email?.toLowerCase() === userEmail;
+
+    if (!isParty) {
+      return Response.json({ error: 'Forbidden: You are not a party to this payment' }, { status: 403 });
     }
 
     // Create session record
