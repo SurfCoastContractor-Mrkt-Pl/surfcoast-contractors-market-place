@@ -48,7 +48,7 @@ export default function EnhancedHeroSection() {
     <section
       className="relative min-h-[600px] flex items-center overflow-hidden"
       style={{
-        backgroundImage: 'linear-gradient(rgba(10,30,60,0.72), rgba(10,30,60,0.72)), url(https://base44.app/api/apps/69b5d136d5baa9e2c5f01224/files/mp/public/69b5d136d5baa9e2c5f01224/aa93ac334_sd_best.jpg)',
+        backgroundImage: 'linear-gradient(rgba(10,30,60,0.72), rgba(10,30,60,0.72)), url(https://media.base44.com/images/public/69b5d136d5baa9e2c5f01224/ba23d6474_generated_image.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
