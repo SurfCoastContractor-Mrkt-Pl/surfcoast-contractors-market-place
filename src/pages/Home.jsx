@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ShoppingBag, Home, Wrench, Shield, CheckCircle } from "lucide-react";
 
 const BASE_URL = "https://surfcoastcmp.base44.app";
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
