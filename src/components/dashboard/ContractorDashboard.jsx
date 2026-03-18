@@ -7,17 +7,27 @@ import { Button } from '@/components/ui/button';
 import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
+import { differenceInDays } from 'date-fns';
 
 export default function ContractorDashboard() {
-  const [user, setUser] = useState(null);
+   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const getUser = async () => {
-      const currentUser = await base44.auth.me();
-      setUser(currentUser);
-    };
-    getUser();
-  }, []);
+   useEffect(() => {
+     const getUser = async () => {
+       const currentUser = await base44.auth.me();
+       setUser(currentUser);
+     };
+     getUser();
+   }, []);
+
+   const { data: contractorProfile } = useQuery({
+     queryKey: ['contractor-profile-dashboard', user?.email],
+     queryFn: async () => {
+       const results = await base44.entities.Contractor.filter({ email: user.email });
+       return results?.[0] || null;
+     },
+     enabled: !!user?.email,
+   });
 
   const { data: pendingRatingScopes = [] } = useQuery({
     queryKey: ['contractor-pending-ratings', user?.email],
@@ -80,9 +90,29 @@ export default function ContractorDashboard() {
         />
       )}
       <div className="max-w-7xl mx-auto">
+        {/* Stripe Payout Banner */}
+        {contractorProfile?.stripe_account_setup_complete && !contractorProfile?.stripe_account_charges_enabled && (
+          <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '10px', padding: '12px 20px', marginBottom: '16px', color: '#92400e', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>⚠️</span>
+            Your Stripe payout account is not yet fully active. Please check your email to complete setup and enable payments.
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Contractor Dashboard</h1>
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
+            <h1 className="text-4xl font-bold text-slate-900">Contractor Dashboard</h1>
+            {contractorProfile?.trial_active && (
+              <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
+                🟢 Free Trial Active — {differenceInDays(new Date(contractorProfile.trial_ends_at), new Date())} days remaining
+              </div>
+            )}
+            {contractorProfile?.trial_expired && !contractorProfile?.trial_active && (
+              <div style={{ background: '#fee2e2', color: '#991b1b', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
+                ⛔ Trial Expired — Upgrade to continue
+              </div>
+            )}
+          </div>
           <p className="text-slate-600">Track your active jobs and communications</p>
         </div>
 
