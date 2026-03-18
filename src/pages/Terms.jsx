@@ -1,180 +1,185 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-slate-900 text-white py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-6">
-            <ChevronLeft className="w-4 h-4" />
+    <div className="min-h-screen bg-slate-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        {/* Back to Home Button - Top */}
+        <Link to="/Landing" className="inline-block mb-8">
+          <Button variant="outline" className="gap-2">
+            <ArrowLeft className="w-4 h-4" />
             Back to Home
-          </Link>
-          <h1 className="text-4xl font-bold">Terms, Policies & Acknowledgements</h1>
-          <p className="text-slate-400 mt-2">Last updated: March 3, 2026</p>
+          </Button>
+        </Link>
+
+        {/* Title */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
+          <h1 className="text-4xl font-serif font-bold text-slate-900 mb-2">Terms of Service</h1>
+          <p className="text-slate-600">SurfCoast Marketplace</p>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-12">
-          
-          {/* Refund Policy */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Refund Policy</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                We genuinely appreciate every person who trusts SurfCoast with their project. Our fees are kept intentionally small — just $1.75 per quote request — because we want this platform to be accessible and fair for everyone.
-              </p>
-              <p>
-                Because our services are delivered the moment payment is made — your quote request is instantly sent to the contractor, and your communication access is immediately activated — we're unable to offer refunds once a transaction is processed. The value is delivered right away, and there's no way to "unsend" a request or reclaim that window of access.
-              </p>
-              <p>
-                For the $50/month unlimited communication subscription, cancelling at any time will stop future charges immediately — you keep full access through the end of your current billing period, and you won't be charged again.
-              </p>
-              <p>
-                We know that's not always what someone hopes to hear, and we're truly sorry if a situation didn't go as expected. If you believe there was a technical failure or error on our end, please don't hesitate to reach out — we will always do our best to make it right.
-              </p>
-            </div>
-          </section>
-
-          {/* User Responsibilities */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">User Responsibilities</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                By using SurfCoast Contractor Marketplace, you agree to:
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>Provide accurate and truthful information in your profile</li>
-                <li>Treat all users with respect and professionalism</li>
-                <li>Not engage in fraudulent, deceptive, or illegal activities</li>
-                <li>Comply with all applicable laws and regulations</li>
-                <li>Respect intellectual property and confidentiality</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* Fees & Pricing */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Fees & Pricing</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>SurfCoast Contractor Market Place charges the following platform fees:</p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong>Job / Project Posting (Customers):</strong> Always free. Customers post their jobs and projects at no cost so contractors can browse and decide if they'd like to pursue the work.</li>
-                <li><strong>Blind Quote Request (Customers only — $1.75):</strong> When a customer wants a contractor to provide a blind estimate or quote on their posted job or project, a one-time $1.75 fee is charged to the customer. This covers one quote request per contractor. Each additional contractor quote request requires a separate $1.75 fee. Contractors are not charged any fee to view jobs or submit quotes.</li>
-                <li><strong>Communication Session ($1.50 — applies to both customers and contractors):</strong> Either party may initiate a direct messaging session with the other for a one-time $1.50 fee per session. This unlocks a timed communication window for that engagement. A new $1.50 fee is required to open a new session after one ends.</li>
-                <li><strong>Unlimited Communication:</strong> $50.00/month subscription. Allows unlimited messaging across the platform for both customers and contractors. Auto-renews monthly. Cancel anytime — cancellation takes effect at the end of the current billing period.</li>
-                <li><strong>Featured Contractor Listing (Contractors only — $29.00/month):</strong> Contractors may optionally upgrade their profile to a featured listing, which places them at the top of search results with a premium badge. Requires an active communication subscription. Auto-renews monthly. Cancel anytime.</li>
-                <li><strong>Platform Facilitation Fee (Contractors — 3% of completed job):</strong> A 3% facilitation fee is deducted from the contractor's earnings on every completed and closed-out job. This fee covers payment processing, dispute resolution, review verification, and ongoing platform support. Example: on a $1,000 job, the contractor receives $970.</li>
-              </ul>
-              <p>All fees are disclosed upfront before payment in compliance with California SB 478 (Honest Pricing Law). Contractor work costs are entirely separate and negotiated directly between you and the contractor — SurfCoast does not process or hold work payments on behalf of customers.</p>
-            </div>
-          </section>
-
-          {/* After Photos Policy */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">After Photos & Account Compliance</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                Contractors are required to upload a minimum of <strong>5 after photos</strong> within <strong>72 hours</strong> of the agreed work date for any completed job. Failure to do so will result in a temporary account lock until the required photos are uploaded.
-              </p>
-              <p>
-                This policy protects customers and maintains platform quality standards. Photos must clearly document the completed work.
-              </p>
-            </div>
-          </section>
-
-          {/* Platform Disclaimer */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Platform Disclaimer</h2>
-            <div className="space-y-4 text-slate-700">
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <p className="font-semibold text-slate-900 mb-2">Important Notice:</p>
-                <p>
-                  SurfCoast Contractor Marketplace is a platform that connects contractors with customers. We are not responsible for the quality, safety, legality, or outcome of any work performed through this platform. All work is conducted between independent parties at their own risk.
-                </p>
-              </div>
-              <h3 className="font-semibold text-slate-900 mt-6">Contractors:</h3>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>You are solely responsible for the work you perform and its quality</li>
-                <li>You must comply with all applicable laws, building codes, and safety regulations</li>
-                <li>You are responsible for obtaining necessary licenses, permits, and insurance</li>
-                <li>You warrant that you have the authority and qualifications to perform advertised services</li>
-                <li>You agree to complete work professionally and on time</li>
-              </ul>
-              <h3 className="font-semibold text-slate-900 mt-4">Customers:</h3>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>You are responsible for vetting contractors before hiring</li>
-                <li>You should request proof of licensing, insurance, and references</li>
-                <li>You agree to communicate clearly about project scope and expectations</li>
-                <li>Disputes over work quality or payment are between you and the contractor</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* Liability Disclaimer */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Limitation of Liability</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                SurfCoast is not liable for:
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>Injuries, property damage, or accidents related to work performed</li>
-                <li>Disputes, payment disagreements, or contract breaches between users</li>
-                <li>Non-completion or poor quality of work</li>
-                <li>Fraudulent, deceptive, or illegal conduct by users</li>
-                <li>Loss of data, account access, or platform downtime</li>
-              </ul>
-              <p className="mt-4 font-semibold">
-                By using SurfCoast, you accept full responsibility for your actions and agree to hold the platform harmless from all claims and damages.
-              </p>
-            </div>
-          </section>
-
-          {/* Privacy & Data */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Privacy & Data Protection</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                Your personal information is protected and used only for platform operations. Contact details are masked until both parties agree to communicate. Identity verification documents are securely stored and reviewed only by authorized personnel.
-              </p>
-              <p>
-                We do not sell user data to third parties. Communication logs and transaction history are kept confidential between you and the platform.
-              </p>
-            </div>
-          </section>
-
-          {/* Account Termination */}
-          <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Account Termination</h2>
-            <div className="space-y-4 text-slate-700">
-              <p>
-                We reserve the right to suspend or terminate accounts that violate our policies, engage in fraudulent activity, or fail to comply with platform guidelines.
-              </p>
-              <p>
-                Terminated accounts will not receive refunds for any pending or completed transactions.
-              </p>
-            </div>
-          </section>
-
-          {/* Contact */}
-          <section className="border-t border-slate-200 pt-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Questions?</h2>
-            <p className="text-slate-700 mb-6">
-              If you have questions about these policies or need support, please reach out to our team.
-            </p>
-            <p className="text-slate-600 mb-4">
-              Use the <strong>Contact Admin</strong> option found in your account settings, or reach out through the platform's support features.
-            </p>
-          </section>
-
+        {/* Section 1 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Platform Liability Waiver</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            SurfCoast Marketplace ("Platform") is a connection platform only. By using this platform, all parties—contractors, customers, vendors, guests, and any other users—fully waive and release SurfCoast Marketplace and all of its officers, directors, employees, agents, and affiliates (collectively, "Platform Parties") from any and all claims, demands, causes of action, damages, injuries, illness, sickness, or death arising from or related to:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Any services rendered or products sold through the platform</li>
+            <li>Any interactions, transactions, or disputes between users</li>
+            <li>Any injury, illness, sickness, or death occurring during or after a transaction</li>
+            <li>Any quality, safety, or legality issues with services or products</li>
+            <li>Any failure of Platform Parties to prevent, warn of, or resolve any of the above</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            Platform Parties make no representations, warranties, or guarantees regarding the quality, safety, legality, or credentials of any contractor, vendor, or service. Users assume all risk when using this platform.
+          </p>
         </div>
+
+        {/* Section 2 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Independent Contractor Status</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            All service providers (contractors, vendors, professionals, and others) using SurfCoast Marketplace are independent operators. They are not employees, agents, or representatives of SurfCoast Marketplace. The platform is not responsible for:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Compliance with employment laws or regulations</li>
+            <li>Worker's compensation or benefits</li>
+            <li>Tax obligations or filings</li>
+            <li>Insurance or liability coverage</li>
+            <li>Any legal or regulatory status of the service provider</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            Service providers are solely responsible for their legal status and all associated obligations.
+          </p>
+        </div>
+
+        {/* Section 3 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">3. No Verification or Endorsement</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            SurfCoast Marketplace does not:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Verify, inspect, or certify the credentials, licenses, or qualifications of any contractor or vendor</li>
+            <li>Endorse, recommend, or guarantee any service provider, product, or service</li>
+            <li>Perform background checks, identity verification, or vetting of users</li>
+            <li>Assume responsibility for the accuracy of any information provided by users</li>
+            <li>Monitor, regulate, or control the conduct of any user</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            All information, profiles, reviews, and ratings on the platform are user-generated and unverified.
+          </p>
+        </div>
+
+        {/* Section 4 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Contractor Terms</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            Contractors using this platform are independent operators, not employees or agents of SurfCoast Marketplace. Contractors are solely responsible for:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Holding all required licenses, certifications, and insurance</li>
+            <li>Complying with all applicable federal, state, and local laws</li>
+            <li>The quality, safety, and legality of all services rendered</li>
+            <li>Collecting and remitting applicable taxes</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            SurfCoast Marketplace makes no guarantee regarding the accuracy of any contractor's credentials, licensing status, or work quality.
+          </p>
+        </div>
+
+        {/* Section 5 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Farmers Market & Swap Meet Vendor Terms</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            All market vendors ("Vendors") operating through SurfCoast Marketplace are independent operators. Vendors are solely responsible for:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Obtaining all required local permits, business licenses, health department approvals, and event-specific vendor credentials</li>
+            <li>Complying with all federal regulations including but not limited to FDA food safety rules, FTC regulations, and consumer protection laws</li>
+            <li>Complying with all applicable state laws including cottage food laws, sales tax collection, and resale permit requirement</li>
+            <li>Complying with all local city and county ordinances governing the sale of goods at markets and swap meets</li>
+            <li>The safety, quality, labeling, and legality of all products and food items sold</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            SurfCoast Marketplace does not inspect, certify, or guarantee any vendor's products, food items, or compliance status.
+          </p>
+        </div>
+
+        {/* Section 6 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Customer & Guest Terms</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            Customers and guests using SurfCoast Marketplace to find contractors or vendors are solely responsible for:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li>Independently researching, vetting, and verifying all contractors and vendors before engaging their services or purchasing products</li>
+            <li>Making their own informed decisions regarding all transactions</li>
+            <li>Understanding that reviews and ratings on this platform are user-generated and not verified by SurfCoast Marketplace</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            SurfCoast Marketplace strongly encourages all customers to verify licenses, read reviews, ask questions, and exercise due diligence before any transaction.
+          </p>
+        </div>
+
+        {/* Section 7 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Food Safety Disclaimer</h2>
+          <p className="text-slate-700 leading-relaxed">
+            Any food or beverage products sold through vendors on this platform have not been inspected or certified by SurfCoast Marketplace. Customers with food allergies, dietary restrictions, or health conditions assume all risk when purchasing food items. SurfCoast Marketplace is not responsible for any illness, allergic reaction, injury, or death related to food or beverage consumption.
+          </p>
+        </div>
+
+        {/* Section 8 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Dispute Resolution</h2>
+          <p className="text-slate-700 leading-relaxed">
+            All disputes between users (customer-contractor, customer-vendor, or otherwise) are solely between the parties involved. SurfCoast Marketplace is not a party to any dispute and has no obligation to mediate, arbitrate, or resolve any disagreement. Users agree to resolve disputes directly and to hold Platform Parties harmless from any such dispute.
+          </p>
+        </div>
+
+        {/* Section 9 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Governing Law</h2>
+          <p className="text-slate-700 leading-relaxed">
+            These Terms shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions. Any legal action arising from these Terms must be brought in a court of competent jurisdiction in San Diego County, California.
+          </p>
+        </div>
+
+        {/* Section 10 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Modifications</h2>
+          <p className="text-slate-700 leading-relaxed">
+            SurfCoast Marketplace reserves the right to update these Terms at any time. Continued use of the platform after any update constitutes acceptance of the revised Terms. Users are encouraged to review this page periodically.
+          </p>
+        </div>
+
+        {/* Section 11 */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Contact</h2>
+          <p className="text-slate-700 leading-relaxed">
+            For questions regarding these Terms, contact us through the platform's support channel.
+          </p>
+        </div>
+
+        {/* Final Acknowledgment */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-8 border-l-4 border-blue-600">
+          <p className="text-slate-900 font-semibold leading-relaxed">
+            By using SurfCoast Marketplace, you acknowledge that you have read, understood, and agreed to these Terms of Service in full.
+          </p>
+        </div>
+
+        {/* Back to Home Button - Bottom */}
+        <Link to="/Landing" className="block text-center">
+          <Button variant="outline" className="gap-2 mx-auto">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Button>
+        </Link>
       </div>
     </div>
   );
