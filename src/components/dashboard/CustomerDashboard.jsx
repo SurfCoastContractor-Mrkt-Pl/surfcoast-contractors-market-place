@@ -117,7 +117,10 @@ export default function CustomerDashboard() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">My Projects</h1>
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
+            <h1 className="text-4xl font-bold text-slate-900">My Projects</h1>
+            <TrialBadge profile={customerProfile} />
+          </div>
           <p className="text-slate-600">Track your posted jobs and active scopes</p>
         </div>
 
