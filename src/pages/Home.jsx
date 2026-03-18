@@ -90,7 +90,7 @@ export default function Home() {
 
       <MarketsVendorsSection />
 
-      <div style={{ position:"relative", zIndex:2, width:"100%", padding:"16px", background:"rgba(10,22,40,0.5)" }}>
+      <div style={{ position:"relative", zIndex:2, width:"100%", padding:"12px 16px", background:"rgba(10,22,40,0.5)" }}>
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:"16px", justifyContent:"center", alignItems:"center", maxWidth:"900px", margin:"0 auto", px:"16px" }}>
            {[
              { icon: Shield, label: "Secure payments" },
