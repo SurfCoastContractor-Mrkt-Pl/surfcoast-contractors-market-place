@@ -8,6 +8,7 @@ import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
 import MarketShopReviews from '@/components/marketshop/MarketShopReviews';
 import MarketShopSettings from '@/components/marketshop/MarketShopSettings';
 import ShareYourListing from '@/components/marketshop/ShareYourListing';
+import PhotoGalleryManager from '@/components/marketshop/PhotoGalleryManager';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
