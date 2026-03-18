@@ -66,23 +66,11 @@ export default function Landing() {
       }}
     >
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-5">
+      <header className="flex items-center px-6 py-5">
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
           <span style={{ fontSize: 22, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px', textShadow: '0 1px 8px rgba(0,0,0,0.5)', lineHeight: 1 }}>SurfCoast</span>
           <span style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '2.5px', textTransform: 'uppercase', lineHeight: 1 }}>Marketplace</span>
         </div>
-        <button
-          onClick={() => base44.auth.redirectToLogin()}
-          className="px-5 py-2.5 rounded-lg font-semibold text-white transition-colors text-sm"
-          style={{
-            background: 'rgba(255,255,255,0.15)',
-            border: '1px solid rgba(255,255,255,0.3)',
-          }}
-          onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.25)'}
-          onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.15)'}
-        >
-          Login
-        </button>
       </header>
 
       {/* Main content */}
