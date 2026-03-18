@@ -18,7 +18,6 @@ import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
 import MarketDirectory from './pages/MarketDirectory';
 import MarketShopProfile from './pages/MarketShopProfile';
-import MarketShopSignup from './pages/MarketShopSignup';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
