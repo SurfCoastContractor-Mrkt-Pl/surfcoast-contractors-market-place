@@ -169,7 +169,7 @@ export default function CustomerAccount() {
   }
 
   return (
-    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
+    <div className="customer-profile" style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", overflowX:"hidden", background:"#0a1628" }}>
     <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
     <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
 
@@ -299,8 +299,8 @@ export default function CustomerAccount() {
                   />
                   {customerProfile && (
                     <div className="space-y-7">
-                      <div className="pb-4 border-b border-slate-200">
-                        <h3 className="text-2xl font-serif font-bold text-slate-900">Your Profile</h3>
+                      <div className="pb-4 border-b border-slate-300">
+                        <h3 className="text-2xl font-bold text-slate-900">Your Profile</h3>
                       </div>
                       <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
                       <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
@@ -314,8 +314,8 @@ export default function CustomerAccount() {
                </TabsContent>
 
               <TabsContent value="my-jobs">
-                <Card className="p-8 border border-slate-200/40">
-                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-2 pb-4 border-b border-slate-200">Job Postings</h2>
+                <Card className="p-8 border border-white/20 bg-white/92 backdrop-blur-md rounded-2xl">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-2 pb-4 border-b border-slate-300">Job Postings</h2>
                   <p className="text-sm text-slate-500 mb-6">View, edit, or delete your posted jobs. Expand any job to see details and manage it.</p>
                   <CustomerJobsManager userEmail={userEmail} />
                 </Card>
@@ -345,12 +345,12 @@ export default function CustomerAccount() {
 
               <TabsContent value="payments">
                 <ActiveSessions payments={payments} />
-                <Card className="p-8 border border-slate-200/40">
-                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">Payment History</h2>
+                <Card className="p-8 border border-white/20 bg-white/92 backdrop-blur-md rounded-2xl">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4 pb-4 border-b border-slate-300">Payment History</h2>
                   {payments?.filter(p => p.status !== 'work_scheduled').length > 0 ? (
                      <div className="space-y-3">
                        {payments.filter(p => p.status !== 'work_scheduled').map(p => (
-                         <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl gap-3">
+                         <div key={p.id} className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-xl gap-3">
                            <div className="flex items-center gap-3 flex-1 min-w-0">
                              {p.status === 'confirmed' ? (
                                <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
@@ -358,8 +358,8 @@ export default function CustomerAccount() {
                                <Clock className="w-5 h-5 text-amber-500 shrink-0" />
                              )}
                              <div className="min-w-0">
-                               <div className="text-sm font-medium text-slate-800">${p.amount?.toFixed(2)} — {p.purpose}</div>
-                               <div className="text-xs text-slate-500">{new Date(p.created_date).toLocaleDateString()}</div>
+                               <div className="text-sm font-medium text-slate-900">${p.amount?.toFixed(2)} — {p.purpose}</div>
+                               <div className="text-xs text-slate-600">{new Date(p.created_date).toLocaleDateString()}</div>
                              </div>
                            </div>
                            <div className="flex items-center gap-2 shrink-0">
@@ -454,8 +454,8 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="scopes">
-                <Card className="p-8 border border-slate-200/40">
-                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">Project Agreements</h2>
+                <Card className="p-8 border border-white/20 bg-white/92 backdrop-blur-md rounded-2xl">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4 pb-4 border-b border-slate-300">Project Agreements</h2>
 
                   {/* Pending progress payments notice */}
                   {progressPayments?.filter(pp => pp.status === 'contractor_completed').length > 0 && (
@@ -477,18 +477,18 @@ export default function CustomerAccount() {
                        const hasProgressPayments = scopePhases.length > 0;
                        return (
                        <React.Fragment key={s.id}>
-                       <div className="border border-slate-200 rounded-xl overflow-hidden">
+                       <div className="border border-slate-300 rounded-xl overflow-hidden bg-white">
                          {hasProgressPayments && s.status === 'approved' && (
                            <div className="p-3 border-b border-slate-200">
                              <ProjectProgressBar payments={scopePhases} />
                            </div>
                          )}
-                         <div className="flex items-center justify-between p-3 bg-slate-50 gap-3">
+                         <div className="flex items-center justify-between p-3 bg-white gap-3">
                             <div className="flex items-center gap-3 flex-1 min-w-0">
                               <FileText className="w-5 h-5 text-amber-500 shrink-0" />
                               <div className="min-w-0">
-                                <div className="text-sm font-medium text-slate-800 truncate">{s.job_title}</div>
-                                <div className="text-xs text-slate-500">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`}</div>
+                                <div className="text-sm font-medium text-slate-900 truncate">{s.job_title}</div>
+                                <div className="text-xs text-slate-700">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`}</div>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
