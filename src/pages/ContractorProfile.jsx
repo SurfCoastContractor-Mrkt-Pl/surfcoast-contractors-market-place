@@ -177,21 +177,27 @@ export default function ContractorProfile() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Profile Info */}
             <div className="md:col-span-2">
-              <div className="flex items-start gap-6 mb-6">
+              <div className="flex items-start gap-6 mb-8">
                  {contractor.photo_url ? (
                    <img
                      src={contractor.photo_url}
                      alt={contractor.name}
-                     className="w-28 h-28 rounded-2xl object-cover border-2 border-white/40 shadow-2xl"
+                     className="w-32 h-32 rounded-3xl object-cover border-2 border-white/40 shadow-2xl"
                    />
                  ) : (
-                   <div className="w-28 h-28 rounded-2xl flex items-center justify-center text-white text-4xl font-bold border-2 border-white/40 shadow-2xl" style={{backgroundColor: '#1E5A96'}}>
+                   <div className="w-32 h-32 rounded-3xl flex items-center justify-center text-white text-5xl font-bold border-2 border-white/40 shadow-2xl" style={{backgroundColor: '#1E5A96'}}>
                      {contractor.name?.[0]}
                    </div>
                  )}
                  <div className="flex-1">
-                    <h1 className="text-4xl font-bold text-white leading-tight">{contractor.name}</h1>
-                    {contractor.years_experience && <p className="text-white/70 mt-2 text-lg">{contractor.years_experience} years of professional experience</p>}
+                    <h1 className="text-5xl font-serif font-bold text-white leading-tight">{contractor.name}</h1>
+                    {contractor.contractor_type === 'trade_specific' && contractor.trade_specialty && (
+                      <p className="text-white/60 text-sm font-medium tracking-wide uppercase mt-2">{contractor.trade_specialty.replace(/_/g, ' ')}</p>
+                    )}
+                    {contractor.line_of_work && (
+                      <p className="text-white/60 text-sm font-medium tracking-wide uppercase mt-1">{contractor.line_of_work.replace(/_/g, ' ')}</p>
+                    )}
+                    {contractor.years_experience && <p className="text-white/70 mt-3 text-base font-light">{contractor.years_experience}+ years of professional experience</p>}
                    <div className="flex items-center gap-2 mt-2 flex-wrap">
                      {contractor.identity_verified && (
                        <div className="flex items-center gap-2 text-green-400">
@@ -242,7 +248,7 @@ export default function ContractorProfile() {
             </div>
 
             {/* CTA */}
-            <div className="bg-white p-7 rounded-2xl h-fit shadow-2xl backdrop-blur-sm border border-white/50">
+            <div className="bg-white/98 p-8 rounded-3xl h-fit shadow-2xl backdrop-blur-sm border border-white/60">
               <div className="mb-6 pb-6 border-b border-slate-100">
                 {contractor.rate_type === 'fixed' ? (
                   <>
@@ -327,16 +333,16 @@ export default function ContractorProfile() {
 
             {/* About */}
              {contractor.bio && (
-               <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                 <h2 className="text-2xl font-bold text-slate-900 mb-5">About</h2>
-                 <p className="text-slate-700 leading-relaxed text-lg">{contractor.bio}</p>
+               <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                 <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6 pb-4 border-b border-slate-200">About</h2>
+                 <p className="text-slate-700 leading-relaxed text-base font-light">{contractor.bio}</p>
                </Card>
              )}
 
             {/* Specialties */}
             {(contractor.skills || contractor.certifications) && (
-              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Expertise</h2>
+              <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6 pb-4 border-b border-slate-200">Expertise</h2>
                 {contractor.skills && contractor.skills.length > 0 && (
                   <div className="mb-4">
                     <h3 className="text-sm font-semibold text-slate-700 mb-2">Skills</h3>
@@ -374,16 +380,16 @@ export default function ContractorProfile() {
 
             {/* Portfolio */}
             {contractor.portfolio_images && contractor.portfolio_images.length > 0 && (
-              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Portfolio</h2>
+              <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6 pb-4 border-b border-slate-200">Portfolio</h2>
                 <PortfolioDisplay images={contractor.portfolio_images} />
               </Card>
             )}
 
             {/* Completed Jobs */}
             {completedJobs && completedJobs.length > 0 && (
-              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Recent Projects</h2>
+              <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6 pb-4 border-b border-slate-200">Recent Projects</h2>
                 <div className="grid gap-4">
                   {completedJobs.map((job) => (
                     <div key={job.id} className="border border-slate-200 rounded-lg p-4">
@@ -405,18 +411,18 @@ export default function ContractorProfile() {
 
           {/* Sidebar */}
           <div className="space-y-7">
-           {/* Availability */}
-           <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-             <h3 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-3">
-               <Calendar className="w-5 h-5 text-blue-600" />
-               Availability
-             </h3>
-             <ContractorAvailabilityCalendar contractorId={contractorId} />
-           </Card>
+            {/* Availability */}
+            <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-5 flex items-center gap-3 pb-4 border-b border-slate-200">
+                <Calendar className="w-5 h-5 text-blue-600" />
+                Schedule
+              </h3>
+              <ContractorAvailabilityCalendar contractorId={contractorId} />
+            </Card>
 
-           {/* Quick Stats */}
-           <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-             <h3 className="text-lg font-bold text-slate-900 mb-5">Overview</h3>
+            {/* Quick Stats */}
+            <Card className="p-8 border border-slate-200/40 bg-white/98 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-5 pb-4 border-b border-slate-200">Professional Details</h3>
              <div className="space-y-4">
                <div className="pb-4 border-b border-slate-100">
                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Response Time</p>
