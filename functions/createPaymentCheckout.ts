@@ -34,6 +34,11 @@ Deno.serve(async (req) => {
   try {
     const body = await req.json();
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     // PCI Compliance: Never accept raw card data
     if (body.card || body.cardNumber || body.cvv) {
@@ -41,6 +46,11 @@ Deno.serve(async (req) => {
     }
 
     const { payerEmail, payerName, payerType, contractorId, contractorEmail, contractorName, idempotencyKey, tier, quoteMetaParam } = body;
+
+    // Verify payer email matches authenticated user
+    if (payerEmail !== user.email) {
+      return Response.json({ error: 'Forbidden: You can only create payments for your own account' }, { status: 403 });
+    }
 
     if (!payerEmail || !payerName || !payerType || !idempotencyKey) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });

@@ -1,9 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
-  const base44 = createClientFromRequest(req);
-
   try {
+    const base44 = createClientFromRequest(req);
     const { email, code } = await req.json();
 
     if (!email || !code) {

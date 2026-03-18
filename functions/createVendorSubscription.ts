@@ -7,7 +7,18 @@ const vendorPriceId = Deno.env.get('STRIPE_VENDOR_LISTING_PRICE_ID');
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { shop_id, shop_name, owner_email, owner_name, vendor_type } = await req.json();
+
+    // Verify owner email matches authenticated user
+    if (owner_email !== user.email) {
+      return Response.json({ error: 'Forbidden: You can only create subscriptions for your own account' }, { status: 403 });
+    }
 
     // Validate inputs
     if (!shop_id || !shop_name || !owner_email || !owner_name || !vendor_type) {

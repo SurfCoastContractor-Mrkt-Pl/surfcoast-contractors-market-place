@@ -5,6 +5,12 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
+    // Authorization: only internal service calls allowed
+    const internalKey = req.headers.get('x-internal-service-key');
+    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const base44 = createClientFromRequest(req);
 
     console.log('Starting stale payment cleanup...');
