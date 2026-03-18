@@ -27,7 +27,7 @@ export default function Home() {
       <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"16px 28px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
         <div style={{ display:'flex', flexDirection:'column', gap:'3px' }}>
           <span style={{ fontSize:'17px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
-          <span style={{ fontSize:'10px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'6px' }}>MARKETPLACE</span>
+          <span style={{ fontSize:'10px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'10px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"12px", alignItems:"center" }}>
           <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"14px", fontWeight:"600", padding:"8px 16px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)" }}>🛍️ Markets & Vendors</a>
