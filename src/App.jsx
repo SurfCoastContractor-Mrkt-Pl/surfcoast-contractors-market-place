@@ -14,6 +14,7 @@ import TimedChatPage from './pages/TimedChatPage';
 import ContractorSignup from './pages/ContractorSignup';
 import CustomerSignup from './pages/CustomerSignup';
 import Landing from './pages/Landing';
+import MarketShopDashboard from './pages/MarketShopDashboard';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
