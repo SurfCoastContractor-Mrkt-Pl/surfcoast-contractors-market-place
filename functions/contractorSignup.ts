@@ -6,13 +6,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = await req.json();
     const { full_name, email, password, phone, trade_specialty, location } = body;
 
@@ -21,9 +14,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'All fields are required' }, { status: 400 });
     }
 
-    // Verify email matches authenticated user
-    if (email !== user.email) {
-      return Response.json({ error: 'Forbidden: You can only sign up with your own email' }, { status: 403 });
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
     if (password.length < 6) {

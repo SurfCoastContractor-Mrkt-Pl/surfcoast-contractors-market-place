@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -15,14 +15,14 @@ Deno.serve(async (req) => {
 
     const now = new Date().toISOString();
 
-    // Find expired demo contractors
-    const contractors = await base44.entities.Contractor.filter({ is_demo: true }, null, 1000);
+    // Find expired demo contractors using service role to bypass RLS
+    const contractors = await base44.asServiceRole.entities.Contractor.filter({ is_demo: true }, null, 1000);
     let deletedCount = 0;
 
     for (const contractor of contractors) {
       if (contractor.demo_expires_at && new Date(contractor.demo_expires_at) < new Date(now)) {
         try {
-          await base44.entities.Contractor.delete(contractor.id);
+          await base44.asServiceRole.entities.Contractor.delete(contractor.id);
           deletedCount++;
         } catch (e) {
           console.error(`Failed to delete contractor ${contractor.id}:`, e);
@@ -30,14 +30,14 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Find expired demo jobs
-    const jobs = await base44.entities.Job.filter({ is_demo: true }, null, 1000);
+    // Find expired demo jobs using service role to bypass RLS
+    const jobs = await base44.asServiceRole.entities.Job.filter({ is_demo: true }, null, 1000);
     let jobsDeleted = 0;
 
     for (const job of jobs) {
       if (job.demo_expires_at && new Date(job.demo_expires_at) < new Date(now)) {
         try {
-          await base44.entities.Job.delete(job.id);
+          await base44.asServiceRole.entities.Job.delete(job.id);
           jobsDeleted++;
         } catch (e) {
           console.error(`Failed to delete job ${job.id}:`, e);

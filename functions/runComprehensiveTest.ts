@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
@@ -27,7 +27,7 @@ Deno.serve(async (req) => {
     // Test 1: Contractor Entity Operations
     console.log('Testing Contractor entity operations...');
     try {
-      const contractors = await base44.entities.Contractor.list('-updated_date', 5);
+      const contractors = await base44.asServiceRole.entities.Contractor.list('-updated_date', 5);
       results.tests.contractor_list = {
         status: 'pass',
         count: contractors?.length || 0,
@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
     // Test 2: Customer Entity Operations
     console.log('Testing Customer entity operations...');
     try {
-      const customers = await base44.entities.CustomerProfile.list('-updated_date', 5);
+      const customers = await base44.asServiceRole.entities.CustomerProfile.list('-updated_date', 5);
       results.tests.customer_list = {
         status: 'pass',
         count: customers?.length || 0,
@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
     // Test 3: Messages Entity
     console.log('Testing Messages...');
     try {
-      const messages = await base44.entities.Message.list('-created_date', 5);
+      const messages = await base44.asServiceRole.entities.Message.list('-created_date', 5);
       results.tests.messages = {
         status: 'pass',
         count: messages?.length || 0,
@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
     // Test 6: Reviews Entity
     console.log('Testing Reviews...');
     try {
-      const reviews = await base44.entities.Review.list('-created_date', 5);
+      const reviews = await base44.asServiceRole.entities.Review.list('-created_date', 5);
       results.tests.reviews = {
         status: 'pass',
         count: reviews?.length || 0,
@@ -140,7 +140,7 @@ Deno.serve(async (req) => {
     // Test 7: Jobs Entity
     console.log('Testing Jobs...');
     try {
-      const jobs = await base44.entities.Job.list('-created_date', 5);
+      const jobs = await base44.asServiceRole.entities.Job.list('-created_date', 5);
       results.tests.jobs = {
         status: 'pass',
         count: jobs?.length || 0,
@@ -166,7 +166,7 @@ Deno.serve(async (req) => {
     // Test 9: QuoteRequest Entity
     console.log('Testing QuoteRequests...');
     try {
-      const quotes = await base44.entities.QuoteRequest.list('-created_date', 5);
+      const quotes = await base44.asServiceRole.entities.QuoteRequest.list('-created_date', 5);
       results.tests.quote_requests = {
         status: 'pass',
         count: quotes?.length || 0,

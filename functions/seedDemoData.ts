@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -162,21 +162,21 @@ Deno.serve(async (req) => {
       }
     ];
 
-    // Create contractors
+    // Create contractors using service role for admin-level data seeding
     let createdCount = 0;
     for (const contractor of demoContractors) {
-      const existing = await base44.entities.Contractor.filter({ email: contractor.email });
+      const existing = await base44.asServiceRole.entities.Contractor.filter({ email: contractor.email });
       if (!existing || existing.length === 0) {
-        await base44.entities.Contractor.create(contractor);
+        await base44.asServiceRole.entities.Contractor.create(contractor);
         createdCount++;
       }
     }
 
-    // Create jobs
+    // Create jobs using service role for admin-level data seeding
     for (const job of demoJobs) {
-      const existing = await base44.entities.Job.filter({ title: job.title });
+      const existing = await base44.asServiceRole.entities.Job.filter({ title: job.title });
       if (!existing || existing.length === 0) {
-        await base44.entities.Job.create(job);
+        await base44.asServiceRole.entities.Job.create(job);
         createdCount++;
       }
     }
