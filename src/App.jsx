@@ -77,6 +77,8 @@ const AuthenticatedApp = () => {
       <Route path="/CustomerDashboard" element={<Navigate to="/Dashboard" replace />} />
       <Route path="/MarketShopDashboard" element={<LayoutWrapper currentPageName="MarketShopDashboard"><MarketShopDashboard /></LayoutWrapper>} />
       <Route path="/MarketShopSignup" element={<LayoutWrapper currentPageName="MarketShopSignup"><MarketShopSignup /></LayoutWrapper>} />
+      <Route path="/MarketDirectory" element={<LayoutWrapper currentPageName="MarketDirectory"><MarketDirectory /></LayoutWrapper>} />
+      <Route path="/MarketShopProfile/:id" element={<LayoutWrapper currentPageName="MarketShopProfile"><MarketShopProfile /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
