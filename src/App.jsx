@@ -69,6 +69,8 @@ const AuthenticatedApp = () => {
       <Route path="/timed-chat/:sessionId" element={<TimedChatPage />} />
       <Route path="/ContractorSignup" element={<LayoutWrapper currentPageName="ContractorSignup"><ContractorSignup /></LayoutWrapper>} />
       <Route path="/CustomerSignup" element={<LayoutWrapper currentPageName="CustomerSignup"><CustomerSignup /></LayoutWrapper>} />
+      <Route path="/ContractorDashboard" element={<Navigate to="/Dashboard" replace />} />
+      <Route path="/CustomerDashboard" element={<Navigate to="/Dashboard" replace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
