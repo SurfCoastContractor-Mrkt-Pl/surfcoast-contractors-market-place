@@ -25,7 +25,7 @@ export default function Home() {
       <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
 
       <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"16px 28px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"2px", lineHeight:1 }}>
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"2px", lineHeight:1 }}>
           <span style={{ fontSize:"22px", fontWeight:"800", color:"#ffffff", letterSpacing:"-0.5px" }}>SurfCoast</span>
           <span style={{ fontSize:"9px", fontWeight:"700", letterSpacing:"3px", color:"rgba(255,255,255,0.5)", textTransform:"uppercase" }}>MARKETPLACE</span>
         </div>
