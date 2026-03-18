@@ -1,223 +1,231 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { createPageUrl } from '@/utils';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Search, Briefcase, ChevronRight } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { Search, Briefcase, ShieldCheck, Star, ClipboardList, CheckCircle2 } from 'lucide-react';
 
-const TRADE_OPTIONS = [
-  'Electrician', 'Plumber', 'Carpenter', 'HVAC', 'Painter',
-  'Roofer', 'Landscaper', 'Mason', 'Handyman', 'Other'
+const TRADES = [
+  { value: '', label: 'Any trade / profession' },
+  { value: 'electrician', label: 'Electrician' },
+  { value: 'plumber', label: 'Plumber' },
+  { value: 'carpenter', label: 'Carpenter' },
+  { value: 'hvac', label: 'HVAC' },
+  { value: 'painter', label: 'Painter' },
+  { value: 'roofer', label: 'Roofer' },
+  { value: 'landscaper', label: 'Landscaper' },
+  { value: 'mason', label: 'Mason' },
+  { value: 'handyman', label: 'Handyman' },
+  { value: 'other', label: 'Other' },
 ];
 
 export default function EnhancedHeroSection() {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('find'); // 'find' | 'post'
+  const [activeTab, setActiveTab] = useState('find');
   const [trade, setTrade] = useState('');
   const [location, setLocation] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFind = (e) => {
+  useEffect(() => {
+    base44.auth.isAuthenticated().then(setIsLoggedIn).catch(() => setIsLoggedIn(false));
+  }, []);
+
+  const handleSearch = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
     if (trade) params.set('trade', trade);
     if (location) params.set('location', location);
-    navigate(`${createPageUrl('FindContractors')}?${params.toString()}`);
+    navigate(`/Contractors?${params.toString()}`);
   };
 
-  const handlePost = (e) => {
-    e.preventDefault();
-    navigate(createPageUrl('QuickJobPost'));
+  const handleGuestCTA = (path) => {
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      base44.auth.redirectToLogin(`/${path.replace('/', '')}`);
+    }
   };
 
   return (
-    <div className="pt-20 pb-16 border-b border-slate-200/50 relative" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
-      <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.55)'}}></div>
-      <div className="relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Value Proposition */}
+    <section
+      className="relative min-h-[600px] flex items-center overflow-hidden"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(10,30,60,0.72), rgba(10,30,60,0.72)), url(https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left: Copy */}
           <div>
-            <div className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{backgroundColor: 'white', color: '#1E5A96'}}>
-              ✓ Verified & Vetted Professionals
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/15 border border-white/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+              <ShieldCheck className="w-4 h-4 text-blue-300" />
+              <span className="text-white text-sm font-medium">Verified &amp; Vetted Professionals</span>
             </div>
-            
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4">
               Hire Verified Contractors.<br />
-              <span style={{color: '#60A5FA'}}>Direct. No Markups.</span>
+              <span className="text-blue-300">Direct. No Markups.</span>
             </h1>
 
-            <p className="text-lg text-slate-100 mb-6 font-light leading-relaxed">
+            {/* Subheadline — updated per request */}
+            <p className="text-white/80 text-lg mb-6 max-w-lg">
               Skip the middlemen. Connect directly with identity-verified professionals — get a full Scope of Work, transparent pricing, and zero hidden fees.
             </p>
 
-            {/* Trust Bar */}
-            <div className="flex flex-wrap gap-3 mb-6">
+            {/* Trust pills */}
+            <div className="flex flex-wrap gap-2 mb-6">
               {[
-                '🔒 Identity-Verified Pros',
-                '⭐ 4.9 Avg Rating',
-                '📋 Scope of Work Guarantee',
-                '💳 No Subscription Required',
-              ].map(item => (
-                <span key={item} className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20">
-                  {item}
+                { icon: <ShieldCheck className="w-3.5 h-3.5" />, label: 'Identity-Verified Pros' },
+                { icon: <Star className="w-3.5 h-3.5 text-yellow-400" />, label: '4.9 Avg Rating' },
+                { icon: <ClipboardList className="w-3.5 h-3.5" />, label: 'Scope of Work Guarantee' },
+              ].map(({ icon, label }) => (
+                <span key={label} className="inline-flex items-center gap-1.5 bg-white/15 border border-white/25 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  {icon} {label}
                 </span>
               ))}
             </div>
 
-            {/* Trust Badges */}
-            <div className="space-y-2.5 mb-8">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-white">Every contractor is identity & license verified</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-white">Receive a detailed Scope of Work before any payment</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-white">12-hour average response time</span>
-              </div>
+            {/* Bullet points */}
+            <ul className="space-y-2 mb-8">
+              {[
+                'Every contractor is identity & license verified',
+                'Receive a detailed Scope of Work before any payment',
+                '12-hour average response time',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2 text-white/85 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/Contractors"
+                className="inline-flex items-center gap-2 bg-white text-slate-900 font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors"
+              >
+                Browse Contractors →
+              </Link>
+              <button
+                onClick={() => handleGuestCTA('/CustomerSignup')}
+                className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+              >
+                Get Free Quotes
+              </button>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to={createPageUrl('FindContractors')}>
-                <Button size="lg" className="text-white font-semibold w-full sm:w-auto" style={{backgroundColor: '#1E5A96'}}>
-                  Browse Contractors <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link to={createPageUrl('CustomerSignup')}>
-                <Button size="lg" className="font-semibold w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100">
-                  Get Free Quotes
-                </Button>
-              </Link>
-            </div>
-
-            {/* Social Proof */}
-            <div className="mt-10 pt-8 border-t border-white/20">
-              <p className="text-sm text-white/70 mb-3 font-medium">TRUSTED BY HOMEOWNERS &amp; BUSINESSES</p>
-              <div className="flex flex-wrap gap-6">
-                <div>
-                  <p className="text-2xl font-bold text-white">2,500+</p>
-                  <p className="text-sm text-white/70">Verified Professionals</p>
+            {/* Stats */}
+            <div className="flex gap-8 mt-10 pt-6 border-t border-white/20">
+              {[
+                { value: '2,500+', label: 'Verified Professionals' },
+                { value: '$5M+', label: 'Work Completed' },
+                { value: '15K+', label: 'Projects Booked' },
+              ].map(({ value, label }) => (
+                <div key={label}>
+                  <div className="text-2xl font-bold text-white">{value}</div>
+                  <div className="text-white/60 text-xs mt-0.5">{label}</div>
                 </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">$5M+</p>
-                  <p className="text-sm text-white/70">Work Completed</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">15K+</p>
-                  <p className="text-sm text-white/70">Projects Booked</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Right: Quick Action Card */}
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-            {/* Tab Toggle */}
-            <div className="grid grid-cols-2 border-b border-slate-200">
+          {/* Right: Search widget */}
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl">
+            {/* Tabs */}
+            <div className="flex rounded-xl overflow-hidden mb-6 bg-white/10">
               <button
                 onClick={() => setActiveTab('find')}
-                className={`py-4 text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${activeTab === 'find' ? 'text-white' : 'text-slate-600 hover:bg-slate-50'}`}
-                style={activeTab === 'find' ? {backgroundColor: '#1E5A96'} : {}}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold transition-colors ${activeTab === 'find' ? 'bg-slate-800 text-white' : 'text-white/70 hover:text-white'}`}
               >
                 <Search className="w-4 h-4" /> Find a Pro
               </button>
               <button
                 onClick={() => setActiveTab('post')}
-                className={`py-4 text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${activeTab === 'post' ? 'text-white' : 'text-slate-600 hover:bg-slate-50'}`}
-                style={activeTab === 'post' ? {backgroundColor: '#1E5A96'} : {}}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold transition-colors ${activeTab === 'post' ? 'bg-slate-800 text-white' : 'text-white/70 hover:text-white'}`}
               >
                 <Briefcase className="w-4 h-4" /> Post a Job
               </button>
             </div>
 
-            <div className="p-6">
-              {activeTab === 'find' ? (
-                <form onSubmit={handleFind} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">What do you need?</label>
-                    <select
-                      value={trade}
-                      onChange={e => setTrade(e.target.value)}
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:border-transparent"
-                      style={{'--tw-ring-color': '#1E5A96'}}
-                    >
-                      <option value="">Any trade / profession</option>
-                      {TRADE_OPTIONS.map(t => <option key={t} value={t.toLowerCase()}>{t}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Your location</label>
-                    <input
-                      type="text"
-                      value={location}
-                      onChange={e => setLocation(e.target.value)}
-                      placeholder="e.g. San Diego, CA"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:border-transparent placeholder-slate-400"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
-                    style={{backgroundColor: '#1E5A96'}}
+            {activeTab === 'find' ? (
+              <form onSubmit={handleSearch} className="space-y-4">
+                <div>
+                  <label className="block text-white/80 text-xs font-semibold uppercase tracking-wide mb-1.5">WHAT DO YOU NEED?</label>
+                  <select
+                    value={trade}
+                    onChange={(e) => setTrade(e.target.value)}
+                    className="w-full bg-white text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
-                    Search Free <ChevronRight className="w-4 h-4" />
-                  </button>
-                  <p className="text-center text-xs text-slate-400">Free to browse · No credit card required</p>
-                </form>
-              ) : (
-                <form onSubmit={handlePost} className="space-y-4">
-                  <div className="rounded-lg p-4 space-y-3" style={{backgroundColor: 'rgba(30, 90, 150, 0.05)'}}>
-                    {['Request quotes — get a Scope of Work & Estimate', 'Compare pricing & reviews side-by-side', 'Hire with confidence — all verified'].map((item, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-slate-700">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
-                    style={{backgroundColor: '#1E5A96'}}
-                  >
-                    Post My Project <ChevronRight className="w-4 h-4" />
-                  </button>
-                  <p className="text-center text-xs text-slate-400">Free to post · Get quotes within 24 hours</p>
-                </form>
-              )}
-            </div>
+                    {TRADES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-white/80 text-xs font-semibold uppercase tracking-wide mb-1.5">YOUR LOCATION</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. San Diego, CA"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="w-full bg-white text-slate-800 rounded-lg px-3 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  Search Free →
+                </button>
 
-            {/* Bottom trust strip */}
-            <div className="bg-slate-50 px-6 py-3 border-t border-slate-100">
-              <div className="flex items-center justify-center gap-4 text-xs text-slate-500">
-                <span>🔒 Secure</span>
-                <span>✓ Verified Pros</span>
-                <span>⭐ 4.9 Avg Rating</span>
+                {/* Updated subtext */}
+                <p className="text-center text-white/60 text-xs">
+                  Free to browse · Sign up for a free 2-week trial to connect with contractors
+                </p>
+
+                {/* Updated trust bar */}
+                <div className="flex justify-center gap-4 text-white/70 text-xs pt-1">
+                  <span>🔒 Secure</span>
+                  <span>✓ Verified Pros</span>
+                  <span>⭐ 4.9 Avg Rating</span>
+                </div>
+              </form>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-white/80 text-sm">Post your job and get quotes from verified contractors in your area.</p>
+                <button
+                  onClick={() => handleGuestCTA('/CustomerSignup')}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                >
+                  Post a Job →
+                </button>
+                <p className="text-center text-white/60 text-xs">
+                  Free to browse · Sign up for a free 2-week trial to connect with contractors
+                </p>
               </div>
-            </div>
+            )}
 
-            {/* Signup Options */}
-            <div className="px-6 py-5 border-t border-slate-100 space-y-3">
-              <p className="text-xs text-slate-500 text-center font-medium">Don't have an account?</p>
-              <div className="grid grid-cols-2 gap-2">
-                <Link to={createPageUrl('ContractorSignup')}>
-                  <Button className="w-full text-sm h-9 font-semibold text-white hover:opacity-90" style={{backgroundColor: '#1E5A96'}}>
-                    Join as Contractor →
-                  </Button>
+            {/* Bottom CTA row — updated */}
+            <div className="mt-5 pt-4 border-t border-white/20">
+              <div className="flex gap-3">
+                <Link
+                  to="/ContractorSignup"
+                  className="flex-1 text-center bg-white/15 hover:bg-white/25 border border-white/25 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Join as Contractor →
                 </Link>
-                <Link to={createPageUrl('CustomerSignup')}>
-                  <Button className="w-full text-sm h-9 font-semibold" variant="outline" style={{color: '#1E5A96', borderColor: '#1E5A96'}}>
-                    Find Contractor →
-                  </Button>
-                </Link>
+                <button
+                  onClick={() => handleGuestCTA('/CustomerSignup')}
+                  className="flex-1 text-center bg-white/15 hover:bg-white/25 border border-white/25 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Find Contractor →
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    </div>
+    </section>
   );
 }
