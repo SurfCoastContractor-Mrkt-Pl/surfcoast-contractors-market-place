@@ -1,967 +1,465 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { 
-  DollarSign, Users, CheckCircle2, Clock, 
-  CreditCard, TrendingUp, ShieldCheck, Download,
-  MessageSquare, ShieldAlert, Eye, EyeOff, AlertTriangle, Bot
-} from 'lucide-react';
-import AdminProfileViewer from '../components/admin/AdminProfileViewer';
-import AdminTableFilters from '../components/admin/AdminTableFilters';
-import PaymentsTable from '../components/admin/PaymentsTable';
-import MessagesTable from '../components/admin/MessagesTable';
-import UserAccountManager from '../components/admin/UserAccountManager';
-import ErrorLogTable from '../components/admin/ErrorLogTable';
-import SecurityAlertsTable from '../components/admin/SecurityAlertsTable';
-import DisputesTable from '../components/admin/DisputesTable';
-import AdminQuickTasks from '../components/admin/AdminQuickTasks';
-import AgentReportsTable from '../components/admin/AgentReportsTable';
+import { Loader2, AlertCircle, TrendingUp, Users, ShoppingBag, Star, Filter } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const [authed, setAuthed] = useState(false);
-  const [error, setError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(true);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [loginAttempted, setLoginAttempted] = useState(false);
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  
+  // Data states
+  const [vendors, setVendors] = useState([]);
+  const [contractors, setContractors] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  
+  // Filter states
+  const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
+  const [vendorTypeFilter, setVendorTypeFilter] = useState('all');
+  const [vendorSearchFilter, setVendorSearchFilter] = useState('');
+  const [contractorSubFilter, setContractorSubFilter] = useState('all');
+  const [contractorAcctFilter, setContractorAcctFilter] = useState('all');
+  const [reviewStatusFilter, setReviewStatusFilter] = useState('all');
+  const [reviewRatingFilter, setReviewRatingFilter] = useState('all');
 
-  const { data: payments = [], isLoading } = useQuery({
-    queryKey: ['all-payments'],
-    queryFn: () => base44.entities.Payment.list('-created_date'),
-    enabled: authed,
-  });
-
-  const { data: messages = [], isLoading: messagesLoading } = useQuery({
-    queryKey: ['all-messages'],
-    queryFn: () => base44.entities.Message.list('-created_date'),
-    enabled: authed,
-  });
-
-  const { data: contractors = [] } = useQuery({
-    queryKey: ['admin-contractors'],
-    queryFn: () => base44.entities.Contractor.list('-created_date'),
-    enabled: authed,
-  });
-
-  const { data: customers = [] } = useQuery({
-    queryKey: ['admin-customers'],
-    queryFn: () => base44.entities.CustomerProfile.list('-created_date'),
-    enabled: authed,
-  });
-
-  const { data: suggestions = [], isLoading: suggestionsLoading } = useQuery({
-    queryKey: ['admin-suggestions'],
-    queryFn: () => base44.entities.Suggestion.list('-created_date'),
-    enabled: authed,
-  });
-
-  const { data: errorLogs = [] } = useQuery({
-    queryKey: ['error-logs'],
-    queryFn: () => base44.entities.ErrorLog.list('-created_date', 200),
-    enabled: authed,
-    refetchInterval: 30000,
-  });
-
-  const { data: securityAlerts = [] } = useQuery({
-    queryKey: ['security-alerts'],
-    queryFn: () => base44.entities.SecurityAlert.list('-created_date', 200),
-    enabled: authed,
-    refetchInterval: 30000,
-  });
-
-  const { data: disputes = [] } = useQuery({
-    queryKey: ['disputes'],
-    queryFn: () => base44.entities.Dispute.list('-created_date', 200),
-    enabled: authed,
-    refetchInterval: 30000,
-  });
-
-  const { data: agentReports = [] } = useQuery({
-    queryKey: ['agent-reports'],
-    queryFn: () => base44.entities.AgentReport.list('-created_date', 200),
-    enabled: authed,
-    refetchInterval: 30000,
-  });
-
-  const unresolvedErrors = errorLogs.filter(l => !l.resolved);
-  const criticalErrors = unresolvedErrors.filter(l => l.severity === 'critical' || l.severity === 'high');
-  const unresolvedAlerts = securityAlerts.filter(a => !a.resolved);
-  const criticalAlerts = unresolvedAlerts.filter(a => a.severity === 'high' || a.severity === 'critical');
-  const openDisputes = disputes.filter(d => d.status === 'open' || d.status === 'in_review');
-  const criticalDisputes = openDisputes.filter(d => d.severity === 'critical' || d.severity === 'high');
-
-  const markReadMutation = useMutation({
-    mutationFn: (id) => base44.entities.Suggestion.update(id, { admin_read: true }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-suggestions'] }),
-  });
-
-  const unverifiedContractors = contractors.filter(c => !c.identity_verified);
-  const minorContractors = contractors.filter(c => c.is_minor);
-  const lockedMinors = minorContractors.filter(c => c.minor_hours_locked);
-
-  // Growth chart data
-  const getGrowthData = () => {
-    const contractorsByDate = {};
-    const customersByDate = {};
-
-    contractors.forEach(c => {
-      const date = new Date(c.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      contractorsByDate[date] = (contractorsByDate[date] || 0) + 1;
-    });
-
-    customers.forEach(c => {
-      const date = new Date(c.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      customersByDate[date] = (customersByDate[date] || 0) + 1;
-    });
-
-    const allDates = [...new Set([...Object.keys(contractorsByDate), ...Object.keys(customersByDate)])].sort();
-    let cumulativeContractors = 0;
-    let cumulativeCustomers = 0;
-
-    return allDates.slice(-14).map(date => {
-      cumulativeContractors += contractorsByDate[date] || 0;
-      cumulativeCustomers += customersByDate[date] || 0;
-      return {
-        date,
-        contractors: cumulativeContractors,
-        customers: cumulativeCustomers,
-      };
-    });
-  };
-
-  const verifyMutation = useMutation({
-    mutationFn: (id) => base44.entities.Contractor.update(id, { identity_verified: true }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-contractors'] }),
-  });
-
-  const confirmMutation = useMutation({
-    mutationFn: (id) => base44.entities.Payment.update(id, { status: 'confirmed' }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all-payments'] }),
-  });
-
-  React.useEffect(() => {
-    const checkAdminAuth = async () => {
+  useEffect(() => {
+    const checkAdmin = async () => {
       try {
-        const isAuth = await base44.auth.isAuthenticated();
-        if (isAuth) {
-          const user = await base44.auth.me();
-          if (user?.role === 'admin') {
-            // Auto-submit for authenticated admins (no password needed)
-            const res = await base44.functions.invoke('adminAuth', { password: '' });
-            if (res?.data?.success) {
-              setAuthed(true);
-              setError('');
-              setLoginLoading(false);
-              return;
-            }
-          }
+        const user = await base44.auth.me();
+        if (!user || user.role !== 'admin') {
+          setIsAdmin(false);
+          setLoading(false);
+          return;
         }
+        setIsAdmin(true);
+        
+        // Load data
+        const [v, c, r] = await Promise.all([
+          base44.entities.MarketShop.list('-created_date', 1000),
+          base44.entities.Contractor.list('-created_date', 1000),
+          base44.entities.VendorReview.list('-created_date', 1000),
+        ]);
+        
+        setVendors(v || []);
+        setContractors(c || []);
+        setReviews(r || []);
       } catch (err) {
-        console.error('Auto-auth check failed:', err);
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-      setLoginLoading(false);
     };
-    checkAdminAuth();
+    checkAdmin();
   }, []);
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    if (!passwordInput.trim()) {
-      setError('Please enter a password.');
-      return;
-    }
-
-    setLoginLoading(true);
-    try {
-      const res = await base44.functions.invoke('adminAuth', { password: passwordInput });
-      if (res?.data?.success) {
-        setAuthed(true);
-        setError('');
-        setPasswordInput('');
-      } else {
-        setError(res?.data?.error || 'Authentication failed. Please try again.');
-        setLoginAttempted(true);
-        setPasswordInput('');
-      }
-    } catch (err) {
-      console.error('Auth error:', err);
-      setError('Authentication failed. Please try again.');
-      setLoginAttempted(true);
-      setPasswordInput('');
-    } finally {
-      setLoginLoading(false);
-    }
-  };
-
-  const totalCollected = payments.filter(p => p.status === 'confirmed').reduce((sum, p) => sum + (p.amount || 0), 0);
-  const totalPending = payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + (p.amount || 0), 0);
-  const confirmedCount = payments.filter(p => p.status === 'confirmed').length;
-  const pendingCount = payments.filter(p => p.status === 'pending').length;
-
-  // Today's analytics
-  const today = new Date().toLocaleDateString('en-US');
-  const todayPayments = payments.filter(p => new Date(p.created_date).toLocaleDateString('en-US') === today);
-  const todayRevenue = todayPayments.filter(p => p.status === 'confirmed').reduce((sum, p) => sum + (p.amount || 0), 0);
-  const todayTransactions = todayPayments.length;
-  const todayConfirmed = todayPayments.filter(p => p.status === 'confirmed').length;
-  const todayCustomers = new Set(todayPayments.filter(p => p.payer_type === 'customer').map(p => p.payer_email)).size;
-
-  const exportCSV = () => {
-    const headers = ['Date', 'Name', 'Email', 'Type', 'Amount', 'Status', 'Purpose', 'ID'];
-    const rows = payments.map(p => [
-      new Date(p.created_date).toLocaleDateString(),
-      p.payer_name,
-      p.payer_email,
-      p.payer_type,
-      `$${(p.amount || 0).toFixed(2)}`,
-      p.status,
-      `"${p.purpose || ''}"`,
-      p.id,
-    ]);
-    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `surfcoast-fees-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-  };
-
-  if (loginLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-sm p-8 text-center">
-          <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center mx-auto mb-4">
-            <ShieldCheck className="w-7 h-7 text-amber-400" />
-          </div>
-          <p className="text-slate-500 text-sm">Verifying access...</p>
-        </Card>
+      <div className="min-h-screen flex items-center justify-center bg-slate-900">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
       </div>
     );
   }
 
-  if (!authed) {
+  if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-sm p-8">
-          <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center mx-auto mb-4">
-            <ShieldCheck className="w-7 h-7 text-amber-400" />
-          </div>
-          <h1 className="text-xl font-bold text-slate-900 mb-1 text-center">Admin Dashboard</h1>
-          <p className="text-xs text-slate-500 text-center mb-6">Enter your password to continue</p>
-
-          <form onSubmit={handlePasswordSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
-                Password
-              </label>
-              <Input
-                id="password"
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter admin password"
-                disabled={loginLoading}
-                className="w-full"
-                autoFocus
-              />
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              disabled={loginLoading || !passwordInput.trim()}
-              className="w-full bg-slate-900 hover:bg-slate-800"
-            >
-              {loginLoading ? 'Verifying...' : 'Access Dashboard'}
-            </Button>
-          </form>
-        </Card>
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
+          <p className="text-slate-400 mb-6">You do not have permission to view this page.</p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium"
+          >
+            Go Home
+          </button>
+        </div>
       </div>
     );
   }
+
+  // Stats calculations
+  const activeVendors = vendors.filter(v => v.status === 'active').length;
+  const pendingVendors = vendors.filter(v => v.status === 'pending').length;
+  const suspendedVendors = vendors.filter(v => v.status === 'suspended').length;
+  const farmersMarketVendors = vendors.filter(v => v.shop_type === 'farmers_market').length;
+  const swapMeetVendors = vendors.filter(v => v.shop_type === 'swap_meet').length;
+  const monthlyRevenue = activeVendors * 35;
+
+  // Filtered data
+  const filteredVendors = useMemo(() => {
+    return vendors.filter(v => {
+      if (vendorStatusFilter !== 'all' && v.status !== vendorStatusFilter) return false;
+      if (vendorTypeFilter !== 'all' && v.shop_type !== vendorTypeFilter) return false;
+      const searchTerm = vendorSearchFilter.toLowerCase();
+      if (searchTerm && !v.shop_name?.toLowerCase().includes(searchTerm) && !v.email?.toLowerCase().includes(searchTerm)) return false;
+      return true;
+    });
+  }, [vendors, vendorStatusFilter, vendorTypeFilter, vendorSearchFilter]);
+
+  const filteredContractors = useMemo(() => {
+    return contractors.filter(c => {
+      if (contractorSubFilter !== 'all' && c.subscription_status !== contractorSubFilter) return false;
+      if (contractorAcctFilter !== 'all' && c.account_locked !== (contractorAcctFilter === 'locked')) return false;
+      return true;
+    });
+  }, [contractors, contractorSubFilter, contractorAcctFilter]);
+
+  const filteredReviews = useMemo(() => {
+    return reviews.filter(r => {
+      if (reviewStatusFilter !== 'all' && r.status !== reviewStatusFilter) return false;
+      if (reviewRatingFilter !== 'all' && r.rating !== parseInt(reviewRatingFilter)) return false;
+      return true;
+    });
+  }, [reviews, reviewStatusFilter, reviewRatingFilter]);
+
+  const handleVendorApprove = async (id, shop) => {
+    await base44.entities.MarketShop.update(id, { status: 'active', subscription_status: 'active' });
+    setVendors(vendors.map(v => v.id === id ? { ...v, status: 'active', subscription_status: 'active' } : v));
+  };
+
+  const handleVendorSuspend = async (id) => {
+    await base44.entities.MarketShop.update(id, { status: 'suspended' });
+    setVendors(vendors.map(v => v.id === id ? { ...v, status: 'suspended' } : v));
+  };
+
+  const handleReviewHide = async (id) => {
+    await base44.entities.VendorReview.update(id, { status: 'hidden' });
+    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'hidden' } : r));
+  };
+
+  const handleReviewShow = async (id) => {
+    await base44.entities.VendorReview.update(id, { status: 'visible' });
+    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'visible' } : r));
+  };
+
+  const handleReviewFlag = async (id, flagged) => {
+    await base44.entities.VendorReview.update(id, { flagged: !flagged });
+    setReviews(reviews.map(r => r.id === id ? { ...r, flagged: !flagged } : r));
+  };
+
+  const StatCard = ({ label, value, color }) => (
+    <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+      <p className="text-sm text-slate-400">{label}</p>
+      <p className={`text-3xl font-bold mt-2 ${color}`}>{value}</p>
+    </div>
+  );
+
+  const StatusBadge = ({ status }) => {
+    const colors = {
+      active: 'bg-green-900 text-green-200',
+      pending: 'bg-yellow-900 text-yellow-200',
+      suspended: 'bg-red-900 text-red-200',
+      visible: 'bg-green-900 text-green-200',
+      hidden: 'bg-red-900 text-red-200',
+      inactive: 'bg-slate-700 text-slate-200',
+    };
+    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-slate-700'}`}>{status}</span>;
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-slate-900 text-white py-5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-amber-400" />
-              Admin Fee Dashboard
-            </h1>
-            <p className="text-slate-400 mt-0.5 text-xs">Platform access fees — SurfCoast Contractor Market Place</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={exportCSV}
-              variant="outline"
-              className="border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700 text-xs h-9"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export CSV
-            </Button>
-            <div className="flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 rounded-lg px-2 py-1 text-xs text-blue-300">
-              <CreditCard className="w-4 h-4" />
-              Stripe
-            </div>
+    <div className="min-h-screen bg-slate-900">
+      {/* Header */}
+      <div className="bg-slate-800 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="bg-slate-800 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex gap-1">
+            {['overview', 'vendors', 'contractors', 'reviews'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors capitalize ${
+                  activeTab === tab
+                    ? 'border-blue-500 text-blue-400'
+                    : 'border-transparent text-slate-400 hover:text-slate-300'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* OVERVIEW */}
+        {activeTab === 'overview' && (
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+              <StatCard label="Active Vendors" value={activeVendors} color="text-green-400" />
+              <StatCard label="Pending" value={pendingVendors} color="text-yellow-400" />
+              <StatCard label="Suspended" value={suspendedVendors} color="text-red-400" />
+              <StatCard label="Farmers Market" value={farmersMarketVendors} color="text-blue-400" />
+              <StatCard label="Swap Meet" value={swapMeetVendors} color="text-purple-400" />
+              <StatCard label="Monthly Revenue" value={`$${monthlyRevenue}`} color="text-amber-400" />
+            </div>
 
-        {/* Quick Tasks */}
-        {authed && <AdminQuickTasks />}
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-green-600" />
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Recent Activity</h2>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {vendors.slice(0, 10).map(v => (
+                  <div key={v.id} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
+                    <div>
+                      <p className="text-white font-medium">{v.shop_name}</p>
+                      <p className="text-xs text-slate-400">{v.email}</p>
+                    </div>
+                    <div className="text-right">
+                      <StatusBadge status={v.status} />
+                      <p className="text-xs text-slate-400 mt-1">{new Date(v.created_date).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <span className="text-sm text-slate-500 font-medium">Confirmed Revenue</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">${totalCollected.toFixed(2)}</div>
-            <div className="text-xs text-slate-400 mt-1">{confirmedCount} confirmed payments</div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-amber-600" />
-              </div>
-              <span className="text-sm text-slate-500 font-medium">Pending</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">${totalPending.toFixed(2)}</div>
-            <div className="text-xs text-slate-400 mt-1">{pendingCount} awaiting confirmation</div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-slate-600" />
-              </div>
-              <span className="text-sm text-slate-500 font-medium">Total Fees</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">${(totalCollected + totalPending).toFixed(2)}</div>
-            <div className="text-xs text-slate-400 mt-1">{payments.length} total transactions</div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
-                <Users className="w-5 h-5 text-blue-600" />
-              </div>
-              <span className="text-sm text-slate-500 font-medium">Unique Payers</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">
-              {new Set(payments.map(p => p.payer_email)).size}
-            </div>
-            <div className="text-xs text-slate-400 mt-1">contractors + customers</div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center">
-                <Users className="w-5 h-5 text-purple-600" />
-              </div>
-              <span className="text-sm text-slate-500 font-medium">Contractors</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">{contractors.length}</div>
-            <div className="text-xs text-slate-400 mt-1">total registered</div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center">
-                <Users className="w-5 h-5 text-indigo-600" />
-              </div>
-              <span className="text-sm text-slate-500 font-medium">Customers</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-900">{customers.length}</div>
-            <div className="text-xs text-slate-400 mt-1">total registered</div>
-          </Card>
-        </div>
-
-        {/* Stripe Banner */}
-        <Card className="p-5 bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-200">
-          <div className="flex items-start gap-4 flex-wrap">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0">
-              <CreditCard className="w-5 h-5 text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-indigo-900">Recommended: Activate Stripe Payments</h3>
-              <p className="text-sm text-indigo-700 mt-1">
-                <strong>Stripe</strong> is the industry-standard, fully PCI-compliant payment processor. It is the best option for collecting your $1.50 fees automatically — no manual tracking needed. Stripe deposits directly to your bank account, sends receipts automatically, and is fully compliant with California SB 478 and US financial regulations.
-              </p>
-              <ul className="mt-2 text-xs text-indigo-600 space-y-1 list-disc list-inside">
-                <li>Automatic card processing — no manual collection</li>
-                <li>Direct bank deposit (no cash app intermediary needed)</li>
-                <li>PCI DSS compliant — legally safest option</li>
-                <li>Automatic tax reporting (1099-K) for IRS compliance</li>
-                <li>California SB 478 compliant fee disclosure built in</li>
-              </ul>
-              <p className="text-xs text-indigo-500 mt-2 font-medium">
-                → Upgrade your Base44 plan to Builder+ to enable Stripe integration in this app.
-              </p>
             </div>
           </div>
-        </Card>
+        )}
 
-        {/* Tabs */}
-        <Tabs defaultValue="sales">
-          <TabsList className="mb-4 flex-wrap h-auto gap-1">
-            <TabsTrigger value="sales">Sales Overview</TabsTrigger>
-            <TabsTrigger value="signups">Signups & Growth</TabsTrigger>
-            <TabsTrigger value="payments">Fee Transactions</TabsTrigger>
-            <TabsTrigger value="messages">
-              Messages {messages.filter(m => !m.read).length > 0 && (
-                <span className="ml-1.5 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {messages.filter(m => !m.read).length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="suggestions">
-              Suggestions {suggestions.filter(s => !s.admin_read).length > 0 && (
-                <span className="ml-1.5 bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {suggestions.filter(s => !s.admin_read).length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="verification">
-             ID Verification {unverifiedContractors.length > 0 && (
-               <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                 {unverifiedContractors.length}
-               </span>
-             )}
-            </TabsTrigger>
-            <TabsTrigger value="minors">
-             Minors {lockedMinors.length > 0 && (
-               <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
-                 {lockedMinors.length}
-               </span>
-             )} {minorContractors.length > 0 && lockedMinors.length === 0 && (
-               <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                 {minorContractors.length}
-               </span>
-             )}
-            </TabsTrigger>
-            <TabsTrigger value="profiles">Profiles</TabsTrigger>
-            <TabsTrigger value="users">User Management</TabsTrigger>
-            <TabsTrigger value="errors" className="relative">
-              Errors
-              {criticalErrors.length > 0 && (
-                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {criticalErrors.length}
-                </span>
-              )}
-              {unresolvedErrors.length > 0 && criticalErrors.length === 0 && (
-                <span className="ml-1.5 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {unresolvedErrors.length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="security" className="relative">
-              Security
-              {criticalAlerts.length > 0 && (
-                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {criticalAlerts.length}
-                </span>
-              )}
-              {unresolvedAlerts.length > 0 && criticalAlerts.length === 0 && (
-                <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {unresolvedAlerts.length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="disputes" className="relative">
-              Disputes
-              {criticalDisputes.length > 0 && (
-                <span className="ml-1.5 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {criticalDisputes.length}
-                </span>
-              )}
-              {openDisputes.length > 0 && criticalDisputes.length === 0 && (
-                <span className="ml-1.5 bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {openDisputes.length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="agent_reports" className="relative">
-              AI Reports
-              {agentReports.filter(r => r.status === 'new').length > 0 && (
-                <span className="ml-1.5 bg-blue-600 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {agentReports.filter(r => r.status === 'new').length}
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Sales Overview Tab */}
-          <TabsContent value="sales">
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="p-5">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">
-                      <DollarSign className="w-5 h-5 text-green-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Today's Revenue</span>
-                  </div>
-                  <div className="text-2xl font-bold text-slate-900">${todayRevenue.toFixed(2)}</div>
-                  <div className="text-xs text-slate-400 mt-1">confirmed payments</div>
-                </Card>
-
-                <Card className="p-5">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <CreditCard className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Transactions</span>
-                  </div>
-                  <div className="text-2xl font-bold text-slate-900">{todayTransactions}</div>
-                  <div className="text-xs text-slate-400 mt-1">today's activity</div>
-                </Card>
-
-                <Card className="p-5">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center">
-                      <Users className="w-5 h-5 text-amber-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Customers</span>
-                  </div>
-                  <div className="text-2xl font-bold text-slate-900">{todayCustomers}</div>
-                  <div className="text-xs text-slate-400 mt-1">new payers today</div>
-                </Card>
-
-                <Card className="p-5">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-slate-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Confirmed</span>
-                  </div>
-                  <div className="text-2xl font-bold text-slate-900">{todayConfirmed}</div>
-                  <div className="text-xs text-slate-400 mt-1">processed today</div>
-                </Card>
-              </div>
-
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Payments (Today)</h3>
-                {todayPayments.length === 0 ? (
-                  <div className="text-center py-6 text-slate-400">No payments today yet.</div>
-                ) : (
-                  <div className="space-y-2">
-                    {todayPayments.slice(0, 20).map(p => (
-                      <div key={p.id} className="p-3 bg-slate-50 rounded-lg flex items-center justify-between text-sm">
-                        <div>
-                          <div className="font-medium text-slate-900">{p.payer_name}</div>
-                          <div className="text-xs text-slate-500">{p.payer_email}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="font-bold text-slate-900">${(p.amount || 0).toFixed(2)}</div>
-                          <Badge className={p.status === 'confirmed' ? 'bg-green-100 text-green-700 text-xs' : 'bg-amber-100 text-amber-700 text-xs'}>
-                            {p.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Signups & Growth Tab */}
-           <TabsContent value="signups">
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                      <Users className="w-4 h-4 text-purple-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Contractors</span>
-                  </div>
-                  <div className="text-3xl font-bold text-slate-900">{contractors.length}</div>
-                  <div className="text-xs text-slate-400 mt-1">total signups</div>
-                </Card>
-
-                <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                      <Users className="w-4 h-4 text-indigo-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Customers</span>
-                  </div>
-                  <div className="text-3xl font-bold text-slate-900">{customers.length}</div>
-                  <div className="text-xs text-slate-400 mt-1">total signups</div>
-                </Card>
-
-                <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                    </div>
-                    <span className="text-sm text-slate-500 font-medium">Verified</span>
-                  </div>
-                  <div className="text-3xl font-bold text-slate-900">{contractors.filter(c => c.identity_verified).length}</div>
-                  <div className="text-xs text-slate-400 mt-1">contractors verified</div>
-                </Card>
-              </div>
-
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-6">Growth Trend (Last 14 Days)</h3>
-                <div className="w-full h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={getGrowthData()}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="contractors" stroke="#a855f7" strokeWidth={2} name="Contractors" />
-                      <Line type="monotone" dataKey="customers" stroke="#6366f1" strokeWidth={2} name="Customers" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </Card>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                <Card className="p-6 w-full overflow-hidden">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-6">Page Traffic</h3>
-                  <div className="w-full h-80">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={[
-                        { name: 'Mon', traffic: 320 },
-                        { name: 'Tue', traffic: 450 },
-                        { name: 'Wed', traffic: 380 },
-                        { name: 'Thu', traffic: 520 },
-                        { name: 'Fri', traffic: 610 },
-                        { name: 'Sat', traffic: 480 },
-                        { name: 'Sun', traffic: 350 }
-                      ]}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="traffic" fill="#8b5cf6" name="Visits" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Card>
-
-                <Card className="p-6 w-full overflow-hidden">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-6">Visit Duration</h3>
-                  <div className="w-full h-80">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={[
-                        { name: 'Mon', duration: 2.4 },
-                        { name: 'Tue', duration: 3.2 },
-                        { name: 'Wed', duration: 2.8 },
-                        { name: 'Thu', duration: 3.5 },
-                        { name: 'Fri', duration: 4.1 },
-                        { name: 'Sat', duration: 3.6 },
-                        { name: 'Sun', duration: 2.9 }
-                      ]}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => `${value.toFixed(1)}m`} />
-                        <Line type="monotone" dataKey="duration" stroke="#06b6d4" strokeWidth={2} name="Minutes" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Card>
+        {/* VENDORS */}
+        {activeTab === 'vendors' && (
+          <div>
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <input
+                  type="text"
+                  placeholder="Search by name or email..."
+                  value={vendorSearchFilter}
+                  onChange={e => setVendorSearchFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500"
+                />
+                <select
+                  value={vendorStatusFilter}
+                  onChange={e => setVendorStatusFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+                <select
+                  value={vendorTypeFilter}
+                  onChange={e => setVendorTypeFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Types</option>
+                  <option value="farmers_market">Farmers Market</option>
+                  <option value="swap_meet">Swap Meet</option>
+                  <option value="both">Both</option>
+                </select>
               </div>
             </div>
-          </TabsContent>
 
-          {/* Payments Tab */}
-          <TabsContent value="payments">
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">All Fee Transactions</h2>
-              <PaymentsTable payments={payments} isLoading={isLoading} />
-            </Card>
-          </TabsContent>
-
-          {/* Messages Tab */}
-          <TabsContent value="messages">
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">All In-App Messages</h2>
-              <MessagesTable messages={messages} isLoading={messagesLoading} />
-            </Card>
-          </TabsContent>
-
-          {/* Suggestions Tab */}
-          <TabsContent value="suggestions">
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-1">User Suggestions</h2>
-              <p className="text-sm text-slate-500 mb-4">Feedback and ideas from contractors and customers. All suggestions are kept on file.</p>
-              {suggestionsLoading ? (
-                <div className="space-y-3">
-                  {[1,2,3].map(i => <div key={i} className="h-14 bg-slate-100 rounded-xl animate-pulse" />)}
-                </div>
-              ) : suggestions.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">No suggestions yet.</div>
-              ) : (
-                <div className="space-y-3">
-                  {suggestions.map(s => (
-                    <div key={s.id} className={`p-4 rounded-xl border ${s.admin_read ? 'bg-slate-50 border-slate-200' : 'bg-amber-50 border-amber-200'}`}>
-                      <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <span className="font-medium text-slate-900 text-sm">{s.submitter_name}</span>
-                            <Badge className={s.submitter_type === 'contractor' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-700'}>
-                              {s.submitter_type}
-                            </Badge>
-                            <Badge className="bg-slate-100 text-slate-600 capitalize">
-                              {s.category?.replace('_', ' ')}
-                            </Badge>
-                            {!s.admin_read && <Badge className="bg-amber-500 text-white text-xs">New</Badge>}
-                          </div>
-                          <div className="text-xs text-slate-500 mb-2">{s.submitter_email} · {new Date(s.created_date).toLocaleDateString()}</div>
-                          <p className="text-sm text-slate-700 whitespace-pre-wrap">{s.suggestion}</p>
-                        </div>
-                        {!s.admin_read && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-xs shrink-0"
-                            onClick={() => markReadMutation.mutate(s.id)}
-                            disabled={markReadMutation.isPending}
-                          >
-                            Mark as Read
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          </TabsContent>
-
-          {/* Identity Verification Tab */}
-          <TabsContent value="verification">
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-1">Contractor Identity Verification</h2>
-              <p className="text-sm text-slate-500 mb-4">Review uploaded ID documents and face photos, then approve or leave pending.</p>
-              {contractors.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">No contractors registered yet.</div>
-              ) : (
-                <div className="space-y-4">
-                  {contractors.map(c => (
-                    <div key={c.id} className={`p-4 rounded-xl border ${c.identity_verified ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
-                      <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-200 shrink-0">
-                            {c.photo_url ? (
-                              <img src={c.photo_url} alt={c.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-slate-500 text-lg font-bold">
-                                {c.name?.charAt(0)}
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-medium text-slate-900">{c.name}</div>
-                            <div className="text-xs text-slate-500">{c.email}</div>
-                            <div className="text-xs text-slate-400">{c.location} · Joined {new Date(c.created_date).toLocaleDateString()}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap shrink-0">
-                          {c.id_document_url && (
-                            <a href={c.id_document_url} target="_blank" rel="noopener noreferrer">
-                              <Button size="sm" variant="outline" className="text-xs">
-                                <Eye className="w-3 h-3 mr-1" /> View ID
-                              </Button>
-                            </a>
-                          )}
-                          {c.face_photo_url && (
-                            <a href={c.face_photo_url} target="_blank" rel="noopener noreferrer">
-                              <Button size="sm" variant="outline" className="text-xs">
-                                <Eye className="w-3 h-3 mr-1" /> Face Photo
-                              </Button>
-                            </a>
-                          )}
-                          {c.identity_verified ? (
-                            <Badge className="bg-green-100 text-green-700 flex items-center gap-1">
-                              <CheckCircle2 className="w-3 h-3" /> Verified
-                            </Badge>
-                          ) : (
-                            <Button
-                              size="sm"
-                              className="bg-green-600 hover:bg-green-700 text-white text-xs"
-                              onClick={() => verifyMutation.mutate(c.id)}
-                              disabled={verifyMutation.isPending}
-                            >
-                              <ShieldAlert className="w-3 h-3 mr-1" /> Mark Verified
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          </TabsContent>
-          {/* Minors Compliance Tab */}
-          <TabsContent value="minors">
-            <Card className="p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-1">Minor Contractor Monitoring</h2>
-              <p className="text-sm text-slate-500 mb-4">California child labor law compliance. Minors limited to 20 hours/week during school months.</p>
-              {minorContractors.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">No minor contractors registered.</div>
-              ) : (
-                <div className="space-y-4">
-                  {minorContractors.map(c => (
-                    <div key={c.id} className={`p-4 rounded-xl border ${c.minor_hours_locked ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'}`}>
-                      <div className="flex items-start justify-between gap-3 flex-wrap mb-3">
-                        <div>
-                          <div className="font-medium text-slate-900">{c.name}</div>
-                          <div className="text-xs text-slate-500">{c.email} · Age: {Math.floor((new Date() - new Date(c.date_of_birth)) / (365.25 * 24 * 60 * 60 * 1000))}</div>
-                        </div>
+            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+              <table className="w-full text-sm">
+                <thead className="border-b border-slate-700 bg-slate-900">
+                  <tr>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Shop Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Type</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Owner Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Created</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {filteredVendors.map(v => (
+                    <tr key={v.id} className="hover:bg-slate-700 transition-colors">
+                      <td className="px-6 py-4 text-white">{v.shop_name}</td>
+                      <td className="px-6 py-4 text-slate-300 capitalize">{v.shop_type?.replace('_', ' ')}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{v.email}</td>
+                      <td className="px-6 py-4 text-slate-400">{v.city}, {v.state}</td>
+                      <td className="px-6 py-4"><StatusBadge status={v.status} /></td>
+                      <td className="px-6 py-4"><StatusBadge status={v.subscription_status || 'inactive'} /></td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{new Date(v.created_date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4">
                         <div className="flex gap-2">
-                          {c.minor_hours_locked ? (
-                            <Badge className="bg-red-100 text-red-700">Locked</Badge>
-                          ) : (
-                            <Badge className="bg-blue-100 text-blue-700">Active</Badge>
+                          {v.status !== 'active' && (
+                            <button
+                              onClick={() => handleVendorApprove(v.id, v)}
+                              className="px-2 py-1 bg-green-700 hover:bg-green-600 text-xs font-medium text-white rounded"
+                            >
+                              Approve
+                            </button>
                           )}
-                          {!c.parental_consent_docs?.parental_consent_form_url && (
-                            <Badge className="bg-amber-100 text-amber-700">Missing Docs</Badge>
+                          {v.status !== 'suspended' && (
+                            <button
+                              onClick={() => handleVendorSuspend(v.id)}
+                              className="px-2 py-1 bg-red-700 hover:bg-red-600 text-xs font-medium text-white rounded"
+                            >
+                              Suspend
+                            </button>
                           )}
+                          <a
+                            href={`/MarketShopProfile/${v.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-2 py-1 bg-blue-700 hover:bg-blue-600 text-xs font-medium text-white rounded"
+                          >
+                            View
+                          </a>
                         </div>
-                      </div>
-                      <div className="space-y-2 text-xs text-slate-700">
-                        <div className="flex justify-between">
-                          <span>Hours This Week:</span>
-                          <strong>{c.minor_weekly_hours_used || 0} / 20</strong>
-                        </div>
-                        {c.minor_hours_locked && (
-                          <div className="p-2 bg-red-100 border border-red-300 rounded text-red-800">
-                            Locked until: {new Date(c.minor_hours_lock_until).toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                      </td>
+                    </tr>
                   ))}
-                </div>
-              )}
-            </Card>
-          </TabsContent>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
 
-          {/* Profiles Tab */}
-          <TabsContent value="profiles">
-            <AdminProfileViewer contractors={contractors} customers={customers} />
-          </TabsContent>
-
-          {/* User Management Tab */}
-          <TabsContent value="users">
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">Contractors</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {contractors.length === 0 ? (
-                    <div className="text-center py-10 text-slate-400 col-span-2">No contractors yet.</div>
-                  ) : (
-                    contractors.map(c => (
-                      <UserAccountManager key={c.id} user={c} userType="contractor" onClose={() => setSelectedUser(null)} />
-                    ))
-                  )}
-                </div>
-              </div>
-
-              <div className="border-t border-slate-200 pt-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">Customers</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {customers.length === 0 ? (
-                    <div className="text-center py-10 text-slate-400 col-span-2">No customers yet.</div>
-                  ) : (
-                    customers.map(c => (
-                      <UserAccountManager key={c.id} user={c} userType="customer" onClose={() => setSelectedUser(null)} />
-                    ))
-                  )}
-                </div>
+        {/* CONTRACTORS */}
+        {activeTab === 'contractors' && (
+          <div>
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <select
+                  value={contractorSubFilter}
+                  onChange={e => setContractorSubFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Subscriptions</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                <select
+                  value={contractorAcctFilter}
+                  onChange={e => setContractorAcctFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Account Status</option>
+                  <option value="active">Active</option>
+                  <option value="locked">Locked</option>
+                </select>
               </div>
             </div>
-          </TabsContent>
 
-          {/* Error Log Tab */}
-          <TabsContent value="errors">
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                <h2 className="text-lg font-semibold text-slate-900">Error Log</h2>
+            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+              <table className="w-full text-sm">
+                <thead className="border-b border-slate-700 bg-slate-900">
+                  <tr>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Trade</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Account</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Stripe Connected</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Created</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {filteredContractors.map(c => (
+                    <tr key={c.id} className="hover:bg-slate-700 transition-colors">
+                      <td className="px-6 py-4 text-white">{c.name}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{c.email}</td>
+                      <td className="px-6 py-4 text-slate-300 capitalize">{c.trade_specialty?.replace('_', ' ')}</td>
+                      <td className="px-6 py-4 text-slate-400">{c.location}</td>
+                      <td className="px-6 py-4"><StatusBadge status={c.subscription_status || 'inactive'} /></td>
+                      <td className="px-6 py-4">{c.account_locked ? <StatusBadge status="locked" /> : <StatusBadge status="active" />}</td>
+                      <td className="px-6 py-4">{c.stripe_account_setup_complete ? '✅' : '❌'}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{new Date(c.created_date).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* REVIEWS */}
+        {activeTab === 'reviews' && (
+          <div>
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <select
+                  value={reviewStatusFilter}
+                  onChange={e => setReviewStatusFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Status</option>
+                  <option value="visible">Visible</option>
+                  <option value="hidden">Hidden</option>
+                </select>
+                <select
+                  value={reviewRatingFilter}
+                  onChange={e => setReviewRatingFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                >
+                  <option value="all">All Ratings</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="3">3 Stars</option>
+                  <option value="2">2 Stars</option>
+                  <option value="1">1 Star</option>
+                </select>
               </div>
-              <p className="text-sm text-slate-500 mb-4">Failed attempts, bugs, and errors encountered by contractors and customers during profile setup, payments, and job management.</p>
-              <ErrorLogTable authed={authed} />
-            </Card>
-          </TabsContent>
+            </div>
 
-          {/* Security Tab */}
-          <TabsContent value="security">
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <ShieldCheck className="w-5 h-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-slate-900">Security Alerts</h2>
-              </div>
-              <p className="text-sm text-slate-500 mb-4">
-                Geo-blocks (non-US access attempts), suspicious proxy/VPN usage, and other threat detections. 
-                Admin is emailed automatically for every alert.
-              </p>
-              <SecurityAlertsTable authed={authed} />
-            </Card>
-          </TabsContent>
-
-          {/* AI Reports Tab */}
-          <TabsContent value="agent_reports">
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <Bot className="w-5 h-5 text-amber-500" />
-                <h2 className="text-lg font-semibold text-slate-900">AI Assistant Reports</h2>
-              </div>
-              <p className="text-sm text-slate-500 mb-4">
-                Platform issues, bugs, and escalations reported by users and guests through the AI assistant.
-              </p>
-              <AgentReportsTable />
-            </Card>
-          </TabsContent>
-
-          {/* Disputes Tab */}
-          <TabsContent value="disputes">
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <AlertTriangle className="w-5 h-5 text-red-600" />
-                <h2 className="text-lg font-semibold text-slate-900">Disputes</h2>
-              </div>
-              <p className="text-sm text-slate-500 mb-4">
-                Project disputes filed by contractors or customers. Related payments are automatically paused. Review evidence and resolve.
-              </p>
-              <DisputesTable authed={authed} disputes={disputes} />
-            </Card>
-          </TabsContent>
-
-          </Tabs>
-
-        <p className="text-center text-xs text-slate-400 pb-4">
-          All fees are $1.50 USD per transaction. Disclosed upfront per California SB 478 (Honest Pricing Law). 
-          Platform operated in California. Consult a licensed accountant for tax reporting obligations.
-        </p>
+            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+              <table className="w-full text-sm">
+                <thead className="border-b border-slate-700 bg-slate-900">
+                  <tr>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Shop Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Reviewer</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Rating</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Title</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Date</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {filteredReviews.map(r => (
+                    <tr key={r.id} className="hover:bg-slate-700 transition-colors">
+                      <td className="px-6 py-4 text-white">{r.shop_name}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{r.reviewer_name}</td>
+                      <td className="px-6 py-4 text-yellow-400">{'⭐'.repeat(r.rating)}</td>
+                      <td className="px-6 py-4 text-slate-300">{r.title}</td>
+                      <td className="px-6 py-4"><StatusBadge status={r.status} /></td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex gap-2">
+                          {r.status === 'visible' && (
+                            <button
+                              onClick={() => handleReviewHide(r.id)}
+                              className="px-2 py-1 bg-red-700 hover:bg-red-600 text-xs font-medium text-white rounded"
+                            >
+                              Hide
+                            </button>
+                          )}
+                          {r.status === 'hidden' && (
+                            <button
+                              onClick={() => handleReviewShow(r.id)}
+                              className="px-2 py-1 bg-green-700 hover:bg-green-600 text-xs font-medium text-white rounded"
+                            >
+                              Show
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleReviewFlag(r.id, r.flagged)}
+                            className={`px-2 py-1 text-xs font-medium text-white rounded ${r.flagged ? 'bg-orange-700' : 'bg-slate-600'}`}
+                          >
+                            {r.flagged ? 'Flagged' : 'Flag'}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
