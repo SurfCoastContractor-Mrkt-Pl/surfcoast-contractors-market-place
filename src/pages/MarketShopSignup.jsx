@@ -59,7 +59,8 @@ export default function MarketShopSignup() {
     categories: [],
     instagram_url: '',
     facebook_url: '',
-    tiktok_url: ''
+    tiktok_url: '',
+    gallery_images: []
   });
 
   // If no type param, show type selection screen
