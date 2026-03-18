@@ -5,7 +5,6 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
-    // Force redeploy
     // Validate internal service key
     const internalKey = req.headers.get('x-internal-service-key');
     if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
