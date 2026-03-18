@@ -177,21 +177,21 @@ export default function ContractorProfile() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Profile Info */}
             <div className="md:col-span-2">
-              <div className="flex items-start gap-5 mb-5">
-                {contractor.photo_url ? (
-                  <img
-                    src={contractor.photo_url}
-                    alt={contractor.name}
-                    className="w-24 h-24 rounded-xl object-cover border-2 border-white/30"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-xl flex items-center justify-center text-white text-3xl font-bold border-2 border-white/30" style={{backgroundColor: '#1E5A96'}}>
-                    {contractor.name?.[0]}
-                  </div>
-                )}
-                <div className="flex-1">
-                   <h1 className="text-3xl font-bold text-white">{contractor.name}</h1>
-                   {contractor.years_experience && <p className="text-white/75 mt-1">{contractor.years_experience} years experience</p>}
+              <div className="flex items-start gap-6 mb-6">
+                 {contractor.photo_url ? (
+                   <img
+                     src={contractor.photo_url}
+                     alt={contractor.name}
+                     className="w-28 h-28 rounded-2xl object-cover border-2 border-white/40 shadow-2xl"
+                   />
+                 ) : (
+                   <div className="w-28 h-28 rounded-2xl flex items-center justify-center text-white text-4xl font-bold border-2 border-white/40 shadow-2xl" style={{backgroundColor: '#1E5A96'}}>
+                     {contractor.name?.[0]}
+                   </div>
+                 )}
+                 <div className="flex-1">
+                    <h1 className="text-4xl font-bold text-white leading-tight">{contractor.name}</h1>
+                    {contractor.years_experience && <p className="text-white/70 mt-2 text-lg">{contractor.years_experience} years of professional experience</p>}
                    <div className="flex items-center gap-2 mt-2 flex-wrap">
                      {contractor.identity_verified && (
                        <div className="flex items-center gap-2 text-green-400">
@@ -242,25 +242,25 @@ export default function ContractorProfile() {
             </div>
 
             {/* CTA */}
-            <div className="bg-white p-6 rounded-xl h-fit shadow-xl">
-              <div className="mb-5">
+            <div className="bg-white p-7 rounded-2xl h-fit shadow-2xl backdrop-blur-sm border border-white/50">
+              <div className="mb-6 pb-6 border-b border-slate-100">
                 {contractor.rate_type === 'fixed' ? (
                   <>
-                    <p className="text-slate-500 mb-1 text-sm">Fixed Rate</p>
-                    <p className="text-3xl font-bold text-slate-900">
+                    <p className="text-slate-400 mb-2 text-xs font-medium uppercase tracking-wider">Fixed Rate</p>
+                    <p className="text-4xl font-bold text-slate-900">
                       {contractor.fixed_rate ? `$${contractor.fixed_rate}` : 'Request Quote'}
-                      <span className="text-lg text-slate-500 ml-1">fixed</span>
+                      <span className="text-base text-slate-500 ml-2 font-normal">fixed</span>
                     </p>
                     {contractor.fixed_rate_details && (
-                      <p className="text-xs text-slate-500 mt-2 leading-relaxed">{contractor.fixed_rate_details}</p>
+                      <p className="text-sm text-slate-600 mt-3 leading-relaxed">{contractor.fixed_rate_details}</p>
                     )}
                   </>
                 ) : (
                   <>
-                    <p className="text-slate-500 mb-1 text-sm">Hourly Rate</p>
-                    <p className="text-3xl font-bold text-slate-900">
+                    <p className="text-slate-400 mb-2 text-xs font-medium uppercase tracking-wider">Hourly Rate</p>
+                    <p className="text-4xl font-bold text-slate-900">
                       {contractor.hourly_rate ? `$${contractor.hourly_rate}` : 'Request Quote'}
-                      {contractor.hourly_rate && <span className="text-lg text-slate-500">/hr</span>}
+                      {contractor.hourly_rate && <span className="text-base text-slate-500 font-normal">/hr</span>}
                     </p>
                   </>
                 )}
@@ -327,16 +327,16 @@ export default function ContractorProfile() {
 
             {/* About */}
              {contractor.bio && (
-               <Card className="p-6">
-                 <h2 className="text-xl font-bold text-slate-900 mb-4">About</h2>
-                 <p className="text-slate-700 leading-relaxed">{contractor.bio}</p>
+               <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                 <h2 className="text-2xl font-bold text-slate-900 mb-5">About</h2>
+                 <p className="text-slate-700 leading-relaxed text-lg">{contractor.bio}</p>
                </Card>
              )}
 
             {/* Specialties */}
             {(contractor.skills || contractor.certifications) && (
-              <Card className="p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-4">Expertise</h2>
+              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">Expertise</h2>
                 {contractor.skills && contractor.skills.length > 0 && (
                   <div className="mb-4">
                     <h3 className="text-sm font-semibold text-slate-700 mb-2">Skills</h3>
@@ -367,21 +367,23 @@ export default function ContractorProfile() {
 
             {/* Services */}
             {services && services.length > 0 && (
-              <ContractorServices services={services} />
+              <div className="rounded-2xl border border-slate-200/50 bg-white/95 backdrop-blur-sm p-7 hover:shadow-lg transition-all duration-300">
+                <ContractorServices services={services} />
+              </div>
             )}
 
             {/* Portfolio */}
             {contractor.portfolio_images && contractor.portfolio_images.length > 0 && (
-              <Card className="p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-4">Portfolio</h2>
+              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">Portfolio</h2>
                 <PortfolioDisplay images={contractor.portfolio_images} />
               </Card>
             )}
 
             {/* Completed Jobs */}
             {completedJobs && completedJobs.length > 0 && (
-              <Card className="p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-4">Recent Projects</h2>
+              <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">Recent Projects</h2>
                 <div className="grid gap-4">
                   {completedJobs.map((job) => (
                     <div key={job.id} className="border border-slate-200 rounded-lg p-4">
@@ -402,36 +404,39 @@ export default function ContractorProfile() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Availability */}
-            <Card className="p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Availability
-              </h3>
-              <ContractorAvailabilityCalendar contractorId={contractorId} />
-            </Card>
+          <div className="space-y-7">
+           {/* Availability */}
+           <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+             <h3 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-3">
+               <Calendar className="w-5 h-5 text-blue-600" />
+               Availability
+             </h3>
+             <ContractorAvailabilityCalendar contractorId={contractorId} />
+           </Card>
 
-            {/* Quick Stats */}
-            <Card className="p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">At a Glance</h3>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-slate-600">Response Time</p>
-                  <p className="font-semibold text-slate-900">Usually within 2 hours</p>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Availability</p>
-                  <p className="font-semibold text-slate-900">
-                    {contractor.availability_status === 'available'
-                      ? 'Available Now'
-                      : contractor.availability_status === 'booked'
-                      ? 'Booked'
-                      : 'On Vacation'}
-                  </p>
-                </div>
-              </div>
-            </Card>
+           {/* Quick Stats */}
+           <Card className="p-7 border border-slate-200/50 bg-white/95 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+             <h3 className="text-lg font-bold text-slate-900 mb-5">Overview</h3>
+             <div className="space-y-4">
+               <div className="pb-4 border-b border-slate-100">
+                 <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Response Time</p>
+                 <p className="font-semibold text-slate-900 text-base">Usually within 2 hours</p>
+               </div>
+               <div>
+                 <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Current Status</p>
+                 <p className={`font-semibold text-base ${
+                   contractor.availability_status === 'available' ? 'text-green-600' :
+                   contractor.availability_status === 'booked' ? 'text-amber-600' : 'text-blue-600'
+                 }`}>
+                   {contractor.availability_status === 'available'
+                     ? '✓ Available Now'
+                     : contractor.availability_status === 'booked'
+                     ? '⊙ Booked'
+                     : '◕ On Vacation'}
+                 </p>
+               </div>
+             </div>
+           </Card>
           </div>
         </div>
       </div>
