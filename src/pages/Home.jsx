@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "lucide-react";
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
+import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import { getAppBaseUrl } from "@/lib/env";
 
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
@@ -44,8 +45,10 @@ export default function Home() {
           <p style={{ fontSize:"clamp(13px, 3vw, 16px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </div>
 
+        <CampaignAdBanner />
+
         <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"6px" }}>
-          {/* Left Card - Find a Pro */}
+           {/* Left Card - Find a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("customer")}
             onMouseLeave={() => setHoveredCard(null)}
