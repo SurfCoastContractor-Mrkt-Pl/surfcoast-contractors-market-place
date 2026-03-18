@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal } from 'lucide-react';
+import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag } from 'lucide-react';
 
 const SHOP_TYPE_LABELS = {
   farmers_market: 'Farmers Market',
@@ -29,8 +29,8 @@ function VendorCard({ shop, onClick }) {
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-xl flex-shrink-0">
-            🛍️
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+            <Store className="w-5 h-5 text-white" strokeWidth={1.5} />
           </div>
           <div>
             <h3 className="font-semibold text-slate-800 text-sm leading-tight">{shop.shop_name}</h3>
@@ -174,10 +174,10 @@ export default function MarketDirectory() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Farmers Market Card */}
           <div className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-2xl">
-                🌽
-              </div>
+           <div className="flex items-center gap-3">
+             <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+               <Leaf className="w-6 h-6 text-green-700" strokeWidth={1.5} />
+             </div>
               <div>
                 <h3 className="font-bold text-green-900 text-lg">Farmers Market Vendor</h3>
               </div>
@@ -188,9 +188,9 @@ export default function MarketDirectory() {
             </p>
             
             <ul className="space-y-2 text-sm text-green-800">
-              <li>✓ List your products</li>
-              <li>✓ Show your market location & schedule</li>
-              <li>✓ Get discovered by local shoppers</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List your products</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Show your market location & schedule</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Get discovered by local shoppers</li>
             </ul>
             
             <button
@@ -203,10 +203,10 @@ export default function MarketDirectory() {
 
           {/* Swap Meet Card */}
           <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center text-2xl">
-                🏷️
-              </div>
+           <div className="flex items-center gap-3">
+             <div className="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
+               <Tag className="w-6 h-6 text-amber-700" strokeWidth={1.5} />
+             </div>
               <div>
                 <h3 className="font-bold text-amber-900 text-lg">Swap Meet Vendor</h3>
               </div>
@@ -217,9 +217,9 @@ export default function MarketDirectory() {
             </p>
             
             <ul className="space-y-2 text-sm text-amber-800">
-              <li>✓ Advertise your space</li>
-              <li>✓ List what you're selling</li>
-              <li>✓ Build your buyer following</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Advertise your space</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List what you're selling</li>
+              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Build your buyer following</li>
             </ul>
             
             <button
@@ -242,7 +242,7 @@ export default function MarketDirectory() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">🛍️</div>
+            <Store className="w-12 h-12 text-slate-400 mx-auto mb-4" strokeWidth={1.5} />
             <p className="font-medium text-slate-500">No vendors found</p>
             <p className="text-sm text-slate-400 mt-1">Try adjusting your search or filters.</p>
           </div>
