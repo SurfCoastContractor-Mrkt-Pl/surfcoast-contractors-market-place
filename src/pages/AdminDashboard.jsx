@@ -167,15 +167,15 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-slate-900">
       {/* Header */}
       <div className="bg-slate-800 border-b border-slate-700">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Admin Dashboard</h1>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="bg-slate-800 border-b border-slate-700">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex gap-1">
+      <div className="bg-slate-800 border-b border-slate-700 overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex gap-0.5 sm:gap-1">
             {[
               { key: 'overview', label: 'Overview', icon: BarChart2 },
               { key: 'vendors', label: 'Vendors', icon: Store },
@@ -185,14 +185,14 @@ export default function AdminDashboard() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+                className={`px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
                   activeTab === key
                     ? 'border-blue-500 text-blue-400'
                     : 'border-transparent text-slate-400 hover:text-slate-300'
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                {label}
+                <span className="hidden sm:inline">{label}</span>
               </button>
             ))}
           </div>
@@ -200,11 +200,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* OVERVIEW */}
-        {activeTab === 'overview' && (
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+         {/* OVERVIEW */}
+         {activeTab === 'overview' && (
+           <div>
+             <div className="grid grid-cols-2 lg:grid-cols-6 gap-2 sm:gap-4 mb-6 sm:mb-8">
               <StatCard label="Active Vendors" value={activeVendors} color="text-green-400" icon={Store} />
               <StatCard label="Pending" value={pendingVendors} color="text-yellow-400" icon={Clock} />
               <StatCard label="Farmers Market" value={farmersMarketVendors} color="text-blue-400" icon={Leaf} />
@@ -213,9 +213,9 @@ export default function AdminDashboard() {
               <StatCard label="Suspended" value={suspendedVendors} color="text-red-400" icon={AlertTriangle} />
             </div>
 
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-5 h-5" />Recent Activity</h2>
-              <div className="space-y-3 max-h-96 overflow-y-auto">
+            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h2 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-4 sm:w-5 h-4 sm:h-5" />Recent Activity</h2>
+              <div className="space-y-2 sm:space-y-3 max-h-96 overflow-y-auto">
                 {vendors.slice(0, 10).map(v => (
                   <div key={v.id} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
                     <div>
@@ -236,8 +236,8 @@ export default function AdminDashboard() {
         {/* VENDORS */}
         {activeTab === 'vendors' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <input
                   type="text"
                   placeholder="Search by name or email..."
@@ -334,8 +334,8 @@ export default function AdminDashboard() {
         {/* CONTRACTORS */}
         {activeTab === 'contractors' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <select
                   value={contractorSubFilter}
                   onChange={e => setContractorSubFilter(e.target.value)}
@@ -393,8 +393,8 @@ export default function AdminDashboard() {
         {/* REVIEWS */}
         {activeTab === 'reviews' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <select
                   value={reviewStatusFilter}
                   onChange={e => setReviewStatusFilter(e.target.value)}
