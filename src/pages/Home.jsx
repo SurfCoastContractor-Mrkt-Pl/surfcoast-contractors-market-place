@@ -31,7 +31,7 @@ export default function Home() {
           <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"8px", alignItems:"center", flexWrap:"wrap" }}>
-          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> <span style={{ display:"none" }}>Markets & Vendors</span></a>
+          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> Markets & Vendors</a>
           <a href={`${BASE_URL}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"700", padding:"6px 16px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", minHeight:"32px", display:"flex", alignItems:"center" }}>Sign In</a>
         </nav>
       </header>
