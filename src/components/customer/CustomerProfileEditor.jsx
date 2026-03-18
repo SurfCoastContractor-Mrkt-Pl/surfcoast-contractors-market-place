@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
 import { Loader2, Save, HelpCircle, CheckCircle2, AlertCircle, Upload, X, Bell } from 'lucide-react';
 import { logError } from '@/components/utils/logError';
+import { useToast } from '@/components/ui/use-toast';
 
 const TRADES = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer',
