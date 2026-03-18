@@ -279,26 +279,7 @@ export default function ContractorProfile() {
                   </>
                 )}
               </div>
-              <Button
-                 className="w-full text-white mb-3 transition-all duration-200"
-                 style={{
-                   background: 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)',
-                   cursor: 'pointer',
-                   boxShadow: '0 0 24px rgba(201, 122, 180, 0.4)',
-                   border: 'none'
-                 }}
-                 onMouseEnter={(e) => {
-                   e.currentTarget.style.boxShadow = '0 0 36px rgba(201, 122, 180, 0.6), inset 0 0 10px rgba(255,255,255,0.1)';
-                   e.currentTarget.style.transform = 'translateY(-2px)';
-                 }}
-                 onMouseLeave={(e) => {
-                   e.currentTarget.style.boxShadow = '0 0 24px rgba(201, 122, 180, 0.4)';
-                   e.currentTarget.style.transform = 'translateY(0)';
-                 }}
-                 onClick={() => requireAuth('post a job', () => window.location.href = createPageUrl('QuickJobPost'))}
-               >
-                 Post a Job
-               </Button>
+
                <Button 
                  variant="outline" 
                  className="w-full transition-all duration-200"
