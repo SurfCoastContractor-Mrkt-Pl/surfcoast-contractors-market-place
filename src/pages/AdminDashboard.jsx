@@ -293,32 +293,35 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4"><StatusBadge status={v.subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(v.created_date).toLocaleDateString()}</td>
                       <td className="px-6 py-4">
-                        <div className="flex gap-2">
-                          {v.status !== 'active' && (
-                            <button
-                              onClick={() => handleVendorApprove(v.id, v)}
-                              className="px-2 py-1 bg-green-700 hover:bg-green-600 text-xs font-medium text-white rounded"
-                            >
-                              Approve
-                            </button>
-                          )}
-                          {v.status !== 'suspended' && (
-                            <button
-                              onClick={() => handleVendorSuspend(v.id)}
-                              className="px-2 py-1 bg-red-700 hover:bg-red-600 text-xs font-medium text-white rounded"
-                            >
-                              Suspend
-                            </button>
-                          )}
-                          <a
-                            href={`/MarketShopProfile/${v.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-2 py-1 bg-blue-700 hover:bg-blue-600 text-xs font-medium text-white rounded"
-                          >
-                            View
-                          </a>
-                        </div>
+                       <div className="flex gap-2">
+                         {v.status !== 'active' && (
+                           <button
+                             onClick={() => handleVendorApprove(v.id, v)}
+                             className="p-1.5 bg-green-700 hover:bg-green-600 rounded transition-colors"
+                             title="Approve"
+                           >
+                             <CheckCircle className="w-4 h-4 text-white" />
+                           </button>
+                         )}
+                         {v.status !== 'suspended' && (
+                           <button
+                             onClick={() => handleVendorSuspend(v.id)}
+                             className="p-1.5 bg-red-700 hover:bg-red-600 rounded transition-colors"
+                             title="Suspend"
+                           >
+                             <Ban className="w-4 h-4 text-white" />
+                           </button>
+                         )}
+                         <a
+                           href={`/shop/${v.custom_slug}`}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="p-1.5 bg-blue-700 hover:bg-blue-600 rounded transition-colors"
+                           title="View Profile"
+                         >
+                           <ExternalLink className="w-4 h-4 text-white" />
+                         </a>
+                       </div>
                       </td>
                     </tr>
                   ))}
