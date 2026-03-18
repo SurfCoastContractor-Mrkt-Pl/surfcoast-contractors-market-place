@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function PhotoGalleryLightbox({ images, isOpen, onClose, initialIndex = 0 }) {
