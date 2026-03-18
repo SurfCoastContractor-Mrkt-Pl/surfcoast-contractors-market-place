@@ -266,15 +266,48 @@ export default function ContractorProfile() {
                 )}
               </div>
               <Button
-                 className="w-full text-white mb-3"
-                 style={{backgroundColor: '#1E5A96'}}
+                 className="w-full text-white mb-3 transition-all duration-200"
+                 style={{
+                   backgroundColor: '#1E5A96',
+                   cursor: 'pointer',
+                   boxShadow: '0 0 20px rgba(30, 90, 150, 0.3)',
+                   border: '1px solid rgba(30, 90, 150, 0.5)'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.currentTarget.style.backgroundColor = '#153d69';
+                   e.currentTarget.style.boxShadow = '0 0 32px rgba(30, 90, 150, 0.6), inset 0 0 10px rgba(255,255,255,0.1)';
+                   e.currentTarget.style.transform = 'translateY(-2px)';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.currentTarget.style.backgroundColor = '#1E5A96';
+                   e.currentTarget.style.boxShadow = '0 0 20px rgba(30, 90, 150, 0.3)';
+                   e.currentTarget.style.transform = 'translateY(0)';
+                 }}
                  onClick={() => requireAuth('post a job', () => window.location.href = createPageUrl('QuickJobPost'))}
                >
                  Post a Job
                </Button>
                <Button 
                  variant="outline" 
-                 className="w-full border-slate-300"
+                 className="w-full transition-all duration-200"
+                 style={{
+                   borderColor: 'rgba(255, 255, 255, 0.2)',
+                   color: '#fff',
+                   backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                   cursor: 'pointer',
+                   boxShadow: '0 0 16px rgba(255, 255, 255, 0.15)',
+                   border: '1px solid rgba(255, 255, 255, 0.2)'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+                   e.currentTarget.style.boxShadow = '0 0 28px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255,255,255,0.1)';
+                   e.currentTarget.style.transform = 'translateY(-2px)';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                   e.currentTarget.style.boxShadow = '0 0 16px rgba(255, 255, 255, 0.15)';
+                   e.currentTarget.style.transform = 'translateY(0)';
+                 }}
                  onClick={() => requireAuth('message this contractor', () => setMessagingPricingOpen(true))}
                >
                  <MessageSquare className="w-4 h-4 mr-2" />
