@@ -169,21 +169,29 @@ export default function CustomerAccount() {
 
   return (
     <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
-      <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
-      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
+    <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
+    <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
 
-      <div className="relative py-12 text-white overflow-hidden" style={{position:"relative", zIndex:10}}>
-        <AuthTopBar />
-        <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
+    <div className="relative py-12 text-white overflow-hidden" style={{position:"relative", zIndex:10, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
+      <div style={{ display:"flex", alignItems:"center", padding:"12px 16px", justifyContent:"space-between" }}>
+        <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration: 'none' }}>
+          <span style={{ fontSize:'clamp(14px, 4vw, 17px)', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
+          <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
+        </Link>
+        <div style={{ marginLeft:"auto" }}>
+          <AuthTopBar />
+        </div>
+      </div>
+      <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8" style={{position:"relative", zIndex:2}}>
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-3xl flex items-center justify-center" style={{backgroundColor: '#1E5A96', boxShadow: '0 8px 24px rgba(30, 90, 150, 0.3)'}}>
+            <div className="w-16 h-16 rounded-3xl flex items-center justify-center" style={{background: 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)', boxShadow: '0 8px 24px rgba(201, 122, 180, 0.4)'}}>
               <User className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-serif font-bold text-white">Customer Account</h1>
+              <h1 className="text-4xl font-serif font-bold text-white">Your Account</h1>
               <div className="flex items-center gap-3 mt-2">
-                <p className="text-white/60 text-base font-light">Manage your projects and activity</p>
+                <p className="text-white/60 text-base font-light">Manage projects, quotes & activity</p>
                 {customerProfile && <TrialBadge profile={customerProfile} />}
               </div>
             </div>
@@ -227,9 +235,14 @@ export default function CustomerAccount() {
          {/* Auth Button */}
          <div className="flex gap-3">
            <Button
-             variant="outline"
              onClick={() => base44.auth.logout()}
              disabled={isAdminPreview}
+             style={{
+               background: isAdminPreview ? '#9ca3af' : 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)',
+               color: 'white',
+               border: 'none',
+               boxShadow: '0 0 16px rgba(201, 122, 180, 0.3)'
+             }}
            >
              <LogOut className="w-4 h-4 mr-2" />
              {isAdminPreview ? 'Logout (Disabled in Preview)' : 'Logout'}
