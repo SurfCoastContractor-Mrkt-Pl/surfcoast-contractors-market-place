@@ -100,7 +100,11 @@ export default function MarketShopDashboard() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Profile Switcher */}
-      <ProfileSwitcher activeProfile="marketshop" profiles={profiles} />
+      <ProfileSwitcher
+        activeProfile="marketshop"
+        primaryType={profiles.contractor ? 'contractor' : 'customer'}
+        hasMarketShop={true}
+      />
 
       {/* Shop Header */}
       <div className="bg-white border-b border-slate-200">
