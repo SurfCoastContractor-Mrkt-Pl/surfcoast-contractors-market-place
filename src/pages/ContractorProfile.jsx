@@ -163,16 +163,24 @@ export default function ContractorProfile() {
       <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
 
       {/* Header */}
-      <div className="relative text-white overflow-hidden" style={{position:"relative", zIndex:10}}>
-        <AuthTopBar />
-        <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{position:"relative", zIndex:2}}>
-          <Link to={createPageUrl('FindContractors')}>
-            <Button variant="ghost" className="mb-5 text-white/80 hover:text-white hover:bg-white/10">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Search
-            </Button>
-          </Link>
+       <div className="relative text-white overflow-hidden" style={{position:"relative", zIndex:10, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
+         <div style={{ display:"flex", alignItems:"center", padding:"12px 16px", justifyContent:"space-between" }}>
+           <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration: 'none' }}>
+             <span style={{ fontSize:'clamp(14px, 4vw, 17px)', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
+             <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
+           </Link>
+           <div style={{ marginLeft:"auto" }}>
+             <AuthTopBar />
+           </div>
+         </div>
+         <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
+         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{position:"relative", zIndex:2}}>
+           <Link to={createPageUrl('FindContractors')}>
+             <Button variant="ghost" className="mb-5 text-white/80 hover:text-white hover:bg-white/10">
+               <ArrowLeft className="w-4 h-4 mr-2" />
+               Back to Search
+             </Button>
+           </Link>
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Profile Info */}
@@ -248,25 +256,25 @@ export default function ContractorProfile() {
             </div>
 
             {/* CTA */}
-            <div className="bg-white/98 p-8 rounded-3xl h-fit shadow-2xl backdrop-blur-sm border border-white/60">
-              <div className="mb-6 pb-6 border-b border-slate-100">
-                {contractor.rate_type === 'fixed' ? (
-                  <>
-                    <p className="text-slate-400 mb-2 text-xs font-medium uppercase tracking-wider">Fixed Rate</p>
-                    <p className="text-4xl font-bold text-slate-900">
-                      {contractor.fixed_rate ? `$${contractor.fixed_rate}` : 'Request Quote'}
-                      <span className="text-base text-slate-500 ml-2 font-normal">fixed</span>
-                    </p>
+             <div className="bg-white/98 p-8 rounded-3xl h-fit shadow-2xl backdrop-blur-sm border border-white/60" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(240,245,250,0.95) 100%)'}}>
+               <div className="mb-6 pb-6 border-b" style={{borderColor: 'rgba(200,120,180,0.2)'}}>
+                 {contractor.rate_type === 'fixed' ? (
+                   <>
+                     <p style={{color: '#c97ab4', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem'}}>Fixed Rate</p>
+                     <p className="text-4xl font-bold" style={{color: '#0a1628'}}>
+                       {contractor.fixed_rate ? `$${contractor.fixed_rate}` : 'Request Quote'}
+                       <span style={{color: '#6b7280', fontSize: '1rem', marginLeft: '0.5rem', fontWeight: '400'}}>{contractor.fixed_rate ? ' fixed' : ''}</span>
+                     </p>
                     {contractor.fixed_rate_details && (
                       <p className="text-sm text-slate-600 mt-3 leading-relaxed">{contractor.fixed_rate_details}</p>
                     )}
                   </>
                 ) : (
                   <>
-                    <p className="text-slate-400 mb-2 text-xs font-medium uppercase tracking-wider">Hourly Rate</p>
-                    <p className="text-4xl font-bold text-slate-900">
+                    <p style={{color: '#c97ab4', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem'}}>Hourly Rate</p>
+                    <p className="text-4xl font-bold" style={{color: '#0a1628'}}>
                       {contractor.hourly_rate ? `$${contractor.hourly_rate}` : 'Request Quote'}
-                      {contractor.hourly_rate && <span className="text-base text-slate-500 font-normal">/hr</span>}
+                      {contractor.hourly_rate && <span style={{color: '#6b7280', fontSize: '1rem', fontWeight: '400'}}>/hr</span>}
                     </p>
                   </>
                 )}
@@ -274,19 +282,17 @@ export default function ContractorProfile() {
               <Button
                  className="w-full text-white mb-3 transition-all duration-200"
                  style={{
-                   backgroundColor: '#1E5A96',
+                   background: 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)',
                    cursor: 'pointer',
-                   boxShadow: '0 0 20px rgba(30, 90, 150, 0.3)',
-                   border: '1px solid rgba(30, 90, 150, 0.5)'
+                   boxShadow: '0 0 24px rgba(201, 122, 180, 0.4)',
+                   border: 'none'
                  }}
                  onMouseEnter={(e) => {
-                   e.currentTarget.style.backgroundColor = '#153d69';
-                   e.currentTarget.style.boxShadow = '0 0 32px rgba(30, 90, 150, 0.6), inset 0 0 10px rgba(255,255,255,0.1)';
+                   e.currentTarget.style.boxShadow = '0 0 36px rgba(201, 122, 180, 0.6), inset 0 0 10px rgba(255,255,255,0.1)';
                    e.currentTarget.style.transform = 'translateY(-2px)';
                  }}
                  onMouseLeave={(e) => {
-                   e.currentTarget.style.backgroundColor = '#1E5A96';
-                   e.currentTarget.style.boxShadow = '0 0 20px rgba(30, 90, 150, 0.3)';
+                   e.currentTarget.style.boxShadow = '0 0 24px rgba(201, 122, 180, 0.4)';
                    e.currentTarget.style.transform = 'translateY(0)';
                  }}
                  onClick={() => requireAuth('post a job', () => window.location.href = createPageUrl('QuickJobPost'))}
@@ -297,21 +303,21 @@ export default function ContractorProfile() {
                  variant="outline" 
                  className="w-full transition-all duration-200"
                  style={{
-                   borderColor: 'rgba(255, 255, 255, 0.2)',
-                   color: '#fff',
-                   backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                   borderColor: '#d97706',
+                   color: '#d97706',
+                   backgroundColor: 'rgba(217, 119, 6, 0.05)',
                    cursor: 'pointer',
-                   boxShadow: '0 0 16px rgba(255, 255, 255, 0.15)',
-                   border: '1px solid rgba(255, 255, 255, 0.2)'
+                   boxShadow: '0 0 16px rgba(217, 119, 6, 0.2)',
+                   border: '2px solid #d97706'
                  }}
                  onMouseEnter={(e) => {
-                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                   e.currentTarget.style.boxShadow = '0 0 28px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255,255,255,0.1)';
+                   e.currentTarget.style.backgroundColor = 'rgba(217, 119, 6, 0.1)';
+                   e.currentTarget.style.boxShadow = '0 0 28px rgba(217, 119, 6, 0.4), inset 0 0 10px rgba(255,255,255,0.1)';
                    e.currentTarget.style.transform = 'translateY(-2px)';
                  }}
                  onMouseLeave={(e) => {
-                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                   e.currentTarget.style.boxShadow = '0 0 16px rgba(255, 255, 255, 0.15)';
+                   e.currentTarget.style.backgroundColor = 'rgba(217, 119, 6, 0.05)';
+                   e.currentTarget.style.boxShadow = '0 0 16px rgba(217, 119, 6, 0.2)';
                    e.currentTarget.style.transform = 'translateY(0)';
                  }}
                  onClick={() => requireAuth('message this contractor', () => setMessagingPricingOpen(true))}
