@@ -18,16 +18,18 @@ export default function Dashboard() {
         const user = await base44.auth.me();
         if (!user) { navigate('/'); return; }
 
-        const [contractors, customers] = await Promise.all([
+        const [contractors, customers, shops] = await Promise.all([
           base44.entities.Contractor.filter({ email: user.email }),
           base44.entities.CustomerProfile.filter({ email: user.email }),
+          base44.entities.MarketShop.filter({ email: user.email }),
         ]);
 
         const hasContractor = contractors && contractors.length > 0;
-        const hasCustomer = customers && customers.length > 0;
+        const hasMarketShop = shops && shops.length > 0;
+        const primaryType = hasContractor ? 'contractor' : 'customer';
 
-        setProfiles({ customer: hasCustomer, contractor: hasContractor, marketshop: false });
-        setActiveProfile(hasContractor ? 'contractor' : 'customer');
+        setProfiles({ customer: !hasContractor, contractor: hasContractor, marketshop: hasMarketShop, primaryType, hasMarketShop });
+        setActiveProfile(primaryType);
       } catch (error) {
         console.error('Dashboard load error:', error);
         navigate('/');
