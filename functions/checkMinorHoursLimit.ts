@@ -32,38 +32,33 @@ Deno.serve(async (req) => {
 
     // If automation call (no contractorId), check ALL minors
     if (isAutomation) {
+      const now = new Date();
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - now.getDay());
+      startOfWeek.setHours(0, 0, 0, 0);
+
+      // Fetch only minors that need updates (optimization: locked or needs reset)
       const allMinors = await base44.asServiceRole.entities.Contractor.filter({
-        is_minor: true
+        is_minor: true,
+        $or: [
+          { minor_hours_locked: true },
+          { minor_weekly_hours_reset_date: { $lt: startOfWeek.toISOString() } }
+        ]
       }, '-created_date', 500);
 
       let updated = 0;
       for (const c of allMinors) {
-        const now = new Date();
-        const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay());
-        startOfWeek.setHours(0, 0, 0, 0);
-
         const lastResetDate = c.minor_weekly_hours_reset_date ? new Date(c.minor_weekly_hours_reset_date) : null;
+        const needsReset = !lastResetDate || lastResetDate < startOfWeek;
+        const lockedExpired = c.minor_hours_locked && c.minor_hours_lock_until && new Date(c.minor_hours_lock_until) <= now;
 
-        // Reset hours if week has passed
-        if (!lastResetDate || lastResetDate < startOfWeek) {
+        if (needsReset || lockedExpired) {
           await base44.asServiceRole.entities.Contractor.update(c.id, {
             minor_weekly_hours_used: 0,
-            minor_weekly_hours_reset_date: startOfWeek.toISOString()
+            minor_weekly_hours_reset_date: startOfWeek.toISOString(),
+            minor_hours_locked: lockedExpired ? false : c.minor_hours_locked
           });
           updated++;
-        }
-
-        // Unlock if lock period has expired
-        if (c.minor_hours_locked && c.minor_hours_lock_until) {
-          if (new Date(c.minor_hours_lock_until) <= now) {
-            await base44.asServiceRole.entities.Contractor.update(c.id, {
-              minor_hours_locked: false,
-              minor_weekly_hours_used: 0,
-              minor_weekly_hours_reset_date: startOfWeek.toISOString()
-            });
-            updated++;
-          }
         }
       }
 
