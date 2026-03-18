@@ -1,317 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
-import EnhancedHeroSection from '@/components/home/EnhancedHeroSection';
-import IndustryCategories from '@/components/home/IndustryCategories';
-import { useQuery } from '@tanstack/react-query';
-import { Star, MapPin, Clock, Briefcase, ChevronRight, CheckCircle2, XCircle, ShieldCheck, CreditCard, GraduationCap } from 'lucide-react';
+import { useState, useEffect } from "react";
 
-// ─── Trust bar ───────────────────────────────────────────────────────────────
-function TrustBar() {
-  return (
-    <div className="bg-slate-800 border-b border-slate-700 py-3">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-          {[
-            { icon: '✓', text: 'Free to browse all contractors' },
-            { icon: '✓', text: 'Sign up for a free 2-week trial' },
-            { icon: '✓', text: 'Verified contractors only' },
-            { icon: '✓', text: 'Secure payments' },
-          ].map(({ icon, text }) => (
-            <span key={text} className="flex items-center gap-2 text-sm text-slate-200">
-              <span>{icon}</span>
-              <span>{text}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+const BASE_URL = "https://surfcoastcmp.base44.app";
+const BG_IMAGE = "https://media.base44.com/images/public/69b5d136d5baa9e2c5f01224/1210d9a44_generated_image.png";
 
-// ─── Social proof strip ───────────────────────────────────────────────────────
-function SocialProof() {
-  return (
-    <section className="py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Trusted by Thousands</p>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Real people, real reviews, real results</h2>
-        <div className="flex flex-wrap justify-center gap-8 mt-8 mb-12">
-          {[
-            { value: '4.9/5', label: 'Average Rating' },
-            { value: '100%', label: 'Verified Profiles' },
-            { value: '12 hrs', label: 'Avg Response Time' },
-            { value: '2.5K+', label: 'Active Pros' },
-          ].map(({ value, label }) => (
-            <div key={label} className="text-center">
-              <div className="text-3xl font-extrabold text-slate-800">{value}</div>
-              <div className="text-sm text-slate-500 mt-1">{label}</div>
-            </div>
-          ))}
-        </div>
+export default function Home() {
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 text-left shadow-sm">
-            <div className="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-4">BEFORE SURFCOAST</div>
-            <ul className="space-y-3">
-              {[
-                'Unknown contractors, no verification',
-                '3-4 week wait for quotes',
-                'Overpriced agencies with no accountability',
-                'No recourse if work is bad',
-              ].map(item => (
-                <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
-                  <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="bg-white rounded-xl border border-green-200 p-6 text-left shadow-sm">
-            <div className="text-xs font-semibold uppercase tracking-wide text-green-600 mb-4">WITH SURFCOAST</div>
-            <ul className="space-y-3">
-              {[
-                'Verified, rated professionals',
-                'Same-day quotes, often same-day work',
-                'Transparent, fair pricing direct from professionals',
-                'Dispute resolution, guarantees',
-              ].map(item => (
-                <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
-                  <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
-// ─── Trade categories ─────────────────────────────────────────────────────────
-function TradeCategories() {
-  const trades = [
-    { label: 'Electricians', value: 'electrician', emoji: '⚡' },
-    { label: 'Plumbers', value: 'plumber', emoji: '🔧' },
-    { label: 'Carpenters', value: 'carpenter', emoji: '🪵' },
-    { label: 'HVAC', value: 'hvac', emoji: '❄️' },
-    { label: 'Masons', value: 'mason', emoji: '🧱' },
-  ];
-  return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-slate-900">Browse by Trade Specialty</h2>
-          <p className="text-slate-500 mt-2">Find certified professionals in specific construction trades</p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          {trades.map(({ label, value, emoji }) => (
-            <Link
-              key={value}
-              to={`/Contractors?trade=${value}`}
-              className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium px-5 py-2.5 rounded-full transition-colors text-sm"
-            >
-              <span>{emoji}</span> {label}
-            </Link>
-          ))}
-        </div>
-        <div className="text-center">
-          <Link to="/Contractors?type=general" className="text-blue-600 hover:underline text-sm font-medium">
-            View All Trades →
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Contractor join section ──────────────────────────────────────────────────
-function ContractorJoinSection() {
-  return (
-    <section className="py-16 bg-gradient-to-br from-slate-800 to-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-4 py-1.5 mb-6">
-            <Briefcase className="w-4 h-4 text-blue-300" />
-            <span className="text-blue-200 text-sm font-medium">For Contractors</span>
-          </div>
-          <h2 className="text-3xl font-extrabold text-white mb-4">Join as a Contractor</h2>
-          <p className="text-slate-300 text-lg mb-8">
-            Create your account to get verified, build your profile, and start getting jobs. Free 2-week trial included.
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {[
-              { icon: <ShieldCheck className="w-4 h-4" />, text: 'Identity verified' },
-              { icon: <Star className="w-4 h-4" />, text: 'Build reviews' },
-              { icon: <CreditCard className="w-4 h-4" />, text: 'Secure payouts' },
-            ].map(({ icon, text }) => (
-              <span key={text} className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm px-4 py-2 rounded-full">
-                {icon} {text}
-              </span>
-            ))}
-          </div>
-          <Link
-            to="/ContractorSignup"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl transition-colors text-base"
-          >
-            Create Contractor Account →
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Featured contractors ─────────────────────────────────────────────────────
-function FeaturedContractors() {
-  const { data: contractors = [] } = useQuery({
-    queryKey: ['featured-contractors'],
-    queryFn: () => base44.entities.Contractor.filter({ is_featured: true, account_locked: false }, '-rating', 6),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  if (!contractors.length) return null;
-
-  return (
-    <section className="py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900">Top-Rated Contractors</h2>
-            <p className="text-slate-500 mt-1">Verified professionals ready to work</p>
-          </div>
-          <Link to="/Contractors" className="text-blue-600 hover:underline text-sm font-medium">
-            View All →
-          </Link>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {contractors.map(c => (
-            <Link
-              key={c.id}
-              to={`/ContractorProfile?id=${c.id}`}
-              className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                  {c.photo_url
-                    ? <img src={c.photo_url} alt={c.name} className="w-full h-full object-cover" />
-                    : <div className="w-full h-full flex items-center justify-center text-lg font-bold text-slate-500">{c.name?.[0]}</div>
-                  }
-                </div>
-                <div>
-                  <div className="font-semibold text-slate-900">{c.name}</div>
-                  <div className="text-sm text-slate-500 capitalize">{c.trade_specialty || c.contractor_type}</div>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-500">
-                {c.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>}
-                {c.years_experience && <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{c.years_experience}y exp.</span>}
-                {c.rating && <span className="flex items-center gap-1"><Star className="w-3 h-3 text-yellow-500" />{c.rating.toFixed(1)}</span>}
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <Link to="/Contractors" className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm">
-            View All Contractors <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Latest jobs ──────────────────────────────────────────────────────────────
-function LatestJobs() {
-  const { data: jobs = [] } = useQuery({
-    queryKey: ['latest-jobs-home'],
-    queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date', 3),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  if (!jobs.length) return null;
-
-  const budgetLabel = (job) => {
-    if (job.budget_min && job.budget_max) return `$${job.budget_min.toLocaleString()} - $${job.budget_max.toLocaleString()}`;
-    if (job.budget_max) return `Up to $${job.budget_max.toLocaleString()}`;
-    return job.budget_type === 'negotiable' ? 'Negotiable' : '';
+  const handleAuth = (role) => {
+    window.location.href = `${BASE_URL}/login?from_url=${encodeURIComponent(`${BASE_URL}/${role === "contractor" ? "ContractorDashboard" : "CustomerDashboard"}`)}`;
   };
 
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-blue-500 mb-1">Open Opportunities</p>
-            <h2 className="text-2xl font-bold text-slate-900">Latest Job Postings</h2>
-          </div>
-          <Link to="/Jobs" className="text-blue-600 hover:underline text-sm font-medium">
-            View All Jobs →
-          </Link>
+    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#020817" }}>
+      <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center", zIndex:0 }} />
+      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom,rgba(2,8,23,0.72) 0%,rgba(2,8,23,0.55) 40%,rgba(2,8,23,0.75) 100%)", zIndex:1 }} />
+
+      <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"18px 28px", backdropFilter:"blur(12px)", background:"rgba(2,8,23,0.45)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"2px", lineHeight:1 }}>
+          <span style={{ fontSize:"22px", fontWeight:"800", color:"#fff", letterSpacing:"-0.5px" }}>SurfCoast</span>
+          <span style={{ fontSize:"9px", fontWeight:"700", letterSpacing:"3px", color:"rgba(255,255,255,0.55)", textTransform:"uppercase" }}>MARKETPLACE</span>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {jobs.map(job => (
-            <Link
-              key={job.id}
-              to={`/JobDetails?id=${job.id}`}
-              className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow"
-            >
-              <div className="font-semibold text-slate-900 mb-1 truncate">{job.title}</div>
-              <p className="text-slate-500 text-sm mb-3 line-clamp-2">{job.description}</p>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-500">
-                {job.trade_needed && <span className="capitalize bg-slate-100 px-2 py-1 rounded-full">{job.trade_needed}</span>}
-                {job.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{job.location}</span>}
-                {budgetLabel(job) && <span className="text-green-700 font-medium">{budgetLabel(job)}</span>}
-              </div>
-            </Link>
+        <nav style={{ marginLeft:"auto", display:"flex", gap:"12px", alignItems:"center" }}>
+          <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"14px", fontWeight:"600", padding:"8px 16px", background:"rgba(255,255,255,0.1)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.2)" }}>🛍️ Markets &amp; Vendors</a>
+          <a href={`${BASE_URL}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"14px", fontWeight:"700", padding:"8px 20px", background:"rgba(14,165,233,0.85)", borderRadius:"20px", border:"1px solid rgba(14,165,233,0.9)", whiteSpace:"nowrap" }}>Sign In</a>
+        </nav>
+      </header>
+
+      <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:"60px 24px 40px" }}>
+        <div style={{ textAlign:"center", marginBottom:"48px", maxWidth:"700px" }}>
+          <h1 style={{ fontSize:"clamp(36px,6vw,64px)", fontWeight:"800", color:"#fff", margin:"0 0 18px", lineHeight:1.1, letterSpacing:"-1px", textShadow:"0 2px 20px rgba(0,0,0,0.5)" }}>The Trades Marketplace</h1>
+          <p style={{ fontSize:"clamp(15px,2vw,18px)", color:"rgba(255,255,255,0.75)", margin:0, lineHeight:1.6 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
+        </div>
+
+        <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "stretch", width:"100%", maxWidth:"780px", justifyContent:"center" }}>
+          <div style={{ flex:1, maxWidth: isMobile ? "420px" : "340px", width: isMobile ? "100%" : undefined, borderRadius:"20px", padding:"32px 28px", backdropFilter:"blur(16px)", transition:"all 0.25s ease", background: hoveredCard==="customer" ? "linear-gradient(145deg,rgba(14,165,233,0.92),rgba(2,132,199,0.95))" : "rgba(5,20,40,0.62)", border: hoveredCard==="customer" ? "1.5px solid rgba(14,165,233,0.9)" : "1.5px solid rgba(255,255,255,0.2)", transform: hoveredCard==="customer" ? "translateY(-5px)" : "none", boxShadow: hoveredCard==="customer" ? "0 28px 60px rgba(0,0,0,0.5)" : "0 8px 32px rgba(0,0,0,0.35)" }} onMouseEnter={() => setHoveredCard("customer")} onMouseLeave={() => setHoveredCard(null)}>
+            <div style={{ fontSize:"36px", marginBottom:"16px" }}>🏠</div>
+            <h2 style={{ fontSize:"22px", fontWeight:"700", margin:"0 0 10px", color:"#fff" }}>I Need a Contractor</h2>
+            <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.7)", margin:"0 0 16px", lineHeight:"1.6" }}>Post your project, receive competitive quotes, and hire vetted tradespeople near you.</p>
+            <ul style={{ listStyle:"none", padding:0, margin:"0 0 24px", display:"flex", flexDirection:"column", gap:"8px", fontSize:"13px", color:"rgba(255,255,255,0.8)" }}>
+              <li>✓ Verified &amp; licensed pros only</li>
+              <li>✓ Free 2-week trial</li>
+              <li>✓ Secure payments</li>
+            </ul>
+            <button style={{ width:"100%", padding:"14px", borderRadius:"12px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", background: hoveredCard==="customer" ? "#fff" : "rgba(14,165,233,0.9)", color: hoveredCard==="customer" ? "#0284c7" : "#fff" }} onClick={() => handleAuth("customer")}>Find a Pro →</button>
+          </div>
+
+          <div style={{ display:"flex", flexDirection: isMobile ? "row" : "column", alignItems:"center", justifyContent:"center", gap:"8px", padding: isMobile ? "8px 0" : "0 20px" }}>
+            <div style={{ background:"rgba(255,255,255,0.15)", flex:1, width: isMobile ? undefined : "1px", height: isMobile ? "1px" : undefined, minHeight: isMobile ? "auto" : "60px", minWidth: isMobile ? "60px" : "auto" }} />
+            <span style={{ color:"rgba(255,255,255,0.4)", fontSize:"12px", fontWeight:"600" }}>or</span>
+            <div style={{ background:"rgba(255,255,255,0.15)", flex:1, width: isMobile ? undefined : "1px", height: isMobile ? "1px" : undefined, minHeight: isMobile ? "auto" : "60px", minWidth: isMobile ? "60px" : "auto" }} />
+          </div>
+
+          <div style={{ flex:1, maxWidth: isMobile ? "420px" : "340px", width: isMobile ? "100%" : undefined, borderRadius:"20px", padding:"32px 28px", backdropFilter:"blur(16px)", transition:"all 0.25s ease", background: hoveredCard==="contractor" ? "linear-gradient(145deg,rgba(245,158,11,0.92),rgba(217,119,6,0.95))" : "rgba(5,20,40,0.62)", border: hoveredCard==="contractor" ? "1.5px solid rgba(245,158,11,0.9)" : "1.5px solid rgba(255,255,255,0.2)", transform: hoveredCard==="contractor" ? "translateY(-5px)" : "none", boxShadow: hoveredCard==="contractor" ? "0 28px 60px rgba(0,0,0,0.5)" : "0 8px 32px rgba(0,0,0,0.35)" }} onMouseEnter={() => setHoveredCard("contractor")} onMouseLeave={() => setHoveredCard(null)}>
+            <div style={{ fontSize:"36px", marginBottom:"16px" }}>🔧</div>
+            <h2 style={{ fontSize:"22px", fontWeight:"700", margin:"0 0 10px", color:"#fff" }}>I'm a Contractor</h2>
+            <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.7)", margin:"0 0 16px", lineHeight:"1.6" }}>Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
+            <ul style={{ listStyle:"none", padding:0, margin:"0 0 24px", display:"flex", flexDirection:"column", gap:"8px", fontSize:"13px", color:"rgba(255,255,255,0.8)" }}>
+              <li>✓ Free 2-week trial</li>
+              <li>✓ Get paid securely via Stripe</li>
+              <li>✓ Build your reputation</li>
+            </ul>
+            <button style={{ width:"100%", padding:"14px", borderRadius:"12px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", background: hoveredCard==="contractor" ? "#fff" : "rgba(245,158,11,0.9)", color: hoveredCard==="contractor" ? "#d97706" : "#fff" }} onClick={() => handleAuth("contractor")}>Join as a Pro →</button>
+          </div>
+        </div>
+
+        <div style={{ marginTop:"36px", width:"100%", maxWidth:"780px", background:"rgba(124,58,237,0.15)", border:"1px solid rgba(124,58,237,0.4)", borderRadius:"18px", padding: isMobile ? "20px" : "22px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"16px", flexDirection: isMobile ? "column" : "row", backdropFilter:"blur(12px)", cursor:"pointer" }} onClick={() => window.location.href=`${BASE_URL}/MarketDirectory`}>
+          <div style={{ display:"flex", alignItems:"center", gap:"16px" }}>
+            <span style={{ fontSize:"32px" }}>🛍️</span>
+            <div>
+              <div style={{ color:"#c4b5fd", fontWeight:"700", fontSize:"16px" }}>Farmers Markets &amp; Swap Meets</div>
+              <div style={{ color:"rgba(255,255,255,0.55)", fontSize:"13px", marginTop:"2px" }}>Browse local vendors or create your own MarketShop</div>
+            </div>
+          </div>
+          <div style={{ background:"linear-gradient(135deg,#7c3aed,#4f46e5)", color:"white", borderRadius:"12px", padding:"10px 22px", fontSize:"13px", fontWeight:"700", whiteSpace:"nowrap", flexShrink:0 }}>Browse Vendors →</div>
+        </div>
+
+        <div style={{ marginTop:"32px", display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"8px" }}>
+          {["🔒 Secure payments","✅ Identity verified pros","📋 Licensed & insured","🇺🇸 Nationwide coverage"].map((t,i,a) => (
+            <span key={i} style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+              <span style={{ fontSize:"13px", color:"rgba(255,255,255,0.55)" }}>{t}</span>
+              {i < a.length-1 && <span style={{ color:"rgba(255,255,255,0.2)" }}>·</span>}
+            </span>
           ))}
         </div>
-        <div className="text-center">
-          <Link to="/Jobs" className="text-blue-600 hover:underline text-sm font-medium">
-            View All Jobs →
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
+      </main>
 
-// ─── Homeschool educators callout ─────────────────────────────────────────────
-function HomeschoolCallout() {
-  return (
-    <section className="py-12 bg-amber-50 border-y border-amber-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <GraduationCap className="w-10 h-10 text-amber-600 mx-auto mb-3" />
-        <h2 className="text-xl font-bold text-slate-900 mb-2">Homeschool Educators Wanted!</h2>
-        <p className="text-slate-600 max-w-xl mx-auto mb-5">
-          Connect with thousands of U.S. families searching for qualified educators. Set your own curriculum, earn competitive rates, and make a real difference.
-        </p>
-        <Link
-          to="/ContractorSignup"
-          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors"
-        >
-          Join Now →
-        </Link>
-      </div>
-    </section>
-  );
-}
+      <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"8px", padding:"20px 24px", background:"rgba(2,8,23,0.7)", borderTop:"1px solid rgba(255,255,255,0.08)", fontSize:"13px", color:"rgba(255,255,255,0.45)" }}>
+        <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
+        <span style={{ color:"rgba(255,255,255,0.2)" }}>·</span>
+        <a href={`${BASE_URL}/TermsOfService`} style={{ color:"rgba(255,255,255,0.5)", textDecoration:"none" }}>Terms of Service</a>
+        <span style={{ color:"rgba(255,255,255,0.2)" }}>·</span>
+        <a href={`${BASE_URL}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.5)", textDecoration:"none" }}>Privacy Policy</a>
+        <span style={{ color:"rgba(255,255,255,0.2)" }}>·</span>
+        <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.5)", textDecoration:"none" }}>Markets &amp; Vendors</a>
+      </footer>
 
-// ─── Main Home page ───────────────────────────────────────────────────────────
-export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <TrustBar />
-      <EnhancedHeroSection />
-      <SocialProof />
-      <TradeCategories />
-      <IndustryCategories />
-      <HomeschoolCallout />
-      <FeaturedContractors />
-      <LatestJobs />
-      <ContractorJoinSection />
+      <div style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(0,0,0,0.6)", borderTop:"1px solid rgba(255,255,255,0.06)", padding:"10px 24px", textAlign:"center" }}>
+        <p style={{ color:"#94a3b8", fontSize:"11px", margin:0, lineHeight:"1.6" }}>SurfCoast Marketplace is a connection platform only. We do not employ contractors and are not responsible for the quality, safety, or legality of services provided. All agreements are between users and contractors directly.</p>
+      </div>
     </div>
   );
 }
