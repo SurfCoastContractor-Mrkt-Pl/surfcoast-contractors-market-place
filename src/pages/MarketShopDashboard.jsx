@@ -166,6 +166,11 @@ export default function MarketShopDashboard() {
         <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
       </div>
 
+      {/* Market Schedule Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
+      </div>
+
       {/* Subscription Warning */}
       {shop.subscription_status !== 'active' && (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
