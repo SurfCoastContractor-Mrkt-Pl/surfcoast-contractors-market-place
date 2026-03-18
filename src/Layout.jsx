@@ -279,6 +279,16 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
           </div>
+          {/* Global Disclaimer */}
+          <div className="border-t border-slate-700 mt-4 pt-4">
+            <p className="text-xs text-slate-400 leading-relaxed">
+              <span className="font-semibold text-slate-300">Legal Disclaimer:</span> SurfCoast Marketplace is a connection platform only and does not employ, endorse, or guarantee any contractor, vendor, product, or service. All users participate at their own risk. By using this platform, all parties waive any and all claims against SurfCoast Marketplace, its administrators, partners, and affiliates for any damages, injuries, illness, sickness, or death. Users are solely responsible for vetting and researching all parties and services.{' '}
+              <Link to={createPageUrl('Terms')} className="text-slate-300 underline hover:text-white transition-colors">Terms of Service</Link>
+              {' | '}
+              <Link to={createPageUrl('Terms')} className="text-slate-300 underline hover:text-white transition-colors">Privacy Policy</Link>
+            </p>
+          </div>
+
           <div className="border-t border-slate-800 mt-3 pt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
             <span className="text-xs">© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
             <div className="flex items-center gap-3">
