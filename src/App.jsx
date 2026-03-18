@@ -16,6 +16,8 @@ import CustomerSignup from './pages/CustomerSignup';
 import Landing from './pages/Landing';
 import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
+import MarketDirectory from './pages/MarketDirectory';
+import MarketShopProfile from './pages/MarketShopProfile';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
