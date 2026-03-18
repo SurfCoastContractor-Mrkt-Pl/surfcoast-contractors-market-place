@@ -80,10 +80,10 @@ export default function Landing() {
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6)' }}
           >
-            San Diego's Trade Network
+            The Trades Marketplace
           </h1>
           <p className="text-white/70 text-lg sm:text-xl leading-relaxed max-w-xl mx-auto">
-            Connect with licensed, verified tradespeople — or land your next job. Built for the people who build San Diego.
+            Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.
           </p>
         </div>
 
