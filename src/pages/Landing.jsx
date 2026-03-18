@@ -121,7 +121,7 @@ export default function Landing() {
           <RoleCard
             icon="🔧"
             title="I'm a Contractor"
-            description="Grow your business, get discovered, and manage jobs — all in one place."
+            description="Expand your reach, manage jobs, and get paid — all from one professional platform."
             bullets={[
               'Free 2-week trial',
               'Get paid securely via Stripe',
