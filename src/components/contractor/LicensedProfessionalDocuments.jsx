@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
+import { getVerifyLicenseUrl } from '@/lib/env';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -123,7 +124,7 @@ export default function LicensedProfessionalDocuments({ contractor }) {
     setVerifying(true);
     setVerifyResult(null);
     try {
-      const res = await fetch('https://sage-c5f01224.base44.app/functions/verifyLicense', {
+      const res = await fetch(getVerifyLicenseUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

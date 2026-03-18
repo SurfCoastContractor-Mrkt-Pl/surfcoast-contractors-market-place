@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-
-const COMPLIANCE_URL = 'https://sage-c5f01224.base44.app/functions/submitComplianceAck';
-const GET_COMPLIANCE_URL = 'https://sage-c5f01224.base44.app/functions/getLocationCompliance';
+import { getComplianceUrl, getComplianceCheckUrl } from '@/lib/env';
 
 const CHECKBOXES = [
   {
@@ -46,7 +44,7 @@ export default function ComplianceAcknowledgment({ contractorId, contractorLocat
     const fetchCompliance = async () => {
       setLoading(true);
       try {
-        const res = await fetch(GET_COMPLIANCE_URL, {
+        const res = await fetch(getComplianceCheckUrl(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({}),
@@ -74,7 +72,7 @@ export default function ComplianceAcknowledgment({ contractorId, contractorLocat
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch(COMPLIANCE_URL, {
+      const res = await fetch(getComplianceUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

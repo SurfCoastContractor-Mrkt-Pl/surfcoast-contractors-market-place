@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "lucide-react";
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
+import { getAppBaseUrl } from "@/lib/env";
 
-const BASE_URL = "https://surfcoastcmp.base44.app";
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
 
 export default function Home() {
@@ -17,8 +17,9 @@ export default function Home() {
   }, []);
 
   const handleAuth = (role) => {
-    const fromUrl = encodeURIComponent(`${BASE_URL}/${role === "contractor" ? "ContractorDashboard" : "CustomerDashboard"}`);
-    window.location.href = `${BASE_URL}/login?from_url=${fromUrl}`;
+    const baseUrl = getAppBaseUrl();
+    const fromUrl = encodeURIComponent(`${baseUrl}/${role === "contractor" ? "ContractorDashboard" : "CustomerDashboard"}`);
+    window.location.href = `${baseUrl}/login?from_url=${fromUrl}`;
   };
 
   return (
@@ -32,8 +33,8 @@ export default function Home() {
           <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ marginLeft:"auto", display:"flex", gap:"8px", alignItems:"center", flexWrap:"wrap" }}>
-          {!isMobile && <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> Markets & Vendors</a>}
-          <a href={`${BASE_URL}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"700", padding:"6px 16px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", minHeight:"32px", display:"flex", alignItems:"center" }}>Sign In</a>
+           {!isMobile && <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px" }}><ShoppingBag size={16} /> Markets & Vendors</a>}
+           <a href={`${getAppBaseUrl()}/login`} style={{ color:"#fff", textDecoration:"none", fontSize:"clamp(12px, 2vw, 14px)", fontWeight:"700", padding:"6px 16px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", minHeight:"32px", display:"flex", alignItems:"center" }}>Sign In</a>
         </nav>
       </header>
 
@@ -116,11 +117,11 @@ export default function Home() {
       <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"8px clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)" }}>
         <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
         <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${BASE_URL}/Terms`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Terms</a>
+        <a href={`${getAppBaseUrl()}/Terms`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Terms</a>
         <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${BASE_URL}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Privacy</a>
+        <a href={`${getAppBaseUrl()}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Privacy</a>
         <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${BASE_URL}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Markets</a>
+        <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Markets</a>
       </footer>
 
       <div style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(0,0,0,0.55)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"6px clamp(16px, 4vw, 24px)", textAlign:"center" }}>
