@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Package, MapPin, Star, Settings } from 'lucide-react';
+import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle } from 'lucide-react';
 import ProfileSwitcher from '@/components/dashboard/ProfileSwitcher';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
@@ -84,7 +84,7 @@ export default function MarketShopDashboard() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-5xl mb-4">🛍️</div>
+          <Store className="w-12 h-12 text-blue-600 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-slate-800 mb-2">No MarketShop Found</h2>
           <p className="text-slate-500 mb-4">You haven't set up a MarketShop profile yet.</p>
           <button
@@ -113,8 +113,8 @@ export default function MarketShopDashboard() {
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-2xl flex-shrink-0">
-              🛍️
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+             <Store className="w-7 h-7 text-white" strokeWidth={1.5} />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-3">
@@ -175,7 +175,7 @@ export default function MarketShopDashboard() {
       {shop.subscription_status !== 'active' && (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-            <div className="text-xl flex-shrink-0">⚠️</div>
+            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" strokeWidth={1.5} />
             <div>
               <h3 className="font-semibold text-amber-900">Subscription Inactive</h3>
               <p className="text-sm text-amber-800 mt-1">Your MarketShop subscription is not active. Upgrade your subscription to access full features.</p>
