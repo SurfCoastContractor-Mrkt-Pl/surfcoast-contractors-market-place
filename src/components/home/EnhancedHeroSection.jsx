@@ -69,9 +69,9 @@ export default function EnhancedHeroSection() {
               <span className="text-blue-300">Direct. No Markups.</span>
             </h1>
 
-            {/* Subheadline — updated per request */}
             <p className="text-white/80 text-lg mb-6 max-w-lg">
               Skip the middlemen. Connect directly with identity-verified professionals — get a full Scope of Work, transparent pricing, and zero hidden fees.
+              <span className="block mt-2 text-white/65 text-base">Free to browse · Sign up for a free 2-week trial to connect with contractors</span>
             </p>
 
             {/* Trust pills */}
@@ -176,7 +176,7 @@ export default function EnhancedHeroSection() {
                   type="submit"
                   className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
-                  Search Free →
+                  Browse Contractors →
                 </button>
 
                 {/* Updated subtext */}
@@ -195,7 +195,7 @@ export default function EnhancedHeroSection() {
               <div className="space-y-4">
                 <p className="text-white/80 text-sm">Post your job and get quotes from verified contractors in your area.</p>
                 <button
-                  onClick={() => handleGuestCTA('/CustomerSignup')}
+                  onClick={() => handleGuestCTA('/PostJob')}
                   className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-colors"
                 >
                   Post a Job →
