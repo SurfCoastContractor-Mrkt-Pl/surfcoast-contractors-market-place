@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { X, Upload, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
