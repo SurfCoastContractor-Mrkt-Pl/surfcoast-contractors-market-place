@@ -183,6 +183,7 @@ export default function MarketShopSignup() {
         instagram_url: formData.instagram_url || undefined,
         facebook_url: formData.facebook_url || undefined,
         tiktok_url: formData.tiktok_url || undefined,
+        gallery_images: formData.gallery_images.length > 0 ? formData.gallery_images : undefined,
         is_active: false
       };
 
