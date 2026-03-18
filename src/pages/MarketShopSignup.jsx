@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChevronLeft, X, Loader2 } from 'lucide-react';
+import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 
 const CATEGORIES = [
   'Produce', 'Meat/Poultry', 'Dairy', 'Baked Goods', 'Prepared Foods',
