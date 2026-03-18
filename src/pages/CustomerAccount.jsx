@@ -176,14 +176,14 @@ export default function CustomerAccount() {
         <AuthTopBar />
         <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8" style={{position:"relative", zIndex:2}}>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: '#1E5A96'}}>
-              <User className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 rounded-3xl flex items-center justify-center" style={{backgroundColor: '#1E5A96', boxShadow: '0 8px 24px rgba(30, 90, 150, 0.3)'}}>
+              <User className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Customer Account</h1>
-              <div className="flex items-center gap-3 mt-1">
-                <p className="text-white/70">Manage your activity and data</p>
+              <h1 className="text-4xl font-serif font-bold text-white">Customer Account</h1>
+              <div className="flex items-center gap-3 mt-2">
+                <p className="text-white/60 text-base font-light">Manage your projects and activity</p>
                 {customerProfile && <TrialBadge profile={customerProfile} />}
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function CustomerAccount() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"#0a1628", minHeight:"100vh"}}>
          {/* Admin Preview Banner */}
          {isAdminPreview && (
-           <Card className="p-5 bg-blue-50 border-blue-200">
+           <Card className="p-5 bg-blue-50 border-blue-200/60 rounded-2xl">
              <div className="flex items-start gap-3">
                <AlertCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                <div>
@@ -277,15 +277,17 @@ export default function CustomerAccount() {
                </div>
 
               <TabsContent value="profile">
-                <div className="space-y-6">
+                <div className="space-y-7">
                   <CustomerProfileEditor
                     profile={customerProfile}
                     userEmail={userEmail}
                     onAskAgent={() => setAgentOpen(true)}
                   />
                   {customerProfile && (
-                    <div className="space-y-6">
-                      <h3 className="text-lg font-semibold text-slate-900">Profile Summary</h3>
+                    <div className="space-y-7">
+                      <div className="pb-4 border-b border-slate-200">
+                        <h3 className="text-2xl font-serif font-bold text-slate-900">Your Profile</h3>
+                      </div>
                       <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
                       <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
                     </div>
@@ -298,9 +300,9 @@ export default function CustomerAccount() {
                </TabsContent>
 
               <TabsContent value="my-jobs">
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-1">My Job Postings</h2>
-                  <p className="text-sm text-slate-500 mb-4">View, edit, or delete your posted jobs. Expand any job to see details and manage it.</p>
+                <Card className="p-8 border border-slate-200/40">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-2 pb-4 border-b border-slate-200">Job Postings</h2>
+                  <p className="text-sm text-slate-500 mb-6">View, edit, or delete your posted jobs. Expand any job to see details and manage it.</p>
                   <CustomerJobsManager userEmail={userEmail} />
                 </Card>
               </TabsContent>
@@ -329,8 +331,8 @@ export default function CustomerAccount() {
 
               <TabsContent value="payments">
                 <ActiveSessions payments={payments} />
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Platform Fee Payments</h2>
+                <Card className="p-8 border border-slate-200/40">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">Payment History</h2>
                   {payments?.filter(p => p.status !== 'work_scheduled').length > 0 ? (
                      <div className="space-y-3">
                        {payments.filter(p => p.status !== 'work_scheduled').map(p => (
@@ -380,7 +382,7 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="settings">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {/* Payment Methods — hidden in admin preview to prevent auth conflicts */}
                   {userEmail && !isAdminPreview && <SavedPaymentMethods userEmail={userEmail} />}
 
@@ -388,11 +390,11 @@ export default function CustomerAccount() {
                   <SecurityInfoPanel />
 
                   {/* Account Security */}
-                  <Card className="p-6">
+                  <Card className="p-8 border border-slate-200/40">
                     <div className="flex items-start gap-3 mb-4">
                       <Lock className="w-5 h-5 text-slate-600 mt-0.5" />
                       <div>
-                        <h3 className="font-semibold text-slate-900">Account Security</h3>
+                        <h3 className="font-serif font-bold text-slate-900 text-lg">Account Security</h3>
                         <p className="text-sm text-slate-500">Your login credentials are managed by SurfCoast's secure authentication system.</p>
                       </div>
                     </div>
@@ -407,11 +409,11 @@ export default function CustomerAccount() {
                   </Card>
 
                   {/* Email Preferences */}
-                  <Card className="p-6">
+                  <Card className="p-8 border border-slate-200/40">
                     <div className="flex items-start gap-3 mb-4">
                       <Mail className="w-5 h-5 text-slate-600 mt-0.5" />
                       <div>
-                        <h3 className="font-semibold text-slate-900">Contact Email</h3>
+                        <h3 className="font-serif font-bold text-slate-900 text-lg">Contact Email</h3>
                         <p className="text-sm text-slate-500">{userEmail}</p>
                       </div>
                     </div>
@@ -422,8 +424,8 @@ export default function CustomerAccount() {
                   </Card>
 
                   {/* Logout */}
-                  <Card className="p-6 bg-slate-50">
-                    <h3 className="font-semibold text-slate-900 mb-2">Session</h3>
+                  <Card className="p-8 border border-slate-200/40 bg-slate-50">
+                    <h3 className="font-serif font-bold text-slate-900 text-lg mb-2">Session</h3>
                     <p className="text-sm text-slate-500 mb-4">Log out from your account on this device.</p>
                     <Button 
                       variant="outline"
@@ -438,8 +440,8 @@ export default function CustomerAccount() {
               </TabsContent>
 
               <TabsContent value="scopes">
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Scope of Work Agreements</h2>
+                <Card className="p-8 border border-slate-200/40">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">Project Agreements</h2>
 
                   {/* Pending progress payments notice */}
                   {progressPayments?.filter(pp => pp.status === 'contractor_completed').length > 0 && (
