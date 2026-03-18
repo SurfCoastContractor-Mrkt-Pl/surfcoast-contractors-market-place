@@ -19,7 +19,6 @@ const STATUS_BADGE = {
   denied:   'bg-red-100 text-red-700',
 };
 
-const SUBMIT_URL = 'https://sage-c5f01224.base44.app/functions/submitQuote';
 
 function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
   const [form, setForm] = useState({

@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { InboxIcon, Loader2, CheckCircle2 } from 'lucide-react';
 
-const RESPOND_URL = 'https://sage-c5f01224.base44.app/functions/respondToQuote';
 
 const COST_TYPE_LABEL = { fixed: 'Fixed Price', hourly: 'Per Hour', estimate: 'Estimate' };
 
