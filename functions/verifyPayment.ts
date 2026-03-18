@@ -5,6 +5,20 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Allow internal service key or authenticated payer
+    const internalKey = req.headers.get('x-internal-key');
+    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isInternalCall = internalKey && validInternalKey && internalKey === validInternalKey;
+
+    let user = null;
+    if (!isInternalCall) {
+      user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     const { payment_id } = await req.json();
 
     if (!payment_id) {
@@ -21,6 +35,13 @@ Deno.serve(async (req) => {
 
     if (!payment) {
       return Response.json({ payment: null });
+    }
+
+    // Ownership check: authenticated user must be the payer
+    if (!isInternalCall && user) {
+      if (payment.payer_email?.toLowerCase() !== user.email.toLowerCase()) {
+        return Response.json({ error: 'Forbidden: You are not the payer for this payment' }, { status: 403 });
+      }
     }
 
     return Response.json({
