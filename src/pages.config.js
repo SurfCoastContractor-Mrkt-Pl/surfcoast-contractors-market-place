@@ -65,7 +65,7 @@ import FindContractors from './pages/FindContractors';
 import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
-import LocalLanding from './pages/LocalLanding';
+
 import Messaging from './pages/Messaging';
 import MyJobs from './pages/MyJobs';
 import PaymentHistory from './pages/PaymentHistory';
@@ -97,9 +97,8 @@ export const PAGES = {
     "FindContractors": FindContractors,
     "Home": Home,
     "JobDetails": JobDetails,
-    "Jobs": Jobs,
-    "LocalLanding": LocalLanding,
-    "Messaging": Messaging,
+     "Jobs": Jobs,
+     "Messaging": Messaging,
     "MyJobs": MyJobs,
     "PaymentHistory": PaymentHistory,
     "PostJob": PostJob,
