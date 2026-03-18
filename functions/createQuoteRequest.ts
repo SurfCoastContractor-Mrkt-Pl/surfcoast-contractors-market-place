@@ -4,8 +4,19 @@ Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
 
   try {
+    // Verify authenticated user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { payment_id, contractor_id, contractor_name, contractor_email, customer_email, customer_name, work_description, job_id, job_title } = body;
+
+    // Ensure the authenticated user matches the customer_email in the request
+    if (!customer_email || user.email.toLowerCase() !== customer_email.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: You can only create quote requests for your own account' }, { status: 403 });
+    }
 
     // Strict validation: all core fields required
     if (!payment_id || !contractor_id || !contractor_email || !customer_email || !work_description) {
