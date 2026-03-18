@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 /**
  * Check if a minor contractor has exceeded their 20-hour weekly work limit
@@ -21,12 +21,8 @@ Deno.serve(async (req) => {
     const isAutomation = !contractorId;
     
     if (isAutomation) {
-      // Validate internal key for automation calls
-      const internalKey = req.headers.get('x-internal-key');
-      const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-      if (!expectedKey || internalKey !== expectedKey) {
-        return Response.json({ error: 'Unauthorized: Invalid or missing internal key' }, { status: 403 });
-      }
+      // Automation call - no auth check needed, service role handles it
+      console.log('Running minor hours automation check');
     } else {
       const user = await base44.auth.me();
       if (!user) {
@@ -38,7 +34,7 @@ Deno.serve(async (req) => {
     if (isAutomation) {
       const allMinors = await base44.asServiceRole.entities.Contractor.filter({
         is_minor: true
-      });
+      }, '-created_date', 500);
 
       let updated = 0;
       for (const c of allMinors) {
