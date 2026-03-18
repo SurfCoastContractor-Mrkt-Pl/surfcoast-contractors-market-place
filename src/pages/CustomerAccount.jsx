@@ -33,6 +33,7 @@ import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
+import TrialBadge from '@/components/customer/TrialBadge';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -178,7 +179,10 @@ export default function CustomerAccount() {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white">Customer Account</h1>
-              <p className="text-white/70">Manage your activity and data</p>
+              <div className="flex items-center gap-3 mt-1">
+                <p className="text-white/70">Manage your activity and data</p>
+                {customerProfile && <TrialBadge profile={customerProfile} />}
+              </div>
             </div>
           </div>
         </div>
