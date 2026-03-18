@@ -139,10 +139,15 @@ export default function AdminDashboard() {
     setReviews(reviews.map(r => r.id === id ? { ...r, flagged: !flagged } : r));
   };
 
-  const StatCard = ({ label, value, color }) => (
+  const StatCard = ({ label, value, color, icon: Icon }) => (
     <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-      <p className="text-sm text-slate-400">{label}</p>
-      <p className={`text-3xl font-bold mt-2 ${color}`}>{value}</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-slate-400">{label}</p>
+          <p className={`text-3xl font-bold mt-2 ${color}`}>{value}</p>
+        </div>
+        {Icon && <Icon className={`w-8 h-8 ${color} opacity-50`} />}
+      </div>
     </div>
   );
 
