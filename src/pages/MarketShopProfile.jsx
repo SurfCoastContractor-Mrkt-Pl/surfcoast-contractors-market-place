@@ -369,45 +369,9 @@ export default function MarketShopProfile() {
         />
 
         {/* Market Schedule */}
-        {(shop.market_events || []).length > 0 && (
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
-            <h2 className="text-xl font-bold mb-4">Where to Find Us</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {shop.market_events.map((event, i) => (
-                <div key={i} className="bg-slate-700 rounded-xl p-4 border border-slate-600">
-                  <p className="font-semibold text-slate-100 mb-2">{event.market_name}</p>
-                  <div className="space-y-2 text-sm text-slate-300">
-                    {event.date && (
-                      <p className="flex items-center gap-2">
-                        <CalendarDays className="w-4 h-4 flex-shrink-0" />
-                        {event.date}
-                      </p>
-                    )}
-                    {event.location && (
-                      <p className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 flex-shrink-0" />
-                        {event.location}
-                      </p>
-                    )}
-                    {event.hours && (
-                      <p className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 flex-shrink-0" />
-                        {event.hours}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {(!shop.market_events || shop.market_events.length === 0) && (
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-8 text-center mb-8">
-            <CalendarDays className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <p className="text-slate-400">No upcoming dates posted yet.</p>
-          </div>
-        )}
+        <div className="mb-8">
+          <MarketShopProfileSchedule shop={shop} />
+        </div>
 
         {/* Reviews Section */}
         <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 mb-8">
