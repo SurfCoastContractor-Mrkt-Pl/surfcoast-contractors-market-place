@@ -100,12 +100,12 @@ export default function MarketDirectory() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex items-center gap-3 mb-2">
-            <ShoppingBag className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-slate-800">Farmers Markets & Swap Meets</h1>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+            <ShoppingBag className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">Farmers Markets & Swap Meets</h1>
           </div>
-          <p className="text-slate-500 text-sm max-w-2xl">
+          <p className="text-slate-500 text-xs sm:text-sm max-w-2xl">
             Browse local vendors near you. All vendors are independently operating — see our disclaimer below.
           </p>
         </div>
@@ -113,31 +113,32 @@ export default function MarketDirectory() {
 
       {/* Disclaimer Banner */}
       <div className="bg-amber-50 border-b border-amber-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-start gap-3">
-          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-amber-800 leading-relaxed">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex items-start gap-2 sm:gap-3">
+          <AlertTriangle className="w-3 sm:w-4 h-3 sm:h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-amber-800 leading-relaxed text-xs sm:text-sm">
             <span className="font-semibold">Platform Disclaimer:</span> SurfCoast Marketplace is a connection platform only. We do not employ, endorse, or guarantee any vendor, product, or service. All users — vendors and customers alike — use this platform at their own risk. SurfCoast Marketplace, its administrators, partners, and affiliates are not responsible for any damages, injuries, illness, or death arising from any transaction or interaction. Customers are solely responsible for vetting vendors and making their own informed decisions.
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col sm:flex-row gap-3">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div className="flex flex-col gap-2 sm:gap-3">
           {/* Search */}
-          <div className="relative flex-1">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
-              className="w-full pl-9 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-9 pr-4 py-2 sm:py-2.5 border border-slate-300 rounded-lg sm:rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search by city, state, zip, or shop name…"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
 
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:flex sm:gap-3">
           {/* Type filter */}
           <select
-            className="border border-slate-300 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
+            className="border border-slate-300 rounded-lg sm:rounded-xl px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
             value={typeFilter}
             onChange={e => setTypeFilter(e.target.value)}
           >
@@ -149,13 +150,14 @@ export default function MarketDirectory() {
 
           {/* Category filter */}
           <select
-            className="border border-slate-300 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
+            className="border border-slate-300 rounded-lg sm:rounded-xl px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
             value={categoryFilter}
             onChange={e => setCategoryFilter(e.target.value)}
           >
             <option value="">All Categories</option>
             {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
           </select>
+          </div>
         </div>
 
         {/* Result count */}
@@ -168,12 +170,12 @@ export default function MarketDirectory() {
       </div>
 
       {/* Vendor Signup Cards */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 className="text-lg font-semibold text-slate-800 mb-5">Are you a vendor? Get listed for free.</h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <h2 className="text-base sm:text-lg font-semibold text-slate-800 mb-4 sm:mb-5">Are you a vendor? Get listed for free.</h2>
+
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
           {/* Farmers Market Card */}
-          <div className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg transition-shadow p-6 flex flex-col gap-4">
+          <div className="rounded-lg sm:rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
            <div className="flex items-center gap-3">
              <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
                <Leaf className="w-6 h-6 text-green-700" strokeWidth={1.5} />
@@ -202,7 +204,7 @@ export default function MarketDirectory() {
           </div>
 
           {/* Swap Meet Card */}
-          <div className="rounded-xl sm:rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-4">
+          <div className="rounded-lg sm:rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
            <div className="flex items-center gap-3">
              <div className="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
                <Tag className="w-6 h-6 text-amber-700" strokeWidth={1.5} />
@@ -233,21 +235,21 @@ export default function MarketDirectory() {
       </div>
 
       {/* Grid */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-200 p-5 animate-pulse h-44" />
+              <div key={i} className="bg-white rounded-lg sm:rounded-2xl border border-slate-200 p-4 sm:p-5 animate-pulse h-40 sm:h-44" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20">
-            <Store className="w-12 h-12 text-slate-400 mx-auto mb-4" strokeWidth={1.5} />
-            <p className="font-medium text-slate-500">No vendors found</p>
-            <p className="text-sm text-slate-400 mt-1">Try adjusting your search or filters.</p>
+          <div className="text-center py-12 sm:py-20">
+            <Store className="w-10 sm:w-12 h-10 sm:h-12 text-slate-400 mx-auto mb-3 sm:mb-4" strokeWidth={1.5} />
+            <p className="font-medium text-slate-500 text-sm sm:text-base">No vendors found</p>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">Try adjusting your search or filters.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filtered.map(shop => (
               <VendorCard
                 key={shop.id}
