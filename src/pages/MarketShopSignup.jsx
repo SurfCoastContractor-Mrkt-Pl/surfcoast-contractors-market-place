@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronLeft, X, Loader2 } from 'lucide-react';
+import { ChevronLeft, X, Loader2, Leaf, Tag } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 
 const CATEGORIES = [
@@ -15,7 +15,7 @@ const THEME_CONFIG = {
   farmers_market: {
     color: '#16a34a',
     bgLight: '#dcfce7',
-    icon: '🌽',
+    icon: Leaf,
     title: 'Set Up Your Market Booth',
     subtitle: 'Get discovered by local shoppers at farmers markets near you',
     buttonColor: 'bg-green-600 hover:bg-green-700',
@@ -24,7 +24,7 @@ const THEME_CONFIG = {
   swap_meet: {
     color: '#d97706',
     bgLight: '#fef3c7',
-    icon: '🏷️',
+    icon: Tag,
     title: 'Claim Your Swap Meet Space',
     subtitle: 'List your goods and build your buyer following at local swap meets',
     buttonColor: 'bg-amber-600 hover:bg-amber-700',
@@ -86,8 +86,8 @@ export default function MarketShopSignup() {
               onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
               className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
             >
-              <div className="w-16 h-16 rounded-xl bg-green-200 flex items-center justify-center text-4xl">
-                🌽
+              <div className="w-16 h-16 rounded-xl bg-green-200 flex items-center justify-center">
+                <Leaf className="w-8 h-8 text-green-700" strokeWidth={1.5} />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-green-900 mb-2">Farmers Market Vendor</h2>
@@ -103,8 +103,8 @@ export default function MarketShopSignup() {
               onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
               className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
             >
-              <div className="w-16 h-16 rounded-xl bg-amber-200 flex items-center justify-center text-4xl">
-                🏷️
+              <div className="w-16 h-16 rounded-xl bg-amber-200 flex items-center justify-center">
+                <Tag className="w-8 h-8 text-amber-700" strokeWidth={1.5} />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-amber-900 mb-2">Swap Meet Vendor</h2>
@@ -249,8 +249,8 @@ export default function MarketShopSignup() {
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl" style={{ backgroundColor: theme.bgLight }}>
-              {theme.icon}
+            <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.bgLight }}>
+              <theme.icon className="w-7 h-7" style={{ color: theme.color }} strokeWidth={1.5} />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-slate-900">{theme.title}</h1>
