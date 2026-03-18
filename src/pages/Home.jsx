@@ -14,9 +14,9 @@ function TrustBar() {
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
           {[
             { icon: '✓', text: 'Free to browse all contractors' },
-            { icon: '🎁', text: 'Sign up for a free 2-week trial' },
-            { icon: '🛡️', text: 'Verified contractors only' },
-            { icon: '🔒', text: 'Secure payments' },
+            { icon: '✓', text: 'Sign up for a free 2-week trial' },
+            { icon: '✓', text: 'Verified contractors only' },
+            { icon: '✓', text: 'Secure payments' },
           ].map(({ icon, text }) => (
             <span key={text} className="flex items-center gap-2 text-sm text-slate-200">
               <span>{icon}</span>
@@ -140,6 +140,7 @@ function ContractorJoinSection() {
           <p className="text-slate-300 text-lg mb-8">
             Create your account to get verified, build your profile, and start getting jobs. Free 2-week trial included.
           </p>
+          
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             {[
               { icon: <ShieldCheck className="w-4 h-4" />, text: 'Identity verified' },
