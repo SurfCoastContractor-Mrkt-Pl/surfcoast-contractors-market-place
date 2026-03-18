@@ -165,7 +165,7 @@ export default function EnhancedHeroSection() {
                   >
                     Search Free <ChevronRight className="w-4 h-4" />
                   </button>
-                  <p className="text-center text-xs text-slate-400">No account needed · 100% free to browse</p>
+                  <p className="text-center text-xs text-slate-400">Free to browse · No credit card required</p>
                 </form>
               ) : (
                 <form onSubmit={handlePost} className="space-y-4">
@@ -184,7 +184,7 @@ export default function EnhancedHeroSection() {
                   >
                     Post My Project <ChevronRight className="w-4 h-4" />
                   </button>
-                  <p className="text-center text-xs text-slate-400">Free to post · Contractors reach out to you</p>
+                  <p className="text-center text-xs text-slate-400">Free to post · Get quotes within 24 hours</p>
                 </form>
               )}
             </div>
