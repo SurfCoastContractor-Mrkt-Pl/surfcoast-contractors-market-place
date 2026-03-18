@@ -49,6 +49,24 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Increment active campaign signup counter
+    try {
+      const activeCampaigns = await base44.asServiceRole.entities.Campaign.filter({
+        status: 'active',
+        type: 'referral'
+      });
+
+      if (activeCampaigns && activeCampaigns.length > 0) {
+        const campaign = activeCampaigns[0];
+        await base44.asServiceRole.entities.Campaign.update(campaign.id, {
+          current_signups: (campaign.current_signups || 0) + 1
+        });
+        console.log(`Campaign signup counter incremented: ${campaign.name}`);
+      }
+    } catch (e) {
+      console.warn('Campaign counter update failed:', e.message);
+    }
+
     return Response.json({
       status: 'completed_first_job',
       referrer_email: referral.referrer_email,
