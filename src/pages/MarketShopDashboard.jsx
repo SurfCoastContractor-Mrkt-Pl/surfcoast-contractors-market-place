@@ -154,8 +154,13 @@ export default function MarketShopDashboard() {
         </div>
       </div>
 
-      {/* Tab Content */}
+      {/* Share Your Listing Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ShareYourListing shop={shop} />
+      </div>
+
+      {/* Tab Content */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
           {activeTab === 'listings' && <MarketShopListings />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
