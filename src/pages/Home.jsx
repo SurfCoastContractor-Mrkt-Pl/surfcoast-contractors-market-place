@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "lucide-react";
+import MarketsVendorsSection from "@/components/home/MarketsVendorsSection";
 
 const BASE_URL = "https://surfcoastcmp.base44.app";
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
@@ -82,31 +83,26 @@ export default function Home() {
           </div>
         </div>
 
-        <div onClick={() => window.location.href=`${BASE_URL}/MarketDirectory`} style={{ marginTop:"clamp(20px, 6vw, 32px)", width:"100%", maxWidth:"780px", background:"rgba(79,46,150,0.22)", border:"1px solid rgba(124,58,237,0.35)", borderRadius:"clamp(12px, 3vw, 16px)", padding:"clamp(14px, 4vw, 20px)", display:"flex", alignItems:"center", justifyContent:"center", gap:"clamp(12px, 3vw, 16px)", flexDirection:"column", backdropFilter:"blur(12px)", cursor:"pointer" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"clamp(10px, 3vw, 14px)", width:"100%" }}>
-             <ShoppingBag size={24} style={{ color:"#7c3aed", flexShrink:0 }} strokeWidth={1.5} />
-            <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ color:"#c4b5fd", fontWeight:"700", fontSize:"clamp(13px, 3vw, 15px)" }}>Farmers Markets & Swap Meets</div>
-              <div style={{ color:"rgba(255,255,255,0.5)", fontSize:"clamp(12px, 2vw, 13px)", marginTop:"2px" }}>Browse local vendors or create your own MarketShop</div>
-            </div>
-          </div>
-          <div style={{ background:"linear-gradient(135deg,#7c3aed,#4f46e5)", color:"white", borderRadius:"10px", padding:"clamp(8px, 2vw, 9px) clamp(16px, 4vw, 20px)", fontSize:"clamp(12px, 2vw, 13px)", fontWeight:"700", whiteSpace:"nowrap", width:"100%", textAlign:"center" }}>Browse Vendors →</div>
-        </div>
+      </main>
+
+      <MarketsVendorsSection />
 
         <div style={{ marginTop:"clamp(20px, 6vw, 28px)", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"clamp(8px, 2vw, 12px)", justifyContent:"center", alignItems:"center", maxWidth:"100%", px:"16px" }}>
-          {[
-            { icon: Shield, label: "Secure payments" },
-            { icon: CheckCircle, label: "Identity verified pros" },
-            { icon: Shield, label: "Licensed & insured" },
-            { icon: ShoppingBag, label: "Nationwide coverage" }
-          ].map(({ icon: Icon, label }, i) => (
-            <span key={i} style={{ display:"flex", alignItems:"center", gap:"clamp(4px, 2vw, 6px)", justifyContent:"center" }}>
-              <Icon size={14} style={{ color:"rgba(255,255,255,0.48)", flexShrink:0 }} strokeWidth={1.5} />
-              <span style={{ fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.48)" }}>{label}</span>
-            </span>
-          ))}
+           {[
+             { icon: Shield, label: "Secure payments" },
+             { icon: CheckCircle, label: "Identity verified pros" },
+             { icon: Shield, label: "Licensed & insured" },
+             { icon: ShoppingBag, label: "Nationwide coverage" }
+           ].map(({ icon: Icon, label }, i) => (
+             <span key={i} style={{ display:"flex", alignItems:"center", gap:"clamp(4px, 2vw, 6px)", justifyContent:"center" }}>
+               <Icon size={14} style={{ color:"rgba(255,255,255,0.48)", flexShrink:0 }} strokeWidth={1.5} />
+               <span style={{ fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.48)" }}>{label}</span>
+             </span>
+           ))}
         </div>
-      </main>
+        </main>
+
+        <MarketsVendorsSection />
 
       <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)" }}>
         <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
