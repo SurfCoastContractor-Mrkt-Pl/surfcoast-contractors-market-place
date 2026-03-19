@@ -787,7 +787,7 @@ export default function BecomeContractor() {
                   <div>
                     <h3 className="font-bold text-amber-900 mb-2">Platform Facilitation Fee</h3>
                     <p className="text-sm text-amber-800 leading-relaxed">
-                      We charge a 3% facilitation fee on completed jobs. This fee covers payment processing and platform maintenance only. SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages arising from transactions. All users engage entirely at their own risk and are solely liable for their agreements. When you complete a $1,000 job, you'll receive $970 after the fee.
+                      A 3% facilitation fee is deducted from each completed job. This fee covers payment processing and platform maintenance. Example: a $1,000 job pays out $970 to the contractor. All liability terms are outlined in the <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a>.
                     </p>
                   </div>
                 </div>
