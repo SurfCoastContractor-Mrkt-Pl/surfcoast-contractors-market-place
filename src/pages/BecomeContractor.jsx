@@ -424,7 +424,7 @@ export default function BecomeContractor() {
             
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name" style={{color:"rgba(255,255,255,0.85)"}}>Full Name *</Label>
+                <Label htmlFor="name">Full Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
