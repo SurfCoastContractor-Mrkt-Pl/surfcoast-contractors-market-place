@@ -33,9 +33,8 @@ Deno.serve(async (req) => {
     // If automation call (no contractorId), check ALL minors
     if (isAutomation) {
       const now = new Date();
-      const startOfWeek = new Date(now);
-      startOfWeek.setDate(now.getDate() - now.getDay());
-      startOfWeek.setHours(0, 0, 0, 0);
+      const dayOfWeek = now.getUTCDay();
+      const startOfWeek = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - dayOfWeek, 0, 0, 0, 0));
 
       // Fetch only minors that need updates (optimization: locked or needs reset)
       const allMinors = await base44.asServiceRole.entities.Contractor.filter({
@@ -107,9 +106,8 @@ Deno.serve(async (req) => {
 
     // Check week reset
     const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
-    startOfWeek.setHours(0, 0, 0, 0);
+    const dayOfWeek = now.getUTCDay();
+    const startOfWeek = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - dayOfWeek, 0, 0, 0, 0));
 
     const lastResetDate = c.minor_weekly_hours_reset_date ? new Date(c.minor_weekly_hours_reset_date) : null;
 
