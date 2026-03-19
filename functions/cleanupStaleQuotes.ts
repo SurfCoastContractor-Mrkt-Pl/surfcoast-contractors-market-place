@@ -4,6 +4,17 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Admin or internal automation only
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: admin or internal access only' }, { status: 403 });
+      }
+    }
+
     const now = new Date();
     const staleThreshold = new Date(now.getTime() - 48 * 60 * 60 * 1000); // 48 hours ago
 
