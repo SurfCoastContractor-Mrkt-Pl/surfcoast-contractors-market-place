@@ -798,25 +798,32 @@ export default function BecomeContractor() {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
 
-          <Button 
-            type="submit" 
-            size="lg" 
-            className="w-full text-white font-semibold disabled:opacity-50"
-            style={{backgroundColor: '#1E5A96'}}
+          <button
+            type="submit"
             disabled={mutation.isPending}
+            style={{ width:"100%", padding:"16px", borderRadius:"12px", border:"none", fontSize:"16px", fontWeight:"700", cursor:mutation.isPending ? "not-allowed" : "pointer", transition:"all 0.2s", minHeight:"52px", background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", color:"#fff", opacity:mutation.isPending ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", boxShadow:"0 4px 24px rgba(217,119,6,0.35)" }}
           >
             {mutation.isPending ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                <Loader2 style={{ width:"18px", height:"18px", animation:"spin 0.8s linear infinite" }} />
                 Creating Profile...
               </>
             ) : (
-              'Create My Profile'
+              'Create My Profile →'
             )}
-          </Button>
+          </button>
         </form>
+      </div>
+
+      {/* Footer */}
+      <div style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"8px", padding:"12px 24px", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"12px", color:"rgba(255,255,255,0.35)" }}>
+        <span>© 2026 SurfCoast Marketplace</span>
+        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
+        <Link to="/Terms" style={{ color:"rgba(255,255,255,0.4)", textDecoration:"none" }}>Terms</Link>
+        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
+        <Link to="/PrivacyPolicy" style={{ color:"rgba(255,255,255,0.4)", textDecoration:"none" }}>Privacy</Link>
       </div>
     </div>
   );
