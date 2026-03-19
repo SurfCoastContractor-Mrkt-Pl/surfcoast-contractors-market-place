@@ -64,7 +64,7 @@ Deno.serve(async (req) => {
     // Send login link or password reset link
     const resetLink = `${req.headers.get('origin')}/reset-password?token=${encodeURIComponent(recoveryToken)}`;
     
-    await base44.integrations.Core.SendEmail({
+    await base44.asServiceRole.integrations.Core.SendEmail({
       to: email,
       subject: 'Complete Your Account Recovery',
       body: `Click the link below to regain access to your account:\n\n${resetLink}\n\nThis link expires in 30 minutes.\n\nIf you didn't request this, ignore this email.`
