@@ -3,6 +3,7 @@ import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "luci
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import { getAppBaseUrl } from "@/lib/env";
+import { base44 } from "@/api/base44Client";
 
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
 
