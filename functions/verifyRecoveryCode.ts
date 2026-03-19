@@ -9,6 +9,31 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Email and code are required' }, { status: 400 });
     }
 
+    // Brute-force rate limiting: max 5 attempts per email per hour
+    const recentAttempts = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `recovery_verify:${email}`,
+      created_date: { $gte: new Date(Date.now() - 3600000).toISOString() }
+    });
+
+    if (recentAttempts && recentAttempts.length >= 5) {
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
+          from_name: 'SurfCoast Security',
+          subject: `[SECURITY ALERT] Recovery Code Brute-Force Attempt — ${email}`,
+          body: `An account is being brute-forced for recovery code verification.\n\nEmail: ${email}\nAttempts in last hour: ${recentAttempts.length + 1}\nTime: ${new Date().toISOString()}\n\nSurfCoast Security System`,
+        });
+      } catch { /* non-blocking */ }
+      return Response.json({ error: 'Too many attempts. Please try again in 1 hour.' }, { status: 429 });
+    }
+
+    // Log this attempt
+    await base44.asServiceRole.entities.RateLimitTracker.create({
+      key: `recovery_verify:${email}`,
+      action: 'verify_recovery_code',
+      user_email: email
+    });
+
     // Find verification record
     let records = [];
     try {
