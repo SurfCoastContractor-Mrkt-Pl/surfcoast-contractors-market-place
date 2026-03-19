@@ -18,10 +18,8 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleAuth = (role) => {
-    const baseUrl = getAppBaseUrl();
-    const nextUrl = `${baseUrl}/${role === "contractor" ? "Dashboard" : "Dashboard"}`;
-    base44.auth.redirectToLogin(nextUrl);
+  const handleAuth = () => {
+    base44.auth.redirectToLogin('/Dashboard');
   };
 
   return (
