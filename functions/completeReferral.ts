@@ -6,13 +6,24 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
  */
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+
+    // Admin or internal automation only — prevents users from self-completing referrals
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: admin or internal access only' }, { status: 403 });
+      }
+    }
+
     const { referred_email } = await req.json();
 
     if (!referred_email) {
       return Response.json({ error: 'referred_email is required' }, { status: 400 });
     }
-
-    const base44 = createClientFromRequest(req);
 
     // Find referral by referred email
     const referrals = await base44.asServiceRole.entities.Referral.filter({
