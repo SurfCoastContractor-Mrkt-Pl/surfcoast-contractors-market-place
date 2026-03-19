@@ -17,7 +17,6 @@ import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
-import { base44 } from '@/api/base44Client';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
