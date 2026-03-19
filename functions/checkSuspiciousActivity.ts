@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Log suspicious activity for admin review
+    // Log suspicious activity and alert admin
     if (alerts.length > 0) {
       await base44.asServiceRole.entities.SecurityAlert.create({
         alert_type: 'suspicious_request',
@@ -48,6 +48,17 @@ Deno.serve(async (req) => {
           timestamp: new Date().toISOString()
         })
       });
+
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
+          from_name: 'SurfCoast Security',
+          subject: `[SECURITY ALERT] Suspicious Payment Activity — ${customer_email}`,
+          body: `Suspicious payment activity was detected.\n\nCustomer: ${customer_email}\nAlerts: ${JSON.stringify(alerts, null, 2)}\nIP Country: ${ip_country || 'unknown'}\nTime: ${new Date().toISOString()}\n\nPlease review in the Admin Dashboard → Security Alerts.\n\nSurfCoast Security System`,
+        });
+      } catch (emailErr) {
+        console.error('Failed to send suspicious activity alert:', emailErr.message);
+      }
     }
 
     return Response.json({
