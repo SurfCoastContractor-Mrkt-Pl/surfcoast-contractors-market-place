@@ -62,6 +62,11 @@ Deno.serve(async (req) => {
 
     const collaboration = collab[0];
 
+    // Verify the caller is the customer who owns this collaboration or an admin
+    if (user.role !== 'admin' && collaboration.customer_email !== user.email) {
+      return Response.json({ error: 'Forbidden: you do not own this collaboration' }, { status: 403 });
+    }
+
     // Check if already invited
     const alreadyInvited = collaboration.collaborators.some(
       c => c.contractor_email === contractor_email
