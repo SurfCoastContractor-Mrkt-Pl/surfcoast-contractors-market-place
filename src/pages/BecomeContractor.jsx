@@ -42,12 +42,12 @@ export default function BecomeContractor() {
     if (isPreview) { setAuthChecked(true); return; }
     base44.auth.me().then(user => {
       if (!user) {
-        base44.auth.redirectToLogin(window.location.href);
+        base44.auth.redirectToLogin(window.location.pathname);
       } else {
         setAuthChecked(true);
       }
     }).catch(() => {
-      base44.auth.redirectToLogin(window.location.href);
+      base44.auth.redirectToLogin(window.location.pathname);
     });
   }, [isPreview]);
   const [createdContractor, setCreatedContractor] = useState(null);
