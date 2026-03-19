@@ -451,6 +451,11 @@ export default function MarketShopSignup() {
               />
             </div>
 
+            {/* Fee Notice */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
+              <strong>5% platform facilitation fee</strong> applies to transactions processed through SurfCoast Marketplace. This covers payment processing and platform maintenance. Example: a $100 sale pays out $95 to you. See <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a> for full details.
+            </div>
+
             {/* Submit Button */}
             <Button
               type="submit"
