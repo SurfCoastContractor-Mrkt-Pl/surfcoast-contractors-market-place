@@ -395,7 +395,29 @@ export default function BecomeContractor() {
 
       {/* Form container */}
       <div style={{ position:"relative", zIndex:2, maxWidth:"720px", margin:"0 auto", width:"100%", padding:"0 16px 48px" }}>
-        <form onSubmit={handleSubmit}>
+        <style>{`
+          .contractor-form label { color: rgba(255,255,255,0.85) !important; }
+          .contractor-form .text-slate-500 { color: rgba(255,255,255,0.45) !important; }
+          .contractor-form .text-slate-900 { color: #ffffff !important; }
+          .contractor-form .bg-slate-50 { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+          .contractor-form input, .contractor-form textarea, .contractor-form select { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
+          .contractor-form input::placeholder, .contractor-form textarea::placeholder { color: rgba(255,255,255,0.35) !important; }
+          .contractor-form .bg-amber-50 { background: rgba(217,119,6,0.12) !important; border-color: rgba(217,119,6,0.4) !important; }
+          .contractor-form .bg-amber-50 * { color: rgba(255,200,100,0.9) !important; }
+          .contractor-form .bg-red-50 { background: rgba(220,38,38,0.12) !important; border-color: rgba(220,38,38,0.4) !important; }
+          .contractor-form .bg-red-50 * { color: rgba(255,160,160,0.9) !important; }
+          .contractor-form .bg-blue-50 { background: rgba(29,111,164,0.15) !important; border-color: rgba(29,111,164,0.4) !important; }
+          .contractor-form .bg-blue-50 * { color: rgba(150,210,255,0.9) !important; }
+          .contractor-form .bg-white { background: rgba(255,255,255,0.06) !important; }
+          .contractor-form .bg-white * { color: rgba(255,255,255,0.85) !important; }
+          .contractor-form .bg-amber-100 { background: rgba(217,119,6,0.2) !important; }
+          .contractor-form .text-amber-700 { color: #fbbf24 !important; }
+          .contractor-form .bg-slate-100 { background: rgba(255,255,255,0.08) !important; }
+          .contractor-form .text-slate-700 { color: rgba(255,255,255,0.8) !important; }
+          .contractor-form .border-slate-200 { border-color: rgba(255,255,255,0.15) !important; }
+          .contractor-form [data-radix-select-trigger] { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
+        `}</style>
+        <form onSubmit={handleSubmit} className="contractor-form">
           {/* Photo & Basic Info */}
           <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
             <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Basic Information</h2>
