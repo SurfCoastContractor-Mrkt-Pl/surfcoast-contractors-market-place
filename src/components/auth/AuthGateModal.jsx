@@ -10,7 +10,7 @@ import { Sparkles, LogIn } from 'lucide-react';
  */
 export default function AuthGateModal({ open, onClose }) {
   const handleLogin = () => {
-    base44.auth.redirectToLogin(window.location.href);
+    base44.auth.redirectToLogin(window.location.pathname);
   };
 
   return (
