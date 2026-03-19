@@ -91,36 +91,41 @@ Deno.serve(async (req) => {
       return Response.json({ allowed: false, country, countryName, reason: 'geo_blocked' });
     }
 
-    // Check for proxy/VPN/Tor/hosting being used from a US IP — flag as suspicious
-    if (isUS && (isProxy || isHosting)) {
-      console.warn(`SUSPICIOUS: US IP ${ip} using proxy/VPN/hosting. Path: ${path}`);
-      
-      try {
-        // Fire-and-forget: don't let SecurityAlert write block the response
-        base44.asServiceRole.entities.SecurityAlert.create({
-          alert_type: 'suspicious_request',
-          severity: 'high',
-          ip_address: ip,
-          country: country,
-          country_name: countryName,
-          user_agent: userAgent.substring(0, 300),
-          path: path,
-          details: `US IP using Proxy/VPN or hosting provider. Potential geo-bypass attempt. Proxy: ${isProxy}, Hosting: ${isHosting}`,
-        }).catch(e => console.warn('SecurityAlert create failed:', e.message));
+    // Block proxy/VPN/hosting IPs — these are used to bypass geo-restrictions
+    if (isProxy || isHosting) {
+      console.warn(`PROXY/VPN BLOCK: ${ip} from ${countryName} (${country}) using proxy/hosting. Path: ${path}`);
 
-        // Email admin for high-severity suspicious proxy
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: Deno.env.get('ADMIN_ALERT_EMAIL'),
-          from_name: 'SurfCoast Security',
-          subject: `[SECURITY ALERT] Suspicious Proxy/VPN Detected`,
-          body: `A suspicious request was flagged — US IP using proxy/VPN or hosting provider.\n\nIP: ${ip}\nProxy: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis may indicate a geo-restriction bypass attempt.\n\nSurfCoast Security System`,
+      try {
+        const recentProxyAlerts = await base44.asServiceRole.entities.SecurityAlert.filter({
+          ip_address: ip,
+          alert_type: 'proxy_block',
+          created_date: { $gte: new Date(Date.now() - 3600000).toISOString() }
         });
+
+        if (!recentProxyAlerts || recentProxyAlerts.length < 3) {
+          await base44.asServiceRole.entities.SecurityAlert.create({
+            alert_type: 'proxy_block',
+            severity: 'high',
+            ip_address: ip,
+            country: country,
+            country_name: countryName,
+            user_agent: userAgent.substring(0, 300),
+            path: path,
+            details: `Proxy/VPN/Hosting provider blocked. Country: ${countryName} (${country}). Proxy: ${isProxy}, Hosting: ${isHosting}`,
+          });
+
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: Deno.env.get('ADMIN_ALERT_EMAIL'),
+            from_name: 'SurfCoast Security',
+            subject: `[SECURITY ALERT] Proxy/VPN Access Blocked`,
+            body: `A proxy/VPN or hosting provider IP was blocked from accessing the platform.\n\nIP: ${ip}\nCountry: ${countryName} (${country})\nProxy: ${isProxy}\nHosting/Datacenter: ${isHosting}\nPath: ${path}\nUser Agent: ${userAgent}\nTime: ${new Date().toISOString()}\n\nThis IP has been denied access.\n\nSurfCoast Security System`,
+          });
+        }
       } catch (logErr) {
-        console.error('Failed to log suspicious proxy');
+        console.error('Failed to log proxy block:', logErr.message);
       }
 
-      // Still allow — it's a US IP — but flag it
-      return Response.json({ allowed: true, country, flagged: true, reason: 'proxy_detected' });
+      return Response.json({ allowed: false, country, countryName, reason: 'proxy_blocked' });
     }
 
     return Response.json({ allowed: true, country, countryName });
