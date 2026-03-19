@@ -36,6 +36,8 @@ export default function ContractorSignup() {
     setError('');
     setLoading(true);
 
+    base44.analytics.track({ eventName: 'contractor_signup_submitted' });
+
     try {
       // Validate required fields
       if (!formData.full_name.trim()) throw new Error('Full name is required');
@@ -65,9 +67,18 @@ export default function ContractorSignup() {
         throw new Error(data.error || 'Signup failed');
       }
 
+      base44.analytics.track({
+        eventName: 'contractor_signup_success',
+        properties: {
+          trade_specialty: formData.trade_specialty,
+          location: formData.location,
+        },
+      });
+
       // Redirect to contractor onboarding
       navigate(createPageUrl('BecomeContractor'));
     } catch (err) {
+      base44.analytics.track({ eventName: 'contractor_signup_failed', properties: { reason: err.message } });
       setError(err.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);
