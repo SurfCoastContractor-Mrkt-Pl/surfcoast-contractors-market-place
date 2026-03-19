@@ -31,6 +31,14 @@ Deno.serve(async (req) => {
 
     const scope = scopes[0];
 
+    // Verify caller owns the scope (if not an internal call)
+    const internalKey2 = req.headers.get('x-internal-service-key');
+    if (!internalKey2 || internalKey2 !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      if (callerRole !== 'admin' && scope.contractor_email !== callerEmail) {
+        return Response.json({ error: 'Forbidden: you do not own this scope' }, { status: 403 });
+      }
+    }
+
     // Check if both ratings have been submitted
     if (!scope.contractor_satisfaction_rating || !scope.customer_satisfaction_rating) {
       return Response.json({ 
