@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Loader2, HardHat } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 const trades = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer', 'painter', 'welder', 'tiler', 'landscaper', 'other'

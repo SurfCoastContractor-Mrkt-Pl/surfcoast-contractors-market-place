@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Loader2, Users } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
