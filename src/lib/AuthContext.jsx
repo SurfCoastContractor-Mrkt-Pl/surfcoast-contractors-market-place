@@ -124,11 +124,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Avoid using the login page itself as the from_url (causes loops)
-    const currentUrl = window.location.href;
-    const isLoginPage = currentUrl.includes('/login');
-    const nextUrl = isLoginPage ? `${window.location.origin}/Dashboard` : currentUrl;
-    base44.auth.redirectToLogin(nextUrl);
+    // Pass just the path so the platform can handle the redirect correctly
+    const currentPath = window.location.pathname;
+    const isLoginPage = currentPath.includes('/login');
+    const nextPath = isLoginPage ? '/Dashboard' : currentPath;
+    base44.auth.redirectToLogin(nextPath);
   };
 
   return (
