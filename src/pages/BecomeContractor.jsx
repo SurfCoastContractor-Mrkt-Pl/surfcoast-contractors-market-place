@@ -483,11 +483,11 @@ export default function BecomeContractor() {
                 />
               </div>
             </div>
-            </Card>
+          </div>
 
           {/* Professional Info */}
-          <Card className="p-6 md:p-8 mb-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-6">Professional Details</h2>
+          <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+            <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Professional Details</h2>
             
             <div className="space-y-6">
               <div>
