@@ -276,7 +276,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="flex flex-col items-center justify-start">
               <h4 className="font-semibold mb-3 text-sm">Connect</h4>
               <div className="flex items-center gap-3">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
+                <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
