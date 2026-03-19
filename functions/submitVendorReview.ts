@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Must be authenticated — prevents anonymous spam reviews
+    const user = await base44.auth.me().catch(() => null);
+    if (!user) {
+      return Response.json({ error: 'Unauthorized: must be logged in to submit a review' }, { status: 401 });
+    }
+
     const { shop_id, reviewer_name, reviewer_email, rating, review_title, review_body, shop_name } = await req.json();
 
     if (!shop_id || !reviewer_name || !reviewer_email || !rating || !review_title || !review_body) {
