@@ -4,36 +4,26 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Verify authenticated user or internal service key
-    const internalKey = req.headers.get('x-internal-key');
-    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    const isInternalCall = internalKey && validInternalKey && internalKey === validInternalKey;
-
-    let user = null;
-    if (!isInternalCall) {
-      user = await base44.auth.me();
-      if (!user) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
+    // Require authenticated user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
     const { action, quote_request_id, contractor_id, quote_amount, quote_message, customer_email, customer_name, contractor_name, job_title } = body;
 
-    // If called by an authenticated user, verify they are the contractor submitting the quote
-    if (!isInternalCall && user) {
-      // The sender must be a contractor — verify their email matches the contractor on the quote request
-      if (quote_request_id) {
-        const quote = await base44.asServiceRole.entities.QuoteRequest.get(quote_request_id);
-        if (!quote || quote.contractor_email?.toLowerCase() !== user.email.toLowerCase()) {
-          return Response.json({ error: 'Forbidden: You are not the contractor on this quote' }, { status: 403 });
-        }
-      } else {
-        // No quote_request_id — verify via contractor record
-        const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: user.email });
-        if (!contractors || contractors.length === 0) {
-          return Response.json({ error: 'Forbidden: Only contractors can submit quotes' }, { status: 403 });
-        }
+    // Verify the authenticated user is the contractor submitting the quote
+    if (quote_request_id) {
+      const quote = await base44.asServiceRole.entities.QuoteRequest.get(quote_request_id);
+      if (!quote || quote.contractor_email?.toLowerCase() !== user.email.toLowerCase()) {
+        return Response.json({ error: 'Forbidden: You are not the contractor on this quote' }, { status: 403 });
+      }
+    } else {
+      // No quote_request_id — verify via contractor record
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: user.email });
+      if (!contractors || contractors.length === 0) {
+        return Response.json({ error: 'Forbidden: Only contractors can submit quotes' }, { status: 403 });
       }
     }
 

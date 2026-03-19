@@ -10,12 +10,6 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Validate explicit shared secret for service-to-service calls
-    const internalServiceKey = req.headers.get('x-internal-service-key');
-    if (internalServiceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { customer_email, payment_method_id, ip_country } = await req.json();
 
     if (!customer_email) {

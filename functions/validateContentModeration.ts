@@ -14,13 +14,10 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Verify authorization
-    const internalKey = req.headers.get('x-internal-service-key');
-    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      const user = await base44.auth.me();
-      if (!user) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
+    // Require authenticated user (called from frontend) or service-role context (called from other functions)
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { content, field_name } = await req.json();
