@@ -150,17 +150,32 @@ export default function Terms() {
           </p>
         </div>
 
-        {/* Section 10 */}
+        {/* Section 10 - Platform Fees */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Modifications</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Platform Facilitation Fees</h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            SurfCoast Marketplace charges facilitation fees to cover payment processing and platform maintenance. These fees are deducted from completed transactions as follows:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li><strong>Contractors (services):</strong> 18% facilitation fee deducted from each completed job payout. Example: a $1,000 job pays out $820 to the contractor.</li>
+            <li><strong>Farmers Market & Swap Meet Vendors:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed">
+            SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages arising from transactions. All users engage entirely at their own risk and are solely liable for their agreements.
+          </p>
+        </div>
+
+        {/* Section 11 - Modifications */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Modifications</h2>
           <p className="text-slate-700 leading-relaxed">
             SurfCoast Marketplace reserves the right to update these Terms at any time. Continued use of the platform after any update constitutes acceptance of the revised Terms. Users are encouraged to review this page periodically.
           </p>
         </div>
 
-        {/* Section 11 */}
+        {/* Section 12 */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Contact</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Contact</h2>
           <p className="text-slate-700 leading-relaxed">
             For questions regarding these Terms, contact us through the platform's support channel.
           </p>
