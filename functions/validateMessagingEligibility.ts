@@ -15,6 +15,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Demo profiles are visible to all authenticated users
+    const contractorCheck = await base44.asServiceRole.entities.Contractor.filter({ email: otherUserEmail });
+    if (contractorCheck.length > 0 && contractorCheck[0].is_demo) {
+      return Response.json({ eligible: true, contractor: contractorCheck[0], is_demo: true });
+    }
+
     // Check user type matching (customer-to-contractor only)
     const userIsContractor = (await base44.entities.Contractor.filter({ email: user.email }))?.length > 0;
     const otherIsContractor = otherUserType === 'contractor';
