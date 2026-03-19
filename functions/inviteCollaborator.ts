@@ -2,6 +2,14 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+
+    // Must be authenticated
+    const user = await base44.auth.me().catch(() => null);
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const {
       collaboration_id,
       contractor_email,
@@ -15,8 +23,6 @@ Deno.serve(async (req) => {
         { status: 400 }
       );
     }
-
-    const base44 = createClientFromRequest(req);
 
     // Check if contractor is payment compliant
     const contractors = await base44.entities.Contractor.filter({
