@@ -21,7 +21,7 @@ export default function Dashboard() {
       try {
         const currentUser = await base44.auth.me();
         setUser(currentUser);
-        if (!currentUser) { navigate('/'); return; }
+        if (!currentUser) { base44.auth.redirectToLogin(window.location.href); return; }
 
         const [contractors, customers, shops] = await Promise.all([
           base44.entities.Contractor.filter({ email: currentUser.email }),
@@ -37,7 +37,12 @@ export default function Dashboard() {
         setActiveProfile(primaryType);
       } catch (error) {
         console.error('Dashboard load error:', error);
-        navigate('/');
+        // Only redirect to login if it's an auth error, otherwise stay
+        if (error?.status === 401 || error?.status === 403) {
+          base44.auth.redirectToLogin(window.location.href);
+        } else {
+          navigate('/Home');
+        }
       } finally {
         setLoading(false);
       }
