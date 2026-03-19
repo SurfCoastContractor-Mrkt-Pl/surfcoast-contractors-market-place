@@ -18,8 +18,8 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleAuth = (destination = '/Dashboard') => {
-    base44.auth.redirectToLogin(destination);
+  const handleSignup = (destination) => {
+    window.location.href = destination;
   };
 
   return (
