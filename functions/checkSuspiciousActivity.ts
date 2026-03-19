@@ -9,7 +9,18 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    
+
+    // Require authentication — must be the customer themselves or internal service
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     const { customer_email, payment_method_id, ip_country } = await req.json();
 
     if (!customer_email) {
