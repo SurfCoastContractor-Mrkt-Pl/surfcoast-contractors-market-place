@@ -384,7 +384,7 @@ export default function BecomeContractor() {
         <h1 style={{ fontSize:"clamp(28px, 5vw, 48px)", fontWeight:"800", color:"#ffffff", margin:"0 0 12px", lineHeight:1.1, letterSpacing:"-1px", textShadow:"0 2px 24px rgba(0,0,0,0.5)" }}>Become a Contractor</h1>
         <p style={{ fontSize:"clamp(14px, 2.5vw, 17px)", color:"rgba(255,255,255,0.7)", margin:"0 0 24px", lineHeight:1.6 }}>Create your professional profile and start earning — free to join, get paid securely.</p>
         <div style={{ display:"flex", flexWrap:"wrap", gap:"16px", justifyContent:"center" }}>
-          {["Free to join", "Identity verified platform", "Direct client connections", "3% facilitation fee only"].map(item => (
+          {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
             <span key={item} style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"13px", color:"rgba(255,255,255,0.75)" }}>
               <CheckCircle style={{ width:"14px", height:"14px", color:"#4ade80", flexShrink:0 }} />
               {item}
@@ -787,7 +787,7 @@ export default function BecomeContractor() {
                   <div>
                     <h3 className="font-bold text-amber-900 mb-2">Platform Facilitation Fee</h3>
                     <p className="text-sm text-amber-800 leading-relaxed">
-                      A 3% facilitation fee is deducted from each completed job. This fee covers payment processing and platform maintenance. Example: a $1,000 job pays out $970 to the contractor. All liability terms are outlined in the <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a>.
+                      An 18% facilitation fee is deducted from each completed job. This fee covers payment processing and platform maintenance. Example: a $1,000 job pays out $820 to the contractor. All liability terms are outlined in the <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a>.
                     </p>
                   </div>
                 </div>
