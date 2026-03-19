@@ -28,41 +28,17 @@ Deno.serve(async (req) => {
         }, { status: 400 });
       }
 
-      // Call content moderation
-      try {
-        const moderationResp = await fetch(`${req.headers.get('origin')}/api/validateContentModeration`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-internal-service-key': Deno.env.get('INTERNAL_SERVICE_KEY') || '',
-          },
-          body: JSON.stringify({
-            content: line_of_work_other,
-            field_name: 'line_of_work_other'
-          }),
-        });
+      // Call content moderation via SDK
+      const modResult = await base44.asServiceRole.functions.invoke('validateContentModeration', {
+        content: line_of_work_other,
+        field_name: 'line_of_work_other'
+      });
 
-        if (!moderationResp.ok) {
-          const modError = await moderationResp.json();
-          return Response.json({ 
-            error: modError.message || 'Content did not pass moderation checks',
-            valid: false
-          }, { status: 400 });
-        }
-
-        const modResult = await moderationResp.json();
-        if (!modResult.valid) {
-          return Response.json({ 
-            error: modResult.error,
-            valid: false
-          }, { status: 400 });
-        }
-      } catch (e) {
-        console.error('Moderation check failed:', e.message);
+      if (!modResult?.valid) {
         return Response.json({ 
-          error: 'Unable to validate content at this time',
+          error: modResult?.error || 'Content did not pass moderation checks',
           valid: false
-        }, { status: 503 });
+        }, { status: 400 });
       }
     }
 
