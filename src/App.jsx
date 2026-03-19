@@ -48,9 +48,15 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
+      // Only redirect to login if NOT on a public page
+      const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup'];
+      const isPublicPath = publicPaths.some(p => window.location.pathname === p) ||
+        window.location.pathname.startsWith('/shop/') ||
+        window.location.pathname.startsWith('/MarketShopProfile/');
+      if (!isPublicPath) {
+        navigateToLogin();
+        return null;
+      }
     }
   }
 
