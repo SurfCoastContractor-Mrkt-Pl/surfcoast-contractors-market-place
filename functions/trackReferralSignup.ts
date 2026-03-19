@@ -2,13 +2,31 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+
+    // Must be authenticated — the referred user must be signing up themselves
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      // Store for email match check below
+      var callerEmail = user.email;
+    }
+
     const { referral_code, referred_email, referred_name } = await req.json();
 
     if (!referral_code || !referred_email) {
       return Response.json({ error: 'Missing referral_code or referred_email' }, { status: 400 });
     }
 
-    const base44 = createClientFromRequest(req);
+    // Prevent spoofing — referred_email must match the authenticated user (unless internal)
+    if (!isValidInternalCall && referred_email.toLowerCase() !== callerEmail.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: referred email must match your account' }, { status: 403 });
+    }
 
     // Find referral record by code
     const referrals = await base44.asServiceRole.entities.Referral.filter({
