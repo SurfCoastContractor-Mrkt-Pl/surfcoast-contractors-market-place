@@ -2,6 +2,19 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+
+    // Require authentication — only authenticated users (sending messages) or internal service calls
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     const { contractor_email, message_text } = await req.json();
 
     if (!contractor_email) {
@@ -10,8 +23,6 @@ Deno.serve(async (req) => {
         { status: 400 }
       );
     }
-
-    const base44 = createClientFromRequest(req);
 
     // Fetch contractor
     const contractors = await base44.asServiceRole.entities.Contractor.filter({
