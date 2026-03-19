@@ -122,14 +122,28 @@ export default function BecomeContractor() {
     },
     onSuccess: (data) => {
       setCreatedContractor(data);
+
+      base44.analytics.track({
+        eventName: 'contractor_profile_created',
+        properties: {
+          contractor_type: data?.contractor_type,
+          line_of_work: data?.line_of_work,
+          is_minor: data?.is_minor ?? false,
+          has_credentials: (data?.credential_documents?.length ?? 0) > 0,
+          location: data?.location,
+        },
+      });
+
       // If compliance_acknowledged is already true, skip to dashboard
       if (data?.compliance_acknowledged) {
+        base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
         setSuccess(true);
         setTimeout(() => {
           navigate(createPageUrl('ContractorAccount'));
         }, 2000);
       } else {
         // Show compliance acknowledgment screen
+        base44.analytics.track({ eventName: 'contractor_onboarding_compliance_shown' });
         setSuccess(true);
       }
     },
