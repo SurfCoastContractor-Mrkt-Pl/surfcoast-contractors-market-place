@@ -20,8 +20,8 @@ export default function Home() {
 
   const handleAuth = (role) => {
     const baseUrl = getAppBaseUrl();
-    const fromUrl = encodeURIComponent(`${baseUrl}/${role === "contractor" ? "ContractorDashboard" : "CustomerDashboard"}`);
-    window.location.href = `${baseUrl}/login?from_url=${fromUrl}`;
+    const nextUrl = `${baseUrl}/${role === "contractor" ? "Dashboard" : "Dashboard"}`;
+    base44.auth.redirectToLogin(nextUrl);
   };
 
   return (
