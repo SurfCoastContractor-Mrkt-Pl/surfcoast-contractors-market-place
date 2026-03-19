@@ -18,8 +18,8 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleAuth = () => {
-    base44.auth.redirectToLogin('/Dashboard');
+  const handleAuth = (destination = '/Dashboard') => {
+    base44.auth.redirectToLogin(destination);
   };
 
   return (
@@ -61,7 +61,7 @@ export default function Home() {
               <li>✓ Free 2-week trial</li>
               <li>✓ Secure payments</li>
             </ul>
-            <button onClick={() => handleAuth()} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
+            <button onClick={() => handleAuth('/FindContractors')} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
           </div>
 
           {/* Horizontal/Vertical OR Divider */}
