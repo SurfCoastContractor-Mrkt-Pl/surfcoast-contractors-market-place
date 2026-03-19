@@ -195,6 +195,20 @@ export default function BecomeContractor() {
     }
     
     setDobError('');
+
+    base44.analytics.track({
+      eventName: 'contractor_onboarding_form_submitted',
+      properties: {
+        contractor_type: formData.contractor_type,
+        line_of_work: formData.line_of_work,
+        is_minor: isMinor,
+        has_id_doc: !!formData.id_document_url,
+        has_face_photo: !!formData.face_photo_url,
+        skills_count: formData.skills.length,
+        certs_count: formData.certifications.length,
+      },
+    });
+
     const data = {
       ...formData,
       is_minor: isMinor,
