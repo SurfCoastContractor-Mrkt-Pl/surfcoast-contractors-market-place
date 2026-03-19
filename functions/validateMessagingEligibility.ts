@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -62,27 +62,29 @@ Deno.serve(async (req) => {
     let tier = 'quote'; // Default tier for quote requests ($1.75)
     if (latestPayment.amount === 1.50) {
       tier = 'timed'; // 10-minute session
+    } else if (latestPayment.amount === 1.75) {
+      tier = 'quote'; // Quote request - no follow-up messaging
     } else if (latestPayment.amount === 50) {
       tier = 'subscription'; // Monthly subscription
     }
 
     // Check if contractor is trying to message about a job with an accepted scope
-     if (userIsContractor && latestPayment.job_id) {
-       const acceptedScopes = await base44.entities.ScopeOfWork.filter({
-         job_id: latestPayment.job_id,
-         status: 'approved',
-         contractor_email: { $ne: user.email }
-       });
+    if (userIsContractor && latestPayment.job_id) {
+      const acceptedScopes = await base44.entities.ScopeOfWork.filter({
+        job_id: latestPayment.job_id,
+        status: 'approved',
+        contractor_email: { $ne: user.email }
+      });
 
-       if (acceptedScopes && acceptedScopes.length > 0) {
-         console.warn('Job already has accepted scope. Job:', latestPayment.job_id, 'Contractor:', user.email);
-         return Response.json({ 
-           allowed: false, 
-           reason: 'This job has already been accepted by another contractor',
-           tier
-         });
-       }
-     }
+      if (acceptedScopes && acceptedScopes.length > 0) {
+        console.warn('Job already has accepted scope. Job:', latestPayment.job_id, 'Contractor:', user.email);
+        return Response.json({ 
+          allowed: false, 
+          reason: 'This job has already been accepted by another contractor',
+          tier
+        });
+      }
+    }
 
     // For timed tier, check if session is still active
     if (tier === 'timed') {
@@ -97,7 +99,7 @@ Deno.serve(async (req) => {
     }
 
     // For subscription tier, verify active subscription exists
-    if (tier === 'subscription' && tier !== 'any') {
+    if (tier === 'subscription') {
       const subscription = await base44.asServiceRole.entities.Subscription.filter({
         user_email: user.email,
         status: 'active'

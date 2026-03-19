@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -42,10 +42,11 @@ Deno.serve(async (req) => {
       }, { status: 403 });
     }
 
-    // Update scope status to approved and store signature
+    // Update scope status to approved and store signature in dedicated field
     await base44.entities.ScopeOfWork.update(scope_id, {
       status: 'approved',
-      customer_notes: signature_url, // Store signature URL in notes field
+      customer_signature_url: signature_url,
+      customer_signed_scope_at: new Date().toISOString(),
     });
 
     // Send approval email to contractor
