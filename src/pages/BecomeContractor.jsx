@@ -308,16 +308,17 @@ export default function BecomeContractor() {
   };
 
 
+  const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
+
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
+      <div style={{ position:"fixed", inset:0, display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1628" }}>
+        <div style={{ width:"32px", height:"32px", border:"3px solid rgba(255,255,255,0.2)", borderTop:"3px solid #d97706", borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (success && createdContractor) {
-    // Show compliance acknowledgment if not already acknowledged
     if (!createdContractor.compliance_acknowledged) {
       return (
         <ComplianceAcknowledgment
@@ -335,55 +336,65 @@ export default function BecomeContractor() {
       );
     }
 
-    // Show success screen if already compliant
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full p-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+      <div style={{ position:"relative", minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1628" }}>
+        <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", zIndex:0 }} />
+        <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.75) 0%, rgba(10,22,40,0.85) 100%)", zIndex:1 }} />
+        <div style={{ position:"relative", zIndex:2, background:"rgba(10,22,40,0.6)", backdropFilter:"blur(20px)", border:"1px solid rgba(217,119,6,0.3)", borderRadius:"20px", padding:"48px 40px", maxWidth:"440px", width:"90%", textAlign:"center" }}>
+          <div style={{ width:"64px", height:"64px", borderRadius:"50%", background:"rgba(217,119,6,0.15)", border:"2px solid rgba(217,119,6,0.4)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px" }}>
+            <CheckCircle style={{ width:"32px", height:"32px", color:"#d97706" }} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Profile Created!</h2>
-          <p className="text-slate-600 mb-4">Your contractor profile is now live. Clients can now find and contact you.</p>
-          <p className="text-sm text-slate-500">Redirecting to your account...</p>
-        </Card>
+          <h2 style={{ fontSize:"26px", fontWeight:"800", color:"#ffffff", margin:"0 0 12px", letterSpacing:"-0.5px" }}>Profile Created!</h2>
+          <p style={{ color:"rgba(255,255,255,0.7)", marginBottom:"8px", lineHeight:"1.6" }}>Your contractor profile is now live. Clients can now find and contact you.</p>
+          <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.4)" }}>Redirecting to your account...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
+      <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
+      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.7) 0%, rgba(10,22,40,0.6) 40%, rgba(10,22,40,0.85) 100%)", zIndex:1 }} />
+
+      {/* Header */}
+      <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"12px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
+        <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration:'none' }}>
+          <span style={{ fontSize:"clamp(14px, 4vw, 17px)", fontWeight:"800", color:"#ffffff", letterSpacing:"-0.5px", lineHeight:1 }}>SurfCoast</span>
+          <span style={{ fontSize:"clamp(7px, 2vw, 10px)", fontWeight:"700", letterSpacing:"1.5px", color:"rgba(255,255,255,0.6)", textTransform:"uppercase", lineHeight:1, marginLeft:"8px" }}>MARKETPLACE</span>
+        </Link>
+        <div style={{ marginLeft:"auto", display:"flex", gap:"8px", alignItems:"center" }}>
+          <button onClick={() => navigate(-1)} style={{ color:"rgba(255,255,255,0.7)", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:"20px", padding:"6px 14px", fontSize:"13px", fontWeight:"600", cursor:"pointer", display:"flex", alignItems:"center", gap:"6px" }}>
+            <ArrowLeft style={{ width:"14px", height:"14px" }} /> Back
+          </button>
+        </div>
+      </header>
+
       {isPreview && (
-        <div className="bg-blue-600 text-white text-sm font-medium px-4 py-2 flex items-center justify-center gap-2">
+        <div style={{ position:"relative", zIndex:10, background:"rgba(29,111,164,0.9)", backdropFilter:"blur(8px)", color:"#fff", fontSize:"13px", fontWeight:"600", padding:"8px 16px", textAlign:"center", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
           👁 <strong>Admin Preview Mode</strong> — Form interactions work normally but submission will not save any data.
         </div>
       )}
-      {/* Header */}
-      <div className="relative py-14 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.58)'}}></div>
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-5">
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Link>
-          <div className="flex items-center gap-4">
-            <div className="w-13 h-13 rounded-xl flex items-center justify-center p-3" style={{backgroundColor: '#1E5A96'}}>
-              <HardHat className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Become a Contractor</h1>
-              <p className="text-white/75 mt-1">Create your professional profile and start earning</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-6 mt-8 pt-6 border-t border-white/20">
-             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Free to join</div>
-             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Identity verified platform</div>
-             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> Direct client connections</div>
-             <div className="flex items-center gap-2 text-white/80 text-sm"><CheckCircle className="w-4 h-4 text-green-400" /> 3% platform facilitation fee</div>
-           </div>
+
+      {/* Hero */}
+      <div style={{ position:"relative", zIndex:2, textAlign:"center", padding:"40px 16px 32px", maxWidth:"700px", margin:"0 auto", width:"100%" }}>
+        <div style={{ width:"56px", height:"56px", borderRadius:"16px", background:"rgba(217,119,6,0.15)", border:"2px solid rgba(217,119,6,0.4)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px" }}>
+          <HardHat style={{ width:"28px", height:"28px", color:"#d97706" }} />
+        </div>
+        <h1 style={{ fontSize:"clamp(28px, 5vw, 48px)", fontWeight:"800", color:"#ffffff", margin:"0 0 12px", lineHeight:1.1, letterSpacing:"-1px", textShadow:"0 2px 24px rgba(0,0,0,0.5)" }}>Become a Contractor</h1>
+        <p style={{ fontSize:"clamp(14px, 2.5vw, 17px)", color:"rgba(255,255,255,0.7)", margin:"0 0 24px", lineHeight:1.6 }}>Create your professional profile and start earning — free to join, get paid securely.</p>
+        <div style={{ display:"flex", flexWrap:"wrap", gap:"16px", justifyContent:"center" }}>
+          {["Free to join", "Identity verified platform", "Direct client connections", "3% facilitation fee only"].map(item => (
+            <span key={item} style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"13px", color:"rgba(255,255,255,0.75)" }}>
+              <CheckCircle style={{ width:"14px", height:"14px", color:"#4ade80", flexShrink:0 }} />
+              {item}
+            </span>
+          ))}
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Form container */}
+      <div style={{ position:"relative", zIndex:2, maxWidth:"720px", margin:"0 auto", width:"100%", padding:"0 16px 48px" }}>
         <form onSubmit={handleSubmit}>
           {/* Photo & Basic Info */}
           <Card className="p-6 md:p-8 mb-6">
