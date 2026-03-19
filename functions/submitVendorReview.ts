@@ -20,6 +20,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
+    // Prevent spoofing — reviewer_email must match authenticated user
+    if (reviewer_email.toLowerCase() !== user.email.toLowerCase()) {
+      return Response.json({ error: 'Forbidden: reviewer email must match your account' }, { status: 403 });
+    }
+
     if (![1, 2, 3, 4, 5].includes(rating)) {
       return Response.json({ error: 'Rating must be 1-5' }, { status: 400 });
     }
