@@ -3,8 +3,21 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    
-    // This function is called via service role only (from automation/backend)
+
+    // Allow internal service calls or authenticated contractors/admins who own the scope
+    const internalKey = req.headers.get('x-internal-service-key');
+    const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      // Ownership check happens after scope is fetched below
+      var callerEmail = user.email;
+      var callerRole = user.role;
+    }
+
     const { scope_id } = await req.json();
 
     // Fetch the scope to get folder details
