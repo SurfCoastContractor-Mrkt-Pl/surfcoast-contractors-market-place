@@ -235,10 +235,10 @@ SurfCoast Contractor Market Place."
 ```
 
 ### Platform Fee
-- 3% facilitation fee on completed jobs covers payment processing and platform maintenance only
+- 18% facilitation fee on completed jobs covers payment processing and platform maintenance only
 - SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages
 - All users engage entirely at their own risk and are solely liable for their agreements
-- Example: $1,000 job → contractor receives $970
+- Example: $1,000 job → contractor receives $820
 
 ### Trial
 - Free 2-week trial for both contractors and customers
