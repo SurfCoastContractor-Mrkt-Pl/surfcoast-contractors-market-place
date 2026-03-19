@@ -311,6 +311,8 @@ export default function BecomeContractor() {
           contractorId={createdContractor.id}
           contractorLocation={createdContractor.location}
           onComplete={() => {
+            base44.analytics.track({ eventName: 'contractor_onboarding_compliance_accepted' });
+            base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
             setSuccess(false);
             setTimeout(() => {
               navigate(createPageUrl('ContractorAccount'));
