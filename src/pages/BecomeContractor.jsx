@@ -801,7 +801,7 @@ export default function BecomeContractor() {
                     <div>
                       <h3 className="font-bold text-red-900">Single-Person Freelancer Policy</h3>
                       <p className="text-sm text-red-700 mt-1 leading-relaxed">
-                        By registering on ContractorHub, you confirm that you are a single individual freelancer. 
+                        By registering on SurfCoast Marketplace, you confirm that you are a single individual freelancer. 
                         Companies, businesses, partnerships, crews, or any group of two or more persons are <strong>strictly prohibited</strong>. 
                         Any contractor found operating with workers, subcontractors, or associates will be <strong>permanently banned</strong> from the platform without notice.
                       </p>
@@ -819,8 +819,8 @@ export default function BecomeContractor() {
                     </label>
                   </div>
                 </div>
-                </div>
-                </div>
+            </div>
+          </div>
 
           <button
             type="submit"
