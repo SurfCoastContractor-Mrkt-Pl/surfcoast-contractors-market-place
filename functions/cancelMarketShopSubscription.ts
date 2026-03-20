@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       stripe_customer_id: null
     });
 
-    console.log(`Shop ${shopId} (${shop.data.shop_name}) subscription cancelled`);
+    console.log(`Shop ${shopId} (${shop.shop_name}) subscription cancelled`);
 
     return Response.json({
       success: true,
