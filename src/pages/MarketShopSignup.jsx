@@ -116,7 +116,8 @@ export default function MarketShopSignup() {
           </button>
 
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">Choose Your Market</h1>
+            <p className="text-lg text-slate-500 mb-2 font-medium">Welcome to the Marketplace</p>
+            <h1 className="text-4xl font-bold text-slate-900 mb-3">Pick Your Market</h1>
             <p className="text-lg text-slate-600">Select the type of marketplace that fits your business</p>
           </div>
 
