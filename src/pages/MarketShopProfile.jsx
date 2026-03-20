@@ -235,9 +235,9 @@ export default function MarketShopProfile() {
   const typeColor = SHOP_TYPE_COLORS[shop.shop_type] || SHOP_TYPE_COLORS.swap_meet;
 
   const bannerBg = shop.banner_url 
-    ? { backgroundImage: `url(${shop.banner_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    ? { backgroundImage: `url(${shop.banner_url})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }
     : shop.shop_type === 'farmers_market'
-      ? { backgroundImage: 'url(https://images.unsplash.com/photo-1488459716781-6918f33427d7?w=1200&h=400&fit=crop&blend=https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=1200&h=400&fit=crop&blend-mode=overlay)', backgroundSize: 'cover', backgroundPosition: 'center' }
+      ? { backgroundImage: 'url(https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/5b60cd4d6_StockCake-Fresh_Market_Produce-1240765-standard.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }
       : shop.shop_type === 'swap_meet'
         ? { backgroundImage: 'url(https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=1200&h=400&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }
         : { background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' };
