@@ -17,11 +17,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id required' }, { status: 400 });
     }
 
-    const contractors = await base44.entities.Contractor.filter({ email: user.email });
+    const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
     const contractor = contractors?.[0];
 
-    if (!contractor || contractor.id !== contractor_id) {
+    if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    // Verify the requesting user owns this contractor profile
+    if (contractor.email !== user.email) {
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
     if (!contractor.stripe_connected_account_id) {
@@ -33,7 +38,7 @@ Deno.serve(async (req) => {
     const charges_enabled = account.charges_enabled ?? false;
     const payouts_enabled = account.payouts_enabled ?? false;
 
-    await base44.entities.Contractor.update(contractor.id, {
+    await base44.asServiceRole.entities.Contractor.update(contractor.id, {
       stripe_account_charges_enabled: charges_enabled,
       stripe_account_setup_complete: charges_enabled,
     });
@@ -41,6 +46,6 @@ Deno.serve(async (req) => {
     return Response.json({ charges_enabled, payouts_enabled });
   } catch (error) {
     console.error('syncContractorStripeStatus error:', error.message);
-    return Response.json({ error: 'Failed to sync Stripe status' }, { status: 500 });
+    return Response.json({ error: error.message || String(error) }, { status: 500 });
   }
 });
