@@ -95,12 +95,23 @@ export default function ProfileCompletionWidget({ contractor }) {
             ) : (
               <Circle className="w-4 h-4 shrink-0" style={{ color: 'rgba(255,255,255,0.25)' }} />
             )}
-            <span
-              className="text-xs"
-              style={{ color: item.done ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)' }}
-            >
-              {item.label}
-            </span>
+            {item.isStripe && !item.done ? (
+              <button
+                onClick={() => handleStripeSetup(contractor)}
+                className="text-xs flex items-center gap-1 underline underline-offset-2"
+                style={{ color: '#f59e0b' }}
+              >
+                Bank account (Stripe)
+                <ExternalLink className="w-3 h-3" />
+              </button>
+            ) : (
+              <span
+                className="text-xs"
+                style={{ color: item.done ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)' }}
+              >
+                {item.label}
+              </span>
+            )}
           </li>
         ))}
       </ul>
