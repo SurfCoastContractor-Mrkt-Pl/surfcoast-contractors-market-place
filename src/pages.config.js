@@ -48,8 +48,6 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AccountRecovery from './pages/AccountRecovery';
-import Admin from './pages/Admin';
-import AdminDashboard from './pages/AdminDashboard';
 import AdminPreview from './pages/AdminPreview';
 import AgentDemo from './pages/AgentDemo';
 import BadgeShowcase from './pages/BadgeShowcase';
