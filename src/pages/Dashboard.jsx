@@ -63,7 +63,7 @@ export default function Dashboard() {
       }
     };
     load();
-  }, [navigate]);
+  }, []);
 
   if (loading) {
     return (
