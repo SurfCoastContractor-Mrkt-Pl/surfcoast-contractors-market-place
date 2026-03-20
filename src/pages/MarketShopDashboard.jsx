@@ -159,6 +159,26 @@ export default function MarketShopDashboard() {
         </div>
       </div>
 
+      {/* Subscription Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <MarketShopSubscription shop={shop} />
+      </div>
+
+      {/* Inquiries Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <MarketShopInquiries shop={shop} />
+      </div>
+
+      {/* Photo Gallery Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
+      </div>
+
+      {/* Market Schedule Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
+      </div>
+
       {/* Tab Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
         <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 lg:p-8">
@@ -182,26 +202,6 @@ export default function MarketShopDashboard() {
           )}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
         </div>
-      </div>
-
-      {/* Market Schedule Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
-      </div>
-
-      {/* Photo Gallery Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
-      </div>
-
-      {/* Inquiries Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <MarketShopInquiries shop={shop} />
-      </div>
-
-      {/* Subscription Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <MarketShopSubscription shop={shop} />
       </div>
 
       {/* Share Your Listing Section - Bottom */}
