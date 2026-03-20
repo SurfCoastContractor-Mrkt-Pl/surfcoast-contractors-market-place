@@ -21,6 +21,7 @@ import MarketDirectory from './pages/MarketDirectory';
 import MarketShopProfile from './pages/MarketShopProfile';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import PricingGuide from './pages/PricingGuide';
 import ReferralSignup from './pages/ReferralSignup';
 import RegionBlocked from './pages/RegionBlocked';
 
@@ -103,6 +104,7 @@ const AuthenticatedApp = () => {
       <Route path="/MarketShopProfile/:id" element={<MarketShopProfile />} />
       <Route path="/Terms" element={<LayoutWrapper currentPageName="Terms"><Terms /></LayoutWrapper>} />
       <Route path="/PrivacyPolicy" element={<LayoutWrapper currentPageName="PrivacyPolicy"><PrivacyPolicy /></LayoutWrapper>} />
+      <Route path="/Pricing" element={<LayoutWrapper currentPageName="Pricing"><PricingGuide /></LayoutWrapper>} />
       <Route path="/ReferralSignup" element={<ReferralSignup />} />
       <Route path="/RegionBlocked" element={<RegionBlocked />} />
       <Route path="*" element={<PageNotFound />} />
