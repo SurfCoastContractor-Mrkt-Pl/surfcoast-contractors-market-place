@@ -11,15 +11,17 @@ import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
 
 export default function ContractorDashboard() {
-   const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [payoutLoading, setPayoutLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-   useEffect(() => {
-     const getUser = async () => {
-       const currentUser = await base44.auth.me();
-       setUser(currentUser);
-     };
-     getUser();
-   }, []);
+  useEffect(() => {
+    const getUser = async () => {
+      const currentUser = await base44.auth.me();
+      setUser(currentUser);
+    };
+    getUser();
+  }, []);
 
    const { data: contractorProfile } = useQuery({
      queryKey: ['contractor-profile-dashboard', user?.email],
