@@ -114,6 +114,7 @@ Deno.serve(async (req) => {
     return Response.json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('Subscription checkout error:', error.message);
-    return Response.json({ error: 'Failed to create subscription checkout' }, { status: 500 });
+    console.error('Full error:', error);
+    return Response.json({ error: error.message || 'Failed to create subscription checkout' }, { status: 500 });
   }
 });
