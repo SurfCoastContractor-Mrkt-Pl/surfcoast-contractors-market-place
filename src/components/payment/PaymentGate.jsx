@@ -27,7 +27,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         throw new Error('Quote details are missing. Please go back and select a project.');
       }
 
-      // Check for duplicate payment
+      // Check for duplicate confirmed payment
       const existing = await base44.entities.Payment.filter({
         payer_email: data.email,
         payer_type: payerType,
@@ -40,23 +40,35 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         return existing[0];
       }
 
-      const idempotencyKey = `${data.email}_${contractorId}_${tier}_${Date.now()}`;
+      // Determine amount in cents
+      const amountCents = tier === 'timed' ? 150 : 175;
 
-      const response = await base44.functions.invoke('createPaymentCheckout', {
-        payerEmail: data.email,
-        payerName: data.name,
-        payerType,
-        contractorId: contractorId || null,
-        contractorEmail: contractorEmail || null,
-        contractorName: contractorName || null,
-        tier,
-        priceId,
-        quoteMetaParam,
-        idempotencyKey,
-        paymentMethodId: null,
+      // Create the Payment record first
+      const paymentRecord = await base44.entities.Payment.create({
+        payer_email: data.email,
+        payer_name: data.name,
+        payer_type: payerType,
+        contractor_id: contractorId || null,
+        contractor_email: contractorEmail || null,
+        amount: amountCents / 100,
+        status: 'pending',
+        purpose: tier === 'timed'
+          ? `10-minute chat with ${contractorName}`
+          : `Quote request from ${contractorName}`,
+        idempotency_key: `${data.email}_${contractorId}_${tier}_${Date.now()}`,
       });
 
-      if (!response.data?.url) {
+      // Call createJobPayment with the new payload
+      const response = await base44.functions.invoke('createJobPayment', {
+        payment_id: paymentRecord.id,
+        amount_cents: amountCents,
+        contractor_id: contractorId || null,
+        customer_email: data.email,
+        customer_name: data.name,
+        purpose: tier === 'timed' ? 'chat' : 'estimate',
+      });
+
+      if (!response.data?.checkout_url) {
         throw new Error('Failed to create checkout session');
       }
 
@@ -65,7 +77,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         throw new Error('Checkout not available in iframe');
       }
 
-      window.location.href = response.data.url;
+      window.location.href = response.data.checkout_url;
       return response.data;
     },
     onSuccess: (record) => {
