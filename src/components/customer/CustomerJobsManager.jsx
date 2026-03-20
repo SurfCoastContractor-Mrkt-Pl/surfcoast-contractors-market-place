@@ -12,7 +12,7 @@ import {
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import { Briefcase, MapPin, DollarSign, Plus, Pencil, Trash2, X, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Briefcase, MapPin, DollarSign, Plus, Pencil, Trash2, X, Check, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react';
 
 function JobEditForm({ job, onSave, onCancel }) {
   const [form, setForm] = useState({
@@ -99,6 +99,7 @@ export default function CustomerJobsManager({ userEmail, isAdminView = false }) 
   const queryClient = useQueryClient();
   const [editingId, setEditingId] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
+  const [savedJobId, setSavedJobId] = useState(null);
 
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ['customer-jobs-manage', userEmail],
@@ -108,10 +109,11 @@ export default function CustomerJobsManager({ userEmail, isAdminView = false }) 
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Job.update(id, data),
-    onSuccess: () => {
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['customer-jobs-manage', userEmail] });
       queryClient.invalidateQueries({ queryKey: ['customer-jobs', userEmail] });
       setEditingId(null);
+      setSavedJobId(id);
     },
   });
 
@@ -157,6 +159,23 @@ export default function CustomerJobsManager({ userEmail, isAdminView = false }) 
 
   return (
     <div className="space-y-3">
+      {savedJobId && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start justify-between">
+          <div className="flex items-start gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-green-900">Changes Saved</p>
+              <p className="text-sm text-green-700">Your job posting has been updated successfully.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setSavedJobId(null)}
+            className="text-green-600 hover:text-green-700 flex-shrink-0"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate-500">{jobs.length} job posting{jobs.length !== 1 ? 's' : ''}</p>
       </div>
