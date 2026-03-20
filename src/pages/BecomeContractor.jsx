@@ -320,6 +320,20 @@ export default function BecomeContractor() {
     );
   }
 
+  // Step: Stripe Connect Payout Setup
+  if (showStripeConnect && createdContractor) {
+    return (
+      <StripeConnectOnboarding
+        contractor={createdContractor}
+        onComplete={() => {
+          base44.analytics.track({ eventName: 'contractor_onboarding_stripe_connect_completed' });
+          base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
+          navigate(createPageUrl('ContractorAccount'));
+        }}
+      />
+    );
+  }
+
   if (success && createdContractor) {
     if (!createdContractor.compliance_acknowledged) {
       return (
@@ -328,29 +342,24 @@ export default function BecomeContractor() {
           contractorLocation={createdContractor.location}
           onComplete={() => {
             base44.analytics.track({ eventName: 'contractor_onboarding_compliance_accepted' });
-            base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
+            // After compliance → show Stripe Connect step
+            setShowStripeConnect(true);
             setSuccess(false);
-            setTimeout(() => {
-              navigate(createPageUrl('ContractorAccount'));
-            }, 1000);
           }}
         />
       );
     }
 
+    // Compliance already done, go straight to Stripe Connect
     return (
-      <div style={{ position:"relative", minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1628" }}>
-        <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", zIndex:0 }} />
-        <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.75) 0%, rgba(10,22,40,0.85) 100%)", zIndex:1 }} />
-        <div style={{ position:"relative", zIndex:2, background:"rgba(10,22,40,0.6)", backdropFilter:"blur(20px)", border:"1px solid rgba(217,119,6,0.3)", borderRadius:"20px", padding:"48px 40px", maxWidth:"440px", width:"90%", textAlign:"center" }}>
-          <div style={{ width:"64px", height:"64px", borderRadius:"50%", background:"rgba(217,119,6,0.15)", border:"2px solid rgba(217,119,6,0.4)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px" }}>
-            <CheckCircle style={{ width:"32px", height:"32px", color:"#d97706" }} />
-          </div>
-          <h2 style={{ fontSize:"26px", fontWeight:"800", color:"#ffffff", margin:"0 0 12px", letterSpacing:"-0.5px" }}>Profile Created!</h2>
-          <p style={{ color:"rgba(255,255,255,0.7)", marginBottom:"8px", lineHeight:"1.6" }}>Your contractor profile is now live. Clients can now find and contact you.</p>
-          <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.4)" }}>Redirecting to your account...</p>
-        </div>
-      </div>
+      <StripeConnectOnboarding
+        contractor={createdContractor}
+        onComplete={() => {
+          base44.analytics.track({ eventName: 'contractor_onboarding_stripe_connect_completed' });
+          base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
+          navigate(createPageUrl('ContractorAccount'));
+        }}
+      />
     );
   }
 
