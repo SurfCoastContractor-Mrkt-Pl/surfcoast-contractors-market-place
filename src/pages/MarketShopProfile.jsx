@@ -237,9 +237,9 @@ export default function MarketShopProfile() {
   const bannerBg = shop.banner_url 
     ? { backgroundImage: `url(${shop.banner_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
     : shop.shop_type === 'farmers_market'
-      ? { background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }
+      ? { backgroundImage: 'url(https://images.unsplash.com/photo-1488459716781-6918f33427d7?w=1200&h=400&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }
       : shop.shop_type === 'swap_meet'
-        ? { background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }
+        ? { backgroundImage: 'url(https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=1200&h=400&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }
         : { background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' };
 
   return (
