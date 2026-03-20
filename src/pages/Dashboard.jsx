@@ -23,10 +23,11 @@ export default function Dashboard() {
         setUser(currentUser);
         if (!currentUser) { base44.auth.redirectToLogin('/Dashboard'); return; }
 
+        // Fetch each independently so one failure doesn't block the others
         const [contractors, customers, shops] = await Promise.all([
-          base44.entities.Contractor.filter({ email: currentUser.email }),
-          base44.entities.CustomerProfile.filter({ email: currentUser.email }),
-          base44.entities.MarketShop.filter({ email: currentUser.email }),
+          base44.entities.Contractor.filter({ email: currentUser.email }).catch(() => []),
+          base44.entities.CustomerProfile.filter({ email: currentUser.email }).catch(() => []),
+          base44.entities.MarketShop.filter({ email: currentUser.email }).catch(() => []),
         ]);
 
         const hasContractor = contractors && contractors.length > 0;
@@ -37,11 +38,13 @@ export default function Dashboard() {
         setActiveProfile(primaryType);
       } catch (error) {
         console.error('Dashboard load error:', error);
-        // Only redirect to login if it's an auth error
         if (error?.status === 401 || error?.status === 403) {
           base44.auth.redirectToLogin('/Dashboard');
+        } else {
+          // Non-auth error: default to customer view so something renders
+          setActiveProfile('customer');
+          setProfiles({ customer: true, contractor: false, marketshop: false, primaryType: 'customer', hasMarketShop: false });
         }
-        // For other errors, just stop loading and show the page (don't navigate away)
       } finally {
         setLoading(false);
       }
