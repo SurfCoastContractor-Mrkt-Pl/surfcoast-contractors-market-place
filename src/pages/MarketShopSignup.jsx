@@ -62,6 +62,8 @@ export default function MarketShopSignup() {
     tiktok_url: '',
     gallery_images: []
   });
+  const [createdShop, setCreatedShop] = useState(null);
+  const [showPaymentSelector, setShowPaymentSelector] = useState(false);
 
   // MUST be before any conditional returns (Rules of Hooks)
   // Auto-populate from logged-in user on mount
