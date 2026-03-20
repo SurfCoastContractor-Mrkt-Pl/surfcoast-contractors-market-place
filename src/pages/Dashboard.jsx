@@ -37,12 +37,11 @@ export default function Dashboard() {
         setActiveProfile(primaryType);
       } catch (error) {
         console.error('Dashboard load error:', error);
-        // Only redirect to login if it's an auth error, otherwise stay
+        // Only redirect to login if it's an auth error
         if (error?.status === 401 || error?.status === 403) {
           base44.auth.redirectToLogin('/Dashboard');
-        } else {
-          navigate('/Home');
         }
+        // For other errors, just stop loading and show the page (don't navigate away)
       } finally {
         setLoading(false);
       }
