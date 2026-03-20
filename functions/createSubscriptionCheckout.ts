@@ -6,11 +6,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const body = await req.json();
-    const { priceId, email, userType, paymentMethodId } = body;
-
-    if (!priceId || !email || !userType) {
-      return Response.json({ error: 'Missing required fields: priceId, email, userType' }, { status: 400 });
-    }
+    let { priceId, email, userType, paymentMethodId, shop_id, payment_model } = body;
 
     const base44 = createClientFromRequest(req);
 
@@ -19,6 +15,27 @@ Deno.serve(async (req) => {
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    // Handle MarketShop checkout (new format)
+    if (shop_id && payment_model) {
+      email = user.email;
+      userType = 'market_vendor';
+      
+      // Map payment model to price ID
+      const priceMap = {
+        subscription: Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID'),
+        facilitation: Deno.env.get('STRIPE_VENDOR_LISTING_PRICE_ID'),
+      };
+      
+      priceId = priceMap[payment_model];
+      if (!priceId) {
+        console.error(`Invalid payment model: ${payment_model}`);
+        return Response.json({ error: 'Invalid payment model' }, { status: 400 });
+      }
+    } else if (!priceId || !email || !userType) {
+      return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
     if (user.email.toLowerCase() !== email.toLowerCase()) {
       return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
     }
