@@ -207,6 +207,24 @@ export default function MarketShopSignup() {
     }));
   };
 
+  const isFormValid = () => {
+    // If linked account, only shop_name is required (rest is pre-filled)
+    if (linkedProfile) {
+      return !!formData.shop_name.trim();
+    }
+    // If no linked account, all required fields must be filled
+    return !!(
+      formData.shop_name.trim() &&
+      formData.owner_name.trim() &&
+      formData.email.trim() &&
+      formData.phone.trim() &&
+      formData.city.trim() &&
+      formData.state.trim() &&
+      formData.zip.trim() &&
+      formData.description.trim()
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitLoading(true);
