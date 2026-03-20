@@ -26,30 +26,42 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const user = await base44.auth.me();
+        let user = null;
+        try {
+          user = await base44.auth.me();
+        } catch (authErr) {
+          console.warn('AdminDashboard: auth.me() failed:', authErr);
+        }
+
+        console.log('AdminDashboard: user =', user, '| role =', user?.role);
+
         if (!user) {
           base44.auth.redirectToLogin('/admin');
+          setLoading(false);
           return;
         }
+
         if (user.role !== 'admin') {
+          console.warn('AdminDashboard: access denied — role is:', user.role);
           setIsAdmin(false);
           setLoading(false);
           return;
         }
+
         setIsAdmin(true);
-        
+
         // Load data
         const [v, c, r] = await Promise.all([
           base44.entities.MarketShop.list('-created_date', 1000),
           base44.entities.Contractor.list('-created_date', 1000),
           base44.entities.VendorReview.list('-created_date', 1000),
         ]);
-        
+
         setVendors(v || []);
         setContractors(c || []);
         setReviews(r || []);
       } catch (err) {
-        console.error(err);
+        console.error('AdminDashboard: unexpected error:', err);
       } finally {
         setLoading(false);
       }
