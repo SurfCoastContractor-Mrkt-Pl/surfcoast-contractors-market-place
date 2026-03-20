@@ -107,10 +107,10 @@ export default function ShareYourListing({ shop }) {
       </div>
 
       {/* Pro Tip */}
-      <div className="rounded-lg bg-slate-800 border border-slate-700 p-4 flex items-start gap-3">
-        <Lightbulb className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-slate-300">
-          <span className="font-semibold text-amber-400">💡 Pro tip:</span> Add your SurfCoast link to ALL your social media bios to get the most visibility.
+      <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 flex items-start gap-3">
+        <Lightbulb className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+        <p className="text-sm text-amber-900">
+          <span className="font-semibold">💡 Pro tip:</span> Add your SurfCoast link to ALL your social media bios to get the most visibility.
         </p>
       </div>
     </div>
