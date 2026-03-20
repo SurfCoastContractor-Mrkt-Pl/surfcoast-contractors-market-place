@@ -26,6 +26,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (!isAuth) {
+          base44.auth.redirectToLogin('/admin');
+          return;
+        }
         const user = await base44.auth.me();
         if (!user || user.role !== 'admin') {
           setIsAdmin(false);
