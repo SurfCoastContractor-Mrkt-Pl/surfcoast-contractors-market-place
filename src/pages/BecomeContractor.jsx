@@ -52,6 +52,7 @@ export default function BecomeContractor() {
     });
   }, [isPreview]);
   const [createdContractor, setCreatedContractor] = useState(null);
+  const [showStripeConnect, setShowStripeConnect] = useState(false);
   const [newCert, setNewCert] = useState('');
   const [newSkill, setNewSkill] = useState('');
   const [uploadingId, setUploadingId] = useState(false);
