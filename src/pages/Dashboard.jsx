@@ -11,10 +11,23 @@ import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
   const [activeProfile, setActiveProfile] = useState(null);
-   const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: false });
-   const [loading, setLoading] = useState(true);
-   const [user, setUser] = useState(null);
-   const navigate = useNavigate();
+  const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: false });
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // Must be declared before any conditional returns (Rules of Hooks)
+  const { data: stripeAccounts = [] } = useQuery({
+    queryKey: ['stripe-accounts-admin'],
+    queryFn: () => base44.entities.Contractor.filter({ stripe_account_setup_complete: true }),
+    enabled: !!profiles.primaryType && user?.role === 'admin',
+  });
+
+  const { data: lockedAccounts = [] } = useQuery({
+    queryKey: ['locked-accounts-admin'],
+    queryFn: () => base44.entities.Contractor.filter({ account_locked: true }),
+    enabled: !!profiles.primaryType && user?.role === 'admin',
+  });
 
   useEffect(() => {
     const load = async () => {
