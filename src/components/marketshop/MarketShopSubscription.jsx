@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2, Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function MarketShopSubscription({ shop }) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(shop.subscription_status !== 'active');
@@ -30,17 +32,8 @@ export default function MarketShopSubscription({ shop }) {
     }
   };
 
-  const handleManageBilling = async () => {
-    setLoading(true);
-    try {
-      const res = await base44.functions.invoke('getVendorBillingPortal', { shop_id: shop.id });
-      window.open(res.data.portal_url, '_blank');
-    } catch (err) {
-      console.error(err);
-      alert('Failed to open billing portal');
-    } finally {
-      setLoading(false);
-    }
+  const handleManageBilling = () => {
+    navigate('/MarketShopBillingManagement');
   };
 
   const handleSwitchModel = async (newModel) => {
@@ -116,10 +109,9 @@ export default function MarketShopSubscription({ shop }) {
             <p className="text-xs sm:text-sm text-red-700 mt-1">Update your payment method to keep your listing active.</p>
             <button
               onClick={handleManageBilling}
-              disabled={loading}
-              className="mt-3 px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 disabled:opacity-50"
+              className="mt-3 px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700"
             >
-              {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Update Payment Method'}
+              Update Payment Method
             </button>
           </div>
         </div>
@@ -222,10 +214,9 @@ export default function MarketShopSubscription({ shop }) {
             <>
               <button
                 onClick={handleManageBilling}
-                disabled={loading}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 min-h-[44px]"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 min-h-[44px]"
               >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
+                <ExternalLink className="w-4 h-4" />
                 Manage Billing
               </button>
               <button
