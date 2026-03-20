@@ -184,18 +184,7 @@ export default function MarketShopDashboard() {
         <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
       </div>
 
-      {/* Subscription Warning */}
-      {shop.subscription_status !== 'active' && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" strokeWidth={1.5} />
-            <div>
-              <h3 className="font-semibold text-amber-900">Subscription Inactive</h3>
-              <p className="text-sm text-amber-800 mt-1">Your MarketShop subscription is not active. Upgrade your subscription to access full features.</p>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Tab Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
