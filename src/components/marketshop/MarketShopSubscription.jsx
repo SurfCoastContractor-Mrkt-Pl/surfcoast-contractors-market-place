@@ -6,6 +6,29 @@ export default function MarketShopSubscription({ shop }) {
   const [loading, setLoading] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(shop.subscription_status !== 'active');
+  const [selectedModel, setSelectedModel] = useState(null);
+
+  const handleCheckout = async (model) => {
+    if (window.self !== window.top) {
+      alert('Checkout must be opened from a published app. Please visit the app directly.');
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      const res = await base44.functions.invoke('createSubscriptionCheckout', {
+        shop_id: shop.id,
+        payment_model: model,
+      });
+      if (res.data?.checkout_url) {
+        window.location.href = res.data.checkout_url;
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to start checkout. Please try again.');
+      setLoading(false);
+    }
+  };
 
   const handleManageBilling = async () => {
     setLoading(true);
@@ -15,6 +38,23 @@ export default function MarketShopSubscription({ shop }) {
     } catch (err) {
       console.error(err);
       alert('Failed to open billing portal');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSwitchModel = async (newModel) => {
+    setLoading(true);
+    try {
+      await base44.functions.invoke('handlePaymentModelSwitch', {
+        shop_id: shop.id,
+        new_model: newModel,
+      });
+      alert(`Switched to ${newModel} model. Changes take effect next billing cycle.`);
+      setShowModelSelector(false);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to switch payment model. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -91,10 +131,21 @@ export default function MarketShopSubscription({ shop }) {
           <p className="text-sm font-semibold text-slate-900 mb-4">Choose Your Payment Model</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
             {/* Subscription Model */}
-            <div className="border-2 border-blue-200 rounded-lg p-3 sm:p-4 cursor-pointer hover:bg-blue-50 transition">
+            <button
+              onClick={() => setSelectedModel('subscription')}
+              className={`border-2 rounded-lg p-3 sm:p-4 text-left transition ${
+                selectedModel === 'subscription'
+                  ? 'border-blue-600 bg-blue-50'
+                  : 'border-blue-200 hover:bg-blue-50'
+              }`}
+            >
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full border-2 border-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3 h-3 text-blue-600" />
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                  selectedModel === 'subscription'
+                    ? 'border-blue-600 bg-blue-600'
+                    : 'border-blue-200'
+                }`}>
+                  {selectedModel === 'subscription' && <Check className="w-3 h-3 text-white" />}
                 </div>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">Subscription</p>
@@ -102,25 +153,40 @@ export default function MarketShopSubscription({ shop }) {
                   <p className="text-xs text-slate-600 mt-2">• Unlimited listings<br/>• 0% transaction fee<br/>• Keep 100% of sales</p>
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Facilitation Model */}
-            <div className="border-2 border-slate-300 rounded-lg p-3 sm:p-4 cursor-pointer hover:bg-slate-50 transition">
+            <button
+              onClick={() => setSelectedModel('facilitation')}
+              className={`border-2 rounded-lg p-3 sm:p-4 text-left transition ${
+                selectedModel === 'facilitation'
+                  ? 'border-blue-600 bg-blue-50'
+                  : 'border-slate-300 hover:bg-slate-50'
+              }`}
+            >
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full border-2 border-slate-400 flex-shrink-0 mt-0.5"></div>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                  selectedModel === 'facilitation'
+                    ? 'border-blue-600 bg-blue-600'
+                    : 'border-slate-400'
+                }`}>
+                  {selectedModel === 'facilitation' && <Check className="w-3 h-3 text-white" />}
+                </div>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">Facilitation Fee</p>
                   <p className="text-lg font-bold text-slate-900 mt-1">5% per sale</p>
                   <p className="text-xs text-slate-600 mt-2">• No monthly fee<br/>• Pay only on sales<br/>• Flexible pricing</p>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
           <button
-            onClick={() => setShowModelSelector(false)}
-            className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700"
+            onClick={() => selectedModel && handleCheckout(selectedModel)}
+            disabled={!selectedModel || loading}
+            className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] flex items-center justify-center gap-2"
           >
-            Continue
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            Start Subscription
           </button>
         </div>
       )}
@@ -152,21 +218,39 @@ export default function MarketShopSubscription({ shop }) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
-          <button
-            onClick={handleManageBilling}
-            disabled={loading}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 min-h-[44px]"
-          >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
-            Manage Billing
-          </button>
-          {shop.subscription_status !== 'cancelled' && (
+          {shop.subscription_status === 'active' && (
+            <>
+              <button
+                onClick={handleManageBilling}
+                disabled={loading}
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 min-h-[44px]"
+              >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
+                Manage Billing
+              </button>
+              <button
+                onClick={() => setShowModelSelector(true)}
+                className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-blue-600 text-blue-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-50 min-h-[44px]"
+              >
+                Switch Payment Model
+              </button>
+              <button
+                onClick={() => setShowCancelModal(true)}
+                className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-red-600 text-red-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-red-50 min-h-[44px]"
+              >
+                <Ban className="w-4 h-4" />
+                Cancel
+              </button>
+            </>
+          )}
+          {shop.subscription_status === 'cancelled' && (
             <button
-              onClick={() => setShowCancelModal(true)}
-              className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-red-600 text-red-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-red-50 min-h-[44px]"
+              onClick={() => setShowModelSelector(true)}
+              disabled={loading}
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-green-700 disabled:opacity-50 min-h-[44px] flex-1"
             >
-              <Ban className="w-4 h-4" />
-              Cancel Subscription
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Renew Subscription
             </button>
           )}
         </div>
