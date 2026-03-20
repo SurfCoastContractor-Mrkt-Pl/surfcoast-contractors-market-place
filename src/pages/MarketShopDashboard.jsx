@@ -103,7 +103,14 @@ export default function MarketShopDashboard() {
   const status = getShopStatus(shop);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50" style={{
+      backgroundImage: 'url(https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/a3bd7c581_StockCake-Farmers_Market_Display-1240764-standard.jpg)',
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="relative">
       {/* Profile Switcher */}
       <ProfileSwitcher
         activeProfile="marketshop"
@@ -207,6 +214,7 @@ export default function MarketShopDashboard() {
       {/* Share Your Listing Section - Bottom */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
         <ShareYourListing shop={shop} />
+      </div>
       </div>
     </div>
   );

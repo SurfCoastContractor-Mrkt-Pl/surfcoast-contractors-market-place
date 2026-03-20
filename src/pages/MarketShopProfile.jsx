@@ -245,7 +245,7 @@ export default function MarketShopProfile() {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
       {/* Banner */}
-      <div className="relative h-40 sm:h-64 md:h-80" style={bannerBg}>
+      <div className="relative min-h-screen" style={bannerBg}>
         <div className="absolute inset-0 bg-black/40" />
         
         {/* Back Button */}
@@ -258,7 +258,7 @@ export default function MarketShopProfile() {
       </div>
 
       {/* Content */}
-      <div className="relative -mt-8 sm:-mt-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 bg-slate-900/95">
         {/* Profile Header */}
         <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
