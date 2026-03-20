@@ -91,8 +91,6 @@ import __Layout from './Layout.jsx';
 
 export const PAGES = {
     "AccountRecovery": AccountRecovery,
-    "Admin": Admin,
-    "AdminDashboard": AdminDashboard,
     "AdminPreview": AdminPreview,
     "AgentDemo": AgentDemo,
     "BadgeShowcase": BadgeShowcase,
