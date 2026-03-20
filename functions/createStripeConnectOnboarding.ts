@@ -52,11 +52,12 @@ Deno.serve(async (req) => {
     });
 
     // Create onboarding link
+    const origin = req.headers.get('origin') || 'https://surfcoast.app';
     const accountLink = await stripe.accountLinks.create({
       account: account.id,
       type: 'account_onboarding',
-      refresh_url: 'https://surfcoast.app/contractor-account?tab=fees',
-      return_url: 'https://surfcoast.app/contractor-account?tab=fees&setup=complete'
+      refresh_url: `${origin}/ContractorAccount?tab=fees`,
+      return_url: `${origin}/ContractorAccount?tab=fees&setup=complete`,
     });
 
     // Save account ID to contractor
