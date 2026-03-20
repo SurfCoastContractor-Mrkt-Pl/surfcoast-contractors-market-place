@@ -527,16 +527,16 @@ export default function MarketShopSignup() {
             {/* Submit Button */}
             <Button
               type="submit"
-              disabled={submitLoading}
+              disabled={submitLoading || !isFormValid()}
               className={`w-full py-2 sm:py-3 text-sm sm:text-base font-semibold text-white min-h-[44px] ${theme.buttonColor}`}
             >
               {submitLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Setting up your listing...
+                  Setting up...
                 </span>
               ) : (
-                'Continue to Payment'
+                'Continue'
               )}
             </Button>
           </form>
