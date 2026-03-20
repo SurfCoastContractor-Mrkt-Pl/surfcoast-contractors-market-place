@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChevronLeft, X, Loader2, Leaf, Tag, CheckCircle } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
+import MarketShopPaymentModelSelector from '@/components/marketshop/MarketShopPaymentModelSelector';
 
 const CATEGORIES = [
   'Produce', 'Meat/Poultry', 'Dairy', 'Baked Goods', 'Prepared Foods',
