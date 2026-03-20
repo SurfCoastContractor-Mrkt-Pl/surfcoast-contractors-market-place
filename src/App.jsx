@@ -19,6 +19,7 @@ import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
 import MarketDirectory from './pages/MarketDirectory';
 import MarketShopProfile from './pages/MarketShopProfile';
+import MarketShopBillingManagement from './pages/MarketShopBillingManagement';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import PricingGuide from './pages/PricingGuide';
@@ -99,6 +100,7 @@ const AuthenticatedApp = () => {
       <Route path="/CustomerDashboard" element={<Navigate to="/Dashboard" replace />} />
       <Route path="/MarketShopDashboard" element={<LayoutWrapper currentPageName="MarketShopDashboard"><MarketShopDashboard /></LayoutWrapper>} />
       <Route path="/MarketShopSignup" element={<LayoutWrapper currentPageName="MarketShopSignup"><MarketShopSignup /></LayoutWrapper>} />
+      <Route path="/MarketShopBillingManagement" element={<LayoutWrapper currentPageName="MarketShopBillingManagement"><MarketShopBillingManagement /></LayoutWrapper>} />
       <Route path="/MarketDirectory" element={<LayoutWrapper currentPageName="MarketDirectory"><MarketDirectory /></LayoutWrapper>} />
       <Route path="/shop/:id" element={<MarketShopProfile />} />
       <Route path="/MarketShopProfile/:id" element={<MarketShopProfile />} />
