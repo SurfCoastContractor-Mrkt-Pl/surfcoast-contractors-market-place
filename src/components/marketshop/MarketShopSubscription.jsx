@@ -256,29 +256,35 @@ export default function MarketShopSubscription({ shop }) {
         </div>
       </div>
 
-      {/* Cancel Modal */}
+      {/* Cancel/Switch Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 max-w-sm w-full">
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Cancel Subscription?</h3>
-            <p className="text-sm text-slate-600 mb-4 sm:mb-6">
-              You can manage your subscription from the Stripe billing portal. This will allow you to pause or cancel anytime.
-            </p>
-            <div className="flex gap-2 sm:gap-3">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Manage Subscription</h3>
+            <div className="space-y-3 mb-6">
               <button
-                onClick={() => setShowCancelModal(false)}
-                className="flex-1 px-4 py-2 border border-slate-300 text-slate-900 text-sm font-semibold rounded-lg hover:bg-slate-50 min-h-[44px]"
+                onClick={() => handleSwitchModel('facilitation')}
+                disabled={loading}
+                className="w-full px-4 py-3 border-2 border-blue-200 text-slate-900 text-sm font-semibold rounded-lg hover:bg-blue-50 disabled:opacity-50 min-h-[44px] text-left"
               >
-                Keep Subscription
+                <p className="font-bold">Switch to Facilitation Fee</p>
+                <p className="text-xs text-slate-500 mt-0.5">5% per sale, no monthly fee</p>
               </button>
               <button
                 onClick={handleCancelSubscription}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 disabled:opacity-50 min-h-[44px]"
+                className="w-full px-4 py-3 border-2 border-red-200 text-slate-900 text-sm font-semibold rounded-lg hover:bg-red-50 disabled:opacity-50 min-h-[44px] text-left"
               >
-                {loading ? 'Loading...' : 'Go to Billing'}
+                <p className="font-bold">Manage in Billing Portal</p>
+                <p className="text-xs text-slate-500 mt-0.5">Pause, update payment, or cancel</p>
               </button>
             </div>
+            <button
+              onClick={() => setShowCancelModal(false)}
+              className="w-full px-4 py-2 border border-slate-300 text-slate-900 text-sm font-semibold rounded-lg hover:bg-slate-50 min-h-[44px]"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
