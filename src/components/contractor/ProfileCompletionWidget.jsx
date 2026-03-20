@@ -1,5 +1,5 @@
-import React from 'react';
-import { CheckCircle2, Circle, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle2, Circle, ExternalLink, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 function getChecklist(contractor) {
