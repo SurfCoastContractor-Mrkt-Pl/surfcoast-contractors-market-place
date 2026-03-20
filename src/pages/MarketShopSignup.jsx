@@ -63,6 +63,48 @@ export default function MarketShopSignup() {
     gallery_images: []
   });
 
+  // Auto-populate from logged-in user on mount
+  useEffect(() => {
+    const autoLink = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) return;
+        const [contractors, customers] = await Promise.all([
+          base44.entities.Contractor.filter({ email: user.email }).catch(() => []),
+          base44.entities.CustomerProfile.filter({ email: user.email }).catch(() => []),
+        ]);
+        if (contractors && contractors.length > 0) {
+          const p = contractors[0];
+          setLinkedProfile({ type: 'contractor', data: p });
+          const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
+          setFormData(prev => ({
+            ...prev,
+            email: p.email || prev.email,
+            owner_name: p.name || prev.owner_name,
+            phone: p.phone || prev.phone,
+            city: locationParts[0] || prev.city,
+            state: locationParts[1] || prev.state,
+          }));
+        } else if (customers && customers.length > 0) {
+          const p = customers[0];
+          setLinkedProfile({ type: 'customer', data: p });
+          const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
+          setFormData(prev => ({
+            ...prev,
+            email: p.email || prev.email,
+            owner_name: p.full_name || prev.owner_name,
+            phone: p.phone || prev.phone,
+            city: locationParts[0] || prev.city,
+            state: locationParts[1] || prev.state,
+          }));
+        }
+      } catch {
+        // Not logged in — no auto-fill
+      }
+    };
+    autoLink();
+  }, []);
+
   // If no type param, show type selection screen
   if (!type) {
     return (
