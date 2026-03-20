@@ -98,12 +98,13 @@ export default function ProfileCompletionWidget({ contractor }) {
             )}
             {item.isStripe && !item.done ? (
               <button
-                onClick={() => handleStripeSetup(contractor)}
-                className="text-xs flex items-center gap-1 underline underline-offset-2"
+                onClick={async () => { setStripeLoading(true); await handleStripeSetup(contractor); setStripeLoading(false); }}
+                disabled={stripeLoading}
+                className="text-xs flex items-center gap-1 underline underline-offset-2 disabled:opacity-60"
                 style={{ color: '#f59e0b' }}
               >
                 Bank account (Stripe)
-                <ExternalLink className="w-3 h-3" />
+                {stripeLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <ExternalLink className="w-3 h-3" />}
               </button>
             ) : (
               <span
