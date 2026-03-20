@@ -81,19 +81,7 @@ export default function Dashboard() {
     );
   }
 
-  const { data: stripeAccounts = [] } = useQuery({
-     queryKey: ['stripe-accounts-admin'],
-     queryFn: () => base44.entities.Contractor.filter({ stripe_account_setup_complete: true }),
-     enabled: !!profiles.primaryType,
-   });
-
-   const { data: lockedAccounts = [] } = useQuery({
-     queryKey: ['locked-accounts-admin'],
-     queryFn: () => base44.entities.Contractor.filter({ account_locked: true }),
-     enabled: !!profiles.primaryType,
-   });
-
-   const isAdmin = user?.role === 'admin';
+  const isAdmin = user?.role === 'admin';
 
    return (
      <div className="min-h-screen bg-slate-50">
