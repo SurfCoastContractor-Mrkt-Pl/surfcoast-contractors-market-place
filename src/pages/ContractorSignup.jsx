@@ -101,7 +101,7 @@ export default function ContractorSignup() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white">Join SurfCoast as a Contractor</h1>
-              <p className="text-white/75 mt-1">Build your verified profile and get your first jobs free — 2-week trial included.</p>
+              <p className="text-white/75 mt-1">Build your verified profile with low fees starting at just 2%. We reward growth with a sliding scale.</p>
             </div>
           </div>
         </div>

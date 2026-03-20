@@ -154,12 +154,25 @@ export default function Terms() {
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Platform Facilitation Fees</h2>
           <p className="text-slate-700 leading-relaxed mb-4">
-            SurfCoast Marketplace charges facilitation fees to cover payment processing and platform maintenance. These fees are deducted from completed transactions as follows:
+            SurfCoast Marketplace charges facilitation fees to cover payment processing and platform maintenance. Fees are calculated based on a contractor's annual earnings tier and deducted from completed transactions as follows:
           </p>
+          
+          <h3 className="font-semibold text-slate-900 mb-3">Contractor Sliding Scale Fees (Based on Annual Earnings)</h3>
           <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
-            <li><strong>Contractors (services):</strong> 18% facilitation fee deducted from each completed job payout. Example: a $1,000 job pays out $820 to the contractor.</li>
-            <li><strong>Farmers Market & Swap Meet Vendors:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
+            <li><strong>Bronze Tier ($0 - $15,000 annual):</strong> 2% facilitation fee. Example: a $1,000 job pays out $980 to the contractor.</li>
+            <li><strong>Silver Tier ($15,000 - $50,000 annual):</strong> 10% facilitation fee. Example: a $1,000 job pays out $900 to the contractor.</li>
+            <li><strong>Gold Tier ($50,000+ annual):</strong> 15% facilitation fee. Example: a $1,000 job pays out $850 to the contractor.</li>
           </ul>
+          <p className="text-slate-700 text-sm mb-4 italic">
+            Tier is automatically determined based on cumulative annual earnings and updates automatically. Tiers reset annually, with lifetime earnings tracked separately. Tier changes apply to future payouts.
+          </p>
+
+          <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors</h3>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
+            <li><strong>Subscription Model:</strong> $35/month flat fee for unlimited listings and transactions.</li>
+            <li><strong>Facilitation Fee Model:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
+          </ul>
+
           <p className="text-slate-700 leading-relaxed">
             SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages arising from transactions. All users engage entirely at their own risk and are solely liable for their agreements.
           </p>
