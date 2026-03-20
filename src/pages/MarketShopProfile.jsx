@@ -284,7 +284,7 @@ export default function MarketShopProfile() {
                 {TypeIcon && (
                   <span className={`text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2 ${typeColor.bg} ${typeColor.text}`}>
                     <TypeIcon className="w-4 h-4" />
-                    {SHOP_TYPE_LABELS[shop.shop_type] || shop.shop_type}
+                    The Market Booths
                   </span>
                 )}
               </div>
