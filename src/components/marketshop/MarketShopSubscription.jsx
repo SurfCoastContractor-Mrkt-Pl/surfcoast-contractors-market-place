@@ -108,13 +108,15 @@ export default function MarketShopSubscription({ shop }) {
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
             Manage Billing
           </button>
-          <button
-            onClick={() => setShowCancelModal(true)}
-            className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-red-600 text-red-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-red-50 min-h-[44px]"
-          >
-            <Ban className="w-4 h-4" />
-            Cancel Subscription
-          </button>
+          {shop.subscription_status !== 'cancelled' && (
+            <button
+              onClick={() => setShowCancelModal(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-red-600 text-red-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-red-50 min-h-[44px]"
+            >
+              <Ban className="w-4 h-4" />
+              Cancel Subscription
+            </button>
+          )}
         </div>
       </div>
 
