@@ -32,6 +32,17 @@ function getChecklist(contractor) {
   return items;
 }
 
+async function handleStripeSetup(contractor) {
+  if (!contractor?.id) return;
+  try {
+    const response = await base44.functions.invoke('createStripeConnectOnboarding', { contractor_id: contractor.id });
+    const url = response?.data?.onboardingUrl || response?.data?.loginLink;
+    if (url) window.location.href = url;
+  } catch (e) {
+    console.error('Stripe setup error:', e);
+  }
+}
+
 export default function ProfileCompletionWidget({ contractor }) {
   const items = getChecklist(contractor);
   const completed = items.filter(i => i.done).length;
