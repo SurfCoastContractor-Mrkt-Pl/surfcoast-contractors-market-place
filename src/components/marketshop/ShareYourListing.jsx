@@ -31,19 +31,19 @@ export default function ShareYourListing({ shop }) {
   };
 
   return (
-    <div className="mb-8 rounded-2xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg p-6 sm:p-8">
+    <div className="mb-8 rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
       {/* Header */}
-      <h2 className="text-xl font-bold text-white mb-6">Share Your Listing</h2>
+      <h2 className="text-xl font-bold text-slate-900 mb-6">Share Your Listing</h2>
 
       {/* Share Link Input */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-slate-300 mb-2">Your Shareable Link</label>
+        <label className="block text-sm font-medium text-slate-600 mb-2">Your Shareable Link</label>
         <div className="flex gap-2">
           <input
             type="text"
             value={shareLink}
             readOnly
-            className="flex-1 px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none"
+            className="flex-1 px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none"
           />
           <button
             onClick={handleCopyLink}
