@@ -23,7 +23,7 @@ export default function useGeoCheck() {
             country: data.countryName || data.country || 'Unknown',
             code: data.country || '',
           });
-          window.location.href = createPageUrl('RegionBlocked') + '&' + params.toString();
+          window.location.href = createPageUrl('RegionBlocked') + '?' + params.toString();
         }
       } catch {
         // Fail open — don't block if check errors
