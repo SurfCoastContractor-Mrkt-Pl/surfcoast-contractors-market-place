@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
     return Response.json({
       success: true,
       shop_id: shopId,
-      shop_name: shop.data.shop_name,
+      shop_name: shop.shop_name,
       stripe_subscription_cancelled: !!stripeSubscriptionId,
       stripe_result: cancelResult ? 'cancelled' : 'none'
     });
