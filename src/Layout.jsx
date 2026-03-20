@@ -67,9 +67,11 @@ export default function Layout({ children, currentPageName }) {
       try {
         const user = await base44.auth.me();
         if (user) {
+          setIsLoggedIn(true);
           const contractors = await base44.entities.Contractor.filter({ email: user.email });
           setIsContractor(contractors && contractors.length > 0);
         } else {
+          setIsLoggedIn(false);
           setIsContractor(false);
         }
       } catch {
