@@ -46,19 +46,24 @@ const AuthenticatedApp = () => {
 
   // Handle authentication errors
   if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Only redirect to login if NOT on a public page
-      const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup', '/FindContractors', '/Jobs', '/Blog', '/BlogDetail', '/ContractorProfile', '/Contractors', '/JobDetails', '/Landing', '/BecomeContractor', '/QuickJobPost'];
-      const isPublicPath = publicPaths.some(p => window.location.pathname === p || window.location.pathname.startsWith(p)) ||
-        window.location.pathname.startsWith('/shop/') ||
-        window.location.pathname.startsWith('/MarketShopProfile/');
-      if (!isPublicPath) {
-        navigateToLogin();
-        return null;
-      }
+  if (authError.type === 'user_not_registered') {
+    return <UserNotRegisteredError />;
+  } else if (authError.type === 'auth_required') {
+    // Only redirect to login if NOT on a public page
+    const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup', '/FindContractors', '/Jobs', '/Blog', '/BlogDetail', '/ContractorProfile', '/Contractors', '/JobDetails', '/Landing', '/BecomeContractor', '/QuickJobPost'];
+    const isPublicPath = publicPaths.some(p => window.location.pathname === p || window.location.pathname.startsWith(p)) ||
+      window.location.pathname.startsWith('/shop/') ||
+      window.location.pathname.startsWith('/MarketShopProfile/');
+    if (!isPublicPath) {
+      // Show spinner briefly while redirect happens to avoid blank screen
+      navigateToLogin();
+      return (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+        </div>
+      );
     }
+  }
   }
 
   // Render the main app
