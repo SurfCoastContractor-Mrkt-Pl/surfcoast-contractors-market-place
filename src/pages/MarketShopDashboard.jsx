@@ -112,14 +112,16 @@ export default function MarketShopDashboard() {
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative">
       {/* Profile Switcher */}
-      <ProfileSwitcher
-        activeProfile="marketshop"
-        primaryType={profiles.contractor ? 'contractor' : 'customer'}
-        hasMarketShop={true}
-      />
+      <div className="relative z-20">
+        <ProfileSwitcher
+          activeProfile="marketshop"
+          primaryType={profiles.contractor ? 'contractor' : 'customer'}
+          hasMarketShop={true}
+        />
+      </div>
 
       {/* Shop Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
@@ -168,7 +170,7 @@ export default function MarketShopDashboard() {
 
       {/* Tab Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 lg:p-8">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
           {activeTab === 'listings' && <MarketShopListings />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
@@ -192,28 +194,38 @@ export default function MarketShopDashboard() {
       </div>
 
       {/* Market Schedule Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
+        </div>
       </div>
 
       {/* Photo Gallery Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
+        </div>
       </div>
 
       {/* Inquiries Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <MarketShopInquiries shop={shop} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <MarketShopInquiries shop={shop} />
+        </div>
       </div>
 
       {/* Subscription Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <MarketShopSubscription shop={shop} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <MarketShopSubscription shop={shop} />
+        </div>
       </div>
 
       {/* Share Your Listing Section - Bottom */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
-        <ShareYourListing shop={shop} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 relative z-10">
+        <div className="bg-white/85 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <ShareYourListing shop={shop} />
+        </div>
       </div>
       </div>
     </div>
