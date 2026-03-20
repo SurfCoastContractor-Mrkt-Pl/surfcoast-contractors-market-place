@@ -176,69 +176,69 @@ export default function MarketDirectory() {
         <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
           {/* Farmers Market Card */}
           <div className="rounded-lg sm:rounded-2xl border border-green-200 bg-cover bg-center shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 relative overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1488459716781-6918f33427d7?w=600&h=400&fit=crop)' }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-green-700/85 to-green-900/85" /></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-green-700/85 to-green-900/85" />
             <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
-           <div className="flex items-center gap-3">
-             <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
-               <Leaf className="w-6 h-6 text-white" strokeWidth={1.5} />
-             </div>
-              <div>
-                <h3 className="font-bold text-white text-lg">Farmers Market Vendor</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
+                  <Leaf className="w-6 h-6 text-white" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-lg">Farmers Market Vendor</h3>
+                </div>
               </div>
+
+              <p className="text-sm text-white/90">
+                Set up your market booth and start selling fresh produce, goods, and homemade products
+              </p>
+
+              <ul className="space-y-2 text-sm text-white/90">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List your products</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Show your market location & schedule</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Get discovered by local shoppers</li>
+              </ul>
+
+              <button
+                onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
+                className="mt-auto px-4 py-2.5 bg-white text-green-700 font-semibold rounded-lg hover:bg-slate-100 transition-colors text-sm w-full"
+              >
+                Set Up My Market Booth →
+              </button>
             </div>
+          </div>
 
-            <p className="text-sm text-white/90">
-              Set up your market booth and start selling fresh produce, goods, and homemade products
-            </p>
-
-            <ul className="space-y-2 text-sm text-white/90">
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List your products</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Show your market location & schedule</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Get discovered by local shoppers</li>
-            </ul>
-
-            <button
-              onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
-              className="mt-auto px-4 py-2.5 bg-white text-green-700 font-semibold rounded-lg hover:bg-slate-100 transition-colors text-sm w-full"
-            >
-              Set Up My Market Booth →
-            </button>
-            </div>
-            </div>
-
-            {/* Swap Meet Card */}
+          {/* Swap Meet Card */}
           <div className="rounded-lg sm:rounded-2xl border border-amber-200 bg-cover bg-center shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 relative overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=600&h=400&fit=crop)' }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-700/85 to-amber-900/85" /></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-700/85 to-amber-900/85" />
             <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
-           <div className="flex items-center gap-3">
-             <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
-               <Tag className="w-6 h-6 text-white" strokeWidth={1.5} />
-             </div>
-              <div>
-                <h3 className="font-bold text-white text-lg">Swap Meet Vendor</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
+                  <Tag className="w-6 h-6 text-white" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-lg">Swap Meet Vendor</h3>
+                </div>
               </div>
-            </div>
 
-            <p className="text-sm text-white/90">
-              Claim your space, list your goods, and connect with buyers at your local swap meet
-            </p>
+              <p className="text-sm text-white/90">
+                Claim your space, list your goods, and connect with buyers at your local swap meet
+              </p>
 
-            <ul className="space-y-2 text-sm text-white/90">
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Advertise your space</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List what you're selling</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Build your buyer following</li>
-            </ul>
+              <ul className="space-y-2 text-sm text-white/90">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Advertise your space</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> List what you're selling</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4" strokeWidth={1.5} /> Build your buyer following</li>
+              </ul>
 
-            <button
-              onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
-              className="mt-auto px-4 py-2.5 bg-white text-amber-700 font-semibold rounded-lg hover:bg-slate-100 transition-colors text-sm w-full"
-            >
-              Claim My Space →
-            </button>
+              <button
+                onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
+                className="mt-auto px-4 py-2.5 bg-white text-amber-700 font-semibold rounded-lg hover:bg-slate-100 transition-colors text-sm w-full"
+              >
+                Claim My Space →
+              </button>
             </div>
-            </div>
-            </div>
-            </div>
+          </div>
+        </div>
+        </div>
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
