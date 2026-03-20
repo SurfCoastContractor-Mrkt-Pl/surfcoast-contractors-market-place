@@ -25,14 +25,10 @@ export default function MarketShopSubscription({ shop }) {
         return;
       }
       
-      const priceId = model === 'subscription' 
-        ? Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID')
-        : Deno.env.get('STRIPE_VENDOR_LISTING_PRICE_ID');
-      
       const res = await base44.functions.invoke('createSubscriptionCheckout', {
-        priceId,
+        shop_id: shop.id,
         email: user.email,
-        userType: 'market_vendor',
+        payment_model: model,
       });
       
       if (res.data?.url) {
