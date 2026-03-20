@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronLeft, X, Loader2, Leaf, Tag } from 'lucide-react';
+import { ChevronLeft, X, Loader2, Leaf, Tag, CheckCircle } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 
 const CATEGORIES = [
@@ -38,8 +38,8 @@ export default function MarketShopSignup() {
   const type = searchParams.get('type');
   const canceled = searchParams.get('canceled') === 'true';
 
-  const [step, setStep] = useState('form'); // form, account-link, loading, success
   const [linkedProfile, setLinkedProfile] = useState(null);
+  const [autoLinkChecked, setAutoLinkChecked] = useState(false);
   const [showAccountLink, setShowAccountLink] = useState(false);
   const [linkEmail, setLinkEmail] = useState('');
   const [linkSearching, setLinkSearching] = useState(false);
@@ -63,47 +63,45 @@ export default function MarketShopSignup() {
     gallery_images: []
   });
 
+  // MUST be before any conditional returns (Rules of Hooks)
   // Auto-populate from logged-in user on mount
   useEffect(() => {
     const autoLink = async () => {
       try {
         const user = await base44.auth.me();
-        if (!user) return;
+        if (!user) { setAutoLinkChecked(true); return; }
+
         const [contractors, customers] = await Promise.all([
           base44.entities.Contractor.filter({ email: user.email }).catch(() => []),
           base44.entities.CustomerProfile.filter({ email: user.email }).catch(() => []),
         ]);
+
         if (contractors && contractors.length > 0) {
-          const p = contractors[0];
-          setLinkedProfile({ type: 'contractor', data: p });
-          const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
-          setFormData(prev => ({
-            ...prev,
-            email: p.email || prev.email,
-            owner_name: p.name || prev.owner_name,
-            phone: p.phone || prev.phone,
-            city: locationParts[0] || prev.city,
-            state: locationParts[1] || prev.state,
-          }));
+          applyProfile('contractor', contractors[0]);
         } else if (customers && customers.length > 0) {
-          const p = customers[0];
-          setLinkedProfile({ type: 'customer', data: p });
-          const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
-          setFormData(prev => ({
-            ...prev,
-            email: p.email || prev.email,
-            owner_name: p.full_name || prev.owner_name,
-            phone: p.phone || prev.phone,
-            city: locationParts[0] || prev.city,
-            state: locationParts[1] || prev.state,
-          }));
+          applyProfile('customer', customers[0]);
         }
       } catch {
-        // Not logged in — no auto-fill
+        // Not logged in or error — no auto-fill
+      } finally {
+        setAutoLinkChecked(true);
       }
     };
     autoLink();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const applyProfile = (profileType, p) => {
+    const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
+    setLinkedProfile({ type: profileType, data: p });
+    setFormData(prev => ({
+      ...prev,
+      email: p.email || prev.email,
+      owner_name: (profileType === 'contractor' ? p.name : p.full_name) || prev.owner_name,
+      phone: p.phone || prev.phone,
+      city: locationParts[0] || prev.city,
+      state: locationParts[1] || prev.state,
+    }));
+  };
 
   // If no type param, show type selection screen
   if (!type) {
@@ -123,7 +121,6 @@ export default function MarketShopSignup() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Farmers Market Card */}
             <button
               onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
               className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
@@ -135,12 +132,9 @@ export default function MarketShopSignup() {
                 <h2 className="text-2xl font-bold text-green-900 mb-2">Farmers Market Vendor</h2>
                 <p className="text-green-800">Set up your market booth and start selling fresh produce, goods, and homemade products</p>
               </div>
-              <div className="mt-2 text-sm text-green-700 font-semibold">
-                Get Started →
-              </div>
+              <div className="mt-2 text-sm text-green-700 font-semibold">Get Started →</div>
             </button>
 
-            {/* Swap Meet Card */}
             <button
               onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
               className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
@@ -152,9 +146,7 @@ export default function MarketShopSignup() {
                 <h2 className="text-2xl font-bold text-amber-900 mb-2">Swap Meet Vendor</h2>
                 <p className="text-amber-800">Claim your space, list your goods, and connect with buyers at your local swap meet</p>
               </div>
-              <div className="mt-2 text-sm text-amber-700 font-semibold">
-                Get Started →
-              </div>
+              <div className="mt-2 text-sm text-amber-700 font-semibold">Get Started →</div>
             </button>
           </div>
         </div>
@@ -179,10 +171,7 @@ export default function MarketShopSignup() {
   };
 
   const handleLinkAccount = async () => {
-    if (!linkEmail.trim()) {
-      setLinkError('Please enter an email');
-      return;
-    }
+    if (!linkEmail.trim()) { setLinkError('Please enter an email'); return; }
     setLinkSearching(true);
     setLinkError('');
     try {
@@ -192,46 +181,36 @@ export default function MarketShopSignup() {
       ]);
 
       if (contractors && contractors.length > 0) {
-        const p = contractors[0];
-        setLinkedProfile({ type: 'contractor', data: p });
-        // Parse city/state from location field (e.g. "San Diego, CA")
-        const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
-        setFormData(prev => ({
-          ...prev,
-          email: linkEmail.trim(),
-          owner_name: p.name || prev.owner_name,
-          phone: p.phone || prev.phone,
-          city: locationParts[0] || prev.city,
-          state: locationParts[1] || prev.state,
-        }));
+        applyProfile('contractor', contractors[0]);
         setShowAccountLink(false);
       } else if (customers && customers.length > 0) {
-        const p = customers[0];
-        setLinkedProfile({ type: 'customer', data: p });
-        const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
-        setFormData(prev => ({
-          ...prev,
-          email: linkEmail.trim(),
-          owner_name: p.full_name || prev.owner_name,
-          phone: p.phone || prev.phone,
-          city: locationParts[0] || prev.city,
-          state: locationParts[1] || prev.state,
-        }));
+        applyProfile('customer', customers[0]);
         setShowAccountLink(false);
       } else {
         setLinkError('No account found with this email');
       }
-    } catch (err) {
+    } catch {
       setLinkError('Error searching for account');
     }
     setLinkSearching(false);
+  };
+
+  const handleUnlink = () => {
+    setLinkedProfile(null);
+    setFormData(prev => ({
+      ...prev,
+      email: '',
+      owner_name: '',
+      phone: '',
+      city: '',
+      state: '',
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitLoading(true);
     try {
-      // Create MarketShop record
       const shopPayload = {
         shop_name: formData.shop_name,
         shop_type: type,
@@ -258,7 +237,6 @@ export default function MarketShopSignup() {
 
       const newShop = await base44.entities.MarketShop.create(shopPayload);
 
-      // Call backend function to create subscription and get checkout URL
       const response = await base44.functions.invoke('createVendorSubscription', {
         shop_id: newShop.id,
         shop_name: formData.shop_name,
@@ -284,15 +262,12 @@ export default function MarketShopSignup() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Canceled Banner */}
         {canceled && !dismissCanceled && (
-          <div className="mb-4 sm:mb-6 bg-amber-50 border border-amber-200 rounded-lg sm:rounded-lg p-3 sm:p-4 flex items-start justify-between gap-2">
+          <div className="mb-4 sm:mb-6 bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 flex items-start justify-between gap-2">
             <div>
               <p className="text-xs sm:text-sm text-amber-900 font-semibold">Payment was canceled</p>
               <p className="text-xs sm:text-sm text-amber-700 mt-1">Your listing has not been activated yet. Complete payment to go live.</p>
             </div>
-            <button
-              onClick={() => setDismissCanceled(true)}
-              className="text-amber-600 hover:text-amber-700 flex-shrink-0"
-            >
+            <button onClick={() => setDismissCanceled(true)} className="text-amber-600 hover:text-amber-700 flex-shrink-0">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -319,30 +294,66 @@ export default function MarketShopSignup() {
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-            {/* Linked Account Info */}
-            {linkedProfile && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-blue-900">Account linked</p>
-                  <p className="text-sm text-blue-800 mt-1">
-                    {linkedProfile.data.full_name || linkedProfile.data.name} ({linkedProfile.data.email})
-                  </p>
-                </div>
+          {/* Account Linking — shown at TOP before form fields */}
+          {!linkedProfile && autoLinkChecked && (
+            <div className="mb-6 pb-6 border-b border-slate-200">
+              <h3 className="font-semibold text-slate-900 mb-3">Already have a SurfCoast account?</h3>
+              <p className="text-sm text-slate-500 mb-3">Link your account to auto-fill your information.</p>
+              {!showAccountLink ? (
                 <button
                   type="button"
-                  onClick={() => {
-                    setLinkedProfile(null);
-                    setFormData(prev => ({ ...prev, email: '' }));
-                  }}
-                  className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                  onClick={() => setShowAccountLink(true)}
+                  className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors text-sm"
                 >
-                  Change
+                  Yes — link my existing account
                 </button>
-              </div>
-            )}
+              ) : (
+                <div className="space-y-3">
+                  <Input
+                    type="email"
+                    value={linkEmail}
+                    onChange={(e) => setLinkEmail(e.target.value)}
+                    placeholder="Enter your account email address"
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleLinkAccount())}
+                  />
+                  {linkError && <p className="text-sm text-red-600">{linkError}</p>}
+                  <div className="flex gap-2">
+                    <Button type="button" onClick={handleLinkAccount} disabled={linkSearching} className="flex-1">
+                      {linkSearching ? <><Loader2 className="w-4 h-4 animate-spin mr-2" />Searching...</> : 'Find & Link Account'}
+                    </Button>
+                    <Button type="button" onClick={() => { setShowAccountLink(false); setLinkEmail(''); setLinkError(''); }} variant="outline">
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
+          {/* Linked Account Banner */}
+          {linkedProfile && (
+            <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-green-900">Account linked — info pre-filled below</p>
+                  <p className="text-sm text-green-700 mt-0.5">
+                    {linkedProfile.data.full_name || linkedProfile.data.name} · {linkedProfile.data.email}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleUnlink}
+                className="text-green-600 hover:text-green-800 font-medium text-xs flex-shrink-0"
+              >
+                Unlink
+              </button>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Shop Name */}
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">Shop/Booth Name *</label>
@@ -370,19 +381,17 @@ export default function MarketShopSignup() {
             </div>
 
             {/* Email */}
-            {!linkedProfile && (
-              <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">Email *</label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleFormChange}
-                  placeholder="your@email.com"
-                  required
-                />
-              </div>
-            )}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-2">Email *</label>
+              <Input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleFormChange}
+                placeholder="your@email.com"
+                required
+              />
+            </div>
 
             {/* Phone */}
             <div>
@@ -481,35 +490,15 @@ export default function MarketShopSignup() {
             {/* Social URLs */}
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">Instagram URL (optional)</label>
-              <Input
-                type="url"
-                name="instagram_url"
-                value={formData.instagram_url}
-                onChange={handleFormChange}
-                placeholder="https://instagram.com/yourshop"
-              />
+              <Input type="url" name="instagram_url" value={formData.instagram_url} onChange={handleFormChange} placeholder="https://instagram.com/yourshop" />
             </div>
-
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">Facebook URL (optional)</label>
-              <Input
-                type="url"
-                name="facebook_url"
-                value={formData.facebook_url}
-                onChange={handleFormChange}
-                placeholder="https://facebook.com/yourshop"
-              />
+              <Input type="url" name="facebook_url" value={formData.facebook_url} onChange={handleFormChange} placeholder="https://facebook.com/yourshop" />
             </div>
-
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">TikTok URL (optional)</label>
-              <Input
-                type="url"
-                name="tiktok_url"
-                value={formData.tiktok_url}
-                onChange={handleFormChange}
-                placeholder="https://tiktok.com/@yourshop"
-              />
+              <Input type="url" name="tiktok_url" value={formData.tiktok_url} onChange={handleFormChange} placeholder="https://tiktok.com/@yourshop" />
             </div>
 
             {/* Fee Notice */}
@@ -533,55 +522,6 @@ export default function MarketShopSignup() {
               )}
             </Button>
           </form>
-
-          {/* Account Linking Section */}
-          <div className="mt-8 pt-8 border-t border-slate-200">
-            <h3 className="font-semibold text-slate-900 mb-4">Already have a SurfCoast account?</h3>
-            
-            {!showAccountLink ? (
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowAccountLink(true)}
-                  className="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors"
-                >
-                  Yes — link my account
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <Input
-                  type="email"
-                  value={linkEmail}
-                  onChange={(e) => setLinkEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                />
-                {linkError && <p className="text-sm text-red-600">{linkError}</p>}
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    onClick={handleLinkAccount}
-                    disabled={linkSearching}
-                    className="flex-1"
-                  >
-                    {linkSearching ? 'Searching...' : 'Search & Link'}
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setShowAccountLink(false);
-                      setLinkEmail('');
-                      setLinkError('');
-                    }}
-                    variant="outline"
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
