@@ -16,6 +16,7 @@ import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumen
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
+import StripeConnectOnboarding from '@/components/contractor/StripeConnectOnboarding';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
