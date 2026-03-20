@@ -44,6 +44,7 @@ async function handleStripeSetup(contractor) {
 }
 
 export default function ProfileCompletionWidget({ contractor }) {
+  const [stripeLoading, setStripeLoading] = useState(false);
   const items = getChecklist(contractor);
   const completed = items.filter(i => i.done).length;
   const total = items.length;
