@@ -159,11 +159,6 @@ export default function MarketShopDashboard() {
         </div>
       </div>
 
-      {/* Share Your Listing Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <ShareYourListing shop={shop} />
-      </div>
-
       {/* Subscription Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <MarketShopSubscription shop={shop} />
@@ -209,6 +204,11 @@ export default function MarketShopDashboard() {
           )}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
         </div>
+      </div>
+
+      {/* Share Your Listing Section - Bottom */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
+        <ShareYourListing shop={shop} />
       </div>
     </div>
   );

@@ -31,87 +31,65 @@ export default function ShareYourListing({ shop }) {
   };
 
   return (
-    <div className="mb-8 rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
+    <div className="rounded-lg border border-slate-200 bg-white shadow-sm p-3 sm:p-4">
       {/* Header */}
-      <h2 className="text-xl font-bold text-slate-900 mb-6">Share Your Listing</h2>
+      <h3 className="text-sm font-semibold text-slate-900 mb-3">Share Your Listing</h3>
 
-      {/* Share Link Input */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-slate-600 mb-2">Your Shareable Link</label>
-        <div className="flex gap-2">
+      {/* Share Link Input - Compact */}
+      <div className="mb-3">
+        <div className="flex gap-1.5 items-center">
           <input
             type="text"
             value={shareLink}
             readOnly
-            className="flex-1 px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none"
+            className="flex-1 px-3 py-1.5 rounded-md bg-slate-50 border border-slate-300 text-slate-700 text-xs focus:outline-none"
           />
           <button
             onClick={handleCopyLink}
-            className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors flex items-center gap-2"
+            className="px-2.5 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-colors flex items-center gap-1"
           >
-            <Copy className="w-4 h-4" />
-            {copied ? '✅ Copied!' : 'Copy Link'}
+            <Copy className="w-3 h-3" />
+            {copied ? '✅' : 'Copy'}
           </button>
         </div>
       </div>
 
-      {/* Social Share Buttons */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-slate-600 mb-3">Share on Social Media</label>
-        <div className="flex flex-wrap gap-3">
-          {/* Facebook */}
-          <button
-            onClick={handleFacebookShare}
-            className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors flex items-center gap-2"
-          >
-            <Facebook className="w-4 h-4" />
-            Facebook
-          </button>
+      {/* Social Share Icons - Compact */}
+      <div className="flex flex-wrap gap-1.5">
+        {/* Facebook */}
+        <button
+          onClick={handleFacebookShare}
+          className="p-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+          title="Share on Facebook"
+        >
+          <Facebook className="w-3 h-3" />
+        </button>
 
-          {/* Instagram */}
-          <div className="relative group">
-            <button
-              className="px-4 py-2.5 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
-              style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
-            >
-              <Instagram className="w-4 h-4" />
-              Instagram
-            </button>
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 whitespace-nowrap z-10">
-              Copy your link and paste it in your Instagram bio or story
-            </div>
-          </div>
+        {/* Instagram */}
+        <button
+          className="p-1.5 rounded-md text-white transition-colors"
+          style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+          title="Copy link for Instagram bio"
+        >
+          <Instagram className="w-3 h-3" />
+        </button>
 
-          {/* TikTok */}
-          <div className="relative group">
-            <button
-              className="px-4 py-2.5 rounded-lg bg-black hover:bg-slate-900 text-white font-medium transition-colors flex items-center gap-2"
-            >
-              <Music className="w-4 h-4" />
-              TikTok
-            </button>
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 whitespace-nowrap z-10">
-              Copy your link and add it to your TikTok bio
-            </div>
-          </div>
+        {/* TikTok */}
+        <button
+          className="p-1.5 rounded-md bg-black hover:bg-slate-900 text-white transition-colors"
+          title="Copy link for TikTok bio"
+        >
+          <Music className="w-3 h-3" />
+        </button>
 
-          {/* Twitter/X */}
-          <button
-            onClick={handleTwitterShare}
-            className="px-4 py-2.5 rounded-lg bg-black hover:bg-slate-900 text-white font-medium transition-colors flex items-center gap-2"
-          >
-            <Twitter className="w-4 h-4" />
-            Twitter/X
-          </button>
-        </div>
-      </div>
-
-      {/* Pro Tip */}
-      <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 flex items-start gap-3">
-        <Lightbulb className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-amber-900">
-          <span className="font-semibold">💡 Pro tip:</span> Add your SurfCoast link to ALL your social media bios to get the most visibility.
-        </p>
+        {/* Twitter/X */}
+        <button
+          onClick={handleTwitterShare}
+          className="p-1.5 rounded-md bg-black hover:bg-slate-900 text-white transition-colors"
+          title="Share on Twitter/X"
+        >
+          <Twitter className="w-3 h-3" />
+        </button>
       </div>
     </div>
   );
