@@ -150,12 +150,31 @@ export default function MarketShopSignup() {
       ]);
 
       if (contractors && contractors.length > 0) {
-        setLinkedProfile({ type: 'contractor', data: contractors[0] });
-        setFormData(prev => ({ ...prev, email: linkEmail.trim() }));
+        const p = contractors[0];
+        setLinkedProfile({ type: 'contractor', data: p });
+        // Parse city/state from location field (e.g. "San Diego, CA")
+        const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
+        setFormData(prev => ({
+          ...prev,
+          email: linkEmail.trim(),
+          owner_name: p.name || prev.owner_name,
+          phone: p.phone || prev.phone,
+          city: locationParts[0] || prev.city,
+          state: locationParts[1] || prev.state,
+        }));
         setShowAccountLink(false);
       } else if (customers && customers.length > 0) {
-        setLinkedProfile({ type: 'customer', data: customers[0] });
-        setFormData(prev => ({ ...prev, email: linkEmail.trim() }));
+        const p = customers[0];
+        setLinkedProfile({ type: 'customer', data: p });
+        const locationParts = p.location ? p.location.split(',').map(s => s.trim()) : [];
+        setFormData(prev => ({
+          ...prev,
+          email: linkEmail.trim(),
+          owner_name: p.full_name || prev.owner_name,
+          phone: p.phone || prev.phone,
+          city: locationParts[0] || prev.city,
+          state: locationParts[1] || prev.state,
+        }));
         setShowAccountLink(false);
       } else {
         setLinkError('No account found with this email');
