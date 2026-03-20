@@ -39,6 +39,7 @@ export default function Layout({ children, currentPageName }) {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [agentOpen, setAgentOpen] = useState(false);
   const [isContractor, setIsContractor] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isBackNav = useRef(false);
 
   const isHome = currentPageName === 'Home';
