@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2 } from 'lucide-react';
+import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2, Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function MarketShopSubscription({ shop }) {
   const [loading, setLoading] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showModelSelector, setShowModelSelector] = useState(shop.subscription_status !== 'active');
 
   const handleManageBilling = async () => {
     setLoading(true);
@@ -56,6 +57,17 @@ export default function MarketShopSubscription({ shop }) {
         <h2 className="text-lg sm:text-xl font-bold text-slate-900">My Subscription</h2>
       </div>
 
+      {/* Inactive Subscription Alert */}
+      {shop.subscription_status !== 'active' && shop.subscription_status !== 'past_due' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 mb-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="font-semibold text-amber-900 text-sm">Subscription Inactive</p>
+            <p className="text-xs sm:text-sm text-amber-800 mt-1">Choose a payment model below to activate your shop and access full features.</p>
+          </div>
+        </div>
+      )}
+
       {shop.subscription_status === 'past_due' && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-4 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -70,6 +82,46 @@ export default function MarketShopSubscription({ shop }) {
               {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Update Payment Method'}
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Show Payment Model Selector if Inactive */}
+      {showModelSelector && shop.subscription_status !== 'active' && (
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 sm:p-6 mb-6">
+          <p className="text-sm font-semibold text-slate-900 mb-4">Choose Your Payment Model</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
+            {/* Subscription Model */}
+            <div className="border-2 border-blue-200 rounded-lg p-3 sm:p-4 cursor-pointer hover:bg-blue-50 transition">
+              <div className="flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full border-2 border-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3 h-3 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-900 text-sm">Subscription</p>
+                  <p className="text-lg font-bold text-slate-900 mt-1">$35/month</p>
+                  <p className="text-xs text-slate-600 mt-2">• Unlimited listings<br/>• 0% transaction fee<br/>• Keep 100% of sales</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Facilitation Model */}
+            <div className="border-2 border-slate-300 rounded-lg p-3 sm:p-4 cursor-pointer hover:bg-slate-50 transition">
+              <div className="flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full border-2 border-slate-400 flex-shrink-0 mt-0.5"></div>
+                <div>
+                  <p className="font-semibold text-slate-900 text-sm">Facilitation Fee</p>
+                  <p className="text-lg font-bold text-slate-900 mt-1">5% per sale</p>
+                  <p className="text-xs text-slate-600 mt-2">• No monthly fee<br/>• Pay only on sales<br/>• Flexible pricing</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowModelSelector(false)}
+            className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700"
+          >
+            Continue
+          </button>
         </div>
       )}
 
