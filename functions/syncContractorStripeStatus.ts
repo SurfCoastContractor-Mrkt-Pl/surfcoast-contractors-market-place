@@ -6,46 +6,36 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { contractor_id } = await req.json();
+
     if (!contractor_id) {
       return Response.json({ error: 'contractor_id required' }, { status: 400 });
     }
 
-    const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
-    const contractor = contractors?.[0];
+    const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
 
     if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
     }
 
-    // Verify the requesting user owns this contractor profile
-    if (contractor.email !== user.email) {
-      return Response.json({ error: 'Unauthorized' }, { status: 403 });
-    }
-
     if (!contractor.stripe_connected_account_id) {
-      return Response.json({ charges_enabled: false, payouts_enabled: false });
+      return Response.json({ ok: true, charges_enabled: false, payouts_enabled: false, payout_ready: false });
     }
 
     const account = await stripe.accounts.retrieve(contractor.stripe_connected_account_id);
 
     const charges_enabled = account.charges_enabled ?? false;
     const payouts_enabled = account.payouts_enabled ?? false;
+    const payout_ready = charges_enabled && payouts_enabled;
 
-    await base44.asServiceRole.entities.Contractor.update(contractor.id, {
+    await base44.asServiceRole.entities.Contractor.update(contractor_id, {
       stripe_account_charges_enabled: charges_enabled,
       stripe_account_setup_complete: charges_enabled,
     });
 
-    return Response.json({ charges_enabled, payouts_enabled });
-  } catch (error) {
-    console.error('syncContractorStripeStatus error:', error.message);
-    return Response.json({ error: error.message || String(error) }, { status: 500 });
+    return Response.json({ ok: true, charges_enabled, payouts_enabled, payout_ready });
+  } catch (err) {
+    console.error('syncContractorStripeStatus error:', err.message);
+    return Response.json({ error: err.message || String(err) }, { status: 500 });
   }
 });
