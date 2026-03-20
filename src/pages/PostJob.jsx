@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Briefcase, Loader2, CheckCircle, Users, Upload, X } from 'lucide-react';
+import { ArrowLeft, Briefcase, Loader2, CheckCircle, Users, Upload, X, ArrowRight } from 'lucide-react';
 import BeforePhotosUpload from '@/components/photos/BeforePhotosUpload';
 
 const trades = [
@@ -118,9 +118,6 @@ export default function PostJob() {
     },
     onSuccess: () => {
       setSuccess(true);
-      setTimeout(() => {
-        navigate(createPageUrl('MyJobs'));
-      }, 4000);
     },
   });
 
@@ -164,16 +161,29 @@ export default function PostJob() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50">
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
-          <Card className="max-w-md w-full p-12 text-center bg-white shadow-2xl border-2 border-green-500 animate-bounce">
-            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-10 h-10 text-green-600" />
+          <Card className="max-w-md w-full p-8 bg-white shadow-2xl border-2 border-green-500">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-7 h-7 text-green-600" />
+              </div>
+              <button
+                onClick={() => setSuccess(false)}
+                className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex-shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-            <h2 className="text-4xl font-bold text-slate-900 mb-3">Job Posted! ✓</h2>
-            <p className="text-lg text-slate-700 mb-2">Your job has been successfully posted.</p>
-            <p className="text-slate-600 mb-6">Contractors can now see and respond to your job posting.</p>
-            <p className="text-sm text-slate-400 font-medium">Redirecting in 4 seconds...</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Job Posted Successfully! ✓</h2>
+            <p className="text-sm text-slate-700 mb-1">Your job has been successfully posted.</p>
+            <p className="text-sm text-slate-600 mb-6">Contractors can now see and respond to your job posting.</p>
+            <Button
+              onClick={() => navigate(createPageUrl('MyJobs'))}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              View My Jobs <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </Card>
         </div>
       </div>
