@@ -133,11 +133,23 @@ export default function ContractorDashboard() {
         />
       )}
       <div className="max-w-7xl mx-auto">
-        {/* Stripe Payout Banner */}
-        {contractorProfile?.stripe_account_setup_complete && !contractorProfile?.stripe_account_charges_enabled && (
-          <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '10px', padding: '12px 20px', marginBottom: '16px', color: '#92400e', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>⚠️</span>
-            Your Stripe payout account is not yet fully active. Please check your email to complete setup and enable payments.
+        {/* Payout Not Set Up — Amber Warning Banner */}
+        {contractorProfile && !contractorProfile.stripe_account_charges_enabled && (
+          <div style={{ background: '#fffbeb', border: '2px solid #f59e0b', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: '240px' }}>
+              <Zap style={{ width: '20px', height: '20px', color: '#d97706', flexShrink: 0 }} />
+              <p style={{ margin: 0, fontSize: '14px', fontWeight: '600', color: '#92400e' }}>
+                Your payout account isn't set up yet — you won't receive payment until you complete this step
+              </p>
+            </div>
+            <Button
+              onClick={handleSetupPayouts}
+              disabled={payoutLoading}
+              style={{ background: '#d97706', color: '#fff', borderRadius: '8px', fontWeight: '700', fontSize: '14px', whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              {payoutLoading ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
+              Set Up Payouts Now →
+            </Button>
           </div>
         )}
 
@@ -145,6 +157,12 @@ export default function ContractorDashboard() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2 flex-wrap">
             <h1 className="text-4xl font-bold text-slate-900">Contractor Dashboard</h1>
+            {/* Payouts Active Badge */}
+            {contractorProfile?.stripe_account_charges_enabled && (
+              <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                💸 Payouts Active — deposits within 2 business days
+              </div>
+            )}
             {contractorProfile?.trial_active && (
               <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
                 🟢 Free Trial Active — {differenceInDays(new Date(contractorProfile.trial_ends_at), new Date())} days remaining
