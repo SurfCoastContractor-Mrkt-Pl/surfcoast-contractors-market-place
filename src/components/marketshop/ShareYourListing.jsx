@@ -57,7 +57,7 @@ export default function ShareYourListing({ shop }) {
 
       {/* Social Share Buttons */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-slate-300 mb-3">Share on Social Media</label>
+        <label className="block text-sm font-medium text-slate-600 mb-3">Share on Social Media</label>
         <div className="flex flex-wrap gap-3">
           {/* Facebook */}
           <button
