@@ -175,7 +175,7 @@ export default function MarketDirectory() {
 
         <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
           {/* Farmers Market Card */}
-          <div className="rounded-lg sm:rounded-2xl border border-green-200 bg-cover bg-center shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 relative overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1488459716781-6918f33427d7?w=600&h=400&fit=crop)' }}>
+          <div className="rounded-lg sm:rounded-2xl border border-green-200 bg-cover bg-center shadow-md hover:shadow-lg transition-shadow p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 relative overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=600&h=400&fit=crop)' }}>
             <div className="absolute inset-0 bg-gradient-to-br from-green-700/85 to-green-900/85" />
             <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
