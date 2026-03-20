@@ -87,6 +87,7 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="/AdminPreview" element={<LayoutWrapper currentPageName="AdminPreview"><AdminPreview /></LayoutWrapper>} />
       <Route path="/AdminDashboard" element={<AdminDashboard />} />
+      <Route path="/Admin" element={<AdminDashboard />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/Dashboard" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
       <Route path="/TimedChat" element={<LayoutWrapper currentPageName="TimedChat"><TimedChat /></LayoutWrapper>} />
