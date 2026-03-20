@@ -270,6 +270,19 @@ export default function MarketShopSignup() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${theme.themeClass} py-8 px-4`}>
+      {showPaymentSelector && createdShop && (
+        <MarketShopPaymentModelSelector
+          shopId={createdShop.id}
+          shopName={createdShop.shop_name}
+          ownerEmail={formData.email}
+          ownerName={formData.owner_name}
+          shopType={type}
+          onClose={() => {
+            setShowPaymentSelector(false);
+            setCreatedShop(null);
+          }}
+        />
+      )}
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Canceled Banner */}
         {canceled && !dismissCanceled && (
