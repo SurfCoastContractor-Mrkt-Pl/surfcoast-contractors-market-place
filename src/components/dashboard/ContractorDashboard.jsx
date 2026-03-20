@@ -23,14 +23,54 @@ export default function ContractorDashboard() {
     getUser();
   }, []);
 
-   const { data: contractorProfile } = useQuery({
-     queryKey: ['contractor-profile-dashboard', user?.email],
-     queryFn: async () => {
-       const results = await base44.entities.Contractor.filter({ email: user.email });
-       return results?.[0] || null;
-     },
-     enabled: !!user?.email,
-   });
+  const { data: contractorProfile, refetch: refetchContractor } = useQuery({
+    queryKey: ['contractor-profile-dashboard', user?.email],
+    queryFn: async () => {
+      const results = await base44.entities.Contractor.filter({ email: user.email });
+      return results?.[0] || null;
+    },
+    enabled: !!user?.email,
+  });
+
+  // Handle Stripe return URL params
+  useEffect(() => {
+    if (!contractorProfile) return;
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('stripe_onboarding') === 'complete') {
+      // Sync Stripe status then show success toast
+      base44.functions.invoke('syncContractorStripeStatus', { contractor_id: contractorProfile.id })
+        .then(() => {
+          refetchContractor();
+          toast.success('Payout account connected! You\'re ready to receive earnings.');
+        });
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (params.get('stripe_refresh') === 'true') {
+      toast.warning('Your Stripe session expired — click below to restart');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [contractorProfile?.id]);
+
+  const handleSetupPayouts = async () => {
+    if (!contractorProfile) return;
+    setPayoutLoading(true);
+    try {
+      const response = await base44.functions.invoke('createStripeConnectOnboarding', {
+        contractor_id: contractorProfile.id
+      });
+      const url = response?.data?.onboardingUrl || response?.data?.loginLink;
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error('Could not retrieve onboarding link. Please try again.');
+      }
+    } catch {
+      toast.error('Failed to start payout setup. Please try again.');
+    } finally {
+      setPayoutLoading(false);
+    }
+  };
 
   const { data: pendingRatingScopes = [] } = useQuery({
     queryKey: ['contractor-pending-ratings', user?.email],
