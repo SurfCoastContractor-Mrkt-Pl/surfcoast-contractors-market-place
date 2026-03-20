@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ onboardingUrl: accountLink.url });
   } catch (error) {
-    console.error('Error in createStripeConnectOnboarding');
-    return Response.json({ error: 'Failed to create onboarding link' }, { status: 500 });
+    console.error('createStripeConnectOnboarding error:', error.message);
+    return Response.json({ error: error.message || 'Failed to create onboarding link' }, { status: 500 });
   }
 });
