@@ -18,7 +18,7 @@ function getChecklist(contractor) {
     { label: 'Trade / specialty', done: !!(c.trade_specialty?.trim()) },
     { label: 'Bio (30+ characters)', done: (c.bio?.trim()?.length || 0) >= 30 },
     { label: 'Rate set', done: rateOk },
-    { label: 'Payout account connected', done: !!c.stripe_account_setup_complete },
+    { label: 'Bank account (Stripe)', done: !!c.stripe_account_charges_enabled, isStripe: true },
     { label: 'Compliance acknowledged', done: !!c.compliance_acknowledged },
   ];
 
