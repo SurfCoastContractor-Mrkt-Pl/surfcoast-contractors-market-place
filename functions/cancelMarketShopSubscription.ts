@@ -14,14 +14,14 @@ Deno.serve(async (req) => {
     }
 
     // Get shop
-    const shops = await base44.asServiceRole.entities.MarketShop.filter({ id: shopId });
-    const shop = shops?.[0];
+    const shops = await base44.asServiceRole.entities.MarketShop.filter({});
+    const shop = shops?.find(s => s.id === shopId);
     if (!shop) {
       return Response.json({ error: 'Shop not found' }, { status: 404 });
     }
 
     // Check for Stripe subscription ID in shop data
-    const stripeSubscriptionId = shop.data?.stripe_subscription_id;
+    const stripeSubscriptionId = shop.stripe_subscription_id;
     let cancelResult = null;
 
     if (stripeSubscriptionId) {
