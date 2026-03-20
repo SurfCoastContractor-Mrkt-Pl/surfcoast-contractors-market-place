@@ -14,7 +14,8 @@ Deno.serve(async (req) => {
     }
 
     // Get shop
-    const shop = await base44.asServiceRole.entities.MarketShop.read(shopId);
+    const shops = await base44.asServiceRole.entities.MarketShop.filter({ id: shopId });
+    const shop = shops?.[0];
     if (!shop) {
       return Response.json({ error: 'Shop not found' }, { status: 404 });
     }
