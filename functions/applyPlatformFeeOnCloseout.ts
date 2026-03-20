@@ -47,8 +47,8 @@ Deno.serve(async (req) => {
       ? (scope.cost_amount || 0) * (scope.estimated_hours || 0)
       : (scope.cost_amount || 0);
 
-    // Calculate platform fee (default 3%, range 2.5-3.5%)
-    const platformFeePercentage = scope.platform_fee_percentage || 3;
+    // Calculate platform fee (default 18%)
+    const platformFeePercentage = scope.platform_fee_percentage || 18;
     const platformFeeAmount = (totalJobCost * platformFeePercentage) / 100;
     const contractorPayoutAmount = totalJobCost - platformFeeAmount;
 

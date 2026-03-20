@@ -9,7 +9,7 @@ export default function PayoutBreakdown({ scope, role }) {
     ? (scope.cost_amount || 0) * (scope.estimated_hours || 0)
     : (scope.cost_amount || 0);
 
-  const platformFeePercentage = scope.platform_fee_percentage || 3;
+  const platformFeePercentage = scope.platform_fee_percentage || 18;
   const platformFeeAmount = scope.platform_fee_amount || (totalCost * platformFeePercentage / 100);
   const payoutAmount = scope.contractor_payout_amount || (totalCost - platformFeeAmount);
 
@@ -40,7 +40,7 @@ export default function PayoutBreakdown({ scope, role }) {
         <div className="flex gap-2 text-xs text-slate-600 bg-slate-100 p-3 rounded-lg">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <p>
-            The 3% platform facilitation fee covers payment processing, dispute resolution, review verification, and support — ensuring safe, reliable transactions for both parties.
+            The 18% platform facilitation fee covers payment processing, dispute resolution, review verification, and support — ensuring safe, reliable transactions for both parties.
           </p>
         </div>
       </CardContent>
