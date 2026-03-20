@@ -50,7 +50,7 @@ const AuthenticatedApp = () => {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
       // Only redirect to login if NOT on a public page
-      const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup', '/FindContractors', '/Jobs', '/Blog', '/BlogDetail', '/ContractorProfile', '/Contractors', '/JobDetails', '/Landing', '/BecomeContractor', '/QuickJobPost'];
+      const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup', '/FindContractors', '/Jobs', '/Blog', '/BlogDetail', '/ContractorProfile', '/Contractors', '/JobDetails', '/Landing', '/BecomeContractor', '/QuickJobPost', '/admin', '/AdminDashboard', '/Admin', '/Dashboard', '/ContractorAccount', '/CustomerAccount'];
       const isPublicPath = publicPaths.some(p => window.location.pathname === p || window.location.pathname.startsWith(p)) ||
         window.location.pathname.startsWith('/shop/') ||
         window.location.pathname.startsWith('/MarketShopProfile/');
