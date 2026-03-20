@@ -22,6 +22,7 @@ import MarketShopProfile from './pages/MarketShopProfile';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ReferralSignup from './pages/ReferralSignup';
+import RegionBlocked from './pages/RegionBlocked';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
