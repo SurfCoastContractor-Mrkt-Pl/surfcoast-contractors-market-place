@@ -257,20 +257,9 @@ export default function MarketShopSignup() {
       }
 
       const newShop = await base44.entities.MarketShop.create(shopPayload);
-
-      const response = await base44.functions.invoke('createVendorSubscription', {
-        shop_id: newShop.id,
-        shop_name: formData.shop_name,
-        owner_email: formData.email,
-        owner_name: formData.owner_name,
-        vendor_type: type
-      });
-
-      if (response.data.checkoutUrl) {
-        window.location.href = response.data.checkoutUrl;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      setCreatedShop(newShop);
+      setShowPaymentSelector(true);
+      setSubmitLoading(false);
     } catch (err) {
       console.error('Submission error:', err);
       alert('Error setting up your listing. Please try again.');
