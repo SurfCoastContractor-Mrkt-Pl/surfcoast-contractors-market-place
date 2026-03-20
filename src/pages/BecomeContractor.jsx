@@ -135,15 +135,12 @@ export default function BecomeContractor() {
         },
       });
 
-      // If compliance_acknowledged is already true, skip to dashboard
       if (data?.compliance_acknowledged) {
-        base44.analytics.track({ eventName: 'contractor_onboarding_completed' });
-        setSuccess(true);
-        setTimeout(() => {
-          navigate(createPageUrl('ContractorAccount'));
-        }, 2000);
+        // Compliance done — go to Stripe Connect step
+        base44.analytics.track({ eventName: 'contractor_onboarding_compliance_shown' });
+        setShowStripeConnect(true);
       } else {
-        // Show compliance acknowledgment screen
+        // Show compliance acknowledgment screen first
         base44.analytics.track({ eventName: 'contractor_onboarding_compliance_shown' });
         setSuccess(true);
       }
