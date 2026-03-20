@@ -18,16 +18,32 @@ export default function MarketShopSubscription({ shop }) {
     
     setLoading(true);
     try {
+      const user = await base44.auth.me();
+      if (!user) {
+        alert('You must be logged in to checkout.');
+        setLoading(false);
+        return;
+      }
+      
+      const priceId = model === 'subscription' 
+        ? Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID')
+        : Deno.env.get('STRIPE_VENDOR_LISTING_PRICE_ID');
+      
       const res = await base44.functions.invoke('createSubscriptionCheckout', {
-        shop_id: shop.id,
-        payment_model: model,
+        priceId,
+        email: user.email,
+        userType: 'market_vendor',
       });
-      if (res.data?.checkout_url) {
-        window.location.href = res.data.checkout_url;
+      
+      if (res.data?.url) {
+        window.location.href = res.data.url;
+      } else {
+        alert('Failed to create checkout session. Please try again.');
       }
     } catch (err) {
       console.error(err);
       alert('Failed to start checkout. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
