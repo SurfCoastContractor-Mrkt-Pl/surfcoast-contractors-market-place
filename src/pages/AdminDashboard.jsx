@@ -84,6 +84,41 @@ export default function AdminDashboard() {
     });
   }, [reviews, reviewStatusFilter, reviewRatingFilter]);
 
+  // Early returns AFTER all hooks
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <ShieldOff className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
+          <p className="text-slate-400 mb-6">You do not have permission to view this page.</p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium"
+          >
+            Go Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Stats calculations
+  const activeVendors = vendors.filter(v => v.status === 'active').length;
+  const pendingVendors = vendors.filter(v => v.status === 'pending').length;
+  const suspendedVendors = vendors.filter(v => v.status === 'suspended').length;
+  const farmersMarketVendors = vendors.filter(v => v.shop_type === 'farmers_market').length;
+  const swapMeetVendors = vendors.filter(v => v.shop_type === 'swap_meet').length;
+  const monthlyRevenue = activeVendors * 35;
+
   const handleVendorApprove = async (id, shop) => {
     await base44.entities.MarketShop.update(id, { status: 'active', subscription_status: 'active' });
     setVendors(vendors.map(v => v.id === id ? { ...v, status: 'active', subscription_status: 'active' } : v));
