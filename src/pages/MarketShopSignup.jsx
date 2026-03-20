@@ -208,9 +208,9 @@ export default function MarketShopSignup() {
   };
 
   const isFormValid = () => {
-    // If linked account, only shop_name is required (rest is pre-filled)
+    // If linked account, button is enabled (shop_name validation handled by HTML required attr)
     if (linkedProfile) {
-      return !!formData.shop_name.trim();
+      return true;
     }
     // If no linked account, all required fields must be filled
     return !!(
