@@ -89,15 +89,16 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Navigation - Unified Header */}
       <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50 sticky top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-12 sm:h-14">
-            {/* Logo */}
-            <Link to="/" className="flex items-center relative flex-shrink-0">
-              <div className="flex flex-col items-center">
-                <span className="font-serif font-bold text-base sunset-gradient-text">SurfCoast</span>
-                <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
-              </div>
-            </Link>
+        <div className="flex items-center justify-between h-12 sm:h-14">
+          {/* Logo - Flush Left */}
+          <Link to="/" className="flex items-center relative flex-shrink-0 pl-4 sm:pl-6 lg:pl-8">
+            <div className="flex flex-col items-center">
+              <span className="font-serif font-bold text-base sunset-gradient-text">SurfCoast</span>
+              <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
+            </div>
+          </Link>
+
+          <div className="max-w-7xl flex-1 mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
             {/* Desktop Nav - Left Group */}
             <div className="hidden lg:flex items-center gap-1 flex-shrink">
