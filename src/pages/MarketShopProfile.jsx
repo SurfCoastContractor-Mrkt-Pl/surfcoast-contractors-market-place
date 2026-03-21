@@ -324,8 +324,8 @@ export default function MarketShopProfile() {
           {/* About */}
           {shop.description && (
           <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/20">
-            <h3 className="text-xs sm:text-sm font-semibold text-slate-300 mb-2">About</h3>
-            <p className="text-sm sm:text-base text-slate-400 leading-relaxed">{shop.description}</p>
+            <h3 className="text-xs sm:text-sm font-semibold text-white/70 mb-2">About</h3>
+            <p className="text-sm sm:text-base text-white/85 leading-relaxed">{shop.description}</p>
           </div>
           )}
 
