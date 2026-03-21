@@ -259,7 +259,7 @@ export default function MarketShopProfile() {
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Profile Header */}
-        <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+        <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Logo */}
             <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
