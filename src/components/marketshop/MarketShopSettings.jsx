@@ -66,7 +66,7 @@ export default function MarketShopSettings({ shop, onUpdate }) {
       <h3 className="text-base font-semibold text-slate-800">Shop Settings</h3>
 
       {/* Photo Uploads */}
-      <div className="space-y-5 border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div className="space-y-5 border border-white/30 rounded-xl p-4 bg-white/40">
         <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Shop Photos</p>
 
         {/* Cover Banner */}
@@ -111,7 +111,7 @@ export default function MarketShopSettings({ shop, onUpdate }) {
                 className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
                   form.shop_type === value
                     ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-slate-700 border-slate-300 hover:border-blue-400'
+                    : 'bg-white/50 text-slate-700 border-slate-300 hover:border-blue-400'
                 }`}
               >
                 {label}

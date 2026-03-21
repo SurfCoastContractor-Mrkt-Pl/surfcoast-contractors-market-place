@@ -11,7 +11,7 @@ export default function MarketShopListings() {
           <Plus className="w-4 h-4" /> Add Listing
         </Button>
       </div>
-      <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center py-14 text-center">
+      <div className="bg-white/30 border-2 border-dashed border-white/40 rounded-xl flex flex-col items-center justify-center py-14 text-center">
         <Package className="w-10 h-10 text-slate-300 mb-3" />
         <p className="font-medium text-slate-500">No listings yet</p>
         <p className="text-sm text-slate-400 mt-1">Add your first product or service listing to get started.</p>

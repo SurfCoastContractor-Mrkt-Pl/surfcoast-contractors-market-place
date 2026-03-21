@@ -96,7 +96,7 @@ export default function MarketShopSubscription({ shop }) {
     : 'N/A';
 
   return (
-    <div className="bg-white rounded-lg sm:rounded-xl border border-slate-200 p-4 sm:p-6 mb-6 sm:mb-8">
+    <div className="bg-white/65 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/30 p-4 sm:p-6 mb-6 sm:mb-8">
       <div className="flex items-center gap-2 mb-4 sm:mb-6">
         <CreditCard className="w-5 h-5 text-blue-600" />
         <h2 className="text-lg sm:text-xl font-bold text-slate-900">My Subscription</h2>
@@ -131,7 +131,7 @@ export default function MarketShopSubscription({ shop }) {
 
       {/* Show Payment Model Selector if Inactive */}
       {showModelSelector && shop.subscription_status !== 'active' && (
-        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 sm:p-6 mb-6">
+        <div className="bg-white/40 border border-white/30 rounded-lg p-4 sm:p-6 mb-6">
           <p className="text-sm font-semibold text-slate-900 mb-4">Choose Your Payment Model</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
             {/* Subscription Model */}
