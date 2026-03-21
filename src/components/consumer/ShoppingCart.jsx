@@ -1,8 +1,10 @@
 import React from 'react';
-import { ShoppingCart as ShoppingCartIcon, X, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart as ShoppingCartIcon, X, Plus, Minus, Trash2, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
 import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { updateInventoryAfterSale, validateInventoryAvailability } from '@/lib/inventoryManager';
 
 export default function ShoppingCart() {
   const {
@@ -16,6 +18,9 @@ export default function ShoppingCart() {
     cartCount,
   } = useConsumerMode();
 
+  const [checkoutState, setCheckoutState] = useState('idle'); // idle, validating, processing, success, error
+  const [checkoutMessage, setCheckoutMessage] = useState('');
+
   // Group items by shop
   const itemsByShop = cartItems.reduce((acc, item) => {
     if (!acc[item.shop_id]) {
@@ -24,6 +29,52 @@ export default function ShoppingCart() {
     acc[item.shop_id].push(item);
     return acc;
   }, {});
+
+  const handleCheckout = async () => {
+    try {
+      setCheckoutState('validating');
+      setCheckoutMessage('Verifying inventory...');
+
+      // Validate inventory availability
+      const validation = await validateInventoryAvailability(cartItems);
+
+      if (!validation.valid) {
+        setCheckoutState('error');
+        const unavailable = validation.unavailableItems?.map(i => i.name).join(', ') || '';
+        const insufficient = validation.insufficientItems?.map(i => `${i.name} (${i.available} available, ${i.requested} requested)`).join(', ') || '';
+        setCheckoutMessage(
+          `${unavailable ? `Out of stock: ${unavailable}. ` : ''}${insufficient ? `Insufficient stock: ${insufficient}` : ''}`
+        );
+        return;
+      }
+
+      setCheckoutState('processing');
+      setCheckoutMessage('Processing payment and updating inventory...');
+
+      // Update inventory
+      const inventoryResult = await updateInventoryAfterSale(cartItems, `order-${Date.now()}`);
+
+      if (inventoryResult.success) {
+        setCheckoutState('success');
+        setCheckoutMessage(`Order complete! ${inventoryResult.summary?.outOfStockNow || 0} items now out of stock.`);
+        
+        // Clear cart after 2 seconds
+        setTimeout(() => {
+          clearCart();
+          setCartOpen(false);
+          setCheckoutState('idle');
+          setCheckoutMessage('');
+        }, 2000);
+      } else {
+        setCheckoutState('error');
+        setCheckoutMessage(inventoryResult.error || 'Failed to process order');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      setCheckoutState('error');
+      setCheckoutMessage(error.message || 'An error occurred during checkout');
+    }
+  };
 
   return (
     <>
@@ -134,28 +185,56 @@ export default function ShoppingCart() {
             </div>
 
             {/* Footer */}
-            {cartItems.length > 0 && (
-              <div className="border-t border-slate-200 p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-slate-900">Total:</span>
-                  <span className="text-lg font-bold text-slate-900">
-                    ${cartTotal.toFixed(2)}
-                  </span>
-                </div>
-                <Button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Proceed to Checkout
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={clearCart}
-                >
-                  Clear Cart
-                </Button>
-              </div>
-            )}
+             {cartItems.length > 0 && (
+               <div className="border-t border-slate-200 p-4 space-y-3">
+                 {checkoutState !== 'idle' && (
+                   <div className={`p-3 rounded-lg flex items-start gap-2 ${
+                     checkoutState === 'success' ? 'bg-green-50' :
+                     checkoutState === 'error' ? 'bg-red-50' :
+                     'bg-blue-50'
+                   }`}>
+                     {checkoutState === 'success' && (
+                       <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                     )}
+                     {checkoutState === 'error' && (
+                       <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                     )}
+                     {(checkoutState === 'validating' || checkoutState === 'processing') && (
+                       <Loader2 className="w-5 h-5 text-blue-600 flex-shrink-0 animate-spin mt-0.5" />
+                     )}
+                     <p className={`text-sm ${
+                       checkoutState === 'success' ? 'text-green-800' :
+                       checkoutState === 'error' ? 'text-red-800' :
+                       'text-blue-800'
+                     }`}>
+                       {checkoutMessage}
+                     </p>
+                   </div>
+                 )}
+
+                 <div className="flex items-center justify-between">
+                   <span className="font-medium text-slate-900">Total:</span>
+                   <span className="text-lg font-bold text-slate-900">
+                     ${cartTotal.toFixed(2)}
+                   </span>
+                 </div>
+                 <Button
+                   className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+                   onClick={handleCheckout}
+                   disabled={checkoutState !== 'idle' && checkoutState !== 'error'}
+                 >
+                   {checkoutState === 'idle' || checkoutState === 'error' ? 'Proceed to Checkout' : 'Processing...'}
+                 </Button>
+                 <Button
+                   variant="outline"
+                   className="w-full"
+                   onClick={clearCart}
+                   disabled={checkoutState !== 'idle' && checkoutState !== 'error'}
+                 >
+                   Clear Cart
+                 </Button>
+               </div>
+             )}
           </div>
         </div>
       )}
