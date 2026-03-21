@@ -283,7 +283,7 @@ export default function MarketShopProfile() {
               {/* Line 2: Location + Shop Type pill — aligned under shop name */}
               <div className="flex flex-row flex-wrap items-center gap-2 mb-3">
                 {(shop.city || shop.state) && (
-                  <span className="flex items-center gap-1 text-slate-300 text-sm">
+                  <span className="flex items-center gap-1 text-white/80 text-sm">
                     <MapPin className="w-4 h-4" />
                     {[shop.city, shop.state].filter(Boolean)
                       .map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase())
