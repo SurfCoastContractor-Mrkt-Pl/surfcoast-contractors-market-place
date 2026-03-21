@@ -5,6 +5,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import PageNotFound from './lib/PageNotFound';
+import ErrorBoundary from './lib/ErrorBoundary';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 import ShoppingCart from '@/components/consumer/ShoppingCart';
@@ -118,18 +119,19 @@ const AuthenticatedApp = () => {
 
 
 function App() {
-
   return (
-    <AuthProvider>
-      <ConsumerModeProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-          <Toaster />
-        </QueryClientProvider>
-      </ConsumerModeProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ConsumerModeProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <AuthenticatedApp />
+            </Router>
+            <Toaster />
+          </QueryClientProvider>
+        </ConsumerModeProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 

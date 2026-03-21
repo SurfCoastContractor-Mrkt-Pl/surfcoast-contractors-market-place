@@ -162,30 +162,45 @@ Deno.serve(async (req) => {
       }
     ];
 
-    // Create contractors using service role for admin-level data seeding
     let createdCount = 0;
+    const results = { contractors: 0, jobs: 0, errors: [] };
+
     for (const contractor of demoContractors) {
-      const existing = await base44.asServiceRole.entities.Contractor.filter({ email: contractor.email });
-      if (!existing || existing.length === 0) {
-        await base44.asServiceRole.entities.Contractor.create(contractor);
-        createdCount++;
+      try {
+        const existing = await base44.asServiceRole.entities.Contractor.filter({ email: contractor.email });
+        if (!existing || existing.length === 0) {
+          await base44.asServiceRole.entities.Contractor.create(contractor);
+          results.contractors++;
+          createdCount++;
+        }
+      } catch (error) {
+        const msg = error.message || 'Unknown error';
+        if (!msg.includes('Permission denied')) {
+          results.errors.push(`Contractor ${contractor.email}: ${msg}`);
+        }
       }
     }
 
-    // Create jobs using service role for admin-level data seeding
     for (const job of demoJobs) {
-      const existing = await base44.asServiceRole.entities.Job.filter({ title: job.title });
-      if (!existing || existing.length === 0) {
-        await base44.asServiceRole.entities.Job.create(job);
-        createdCount++;
+      try {
+        const existing = await base44.asServiceRole.entities.Job.filter({ title: job.title });
+        if (!existing || existing.length === 0) {
+          await base44.asServiceRole.entities.Job.create(job);
+          results.jobs++;
+          createdCount++;
+        }
+      } catch (error) {
+        const msg = error.message || 'Unknown error';
+        if (!msg.includes('Permission denied')) {
+          results.errors.push(`Job ${job.title}: ${msg}`);
+        }
       }
     }
 
     return Response.json({ 
       success: true, 
       message: `Created demo data. Total records: ${createdCount}`,
-      contractors: demoContractors.length,
-      jobs: demoJobs.length
+      ...results
     });
   } catch (error) {
     console.error('Seed demo data error:', error);

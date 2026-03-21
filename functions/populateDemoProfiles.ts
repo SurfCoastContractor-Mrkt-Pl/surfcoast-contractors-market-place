@@ -105,7 +105,10 @@ Deno.serve(async (req) => {
         totalCreated += contractorCount;
         createdCities.push({ city: cityName, count: contractorCount });
       } catch (e) {
-        console.error(`Failed to create contractors for ${cityName}:`, e.message);
+        const msg = e.message || 'Unknown error';
+        if (!msg.includes('Permission denied')) {
+          console.error(`Failed to create contractors for ${cityName}:`, msg);
+        }
       }
     }
 
