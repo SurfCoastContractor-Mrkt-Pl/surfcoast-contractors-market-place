@@ -126,7 +126,6 @@ export default function MarketShopDashboard() {
           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
             <div className="flex-1">
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3">
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
                 <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full border border-blue-200 transition-colors">
                   <Camera className="w-3.5 h-3.5" />
                   <span>Upload Photo</span>
