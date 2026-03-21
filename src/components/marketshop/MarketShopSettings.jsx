@@ -151,7 +151,7 @@ export default function MarketShopSettings({ shop, onUpdate }) {
             {CATEGORIES.map(cat => (
               <button key={cat} type="button" onClick={() => toggle('categories', cat)}
                 className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
-                  (form.categories || []).includes(cat) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-300 hover:border-blue-400'
+                  (form.categories || []).includes(cat) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 text-slate-600 border-slate-300 hover:border-blue-400'
                 }`}
               >{cat}</button>
             ))}
@@ -164,7 +164,7 @@ export default function MarketShopSettings({ shop, onUpdate }) {
             {PAYMENT_METHODS.map(method => (
               <button key={method} type="button" onClick={() => toggle('payment_methods', method)}
                 className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
-                  (form.payment_methods || []).includes(method) ? 'bg-green-600 text-white border-green-600' : 'bg-white text-slate-600 border-slate-300 hover:border-green-400'
+                  (form.payment_methods || []).includes(method) ? 'bg-green-600 text-white border-green-600' : 'bg-white/50 text-slate-600 border-slate-300 hover:border-green-400'
                 }`}
               >{method}</button>
             ))}
