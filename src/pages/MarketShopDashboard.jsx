@@ -124,12 +124,22 @@ export default function MarketShopDashboard() {
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
-             <Store className="w-5 sm:w-7 h-5 sm:h-7 text-white" strokeWidth={1.5} />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+             <Store className="w-5 h-5 text-white" strokeWidth={1.5} />
             </div>
             <div className="flex-1">
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3">
                 <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
+                <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full border border-blue-200 transition-colors">
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Upload Photo</span>
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                    handleUpdate({ logo_url: file_url });
+                  }} />
+                </label>
                 <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
                   {status}
                 </span>
