@@ -216,8 +216,7 @@ export default function Layout({ children, currentPageName }) {
                 );
               })}
               <div className="pt-4 border-t border-slate-100 space-y-2">
-
-              {isContractor === false && (
+                {isContractor === false && (
                   <Link to={createPageUrl('QuickJobPost')} onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full text-white font-medium" style={{backgroundColor: '#1E5A96'}}>Post a Job</Button>
                   </Link>
@@ -227,21 +226,21 @@ export default function Layout({ children, currentPageName }) {
                     Join as Contractor
                   </Button>
                 </Link>
-                {isLoggedIn && (
-                  <Link to={createPageUrl('Dashboard')} onClick={() => {
-                    setMobileMenuOpen(false);
-                    window.scrollTo(0, 0);
-                  }}>
-                    <Button variant="outline" className="w-full text-slate-700 font-medium">
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      My Dashboard
-                    </Button>
-                  </Link>
-                )}
                 <div className="border-t border-slate-100 pt-2 space-y-1">
                    <div className="px-3 py-2 text-xs font-semibold text-slate-500">
                      {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                    </div>
+                   {isLoggedIn && (
+                     <Link to={createPageUrl('Dashboard')} onClick={() => {
+                       setMobileMenuOpen(false);
+                       window.scrollTo(0, 0);
+                     }}>
+                       <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                         <ArrowLeft className="w-4 h-4" />
+                         My Dashboard
+                       </div>
+                     </Link>
+                   )}
                    {(isContractor ? contractorLinks : customerLinks).map(link => (
                      <Link key={link.page} to={createPageUrl(link.page)} onClick={() => {
                        setMobileMenuOpen(false);
