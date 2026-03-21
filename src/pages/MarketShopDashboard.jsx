@@ -143,7 +143,7 @@ export default function MarketShopDashboard() {
                 </span>
               </div>
               {/* Row 2: Location + Shop Type — indented to align under shop name */}
-              <div className="flex flex-row flex-wrap items-center gap-2 mt-1 pl-[calc(theme(spacing.2)*2+theme(spacing.3)+theme(fontSize.xs[0])*6.5)]" style={{paddingLeft: '7rem'}}>
+              <div className="flex flex-row flex-wrap items-center gap-2 mt-1 pl-[calc(theme(spacing.2)*2+theme(spacing.3)+theme(fontSize.xs[0])*6.5)]" style={{paddingLeft: '9.5rem'}}>
                 {(shop.city || shop.state) && (
                   <span className="text-sm text-slate-500 capitalize">
                     {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
