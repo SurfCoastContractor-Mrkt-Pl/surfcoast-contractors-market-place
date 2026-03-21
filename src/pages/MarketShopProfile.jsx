@@ -302,7 +302,7 @@ export default function MarketShopProfile() {
                 <div className="flex items-center gap-2">
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < Math.round(parseFloat(avgRating)) ? 'fill-amber-400 text-amber-400' : 'text-slate-600'}`} />
+                      <Star key={i} className={`w-4 h-4 ${i < Math.round(parseFloat(avgRating)) ? 'fill-amber-400 text-amber-400' : 'text-white/30'}`} />
                     ))}
                   </div>
                   <span className="text-sm text-white/70">{avgRating} ({reviews.length})</span>
