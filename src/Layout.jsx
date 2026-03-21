@@ -97,7 +97,7 @@ export default function Layout({ children, currentPageName }) {
               <span className="text-xs font-semibold ml-1 text-slate-500">MARKETPLACE</span>
             </Link>
 
-            {/* Desktop Nav */}
+            {/* Desktop Nav - Left Group */}
             <div className="hidden lg:flex items-center gap-1 flex-shrink">
               {getNavLinks(isContractor).map(link => (
                 <Link key={link.page} to={createPageUrl(link.page)}>
@@ -116,10 +116,7 @@ export default function Layout({ children, currentPageName }) {
               ))}
             </div>
 
-            {/* Shopping Cart - Consumer Mode */}
-             {isConsumerMode && <ShoppingCart />}
-
-            {/* CTA Buttons */}
+            {/* Right Group - CTA Buttons & Account */}
              <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
 
               {isContractor === false && (
