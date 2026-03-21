@@ -125,8 +125,8 @@ export default function MarketShopDashboard() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
             <div className="flex-1">
-              {/* Row 1: Upload Photo + Shop Name + Status */}
-              <div className="flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+              {/* Row 1: Upload Photo + [Shop Name + Status + Location + Shop Type stacked] */}
+              <div className="flex flex-row items-start gap-3">
                 <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full border border-blue-200 transition-colors flex-shrink-0">
                   <Camera className="w-3.5 h-3.5" />
                   <span>Upload Photo</span>
@@ -137,24 +137,28 @@ export default function MarketShopDashboard() {
                     handleUpdate({ logo_url: file_url });
                   }} />
                 </label>
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
-                  {status}
-                </span>
-              </div>
-              {/* Row 2: Location + Shop Type — indented to align under shop name */}
-              <div className="flex flex-row flex-wrap items-center gap-2 mt-1 pl-[calc(theme(spacing.2)*2+theme(spacing.3)+theme(fontSize.xs[0])*6.5)]" style={{paddingLeft: '9.5rem'}}>
-                {(shop.city || shop.state) && (
-                  <span className="text-sm text-slate-500 capitalize">
-                    {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
-                  </span>
-                )}
-                {shop.shop_type && (
-                  <span className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
-                    <Store className="w-3 h-3" />
-                    {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
-                  </span>
-                )}
+                <div className="flex flex-col">
+                  <div className="flex flex-row flex-wrap items-center gap-2">
+                    <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
+                      {status}
+                    </span>
+                  </div>
+                  {/* Row 2: Location + Shop Type — naturally aligned under shop name */}
+                  <div className="flex flex-row flex-wrap items-center gap-2 mt-1">
+                    {(shop.city || shop.state) && (
+                      <span className="text-sm text-slate-500">
+                        {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
+                      </span>
+                    )}
+                    {shop.shop_type && (
+                      <span className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
+                        <Store className="w-3 h-3" />
+                        {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
