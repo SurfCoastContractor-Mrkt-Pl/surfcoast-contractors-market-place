@@ -62,33 +62,9 @@ export default function MarketShopSettings({ shop, onUpdate }) {
   };
 
   return (
-    <div className="space-y-6">
-      <h3 className="text-base font-semibold text-slate-800">Shop Settings</h3>
-
-      {/* Photo Uploads */}
-      <div className="space-y-5 border border-slate-200 rounded-xl p-4 bg-slate-50">
-        <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Shop Photos</p>
-
-        {/* Cover Banner */}
-        <ImageCropUploader
-          label="Cover Banner"
-          currentUrl={shop?.banner_url}
-          aspectRatio={4}
-          shape="rect"
-          hint="Recommended: wide landscape photo (4:1 ratio). Drag & zoom to crop."
-          onSave={(url) => handlePhotoSave('banner_url', url)}
-        />
-
-        {/* Profile / Booth Photo */}
-        <ImageCropUploader
-          label="Profile / Booth Photo"
-          currentUrl={shop?.logo_url}
-          aspectRatio={1}
-          shape="circle"
-          hint="Square photo of your booth or logo. Drag & zoom to crop."
-          onSave={(url) => handlePhotoSave('logo_url', url)}
-        />
-      </div>
+    <div className="space-y-5">
+      <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">Shop Settings</h3>
+      <p className="text-xs text-slate-500 -mt-3">To update your cover photo or profile photo, use the camera icons on the shop header above.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
