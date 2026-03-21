@@ -64,18 +64,20 @@ export default function ContractorCard({ contractor }) {
               </div>
               
               <div className="flex flex-wrap gap-1 mt-0.5">
-                <Badge 
-                  variant="secondary" 
-                  className={`text-xs py-0.5 px-1.5 ${contractor.contractor_type === 'trade_specific' 
-                    ? 'bg-blue-100 text-blue-700' 
-                    : 'bg-amber-100 text-amber-700'
-                  }`}
-                >
-                  {contractor.contractor_type === 'trade_specific' 
-                    ? tradeLabels[contractor.trade_specialty] || 'Trade'
-                    : 'General'
-                  }
-                </Badge>
+                {contractor.contractor_type === 'trade_specific' && contractor.trade_specialty ? (() => {
+                  const TradeIcon = getTradeIcon(contractor.trade_specialty);
+                  const tradeColor = getTradeColor(contractor.trade_specialty);
+                  return (
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1.5 ${tradeColor.bg} ${tradeColor.text}`}>
+                      <TradeIcon className="w-3 h-3" />
+                      {tradeLabels[contractor.trade_specialty] || 'Trade'}
+                    </span>
+                  );
+                })() : (
+                  <Badge variant="secondary" className="text-xs py-0.5 px-1.5 bg-amber-100 text-amber-700">
+                    General
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
