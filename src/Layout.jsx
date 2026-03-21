@@ -87,13 +87,14 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex flex-col">
 
-      {/* Navigation - Hidden on Home page */}
-      {!isHome && <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50 sticky top-0">
+      {/* Navigation - Unified Header */}
+      <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50 sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 sm:h-14">
             {/* Logo */}
-            <Link to="/Landing" className="flex items-center relative flex-shrink-0">
-              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-10 w-10 object-contain" />
+            <Link to="/" className="flex items-center relative flex-shrink-0">
+              <span className="font-serif font-bold text-base" style={{color: '#1E5A96'}}>SurfCoast</span>
+              <span className="text-xs font-semibold ml-1 text-slate-500">MARKETPLACE</span>
             </Link>
 
             {/* Desktop Nav */}
