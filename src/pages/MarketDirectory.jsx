@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag, CheckCircle } from 'lucide-react';
+import { useConsumerMode } from '@/lib/ConsumerModeContext';
+import MarketListingBrowser from '@/components/consumer/MarketListingBrowser';
 
 const SHOP_TYPE_LABELS = {
   farmers_market: 'Farmers Market',
@@ -72,18 +74,32 @@ function VendorCard({ shop, onClick }) {
 
 export default function MarketDirectory() {
   const navigate = useNavigate();
+  const { isConsumerMode } = useConsumerMode();
   const [shops, setShops] = useState([]);
+  const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
   useEffect(() => {
-    base44.entities.MarketShop.filter({ is_active: true })
-      .then(data => setShops(data || []))
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+    const loadData = async () => {
+      try {
+        const shopsData = await base44.entities.MarketShop.filter({ is_active: true });
+        setShops(shopsData || []);
+        
+        if (isConsumerMode) {
+          const listingsData = await base44.entities.MarketListing.filter({ status: 'active' });
+          setListings(listingsData || []);
+        }
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [isConsumerMode]);
 
   const filtered = useMemo(() => {
     return shops.filter(shop => {
@@ -99,17 +115,21 @@ export default function MarketDirectory() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
-            <ShoppingBag className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">Farmers Markets & Swap Meets</h1>
-          </div>
-          <p className="text-slate-500 text-xs sm:text-sm max-w-2xl">
-            Browse local vendors near you. All vendors are independently operating — see our disclaimer below.
-          </p>
-        </div>
-      </div>
+       <div className="bg-white border-b border-slate-200">
+         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+           <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+             <ShoppingBag className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
+             <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">
+               {isConsumerMode ? 'Shop Local Market Items' : 'Farmers Markets & Swap Meets'}
+             </h1>
+           </div>
+           <p className="text-slate-500 text-xs sm:text-sm max-w-2xl">
+             {isConsumerMode
+               ? 'Browse fresh produce, crafts, and goods from local vendors. Add items to your cart and checkout in one place.'
+               : 'Browse local vendors near you. All vendors are independently operating — see our disclaimer below.'}
+           </p>
+         </div>
+       </div>
 
       {/* Disclaimer Banner */}
       <div className="bg-amber-50 border-b border-amber-200">
@@ -241,31 +261,67 @@ export default function MarketDirectory() {
         </div>
 
       {/* Grid */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg sm:rounded-2xl border border-slate-200 p-4 sm:p-5 animate-pulse h-40 sm:h-44" />
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-12 sm:py-20">
-            <Store className="w-10 sm:w-12 h-10 sm:h-12 text-slate-400 mx-auto mb-3 sm:mb-4" strokeWidth={1.5} />
-            <p className="font-medium text-slate-500 text-sm sm:text-base">No vendors found</p>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">Try adjusting your search or filters.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {filtered.map(shop => (
-              <VendorCard
-                key={shop.id}
-                shop={shop}
-                onClick={() => navigate(`/MarketShopProfile/${shop.id}`)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
+         {isConsumerMode ? (
+           <>
+             {/* Consumer Mode - Browse Products */}
+             {loading ? (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                 {[...Array(8)].map((_, i) => (
+                   <div key={i} className="bg-white rounded-lg border border-slate-200 animate-pulse h-48" />
+                 ))}
+               </div>
+             ) : listings.length === 0 ? (
+               <div className="text-center py-12 sm:py-20">
+                 <ShoppingBag className="w-10 sm:w-12 h-10 sm:h-12 text-slate-400 mx-auto mb-3 sm:mb-4" strokeWidth={1.5} />
+                 <p className="font-medium text-slate-500 text-sm sm:text-base">No products available</p>
+                 <p className="text-xs sm:text-sm text-slate-400 mt-1">Check back soon for new items from local vendors.</p>
+               </div>
+             ) : (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                 {listings.map(listing => {
+                   const shop = shops.find(s => s.id === listing.shop_id);
+                   return (
+                     <MarketListingBrowser
+                       key={listing.id}
+                       listing={listing}
+                       shopName={shop?.shop_name || 'Unknown Shop'}
+                       shopId={listing.shop_id}
+                     />
+                   );
+                 })}
+               </div>
+             )}
+           </>
+         ) : (
+           <>
+             {/* Vendor Mode - Browse Vendors */}
+             {loading ? (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                 {[...Array(6)].map((_, i) => (
+                   <div key={i} className="bg-white rounded-lg sm:rounded-2xl border border-slate-200 p-4 sm:p-5 animate-pulse h-40 sm:h-44" />
+                 ))}
+               </div>
+             ) : filtered.length === 0 ? (
+               <div className="text-center py-12 sm:py-20">
+                 <Store className="w-10 sm:w-12 h-10 sm:h-12 text-slate-400 mx-auto mb-3 sm:mb-4" strokeWidth={1.5} />
+                 <p className="font-medium text-slate-500 text-sm sm:text-base">No vendors found</p>
+                 <p className="text-xs sm:text-sm text-slate-400 mt-1">Try adjusting your search or filters.</p>
+               </div>
+             ) : (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                 {filtered.map(shop => (
+                   <VendorCard
+                     key={shop.id}
+                     shop={shop}
+                     onClick={() => navigate(`/MarketShopProfile/${shop.id}`)}
+                   />
+                 ))}
+               </div>
+             )}
+           </>
+         )}
+       </div>
     </div>
   );
 }
