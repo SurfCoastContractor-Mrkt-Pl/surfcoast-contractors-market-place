@@ -189,7 +189,7 @@ export default function MarketShopDashboard() {
       {/* Tab Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
-          {activeTab === 'listings' && <MarketShopListings />}
+          {activeTab === 'listings' && <MarketShopListings shopId={shop.id} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
             shop.subscription_status === 'active' ? (
