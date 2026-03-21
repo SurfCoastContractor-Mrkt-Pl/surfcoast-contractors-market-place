@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Eye, UserPlus, User, Briefcase, FileText, Home, ArrowRight } from 'lucide-react';
+import { Eye, UserPlus, User, Briefcase, FileText, Home, ArrowRight, LayoutDashboard } from 'lucide-react';
 
 const PREVIEW_PAGES = [
   {
@@ -53,6 +53,22 @@ const PREVIEW_PAGES = [
     href: createPageUrl('Home'),
     color: 'bg-indigo-50 border-indigo-200',
     iconColor: 'text-indigo-600',
+  },
+  {
+    title: 'Contractor Dashboard',
+    description: 'Contractor-specific dashboard for managing jobs, scopes, and profile.',
+    icon: LayoutDashboard,
+    href: createPageUrl('Dashboard'),
+    color: 'bg-orange-50 border-orange-200',
+    iconColor: 'text-orange-600',
+  },
+  {
+    title: 'Customer Dashboard',
+    description: 'Customer-specific dashboard for managing job postings and scopes.',
+    icon: LayoutDashboard,
+    href: createPageUrl('Dashboard'),
+    color: 'bg-cyan-50 border-cyan-200',
+    iconColor: 'text-cyan-600',
   },
 ];
 
