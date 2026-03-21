@@ -35,6 +35,7 @@ import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import TrialBadge from '@/components/customer/TrialBadge';
+import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -232,6 +233,11 @@ export default function CustomerAccount() {
              </div>
            </Card>
          )}
+
+         {/* Consumer Mode Toggle */}
+         <div className="bg-white/92 backdrop-blur-md border border-white/20 rounded-2xl p-4">
+           <ConsumerModeToggle />
+         </div>
 
          {/* Auth Button */}
          <div className="flex gap-3">
