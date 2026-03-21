@@ -387,7 +387,7 @@ export default function MarketShopProfile() {
               <div className="text-center">
                 <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">{avgRating}</div>
                 <StarRating rating={Math.round(parseFloat(avgRating))} />
-                <p className="text-xs sm:text-sm text-slate-400 mt-2">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs sm:text-sm text-white/70 mt-2">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
           )}
