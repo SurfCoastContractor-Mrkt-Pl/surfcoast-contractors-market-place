@@ -33,29 +33,31 @@ export default function MarketShopPaymentModelSelector({ shopId, shopName, owner
     if (!selected) return;
     setLoading(true);
     try {
-      const response = await fetch('/api/create-market-shop-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          shopId,
-          paymentModel: selected,
-          shopName,
-          ownerEmail,
-          ownerName,
-          shopType
-        })
+      // Check if running in iframe
+      if (window.self !== window.top) {
+        alert('Checkout only works from a published app. Please open this in a new tab.');
+        setLoading(false);
+        return;
+      }
+
+      const { base44 } = await import('@/api/base44Client');
+      const response = await base44.functions.invoke('createMarketShopCheckout', {
+        shopId,
+        paymentModel: selected,
+        shopName,
+        ownerEmail,
+        ownerName,
       });
 
-      const data = await response.json();
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
+      if (response.data?.checkoutUrl) {
+        window.location.href = response.data.checkoutUrl;
       } else {
         alert('Error creating checkout session');
         setLoading(false);
       }
     } catch (err) {
       console.error('Checkout error:', err);
-      alert('Error proceeding to payment');
+      alert('Error proceeding to payment. Please try again.');
       setLoading(false);
     }
   };
