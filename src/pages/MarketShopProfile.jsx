@@ -530,6 +530,7 @@ export default function MarketShopProfile() {
             Back to Vendor Directory
           </button>
         </div>
+      </div>
     </div>
   );
 }
