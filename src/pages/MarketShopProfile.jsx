@@ -425,23 +425,28 @@ export default function MarketShopProfile() {
 
           {/* Leave a Review Form */}
           <div className="bg-white/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/30 mb-6 sm:mb-8">
-            <h3 className="text-base sm:text-lg font-semibold mb-4">Leave a Review</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white mb-4">Leave a Review</h3>
             <form onSubmit={handleReviewSubmit} className="space-y-3 sm:space-y-4">
               <div className="grid grid-cols-1 gap-3 sm:gap-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  value={reviewForm.name}
-                  onChange={e => setReviewForm({ ...reviewForm, name: e.target.value })}
-                  className="px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  value={reviewForm.email}
-                  onChange={e => setReviewForm({ ...reviewForm, email: e.target.value })}
-                  className="px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                <div>
+                  <label className="block text-sm font-semibold text-white mb-1">Your Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter your name"
+                    value={reviewForm.name}
+                    onChange={e => setReviewForm({ ...reviewForm, name: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-white mb-1">Your Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={reviewForm.email}
+                    onChange={e => setReviewForm({ ...reviewForm, email: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
