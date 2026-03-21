@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Loader2 } from 'lucide-react';
+import ImageCropUploader from './ImageCropUploader';
 
 const SHOP_TYPES = [
   { value: 'farmers_market', label: 'Farmers Market' },
