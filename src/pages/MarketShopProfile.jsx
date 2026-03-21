@@ -273,25 +273,30 @@ export default function MarketShopProfile() {
 
             {/* Info */}
             <div className="flex-1">
-              <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3 mb-2">
+              {/* Line 1: Shop Name + Verified */}
+              <div className="flex flex-row flex-wrap items-center gap-2 sm:gap-3 mb-1">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">{shop.shop_name}</h1>
                 {shop.verified_vendor && (
                   <CheckCircle className="w-6 h-6 text-green-400" />
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 mb-3">
+              {/* Line 2: Location + Shop Type pill — aligned under shop name */}
+              <div className="flex flex-row flex-wrap items-center gap-2 mb-3">
+                {(shop.city || shop.state) && (
+                  <span className="flex items-center gap-1 text-slate-300 text-sm">
+                    <MapPin className="w-4 h-4" />
+                    {[shop.city, shop.state].filter(Boolean)
+                      .map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase())
+                      .join(', ')}
+                  </span>
+                )}
                 {TypeIcon && (
                   <span className={`text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2 ${typeColor.bg} ${typeColor.text}`}>
                     <TypeIcon className="w-4 h-4" />
                     The Market Booths
                   </span>
                 )}
-              </div>
-
-              <div className="flex items-center gap-1 text-slate-300 mb-3">
-                <MapPin className="w-4 h-4" />
-                {[shop.city, shop.state].filter(Boolean).join(', ')}
               </div>
 
               {reviews.length > 0 && (
