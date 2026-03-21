@@ -85,12 +85,12 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
 
       {/* Navigation - Hidden on Home page */}
-      {!isHome && <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50">
+      {!isHome && <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50 sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link to="/Landing" className="flex items-center gap-0 relative flex-shrink-0">
-              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-[69px] w-[69px] object-contain" />
+              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="h-12 sm:h-[69px] w-12 sm:w-[69px] object-contain" />
               <div className="flex flex-col items-center justify-center gap-0.5" style={{lineHeight: 1}}>
                <span className="font-serif font-bold" style={{fontSize: '22px', fontWeight: 800, color: '#ffffff'}}>
                   SurfCoast
@@ -263,9 +263,9 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Footer - Hidden on Home page */}
-      {!isHome && <footer className="bg-slate-800 text-slate-50 py-5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+       {!isHome && <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
             <div className="sm:col-span-2 lg:col-span-2">
               <div className="flex items-center gap-2 mb-1">
                 <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="w-8 h-8 flex-shrink-0" />
@@ -298,8 +298,8 @@ export default function Layout({ children, currentPageName }) {
              </div>
             )}
             <div className="flex flex-col items-center justify-start">
-              <h4 className="font-semibold mb-3 text-sm">Connect</h4>
-              <div className="flex items-center gap-3">
+              <h4 className="font-semibold mb-3 text-sm text-center">Connect</h4>
+              <div className="flex items-center gap-4 sm:gap-3">
                 <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
@@ -325,9 +325,9 @@ export default function Layout({ children, currentPageName }) {
             </p>
           </div>
 
-          <div className="border-t border-slate-800 mt-3 pt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
+          <div className="border-t border-slate-800 mt-4 sm:mt-6 pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
             <span className="text-xs">© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-3">
               <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors text-xs">
                 Terms
               </Link>
@@ -337,7 +337,7 @@ export default function Layout({ children, currentPageName }) {
               </Link>
               <button
                 onClick={() => setSuggestionOpen(true)}
-                className="flex items-center gap-1 text-slate-400 hover:text-amber-400 transition-colors text-xs"
+                className="flex items-center gap-1 text-slate-400 hover:text-amber-400 transition-colors text-xs min-h-[44px] px-2 py-1 active:bg-slate-700 rounded sm:min-h-auto sm:py-0"
               >
                 <Lightbulb className="w-3 h-3" />
                 Feedback
