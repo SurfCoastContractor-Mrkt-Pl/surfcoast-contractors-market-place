@@ -222,7 +222,7 @@ export default function FindContractors() {
             <span className="font-medium text-slate-700">Filters</span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
@@ -235,30 +235,46 @@ export default function FindContractors() {
 
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Contractor Type" />
+                <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value={null}>All Types</SelectItem>
                 <SelectItem value="trade_specific">Trade Specific</SelectItem>
                 <SelectItem value="general">General Contractor</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={tradeFilter} onValueChange={setTradeFilter}>
+            <Select value={tradeFilter} onValueChange={setTradeFilter} disabled={typeFilter === 'general'}>
               <SelectTrigger>
-                <SelectValue placeholder="Trade Specialty" />
+                <SelectValue placeholder="Trade" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Trades</SelectItem>
+                <SelectItem value={null}>All Trades</SelectItem>
                 {trades.map(trade => (
                   <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
+            <Select value={lineOfWorkFilter} onValueChange={setLineOfWorkFilter} disabled={typeFilter === 'trade_specific'}>
+              <SelectTrigger>
+                <SelectValue placeholder="Service" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={null}>All Services</SelectItem>
+                <SelectItem value="freelance_writer">Freelance Writer</SelectItem>
+                <SelectItem value="freelance_designer">Freelance Designer</SelectItem>
+                <SelectItem value="freelance_developer">Freelance Developer</SelectItem>
+                <SelectItem value="consultant">Consultant</SelectItem>
+                <SelectItem value="virtual_assistant">Virtual Assistant</SelectItem>
+                <SelectItem value="handyman">Handyman</SelectItem>
+                <SelectItem value="appliance_repair">Appliance Repair</SelectItem>
+              </SelectContent>
+            </Select>
+
             <Select value={ratingFilter} onValueChange={setRatingFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Minimum Rating" />
+                <SelectValue placeholder="Rating" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={null}>All Ratings</SelectItem>
