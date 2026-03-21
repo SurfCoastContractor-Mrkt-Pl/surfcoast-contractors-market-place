@@ -42,16 +42,7 @@ export default function AuthTopBar() {
               <p className="text-xs text-slate-500">{user.email}</p>
             </div>
           </div>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => base44.auth.logout()}
-            className="border-slate-300 hover:bg-slate-50"
-          >
-            <LogOut className="w-4 h-4 mr-1.5" />
-            <span className="hidden sm:inline">Logout</span>
-            <span className="sm:hidden">Log Out</span>
-          </Button>
+
         </>
       ) : (
         <Button
