@@ -287,46 +287,42 @@ export default function FindContractors() {
 
           {hasActiveFilters && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
-              <span className="text-sm text-slate-500">Active filters:</span>
+              <span className="text-sm text-slate-500">Filtering by:</span>
               {searchQuery && (
-                <Badge variant="secondary" className="gap-1">
-                  {searchQuery}
+                <Badge className="gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200">
+                  🔍 {searchQuery}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchQuery('')} />
                 </Badge>
               )}
-              {typeFilter && typeFilter !== 'all' && (
-                <Badge variant="secondary" className="gap-1">
+              {typeFilter && (
+                <Badge className="gap-1 bg-purple-100 text-purple-800 hover:bg-purple-200">
                   {typeFilter}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setTypeFilter('')} />
                 </Badge>
               )}
-              {tradeFilter && tradeFilter !== 'all' && (
-                <Badge variant="secondary" className="gap-1">
+              {tradeFilter && (
+                <Badge className="gap-1 bg-green-100 text-green-800 hover:bg-green-200">
                   {trades.find(t => t.id === tradeFilter)?.name}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setTradeFilter('')} />
                 </Badge>
               )}
+              {lineOfWorkFilter && (
+                <Badge className="gap-1 bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
+                  {lineOfWorkFilter}
+                  <X className="w-3 h-3 cursor-pointer" onClick={() => setLineOfWorkFilter('')} />
+                </Badge>
+              )}
               {ratingFilter && (
-                <Badge variant="secondary" className="gap-1">
-                  {ratingFilter}+ rating
+                <Badge className="gap-1 bg-amber-100 text-amber-800 hover:bg-amber-200">
+                  ⭐ {ratingFilter}+ stars
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setRatingFilter('')} />
                 </Badge>
               )}
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-amber-600">
-                Clear all
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-600 hover:text-slate-900 ml-2">
+                Reset all
               </Button>
             </div>
           )}
-        </div>
-
-        {/* Enter Button */}
-        <div className="mb-8">
-          <Button 
-            onClick={applyFilters}
-            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-lg"
-          >
-            Enter
-          </Button>
         </div>
 
         {/* Featured Contractors */}
