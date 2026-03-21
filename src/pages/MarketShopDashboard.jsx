@@ -136,6 +136,7 @@ export default function MarketShopDashboard() {
                     handleUpdate({ logo_url: file_url });
                   }} />
                 </label>
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
                 <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
                   {status}
                 </span>
