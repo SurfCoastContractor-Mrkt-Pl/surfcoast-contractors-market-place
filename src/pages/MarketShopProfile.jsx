@@ -400,7 +400,7 @@ export default function MarketShopProfile() {
                   <div>
                     <StarRating rating={review.rating} />
                     <p className="font-semibold text-slate-100 mt-2">{review.title}</p>
-                    <p className="text-sm text-slate-400 flex items-center gap-2 mt-1">
+                    <p className="text-sm text-white/65 flex items-center gap-2 mt-1">
                       <User className="w-4 h-4" />
                       {review.reviewer_name} • 
                       <CalendarDays className="w-4 h-4 ml-2" />
