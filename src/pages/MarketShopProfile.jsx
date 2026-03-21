@@ -416,7 +416,7 @@ export default function MarketShopProfile() {
                       <Store className="w-4 h-4" />
                       Vendor Reply
                     </p>
-                    <p className="text-slate-300 text-sm">{review.vendor_reply}</p>
+                    <p className="text-white/85 text-sm">{review.vendor_reply}</p>
                   </div>
                 )}
               </div>
