@@ -142,17 +142,20 @@ Deno.serve(async (req) => {
       }
     }
 
-    // ── Severity: critical → also escalate to Base44 IT security ───────────
+    // ── Severity: critical → also escalate to security contact ───────────
     if (severity === 'critical') {
-      try {
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: 'security@base44.com',
-          from_name: 'SurfCoast Security — Automated Escalation',
-          subject: `🔴 [CRITICAL BREACH ESCALATION] SurfCoast — ${alert_type}`,
-          body: `This is an automated critical security escalation from SurfCoast Contractor Marketplace (Base44 app).\n\nA CRITICAL security event has been detected and requires immediate platform-level review.\n\n${alertBody}\n\n---\nApp: SurfCoast Contractor Marketplace\nEscalation ID: ${alertRecord?.id || 'unknown'}\nThis message was generated automatically by the SurfCoast security pipeline.`,
-        });
-      } catch (b44Err) {
-        console.error('Base44 escalation email failed:', b44Err.message);
+      const securityContactEmail = Deno.env.get('SECURITY_ESCALATION_EMAIL') || Deno.env.get('ADMIN_ALERT_EMAIL');
+      if (securityContactEmail) {
+        try {
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: securityContactEmail,
+            from_name: 'SurfCoast Security — Automated Escalation',
+            subject: `🔴 [CRITICAL BREACH ESCALATION] SurfCoast — ${alert_type}`,
+            body: `This is an automated critical security escalation from SurfCoast Contractor Marketplace (Base44 app).\n\nA CRITICAL security event has been detected and requires immediate platform-level review.\n\n${alertBody}\n\n---\nApp: SurfCoast Contractor Marketplace\nEscalation ID: ${alertRecord?.id || 'unknown'}\nThis message was generated automatically by the SurfCoast security pipeline.`,
+          });
+        } catch (b44Err) {
+          console.error('Security escalation email failed:', b44Err.message);
+        }
       }
     }
 
