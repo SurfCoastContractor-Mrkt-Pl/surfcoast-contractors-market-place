@@ -93,8 +93,10 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-12 sm:h-14">
             {/* Logo */}
             <Link to="/" className="flex items-center relative flex-shrink-0">
-              <span className="font-serif font-bold text-base" style={{color: '#1E5A96'}}>SurfCoast</span>
-              <span className="text-xs font-semibold ml-1 text-slate-500">MARKETPLACE</span>
+              <div className="flex flex-col items-center">
+                <span className="font-serif font-bold text-base sunset-gradient-text">SurfCoast</span>
+                <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
+              </div>
             </Link>
 
             {/* Desktop Nav - Left Group */}
