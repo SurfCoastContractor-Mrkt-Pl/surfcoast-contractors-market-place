@@ -19,6 +19,7 @@ import {
   Calendar,
   Award,
 } from 'lucide-react';
+import { getTradeIcon, getTradeColor } from '@/lib/tradeIcons';
 
 import PortfolioDisplay from '@/components/contractor/PortfolioDisplay';
 import ReviewsSection from '@/components/contractor/ReviewsSection';
