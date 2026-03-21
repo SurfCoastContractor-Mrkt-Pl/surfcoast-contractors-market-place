@@ -395,12 +395,12 @@ export default function MarketShopProfile() {
           {/* Reviews List */}
           <div className="space-y-3 sm:space-y-5 mb-6 sm:mb-8">
             {reviews.map(review => (
-              <div key={review.id} className="bg-white/10 rounded-xl p-5 border border-white/20">
+              <div key={review.id} className="bg-white/20 rounded-xl p-5 border border-white/30">
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <StarRating rating={review.rating} />
-                    <p className="font-semibold text-slate-100 mt-2">{review.title}</p>
-                    <p className="text-sm text-white/65 flex items-center gap-2 mt-1">
+                    <p className="font-semibold text-white mt-2">{review.title}</p>
+                    <p className="text-sm text-white/80 flex items-center gap-2 mt-1">
                       <User className="w-4 h-4" />
                       {review.reviewer_name} • 
                       <CalendarDays className="w-4 h-4 ml-2" />
