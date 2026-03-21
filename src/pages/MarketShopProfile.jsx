@@ -447,7 +447,7 @@ export default function MarketShopProfile() {
               </div>
 
               <div>
-                <label className="block text-sm text-slate-300 mb-2">Rating</label>
+                <label className="block text-sm text-white/80 mb-2">Rating</label>
                 <StarRating rating={reviewForm.rating} interactive onSelect={r => setReviewForm({ ...reviewForm, rating: r })} />
               </div>
 
