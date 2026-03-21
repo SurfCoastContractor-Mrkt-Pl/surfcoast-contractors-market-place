@@ -447,29 +447,35 @@ export default function MarketShopProfile() {
                     value={reviewForm.email}
                     onChange={e => setReviewForm({ ...reviewForm, email: e.target.value })}
                     className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-white mb-2">Rating</label>
+                <StarRating rating={reviewForm.rating} interactive onSelect={r => setReviewForm({ ...reviewForm, rating: r })} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-white mb-1">Review Title</label>
+                <input
+                  type="text"
+                  placeholder="Summarize your experience"
+                  value={reviewForm.title}
+                  onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-white/80 mb-2">Rating</label>
-                <StarRating rating={reviewForm.rating} interactive onSelect={r => setReviewForm({ ...reviewForm, rating: r })} />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Review Title"
-                value={reviewForm.title}
-                onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })}
-                className="w-full px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-
-              <textarea
-                placeholder="Your Review..."
-                value={reviewForm.body}
-                onChange={e => setReviewForm({ ...reviewForm, body: e.target.value })}
-                className="w-full px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                <label className="block text-sm font-semibold text-white mb-1">Your Review</label>
+                <textarea
+                  placeholder="Share your experience..."
+                  value={reviewForm.body}
+                  onChange={e => setReviewForm({ ...reviewForm, body: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                 rows="4"
                 required
               />
