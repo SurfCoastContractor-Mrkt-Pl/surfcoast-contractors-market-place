@@ -200,11 +200,20 @@ export default function ContractorProfile() {
                  )}
                  <div className="flex-1">
                     <h1 className="text-5xl font-serif font-bold text-white leading-tight">{contractor.name}</h1>
-                    {contractor.contractor_type === 'trade_specific' && contractor.trade_specialty && (
-                      <p className="text-white/60 text-sm font-medium tracking-wide uppercase mt-2">{contractor.trade_specialty.replace(/_/g, ' ')}</p>
-                    )}
+                    <div className="flex flex-row flex-wrap items-center gap-2 mt-3">
+                      {contractor.contractor_type === 'trade_specific' && contractor.trade_specialty && (() => {
+                        const TradeIcon = getTradeIcon(contractor.trade_specialty);
+                        const tradeColor = getTradeColor(contractor.trade_specialty);
+                        return (
+                          <span className={`text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2 ${tradeColor.bg} ${tradeColor.text}`}>
+                            <TradeIcon className="w-4 h-4" />
+                            {contractor.trade_specialty.replace(/_/g, ' ')}
+                          </span>
+                        );
+                      })()}
+                    </div>
                     {contractor.line_of_work && (
-                      <p className="text-white/60 text-sm font-medium tracking-wide uppercase mt-1">{contractor.line_of_work.replace(/_/g, ' ')}</p>
+                      <p className="text-white/60 text-sm font-medium tracking-wide uppercase mt-2">{contractor.line_of_work.replace(/_/g, ' ')}</p>
                     )}
                     {contractor.years_experience && <p className="text-white/70 mt-3 text-base font-light">{contractor.years_experience}+ years of professional experience</p>}
                    <div className="flex items-center gap-2 mt-2 flex-wrap">
