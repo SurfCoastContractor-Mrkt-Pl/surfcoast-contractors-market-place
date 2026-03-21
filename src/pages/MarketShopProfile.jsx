@@ -476,9 +476,10 @@ export default function MarketShopProfile() {
                   value={reviewForm.body}
                   onChange={e => setReviewForm({ ...reviewForm, body: e.target.value })}
                   className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="4"
-                required
-              />
+                  rows="4"
+                  required
+                />
+              </div>
 
               <button
                 type="submit"
