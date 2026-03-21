@@ -17,6 +17,7 @@ import TimedChat from './pages/TimedChat';
 import TimedChatPage from './pages/TimedChatPage';
 import ContractorSignup from './pages/ContractorSignup';
 import CustomerSignup from './pages/CustomerSignup';
+import ContractorDashboard from './components/dashboard/ContractorDashboard';
 
 import MarketShopDashboard from './pages/MarketShopDashboard';
 import MarketShopSignup from './pages/MarketShopSignup';
@@ -99,7 +100,7 @@ const AuthenticatedApp = () => {
       <Route path="/timed-chat/:sessionId" element={<TimedChatPage />} />
       <Route path="/ContractorSignup" element={<LayoutWrapper currentPageName="ContractorSignup"><ContractorSignup /></LayoutWrapper>} />
       <Route path="/CustomerSignup" element={<LayoutWrapper currentPageName="CustomerSignup"><CustomerSignup /></LayoutWrapper>} />
-      <Route path="/ContractorDashboard" element={<Navigate to="/Dashboard" replace />} />
+      <Route path="/ContractorDashboard" element={<LayoutWrapper currentPageName="ContractorDashboard"><ContractorDashboard /></LayoutWrapper>} />
       <Route path="/CustomerDashboard" element={<Navigate to="/Dashboard" replace />} />
       <Route path="/MarketShopDashboard" element={<LayoutWrapper currentPageName="MarketShopDashboard"><MarketShopDashboard /></LayoutWrapper>} />
       <Route path="/MarketShopSignup" element={<LayoutWrapper currentPageName="MarketShopSignup"><MarketShopSignup /></LayoutWrapper>} />
