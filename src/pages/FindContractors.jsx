@@ -359,14 +359,24 @@ export default function FindContractors() {
           </div>
         )}
 
-        {/* All Contractors */}
-        <div id="results-section">
+        {/* Results Summary */}
+        <div id="results-section" className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2 text-slate-600">
-              <Users className="w-5 h-5" />
-              <span>{filteredRegular.length} contractors found</span>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-slate-600">
+                <Users className="w-5 h-5" />
+                <span className="font-medium">
+                  {filteredFeatured.length + filteredRegular.length} {filteredFeatured.length + filteredRegular.length === 1 ? 'contractor' : 'contractors'} found
+                </span>
+              </div>
+              {filteredFeatured.length > 0 && (
+                <div className="text-sm text-slate-500">
+                  ({filteredFeatured.length} featured, {filteredRegular.length} regular)
+                </div>
+              )}
             </div>
           </div>
+        </div>
 
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
