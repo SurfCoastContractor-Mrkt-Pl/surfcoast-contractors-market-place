@@ -131,14 +131,6 @@ export default function Layout({ children, currentPageName }) {
                   Join as Contractor
                 </Button>
               </Link>
-              {isLoggedIn && (
-                <Link to={createPageUrl('Dashboard')}>
-                  <Button variant="outline" className="text-slate-600 font-medium text-sm">
-                    <ArrowLeft className="w-4 h-4 mr-1" />
-                    My Dashboard
-                  </Button>
-                </Link>
-              )}
               {!isLoggedIn && (
                 <button
                   onClick={() => base44.auth.redirectToLogin()}
@@ -156,9 +148,16 @@ export default function Layout({ children, currentPageName }) {
                   <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
                     {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                   </div>
+                  {isLoggedIn && (
+                    <Link to={createPageUrl('Dashboard')}>
+                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                        My Dashboard
+                      </div>
+                    </Link>
+                  )}
                   {(isContractor ? contractorLinks : customerLinks).map(link => (
                     <Link key={link.page} to={createPageUrl(link.page)}>
-                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl">
+                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
                         {link.name}
                       </div>
                     </Link>
