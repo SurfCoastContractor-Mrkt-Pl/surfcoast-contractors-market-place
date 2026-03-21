@@ -383,7 +383,7 @@ export default function MarketShopProfile() {
 
           {/* Reviews Summary */}
           {reviews.length > 0 && (
-            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-slate-700">
+            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-white/20">
               <div className="text-center">
                 <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">{avgRating}</div>
                 <StarRating rating={Math.round(parseFloat(avgRating))} />
