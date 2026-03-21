@@ -124,25 +124,25 @@ export default function Layout({ children, currentPageName }) {
              {isConsumerMode && <ShoppingCart />}
 
             {/* CTA Buttons */}
-             <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+             <div className="hidden lg:flex items-center gap-3 flex-shrink-0 ml-auto">
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
-                  <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
+                  <Button size="sm" className="text-white font-medium text-xs h-8 px-3" style={{backgroundColor: '#1E5A96'}}>
                     Post a Job
                   </Button>
                 </Link>
               )}
               <Link to={createPageUrl('BecomeContractor')}>
-                <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
+                <Button size="sm" className="text-white font-medium text-xs h-8 px-3" style={{backgroundColor: '#1E5A96'}}>
                   Join as Contractor
                 </Button>
               </Link>
               {isLoggedIn && (
                 <Link to={createPageUrl('Dashboard')}>
-                  <Button variant="outline" className="text-slate-600 font-medium text-sm">
+                  <Button variant="outline" size="sm" className="text-slate-600 font-medium text-xs h-8 px-3">
                     <ArrowLeft className="w-4 h-4 mr-1" />
-                    My Dashboard
+                    Dashboard
                   </Button>
                 </Link>
               )}
@@ -155,8 +155,8 @@ export default function Layout({ children, currentPageName }) {
                 </button>
               )}
               <div className="relative group">
-               <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">
-                  <UserCircle className="w-5 h-5 mr-1" />
+               <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900 text-xs h-8 px-2">
+                  <UserCircle className="w-4 h-4 mr-1" />
                   Account
                 </Button>
                <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
@@ -171,16 +171,10 @@ export default function Layout({ children, currentPageName }) {
                     </Link>
                   ))}
                   <Link to={createPageUrl('MarketDirectory')}>
-                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
+                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200 rounded-b-xl">
                       Browse Markets & Vendors
                     </div>
                   </Link>
-                  <button
-                    onClick={() => base44.auth.logout()}
-                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl"
-                  >
-                    Logout
-                  </button>
                 </div>
                </div>
               </div>
