@@ -30,7 +30,7 @@ const StarRating = ({ rating, interactive = false, onSelect = null }) => (
         className={interactive ? 'cursor-pointer hover:scale-110 transition-transform' : ''}
       >
         <Star
-          className={`w-5 h-5 ${i < rating ? 'fill-amber-400 text-amber-400' : 'text-slate-600'}`}
+          className={`w-5 h-5 ${i < rating ? 'fill-amber-400 text-amber-400' : 'text-white/30'}`}
         />
       </button>
     ))}
