@@ -305,7 +305,7 @@ export default function MarketShopProfile() {
                       <Star key={i} className={`w-4 h-4 ${i < Math.round(parseFloat(avgRating)) ? 'fill-amber-400 text-amber-400' : 'text-slate-600'}`} />
                     ))}
                   </div>
-                  <span className="text-sm text-slate-400">{avgRating} ({reviews.length})</span>
+                  <span className="text-sm text-white/70">{avgRating} ({reviews.length})</span>
                 </div>
               )}
 
