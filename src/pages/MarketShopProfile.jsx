@@ -395,7 +395,7 @@ export default function MarketShopProfile() {
           {/* Reviews List */}
           <div className="space-y-3 sm:space-y-5 mb-6 sm:mb-8">
             {reviews.map(review => (
-              <div key={review.id} className="bg-slate-700 rounded-xl p-5 border border-slate-600">
+              <div key={review.id} className="bg-white/10 rounded-xl p-5 border border-white/20">
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <StarRating rating={review.rating} />
