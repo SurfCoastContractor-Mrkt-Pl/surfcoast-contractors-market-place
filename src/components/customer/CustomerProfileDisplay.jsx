@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, DollarSign, Star, Users, Camera } from 'lucide-react';
+import { MapPin, Briefcase, DollarSign, Star, Users, Camera, Home } from 'lucide-react';
 
 export default function CustomerProfileDisplay({ profile, jobCount }) {
   const { data: closedScopes } = useQuery({
@@ -29,7 +29,13 @@ export default function CustomerProfileDisplay({ profile, jobCount }) {
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">Profile Information</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-slate-900">Profile Information</h2>
+          <span className="text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2 bg-slate-700 text-slate-200">
+            <Home className="w-4 h-4" />
+            Client
+          </span>
+        </div>
         <div className="space-y-4">
           {profile?.location && (
             <div className="flex items-center gap-3">
