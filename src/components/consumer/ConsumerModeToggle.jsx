@@ -41,10 +41,11 @@ export default function ConsumerModeToggle() {
   return (
     <Button
       onClick={handleEnterConsumerMode}
-      className="w-full bg-blue-600 hover:bg-blue-700 text-white gap-2"
+      variant="outline"
+      className="w-full gap-2 text-slate-600 hover:text-slate-900"
     >
       <ShoppingBag className="w-4 h-4" />
-      Browse MarketShop as Customer
+      Browse MarketShop
     </Button>
   );
 }
