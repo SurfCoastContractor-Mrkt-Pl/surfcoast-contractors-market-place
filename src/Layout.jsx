@@ -8,6 +8,8 @@ import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle, 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import useGeoCheck from './components/security/useGeoCheck';
+import { useConsumerMode } from '@/lib/ConsumerModeContext';
+import ShoppingCart from '@/components/consumer/ShoppingCart';
 
 
 const getNavLinks = (isContractor) => {
@@ -41,6 +43,7 @@ export default function Layout({ children, currentPageName }) {
   const [isContractor, setIsContractor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isBackNav = useRef(false);
+  const { isConsumerMode } = useConsumerMode();
 
   const isHome = currentPageName === 'Home';
   useGeoCheck();
@@ -120,8 +123,11 @@ export default function Layout({ children, currentPageName }) {
               ))}
             </div>
 
+            {/* Shopping Cart - Consumer Mode */}
+             {isConsumerMode && <ShoppingCart />}
+
             {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+             <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
 
               {isContractor === false && (
                 <Link to={createPageUrl('QuickJobPost')}>
