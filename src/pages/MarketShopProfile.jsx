@@ -433,7 +433,7 @@ export default function MarketShopProfile() {
                   placeholder="Your Name"
                   value={reviewForm.name}
                   onChange={e => setReviewForm({ ...reviewForm, name: e.target.value })}
-                  className="px-4 py-2 bg-slate-600 border border-slate-500 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
                 <input
@@ -441,7 +441,7 @@ export default function MarketShopProfile() {
                   placeholder="Your Email"
                   value={reviewForm.email}
                   onChange={e => setReviewForm({ ...reviewForm, email: e.target.value })}
-                  className="px-4 py-2 bg-slate-600 border border-slate-500 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
