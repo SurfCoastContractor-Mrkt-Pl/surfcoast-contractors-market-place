@@ -490,7 +490,7 @@ export default function MarketShopProfile() {
               placeholder="Your Name"
               value={inquiryForm.name}
               onChange={e => setInquiryForm({ ...inquiryForm, name: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             <input
@@ -498,14 +498,14 @@ export default function MarketShopProfile() {
               placeholder="Your Email"
               value={inquiryForm.email}
               onChange={e => setInquiryForm({ ...inquiryForm, email: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             <textarea
               placeholder="Your Message..."
               value={inquiryForm.message}
               onChange={e => setInquiryForm({ ...inquiryForm, message: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows="4"
               required
             />
