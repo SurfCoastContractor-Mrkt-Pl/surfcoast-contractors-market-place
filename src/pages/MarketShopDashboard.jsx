@@ -121,13 +121,13 @@ export default function MarketShopDashboard() {
       </div>
 
       {/* Shop Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-            <div className="flex-1">
-              {/* Row 1: Upload Photo + [Shop Name + Status + Location + Shop Type stacked] */}
-              <div className="flex flex-row items-start gap-3">
-                <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full border border-blue-200 transition-colors flex-shrink-0">
+       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-16 sm:top-14 z-20">
+         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
+           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+             <div className="flex-1 w-full">
+               {/* Row 1: Upload Photo + [Shop Name + Status + Location + Shop Type stacked] */}
+               <div className="flex flex-col sm:flex-row items-start gap-3">
+                 <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-2 sm:py-1 rounded-full border border-blue-200 transition-colors flex-shrink-0 min-h-[44px] sm:min-h-auto">
                   <Camera className="w-3.5 h-3.5" />
                   <span>Upload Photo</span>
                   <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
@@ -165,13 +165,13 @@ export default function MarketShopDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-1 border-b border-slate-200 -mb-px overflow-x-auto">
+         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 sticky top-32 sm:top-28 z-20 bg-white/95 backdrop-blur-sm">
+           <div className="flex gap-1 border-b border-slate-200 -mb-px overflow-x-auto scrollbar-hide">
             {TABS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap min-h-[44px] sm:min-h-auto flex items-center ${
                   activeTab === key
                     ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-slate-500 hover:text-slate-700'
