@@ -124,9 +124,6 @@ export default function MarketShopDashboard() {
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
-             <Store className="w-5 h-5 text-white" strokeWidth={1.5} />
-            </div>
             <div className="flex-1">
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3">
                 <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
