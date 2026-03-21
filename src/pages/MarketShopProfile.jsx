@@ -408,7 +408,7 @@ export default function MarketShopProfile() {
                     </p>
                   </div>
                 </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{review.body}</p>
+                <p className="text-white/85 text-sm leading-relaxed">{review.body}</p>
                 
                 {review.vendor_reply && (
                   <div className="bg-white/10 rounded-lg p-4 mt-4 border-l-4 border-blue-400">
