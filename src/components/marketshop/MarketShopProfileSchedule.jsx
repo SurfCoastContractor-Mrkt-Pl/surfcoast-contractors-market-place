@@ -9,9 +9,9 @@ export default function MarketShopProfileSchedule({ shop }) {
 
   if (events.length === 0) {
     return (
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 sm:p-8 text-center">
-        <Calendar className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-        <p className="text-slate-400">No upcoming appearances scheduled.</p>
+      <div className="bg-amber-50/80 rounded-2xl border border-amber-200/60 p-6 sm:p-8 text-center">
+        <Calendar className="w-10 h-10 text-amber-300 mx-auto mb-3" />
+        <p className="text-amber-700">No upcoming appearances scheduled.</p>
       </div>
     );
   }
