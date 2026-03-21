@@ -261,17 +261,7 @@ export default function ContractorAccount() {
            <ConsumerModeToggle />
          </div>
 
-         {/* Auth Button */}
-         <div className="flex gap-3">
-           <Button
-             variant="outline"
-             onClick={() => base44.auth.logout()}
-             disabled={isAdminPreview}
-           >
-             <LogOut className="w-4 h-4 mr-2" />
-             {isAdminPreview ? 'Logout (Disabled in Preview)' : 'Logout'}
-           </Button>
-         </div>
+
 
          {contractor && (
           <>
@@ -645,19 +635,7 @@ export default function ContractorAccount() {
                     </Button>
                   </Card>
 
-                  {/* Logout */}
-                  <Card className="p-6 bg-slate-50">
-                    <h3 className="font-semibold text-slate-900 mb-2">Session</h3>
-                    <p className="text-sm text-slate-500 mb-4">Log out from your account on this device.</p>
-                    <Button 
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => base44.auth.logout()}
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </Button>
-                  </Card>
+
                 </div>
               </TabsContent>
 
