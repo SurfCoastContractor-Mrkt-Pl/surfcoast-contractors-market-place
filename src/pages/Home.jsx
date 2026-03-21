@@ -25,7 +25,8 @@ export default function Home() {
   return (
     <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
       <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
-      <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.65)", zIndex:1 }} />
+      <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.65)", zIndex:1, pointerEvents:"none" }} />
+      <div style={{ position:"absolute", inset:0, background:"rgba(10,22,40,0.65)", zIndex:1, pointerEvents:"none" }} />
 
       <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"12px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
         <div style={{ display:'flex', flexDirection:'column', gap:'2px' }}>
