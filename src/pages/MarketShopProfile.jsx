@@ -424,7 +424,7 @@ export default function MarketShopProfile() {
           </div>
 
           {/* Leave a Review Form */}
-          <div className="bg-white/10 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/20 mb-6 sm:mb-8">
+          <div className="bg-white/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/30 mb-6 sm:mb-8">
             <h3 className="text-base sm:text-lg font-semibold mb-4">Leave a Review</h3>
             <form onSubmit={handleReviewSubmit} className="space-y-3 sm:space-y-4">
               <div className="grid grid-cols-1 gap-3 sm:gap-4">
