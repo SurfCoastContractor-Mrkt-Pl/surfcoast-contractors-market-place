@@ -333,7 +333,7 @@ export default function MarketShopProfile() {
             <div className="mt-4">
               <div className="flex flex-wrap gap-2">
                 {shop.categories.map(cat => (
-                  <span key={cat} className="text-xs bg-slate-700 text-slate-200 px-3 py-1 rounded-full">{cat}</span>
+                  <span key={cat} className="text-xs bg-white/15 text-white/90 px-3 py-1 rounded-full">{cat}</span>
                 ))}
               </div>
             </div>
