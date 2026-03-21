@@ -411,7 +411,7 @@ export default function MarketShopProfile() {
                 <p className="text-slate-300 text-sm leading-relaxed">{review.body}</p>
                 
                 {review.vendor_reply && (
-                  <div className="bg-slate-600 rounded-lg p-4 mt-4 border-l-4 border-blue-500">
+                  <div className="bg-white/10 rounded-lg p-4 mt-4 border-l-4 border-blue-400">
                     <p className="text-xs font-semibold text-slate-300 flex items-center gap-1.5 mb-2">
                       <Store className="w-4 h-4" />
                       Vendor Reply
