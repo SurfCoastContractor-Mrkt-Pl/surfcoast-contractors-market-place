@@ -177,8 +177,7 @@ export default function CustomerAccount() {
     <div className="relative py-12 text-white overflow-hidden" style={{position:"relative", zIndex:10, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
       <div style={{ display:"flex", alignItems:"center", padding:"12px 16px", justifyContent:"space-between" }}>
         <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration: 'none' }}>
-          <span style={{ fontSize:'clamp(14px, 4vw, 17px)', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
-          <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" style={{ height:'32px', width:'32px', objectFit:'contain' }} />
         </Link>
         <div style={{ marginLeft:"auto" }}>
           <AuthTopBar />
