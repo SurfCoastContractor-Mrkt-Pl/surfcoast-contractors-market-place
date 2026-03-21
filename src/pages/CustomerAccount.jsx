@@ -239,23 +239,6 @@ export default function CustomerAccount() {
            <ConsumerModeToggle />
          </div>
 
-         {/* Auth Button */}
-         <div className="flex gap-3">
-           <Button
-             onClick={() => base44.auth.logout()}
-             disabled={isAdminPreview}
-             style={{
-               background: isAdminPreview ? '#9ca3af' : 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)',
-               color: 'white',
-               border: 'none',
-               boxShadow: '0 0 16px rgba(201, 122, 180, 0.3)'
-             }}
-           >
-             <LogOut className="w-4 h-4 mr-2" />
-             {isAdminPreview ? 'Logout (Disabled in Preview)' : 'Logout'}
-           </Button>
-         </div>
-
          {/* Tabs - always visible */}
          <Tabs defaultValue="profile">
                <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -443,19 +426,7 @@ export default function CustomerAccount() {
                     </Button>
                   </Card>
 
-                  {/* Logout */}
-                  <Card className="p-8 border border-slate-200/40 bg-slate-50">
-                    <h3 className="font-serif font-bold text-slate-900 text-lg mb-2">Session</h3>
-                    <p className="text-sm text-slate-500 mb-4">Log out from your account on this device.</p>
-                    <Button 
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => base44.auth.logout()}
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </Button>
-                  </Card>
+
                 </div>
               </TabsContent>
 
