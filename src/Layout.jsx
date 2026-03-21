@@ -365,6 +365,6 @@ export default function Layout({ children, currentPageName }) {
           </div>
         </div>
       </footer>
-        </div>
-        );
-        }
+    </div>
+  );
+}
