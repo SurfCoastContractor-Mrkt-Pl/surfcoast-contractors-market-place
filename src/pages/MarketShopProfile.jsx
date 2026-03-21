@@ -482,7 +482,7 @@ export default function MarketShopProfile() {
         </div>
 
         {/* Contact Vendor Form */}
-        <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+        <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Vendor</h2>
           <form onSubmit={handleInquirySubmit} className="space-y-3 sm:space-y-4">
             <input
