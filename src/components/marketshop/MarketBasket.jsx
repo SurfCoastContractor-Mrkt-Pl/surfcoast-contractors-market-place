@@ -8,6 +8,7 @@ export default function MarketBasket({ shopId }) {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
   const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export default function MarketBasket({ shopId }) {
                   variant="ghost"
                   size="sm"
                   className="flex-1 text-slate-600 hover:text-slate-900"
+                  onClick={() => setEditingItem(item)}
                 >
                   <Edit2 className="w-4 h-4 mr-1" /> Edit
                 </Button>
@@ -135,6 +137,18 @@ export default function MarketBasket({ shopId }) {
           shopId={shopId}
           onClose={() => setShowForm(false)}
           onSuccess={loadListings}
+        />
+      )}
+
+      {editingItem && (
+        <ProductListingForm
+          shopId={shopId}
+          listing={editingItem}
+          onClose={() => setEditingItem(null)}
+          onSuccess={() => {
+            setEditingItem(null);
+            loadListings();
+          }}
         />
       )}
     </div>
