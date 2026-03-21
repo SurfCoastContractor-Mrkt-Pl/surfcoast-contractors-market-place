@@ -456,7 +456,7 @@ export default function MarketShopProfile() {
                 placeholder="Review Title"
                 value={reviewForm.title}
                 onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })}
-                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
               />
 
@@ -464,7 +464,7 @@ export default function MarketShopProfile() {
                 placeholder="Your Review..."
                 value={reviewForm.body}
                 onChange={e => setReviewForm({ ...reviewForm, body: e.target.value })}
-                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-2 bg-white/25 border border-white/40 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 rows="4"
                 required
               />
