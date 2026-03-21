@@ -173,9 +173,20 @@ export default function Layout({ children, currentPageName }) {
                       </div>
                     </Link>
                   ))}
+                  <Link to={createPageUrl('MarketDirectory')}>
+                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
+                      Browse Markets & Vendors
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => base44.auth.logout()}
+                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl"
+                  >
+                    Logout
+                  </button>
                 </div>
                </div>
-            </div>
+              </div>
 
             {/* Mobile Menu Button */}
             <button 
@@ -253,6 +264,20 @@ export default function Layout({ children, currentPageName }) {
                        </div>
                      </Link>
                    ))}
+                   <Link to={createPageUrl('MarketDirectory')} onClick={() => setMobileMenuOpen(false)}>
+                     <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100">
+                       Browse Markets & Vendors
+                     </div>
+                   </Link>
+                   <button
+                     onClick={() => {
+                       setMobileMenuOpen(false);
+                       base44.auth.logout();
+                     }}
+                     className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
+                   >
+                     Logout
+                   </button>
                  </div>
               </div>
             </div>
