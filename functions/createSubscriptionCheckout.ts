@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
-import Stripe from 'npm:stripe@17.5.0';
+import Stripe from 'npm:stripe@^15.0.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
@@ -80,9 +80,10 @@ Deno.serve(async (req) => {
     const origin = req.headers.get('origin') || 'https://localhost:3000';
 
     const sessionConfig = {
+      payment_method_types: ['card'],
+      line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
       customer_email: email,
-      line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/Cancel`,
       metadata: {
@@ -90,16 +91,6 @@ Deno.serve(async (req) => {
         user_type: userType,
       },
     };
-
-    // If using a saved payment method, set it directly (no payment form needed)
-    if (paymentMethodId) {
-      sessionConfig.payment_method_types = ['card'];
-      sessionConfig.payment_method_collection = 'if_required';
-      sessionConfig.payment_method = paymentMethodId;
-    } else {
-      // Otherwise allow card entry without saving
-      sessionConfig.payment_method_types = ['card'];
-    }
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
