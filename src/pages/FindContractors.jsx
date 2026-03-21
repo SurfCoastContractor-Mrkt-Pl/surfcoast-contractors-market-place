@@ -32,16 +32,12 @@ export default function FindContractors() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
+  const [lineOfWorkFilter, setLineOfWorkFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
   const [userEmail, setUserEmail] = useState(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [activeSearchQuery, setActiveSearchQuery] = useState('');
-  const [activeTypeFilter, setActiveTypeFilter] = useState('');
-  const [activeTradeFilter, setActiveTradeFilter] = useState('');
-  const [activeRatingFilter, setActiveRatingFilter] = useState('');
 
   useEffect(() => {
     const loadUser = async () => {
