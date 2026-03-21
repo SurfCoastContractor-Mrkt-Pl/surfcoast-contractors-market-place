@@ -48,6 +48,7 @@ import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfe
 import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilityManager';
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
+import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -254,6 +255,11 @@ export default function ContractorAccount() {
              </div>
            </Card>
          )}
+
+         {/* Consumer Mode Toggle */}
+         <div className="bg-white rounded-lg p-4 border border-slate-200">
+           <ConsumerModeToggle />
+         </div>
 
          {/* Auth Button */}
          <div className="flex gap-3">
