@@ -115,4 +115,18 @@
     h3, h4 { font-family: 'Crimson Text', serif; }
     p { font-family: 'Crimson Text', serif; }
   }
+
+  /* Sunset Gradient Text */
+  .sunset-gradient-text {
+    background: linear-gradient(to bottom, #D94600, #F97316, #FCD34D);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Letter spacing for MARKETPLACE */
+  .marketplace-spacing {
+    letter-spacing: 0.15em;
+  }
 }
