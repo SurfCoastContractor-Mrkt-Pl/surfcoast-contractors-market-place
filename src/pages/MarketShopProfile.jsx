@@ -243,22 +243,21 @@ export default function MarketShopProfile() {
         : { background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      {/* Banner */}
-      <div className="relative min-h-screen" style={bannerBg}>
-        <div className="absolute inset-0 bg-black/40" />
-        
-        {/* Back Button */}
+    <div className="min-h-screen text-white" style={{ ...bannerBg, backgroundAttachment: 'fixed' }}>
+      <div className="absolute inset-0 bg-black/50 fixed" />
+
+      {/* Back Button */}
+      <div className="relative z-10">
         <button
           onClick={() => navigate('/MarketDirectory')}
-          className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-black/50 hover:bg-black/70 rounded-lg transition-colors text-xs sm:text-sm"
+          className="absolute top-2 left-2 sm:top-4 sm:left-4 flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-black/50 hover:bg-black/70 rounded-lg transition-colors text-xs sm:text-sm"
         >
           <ArrowLeft className="w-3 sm:w-4 h-3 sm:h-4" /> <span className="hidden sm:inline">Back</span>
         </button>
       </div>
 
       {/* Content */}
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 bg-slate-900/95">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Profile Header */}
         <div className="bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-700 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
