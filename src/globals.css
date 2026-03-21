@@ -58,6 +58,7 @@
 
   html {
     @apply scroll-smooth;
+    -webkit-touch-callout: none;
   }
 
   body {
@@ -65,6 +66,8 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -106,11 +109,24 @@
 
   input, textarea, select {
     @apply transition-colors;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   input:focus, textarea:focus, select:focus {
     @apply outline-none ring-2 ring-offset-2;
     box-shadow: 0 0 0 2px #1E5A96, 0 0 0 4px rgba(30, 90, 150, 0.1);
+  }
+
+  /* Touch-friendly minimum sizes */
+  button, a[role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    @apply text-base;
   }
 }
 
