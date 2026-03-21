@@ -166,10 +166,16 @@ export default function Layout({ children, currentPageName }) {
                     </Link>
                   ))}
                   <Link to={createPageUrl('MarketDirectory')}>
-                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200 rounded-b-xl">
+                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
                       Browse Markets & Vendors
                     </div>
                   </Link>
+                  <button
+                    onClick={() => base44.auth.logout()}
+                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
+                  >
+                    Logout
+                  </button>
                 </div>
                </div>
               </div>
