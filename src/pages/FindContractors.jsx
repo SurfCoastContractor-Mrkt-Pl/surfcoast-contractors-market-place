@@ -105,10 +105,10 @@ export default function FindContractors() {
 
   const filterContractors = (list) => {
     return list.filter(c => {
-      // Fuzzy matching - split query into words and match any word in name, location, bio, or trade
-      let matchesSearch = !activeSearchQuery;
-      if (activeSearchQuery && !matchesSearch) {
-        const query = activeSearchQuery.toLowerCase();
+      // Search query
+      let matchesSearch = !searchQuery;
+      if (searchQuery && !matchesSearch) {
+        const query = searchQuery.toLowerCase();
         const searchFields = [
           c.name?.toLowerCase() || '',
           c.location?.toLowerCase() || '',
@@ -119,44 +119,38 @@ export default function FindContractors() {
         matchesSearch = searchFields.includes(query);
       }
 
-      const matchesType = !activeTypeFilter || activeTypeFilter === 'all' || c.contractor_type === activeTypeFilter;
-      const matchesTrade = !activeTradeFilter || activeTradeFilter === 'all' || c.trade_specialty === activeTradeFilter;
-      const matchesRating = !activeRatingFilter || (c.rating || 0) >= parseInt(activeRatingFilter);
+      // Type filter
+      const matchesType = !typeFilter || typeFilter === 'all' || c.contractor_type === typeFilter;
+      
+      // Trade filter
+      const matchesTrade = !tradeFilter || tradeFilter === 'all' || c.trade_specialty === tradeFilter;
+      
+      // Line of work filter
+      const matchesLineOfWork = !lineOfWorkFilter || lineOfWorkFilter === 'all' || c.line_of_work === lineOfWorkFilter;
+      
+      // Rating filter
+      const matchesRating = !ratingFilter || (c.rating || 0) >= parseInt(ratingFilter);
 
-      // If user location is set, show contractors with calculated distance OR those still being calculated
+      // Location radius filter
       const distance = contractorDistances[c.id];
       const matchesRadius = !userLocation || (distance === undefined || distance <= searchRadius);
 
-      return matchesSearch && matchesType && matchesTrade && matchesRating && matchesRadius;
+      return matchesSearch && matchesType && matchesTrade && matchesLineOfWork && matchesRating && matchesRadius;
     });
   };
 
   const filteredFeatured = filterContractors(featured);
   const filteredRegular = filterContractors(regular);
 
-  const applyFilters = () => {
-    setActiveSearchQuery(searchQuery);
-    setActiveTypeFilter(typeFilter);
-    setActiveTradeFilter(tradeFilter);
-    setActiveRatingFilter(ratingFilter);
-    // Auto-scroll to results
-    setTimeout(() => {
-      document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-
   const clearFilters = () => {
     setSearchQuery('');
     setTypeFilter('');
     setTradeFilter('');
+    setLineOfWorkFilter('');
     setRatingFilter('');
-    setActiveSearchQuery('');
-    setActiveTypeFilter('');
-    setActiveTradeFilter('');
-    setActiveRatingFilter('');
   };
 
-  const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeRatingFilter;
+  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || lineOfWorkFilter || ratingFilter;
 
   return (
     <div className="min-h-screen bg-slate-50 pt-0">
