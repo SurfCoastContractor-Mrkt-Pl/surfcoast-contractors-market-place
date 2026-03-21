@@ -12,10 +12,20 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id required' }, { status: 400 });
     }
 
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
 
     if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    // Verify user owns this contractor
+    if (contractor.email !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: You do not own this contractor profile' }, { status: 403 });
     }
 
     if (!contractor.stripe_connected_account_id) {
