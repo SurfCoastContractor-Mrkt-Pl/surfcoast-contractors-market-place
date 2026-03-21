@@ -521,7 +521,7 @@ export default function MarketShopProfile() {
         </div>
 
         {/* Footer */}
-        <div className="text-center py-8 border-t border-slate-700">
+        <div className="text-center py-8 border-t border-white/20">
           <button
             onClick={() => navigate('/MarketDirectory')}
             className="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center justify-center gap-2 mx-auto"
