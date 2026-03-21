@@ -6,7 +6,7 @@ export default function MarketShopListings() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-slate-800">My Listings</h3>
+        <h3 className="text-base font-semibold text-slate-800">My Basket</h3>
         <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white gap-1">
           <Plus className="w-4 h-4" /> Add Listing
         </Button>
