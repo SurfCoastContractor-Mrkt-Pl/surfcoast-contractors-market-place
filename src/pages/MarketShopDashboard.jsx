@@ -144,7 +144,8 @@ export default function MarketShopDashboard() {
               <p className="text-sm text-slate-500 mt-1">
                 {[shop.city, shop.state].filter(Boolean).join(', ')}
                 {shop.shop_type && (
-                  <span className="ml-2 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
+                  <span className="ml-2 inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
+                    <Store className="w-3 h-3" />
                     {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                   </span>
                 )}
