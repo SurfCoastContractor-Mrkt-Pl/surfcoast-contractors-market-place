@@ -360,7 +360,7 @@ export default function FindContractors() {
         )}
 
         {/* Results Summary */}
-        <div id="results-section" className="mb-8">
+        <div id="results-section">
           <div className="flex items-center justify-between mb-6">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-slate-600">
@@ -376,7 +376,6 @@ export default function FindContractors() {
               )}
             </div>
           </div>
-        </div>
 
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
