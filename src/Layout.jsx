@@ -98,98 +98,97 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </Link>
 
-            {/* Desktop Nav - Left Group */}
-            <div className="hidden lg:flex items-center gap-1 flex-shrink">
-              {getNavLinks(isContractor).map(link => (
-                <Link key={link.page} to={createPageUrl(link.page)}>
-                  <Button 
-                  variant="ghost" 
-                  className={`text-sm ${
-                    currentPageName === link.page 
-                      ? 'bg-blue-50'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                  style={currentPageName === link.page ? {color: '#1E5A96'} : {}}
-                  >
-                    {link.name}
-                  </Button>
-                </Link>
-              ))}
-            </div>
-
-            {/* Right Group - CTA Buttons & Account */}
-             <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
-
-              {isContractor === false && (
-                <Link to={createPageUrl('QuickJobPost')}>
-                  <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
-                    Post a Job
-                  </Button>
-                </Link>
-              )}
-              <Link to={createPageUrl('BecomeContractor')}>
-                <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
-                  Join as Contractor
+          {/* Desktop Nav - Left Group */}
+          <div className="hidden lg:flex items-center gap-1 flex-shrink">
+            {getNavLinks(isContractor).map(link => (
+              <Link key={link.page} to={createPageUrl(link.page)}>
+                <Button 
+                variant="ghost" 
+                className={`text-sm ${
+                  currentPageName === link.page 
+                    ? 'bg-blue-50'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                style={currentPageName === link.page ? {color: '#1E5A96'} : {}}
+                >
+                  {link.name}
                 </Button>
               </Link>
-              {!isLoggedIn && (
-                <button
-                  onClick={() => base44.auth.redirectToLogin()}
-                  className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
-                >
-                  Login
-                </button>
-              )}
-              <div className="relative group">
-               <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">
-                  <UserCircle className="w-5 h-5 mr-1" />
-                  Account
+            ))}
+          </div>
+
+          {/* Right Group - CTA Buttons & Account */}
+          <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+
+            {isContractor === false && (
+              <Link to={createPageUrl('QuickJobPost')}>
+                <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
+                  Post a Job
                 </Button>
-               <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
-                  <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-                    {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
-                  </div>
-                  {isLoggedIn && (
-                    <Link to={createPageUrl('Dashboard')}>
-                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
-                        My Dashboard
-                      </div>
-                    </Link>
-                  )}
-                  {(isContractor ? contractorLinks : customerLinks).map(link => (
-                    <Link key={link.page} to={createPageUrl(link.page)}>
-                      <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
-                        {link.name}
-                      </div>
-                    </Link>
-                  ))}
-                  <Link to={createPageUrl('MarketDirectory')}>
-                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
-                      Browse Markets & Vendors
+              </Link>
+            )}
+            <Link to={createPageUrl('BecomeContractor')}>
+              <Button className="text-white font-medium text-sm" style={{backgroundColor: '#1E5A96'}}>
+                Join as Contractor
+              </Button>
+            </Link>
+            {!isLoggedIn && (
+              <button
+                onClick={() => base44.auth.redirectToLogin()}
+                className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
+              >
+                Login
+              </button>
+            )}
+            <div className="relative group">
+             <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">
+                <UserCircle className="w-5 h-5 mr-1" />
+                Account
+              </Button>
+             <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg hidden group-hover:block z-50">
+                <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
+                  {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
+                </div>
+                {isLoggedIn && (
+                  <Link to={createPageUrl('Dashboard')}>
+                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                      My Dashboard
                     </div>
                   </Link>
-                  <button
-                    onClick={() => base44.auth.logout()}
-                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
-                  >
-                    Logout
-                  </button>
-                </div>
-               </div>
+                )}
+                {(isContractor ? contractorLinks : customerLinks).map(link => (
+                  <Link key={link.page} to={createPageUrl(link.page)}>
+                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                      {link.name}
+                    </div>
+                  </Link>
+                ))}
+                <Link to={createPageUrl('MarketDirectory')}>
+                  <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
+                    Browse Markets & Vendors
+                  </div>
+                </Link>
+                <button
+                  onClick={() => base44.auth.logout()}
+                  className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
+                >
+                  Logout
+                </button>
               </div>
+             </div>
+            </div>
 
-            {/* Mobile Menu Button */}
-            <button 
-              className="lg:hidden p-2 flex-shrink-0"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-slate-900" />
-              ) : (
-                <Menu className="w-6 h-6 text-slate-900" />
-              )}
-            </button>
-          </div>
+          {/* Mobile Menu Button */}
+          <button 
+            className="lg:hidden p-2 flex-shrink-0"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6 text-slate-900" />
+            ) : (
+              <Menu className="w-6 h-6 text-slate-900" />
+            )}
+          </button>
         </div>
 
         {/* Mobile Menu */}
