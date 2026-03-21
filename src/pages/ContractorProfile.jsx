@@ -18,6 +18,7 @@ import {
   MessageSquare,
   Calendar,
   Award,
+  Home,
 } from 'lucide-react';
 import { getTradeIcon, getTradeColor } from '@/lib/tradeIcons';
 

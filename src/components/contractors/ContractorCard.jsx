@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, MapPin, Clock, CheckCircle2 } from 'lucide-react';
+import { Star, MapPin, Clock, CheckCircle2, Home } from 'lucide-react';
 import { getTradeIcon, getTradeColor } from '@/lib/tradeIcons';
 import StatusBadge from './StatusBadge';
 
