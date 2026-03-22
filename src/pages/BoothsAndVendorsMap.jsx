@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import VendorMap from '@/components/vendor/VendorMap';
 import VendorFilterPanel from '@/components/vendor/VendorFilterPanel';
 import BookingRequestForm from '@/components/booking/BookingRequestForm';
@@ -8,7 +9,7 @@ import ReviewForm from '@/components/reviews/ReviewForm';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Sliders, Calendar, MessageCircle } from 'lucide-react';
+import { Star, MapPin, Sliders, Calendar, MessageCircle, ChevronRight } from 'lucide-react';
 
 const PRODUCT_CATEGORIES = [
   'electronics', 'tools', 'sports_equipment', 'books_media', 'home_decor',
@@ -268,7 +269,13 @@ export default function BoothsAndVendorsMap() {
                       </div>
                     )}
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
+                      <Link to={`/vendor/${vendor.id}`}>
+                        <Button variant="outline" size="sm" className="w-full">
+                          <ChevronRight className="w-4 h-4 mr-1" />
+                          View
+                        </Button>
+                      </Link>
                       <Button
                         onClick={() => {
                           setReviewVendor(vendor);
