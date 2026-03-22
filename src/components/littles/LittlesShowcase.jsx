@@ -286,8 +286,10 @@ export default function LittlesShowcase() {
   }
 
   return (
-    <div className="w-full py-12 overflow-hidden">
-      <div className="space-y-12">
+    <>
+      <style>{styles}</style>
+      <div className="w-full py-12 overflow-hidden">
+        <div className="space-y-12">
         {rows.map((row, rowIndex) => (
           <div
             key={rowIndex}
