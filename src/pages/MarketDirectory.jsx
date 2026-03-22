@@ -322,7 +322,29 @@ export default function MarketDirectory() {
              )}
            </>
          )}
-       </div>
-    </div>
-  );
-}
+         </div>
+
+         {/* Welcome to the Littles Showcase Section */}
+         <div className="bg-gradient-to-b from-pink-50 via-orange-50 to-white mt-12 sm:mt-16 py-12 sm:py-20 overflow-hidden">
+         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+         {/* Header */}
+         <div className="text-center mb-8 sm:mb-12">
+           <div className="flex items-center justify-center gap-2 mb-3">
+             <Sparkles className="w-6 h-6 text-pink-500" />
+             <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
+               Welcome to the Littles
+             </h2>
+             <Sparkles className="w-6 h-6 text-orange-500" />
+           </div>
+           <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
+             Celebrate the creativity, art, innovations, and crafts of our youngest community members — shared by proud parents and guardians working together
+           </p>
+         </div>
+
+         {/* Littles Showcase */}
+         <LittlesShowcase />
+         </div>
+         </div>
+         </div>
+         );
+         }
