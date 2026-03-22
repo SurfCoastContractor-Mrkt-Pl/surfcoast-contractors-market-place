@@ -100,10 +100,10 @@ export default function SwapMeetRatings() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <BarChart3 className="w-8 h-8 text-orange-500" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Swap Meet & Market Ratings</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Swap Meet Ratings</h1>
           </div>
           <p className="text-slate-600 max-w-2xl">
-            Real ratings from vendors like you. Find the best locations based on cleanliness, customer traffic, and overall experience.
+            Real ratings from vendors like you. Find the best swap meets based on cleanliness, customer traffic, and overall experience.
           </p>
         </div>
 
