@@ -304,11 +304,11 @@ export default function Layout({ children, currentPageName }) {
                   >
                     Logout
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  )}
 
       </nav>
 
