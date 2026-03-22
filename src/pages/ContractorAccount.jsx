@@ -50,6 +50,9 @@ import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
 import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
+import LeadManagementDashboard from '@/components/contractor/LeadManagementDashboard';
+import ReviewManagementPanel from '@/components/contractor/ReviewManagementPanel';
+import ProjectMilestoneManager from '@/components/projects/ProjectMilestoneManager';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -274,8 +277,10 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="profile">
-             <TabsList className="w-full grid-cols-10">
+             <TabsList className="w-full grid-cols-12">
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
+                 <TabsTrigger value="leads" className="text-xs sm:text-sm">Leads</TabsTrigger>
+                 <TabsTrigger value="reviews" className="text-xs sm:text-sm">Reviews</TabsTrigger>
                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1">
                    Live
                    {liveSessions?.length > 0 && (
@@ -315,6 +320,14 @@ export default function ContractorAccount() {
                    <ContractorAnalyticsDashboard contractor={contractor} />
                    <FeaturedBadgeToggle contractor={contractor} />
                  </div>
+               </TabsContent>
+
+               <TabsContent value="leads">
+                 <LeadManagementDashboard contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="reviews">
+                 <ReviewManagementPanel contractorId={contractor?.id} contractorEmail={userEmail} />
                </TabsContent>
 
                <TabsContent value="live-sessions">
@@ -514,6 +527,13 @@ export default function ContractorAccount() {
                             )}
                           </div>
                         </div>
+                        {/* Milestones */}
+                        {s.status === 'approved' && (
+                          <div className="border-t border-slate-100 p-4 bg-white">
+                            <h4 className="font-medium text-slate-900 mb-4">Project Milestones</h4>
+                            <ProjectMilestoneManager scopeId={s.id} scopeStatus={s.status} />
+                          </div>
+                        )}
                         </div>
                         </React.Fragment>
                         );})}
