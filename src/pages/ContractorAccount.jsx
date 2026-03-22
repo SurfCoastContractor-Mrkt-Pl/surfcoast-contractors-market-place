@@ -53,6 +53,8 @@ import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
 import LeadManagementDashboard from '@/components/contractor/LeadManagementDashboard';
 import ReviewManagementPanel from '@/components/contractor/ReviewManagementPanel';
 import ProjectMilestoneManager from '@/components/projects/ProjectMilestoneManager';
+import EarningsReportsDashboard from '@/components/contractor/EarningsReportsDashboard';
+import ChatArchiveDashboard from '@/components/contractor/ChatArchiveDashboard';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -277,35 +279,37 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="profile">
-             <TabsList className="w-full grid-cols-12">
-                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Dashboard</TabsTrigger>
-                 <TabsTrigger value="leads" className="text-xs sm:text-sm">Leads</TabsTrigger>
-                 <TabsTrigger value="reviews" className="text-xs sm:text-sm">Reviews</TabsTrigger>
-                 <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1">
+             <TabsList className="w-full grid-cols-14 overflow-x-auto">
+                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
+                 <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
+                 <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
+                 <TabsTrigger value="earnings" className="text-xs sm:text-sm whitespace-nowrap">Earnings</TabsTrigger>
+                 <TabsTrigger value="chats" className="text-xs sm:text-sm whitespace-nowrap">Chats</TabsTrigger>
+                 <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
                    Live
                    {liveSessions?.length > 0 && (
                      <span className="bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{liveSessions.length}</span>
                    )}
                  </TabsTrigger>
-                 <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1">
+                 <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
                    Quotes
                    {incomingQuotes?.filter(q => q.status === 'pending' || q.status === 'sent').length > 0 && (
                      <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
                    )}
                  </TabsTrigger>
-                 <TabsTrigger value="profile" className="text-xs sm:text-sm">Profile</TabsTrigger>
-                 <TabsTrigger value="badges" className="text-xs sm:text-sm">Badges</TabsTrigger>
-                 <TabsTrigger value="featured" className="text-xs sm:text-sm">Featured</TabsTrigger>
-                 <TabsTrigger value="referrals" className="text-xs sm:text-sm">Referrals</TabsTrigger>
-                 <TabsTrigger value="fees" className="text-xs sm:text-sm">Fees</TabsTrigger>
-                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5">
+                 <TabsTrigger value="profile" className="text-xs sm:text-sm whitespace-nowrap">Profile</TabsTrigger>
+                 <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
+                 <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
+                 <TabsTrigger value="referrals" className="text-xs sm:text-sm whitespace-nowrap">Referrals</TabsTrigger>
+                 <TabsTrigger value="fees" className="text-xs sm:text-sm whitespace-nowrap">Fees</TabsTrigger>
+                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
                    <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
                    {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
                      <span className="ml-0.5 bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
                    )}
                  </TabsTrigger>
-                 <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
-                 <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5">
+                 <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
+                 <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
                    <CalendarCheck className="w-3 h-3 sm:w-4 sm:h-4" />Work
                    {pastWorkPayments?.length > 0 && (
                      <span className="ml-0.5 bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
@@ -328,6 +332,14 @@ export default function ContractorAccount() {
 
                <TabsContent value="reviews">
                  <ReviewManagementPanel contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="earnings">
+                 <EarningsReportsDashboard contractorEmail={userEmail} contractorId={contractor?.id} />
+               </TabsContent>
+
+               <TabsContent value="chats">
+                 <ChatArchiveDashboard contractorEmail={userEmail} />
                </TabsContent>
 
                <TabsContent value="live-sessions">
