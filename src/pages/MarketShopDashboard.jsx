@@ -75,49 +75,6 @@ export default function MarketShopDashboard() {
     setShop(prev => ({ ...prev, ...data }));
   };
 
-  const handleLogoUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const minSize = 50 * 1024; // 50KB
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (file.size < minSize) {
-      alert('Photo is too small. Please choose an image at least 50KB.');
-      return;
-    }
-    if (file.size > maxSize) {
-      alert('Photo is too large. Please choose an image smaller than 5MB.');
-      return;
-    }
-
-    console.log('File selected:', file.name, file.size, file.type);
-    setUploadingPhoto(true);
-    (async () => {
-      try {
-        console.log('Starting upload...');
-        const response = await base44.integrations.Core.UploadFile({ file });
-        console.log('Upload response:', response);
-        const { file_url } = response;
-        if (!file_url) {
-          console.error('No file_url in response');
-          alert('Upload failed: no URL returned');
-          return;
-        }
-        console.log('Uploaded to:', file_url);
-        await base44.entities.MarketShop.update(shop.id, { logo_url: file_url });
-        setShop(prev => ({ ...prev, logo_url: file_url }));
-        console.log('Shop updated successfully');
-      } catch (err) {
-        console.error('Logo upload error:', err.message, err);
-        alert(`Error: ${err.message}`);
-      } finally {
-        setUploadingPhoto(false);
-        if (logoInputRef.current) logoInputRef.current.value = '';
-      }
-    })();
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
