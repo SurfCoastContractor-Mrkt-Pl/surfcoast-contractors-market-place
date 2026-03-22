@@ -1,5 +1,18 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+// Constant-time comparison to prevent timing attacks
+async function constantTimeCompare(a, b) {
+  const encoder = new TextEncoder();
+  const aBytes = encoder.encode(a);
+  const bBytes = encoder.encode(b);
+  
+  let result = 0;
+  for (let i = 0; i < Math.max(aBytes.length, bBytes.length); i++) {
+    result |= (aBytes[i] || 0) ^ (bBytes[i] || 0);
+  }
+  return result === 0;
+}
+
 Deno.serve(async (req) => {
   const requestId = crypto.randomUUID();
   try {
@@ -77,8 +90,12 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verify password (only password required, no service key needed)
-    if (providedPassword !== dashboardPassword) {
+    // Verify password using constant-time comparison to prevent timing attacks
+    const passwordMatch = providedPassword && dashboardPassword && 
+      providedPassword.length === dashboardPassword.length &&
+      await constantTimeCompare(providedPassword, dashboardPassword);
+    
+    if (!passwordMatch) {
       console.warn(`[${requestId}] Invalid admin dashboard password attempt from ${rateLimitKey}`);
       return Response.json({ success: false, error: 'Invalid password.' }, { status: 403 });
     }
