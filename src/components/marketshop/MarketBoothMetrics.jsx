@@ -75,6 +75,27 @@ export default function MarketBoothMetrics({ shop }) {
       color: 'text-amber-600',
       bgColor: 'bg-amber-50',
     },
+    {
+      label: 'Categories',
+      value: metrics.categoriesCount,
+      icon: Package,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+    },
+    {
+      label: 'Subscription',
+      value: metrics.subscriptionStatus === 'active' ? 'Active' : 'Inactive',
+      icon: Zap,
+      color: metrics.subscriptionStatus === 'active' ? 'text-emerald-600' : 'text-slate-400',
+      bgColor: metrics.subscriptionStatus === 'active' ? 'bg-emerald-50' : 'bg-slate-100',
+    },
+    {
+      label: 'Verified Vendor',
+      value: metrics.verifiedVendor ? '✓' : '—',
+      icon: CheckCircle,
+      color: metrics.verifiedVendor ? 'text-cyan-600' : 'text-slate-400',
+      bgColor: metrics.verifiedVendor ? 'bg-cyan-50' : 'bg-slate-100',
+    },
   ];
 
   return (
