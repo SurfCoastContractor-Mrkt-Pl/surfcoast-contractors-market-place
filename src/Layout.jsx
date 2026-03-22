@@ -333,7 +333,7 @@ export default function Layout({ children, currentPageName }) {
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full">
         {children}
       </main>
 
