@@ -126,12 +126,7 @@ export default function MarketShopDashboard() {
                    handleUpdate({ logo_url: file_url });
                  }} />
                </label>
-               <div className="flex flex-row flex-wrap items-center justify-end gap-2">
-                 <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
-                 <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
-                   {status}
-                 </span>
-               </div>
+               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-right">{shop.shop_name}</h1>
                <div className="flex flex-row flex-wrap items-center justify-end gap-2">
                  {(shop.city || shop.state) && (
                    <span className="text-sm text-slate-500">
@@ -145,6 +140,9 @@ export default function MarketShopDashboard() {
                    </span>
                  )}
                </div>
+               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize self-end ${STATUS_STYLES[status]}`}>
+                 {status}
+               </span>
              </div>
            </div>
         </div>
