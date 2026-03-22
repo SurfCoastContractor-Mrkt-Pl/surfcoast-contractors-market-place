@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle, Camera } from 'lucide-react';
+import MarketBoothMetrics from '@/components/marketshop/MarketBoothMetrics';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
 import MarketShopReviews from '@/components/marketshop/MarketShopReviews';
@@ -168,7 +169,11 @@ export default function MarketShopDashboard() {
       {/* Shop Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
-          <div className="flex items-start justify-end gap-4">
+          <div className="flex items-start justify-between gap-4">
+            {/* Left: Metrics */}
+            <div className="hidden sm:flex items-center flex-1">
+              <MarketBoothMetrics shop={shop} />
+            </div>
             {/* Right: Upload Photo + Shop Name + Status + Location + Type all stacked */}
             <div className="flex flex-col items-center gap-1">
               <button
