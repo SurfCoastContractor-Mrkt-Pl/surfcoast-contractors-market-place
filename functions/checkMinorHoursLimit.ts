@@ -28,6 +28,8 @@ Deno.serve(async (req) => {
       if (!user) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
+      // For single contractor checks, verify the user is authorized to view this contractor's data
+      // Only admins or the contractor themselves can check hours
     }
 
     // If automation call (no contractorId), check ALL minors

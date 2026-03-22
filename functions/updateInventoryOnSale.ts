@@ -18,7 +18,8 @@ Deno.serve(async (req) => {
   try {
     // Validate internal service key — only internal payment processes may call this
     const internalKey = req.headers.get('x-internal-key');
-    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!expectedKey || internalKey !== expectedKey) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 

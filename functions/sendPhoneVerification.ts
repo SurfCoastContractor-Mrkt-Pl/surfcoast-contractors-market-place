@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
     const isAuthenticated = await base44.auth.isAuthenticated();
     if (isAuthenticated) {
       const user = await base44.auth.me();
-      if (user.email.toLowerCase() !== userEmail.toLowerCase()) {
+      if (!user || user.email.toLowerCase() !== userEmail.toLowerCase()) {
         return Response.json({ error: 'Forbidden: email does not match authenticated user' }, { status: 403 });
       }
     }

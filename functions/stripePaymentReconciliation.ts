@@ -9,10 +9,11 @@ Deno.serve(async (req) => {
 
     // Only allow admin or internal service
     const internalKey = req.headers.get('x-internal-service-key');
-    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (internalKey !== expectedKey) {
       const user = await base44.auth.me();
       if (!user || user.role !== 'admin') {
-        return Response.json({ error: 'Unauthorized' }, { status: 403 });
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
 
