@@ -207,8 +207,8 @@ export default function Layout({ children, currentPageName }) {
                  </button>
                 </div>
                 )}
-                </div>
                 )}
+                </div>
 
                 {/* Mobile Menu Button */}
                 <button
