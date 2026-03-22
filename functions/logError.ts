@@ -1,10 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Simple in-memory rate limiter per IP (basic protection)
-const requestCounts = new Map();
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const RATE_LIMIT_THRESHOLD = 10; // Max 10 requests per minute per IP
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -23,22 +18,24 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Rate limiting per user/IP
-    const now = Date.now();
+    // SECURITY: Database-backed rate limiting (not in-memory)
+    // In-memory rate limiting is ineffective in serverless environments
+    const now = new Date().toISOString();
+    const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
     const userKey = user?.email || req.headers.get('x-forwarded-for') || 'anonymous';
-    if (!requestCounts.has(userKey)) {
-      requestCounts.set(userKey, []);
-    }
-
-    const userRequests = requestCounts.get(userKey);
-    const recentRequests = userRequests.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
     
-    if (recentRequests.length >= RATE_LIMIT_THRESHOLD) {
-      return Response.json({ error: 'Rate limit exceeded: too many error logs in short time' }, { status: 429 });
+    try {
+      const recentErrors = await base44.asServiceRole.entities.ErrorLog.filter({
+        user_email: userKey,
+        created_date: { $gte: oneMinuteAgo }
+      });
+      
+      if (recentErrors && recentErrors.length >= 10) {
+        return Response.json({ error: 'Rate limit exceeded: too many error logs in short time' }, { status: 429 });
+      }
+    } catch (limitError) {
+      console.warn('Rate limit check failed, proceeding:', limitError.message);
     }
-
-    recentRequests.push(now);
-    requestCounts.set(userKey, recentRequests);
 
     const body = await req.json();
 

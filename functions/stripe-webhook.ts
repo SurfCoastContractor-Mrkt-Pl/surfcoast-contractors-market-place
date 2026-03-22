@@ -8,7 +8,7 @@ const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 async function isEventProcessed(base44, eventId) {
   try {
     const events = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({
-      stripe_event_id: eventId
+      event_id: eventId
     });
     return events && events.length > 0;
   } catch (error) {
@@ -20,7 +20,7 @@ async function isEventProcessed(base44, eventId) {
 async function markEventProcessed(base44, eventId, eventType) {
   try {
     await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
-      stripe_event_id: eventId,
+      event_id: eventId,
       event_type: eventType,
       processed_at: new Date().toISOString()
     });

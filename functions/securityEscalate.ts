@@ -98,9 +98,15 @@ Deno.serve(async (req) => {
     }
 
     // ── Compute integrity fingerprints ──────────────────────────────────────
+    const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!internalKey) {
+      console.error('CRITICAL: INTERNAL_SERVICE_KEY not configured — cannot sign security events');
+      return Response.json({ error: 'Internal service key not configured' }, { status: 500 });
+    }
+
     const payloadString = JSON.stringify({ alert_type, severity, ip_address, country, details, user_email, ts: new Date().toISOString() });
     const payloadHash = await sha256(payloadString);
-    const hmacSig = await hmacSign(Deno.env.get('INTERNAL_SERVICE_KEY') || 'fallback', payloadString);
+    const hmacSig = await hmacSign(internalKey, payloadString);
 
     // ── Persist to SecurityAlert ────────────────────────────────────────────
     let alertRecord;

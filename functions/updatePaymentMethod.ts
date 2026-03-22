@@ -21,11 +21,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { subscriptionId, cardData } = await req.json();
+    const { subscriptionId, paymentMethodId } = await req.json();
 
-    if (!subscriptionId || !cardData) {
+    if (!subscriptionId || !paymentMethodId) {
       return Response.json(
-        { error: 'Missing subscriptionId or cardData' },
+        { error: 'Missing subscriptionId or paymentMethodId' },
         { status: 400 }
       );
     }
@@ -41,22 +41,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Subscription not found' }, { status: 404 });
     }
 
-    // Create token from card data
-    const token = await stripe.tokens.create({
-      card: {
-        number: cardData.cardNumber.replace(/\s/g, ''),
-        exp_month: parseInt(cardData.expiryMonth),
-        exp_year: parseInt(cardData.expiryYear),
-        cvc: cardData.cvc
-      }
-    });
+    // SECURITY: Card data must be tokenized on frontend via Stripe.js
+    // Backend should only receive the payment method ID (already tokenized by Stripe)
+    // Never accept raw card details (number, CVC, expiry) on the backend
 
     // Get Stripe subscription
     const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
 
-    // Update customer default payment method
-    await stripe.customers.update(stripeSubscription.customer, {
-      source: token.id
+    // Update subscription to use the new payment method
+    await stripe.subscriptions.update(subscriptionId, {
+      default_payment_method: paymentMethodId
     });
 
     console.log(`Payment method updated for ${user.email}`);

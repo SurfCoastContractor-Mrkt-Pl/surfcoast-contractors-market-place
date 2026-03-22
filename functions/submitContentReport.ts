@@ -78,14 +78,24 @@ Deno.serve(async (req) => {
       }
     }
 
+    // SECURITY: Sanitize user inputs to prevent prompt injection
+    const sanitizeInput = (text) => {
+      if (!text) return '';
+      // Remove control characters and limit length
+      return text.replace(/[\x00-\x1F\x7F]/g, '').substring(0, 500);
+    };
+
+    const sanitizedPreview = sanitizeInput(content_preview);
+    const sanitizedReason = sanitizeInput(reason);
+
     // Scan content for violations
     const scanResult = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are a content moderation expert. Analyze the following reported content for policy violations:
+      prompt: `You are a content moderation expert. Analyze the following reported content for policy violations.
 
 Content Type: ${content_type}
 Reported Category: ${violation_category}
-Reason for Report: ${reason || 'Not specified'}
-Content Preview: "${content_preview || 'No preview provided'}"
+Reason for Report: ${sanitizedReason || 'Not specified'}
+Content Preview: "${sanitizedPreview || 'No preview provided'}"
 
 Check for:
 1. Illegal activities (drug trafficking, human trafficking, weapons, etc.)
@@ -95,12 +105,12 @@ Check for:
 5. Unsafe or exploitative services
 6. Extreme or graphic content
 
-Respond in JSON with:
-- risk_score (0-100): How serious is the violation?
-- violations (array): List any detected violations
-- recommended_severity (low/medium/high/critical): Severity level
+Respond ONLY with valid JSON containing:
+- risk_score (0-100)
+- violations (array of strings)
+- recommended_severity (one of: low, medium, high, critical)
 
-Be thorough and conservative in flagging potential illegal activity.`,
+Do not include any explanations or additional text outside the JSON object.`,
       response_json_schema: {
         type: 'object',
         properties: {
