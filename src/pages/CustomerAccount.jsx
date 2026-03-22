@@ -36,6 +36,7 @@ import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import TrialBadge from '@/components/customer/TrialBadge';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
+import LittlesUploadModal from '@/components/littles/LittlesUploadModal';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
