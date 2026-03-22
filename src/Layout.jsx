@@ -225,7 +225,7 @@ export default function Layout({ children, currentPageName }) {
 
            {/* Mobile Menu */}
            {mobileMenuOpen && (
-           <div className="lg:hidden bg-white border-b border-slate-200">
+             <div className="lg:hidden bg-white border-b border-slate-200">
             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
