@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import VendorMap from '@/components/vendor/VendorMap';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import VendorFilterPanel from '@/components/vendor/VendorFilterPanel';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, MapPin, Phone, Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Star, MapPin, Sliders } from 'lucide-react';
 
 const PRODUCT_CATEGORIES = [
   'electronics', 'tools', 'sports_equipment', 'books_media', 'home_decor',
@@ -32,11 +32,14 @@ const categoryLabels = {
 export default function BoothsAndVendorsMap() {
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [filters, setFilters] = useState({
     marketType: 'all',
     location: '',
     category: 'all',
-    minRating: 0
+    minRating: 0,
+    trades: [],
+    availability: []
   });
 
   const { data: vendors = [], isLoading } = useQuery({
@@ -77,75 +80,59 @@ export default function BoothsAndVendorsMap() {
       if ((vendor.average_rating || 0) < filters.minRating) return false;
     }
 
+    if (filters.trades && filters.trades.length > 0) {
+      // For vendors, check if any category matches trade-related keywords
+      const hasTrade = filters.trades.some(trade => {
+        const tradeKeywords = trade.toLowerCase();
+        return vendor.categories?.some(cat => cat.toLowerCase().includes(tradeKeywords));
+      });
+      if (!hasTrade) return false;
+    }
+
+    if (filters.availability && filters.availability.length > 0) {
+      const status = vendor.availability_status || 'available';
+      if (!filters.availability.includes(status)) return false;
+    }
+
     return true;
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Booths & Vendors</h1>
-          <p className="text-slate-600">Browse farmers markets and swap meets near you</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex">
+      {/* Overlay for mobile filter panel */}
+      {filterPanelOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setFilterPanelOpen(false)}
+        />
+      )}
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg border border-slate-200 p-6 mb-8 backdrop-blur-sm bg-opacity-95">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label className="text-sm font-medium text-slate-700 block mb-2">Market Type</label>
-              <Select value={filters.marketType} onValueChange={(value) => setFilters({ ...filters, marketType: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All types" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="farmers_market">Farmers Market</SelectItem>
-                  <SelectItem value="swap_meet">Swap Meet</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      {/* Filter Panel */}
+      <VendorFilterPanel
+        filters={filters}
+        onFiltersChange={setFilters}
+        onClose={() => setFilterPanelOpen(false)}
+        isOpen={filterPanelOpen}
+      />
 
-            <div>
-              <label className="text-sm font-medium text-slate-700 block mb-2">Location</label>
-              <Input
-                placeholder="City, State"
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-              />
+      {/* Main Content */}
+      <div className="flex-1 min-w-0">
+        <div className="max-w-7xl mx-auto w-full px-4 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-2">
+              <h1 className="text-4xl font-bold text-slate-900">Booths & Vendors</h1>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setFilterPanelOpen(!filterPanelOpen)}
+                className="lg:hidden"
+              >
+                <Sliders className="w-5 h-5" />
+              </Button>
             </div>
-
-            <div>
-              <label className="text-sm font-medium text-slate-700 block mb-2">Category</label>
-              <Select value={filters.category} onValueChange={(value) => setFilters({ ...filters, category: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {PRODUCT_CATEGORIES.map(cat => (
-                    <SelectItem key={cat} value={cat}>{categoryLabels[cat]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-slate-700 block mb-2">Min Rating</label>
-              <Select value={filters.minRating.toString()} onValueChange={(value) => setFilters({ ...filters, minRating: parseFloat(value) })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Any rating" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">Any Rating</SelectItem>
-                  <SelectItem value="3">3+ Stars</SelectItem>
-                  <SelectItem value="4">4+ Stars</SelectItem>
-                  <SelectItem value="4.5">4.5+ Stars</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <p className="text-slate-600">Browse farmers markets and swap meets near you</p>
           </div>
-        </div>
 
         {/* View Toggle */}
         <div className="flex gap-2 mb-6">
@@ -251,6 +238,7 @@ export default function BoothsAndVendorsMap() {
         {/* Results Count */}
         <div className="mt-6 text-sm text-slate-600">
           Showing {filteredVendors.length} of {vendors.length} vendors
+        </div>
         </div>
       </div>
     </div>
