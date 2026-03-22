@@ -693,21 +693,20 @@ export default function ContractorAccount() {
           </Card>
           )}
           </div>
-          </div>
-          </div>
-          </div>
+        </div>
 
-          {/* Persistent Chat Sidebar */}
-          {activeSidebarChat && (
+        {/* Persistent Chat Sidebar */}
+        {activeSidebarChat && (
           <PersistentChatSidebar
-          scopeId={activeSidebarChat.id}
-          scopeTitle={activeSidebarChat.job_title}
-          userEmail={userEmail}
-          userName={contractor?.name}
-          userType="contractor"
-          onClose={() => setActiveSidebarChat(null)}
+            scopeId={activeSidebarChat.id}
+            scopeTitle={activeSidebarChat.job_title}
+            userEmail={userEmail}
+            userName={contractor?.name}
+            userType="contractor"
+            onClose={() => setActiveSidebarChat(null)}
           />
-          )}
-          </div>
-          );
-          }
+        )}
+      </div>
+    </div>
+  );
+}

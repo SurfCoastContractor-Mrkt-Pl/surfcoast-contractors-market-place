@@ -557,21 +557,20 @@ export default function CustomerAccount() {
             {/* Delete Profile */}
             <DeleteAccountSection userEmail={userEmail} onDelete={handleDeleteAll} />
           </div>
-          </div>
-          </div>
-          </div>
+        </div>
 
-          {/* Persistent Chat Sidebar */}
-          {activeSidebarChat && (
+        {/* Persistent Chat Sidebar */}
+        {activeSidebarChat && (
           <PersistentChatSidebar
-          scopeId={activeSidebarChat.id}
-          scopeTitle={activeSidebarChat.job_title}
-          userEmail={userEmail}
-          userName={customerProfile?.full_name}
-          userType="customer"
-          onClose={() => setActiveSidebarChat(null)}
+            scopeId={activeSidebarChat.id}
+            scopeTitle={activeSidebarChat.job_title}
+            userEmail={userEmail}
+            userName={customerProfile?.full_name}
+            userType="customer"
+            onClose={() => setActiveSidebarChat(null)}
           />
-          )}
-          </div>
-          );
-          }
+        )}
+      </div>
+    </div>
+  );
+}
