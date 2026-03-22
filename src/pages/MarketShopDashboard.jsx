@@ -113,45 +113,44 @@ export default function MarketShopDashboard() {
       {/* Shop Header */}
        <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 z-20">
          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
-           <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-             <div className="flex-1 w-full">
-               {/* Row 1: Upload Photo + [Shop Name + Status + Location + Shop Type stacked] */}
-               <div className="flex flex-col sm:flex-row items-start gap-3">
-                 <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-2 sm:py-1 rounded-full border border-blue-200 transition-colors flex-shrink-0 min-h-[44px] sm:min-h-auto">
-                  <Camera className="w-3.5 h-3.5" />
-                  <span>Upload Photo</span>
-                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-                    handleUpdate({ logo_url: file_url });
-                  }} />
-                </label>
-                <div className="flex flex-col">
-                  <div className="flex flex-row flex-wrap items-center gap-2">
-                    <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
-                      {status}
-                    </span>
-                  </div>
-                  {/* Row 2: Location + Shop Type — naturally aligned under shop name */}
-                  <div className="flex flex-row flex-wrap items-center gap-2 mt-1">
-                    {(shop.city || shop.state) && (
-                      <span className="text-sm text-slate-500">
-                        {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
-                      </span>
-                    )}
-                    {shop.shop_type && (
-                      <span className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
-                        <Store className="w-3 h-3" />
-                        {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+           <div className="flex items-start justify-between gap-4">
+             {/* Left: Shop Name + Status + Location + Type */}
+             <div className="flex flex-col">
+               <div className="flex flex-row flex-wrap items-center gap-2">
+                 <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{shop.shop_name}</h1>
+                 <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
+                   {status}
+                 </span>
+               </div>
+               <div className="flex flex-row flex-wrap items-center gap-2 mt-1">
+                 {(shop.city || shop.state) && (
+                   <span className="text-sm text-slate-500">
+                     {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
+                   </span>
+                 )}
+                 {shop.shop_type && (
+                   <span className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
+                     <Store className="w-3 h-3" />
+                     {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                   </span>
+                 )}
+               </div>
+             </div>
+
+             {/* Right: Upload Photo stacked above shop info badges */}
+             <div className="flex flex-col items-end gap-2 flex-shrink-0">
+               <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-full border border-blue-200 transition-colors">
+                 <Camera className="w-3.5 h-3.5" />
+                 <span>Upload Photo</span>
+                 <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                   const file = e.target.files?.[0];
+                   if (!file) return;
+                   const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                   handleUpdate({ logo_url: file_url });
+                 }} />
+               </label>
+             </div>
+           </div>
         </div>
 
         {/* Tabs */}
