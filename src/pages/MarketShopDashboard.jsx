@@ -40,8 +40,6 @@ export default function MarketShopDashboard() {
   const [shop, setShop] = useState(null);
   const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: true });
   const [activeTab, setActiveTab] = useState('listings');
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const logoInputRef = React.useRef(null);
 
   useEffect(() => {
     const load = async () => {
