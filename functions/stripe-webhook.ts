@@ -5,27 +5,30 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
 // SECURITY: Database-backed idempotency for webhook processing (no in-memory storage)
+// This ensures reliable deduplication in distributed/serverless environments
 async function isEventProcessed(base44, eventId) {
   try {
     const events = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({
-      event_id: eventId
+      stripe_event_id: eventId
     });
     return events && events.length > 0;
   } catch (error) {
     console.error('Error checking webhook idempotency:', error.message);
-    return false;
+    return false; // Assume not processed on error, allow retry
   }
 }
 
 async function markEventProcessed(base44, eventId, eventType) {
   try {
     await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
-      event_id: eventId,
+      stripe_event_id: eventId,
       event_type: eventType,
+      event_data: JSON.stringify({ type: eventType }),
       processed_at: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error marking webhook as processed:', error.message);
+    // Don't re-throw — idempotency check already passed, continue processing
   }
 }
 
