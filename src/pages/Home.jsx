@@ -27,16 +27,6 @@ export default function Home() {
       <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
       <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.72)", zIndex:1 }} />
 
-      <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)", minHeight:"44px" }}>
-         <div style={{ display:'flex', flexDirection:'column', gap:'2px' }}>
-           <span style={{ fontSize:'14px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
-           <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
-         </div>
-         <nav style={{ display:"flex", gap:"8px", alignItems:"center" }}>
-            {!isMobile && <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.8)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"20px", border:"1px solid rgba(255,255,255,0.18)", display:"flex", alignItems:"center", gap:"4px", whiteSpace:"nowrap" }}><ShoppingBag size={14} /> Markets & Vendors</a>}
-            <button onClick={() => base44.auth.redirectToLogin('/Dashboard')} style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer" }}>Sign In</button>
-         </nav>
-       </header>
 
       <main style={{ position:"relative", zIndex:2, flex:1, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px clamp(6px, 1vw, 8px)" : "20px 16px 8px", minHeight:"auto" }}>
         <div style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "12px", maxWidth:"680px" }}>
