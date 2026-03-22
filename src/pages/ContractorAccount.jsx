@@ -428,6 +428,16 @@ export default function ContractorAccount() {
                   </Card>
 
                   <ServicePackageManager contractorId={contractor?.id} services={contractorServices || []} onRefresh={refetchServices} />
+
+                  {/* Littles Showcase Button */}
+                  <Card className="p-6">
+                    <h2 className="text-lg font-semibold text-slate-900 mb-4">Share Your Family's Creativity</h2>
+                    <p className="text-sm text-slate-600 mb-4">
+                      Showcase your child's creative work, art, innovations, and crafts. Help them build confidence and celebrate their achievements in our community!
+                    </p>
+                    <LittlesUploadModal userEmail={userEmail} userType="contractor" />
+                  </Card>
+
                   <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
                   <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
                   </div>
