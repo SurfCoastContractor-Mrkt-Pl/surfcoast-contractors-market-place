@@ -45,7 +45,7 @@ export default function Layout({ children, currentPageName }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasMarketShop, setHasMarketShop] = useState(false);
   const isBackNav = useRef(false);
-  const { isConsumerMode } = useConsumerMode();
+  const { isConsumerMode, toggleConsumerMode } = useConsumerMode();
 
   useGeoCheck();
 
