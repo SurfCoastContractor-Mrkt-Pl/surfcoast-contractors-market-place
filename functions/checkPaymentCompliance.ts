@@ -39,15 +39,25 @@ Deno.serve(async (req) => {
     const contractor = contractors[0];
 
     // Check if message contains payment keywords (off-platform payment red flags)
-    const paymentKeywords = [
-      'venmo', 'cashapp', 'cash app', 'paypal', 'wire transfer', 'direct deposit',
-      'transfer', 'bank account', 'check payment', 'payment outside',
-      'off platform', 'direct payment', 'separate payment', 'outside platform'
+    // Use word boundaries to avoid false positives (e.g., "transfer files" ≠ "wire transfer")
+    const paymentPatterns = [
+      /\bvenmo\b/i,
+      /\bcash\s?app\b/i,
+      /\bpaypal\b/i,
+      /\bwire\s+transfer\b/i,
+      /\bdirect\s+deposit\b/i,
+      /\bbank\s+account\b/i,
+      /\bcheck\s+payment\b/i,
+      /\bpayment\s+outside\b/i,
+      /\boff\s+platform\b/i,
+      /\bdirect\s+payment\b/i,
+      /\bseparate\s+payment\b/i,
+      /\boutside\s+platform\b/i
     ];
 
     const messageText = message_text?.toLowerCase() || '';
-    const hasPaymentKeywords = paymentKeywords.some(keyword =>
-      messageText.includes(keyword)
+    const hasPaymentKeywords = paymentPatterns.some(pattern =>
+      pattern.test(messageText)
     );
 
     if (!hasPaymentKeywords) {
