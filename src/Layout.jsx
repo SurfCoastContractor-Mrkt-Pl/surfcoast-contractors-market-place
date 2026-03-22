@@ -226,7 +226,7 @@ export default function Layout({ children, currentPageName }) {
            {/* Mobile Menu */}
            {mobileMenuOpen && (
            <div className="lg:hidden bg-white border-b border-slate-200">
-            <div className="px-4 py-4 space-y-2">
+             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
                 return (
@@ -317,11 +317,11 @@ export default function Layout({ children, currentPageName }) {
 
                   {/* Main Content */}
                   <main className="flex-1">
-        {children}
-      </main>
+                    {children}
+                  </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
+                  {/* Footer */}
+                  <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
             <div className="sm:col-span-2 lg:col-span-2">
