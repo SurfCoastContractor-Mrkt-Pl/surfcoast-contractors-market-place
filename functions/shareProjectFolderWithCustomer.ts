@@ -20,7 +20,12 @@ Deno.serve(async (req) => {
       callerRole = user.role;
     }
 
-    const { scope_id } = await req.json();
+    const { scope_id, customer_email } = await req.json();
+
+    // Validate required fields
+    if (!scope_id) {
+      return Response.json({ error: 'Missing scope_id' }, { status: 400 });
+    }
 
     // Fetch the scope to get folder details
     const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ 
@@ -33,11 +38,20 @@ Deno.serve(async (req) => {
 
     const scope = scopes[0];
 
-    // Verify caller owns the scope (if not an internal call)
+    // Verify caller is authorized (owner or admin)
     if (!isValidInternalCall) {
-      if (callerRole !== 'admin' && scope.contractor_email !== callerEmail) {
-        return Response.json({ error: 'Forbidden: you do not own this scope' }, { status: 403 });
+      const isOwner = scope.contractor_email === callerEmail;
+      const isCustomer = scope.customer_email === callerEmail;
+      const isAdmin = callerRole === 'admin';
+      
+      if (!isOwner && !isCustomer && !isAdmin) {
+        return Response.json({ error: 'Forbidden: you are not involved in this scope' }, { status: 403 });
       }
+    }
+
+    // Validate customer_email matches scope if provided
+    if (customer_email && customer_email !== scope.customer_email) {
+      return Response.json({ error: 'Forbidden: customer email does not match scope' }, { status: 403 });
     }
 
     // Check if both ratings have been submitted
