@@ -110,15 +110,6 @@ export default function MarketShopDashboard() {
     }}>
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative">
-      {/* Profile Switcher */}
-      <div className="relative z-20">
-        <ProfileSwitcher
-          activeProfile="marketshop"
-          primaryType={profiles.contractor ? 'contractor' : 'customer'}
-          hasMarketShop={true}
-        />
-      </div>
-
       {/* Shop Header */}
        <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 z-20">
          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
