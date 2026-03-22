@@ -44,6 +44,33 @@ export default function ReferralSignup() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const sendReferralLink = async () => {
+    if (!recipientEmail.trim()) {
+      alert('Please enter a recipient email');
+      return;
+    }
+
+    setSendingEmail(true);
+    try {
+      await base44.functions.invoke('sendReferralLink', {
+        senderEmail: email,
+        recipientEmail: recipientEmail.trim(),
+        referralCode: referralCode,
+      });
+      setSendSuccess(true);
+      setTimeout(() => {
+        setShowSendModal(false);
+        setRecipientEmail('');
+        setSendSuccess(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error sending referral link:', error);
+      alert('Failed to send referral link. Please try again.');
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
