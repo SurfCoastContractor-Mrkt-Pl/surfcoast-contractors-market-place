@@ -165,7 +165,7 @@ export default function MarketShopDashboard() {
         </div>
 
         {/* Tabs */}
-         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 sticky top-32 sm:top-28 z-20 bg-white/95 backdrop-blur-sm">
+         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 z-20 bg-white/95 backdrop-blur-sm">
            <div className="flex gap-1 border-b border-slate-200 -mb-px overflow-x-auto scrollbar-hide">
             {TABS.map(({ key, label, icon: Icon }) => (
               <button
