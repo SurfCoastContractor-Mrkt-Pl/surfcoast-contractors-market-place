@@ -173,7 +173,7 @@ export default function ImageCropUploader({ label, currentUrl, aspectRatio = 1, 
 
       {/* Crop Modal */}
       {cropping && rawImage && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center p-4" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
           <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 w-full max-w-lg">
             <h3 className="text-base font-bold text-slate-800 mb-1">Crop {label}</h3>
             <p className="text-xs text-slate-500 mb-4">Drag to reposition · Use zoom to fit</p>
