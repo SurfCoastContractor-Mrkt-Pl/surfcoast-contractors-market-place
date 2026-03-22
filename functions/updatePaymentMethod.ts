@@ -3,6 +3,15 @@ import Stripe from 'npm:stripe@16.0.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
+/**
+ * SECURITY: SSRF Protection
+ * This function handles sensitive payment method updates. If card data 
+ * fetching or reupload is implemented, ensure ALLOWED_IMAGE_DOMAINS 
+ * and ALLOWED_EVIDENCE_DOMAINS environment variables are strictly 
+ * configured with only trusted domains to prevent Server-Side Request 
+ * Forgery (SSRF) attacks. Never allow arbitrary URLs.
+ */
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
