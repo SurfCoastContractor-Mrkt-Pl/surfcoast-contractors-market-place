@@ -27,11 +27,13 @@ export default function PhotoGalleryManager({ shop, onUpdate }) {
         files.map(file => base44.integrations.Core.UploadFile({ file }))
       );
       const newImages = [...images, ...uploadedUrls.map(r => r.file_url)];
+      console.log('Uploaded URLs:', uploadedUrls);
+      console.log('New images array:', newImages);
       await base44.entities.MarketShop.update(shop.id, { gallery_images: newImages });
       onUpdate({ gallery_images: newImages });
     } catch (err) {
       console.error('Upload error:', err);
-      alert('Error uploading photos');
+      alert('Error uploading photos: ' + err.message);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
