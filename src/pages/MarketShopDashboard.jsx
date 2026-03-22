@@ -79,6 +79,19 @@ export default function MarketShopDashboard() {
   const handleLogoUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    const minSize = 50 * 1024; // 50KB
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (file.size < minSize) {
+      alert('Photo is too small. Please choose an image at least 50KB.');
+      return;
+    }
+    if (file.size > maxSize) {
+      alert('Photo is too large. Please choose an image smaller than 5MB.');
+      return;
+    }
+
     console.log('File selected:', file.name, file.size, file.type);
     setUploadingPhoto(true);
     (async () => {
