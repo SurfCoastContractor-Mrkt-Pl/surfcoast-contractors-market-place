@@ -67,9 +67,10 @@ export default function ImageCropUploader({ label, currentUrl, aspectRatio = 1, 
       setZoom(1);
       setOffset({ x: 0, y: 0 });
       setCropping(true);
+      // Reset after read completes so re-selecting same file works
+      if (fileRef.current) fileRef.current.value = '';
     };
     reader.readAsDataURL(file);
-    e.target.value = '';
   };
 
   const onMouseDown = (e) => {
