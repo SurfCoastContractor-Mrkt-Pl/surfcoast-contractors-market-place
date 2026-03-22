@@ -119,16 +119,6 @@ export default function Home() {
         </div>
       </div>
 
-      <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"8px clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)", flexShrink:0 }}>
-        <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
-        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${getAppBaseUrl()}/Terms`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Terms</a>
-        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${getAppBaseUrl()}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Privacy</a>
-        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Markets</a>
-      </footer>
-
       <div style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(10,22,40,0.8)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"clamp(24px, 4vw, 32px) clamp(16px, 4vw, 24px)", flexShrink:0 }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <h3 style={{ color:"rgba(255,255,255,0.9)", fontSize:"16px", fontWeight:"700", marginBottom:"20px", textAlign:"center" }}>Connect With Us</h3>
@@ -145,6 +135,16 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"8px clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)", flexShrink:0 }}>
+        <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
+        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
+        <a href={`${getAppBaseUrl()}/Terms`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Terms</a>
+        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
+        <a href={`${getAppBaseUrl()}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Privacy</a>
+        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
+        <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Markets</a>
+      </footer>
 
       <div style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(0,0,0,0.55)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"6px clamp(16px, 4vw, 24px)", textAlign:"center", flexShrink:0 }}>
         <p style={{ color:"rgba(255,255,255,0.3)", fontSize:"clamp(10px, 2vw, 11px)", margin:0, lineHeight:"1.6" }}>SurfCoast Marketplace is a connection platform only. We do not employ contractors and are not responsible for the quality, safety, or legality of services provided. All agreements are between users and contractors directly.</p>
