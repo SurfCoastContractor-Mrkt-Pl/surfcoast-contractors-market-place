@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
+import Home from './pages/Home';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -44,11 +45,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={
-        <LayoutWrapper currentPageName={mainPageKey}>
-          <MainPage />
-        </LayoutWrapper>
-      } />
+      <Route path="/" element={<Home />} />
       <Route path="/BoothsAndVendorsMap" element={
         <LayoutWrapper currentPageName="BoothsAndVendorsMap">
           <BoothsAndVendorsMap />
