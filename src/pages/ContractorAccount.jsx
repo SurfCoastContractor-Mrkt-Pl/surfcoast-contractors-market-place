@@ -218,6 +218,7 @@ export default function ContractorAccount() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-slate-50">
       <div className="relative py-12 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <AuthTopBar />
