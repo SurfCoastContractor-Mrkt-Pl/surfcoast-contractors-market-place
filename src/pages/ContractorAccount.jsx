@@ -694,10 +694,10 @@ export default function ContractorAccount() {
           </Card>
           )}
           </div>
-        </div>
+          </div>
 
-        {/* Persistent Chat Sidebar */}
-        {activeSidebarChat && (
+          {/* Persistent Chat Sidebar */}
+          {activeSidebarChat && (
           <PersistentChatSidebar
             scopeId={activeSidebarChat.id}
             scopeTitle={activeSidebarChat.job_title}
@@ -706,8 +706,9 @@ export default function ContractorAccount() {
             userType="contractor"
             onClose={() => setActiveSidebarChat(null)}
           />
-        )}
-      </div>
-    </>
-  );
-}
+          )}
+          </div>
+          </div>
+          </>
+          );
+          }
