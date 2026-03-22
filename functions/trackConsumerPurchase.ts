@@ -5,11 +5,45 @@ const BADGE_THRESHOLD = 15000; // $150 in cents
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Verify authorization: internal service OR authenticated user updating own tier
+    const internalKey = req.headers.get('x-internal-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isValidInternalCall = internalKey && internalKey === expectedKey;
+    
+    let authenticatedUserEmail = null;
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json(
+          { error: 'Authentication required or internal service key needed' },
+          { status: 401 }
+        );
+      }
+      authenticatedUserEmail = user.email;
+    }
+    
     const { user_email, amount, purchase_type } = await req.json();
 
     if (!user_email || !amount || !purchase_type) {
       return Response.json(
         { error: 'Missing required fields: user_email, amount, purchase_type' },
+        { status: 400 }
+      );
+    }
+
+    // Authorization check: prevent updating other users' tiers
+    if (!isValidInternalCall && authenticatedUserEmail !== user_email) {
+      return Response.json(
+        { error: 'Forbidden: you can only update your own consumer tier' },
+        { status: 403 }
+      );
+    }
+
+    // Validate amount is positive
+    if (amount <= 0) {
+      return Response.json(
+        { error: 'Amount must be a positive number' },
         { status: 400 }
       );
     }
