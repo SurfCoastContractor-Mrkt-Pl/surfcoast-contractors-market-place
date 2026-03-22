@@ -571,8 +571,7 @@ export default function CustomerAccount() {
             onClose={() => setActiveSidebarChat(null)}
           />
         )}
-        </div>
-        </div>
-        </> 
-        );
-        }
+      </div>
+    </> 
+  );
+}
