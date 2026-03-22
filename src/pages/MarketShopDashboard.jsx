@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle, Camera } from 'lucide-react';
@@ -157,21 +157,22 @@ export default function MarketShopDashboard() {
           <div className="flex items-start justify-end gap-4">
             {/* Right: Upload Photo + Shop Name + Status + Location + Type all stacked */}
             <div className="flex flex-col items-center gap-1">
-              <label className={`cursor-pointer flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-full border transition-colors ${uploadingPhoto ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border-blue-200'}`}>
+              <button
+                type="button"
+                onClick={() => logoInputRef.current?.click()}
+                disabled={uploadingPhoto}
+                className={`cursor-pointer flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-full border transition-colors ${uploadingPhoto ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border-blue-200'}`}
+              >
                 {uploadingPhoto ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
                 <span>{uploadingPhoto ? 'Uploading...' : 'Upload Photo'}</span>
-                <input type="file" accept="image/*" className="hidden" disabled={uploadingPhoto} onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  setUploadingPhoto(true);
-                  try {
-                    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-                    await handleUpdate({ logo_url: file_url });
-                  } finally {
-                    setUploadingPhoto(false);
-                  }
-                }} />
-              </label>
+              </button>
+              <input
+                ref={logoInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleLogoUpload}
+              />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-center">{shop.shop_name}</h1>
               <div className="flex flex-row flex-wrap items-center justify-center gap-2">
                 {(shop.city || shop.state) && (
