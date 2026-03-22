@@ -60,6 +60,9 @@ import MarketingToolkit from '@/components/contractor/MarketingToolkit';
 import PayoutManagementDashboard from '@/components/contractor/PayoutManagementDashboard';
 import AdvancedAnalyticsDashboard from '@/components/contractor/AdvancedAnalyticsDashboard';
 import AvailabilityScheduleManager from '@/components/contractor/AvailabilityScheduleManager';
+import PortfolioGalleryManager from '@/components/contractor/PortfolioGalleryManager';
+import ServicePackagesManager from '@/components/contractor/ServicePackagesManager';
+import CustomerTestimonialsManager from '@/components/contractor/CustomerTestimonialsManager';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -284,7 +287,7 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="profile">
-             <TabsList className="w-full grid-cols-19 overflow-x-auto">
+             <TabsList className="w-full grid-cols-22 overflow-x-auto">
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
                  <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
@@ -293,6 +296,9 @@ export default function ContractorAccount() {
                  <TabsTrigger value="analytics" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
                  <TabsTrigger value="payouts" className="text-xs sm:text-sm whitespace-nowrap">Payouts</TabsTrigger>
                  <TabsTrigger value="availability" className="text-xs sm:text-sm whitespace-nowrap">Availability</TabsTrigger>
+                 <TabsTrigger value="portfolio" className="text-xs sm:text-sm whitespace-nowrap">Portfolio</TabsTrigger>
+                 <TabsTrigger value="packages" className="text-xs sm:text-sm whitespace-nowrap">Packages</TabsTrigger>
+                 <TabsTrigger value="testimonials" className="text-xs sm:text-sm whitespace-nowrap">Testimonials</TabsTrigger>
                  <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
                  <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
