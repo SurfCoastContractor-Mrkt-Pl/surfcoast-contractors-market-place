@@ -264,18 +264,18 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
         )}
-        </nav>
+      </nav>
 
-        <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
-        <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+      <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
+      <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
-        {/* Main Content */}
-        <main className="flex-1">
-          {children}
-        </main>
+      {/* Main Content */}
+      <main className="flex-1">
+        {children}
+      </main>
 
-        {/* Footer */}
-        <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
+      {/* Footer */}
+      <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
             <div className="sm:col-span-2 lg:col-span-2">
