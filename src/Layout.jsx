@@ -104,6 +104,7 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
 
       {/* Navigation */}
+      <>
       <nav className="z-50 bg-transparent">
 
         {/* Main nav bar */}
