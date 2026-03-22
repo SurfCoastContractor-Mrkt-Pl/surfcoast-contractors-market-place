@@ -3,10 +3,11 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import VendorMap from '@/components/vendor/VendorMap';
 import VendorFilterPanel from '@/components/vendor/VendorFilterPanel';
+import BookingRequestForm from '@/components/booking/BookingRequestForm';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Sliders } from 'lucide-react';
+import { Star, MapPin, Sliders, Calendar } from 'lucide-react';
 
 const PRODUCT_CATEGORIES = [
   'electronics', 'tools', 'sports_equipment', 'books_media', 'home_decor',
@@ -33,6 +34,8 @@ export default function BoothsAndVendorsMap() {
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [bookingVendor, setBookingVendor] = useState(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const [filters, setFilters] = useState({
     marketType: 'all',
     location: '',
@@ -203,7 +206,7 @@ export default function BoothsAndVendorsMap() {
                     )}
 
                     {vendor.categories && vendor.categories.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1 mb-4">
                         {vendor.categories.slice(0, 3).map(cat => (
                           <Badge key={cat} variant="outline" className="text-xs">
                             {categoryLabels[cat]}
@@ -214,6 +217,18 @@ export default function BoothsAndVendorsMap() {
                         )}
                       </div>
                     )}
+
+                    <Button
+                      onClick={() => {
+                        setBookingVendor(vendor);
+                        setBookingOpen(true);
+                      }}
+                      className="w-full"
+                      size="sm"
+                    >
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Book a Visit
+                    </Button>
                   </div>
                 </Card>
               ))
