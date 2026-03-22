@@ -99,13 +99,13 @@ export default function MarketBoothMetrics({ shop }) {
   ];
 
   return (
-    <div className="flex flex-wrap gap-3 sm:gap-4">
+    <div className="grid grid-cols-3 gap-3 sm:gap-4 w-full">
       {metricItems.map((item, idx) => {
         const Icon = item.icon;
         return (
           <div
             key={idx}
-            className={`flex flex-col items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-lg border border-slate-200 ${item.bgColor}`}
+            className={`flex flex-col items-center gap-1.5 px-2 sm:px-4 py-2.5 rounded-lg border border-slate-200 ${item.bgColor}`}
           >
             <div className="flex items-center gap-2">
               <Icon className={`w-4 h-4 ${item.color}`} />
