@@ -36,8 +36,20 @@ export default function Home() {
            <span style={{ fontSize:'14px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
            <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
          </div>
-         <nav style={{ display:"flex", gap:"8px", alignItems:"center" }}>
-            <button onClick={() => base44.auth.redirectToLogin('/Dashboard')} style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer" }}>Login</button>
+         <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }}>
+            <button onClick={() => setDropdownOpen(!dropdownOpen)} style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer", gap:"6px", transition:"all 0.2s" }}>
+              Enter <ChevronDown size={14} style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.2s" }} />
+            </button>
+            {dropdownOpen && (
+              <div style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}>
+                <button onClick={() => { base44.auth.redirectToLogin('/Dashboard'); setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
+                  Login / Sign Up
+                </button>
+                <button onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}>
+                  About Us
+                </button>
+              </div>
+            )}
          </nav>
        </header>
 
