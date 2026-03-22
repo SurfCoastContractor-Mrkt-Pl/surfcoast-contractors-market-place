@@ -394,6 +394,14 @@ export default function ContractorAccount() {
                  <CustomerTestimonialsManager contractorId={contractor?.id} />
                </TabsContent>
 
+               <TabsContent value="documents">
+                 <DocumentManagementHub contractorId={contractor?.id} />
+               </TabsContent>
+
+               <TabsContent value="case-studies">
+                 <CaseStudiesBuilder contractorId={contractor?.id} />
+               </TabsContent>
+
                <TabsContent value="live-sessions">
                  <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
