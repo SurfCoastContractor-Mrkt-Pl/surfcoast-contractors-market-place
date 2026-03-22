@@ -301,14 +301,31 @@ export default function LittlesShowcase() {
   // Split showcases into rows and alternate direction
   const rows = [];
   const itemsPerRow = 6;
-  for (let i = 0; i < showcases.length; i += itemsPerRow) {
-    rows.push(showcases.slice(i, i + itemsPerRow));
+  for (let i = 0; i < filteredShowcases.length; i += itemsPerRow) {
+    rows.push(filteredShowcases.slice(i, i + itemsPerRow));
   }
 
   return (
     <>
       <style>{styles}</style>
       <div className="w-full py-12 overflow-hidden">
+        {/* Filter Buttons */}
+        <div className="flex gap-2 justify-center mb-8 px-4 flex-wrap">
+          {filterCategories.map(category => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedFilter(category.id)}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                selectedFilter === category.id
+                  ? 'bg-pink-500 text-white shadow-md'
+                  : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
         <div className="space-y-12">
         {rows.map((row, rowIndex) => (
           <div
