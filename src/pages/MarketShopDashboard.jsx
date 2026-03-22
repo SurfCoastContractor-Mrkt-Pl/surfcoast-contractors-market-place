@@ -121,7 +121,7 @@ export default function MarketShopDashboard() {
       </div>
 
       {/* Shop Header */}
-       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-16 sm:top-14 z-20">
+       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 z-20">
          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
              <div className="flex-1 w-full">
