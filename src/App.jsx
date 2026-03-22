@@ -7,6 +7,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
+import VendorDetail from './pages/VendorDetail';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
@@ -50,6 +51,11 @@ const AuthenticatedApp = () => {
       <Route path="/BoothsAndVendorsMap" element={
         <LayoutWrapper currentPageName="BoothsAndVendorsMap">
           <BoothsAndVendorsMap />
+        </LayoutWrapper>
+      } />
+      <Route path="/vendor/:vendorId" element={
+        <LayoutWrapper currentPageName="VendorDetail">
+          <VendorDetail />
         </LayoutWrapper>
       } />
       <Route path="/ContractorFinancialDashboard" element={
