@@ -323,6 +323,7 @@ export default function Layout({ children, currentPageName }) {
                   <div>
                     <h4 className="font-semibold mb-3">Markets & Vendors</h4>
                     <ul className="space-y-1 text-slate-400">
+                      <li className="text-xs"><Link to={createPageUrl('BoothsAndVendors')} className="hover:text-white">Booths & Vendors</Link></li>
                       <li className="text-xs"><Link to={createPageUrl('MarketDirectory')} className="hover:text-white">Market Directory</Link></li>
                       <li className="text-xs"><Link to={createPageUrl('SwapMeetRatings')} className="hover:text-white">Swap Meet Ratings</Link></li>
                       <li className="text-xs"><Link to={createPageUrl('FarmersMarketRatings')} className="hover:text-white">Farmers Market Ratings</Link></li>
