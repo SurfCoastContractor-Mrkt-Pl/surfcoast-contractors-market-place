@@ -8,6 +8,9 @@ export default function MarketBoothMetrics({ shop }) {
     totalInquiries: 0,
     avgRating: 0,
     reviewCount: 0,
+    categoriesCount: 0,
+    subscriptionStatus: 'inactive',
+    verifiedVendor: false,
     loading: true,
   });
 
