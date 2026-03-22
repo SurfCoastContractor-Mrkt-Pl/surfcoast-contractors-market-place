@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag, CheckCircle } from 'lucide-react';
+import { Search, ShoppingBag, MapPin, Star, AlertTriangle, SlidersHorizontal, Store, Leaf, Tag, CheckCircle, Sparkles } from 'lucide-react';
 import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import MarketListingBrowser from '@/components/consumer/MarketListingBrowser';
+import LittlesShowcase from '@/components/littles/LittlesShowcase';
 
 const SHOP_TYPE_LABELS = {
   farmers_market: 'Farmers Market',
