@@ -87,18 +87,9 @@ export default function Layout({ children, currentPageName }) {
       <nav className="z-50 bg-transparent sticky top-0">
 
         {/* Main nav bar */}
-        <div className="flex items-center h-10 px-4 sm:px-6 lg:px-8 gap-2">
+        <div className="flex items-center justify-between h-10 px-4 sm:px-6 lg:px-8">
 
-          {/* Logo */}
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2 flex-shrink-0 mr-2">
-            <img
-              src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/c07937f4b_logounderhomebutton.png"
-              alt="SurfCoast"
-              className="h-8 w-auto"
-            />
-          </Link>
-
-          {/* Desktop Nav - Links */}
+          {/* Desktop Nav - Left */}
           <div className="hidden lg:flex items-center gap-1 flex-shrink">
             {getNavLinks(isContractor).map(link => (
               <Link key={link.page} to={createPageUrl(link.page)}>
