@@ -71,8 +71,15 @@ SurfCoast Automated Security System
 Deno.serve(async (req) => {
   try {
     // Only accept internal service calls
-    const internalKey = req.headers.get('x-internal-service-key');
-    if (!internalKey || internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+    const headerKey = req.headers.get('x-internal-service-key');
+    const configKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    
+    if (!configKey) {
+      console.error('CRITICAL: INTERNAL_SERVICE_KEY not configured — cannot accept security events');
+      return Response.json({ error: 'Internal service key not configured' }, { status: 500 });
+    }
+
+    if (!headerKey || headerKey !== configKey) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -98,15 +105,9 @@ Deno.serve(async (req) => {
     }
 
     // ── Compute integrity fingerprints ──────────────────────────────────────
-    const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    if (!internalKey) {
-      console.error('CRITICAL: INTERNAL_SERVICE_KEY not configured — cannot sign security events');
-      return Response.json({ error: 'Internal service key not configured' }, { status: 500 });
-    }
-
     const payloadString = JSON.stringify({ alert_type, severity, ip_address, country, details, user_email, ts: new Date().toISOString() });
     const payloadHash = await sha256(payloadString);
-    const hmacSig = await hmacSign(internalKey, payloadString);
+    const hmacSig = await hmacSign(configKey, payloadString);
 
     // ── Persist to SecurityAlert ────────────────────────────────────────────
     let alertRecord;
