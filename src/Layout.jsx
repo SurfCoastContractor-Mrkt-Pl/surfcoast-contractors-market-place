@@ -300,16 +300,16 @@ export default function Layout({ children, currentPageName }) {
                     </div>
                   </Link>
                   <button
-                     onClick={() => { setMobileMenuOpen(false); base44.auth.logout(); }}
-                     className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
-                   >
-                     Logout
-                   </button>
-                   </div>
-                   </div>
-                   </div>
-                   </div>
-                   )}
+                    onClick={() => { setMobileMenuOpen(false); base44.auth.logout(); }}
+                    className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
+                  >
+                    Logout
+                  </button>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  )}
 
       </nav>
 
