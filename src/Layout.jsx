@@ -144,7 +144,7 @@ export default function Layout({ children, currentPageName }) {
                 Account
               </Button>
               {accountMenuOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
                 <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
                   {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                 </div>
