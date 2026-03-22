@@ -208,7 +208,6 @@ export default function Layout({ children, currentPageName }) {
                  </div>
                  )}
                  </div>
-                 )}
 
                  {/* Mobile Menu Button */}
                  <button
@@ -221,8 +220,8 @@ export default function Layout({ children, currentPageName }) {
                      <Menu className="w-6 h-6 text-slate-900" />
                    )}
                  </button>
-                 </div>
-                 </nav>
+               </div>
+             </nav>
       {/* end main nav bar div */}
 
       {/* Mobile Menu */}
