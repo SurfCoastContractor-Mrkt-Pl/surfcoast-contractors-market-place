@@ -188,95 +188,95 @@ export default function BoothsAndVendors() {
         {/* Search and Filters */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="space-y-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search vendors by name or description..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-            />
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search vendors by name or description..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+              />
+            </div>
+
+            {/* Filters Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {/* Market Type */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Market Type</label>
+                <select
+                  value={filters.marketType}
+                  onChange={(e) => setFilters({...filters, marketType: e.target.value})}
+                  className="w-full px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="all">All Markets</option>
+                  <option value="farmers_market">Farmers Markets</option>
+                  <option value="swap_meet">Swap Meets</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Location</label>
+                <select
+                  value={filters.location}
+                  onChange={(e) => setFilters({...filters, location: e.target.value})}
+                  className="w-full px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="all">All Locations</option>
+                  {locations.map(loc => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Category</label>
+                <select
+                  value={filters.category}
+                  onChange={(e) => setFilters({...filters, category: e.target.value})}
+                  className="w-full px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="all">All Categories</option>
+                  {allCategories.map(cat => (
+                    <option key={cat} value={cat}>{cat.replace(/_/g, ' ')}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Subscription Status */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Status</label>
+                <select
+                  value={filters.subscriptionStatus}
+                  onChange={(e) => setFilters({...filters, subscriptionStatus: e.target.value})}
+                  className="w-full px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="all">All Vendors</option>
+                  <option value="active">Active Subscription</option>
+                  <option value="inactive">Limited Listing</option>
+                </select>
+              </div>
+
+              {/* Min Rating */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Min Rating</label>
+                <select
+                  value={filters.minRating}
+                  onChange={(e) => setFilters({...filters, minRating: parseFloat(e.target.value)})}
+                  className="w-full px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="0">All Ratings</option>
+                  <option value="3">3+ Stars</option>
+                  <option value="4">4+ Stars</option>
+                  <option value="4.5">4.5+ Stars</option>
+                </select>
+              </div>
+            </div>
           </div>
-
-          {/* Filters Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Market Type */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-2">Market Type</label>
-              <select
-                value={filters.marketType}
-                onChange={(e) => setFilters({...filters, marketType: e.target.value})}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                <option value="all">All Markets</option>
-                <option value="farmers_market">Farmers Markets</option>
-                <option value="swap_meet">Swap Meets</option>
-                <option value="both">Both</option>
-              </select>
-            </div>
-
-            {/* Location */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-2">Location</label>
-              <select
-                value={filters.location}
-                onChange={(e) => setFilters({...filters, location: e.target.value})}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                <option value="all">All Locations</option>
-                {locations.map(loc => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-2">Category</label>
-              <select
-                value={filters.category}
-                onChange={(e) => setFilters({...filters, category: e.target.value})}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                <option value="all">All Categories</option>
-                {allCategories.map(cat => (
-                  <option key={cat} value={cat}>{cat.replace(/_/g, ' ')}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Subscription Status */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-2">Status</label>
-              <select
-                value={filters.subscriptionStatus}
-                onChange={(e) => setFilters({...filters, subscriptionStatus: e.target.value})}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                <option value="all">All Vendors</option>
-                <option value="active">Active Subscription</option>
-                <option value="inactive">Limited Listing</option>
-              </select>
-            </div>
-
-            {/* Min Rating */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-2">Min Rating</label>
-              <select
-                value={filters.minRating}
-                onChange={(e) => setFilters({...filters, minRating: parseFloat(e.target.value)})}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                <option value="0">All Ratings</option>
-                <option value="3">3+ Stars</option>
-                <option value="4">4+ Stars</option>
-                <option value="4.5">4.5+ Stars</option>
-              </select>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Vendor Grid */}
