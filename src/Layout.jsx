@@ -221,11 +221,10 @@ export default function Layout({ children, currentPageName }) {
              )}
            </button>
          </div>
-       </nav>
-      {/* end main nav bar div */}
+         </nav>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
+         {/* Mobile Menu */}
+         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-slate-200">
             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
