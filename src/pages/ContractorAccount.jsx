@@ -301,6 +301,8 @@ export default function ContractorAccount() {
                  <TabsTrigger value="portfolio" className="text-xs sm:text-sm whitespace-nowrap">Portfolio</TabsTrigger>
                  <TabsTrigger value="packages" className="text-xs sm:text-sm whitespace-nowrap">Packages</TabsTrigger>
                  <TabsTrigger value="testimonials" className="text-xs sm:text-sm whitespace-nowrap">Testimonials</TabsTrigger>
+                 <TabsTrigger value="documents" className="text-xs sm:text-sm whitespace-nowrap">Documents</TabsTrigger>
+                 <TabsTrigger value="case-studies" className="text-xs sm:text-sm whitespace-nowrap">Case Studies</TabsTrigger>
                  <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
                  <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
