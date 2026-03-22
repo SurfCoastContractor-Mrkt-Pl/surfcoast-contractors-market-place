@@ -1,6 +1,13 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
-// Constant-time comparison to prevent timing attacks
+/**
+ * SECURITY: Constant-time comparison prevents timing attacks on password verification
+ * Current: plaintext password in env var (acceptable for admin-only dashboard)
+ * PHASE 3 UPGRADE: Replace with bcrypt/argon2 hash in future
+ *   - Store hashed password in secret: ADMIN_DASHBOARD_PASSWORD_HASH
+ *   - Use: await bcrypt.compare(provided, hash)
+ *   - Provides forward secrecy even if secrets are exposed
+ */
 async function constantTimeCompare(a, b) {
   const encoder = new TextEncoder();
   const aBytes = encoder.encode(a);
@@ -104,7 +111,8 @@ Deno.serve(async (req) => {
     console.log(`[${requestId}] Admin dashboard access granted for ${rateLimitKey}`);
     return Response.json({ success: true });
   } catch (error) {
-    console.error(`[${requestId}] adminAuth error:`, error.message);
+    // Never expose internal error details in response
+    console.error(`[${requestId}] adminAuth error - request processing failed`);
     return Response.json({ success: false, error: 'Server error.' }, { status: 500 });
   }
 });
