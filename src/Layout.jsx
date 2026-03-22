@@ -312,9 +312,7 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
           </div>
-        )}
-
-      </nav>
+      )}
 
       <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
