@@ -43,6 +43,19 @@ Deno.serve(async (req) => {
       body: `Hi ${customer_name},\n\n${contractor_name} has submitted a quote of $${parseFloat(quote_amount || 0).toFixed(2)} for your project: "${job_title}".\n\n${quote_message ? `Message from contractor:\n"${quote_message}"\n\n` : ''}Log in to your account to review and accept or decline this quote.\n\nSurfCoast Marketplace`,
     });
 
+    // Track event for analytics
+    await base44.analytics.track({
+      eventName: 'contractor_quote_submission',
+      properties: {
+        contractor_email: user.email,
+        contractor_name: contractor_name,
+        customer_email: customer_email,
+        job_title: job_title,
+        quote_amount: quote_amount,
+        quote_request_id: quote_request_id || 'direct_submission'
+      }
+    });
+
     console.log(`Quote notification sent to ${customer_email} for job: ${job_title}`);
     return Response.json({ success: true });
   } catch (error) {
