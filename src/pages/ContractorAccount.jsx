@@ -49,6 +49,7 @@ import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilit
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
+import LittlesUploadModal from '@/components/littles/LittlesUploadModal';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
