@@ -221,8 +221,8 @@ export default function Layout({ children, currentPageName }) {
             )}
           </button>
         </div>
-        {/* end main nav bar div */}
       </nav>
+      {/* end main nav bar div */}
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
