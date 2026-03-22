@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Heart } from 'lucide-react';
-import './littles-showcase.css';
 
 const PolaroidCard = ({ showcase, onLike, userEmail }) => {
   const [isLiked, setIsLiked] = useState(false);
