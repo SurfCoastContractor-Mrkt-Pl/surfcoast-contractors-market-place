@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle } from "lucide-react";
+import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown } from "lucide-react";
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import { getAppBaseUrl } from "@/lib/env";
