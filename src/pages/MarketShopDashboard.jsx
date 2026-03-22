@@ -187,8 +187,11 @@ export default function MarketShopDashboard() {
             <div className="hidden sm:flex items-center flex-1">
               <MarketBoothMetrics shop={shop} />
             </div>
-            {/* Right: Upload Photo + Shop Name + Status + Location + Type all stacked */}
-            <div className="flex flex-col items-center gap-1">
+            {/* Right: Logo + Upload Photo + Shop Name + Status + Location + Type all stacked */}
+            <div className="flex flex-col items-center gap-2">
+              {shop.logo_url && (
+                <img src={shop.logo_url} alt={shop.shop_name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border border-slate-200" />
+              )}
               <button
                 type="button"
                 onClick={() => logoInputRef.current?.click()}
