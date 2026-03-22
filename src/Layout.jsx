@@ -89,7 +89,6 @@ export default function Layout({ children, currentPageName }) {
         {/* Main nav bar */}
         <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-4">
 
-
           {/* Desktop Nav - Left (next to logo) */}
           <div className="hidden lg:flex items-center gap-1 flex-shrink">
             {getNavLinks(isContractor).map(link => (
@@ -107,18 +106,6 @@ export default function Layout({ children, currentPageName }) {
 
           {/* Desktop Nav - Right */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
-            {isContractor === false && (
-              <Link to={createPageUrl('QuickJobPost')}>
-                <Button className="text-white font-medium text-sm" style={{ backgroundColor: '#1E5A96' }}>
-                  Post a Job
-                </Button>
-              </Link>
-            )}
-            <Link to={createPageUrl('BecomeContractor')}>
-              <Button className="text-white font-medium text-sm" style={{ backgroundColor: '#1E5A96' }}>
-                Join as Contractor
-              </Button>
-            </Link>
             {!isLoggedIn && (
               <button
                 onClick={() => base44.auth.redirectToLogin()}
@@ -196,14 +183,6 @@ export default function Layout({ children, currentPageName }) {
                 );
               })}
               <div className="pt-4 border-t border-slate-100 space-y-2">
-                {isContractor === false && (
-                  <Link to={createPageUrl('QuickJobPost')} onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full text-white font-medium" style={{ backgroundColor: '#1E5A96' }}>Post a Job</Button>
-                  </Link>
-                )}
-                <Link to={createPageUrl('BecomeContractor')} onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full text-white font-medium" style={{ backgroundColor: '#1E5A96' }}>Join as Contractor</Button>
-                </Link>
                 <div className="border-t border-slate-100 pt-2 space-y-1">
                   <div className="px-3 py-2 text-xs font-semibold text-slate-500">
                     {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
