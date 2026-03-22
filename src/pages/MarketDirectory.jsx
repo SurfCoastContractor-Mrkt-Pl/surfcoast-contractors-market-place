@@ -323,7 +323,5 @@ export default function MarketDirectory() {
          )}
          </div>
       </div>
-    );
-  }
-}
-         }
+      );
+      }
