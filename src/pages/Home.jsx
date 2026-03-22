@@ -133,13 +133,13 @@ export default function Home() {
           <h3 style={{ color:"rgba(255,255,255,0.9)", fontSize:"16px", fontWeight:"700", marginBottom:"20px", textAlign:"center" }}>Connect With Us</h3>
           <div style={{ display:"grid", gridTemplateColumns:window.innerWidth < 600 ? "1fr" : "repeat(3, 1fr)", gap:"20px", justifyContent:"center", alignItems:"start" }}>
             <div style={{ display:"flex", justifyContent:"center" }}>
-              <InstagramQRCode size={120} />
+              <InstagramQRCode size={60} />
             </div>
             <div style={{ display:"flex", justifyContent:"center" }}>
-              <FacebookQRCode size={120} />
+              <FacebookQRCode size={60} />
             </div>
             <div style={{ display:"flex", justifyContent:"center" }}>
-              <FacebookGroupQRCode size={120} />
+              <FacebookGroupQRCode size={60} />
             </div>
           </div>
         </div>
