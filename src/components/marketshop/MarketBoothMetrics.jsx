@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2, TrendingUp, Users, Calendar, MessageCircle } from 'lucide-react';
+import { Loader2, TrendingUp, Users, Calendar, MessageCircle, Package, CheckCircle, Zap } from 'lucide-react';
 
 export default function MarketBoothMetrics({ shop }) {
   const [metrics, setMetrics] = useState({
