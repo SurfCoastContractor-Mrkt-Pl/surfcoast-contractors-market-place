@@ -707,6 +707,6 @@ export default function ContractorAccount() {
           />
         )}
       </div>
-    </div>
+    </>
   );
 }

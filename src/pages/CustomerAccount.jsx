@@ -172,6 +172,7 @@ export default function CustomerAccount() {
   }
 
   return (
+    <>
     <div className="customer-profile" style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", overflowX:"hidden", background:"#0a1628" }}>
     <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
     <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
@@ -571,6 +572,6 @@ export default function CustomerAccount() {
           />
         )}
       </div>
-    </div>
+    </> 
   );
 }
