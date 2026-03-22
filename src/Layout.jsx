@@ -317,7 +317,7 @@ export default function Layout({ children, currentPageName }) {
 
                   {/* Main Content */}
                   <main className="flex-1">
-                    {children}
+                  {children}
                   </main>
 
                   {/* Footer */}
