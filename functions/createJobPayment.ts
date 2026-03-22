@@ -6,12 +6,23 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
 
     const { payment_id, amount_cents, contractor_id, customer_email, customer_name, purpose } = body;
 
     if (!payment_id || !amount_cents || !customer_email || !customer_name) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Verify the customer_email in the payload matches the authenticated user
+    if (customer_email !== user.email) {
+      return Response.json({ error: 'Forbidden: You can only create payments for your own account' }, { status: 403 });
     }
 
     // Fetch the Payment record
