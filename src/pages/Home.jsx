@@ -40,7 +40,7 @@ export default function Home() {
          </nav>
        </header>
 
-      <main style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px clamp(12px, 4vw, 20px)" : "28px 16px 12px", width:"100%" }}>
+      <main style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px 8px" : "28px 16px 8px", width:"100%", flex:1 }}>
 
         <div style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "12px", maxWidth:"680px" }}>
           <h1 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
