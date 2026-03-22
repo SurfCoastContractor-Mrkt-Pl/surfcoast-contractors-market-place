@@ -205,11 +205,12 @@ export default function Layout({ children, currentPageName }) {
                  >
                    Logout
                  </button>
-                </div>
-                )}
-                )}
+                 </div>
+                 )}
+                 </div>
+                 )}
 
-                {/* Mobile Menu Button */}
+                 {/* Mobile Menu Button */}
                 <button
             className="lg:hidden p-2 flex-shrink-0 ml-auto"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
