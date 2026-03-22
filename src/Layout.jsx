@@ -312,10 +312,10 @@ export default function Layout({ children, currentPageName }) {
                   </div>
                   </div>
                   )}
-                  </>
 
                   <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
-      <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+                  <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+                  </>
 
       {/* Main Content */}
       <main className="flex-1">
