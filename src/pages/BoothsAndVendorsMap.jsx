@@ -156,7 +156,7 @@ export default function BoothsAndVendorsMap() {
         ) : viewMode === 'map' ? (
           <div className="h-96 md:h-[600px] rounded-lg overflow-hidden shadow-lg">
             <VendorMap
-              vendors={vendors}
+              vendors={filteredVendors}
               selectedFilters={filters}
               onVendorSelect={setSelectedVendor}
             />
