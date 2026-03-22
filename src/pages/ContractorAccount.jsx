@@ -707,8 +707,7 @@ export default function ContractorAccount() {
             onClose={() => setActiveSidebarChat(null)}
           />
           )}
-        </div>
-      </div>
-    </>
-  );
-}
+          </div>
+          </>
+          );
+          }

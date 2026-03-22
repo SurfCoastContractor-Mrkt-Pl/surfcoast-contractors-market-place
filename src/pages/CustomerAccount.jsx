@@ -570,8 +570,7 @@ export default function CustomerAccount() {
             userType="customer"
             onClose={() => setActiveSidebarChat(null)}
           />
-        )}
-      </div>
-    </> 
-  );
-}
+          )}
+          </> 
+          );
+          }
