@@ -153,9 +153,14 @@ export default function Layout({ children, currentPageName }) {
                         {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                       </div>
                       {isLoggedIn && (
-                        <Link to={createPageUrl('Dashboard')}>
-                          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
-                        </Link>
+                        <>
+                          <Link to={createPageUrl('Dashboard')}>
+                            <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
+                          </Link>
+                          <Link to={createPageUrl('ConsumerHub')}>
+                            <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">Consumer Hub</div>
+                          </Link>
+                        </>
                       )}
                       {(isContractor ? contractorLinks : customerLinks).map(link => (
                         <Link key={link.page} to={createPageUrl(link.page)}>
@@ -251,12 +256,19 @@ export default function Layout({ children, currentPageName }) {
                     {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
                   </div>
                   {isLoggedIn && (
-                    <Link to={createPageUrl('Dashboard')} onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-                      <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                        <ArrowLeft className="w-4 h-4" />
-                        My Dashboard
-                      </div>
-                    </Link>
+                    <>
+                      <Link to={createPageUrl('Dashboard')} onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+                        <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                          <ArrowLeft className="w-4 h-4" />
+                          My Dashboard
+                        </div>
+                      </Link>
+                      <Link to={createPageUrl('ConsumerHub')} onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+                        <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100 pt-3 mt-1">
+                          🎖️ Consumer Hub
+                        </div>
+                      </Link>
+                    </>
                   )}
                   {(isContractor ? contractorLinks : customerLinks).map(link => (
                     <Link key={link.page} to={createPageUrl(link.page)} onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}>
