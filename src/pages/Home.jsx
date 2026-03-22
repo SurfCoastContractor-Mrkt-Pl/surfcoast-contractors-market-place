@@ -13,6 +13,7 @@ const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/pub
 export default function Home() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 600);
