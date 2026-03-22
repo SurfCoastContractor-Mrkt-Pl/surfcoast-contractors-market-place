@@ -308,7 +308,8 @@ export default function LittlesShowcase() {
             ))}
           </div>
         ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
