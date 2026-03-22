@@ -25,6 +25,7 @@ import MarketShopProfile from './pages/MarketShopProfile';
 import MarketShopBillingManagement from './pages/MarketShopBillingManagement';
 import SwapMeetRatings from './pages/SwapMeetRatings';
 import FarmersMarketRatings from './pages/FarmersMarketRatings';
+import BoothsAndVendors from './pages/BoothsAndVendors';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import PricingGuide from './pages/PricingGuide';
