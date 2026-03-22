@@ -378,6 +378,18 @@ export default function ContractorAccount() {
                  <AvailabilityScheduleManager contractor={contractor} contractorEmail={userEmail} />
                </TabsContent>
 
+               <TabsContent value="portfolio">
+                 <PortfolioGalleryManager contractorId={contractor?.id} />
+               </TabsContent>
+
+               <TabsContent value="packages">
+                 <ServicePackagesManager contractorId={contractor?.id} />
+               </TabsContent>
+
+               <TabsContent value="testimonials">
+                 <CustomerTestimonialsManager contractorId={contractor?.id} />
+               </TabsContent>
+
                <TabsContent value="live-sessions">
                  <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
