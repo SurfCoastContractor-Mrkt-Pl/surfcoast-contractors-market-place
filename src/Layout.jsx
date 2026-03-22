@@ -236,6 +236,32 @@ export default function Layout({ children, currentPageName }) {
                       </div>
                     </Link>
                   ))}
+                  {isLoggedIn && (
+                    <div className="border-t border-slate-100 pt-2">
+                      <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
+                      <Link to={createPageUrl('Dashboard')} onClick={() => setMobileMenuOpen(false)}>
+                        <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                          <span>{isContractor ? '🔧' : '🏠'}</span>
+                          <span>{isContractor ? 'Contractor' : 'Customer'}</span>
+                        </div>
+                      </Link>
+                      {hasMarketShop ? (
+                        <Link to={createPageUrl('MarketShopDashboard')} onClick={() => setMobileMenuOpen(false)}>
+                          <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                            <span>🛍️</span>
+                            <span>MarketShop</span>
+                          </div>
+                        </Link>
+                      ) : (
+                        <Link to={createPageUrl('MarketShopSignup')} onClick={() => setMobileMenuOpen(false)}>
+                          <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
+                            <span>🛍️</span>
+                            <span>+ Add MarketShop</span>
+                          </div>
+                        </Link>
+                      )}
+                    </div>
+                  )}
                   <Link to={createPageUrl('MarketDirectory')} onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100">
                       Browse Markets & Vendors
