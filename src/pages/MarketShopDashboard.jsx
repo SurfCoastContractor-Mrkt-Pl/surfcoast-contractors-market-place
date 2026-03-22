@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle, Camera } from 'lucide-react';
-import ProfileSwitcher from '@/components/dashboard/ProfileSwitcher';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
 import MarketShopReviews from '@/components/marketshop/MarketShopReviews';
