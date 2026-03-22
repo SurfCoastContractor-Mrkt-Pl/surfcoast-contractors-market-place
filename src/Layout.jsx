@@ -202,11 +202,11 @@ export default function Layout({ children, currentPageName }) {
                  >
                    Logout
                  </button>
-                </div>
-                )}
-                </div>
+                 </div>
+                 )}
+                 </div>
 
-                {/* Mobile Menu Button */}
+                 {/* Mobile Menu Button */}
           <button
             className="lg:hidden p-2 flex-shrink-0 ml-auto"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -302,14 +302,14 @@ export default function Layout({ children, currentPageName }) {
                   <button
                     onClick={() => { setMobileMenuOpen(false); base44.auth.logout(); }}
                     className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
-                  >
+                    >
                     Logout
-                  </button>
-                  </div>
-                  </div>
-                  </div>
-                  </div>
-                  )}
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    )}
 
       </nav>
 
