@@ -105,128 +105,131 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Navigation */}
       <>
-      <nav className="z-50 bg-transparent">
+        <nav className="z-50 bg-transparent">
 
-        {/* Main nav bar */}
-        <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-4">
+          {/* Main nav bar */}
+          <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-4">
 
-          {/* Desktop Nav - Left (next to logo) */}
-           {currentPageName !== 'Home' && (
-             <div className="hidden lg:flex items-center gap-1 flex-shrink">
-               {getNavLinks(isContractor).map(link => (
-                 <Link key={link.page} to={createPageUrl(link.page)}>
-                   <Button
-                     variant="ghost"
-                     className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
-                     style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
-                   >
-                     {link.name}
-                   </Button>
-                 </Link>
-               ))}
-             </div>
-           )}
-
-          {/* Desktop Nav - Right */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
-            {!isLoggedIn && (
-              <button
-                onClick={() => base44.auth.redirectToLogin()}
-                className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
-              >
-                Login
-              </button>
-            )}
-            {(currentPageName !== 'Home' || isLoggedIn) && (
-              <div className="relative" ref={accountMenuRef}>
-                <Button 
-                  variant="ghost" 
-                  className="text-slate-600 hover:text-slate-900 text-sm"
-                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-                >
-                  <UserCircle className="w-5 h-5 mr-1" />
-                  Account
-                </Button>
-                {accountMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
-                <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-                  {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
-                </div>
-                {isLoggedIn && (
-                  <Link to={createPageUrl('Dashboard')}>
-                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
-                  </Link>
-                )}
-                {(isContractor ? contractorLinks : customerLinks).map(link => (
+            {/* Desktop Nav - Left (next to logo) */}
+            {currentPageName !== 'Home' && (
+              <div className="hidden lg:flex items-center gap-1 flex-shrink">
+                {getNavLinks(isContractor).map(link => (
                   <Link key={link.page} to={createPageUrl(link.page)}>
-                    <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">{link.name}</div>
+                    <Button
+                      variant="ghost"
+                      className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
+                      style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
+                    >
+                      {link.name}
+                    </Button>
                   </Link>
                 ))}
-                {isLoggedIn && (
-                  <div className="border-t border-slate-200">
-                    <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-                    <Link to={createPageUrl('Dashboard')}>
-                      <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                        <span>{isContractor ? '🔧' : '🏠'}</span>
-                        <span>{isContractor ? 'Contractor' : 'Customer'}</span>
-                      </div>
-                    </Link>
-                    <button
-                      onClick={() => toggleConsumerMode(!isConsumerMode)}
-                      className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-                    >
-                      <ShoppingBag className="w-4 h-4" />
-                      <span>{isConsumerMode ? 'Exit Shopping' : 'Browse & Shop'}</span>
-                    </button>
-                    {hasMarketShop ? (
-                      <Link to={createPageUrl('MarketShopDashboard')}>
-                        <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                          <span>🛍️</span>
-                          <span>MarketShop</span>
-                        </div>
-                      </Link>
-                    ) : (
-                      <Link to={createPageUrl('MarketShopSignup')}>
-                        <div className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2">
-                          <span>🛍️</span>
-                          <span>+ Add MarketShop</span>
-                        </div>
-                      </Link>
-                    )}
-                  </div>
-                )}
-                <Link to={createPageUrl('MarketDirectory')}>
-                  <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
-                    Browse Markets & Vendors
-                  </div>
-                </Link>
+              </div>
+            )}
+
+            {/* Desktop Nav - Right */}
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+              {!isLoggedIn && (
                 <button
-                   onClick={() => base44.auth.logout()}
-                   className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
-                 >
-                   Logout
-                 </button>
-               </div>
-             )}
+                  onClick={() => base44.auth.redirectToLogin()}
+                  className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
+                >
+                  Login
+                </button>
+              )}
+              {(currentPageName !== 'Home' || isLoggedIn) && (
+                <div className="relative" ref={accountMenuRef}>
+                  <Button 
+                    variant="ghost" 
+                    className="text-slate-600 hover:text-slate-900 text-sm"
+                    onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                  >
+                    <UserCircle className="w-5 h-5 mr-1" />
+                    Account
+                  </Button>
+                  {accountMenuOpen && (
+                    <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                      <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
+                        {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
+                      </div>
+                      {isLoggedIn && (
+                        <Link to={createPageUrl('Dashboard')}>
+                          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
+                        </Link>
+                      )}
+                      {(isContractor ? contractorLinks : customerLinks).map(link => (
+                        <Link key={link.page} to={createPageUrl(link.page)}>
+                          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">{link.name}</div>
+                        </Link>
+                      ))}
+                      {isLoggedIn && (
+                        <div className="border-t border-slate-200">
+                          <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
+                          <Link to={createPageUrl('Dashboard')}>
+                            <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                              <span>{isContractor ? '🔧' : '🏠'}</span>
+                              <span>{isContractor ? 'Contractor' : 'Customer'}</span>
+                            </div>
+                          </Link>
+                          <button
+                            onClick={() => toggleConsumerMode(!isConsumerMode)}
+                            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                          >
+                            <ShoppingBag className="w-4 h-4" />
+                            <span>{isConsumerMode ? 'Exit Shopping' : 'Browse & Shop'}</span>
+                          </button>
+                          {hasMarketShop ? (
+                            <Link to={createPageUrl('MarketShopDashboard')}>
+                              <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                                <span>🛍️</span>
+                                <span>MarketShop</span>
+                              </div>
+                            </Link>
+                          ) : (
+                            <Link to={createPageUrl('MarketShopSignup')}>
+                              <div className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2">
+                                <span>🛍️</span>
+                                <span>+ Add MarketShop</span>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                      <Link to={createPageUrl('MarketDirectory')}>
+                        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
+                          Browse Markets & Vendors
+                        </div>
+                      </Link>
+                      <button
+                        onClick={() => base44.auth.logout()}
+                        className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
-           {/* Mobile Menu Button */}
-           <button
-             className="lg:hidden p-2 flex-shrink-0 ml-auto"
-             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-           >
-             {mobileMenuOpen ? (
-               <X className="w-6 h-6 text-slate-900" />
-             ) : (
-               <Menu className="w-6 h-6 text-slate-900" />
-             )}
-           </button>
-           </div>
-           </nav>
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 flex-shrink-0 ml-auto"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-slate-900" />
+              ) : (
+                <Menu className="w-6 h-6 text-slate-900" />
+              )}
+            </button>
+          </div>
+        </nav>
 
-           {/* Mobile Menu */}
-           {mobileMenuOpen && (
-           <div className="lg:hidden bg-white border-b border-slate-200">
-             <div className="px-4 py-4 space-y-2">
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-white border-b border-slate-200">
+            <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
                 return (
@@ -307,21 +310,23 @@ export default function Layout({ children, currentPageName }) {
                   >
                     Logout
                   </button>
-                  </div>
-                  </div>
-                  )}
-                  </>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
 
-                  <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
-                  <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+      <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
+      <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
-                  {/* Main Content */}
-                  <main className="flex-1">
-                  {children}
-                  </main>
+      {/* Main Content */}
+      <main className="flex-1">
+        {children}
+      </main>
 
-                  {/* Footer */}
-                  <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
+      {/* Footer */}
+      <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
             <div className="sm:col-span-2 lg:col-span-2">
