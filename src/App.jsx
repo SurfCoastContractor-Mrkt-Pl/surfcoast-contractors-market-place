@@ -2,35 +2,11 @@ import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { pagesConfig } from './pages.config'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
-import ErrorBoundary from './lib/ErrorBoundary';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
-import ShoppingCart from '@/components/consumer/ShoppingCart';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-import AdminPreview from './pages/AdminPreview';
-import AdminDashboard from './pages/AdminDashboard';
-import Dashboard from './pages/Dashboard';
-import TimedChat from './pages/TimedChat';
-import TimedChatPage from './pages/TimedChatPage';
-import ContractorSignup from './pages/ContractorSignup';
-import CustomerSignup from './pages/CustomerSignup';
-
-import MarketShopDashboard from './pages/MarketShopDashboard';
-import MarketShopSignup from './pages/MarketShopSignup';
-import MarketDirectory from './pages/MarketDirectory';
-import MarketShopProfile from './pages/MarketShopProfile';
-import MarketShopBillingManagement from './pages/MarketShopBillingManagement';
-import SwapMeetRatings from './pages/SwapMeetRatings';
-import FarmersMarketRatings from './pages/FarmersMarketRatings';
-import BoothsAndVendors from './pages/BoothsAndVendors';
-import Terms from './pages/Terms';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import PricingGuide from './pages/PricingGuide';
-import ReferralSignup from './pages/ReferralSignup';
-import RegionBlocked from './pages/RegionBlocked';
+import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -57,31 +33,20 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Only redirect to login if NOT on a public page
-      const publicPaths = ['/', '/Home', '/Terms', '/PrivacyPolicy', '/MarketDirectory', '/ReferralSignup', '/FindContractors', '/Jobs', '/Blog', '/BlogDetail', '/ContractorProfile', '/Contractors', '/JobDetails', '/Landing', '/BecomeContractor', '/QuickJobPost', '/admin', '/AdminDashboard', '/Admin', '/Dashboard', '/ContractorAccount', '/CustomerAccount'];
-      const isPublicPath = publicPaths.some(p => window.location.pathname === p || window.location.pathname.startsWith(p)) ||
-        window.location.pathname.startsWith('/shop/') ||
-        window.location.pathname.startsWith('/MarketShopProfile/');
-      if (!isPublicPath) {
-        navigateToLogin();
-        return (
-          <div className="fixed inset-0 flex items-center justify-center">
-            <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-          </div>
-        );
-      }
-      // On public pages — fall through and render normally
-    } else {
-      // Unknown/other error — render the app anyway rather than blank screen
-      // The individual pages handle their own auth as needed
+      // Redirect to login automatically
+      navigateToLogin();
+      return null;
     }
   }
 
   // Render the main app
-   return (
-     <Routes>
-       <Route path="/" element={<Navigate to="/Home" replace />} />
-      <Route path="/Home" element={<Home />} />
+  return (
+    <Routes>
+      <Route path="/" element={
+        <LayoutWrapper currentPageName={mainPageKey}>
+          <MainPage />
+        </LayoutWrapper>
+      } />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
@@ -93,31 +58,6 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
-      <Route path="/AdminPreview" element={<LayoutWrapper currentPageName="AdminPreview"><AdminPreview /></LayoutWrapper>} />
-      <Route path="/AdminDashboard" element={<AdminDashboard />} />
-      <Route path="/Admin" element={<AdminDashboard />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/Dashboard" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
-      <Route path="/TimedChat" element={<LayoutWrapper currentPageName="TimedChat"><TimedChat /></LayoutWrapper>} />
-      <Route path="/timed-chat/:sessionId" element={<TimedChatPage />} />
-      <Route path="/ContractorSignup" element={<LayoutWrapper currentPageName="ContractorSignup"><ContractorSignup /></LayoutWrapper>} />
-      <Route path="/CustomerSignup" element={<LayoutWrapper currentPageName="CustomerSignup"><CustomerSignup /></LayoutWrapper>} />
-      <Route path="/ContractorDashboard" element={<Navigate to="/Dashboard" replace />} />
-      <Route path="/CustomerDashboard" element={<Navigate to="/Dashboard" replace />} />
-      <Route path="/MarketShopDashboard" element={<LayoutWrapper currentPageName="MarketShopDashboard"><MarketShopDashboard /></LayoutWrapper>} />
-      <Route path="/MarketShopSignup" element={<LayoutWrapper currentPageName="MarketShopSignup"><MarketShopSignup /></LayoutWrapper>} />
-      <Route path="/MarketShopBillingManagement" element={<LayoutWrapper currentPageName="MarketShopBillingManagement"><MarketShopBillingManagement /></LayoutWrapper>} />
-      <Route path="/MarketDirectory" element={<LayoutWrapper currentPageName="MarketDirectory"><MarketDirectory /></LayoutWrapper>} />
-      <Route path="/shop/:id" element={<MarketShopProfile />} />
-      <Route path="/MarketShopProfile/:id" element={<MarketShopProfile />} />
-      <Route path="/Terms" element={<LayoutWrapper currentPageName="Terms"><Terms /></LayoutWrapper>} />
-      <Route path="/PrivacyPolicy" element={<LayoutWrapper currentPageName="PrivacyPolicy"><PrivacyPolicy /></LayoutWrapper>} />
-      <Route path="/Pricing" element={<LayoutWrapper currentPageName="Pricing"><PricingGuide /></LayoutWrapper>} />
-      <Route path="/ReferralSignup" element={<ReferralSignup />} />
-      <Route path="/SwapMeetRatings" element={<LayoutWrapper currentPageName="SwapMeetRatings"><SwapMeetRatings /></LayoutWrapper>} />
-      <Route path="/FarmersMarketRatings" element={<LayoutWrapper currentPageName="FarmersMarketRatings"><FarmersMarketRatings /></LayoutWrapper>} />
-      <Route path="/BoothsAndVendors" element={<LayoutWrapper currentPageName="BoothsAndVendors"><BoothsAndVendors /></LayoutWrapper>} />
-      <Route path="/RegionBlocked" element={<RegionBlocked />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -125,19 +65,16 @@ const AuthenticatedApp = () => {
 
 
 function App() {
+
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <ConsumerModeProvider>
-          <QueryClientProvider client={queryClientInstance}>
-            <Router>
-              <AuthenticatedApp />
-            </Router>
-            <Toaster />
-          </QueryClientProvider>
-        </ConsumerModeProvider>
-      </AuthProvider>
-    </ErrorBoundary>
+    <AuthProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <Router>
+          <AuthenticatedApp />
+        </Router>
+        <Toaster />
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }
 
