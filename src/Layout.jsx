@@ -220,12 +220,12 @@ export default function Layout({ children, currentPageName }) {
                <Menu className="w-6 h-6 text-slate-900" />
              )}
            </button>
-         </div>
-         </nav>
+           </div>
+           </nav>
 
-         {/* Mobile Menu */}
-         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-slate-200">
+           {/* Mobile Menu */}
+           {mobileMenuOpen && (
+           <div className="lg:hidden bg-white border-b border-slate-200">
             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
@@ -310,10 +310,10 @@ export default function Layout({ children, currentPageName }) {
                   </div>
                   </div>
                   )}
+                  </>
 
                   <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
                   <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
-                  </>
 
                   {/* Main Content */}
                   <main className="flex-1">
