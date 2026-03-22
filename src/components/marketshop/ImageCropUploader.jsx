@@ -116,6 +116,7 @@ export default function ImageCropUploader({ label, currentUrl, aspectRatio = 1, 
     ctx.drawImage(img, x, y, drawW, drawH);
 
     canvas.toBlob(async (blob) => {
+      if (!blob) { alert('Could not process image. Please try again.'); return; }
       setSaving(true);
       try {
         const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
@@ -123,9 +124,10 @@ export default function ImageCropUploader({ label, currentUrl, aspectRatio = 1, 
         await onSave(file_url);
         setSaved(true);
         setCropping(false);
+        setRawImage(null);
         setTimeout(() => setSaved(false), 2500);
       } catch (err) {
-        console.error(err);
+        console.error('Photo upload error:', err);
         alert('Upload failed. Please try again.');
       } finally {
         setSaving(false);
