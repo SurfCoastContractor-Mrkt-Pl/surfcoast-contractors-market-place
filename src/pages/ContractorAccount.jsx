@@ -406,6 +406,14 @@ export default function ContractorAccount() {
                  <CaseStudiesBuilder contractorId={contractor?.id} />
                </TabsContent>
 
+               <TabsContent value="crm">
+                 <ClientRelationshipManager contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="proposals">
+                 <ProposalTemplateManager contractorId={contractor?.id} />
+               </TabsContent>
+
                <TabsContent value="live-sessions">
                  <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
