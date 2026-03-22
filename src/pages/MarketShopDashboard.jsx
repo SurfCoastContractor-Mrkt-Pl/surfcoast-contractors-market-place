@@ -140,7 +140,7 @@ export default function MarketShopDashboard() {
                    </span>
                  )}
                </div>
-               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize self-end ${STATUS_STYLES[status]}`}>
+               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize self-center ${STATUS_STYLES[status]}`}>
                  {status}
                </span>
              </div>
