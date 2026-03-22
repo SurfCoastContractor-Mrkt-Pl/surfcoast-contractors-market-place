@@ -196,6 +196,20 @@ export default function MarketShopDashboard() {
               </div>
             )
           )}
+          {activeTab === 'ratings' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 mb-4">Rate Your Market Locations</h3>
+                <p className="text-sm text-slate-600 mb-6">
+                  Help other vendors find quality locations by rating your swap meet and farmer market venues.
+                </p>
+                <LocationRatingForm
+                  location={{ location_name: shop.shop_name, city: shop.city, state: shop.state, location_type: shop.shop_type }}
+                  onSave={() => window.location.reload()}
+                />
+              </div>
+            </div>
+          )}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
         </div>
       </div>
