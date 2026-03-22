@@ -110,26 +110,7 @@ export default function SwapMeetRatings() {
           </p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex gap-2 mb-6">
-          {[
-            { value: 'all', label: 'All Locations' },
-            { value: 'swap_meet', label: 'Swap Meets' },
-            { value: 'farmers_market', label: 'Farmers Markets' },
-          ].map(tab => (
-            <button
-              key={tab.value}
-              onClick={() => setFilter(tab.value)}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                filter === tab.value
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-white text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+
 
         {/* Loading State */}
         {loading ? (
