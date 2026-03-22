@@ -36,6 +36,7 @@ import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import TrialBadge from '@/components/customer/TrialBadge';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
+import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -48,6 +49,7 @@ export default function CustomerAccount() {
    const [userEmail, setUserEmail] = useState(null);
    const [showWelcome, setShowWelcome] = useState(false);
    const [agentOpen, setAgentOpen] = useState(false);
+   const [activeSidebarChat, setActiveSidebarChat] = useState(null);
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -469,6 +471,17 @@ export default function CustomerAccount() {
                               </div>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
+                             {s.status === 'approved' && (
+                               <Button
+                                 size="sm"
+                                 variant="outline"
+                                 className="text-xs h-7 px-2.5 gap-1 border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                                 onClick={() => setActiveSidebarChat(s)}
+                                 title="Open persistent chat sidebar"
+                               >
+                                 💬 Sidebar Chat
+                               </Button>
+                             )}
                              <ScopeChatPanel
                                scope={s}
                                userEmail={userEmail}
@@ -545,5 +558,17 @@ export default function CustomerAccount() {
             <DeleteAccountSection userEmail={userEmail} onDelete={handleDeleteAll} />
           </div>
           </div>
-          );
+
+          {/* Persistent Chat Sidebar */}
+          {activeSidebarChat && (
+            <PersistentChatSidebar
+              scopeId={activeSidebarChat.id}
+              scopeTitle={activeSidebarChat.job_title}
+              userEmail={userEmail}
+              userName={customerProfile?.full_name}
+              userType="customer"
+              onClose={() => setActiveSidebarChat(null)}
+            />
+          )}
+          </>;
           }
