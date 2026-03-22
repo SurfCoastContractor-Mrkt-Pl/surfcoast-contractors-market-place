@@ -474,6 +474,17 @@ export default function ContractorAccount() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
+                            {s.status === 'approved' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-xs h-7 px-2.5 gap-1 border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                                onClick={() => setActiveSidebarChat(s)}
+                                title="Open persistent chat sidebar"
+                              >
+                                💬 Sidebar Chat
+                              </Button>
+                            )}
                             <ScopeChatPanel
                               scope={s}
                               userEmail={userEmail}
