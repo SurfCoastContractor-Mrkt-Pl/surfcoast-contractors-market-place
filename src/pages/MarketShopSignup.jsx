@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { ChevronLeft, X, Loader2, Leaf, Tag, CheckCircle } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 import MarketShopPaymentModelSelector from '@/components/marketshop/MarketShopPaymentModelSelector';
+import { useRequiredFieldValidation } from '@/hooks/useRequiredFieldValidation';
+import FormFieldWrapper from '@/components/forms/FormFieldWrapper';
 
 const CATEGORIES_FARMERS_MARKET = [
   'Produce', 'Meat/Poultry', 'Dairy', 'Baked Goods', 'Prepared Foods',
