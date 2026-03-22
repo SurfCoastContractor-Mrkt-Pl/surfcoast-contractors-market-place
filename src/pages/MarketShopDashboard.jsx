@@ -143,27 +143,9 @@ export default function MarketShopDashboard() {
             <div className="hidden sm:flex items-center flex-1">
               <MarketBoothMetrics shop={shop} />
             </div>
-            {/* Right: Logo + Upload Photo + Shop Name + Status + Location + Type all stacked */}
-            <div className="flex flex-col items-center gap-2">
-              {shop.logo_url && (
-                <img src={shop.logo_url} alt={shop.shop_name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border border-slate-200" />
-              )}
-              <button
-                type="button"
-                onClick={() => logoInputRef.current?.click()}
-                disabled={uploadingPhoto}
-                className={`cursor-pointer flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-full border transition-colors ${uploadingPhoto ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border-blue-200'}`}
-              >
-                {uploadingPhoto ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
-                <span>{uploadingPhoto ? 'Uploading...' : 'Upload Photo'}</span>
-              </button>
-              <input
-                ref={logoInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleLogoUpload}
-              />
+            {/* Right: Logo Widget + Shop Name + Status + Location + Type */}
+            <div className="flex flex-col items-center gap-3">
+              <LogoUploadWidget shop={shop} onUpdate={handleUpdate} />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-center">{shop.shop_name}</h1>
               <div className="flex flex-row flex-wrap items-center justify-center gap-2">
                 {(shop.city || shop.state) && (
