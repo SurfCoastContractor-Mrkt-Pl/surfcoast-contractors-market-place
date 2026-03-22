@@ -71,7 +71,7 @@ const AuthenticatedApp = () => {
       } />
       <Route path="/About" element={
         <LayoutWrapper currentPageName="About">
-          <Home />
+          <About />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
