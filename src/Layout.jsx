@@ -93,8 +93,8 @@ export default function Layout({ children, currentPageName }) {
           {/* Logo - Almost Flush Left */}
           <Link to="/" className="flex items-center relative flex-shrink-0">
             <div className="flex flex-col items-center">
-              <span className="font-serif font-bold text-base sunset-gradient-text">SurfCoast</span>
-              <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
+              <span className="font-serif font-bold text-base text-white">SurfCoast</span>
+              <span className="text-xs font-semibold uppercase text-white marketplace-spacing">MARKETPLACE</span>
             </div>
           </Link>
 
@@ -289,8 +289,8 @@ export default function Layout({ children, currentPageName }) {
               <div className="flex items-center gap-2 mb-1">
                 <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/e463c3ecd_SGN_05_15_2022_1652641626318_Original.jpeg" alt="SurfCoast" className="w-8 h-8 flex-shrink-0" />
                 <div className="text-center">
-                  <span className="font-serif font-bold text-lg sunset-gradient-text">SurfCoast</span><br/>
-                  <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
+                  <span className="font-serif font-bold text-lg text-white">SurfCoast</span><br/>
+                  <span className="text-xs font-semibold uppercase text-white marketplace-spacing">MARKETPLACE</span>
                 </div>
               </div>
               <p className="text-slate-300 max-w-sm text-xs">
