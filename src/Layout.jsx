@@ -42,6 +42,7 @@ export default function Layout({ children, currentPageName }) {
   const [agentOpen, setAgentOpen] = useState(false);
   const [isContractor, setIsContractor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasMarketShop, setHasMarketShop] = useState(false);
   const isBackNav = useRef(false);
   const { isConsumerMode } = useConsumerMode();
 
