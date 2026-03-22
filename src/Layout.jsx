@@ -321,10 +321,17 @@ export default function Layout({ children, currentPageName }) {
                   <li className="text-xs"><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
                   <li className="text-xs"><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
                   <li className="text-xs"><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col items-center justify-start">
+                  </ul>
+                  </div>
+                  )}
+                  <div>
+                  <h4 className="font-semibold mb-3">Markets & Vendors</h4>
+                  <ul className="space-y-1 text-slate-400">
+                  <li className="text-xs"><Link to={createPageUrl('MarketDirectory')} className="hover:text-white">Market Directory</Link></li>
+                  <li className="text-xs"><Link to={createPageUrl('SwapMeetRatings')} className="hover:text-white">Location Ratings</Link></li>
+                  </ul>
+                  </div>
+                  <div className="flex flex-col items-center justify-start">
               <h4 className="font-semibold mb-3 text-sm text-center">Connect</h4>
               <div className="flex items-center gap-4 sm:gap-3">
                 <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors">
