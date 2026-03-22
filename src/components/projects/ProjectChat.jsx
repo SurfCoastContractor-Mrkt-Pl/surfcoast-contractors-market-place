@@ -14,14 +14,34 @@ export default function ProjectChat({ scopeId, userEmail, userName, userType }) 
   const queryClient = useQueryClient();
   const messagesEndRef = useRef(null);
 
-  const { data: messagesRaw } = useQuery({
-    queryKey: ['project-messages', scopeId],
-    queryFn: () => base44.entities.ProjectMessage.filter({ scope_id: scopeId }, 'created_date'),
-    enabled: !!scopeId,
-    refetchInterval: 10000,
-  });
+  const [messages, setMessages] = useState([]);
+  const [subscribed, setSubscribed] = useState(false);
 
-  const messages = messagesRaw;
+  // Fetch initial messages
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (!scopeId) return;
+      const msgs = await base44.entities.ProjectMessage.filter({ scope_id: scopeId }, 'created_date');
+      setMessages(msgs || []);
+      setSubscribed(true);
+      
+      // Subscribe to real-time updates
+      const unsubscribe = base44.entities.ProjectMessage.subscribe((event) => {
+        if (event.type === 'create' && event.data?.scope_id === scopeId) {
+          setMessages((prev) => [...prev, event.data]);
+        } else if (event.type === 'delete' && event.data?.scope_id === scopeId) {
+          setMessages((prev) => prev.filter(m => m.id !== event.id));
+        }
+      });
+      
+      return unsubscribe;
+    };
+    
+    const unsubPromise = loadMessages();
+    return () => {
+      unsubPromise.then(fn => fn?.());
+    };
+  }, [scopeId]);
 
   const sendMutation = useMutation({
     mutationFn: (messageData) => base44.entities.ProjectMessage.create(messageData),
