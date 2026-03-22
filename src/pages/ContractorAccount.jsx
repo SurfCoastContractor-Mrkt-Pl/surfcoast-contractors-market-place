@@ -49,6 +49,7 @@ import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilit
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
+import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -67,6 +68,7 @@ export default function ContractorAccount() {
      try { return JSON.parse(localStorage.getItem('downloadedInvoices') || '[]'); } catch { return []; }
    });
    const [downloadingId, setDownloadingId] = useState(null);
+   const [activeSidebarChat, setActiveSidebarChat] = useState(null);
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -681,5 +683,17 @@ export default function ContractorAccount() {
           )}
           </div>
           </div>
-          );
+
+          {/* Persistent Chat Sidebar */}
+          {activeSidebarChat && (
+            <PersistentChatSidebar
+              scopeId={activeSidebarChat.id}
+              scopeTitle={activeSidebarChat.job_title}
+              userEmail={userEmail}
+              userName={contractor?.name}
+              userType="contractor"
+              onClose={() => setActiveSidebarChat(null)}
+            />
+          )}
+          </>;
           }
