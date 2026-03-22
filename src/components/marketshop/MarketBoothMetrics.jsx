@@ -26,12 +26,18 @@ export default function MarketBoothMetrics({ shop }) {
         const avgRating = shop?.average_rating || 0;
         const reviewCount = shop?.total_ratings || 0;
         const totalInquiries = inquiries?.length || 0;
+        const categoriesCount = shop?.categories?.length || 0;
+        const subscriptionStatus = shop?.subscription_status || 'inactive';
+        const verifiedVendor = shop?.verified_vendor || false;
 
         setMetrics({
           marketAppearances,
           totalInquiries,
           avgRating,
           reviewCount,
+          categoriesCount,
+          subscriptionStatus,
+          verifiedVendor,
           loading: false,
         });
       } catch (err) {
