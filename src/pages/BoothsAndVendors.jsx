@@ -279,21 +279,22 @@ export default function BoothsAndVendors() {
           </div>
       </div>
 
-      {/* Vendor Grid */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {filteredShops.length === 0 ? (
-          <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-            <Store className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-600 font-medium">No vendors match your filters</p>
-            <p className="text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredShops.map(shop => (
-              <VendorCard key={shop.id} shop={shop} />
-            ))}
-          </div>
-        )}
+        {/* Vendor Grid */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {filteredShops.length === 0 ? (
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-12 text-center">
+              <Store className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+              <p className="text-slate-600 font-medium">No vendors match your filters</p>
+              <p className="text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredShops.map(shop => (
+                <VendorCard key={shop.id} shop={shop} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
