@@ -105,10 +105,10 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Navigation */}
       <>
-        <nav className="z-50 bg-transparent">
+        <nav className="z-50 bg-white border-b border-slate-200">
 
           {/* Main nav bar */}
-          <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-4">
+          <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4">
 
             {/* Desktop Nav - Left (next to logo) */}
             {currentPageName !== 'Home' && (
