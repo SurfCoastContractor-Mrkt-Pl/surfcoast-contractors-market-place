@@ -40,6 +40,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Rate limiting: max 5 checkout attempts per hour per user
+    const rateLimitEntries = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: user.email,
+      limit_type: 'payment_checkout'
+    });
+    
+    if (rateLimitEntries?.length > 0) {
+      const tracker = rateLimitEntries[0];
+      const windowAge = Date.now() - new Date(tracker.created_date).getTime();
+      if (windowAge < 3600000 && tracker.request_count >= 5) {
+        return Response.json({ error: 'Too many payment attempts. Please try again later.' }, { status: 429 });
+      }
+      if (windowAge < 3600000) {
+        await base44.asServiceRole.entities.RateLimitTracker.update(tracker.id, {
+          request_count: tracker.request_count + 1
+        });
+      }
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: user.email,
+        limit_type: 'payment_checkout',
+        request_count: 1,
+        window_start: new Date().toISOString(),
+        window_duration_seconds: 3600
+      });
+    }
+
     // PCI Compliance: Never accept raw card data
     if (body.card || body.cardNumber || body.cvv) {
       return Response.json({ error: 'Card data not allowed' }, { status: 400 });
