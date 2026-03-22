@@ -38,7 +38,6 @@ export default function BoothsAndVendorsMap() {
     location: '',
     category: 'all',
     minRating: 0,
-    trades: [],
     availability: []
   });
 
@@ -78,15 +77,6 @@ export default function BoothsAndVendorsMap() {
 
     if (filters.minRating > 0) {
       if ((vendor.average_rating || 0) < filters.minRating) return false;
-    }
-
-    if (filters.trades && filters.trades.length > 0) {
-      // For vendors, check if any category matches trade-related keywords
-      const hasTrade = filters.trades.some(trade => {
-        const tradeKeywords = trade.toLowerCase();
-        return vendor.categories?.some(cat => cat.toLowerCase().includes(tradeKeywords));
-      });
-      if (!hasTrade) return false;
     }
 
     if (filters.availability && filters.availability.length > 0) {
