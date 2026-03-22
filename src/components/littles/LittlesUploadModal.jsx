@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useMutation } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, X, Sparkles } from 'lucide-react';
+import { Upload, X, Sparkles, Lock } from 'lucide-react';
 
-export default function LittlesUploadModal({ userEmail, userType }) {
+export default function LittlesUploadModal({ userEmail: initialUserEmail, userType: initialUserType }) {
   const [open, setOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState(initialUserEmail);
+  const [userType, setUserType] = useState(initialUserType);
   const [formData, setFormData] = useState({
     child_name: '',
     child_age: '',
@@ -18,6 +21,30 @@ export default function LittlesUploadModal({ userEmail, userType }) {
   const [photoUrls, setPhotoUrls] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [previewUrls, setPreviewUrls] = useState([]);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (user) {
+          setIsAuthenticated(true);
+          setUserEmail(user.email);
+          // Try to detect user type from profile
+          const isContractor = await base44.entities.Contractor.filter({ email: user.email });
+          const isCustomer = await base44.entities.CustomerProfile.filter({ email: user.email });
+          if (isContractor && isContractor.length > 0) {
+            setUserType('contractor');
+          } else if (isCustomer && isCustomer.length > 0) {
+            setUserType('customer');
+          }
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const createShowcaseMutation = useMutation({
     mutationFn: async (data) => {
@@ -97,6 +124,20 @@ export default function LittlesUploadModal({ userEmail, userType }) {
   };
 
   const isLoading = createShowcaseMutation.isPending;
+
+  if (!isAuthenticated) {
+    return (
+      <Button
+        disabled
+        variant="default"
+        className="gap-2 bg-gray-400 text-white cursor-not-allowed"
+        title="Login required to share a Little"
+      >
+        <Lock className="w-4 h-4" />
+        Littles Showcase
+      </Button>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
