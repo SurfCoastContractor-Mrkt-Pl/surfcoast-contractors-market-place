@@ -91,7 +91,7 @@ export default function Layout({ children, currentPageName }) {
       <nav className="z-50 bg-white backdrop-blur-sm border-b border-slate-200/50 sticky top-0">
         <div className="flex items-center justify-between h-12 sm:h-14 px-4 sm:px-6 lg:px-8">
           {/* Logo - Almost Flush Left */}
-          <Link to="/" className="flex items-center relative flex-shrink-0 pl-1">
+          <Link to="/" className="flex items-center relative flex-shrink-0">
             <div className="flex flex-col items-center">
               <span className="font-serif font-bold text-base sunset-gradient-text">SurfCoast</span>
               <span className="text-xs font-semibold uppercase sunset-gradient-text marketplace-spacing">MARKETPLACE</span>
