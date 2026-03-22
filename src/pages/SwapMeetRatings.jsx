@@ -12,9 +12,12 @@ export default function SwapMeetRatings() {
       try {
         const allRatings = await base44.entities.SwapMeetLocationRating.list('', 1000);
         
+        // Filter for swap meets only
+        const swapMeetRatings = allRatings.filter(r => r.location_type === 'swap_meet');
+        
         // Group by location and calculate averages
         const locationMap = {};
-        allRatings.forEach(rating => {
+        swapMeetRatings.forEach(rating => {
           const key = rating.location_name;
           if (!locationMap[key]) {
             locationMap[key] = {
