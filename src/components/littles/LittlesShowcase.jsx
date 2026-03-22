@@ -235,6 +235,7 @@ const styles = `
 
 export default function LittlesShowcase() {
   const [userEmail, setUserEmail] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState('recent');
 
   // Littles showcase component
   useEffect(() => {
@@ -261,6 +262,24 @@ export default function LittlesShowcase() {
       );
       return result || [];
     }
+  });
+
+  const filterCategories = [
+    { id: 'recent', label: 'Recent' },
+    { id: 'favorites', label: 'Most Liked' },
+    { id: 'featured', label: 'Featured' }
+  ];
+
+  const filteredShowcases = showcases.filter(showcase => {
+    if (selectedFilter === 'recent') return true;
+    if (selectedFilter === 'favorites') return true;
+    if (selectedFilter === 'featured') return showcase.is_featured;
+    return true;
+  }).sort((a, b) => {
+    if (selectedFilter === 'favorites') {
+      return (b.likes_count || 0) - (a.likes_count || 0);
+    }
+    return 0;
   });
 
   if (isLoading) {
