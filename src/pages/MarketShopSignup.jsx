@@ -14,7 +14,7 @@ const CATEGORIES_FARMERS_MARKET = [
 
 const CATEGORIES_SWAP_MEET = [
   'Electronics', 'Tools', 'Sports Equipment', 'Books & Media', 'Home Decor',
-  'Clothing & Accessories', 'Collectibles', 'Handmade Crafts', 'Vintage & Antiques', 'Jewelry', 'Other'
+  'Clothing & Accessories', 'Collectibles', 'Handmade Crafts', 'Vintage & Antiques', 'Jewelry', 'Misc', 'Other'
 ];
 
 const THEME_CONFIG = {
