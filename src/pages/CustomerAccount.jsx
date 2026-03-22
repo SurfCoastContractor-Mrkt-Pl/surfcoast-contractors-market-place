@@ -294,6 +294,15 @@ export default function CustomerAccount() {
                       </div>
                       <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
                       <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
+
+                      {/* Littles Showcase Button */}
+                      <Card className="p-6 border border-white/20 bg-white/92 backdrop-blur-md rounded-2xl">
+                        <h2 className="text-lg font-semibold text-slate-900 mb-4">Share Your Family's Creativity</h2>
+                        <p className="text-sm text-slate-600 mb-4">
+                          Showcase your child's creative work, art, innovations, and crafts. Help them build confidence and celebrate their achievements in our community!
+                        </p>
+                        <LittlesUploadModal userEmail={userEmail} userType="customer" />
+                      </Card>
                     </div>
                   )}
                 </div>
