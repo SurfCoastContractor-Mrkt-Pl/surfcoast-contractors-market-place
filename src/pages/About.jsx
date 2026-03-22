@@ -73,19 +73,35 @@ export default function About() {
 
               <div className="space-y-4 text-slate-700">
                 <p>
-                  Hector's path wasn't easy, and that's exactly the point. Born and raised in San Diego, California, his early years were marked by struggle—rough times in school led to homelessness for 11 years. But instead of accepting that narrative, he fought back. He earned his High School diploma, went to trade school for Computer Systems, and has spent over a decade mastering the plumbing trade.
+                  Hector A. Navarrete isn't your typical platform builder—and that's exactly the point.
                 </p>
 
                 <p>
-                  Today, he's a Purple Belt in Gracie Jiu-Jitsu under Professor Omar in Hemet, CA—a discipline that shaped his philosophy: show up, put in the work, never quit. He's an avid reader, a self-described conspiracy theory enthusiast (yes, he wears his tinfoil hat when watching The Why Files), and a devoted husband and father.
+                  Born and raised in San Diego, his early years were anything but easy. School didn't come naturally, and life threw its share of hard lessons. At one point, he faced over a decade of homelessness. But quitting was never part of the plan. Through persistence and grit, he fought his way back and earned his high school diploma—proving early on that resilience beats circumstance.
                 </p>
 
                 <p>
-                  But here's what really drives him: he sees your fight. Whether you're just starting out or scaling something real, Hector understands that the real metric of success isn't credentials or connections—it's the heart you bring to the table. That's what this platform is built on.
+                  From there, Hector took a hands-on path. He studied Computer Systems, stepped into the trades, and built a career in plumbing that now spans over a decade. Today, as the owner of SurfCoast Plumbing, he understands firsthand what it means to work hard, build trust, and earn every opportunity.
+                </p>
+
+                <p>
+                  But this platform wasn't built from theory—it was built from experience.
+                </p>
+
+                <p>
+                  As a husband and father, Hector is driven by something bigger than business. He believes in creating opportunities not just for himself, but for others willing to put in the work. SurfCoast Contractor Marketplace is an extension of that belief—a place where everyday people can build skills, create income, and take ownership of their future.
+                </p>
+
+                <p>
+                  Outside of work, Hector is a lifelong learner, an avid reader, and someone who's always asking questions (sometimes the kind that come with a "tin foil hat" and a late-night episode of The Why Files). He's a dedicated martial artist, holding a purple belt in Gracie Jiu-Jitsu under Professor Omar in Hemet, with additional training in Taekwondo and Krav Maga—disciplines that reflect his mindset: stay sharp, stay humble, and keep showing up.
+                </p>
+
+                <p>
+                  This platform is built on those same principles—resilience, growth, and respect for the grind.
                 </p>
 
                 <p className="text-base italic text-slate-600 pt-2">
-                  "In the end, what matters most is your fight."
+                  "If you're here, you're in the right place."
                 </p>
               </div>
 
