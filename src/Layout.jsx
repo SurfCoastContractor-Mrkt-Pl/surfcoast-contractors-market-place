@@ -89,7 +89,7 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Navigation - Unified Header */}
       <nav className="z-50 bg-transparent sticky top-0">
-        <div className="flex items-center justify-between h-12 sm:h-14 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-10 px-4 sm:px-6 lg:px-8">
           {/* Logo - Almost Flush Left */}
           <Link to="/" className="flex items-center relative flex-shrink-0">
           </Link>
