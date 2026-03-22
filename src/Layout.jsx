@@ -137,7 +137,7 @@ export default function Layout({ children, currentPageName }) {
                   Login
                 </button>
               )}
-              {(currentPageName !== 'Home' || isLoggedIn) && (
+              {isLoggedIn && (
                 <div className="relative" ref={accountMenuRef}>
                   <Button 
                     variant="ghost" 
