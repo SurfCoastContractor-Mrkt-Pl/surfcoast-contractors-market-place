@@ -394,108 +394,139 @@ export default function MarketShopSignup() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Shop Name */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-900 mb-2">Shop/Booth Name *</label>
+            <FormFieldWrapper
+              label="Shop/Booth Name"
+              required={true}
+              isInvalid={isFieldInvalid('shop_name')}
+            >
               <Input
                 type="text"
                 name="shop_name"
                 value={formData.shop_name}
                 onChange={handleFormChange}
+                onBlur={() => markFieldTouched('shop_name')}
                 placeholder="e.g., Green Valley Organics"
-                required
+                className={isFieldInvalid('shop_name') ? 'border-red-500' : ''}
               />
-            </div>
+            </FormFieldWrapper>
 
             {/* Owner Name */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-900 mb-2">Your Name *</label>
+            <FormFieldWrapper
+              label="Your Name"
+              required={true}
+              isInvalid={isFieldInvalid('owner_name')}
+            >
               <Input
                 type="text"
                 name="owner_name"
                 value={formData.owner_name}
                 onChange={handleFormChange}
+                onBlur={() => markFieldTouched('owner_name')}
                 placeholder="Your full name"
-                required
+                className={isFieldInvalid('owner_name') ? 'border-red-500' : ''}
               />
-            </div>
+            </FormFieldWrapper>
 
             {/* Email */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-900 mb-2">Email *</label>
+            <FormFieldWrapper
+              label="Email"
+              required={true}
+              isInvalid={isFieldInvalid('email')}
+            >
               <Input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleFormChange}
+                onBlur={() => markFieldTouched('email')}
                 placeholder="your@email.com"
-                required
+                className={isFieldInvalid('email') ? 'border-red-500' : ''}
               />
-            </div>
+            </FormFieldWrapper>
 
             {/* Phone */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-900 mb-2">Phone *</label>
+            <FormFieldWrapper
+              label="Phone"
+              required={true}
+              isInvalid={isFieldInvalid('phone')}
+            >
               <Input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleFormChange}
+                onBlur={() => markFieldTouched('phone')}
                 placeholder="(555) 123-4567"
-                required
+                className={isFieldInvalid('phone') ? 'border-red-500' : ''}
               />
-            </div>
+            </FormFieldWrapper>
 
             {/* Location */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">City *</label>
+              <FormFieldWrapper
+                label="City"
+                required={true}
+                isInvalid={isFieldInvalid('city')}
+              >
                 <Input
                   type="text"
                   name="city"
                   value={formData.city}
                   onChange={handleFormChange}
+                  onBlur={() => markFieldTouched('city')}
                   placeholder="City"
-                  required
+                  className={isFieldInvalid('city') ? 'border-red-500' : ''}
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">State *</label>
+              </FormFieldWrapper>
+              <FormFieldWrapper
+                label="State"
+                required={true}
+                isInvalid={isFieldInvalid('state')}
+              >
                 <Input
                   type="text"
                   name="state"
                   value={formData.state}
                   onChange={handleFormChange}
+                  onBlur={() => markFieldTouched('state')}
                   placeholder="CA"
                   maxLength="2"
-                  required
+                  className={isFieldInvalid('state') ? 'border-red-500' : ''}
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">ZIP *</label>
+              </FormFieldWrapper>
+              <FormFieldWrapper
+                label="ZIP"
+                required={true}
+                isInvalid={isFieldInvalid('zip')}
+              >
                 <Input
                   type="text"
                   name="zip"
                   value={formData.zip}
                   onChange={handleFormChange}
+                  onBlur={() => markFieldTouched('zip')}
                   placeholder="90210"
-                  required
+                  className={isFieldInvalid('zip') ? 'border-red-500' : ''}
                 />
-              </div>
+              </FormFieldWrapper>
             </div>
 
             {/* Description */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-900 mb-2">Description *</label>
+            <FormFieldWrapper
+              label="Description"
+              required={true}
+              isInvalid={isFieldInvalid('description')}
+            >
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleFormChange}
+                onBlur={() => markFieldTouched('description')}
                 placeholder="Tell shoppers what you sell and what makes your booth unique"
-                required
                 rows="4"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-offset-0 focus:border-transparent outline-none"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-offset-0 focus:border-transparent outline-none ${isFieldInvalid('description') ? 'border-red-500' : 'border-slate-300'}`}
               />
-            </div>
+            </FormFieldWrapper>
 
             {/* Categories */}
             <div>
