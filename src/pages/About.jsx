@@ -48,6 +48,55 @@ export default function About() {
             We're here for the builders, the learners, and the ones who refuse to sit still.
           </p>
         </div>
+
+        {/* Founder Section */}
+        <div className="mt-16 pt-16 border-t border-slate-200">
+          <h2 className="text-3xl font-bold text-slate-900 mb-12">Meet the Founder</h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <img 
+                src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/93f3cfcd7_IMG_3860.jpg" 
+                alt="Hector A. Navarrete" 
+                className="rounded-lg shadow-lg w-full"
+              />
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Hector A. Navarrete</h3>
+                <p className="text-slate-600 font-semibold mb-4">
+                  Owner: SurfCoast Plumbing<br />
+                  Developer/Admin: SurfCoast Contractor Market Place
+                </p>
+              </div>
+
+              <div className="space-y-4 text-slate-700">
+                <p>
+                  Hector's path wasn't easy, and that's exactly the point. Born and raised in San Diego, California, his early years were marked by struggle—rough times in school led to homelessness for 11 years. But instead of accepting that narrative, he fought back. He earned his High School diploma, went to trade school for Computer Systems, and has spent over a decade mastering the plumbing trade.
+                </p>
+
+                <p>
+                  Today, he's a Purple Belt in Gracie Jiu-Jitsu under Professor Omar in Hemet, CA—a discipline that shaped his philosophy: show up, put in the work, never quit. He's an avid reader, a self-described conspiracy theory enthusiast (yes, he wears his tinfoil hat when watching The Why Files), and a devoted husband and father.
+                </p>
+
+                <p>
+                  But here's what really drives him: he sees your fight. Whether you're just starting out or scaling something real, Hector understands that the real metric of success isn't credentials or connections—it's the heart you bring to the table. That's what this platform is built on.
+                </p>
+
+                <p className="text-base italic text-slate-600 pt-2">
+                  "In the end, what matters most is your fight."
+                </p>
+              </div>
+
+              <div className="pt-4">
+                <p className="text-sm text-slate-500 font-semibold">
+                  Facebook Group: Entrepreneur Local / SurfCoast Market
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
