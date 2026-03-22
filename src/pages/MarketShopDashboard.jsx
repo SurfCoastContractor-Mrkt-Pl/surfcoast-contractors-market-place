@@ -126,8 +126,8 @@ export default function MarketShopDashboard() {
                    handleUpdate({ logo_url: file_url });
                  }} />
                </label>
-               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-center">{shop.shop_name}</h1>
-               <div className="flex flex-row flex-wrap items-center justify-center gap-2">
+               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-right">{shop.shop_name}</h1>
+               <div className="flex flex-row flex-wrap items-center justify-end gap-2">
                  {(shop.city || shop.state) && (
                    <span className="text-sm text-slate-500">
                      {[shop.city, shop.state].filter(Boolean).map((s, i) => i === 0 ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s.toUpperCase()).join(', ')}
