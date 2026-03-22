@@ -92,6 +92,16 @@ export default function BoothsAndVendorsMap() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex">
+      {/* Booking Modal */}
+      <BookingRequestForm
+        market={bookingVendor}
+        isOpen={bookingOpen}
+        onClose={() => {
+          setBookingOpen(false);
+          setBookingVendor(null);
+        }}
+      />
+
       {/* Overlay for mobile filter panel */}
       {filterPanelOpen && (
         <div
