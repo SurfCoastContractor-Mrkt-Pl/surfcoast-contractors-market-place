@@ -16,6 +16,12 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Validate internal service key — only internal payment processes may call this
+    const internalKey = req.headers.get('x-internal-key');
+    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
     const { cartItems, orderId } = await req.json();
 
