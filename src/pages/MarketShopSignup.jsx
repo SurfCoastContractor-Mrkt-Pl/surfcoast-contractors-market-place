@@ -183,6 +183,10 @@ export default function MarketShopSignup() {
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
+    // Mark field as touched when user changes it
+    if (requiredFields.includes(name)) {
+      markFieldTouched(name);
+    }
   };
 
   const handleLinkAccount = async () => {
