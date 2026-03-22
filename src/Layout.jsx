@@ -11,6 +11,7 @@ import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import useGeoCheck from './components/security/useGeoCheck';
 import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import ShoppingCart from '@/components/consumer/ShoppingCart';
+import { ShoppingBag } from 'lucide-react';
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [
