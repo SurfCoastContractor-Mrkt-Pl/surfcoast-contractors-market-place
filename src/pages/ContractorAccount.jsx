@@ -428,6 +428,22 @@ export default function ContractorAccount() {
                  <PerformanceAnalyticsDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
                </TabsContent>
 
+               <TabsContent value="scheduling">
+                 <AdvancedSchedulingManager contractorId={contractor?.id} />
+               </TabsContent>
+
+               <TabsContent value="bonuses">
+                 <BonusesAndTierUnlocks contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="automation">
+                 <AutomationAndSmartTools contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="team">
+                 <TeamManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
                <TabsContent value="live-sessions">
                  <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
