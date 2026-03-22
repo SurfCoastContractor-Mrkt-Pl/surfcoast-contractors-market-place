@@ -65,6 +65,8 @@ import ServicePackagesManager from '@/components/contractor/ServicePackagesManag
 import CustomerTestimonialsManager from '@/components/contractor/CustomerTestimonialsManager';
 import DocumentManagementHub from '@/components/contractor/DocumentManagementHub';
 import CaseStudiesBuilder from '@/components/contractor/CaseStudiesBuilder';
+import ClientRelationshipManager from '@/components/contractor/ClientRelationshipManager';
+import ProposalTemplateManager from '@/components/contractor/ProposalTemplateManager';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
