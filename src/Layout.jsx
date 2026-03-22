@@ -207,20 +207,21 @@ export default function Layout({ children, currentPageName }) {
                  </button>
                </div>
              )}
+             </div>
 
-             {/* Mobile Menu Button */}
-                 <button
-                   className="lg:hidden p-2 flex-shrink-0 ml-auto"
-                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                 >
-                   {mobileMenuOpen ? (
-                     <X className="w-6 h-6 text-slate-900" />
-                   ) : (
-                     <Menu className="w-6 h-6 text-slate-900" />
-                   )}
-                 </button>
-               </div>
-             </nav>
+           {/* Mobile Menu Button */}
+           <button
+             className="lg:hidden p-2 flex-shrink-0 ml-auto"
+             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+           >
+             {mobileMenuOpen ? (
+               <X className="w-6 h-6 text-slate-900" />
+             ) : (
+               <Menu className="w-6 h-6 text-slate-900" />
+             )}
+           </button>
+         </div>
+       </nav>
       {/* end main nav bar div */}
 
       {/* Mobile Menu */}
