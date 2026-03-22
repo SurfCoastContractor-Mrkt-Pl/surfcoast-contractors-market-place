@@ -68,6 +68,10 @@ import CaseStudiesBuilder from '@/components/contractor/CaseStudiesBuilder';
 import ClientRelationshipManager from '@/components/contractor/ClientRelationshipManager';
 import ProposalTemplateManager from '@/components/contractor/ProposalTemplateManager';
 import PerformanceAnalyticsDashboard from '@/components/contractor/PerformanceAnalyticsDashboard';
+import AdvancedSchedulingManager from '@/components/contractor/AdvancedSchedulingManager';
+import BonusesAndTierUnlocks from '@/components/contractor/BonusesAndTierUnlocks';
+import AutomationAndSmartTools from '@/components/contractor/AutomationAndSmartTools';
+import TeamManagementHub from '@/components/contractor/TeamManagementHub';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
