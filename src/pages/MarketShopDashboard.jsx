@@ -71,8 +71,25 @@ export default function MarketShopDashboard() {
 
   const handleUpdate = async (data) => {
     if (!shop?.id) return;
-    const updated = await base44.entities.MarketShop.update(shop.id, data);
+    await base44.entities.MarketShop.update(shop.id, data);
     setShop(prev => ({ ...prev, ...data }));
+  };
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await base44.entities.MarketShop.update(shop.id, { logo_url: file_url });
+      setShop(prev => ({ ...prev, logo_url: file_url }));
+    } catch (err) {
+      console.error('Logo upload error:', err);
+      alert('Error uploading photo');
+    } finally {
+      setUploadingPhoto(false);
+      if (logoInputRef.current) logoInputRef.current.value = '';
+    }
   };
 
   if (loading) {
