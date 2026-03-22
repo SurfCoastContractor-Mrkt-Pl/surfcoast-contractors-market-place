@@ -2,7 +2,20 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
+    // Validate internal service key OR authenticated admin session
+    const internalKey = req.headers.get('x-internal-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+
     const base44 = createClientFromRequest(req);
+
+    if (internalKey !== expectedKey) {
+      // Fall back to checking authenticated admin user
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     const { contractorId, contractorEmail } = await req.json();
 
     if (!contractorId || !contractorEmail) {
