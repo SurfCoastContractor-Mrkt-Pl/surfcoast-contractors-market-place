@@ -165,57 +165,125 @@ export default function BoothsAndVendors() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-3">
-              Booths & Vendors
-            </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Discover amazing local vendors at farmers markets and swap meets. Choose how you'd like to browse.
-            </p>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
+            Booths & Vendors
+          </h1>
+          <p className="text-slate-600">
+            Browse {filteredShops.length} {filteredShops.length === 1 ? 'vendor' : 'vendors'} across farmers markets and swap meets
+          </p>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="space-y-4">
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search vendors by name or description..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+            />
+          </div>
+
+          {/* Filters Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {/* Market Type */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-2">Market Type</label>
+              <select
+                value={filters.marketType}
+                onChange={(e) => setFilters({...filters, marketType: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              >
+                <option value="all">All Markets</option>
+                <option value="farmers_market">Farmers Markets</option>
+                <option value="swap_meet">Swap Meets</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-2">Location</label>
+              <select
+                value={filters.location}
+                onChange={(e) => setFilters({...filters, location: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              >
+                <option value="all">All Locations</option>
+                {locations.map(loc => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-2">Category</label>
+              <select
+                value={filters.category}
+                onChange={(e) => setFilters({...filters, category: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              >
+                <option value="all">All Categories</option>
+                {allCategories.map(cat => (
+                  <option key={cat} value={cat}>{cat.replace(/_/g, ' ')}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Subscription Status */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-2">Status</label>
+              <select
+                value={filters.subscriptionStatus}
+                onChange={(e) => setFilters({...filters, subscriptionStatus: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              >
+                <option value="all">All Vendors</option>
+                <option value="active">Active Subscription</option>
+                <option value="inactive">Limited Listing</option>
+              </select>
+            </div>
+
+            {/* Min Rating */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-2">Min Rating</label>
+              <select
+                value={filters.minRating}
+                onChange={(e) => setFilters({...filters, minRating: parseFloat(e.target.value)})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              >
+                <option value="0">All Ratings</option>
+                <option value="3">3+ Stars</option>
+                <option value="4">4+ Stars</option>
+                <option value="4.5">4.5+ Stars</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="space-y-12">
-          {/* Farmers Markets Section */}
-          <SectionCard
-            icon={Store}
-            title="🌾 Farmers Markets"
-            options={farmersMarketOptions}
-          />
-
-          {/* Swap Meets Section */}
-          <SectionCard
-            icon={Warehouse}
-            title="♻️ Swap Meets"
-            options={swapMeetOptions}
-          />
-        </div>
-
-        {/* Info Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-            <h3 className="font-semibold text-blue-900 mb-2">💡 Market Locations</h3>
-            <p className="text-sm text-blue-700">
-              View aggregated vendor ratings and details about specific markets and venues.
-            </p>
+      {/* Vendor Grid */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {filteredShops.length === 0 ? (
+          <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
+            <Store className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-600 font-medium">No vendors match your filters</p>
+            <p className="text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
           </div>
-          <div className="bg-amber-50 rounded-xl p-6 border border-amber-200">
-            <h3 className="font-semibold text-amber-900 mb-2">🏪 Shop/Booth Browsing</h3>
-            <p className="text-sm text-amber-700">
-              Discover individual vendors and shops with their unique products and offerings.
-            </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredShops.map(shop => (
+              <VendorCard key={shop.id} shop={shop} />
+            ))}
           </div>
-          <div className="bg-green-50 rounded-xl p-6 border border-green-200">
-            <h3 className="font-semibold text-green-900 mb-2">⭐ Ratings & Reviews</h3>
-            <p className="text-sm text-green-700">
-              See real vendor feedback and market ratings to make informed choices.
-            </p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
