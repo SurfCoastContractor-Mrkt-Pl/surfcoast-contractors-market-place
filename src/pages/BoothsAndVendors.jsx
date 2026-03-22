@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, MapPin, Grid3x3, Warehouse } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { Store, MapPin, Grid3x3, Warehouse, Star, Search, Filter, Loader2 } from 'lucide-react';
 
 const BrowseOption = ({ icon: Icon, title, description, onClick }) => (
   <button
