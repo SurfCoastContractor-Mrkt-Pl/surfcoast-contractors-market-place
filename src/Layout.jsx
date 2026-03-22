@@ -309,8 +309,6 @@ export default function Layout({ children, currentPageName }) {
                   </button>
                   </div>
                   </div>
-                  </div>
-                  </div>
                   )}
 
                   <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
