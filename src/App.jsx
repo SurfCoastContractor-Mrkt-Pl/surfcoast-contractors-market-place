@@ -23,6 +23,7 @@ import MarketShopSignup from './pages/MarketShopSignup';
 import MarketDirectory from './pages/MarketDirectory';
 import MarketShopProfile from './pages/MarketShopProfile';
 import MarketShopBillingManagement from './pages/MarketShopBillingManagement';
+import SwapMeetRatings from './pages/SwapMeetRatings';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import PricingGuide from './pages/PricingGuide';
