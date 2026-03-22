@@ -63,6 +63,8 @@ import AvailabilityScheduleManager from '@/components/contractor/AvailabilitySch
 import PortfolioGalleryManager from '@/components/contractor/PortfolioGalleryManager';
 import ServicePackagesManager from '@/components/contractor/ServicePackagesManager';
 import CustomerTestimonialsManager from '@/components/contractor/CustomerTestimonialsManager';
+import DocumentManagementHub from '@/components/contractor/DocumentManagementHub';
+import CaseStudiesBuilder from '@/components/contractor/CaseStudiesBuilder';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
