@@ -73,6 +73,9 @@ export default function MarketShopSignup() {
   const [createdShop, setCreatedShop] = useState(null);
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
 
+  const requiredFields = ['shop_name', 'owner_name', 'email', 'phone', 'city', 'state', 'zip', 'description'];
+  const { isFieldInvalid, markFieldTouched, touched } = useRequiredFieldValidation(formData, requiredFields);
+
   // MUST be before any conditional returns (Rules of Hooks)
   // Auto-populate from logged-in user on mount
   useEffect(() => {
