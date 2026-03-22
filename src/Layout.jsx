@@ -87,7 +87,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex flex-col">
 
-      {/* Navigation - Unified Header */}
+      {/* Navigation */}
       <nav className="z-50 bg-transparent sticky top-0">
         <div className="flex items-center justify-between h-10 px-4 sm:px-6 lg:px-8">
           {/* Desktop Nav - Left Group */}
