@@ -62,7 +62,22 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Fetch all unnotified jobs (created in last 24 hours)
+    // Verify admin or internal service role only
+    const internalKey = req.headers.get('x-internal-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isValidInternalCall = internalKey && internalKey === expectedKey;
+    
+    if (!isValidInternalCall) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        return Response.json(
+          { error: 'Forbidden: admin access required for job matching' },
+          { status: 403 }
+        );
+      }
+    }
+    
+    // Fetch all unnotified jobs (created in last 24 hours) with limit
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const jobs = await base44.asServiceRole.entities.Job.filter(
       { status: 'open' },
@@ -70,11 +85,11 @@ Deno.serve(async (req) => {
       100
     );
     
-    // Fetch all available contractors
+    // Fetch available contractors with limit (reduced from 500 to 200 for resource efficiency)
     const contractors = await base44.asServiceRole.entities.Contractor.filter(
       { available: true, identity_verified: true },
       '-rating',
-      500
+      200
     );
     
     // Fetch existing notifications to avoid duplicates
