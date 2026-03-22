@@ -6,22 +6,20 @@ export default function InstagramQRCode({ handle = 'surfcoastmkt_pl', size = 256
   const instagramUrl = `https://instagram.com/${handle}`;
 
   return (
-    <div className="flex flex-col items-center gap-4 p-8 bg-white rounded-2xl shadow-lg">
-      <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-6 rounded-xl">
-        <QRCode
-          value={instagramUrl}
-          size={size}
-          level="H"
-          includeMargin={true}
-          fgColor="#D97706"
-          bgColor="#FFFFFF"
-        />
-      </div>
+    <div className="flex flex-col items-center gap-2 border-2 border-amber-600 p-2 rounded-lg">
+      <QRCode
+        value={instagramUrl}
+        size={size}
+        level="H"
+        includeMargin={true}
+        fgColor="#D97706"
+        bgColor="#FFFFFF"
+      />
       
       {showHandle && (
-        <div className="flex items-center gap-2 text-amber-700">
-          <Instagram className="w-5 h-5" />
-          <span className="font-bold text-lg">@{handle}</span>
+        <div className="flex items-center gap-1 text-amber-700 text-xs">
+          <Instagram className="w-3 h-3" />
+          <span className="font-bold">@{handle}</span>
         </div>
       )}
     </div>
