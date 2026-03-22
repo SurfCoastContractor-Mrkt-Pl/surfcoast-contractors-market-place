@@ -55,6 +55,8 @@ import ReviewManagementPanel from '@/components/contractor/ReviewManagementPanel
 import ProjectMilestoneManager from '@/components/projects/ProjectMilestoneManager';
 import EarningsReportsDashboard from '@/components/contractor/EarningsReportsDashboard';
 import ChatArchiveDashboard from '@/components/contractor/ChatArchiveDashboard';
+import LicenseVerificationDashboard from '@/components/contractor/LicenseVerificationDashboard';
+import MarketingToolkit from '@/components/contractor/MarketingToolkit';
 
 export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -279,12 +281,14 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="profile">
-             <TabsList className="w-full grid-cols-14 overflow-x-auto">
+             <TabsList className="w-full grid-cols-16 overflow-x-auto">
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
                  <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
                  <TabsTrigger value="earnings" className="text-xs sm:text-sm whitespace-nowrap">Earnings</TabsTrigger>
                  <TabsTrigger value="chats" className="text-xs sm:text-sm whitespace-nowrap">Chats</TabsTrigger>
+                 <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
+                 <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
                    Live
                    {liveSessions?.length > 0 && (
@@ -340,6 +344,14 @@ export default function ContractorAccount() {
 
                <TabsContent value="chats">
                  <ChatArchiveDashboard contractorEmail={userEmail} />
+               </TabsContent>
+
+               <TabsContent value="license">
+                 <LicenseVerificationDashboard contractor={contractor} />
+               </TabsContent>
+
+               <TabsContent value="marketing">
+                 <MarketingToolkit contractor={contractor} />
                </TabsContent>
 
                <TabsContent value="live-sessions">
