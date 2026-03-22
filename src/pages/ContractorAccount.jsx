@@ -416,6 +416,10 @@ export default function ContractorAccount() {
                  <ProposalTemplateManager contractorId={contractor?.id} />
                </TabsContent>
 
+               <TabsContent value="analytics">
+                 <PerformanceAnalyticsDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
                <TabsContent value="live-sessions">
                  <LiveSessions contractorEmail={userEmail} />
                </TabsContent>
