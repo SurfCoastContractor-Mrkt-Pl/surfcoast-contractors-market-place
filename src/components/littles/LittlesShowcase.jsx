@@ -236,6 +236,7 @@ const styles = `
 export default function LittlesShowcase() {
   const [userEmail, setUserEmail] = useState(null);
 
+  // Littles showcase component
   useEffect(() => {
     const getUser = async () => {
       try {
