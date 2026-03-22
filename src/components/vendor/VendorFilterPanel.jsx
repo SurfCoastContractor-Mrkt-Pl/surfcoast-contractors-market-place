@@ -6,36 +6,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { X, Sliders } from 'lucide-react';
 
-const TRADES = [
-  'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 
-  'roofer', 'painter', 'welder', 'tiler', 'landscaper'
-];
 
-const tradeLabels = {
-  electrician: 'Electrician',
-  plumber: 'Plumber',
-  carpenter: 'Carpenter',
-  hvac: 'HVAC',
-  mason: 'Mason',
-  roofer: 'Roofer',
-  painter: 'Painter',
-  welder: 'Welder',
-  tiler: 'Tiler',
-  landscaper: 'Landscaper'
-};
 
 export default function VendorFilterPanel({ filters, onFiltersChange, onClose, isOpen }) {
   const handleRatingChange = (value) => {
     onFiltersChange({ ...filters, minRating: value[0] });
   };
 
-  const handleTradeToggle = (trade) => {
-    const selectedTrades = filters.trades || [];
-    const updated = selectedTrades.includes(trade)
-      ? selectedTrades.filter(t => t !== trade)
-      : [...selectedTrades, trade];
-    onFiltersChange({ ...filters, trades: updated });
-  };
+
 
   const handleAvailabilityChange = (status) => {
     const availability = filters.availability || [];
@@ -51,7 +29,6 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
       location: '',
       category: 'all',
       minRating: 0,
-      trades: [],
       availability: []
     });
   };
@@ -138,25 +115,6 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
               className="flex-1"
             />
             <span className="text-sm font-medium text-slate-700 w-10">{(filters.minRating || 0).toFixed(1)}★</span>
-          </div>
-        </div>
-
-        {/* Trade Types */}
-        <div className="mb-6">
-          <label className="text-sm font-semibold text-slate-900 block mb-3">Trade Types</label>
-          <div className="space-y-2">
-            {TRADES.map(trade => (
-              <div key={trade} className="flex items-center gap-2">
-                <Checkbox
-                  id={`trade-${trade}`}
-                  checked={(filters.trades || []).includes(trade)}
-                  onCheckedChange={() => handleTradeToggle(trade)}
-                />
-                <label htmlFor={`trade-${trade}`} className="text-sm text-slate-700 cursor-pointer">
-                  {tradeLabels[trade]}
-                </label>
-              </div>
-            ))}
           </div>
         </div>
 
