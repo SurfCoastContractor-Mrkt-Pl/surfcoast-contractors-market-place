@@ -75,21 +75,28 @@ export default function MarketShopDashboard() {
     setShop(prev => ({ ...prev, ...data }));
   };
 
-  const handleLogoUpload = async (e) => {
+  const handleLogoUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploadingPhoto(true);
-    try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      await base44.entities.MarketShop.update(shop.id, { logo_url: file_url });
-      setShop(prev => ({ ...prev, logo_url: file_url }));
-    } catch (err) {
-      console.error('Logo upload error:', err);
-      alert('Error uploading photo');
-    } finally {
-      setUploadingPhoto(false);
-      if (logoInputRef.current) logoInputRef.current.value = '';
-    }
+    // Read file immediately before any state change causes re-render
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const blob = new Blob([reader.result], { type: file.type });
+      const uploadFile = new File([blob], file.name, { type: file.type });
+      setUploadingPhoto(true);
+      try {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file: uploadFile });
+        await base44.entities.MarketShop.update(shop.id, { logo_url: file_url });
+        setShop(prev => ({ ...prev, logo_url: file_url }));
+      } catch (err) {
+        console.error('Logo upload error:', err);
+        alert('Error uploading photo');
+      } finally {
+        setUploadingPhoto(false);
+        if (logoInputRef.current) logoInputRef.current.value = '';
+      }
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   if (loading) {
