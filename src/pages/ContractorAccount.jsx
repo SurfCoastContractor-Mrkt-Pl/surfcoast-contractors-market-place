@@ -313,6 +313,10 @@ export default function ContractorAccount() {
                  <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
                  <TabsTrigger value="proposals" className="text-xs sm:text-sm whitespace-nowrap">Proposals</TabsTrigger>
                  <TabsTrigger value="analytics" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
+                 <TabsTrigger value="scheduling" className="text-xs sm:text-sm whitespace-nowrap">Scheduling</TabsTrigger>
+                 <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
+                 <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
+                 <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
                  <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
                  <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
