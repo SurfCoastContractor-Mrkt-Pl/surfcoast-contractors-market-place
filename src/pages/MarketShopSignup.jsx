@@ -7,9 +7,14 @@ import { ChevronLeft, X, Loader2, Leaf, Tag, CheckCircle } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 import MarketShopPaymentModelSelector from '@/components/marketshop/MarketShopPaymentModelSelector';
 
-const CATEGORIES = [
+const CATEGORIES_FARMERS_MARKET = [
   'Produce', 'Meat/Poultry', 'Dairy', 'Baked Goods', 'Prepared Foods',
   'Clothing', 'Jewelry', 'Home Decor', 'Art/Craft', 'Plants', 'Other'
+];
+
+const CATEGORIES_SWAP_MEET = [
+  'Electronics', 'Tools', 'Sports Equipment', 'Books & Media', 'Home Decor',
+  'Clothing & Accessories', 'Collectibles', 'Handmade Crafts', 'Vintage & Antiques', 'Jewelry', 'Other'
 ];
 
 const THEME_CONFIG = {
@@ -159,6 +164,7 @@ export default function MarketShopSignup() {
   }
 
   const theme = THEME_CONFIG[type];
+  const CATEGORIES = type === 'swap_meet' ? CATEGORIES_SWAP_MEET : CATEGORIES_FARMERS_MARKET;
 
   const handleFormChange = (e) => {
     const { name, value, type: inputType, checked } = e.target;
