@@ -110,19 +110,21 @@ export default function Layout({ children, currentPageName }) {
         <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-4">
 
           {/* Desktop Nav - Left (next to logo) */}
-          <div className="hidden lg:flex items-center gap-1 flex-shrink">
-            {getNavLinks(isContractor).map(link => (
-              <Link key={link.page} to={createPageUrl(link.page)}>
-                <Button
-                  variant="ghost"
-                  className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
-                  style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
-                >
-                  {link.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
+           {currentPageName !== 'Home' && (
+             <div className="hidden lg:flex items-center gap-1 flex-shrink">
+               {getNavLinks(isContractor).map(link => (
+                 <Link key={link.page} to={createPageUrl(link.page)}>
+                   <Button
+                     variant="ghost"
+                     className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
+                     style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
+                   >
+                     {link.name}
+                   </Button>
+                 </Link>
+               ))}
+             </div>
+           )}
 
           {/* Desktop Nav - Right */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
