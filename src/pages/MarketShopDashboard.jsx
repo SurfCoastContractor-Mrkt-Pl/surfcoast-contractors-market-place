@@ -13,6 +13,8 @@ import MarketShopSchedule from '@/components/marketshop/MarketShopSchedule';
 import MarketShopSubscription from '@/components/marketshop/MarketShopSubscription';
 import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
 import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
+import LocationRatingForm from '@/components/locations/LocationRatingForm';
+import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
