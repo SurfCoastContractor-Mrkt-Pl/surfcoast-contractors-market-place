@@ -162,22 +162,32 @@ export default function BoothsAndVendors() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
-            Booths & Vendors
-          </h1>
-          <p className="text-slate-600">
-            Browse {filteredShops.length} {filteredShops.length === 1 ? 'vendor' : 'vendors'} across farmers markets and swap meets
-          </p>
+    <div 
+      className="min-h-screen"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1488459716781-6f3ee109e5e4?w=1200&h=800&fit=crop)',
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="relative">
+        {/* Header */}
+        <div className="bg-white/60 backdrop-blur-sm">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
+              Booths & Vendors
+            </h1>
+            <p className="text-slate-600">
+              Browse {filteredShops.length} {filteredShops.length === 1 ? 'vendor' : 'vendors'} across farmers markets and swap meets
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Search and Filters */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="space-y-4">
+        {/* Search and Filters */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="space-y-4">
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
