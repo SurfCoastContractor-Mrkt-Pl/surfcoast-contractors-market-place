@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
+import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -54,6 +55,11 @@ const AuthenticatedApp = () => {
       <Route path="/ContractorFinancialDashboard" element={
         <LayoutWrapper currentPageName="ContractorFinancialDashboard">
           <ContractorFinancialDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ConsumerHub" element={
+        <LayoutWrapper currentPageName="ConsumerHub">
+          <ConsumerHub />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
