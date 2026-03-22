@@ -134,7 +134,11 @@ export default function MarketShopDashboard() {
                    </span>
                  )}
                  {shop.shop_type && (
-                   <span className="inline-flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">
+                   <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full capitalize ${
+                     status === 'pending' || status === 'suspended'
+                       ? 'bg-red-100 text-red-600'
+                       : 'bg-green-100 text-green-600'
+                   }`}>
                      <Store className="w-3 h-3" />
                      {shop.shop_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                    </span>
