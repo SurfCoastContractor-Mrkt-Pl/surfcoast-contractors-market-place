@@ -43,7 +43,7 @@ const VendorCard = ({ shop }) => {
   const rating = shop.average_rating ? parseFloat(shop.average_rating).toFixed(1) : 'N/A';
   
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white/70 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-lg transition-shadow hover:bg-white/85">
       {/* Logo/Banner */}
       <div className="h-32 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
         {shop.logo_url && (
@@ -82,7 +82,7 @@ const VendorCard = ({ shop }) => {
         <p className="text-xs text-slate-600 line-clamp-2 mb-4">{shop.description}</p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-between pt-3">
           <span className={`text-xs font-semibold px-2 py-1 rounded ${
             shop.subscription_status === 'active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
           }`}>
