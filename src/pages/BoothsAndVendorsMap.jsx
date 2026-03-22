@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import VendorMap from '@/components/vendor/VendorMap';
 import VendorFilterPanel from '@/components/vendor/VendorFilterPanel';
 import BookingRequestForm from '@/components/booking/BookingRequestForm';
+import ReviewForm from '@/components/reviews/ReviewForm';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Sliders, Calendar } from 'lucide-react';
+import { Star, MapPin, Sliders, Calendar, MessageCircle } from 'lucide-react';
 
 const PRODUCT_CATEGORIES = [
   'electronics', 'tools', 'sports_equipment', 'books_media', 'home_decor',
@@ -36,6 +37,8 @@ export default function BoothsAndVendorsMap() {
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [bookingVendor, setBookingVendor] = useState(null);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [reviewVendor, setReviewVendor] = useState(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [filters, setFilters] = useState({
     marketType: 'all',
     location: '',
@@ -99,6 +102,19 @@ export default function BoothsAndVendorsMap() {
         onClose={() => {
           setBookingOpen(false);
           setBookingVendor(null);
+        }}
+      />
+
+      {/* Review Modal */}
+      <ReviewForm
+        vendor={reviewVendor}
+        isOpen={reviewOpen}
+        onClose={() => {
+          setReviewOpen(false);
+          setReviewVendor(null);
+        }}
+        onSuccess={() => {
+          // Refresh reviews
         }}
       />
 
@@ -228,17 +244,53 @@ export default function BoothsAndVendorsMap() {
                       </div>
                     )}
 
-                    <Button
-                      onClick={() => {
-                        setBookingVendor(vendor);
-                        setBookingOpen(true);
-                      }}
-                      className="w-full"
-                      size="sm"
-                    >
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Book a Visit
-                    </Button>
+                    {/* Rating Display */}
+                    {vendorRatings[vendor.id] && (
+                      <div className="flex items-center gap-2 mb-4 pb-4 border-b">
+                        <div className="flex gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3 h-3 ${
+                                i < Math.round(vendorRatings[vendor.id].average)
+                                  ? 'fill-amber-400 text-amber-400'
+                                  : 'text-slate-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-sm font-medium text-slate-900">
+                          {vendorRatings[vendor.id].average}
+                        </span>
+                        <span className="text-xs text-slate-600">
+                          ({vendorRatings[vendor.id].count} {vendorRatings[vendor.id].count === 1 ? 'review' : 'reviews'})
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        onClick={() => {
+                          setReviewVendor(vendor);
+                          setReviewOpen(true);
+                        }}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <MessageCircle className="w-4 h-4 mr-1" />
+                        Review
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setBookingVendor(vendor);
+                          setBookingOpen(true);
+                        }}
+                        size="sm"
+                      >
+                        <Calendar className="w-4 h-4 mr-1" />
+                        Book
+                      </Button>
+                    </div>
                   </div>
                 </Card>
               ))
