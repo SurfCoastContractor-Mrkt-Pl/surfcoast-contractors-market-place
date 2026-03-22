@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle, Camera } from 'lucide-react';
+import { Loader2, Package, MapPin, Star, Settings, Store, AlertTriangle } from 'lucide-react';
 import MarketBoothMetrics from '@/components/marketshop/MarketBoothMetrics';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
@@ -12,6 +12,7 @@ import PhotoGalleryManager from '@/components/marketshop/PhotoGalleryManager';
 import MarketShopSchedule from '@/components/marketshop/MarketShopSchedule';
 import MarketShopSubscription from '@/components/marketshop/MarketShopSubscription';
 import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
+import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
