@@ -39,6 +39,23 @@ export default function MarketShopDashboard() {
   const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: true });
   const [activeTab, setActiveTab] = useState('listings');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const logoInputRef = React.useRef(null);
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await handleUpdate({ logo_url: file_url });
+    } catch (err) {
+      console.error('Logo upload error:', err);
+      alert('Error uploading photo');
+    } finally {
+      setUploadingPhoto(false);
+      if (logoInputRef.current) logoInputRef.current.value = '';
+    }
+  };
 
   useEffect(() => {
     const load = async () => {
