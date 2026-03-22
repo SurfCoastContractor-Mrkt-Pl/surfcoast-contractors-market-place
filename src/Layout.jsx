@@ -172,7 +172,6 @@ export default function Layout({ children, currentPageName }) {
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden p-2 flex-shrink-0 ml-auto"
-
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
