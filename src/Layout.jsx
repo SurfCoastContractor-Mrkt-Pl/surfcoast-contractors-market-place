@@ -46,6 +46,7 @@ export default function Layout({ children, currentPageName }) {
   const [hasMarketShop, setHasMarketShop] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const isBackNav = useRef(false);
+  const accountMenuRef = useRef(null);
   const { isConsumerMode, toggleConsumerMode } = useConsumerMode();
 
   useGeoCheck();
