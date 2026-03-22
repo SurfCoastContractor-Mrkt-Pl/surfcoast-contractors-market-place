@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, Users, Wrench, Copy, Check } from 'lucide-react';
+import { Sparkles, Users, Wrench, Copy, Check, Mail, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { getAppBaseUrl } from '@/lib/env';
 
@@ -10,6 +10,10 @@ export default function ReferralSignup() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState(false);
 
   const generateReferralCode = async () => {
     if (!email.trim()) {
