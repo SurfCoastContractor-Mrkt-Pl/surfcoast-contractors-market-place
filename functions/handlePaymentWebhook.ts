@@ -46,11 +46,11 @@ Deno.serve(async (req) => {
     // Validate webhook signature
     let event;
     try {
-      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
-    } catch (sigError) {
-      console.error(`[${requestId}] Webhook signature verification failed:`, sigError.message);
-      return Response.json({ error: 'Invalid signature', requestId }, { status: 400 });
-    }
+       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+     } catch (sigError) {
+       console.error(`[${requestId}] Webhook signature verification failed`);
+       return Response.json({ error: 'Invalid signature' }, { status: 400 });
+     }
 
     // Note: Stripe's own signature verification already prevents replay attacks
     // within its 5-minute tolerance window. We do not add our own timestamp check
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
 
         console.log(`Payment ${paymentId} confirmed successfully`);
       } catch (updateError) {
-         console.error('Error confirming payment for session', session.id);
+         console.error('Error confirming payment - session:', session.id);
          // Still return received: true to prevent Stripe retrying indefinitely
        }
     }
@@ -157,7 +157,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error(`[${requestId}] Webhook error:`, error.message);
-    return Response.json({ error: 'Internal server error', requestId }, { status: 500 });
+    console.error(`[${requestId}] Webhook error - generic handler`);
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 });

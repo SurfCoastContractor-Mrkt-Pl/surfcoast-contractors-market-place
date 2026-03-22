@@ -174,9 +174,9 @@ Deno.serve(async (req) => {
       url: session.url,
     });
   } catch (error) {
-    console.error('Payment checkout error:', error.message);
+    console.error('Payment checkout error - request failed');
     return Response.json({
-      error: error.message || 'Checkout failed',
+      error: 'Checkout failed - please try again',
     }, { status: error.statusCode || 500 });
   }
 });

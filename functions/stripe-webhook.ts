@@ -51,11 +51,11 @@ Deno.serve(async (req) => {
     
     let event;
     try {
-      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
-    } catch (err) {
-      console.error('Webhook signature verification failed:', err.message);
-      return Response.json({ error: 'Invalid signature' }, { status: 400 });
-    }
+       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
+     } catch (err) {
+       console.error('Webhook signature verification failed - invalid request');
+       return Response.json({ error: 'Invalid signature' }, { status: 400 });
+     }
 
     // SDK init only AFTER signature is verified
     const base44 = createClientFromRequest(req);
@@ -123,7 +123,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true }, { status: 200 });
   } catch (error) {
-    console.error('Webhook processing error:', error.message, error.code || '', error.stack || '');
+    console.error('Webhook processing error - request ID:', event?.id || 'unknown');
     return Response.json({ error: 'Webhook processing failed' }, { status: 500 });
   }
 });
