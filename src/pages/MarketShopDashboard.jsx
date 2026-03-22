@@ -111,28 +111,6 @@ export default function MarketShopDashboard() {
     }}>
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative">
-      {/* Dark grey top bar with tabs */}
-      <div className="bg-slate-700 z-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center overflow-x-auto scrollbar-hide">
-            {TABS.map(({ key, label, icon: Icon }) => (
-              <button
-                key={key}
-                onClick={() => setActiveTab(key)}
-                className={`flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
-                  activeTab === key
-                    ? 'border-white text-white'
-                    : 'border-transparent text-slate-300 hover:text-white hover:border-slate-400'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Shop Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
