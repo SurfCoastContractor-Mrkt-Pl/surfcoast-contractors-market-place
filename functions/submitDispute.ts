@@ -37,7 +37,6 @@ Deno.serve(async (req) => {
     const {
       initiator_type,
       respondent_email,
-      respondent_name,
       respondent_type,
       scope_id,
       job_id,
@@ -50,8 +49,27 @@ Deno.serve(async (req) => {
     } = body;
 
     // Validate required fields
-    if (!respondent_email || !respondent_name || !respondent_type || !category || !title || !description) {
+    if (!respondent_email || !respondent_type || !category || !title || !description) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Validate respondent_email format
+    if (!respondent_email.includes('@') || respondent_email.length > 254) {
+      return Response.json({ error: 'Invalid respondent email format' }, { status: 400 });
+    }
+
+    // Validate respondent exists (contractor or customer)
+    let respondentExists = false;
+    try {
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: respondent_email });
+      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email: respondent_email });
+      respondentExists = (contractors && contractors.length > 0) || (customers && customers.length > 0);
+    } catch (error) {
+      console.warn('Could not verify respondent existence:', error.message);
+    }
+
+    if (!respondentExists) {
+      return Response.json({ error: 'Respondent user not found on platform' }, { status: 400 });
     }
 
     // Initiator is always the authenticated user (prevent spoofing)
