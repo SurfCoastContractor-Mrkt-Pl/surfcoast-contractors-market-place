@@ -316,7 +316,7 @@ export default function Layout({ children, currentPageName }) {
                   </>
 
                   {/* Main Content */}
-      <main className="flex-1">
+                  <main className="flex-1">
         {children}
       </main>
 
