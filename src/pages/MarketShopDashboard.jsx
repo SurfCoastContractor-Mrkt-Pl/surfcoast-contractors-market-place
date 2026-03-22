@@ -115,7 +115,7 @@ export default function MarketShopDashboard() {
          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6">
            <div className="flex items-start justify-end gap-4">
              {/* Right: Upload Photo + Shop Name + Status + Location + Type all stacked */}
-             <div className="flex flex-col items-end gap-1">
+             <div className="flex flex-col items-center gap-1">
                <label className="cursor-pointer flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-full border border-blue-200 transition-colors">
                  <Camera className="w-3.5 h-3.5" />
                  <span>Upload Photo</span>
