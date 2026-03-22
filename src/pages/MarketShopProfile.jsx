@@ -378,6 +378,17 @@ export default function MarketShopProfile() {
           <MarketShopProfileSchedule shop={shop} />
         </div>
 
+        {/* Location Ratings Section */}
+        <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-5 h-5 text-amber-300" />
+            <h2 className="text-lg sm:text-xl font-bold">Vendor Ratings</h2>
+          </div>
+          <LocationRatingDisplay
+            location={{ location_name: shop.shop_name, city: shop.city, state: shop.state, location_type: shop.shop_type }}
+          />
+        </div>
+
         {/* Reviews Section */}
         <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Reviews & Feedback</h2>
