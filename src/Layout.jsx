@@ -130,12 +130,17 @@ export default function Layout({ children, currentPageName }) {
             {/* Desktop Nav - Right */}
             <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
               {!isLoggedIn && (
-                <button
-                  onClick={() => base44.auth.redirectToLogin()}
-                  className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
-                >
-                  Login
-                </button>
+                <>
+                  <Link to="/About">
+                    <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">About Us</Button>
+                  </Link>
+                  <button
+                    onClick={() => base44.auth.redirectToLogin()}
+                    className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
+                  >
+                    Login
+                  </button>
+                </>
               )}
               {isLoggedIn && (
                 <div className="relative" ref={accountMenuRef}>
