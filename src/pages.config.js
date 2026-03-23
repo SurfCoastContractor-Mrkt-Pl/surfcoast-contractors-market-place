@@ -105,7 +105,6 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "DisputeCenter": DisputeCenter,
     "FindContractors": FindContractors,
-    "Home": Home,
     "JobDetails": JobDetails,
     "Jobs": Jobs,
     "MarketDirectory": MarketDirectory,
