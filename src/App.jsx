@@ -15,6 +15,7 @@ import About from './pages/About';
 import ContractorPublicProfile from './pages/ContractorPublicProfile';
 import ConsumerSignup from './pages/ConsumerSignup';
 import SearchAnalytics from './pages/SearchAnalytics';
+import ContractorInquiries from './pages/ContractorInquiries';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
