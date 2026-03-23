@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
+import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementGenerator';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -177,9 +178,16 @@ export default function ContractorDashboard() {
           <p className="text-slate-600">Track your active jobs and communications</p>
         </div>
 
+        {/* Service Agreement Generator */}
+        {contractorProfile && (
+          <div className="mb-6">
+            <ServiceAgreementGenerator contractor={contractorProfile} />
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Active Jobs */}
-          <div className="lg:col-span-2">
+           {/* Active Jobs */}
+           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
