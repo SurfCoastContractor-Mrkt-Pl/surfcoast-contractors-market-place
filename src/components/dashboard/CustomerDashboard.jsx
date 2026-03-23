@@ -105,7 +105,7 @@ export default function CustomerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
       {pendingRatingScopes.length > 0 && (
         <PendingRatingModal
           scope={pendingRatingScopes[0]}
@@ -118,206 +118,187 @@ export default function CustomerDashboard() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <h1 className="text-4xl font-bold text-slate-900">My Projects</h1>
+            <h1 className="text-4xl font-bold text-white">My Projects</h1>
             <TrialBadge profile={customerProfile} />
           </div>
-          <p className="text-slate-600">Track your posted jobs and active scopes</p>
+          <p style={{ color: 'rgba(255,255,255,0.6)' }}>Track your posted jobs and active scopes</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Posted Jobs */}
           <div className="lg:col-span-2 space-y-6">
             {/* Open Jobs */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5" />
-                  Posted Jobs
-                </CardTitle>
-                <CardDescription>Jobs accepting contractor proposals</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {jobsLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading jobs...</div>
-                ) : myJobs.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-slate-600 mb-4">No open jobs</p>
-                    <Link to="/QuickJobPost">
-                      <Button>Post a Job</Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {myJobs.map((job) => (
-                      <div key={job.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                        <div className="flex justify-between items-start mb-3">
-                          <div>
-                            <h3 className="font-semibold text-slate-900">{job.title}</h3>
-                            <p className="text-sm text-slate-600">{job.location}</p>
-                          </div>
-                          <Badge className={jobStatusColor[job.status] || 'bg-slate-100 text-slate-800'}>
-                            {job.status.replace(/_/g, ' ')}
-                          </Badge>
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(45,140,200,0.3)', borderRadius: '12px', padding: '20px', backdropFilter: 'blur(12px)' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <Briefcase className="w-5 h-5" style={{ color: '#1d6fa4' }} />
+                <h2 className="font-semibold text-white text-base">Posted Jobs</h2>
+              </div>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Jobs accepting contractor proposals</p>
+              {jobsLoading ? (
+                <div className="text-center py-8" style={{ color: 'rgba(255,255,255,0.5)' }}>Loading jobs...</div>
+              ) : myJobs.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>No open jobs</p>
+                  <Link to="/QuickJobPost">
+                    <button style={{ background: '#1d6fa4', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontWeight: '700', cursor: 'pointer', fontSize: '14px' }}>Post a Job</button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {myJobs.map((job) => (
+                    <div key={job.id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '14px' }}>
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-semibold text-white text-sm">{job.title}</h3>
+                          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{job.location}</p>
                         </div>
-                        <p className="text-sm text-slate-700 mb-3 line-clamp-2">{job.description}</p>
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-slate-600">Budget: ${job.budget_min || '0'} - ${job.budget_max || 'TBD'}</span>
-                          <Link to={`/MyJobs?jobId=${job.id}`}>
-                            <Button variant="outline" size="sm">View Responses</Button>
-                          </Link>
-                        </div>
+                        <span style={{ background: 'rgba(29,111,164,0.25)', color: '#60b4e8', fontSize: '11px', fontWeight: '600', padding: '3px 8px', borderRadius: '20px', border: '1px solid rgba(29,111,164,0.4)' }}>
+                          {job.status.replace(/_/g, ' ')}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                      <p className="text-xs mb-3 line-clamp-2" style={{ color: 'rgba(255,255,255,0.6)' }}>{job.description}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Budget: ${job.budget_min || '0'} - ${job.budget_max || 'TBD'}</span>
+                        <Link to={`/MyJobs?jobId=${job.id}`}>
+                          <button style={{ background: 'transparent', color: '#60b4e8', border: '1px solid rgba(29,111,164,0.5)', borderRadius: '6px', padding: '5px 12px', fontWeight: '600', cursor: 'pointer', fontSize: '12px' }}>View Responses</button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Quote Requests */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
-                  Quote Requests
-                </CardTitle>
-                <CardDescription>Pending contractor quotes</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {quotesLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading quotes...</div>
-                ) : quoteRequests.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No quote requests</p>
-                ) : (
-                  <div className="space-y-4">
-                    {quoteRequests.map((quote) => (
-                      <div key={quote.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                        <div className="flex justify-between items-start mb-3">
-                          <div>
-                            <h3 className="font-semibold text-slate-900">{quote.job_title}</h3>
-                            <p className="text-sm text-slate-600">From: {quote.contractor_name}</p>
-                          </div>
-                          <Badge className={quote.status === 'quoted' ? 'bg-green-100 text-green-800' : quote.status === 'view_denied' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}>
-                            {quote.status.replace(/_/g, ' ')}
-                          </Badge>
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(45,140,200,0.3)', borderRadius: '12px', padding: '20px', backdropFilter: 'blur(12px)' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <MessageSquare className="w-5 h-5" style={{ color: '#1d6fa4' }} />
+                <h2 className="font-semibold text-white text-base">Quote Requests</h2>
+              </div>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Pending contractor quotes</p>
+              {quotesLoading ? (
+                <div className="text-center py-8" style={{ color: 'rgba(255,255,255,0.5)' }}>Loading quotes...</div>
+              ) : quoteRequests.length === 0 ? (
+                <p className="text-center py-8" style={{ color: 'rgba(255,255,255,0.4)' }}>No quote requests</p>
+              ) : (
+                <div className="space-y-3">
+                  {quoteRequests.map((quote) => (
+                    <div key={quote.id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '14px' }}>
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-semibold text-white text-sm">{quote.job_title}</h3>
+                          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>From: {quote.contractor_name}</p>
                         </div>
-                        {quote.quote_amount && (
-                          <p className="text-sm font-medium text-slate-900 mb-2">Quote: ${quote.quote_amount}</p>
-                        )}
-                        {quote.quote_message && (
-                          <p className="text-sm text-slate-600 mb-3">{quote.quote_message}</p>
-                        )}
-                        <Link to={`/MyJobs?jobId=${quote.job_id}`}>
-                          <Button variant="outline" size="sm">View Details</Button>
-                        </Link>
+                        <span style={{ background: quote.status === 'quoted' ? 'rgba(34,197,94,0.2)' : quote.status === 'view_denied' ? 'rgba(239,68,68,0.2)' : 'rgba(217,119,6,0.2)', color: quote.status === 'quoted' ? '#4ade80' : quote.status === 'view_denied' ? '#f87171' : '#fbbf24', fontSize: '11px', fontWeight: '600', padding: '3px 8px', borderRadius: '20px' }}>
+                          {quote.status.replace(/_/g, ' ')}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                      {quote.quote_amount && (
+                        <p className="text-sm font-semibold mb-1" style={{ color: '#d97706' }}>Quote: ${quote.quote_amount}</p>
+                      )}
+                      {quote.quote_message && (
+                        <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>{quote.quote_message}</p>
+                      )}
+                      <Link to={`/MyJobs?jobId=${quote.job_id}`}>
+                        <button style={{ background: 'transparent', color: '#60b4e8', border: '1px solid rgba(29,111,164,0.5)', borderRadius: '6px', padding: '5px 12px', fontWeight: '600', cursor: 'pointer', fontSize: '12px' }}>View Details</button>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Active Scopes */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Active Projects
-                </CardTitle>
-                <CardDescription>Approved scopes in progress</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {scopesLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading...</div>
-                ) : activeScopes.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No active projects yet</p>
-                ) : (
-                  <div className="space-y-4">
-                    {activeScopes.map((scope) => (
-                      <div key={scope.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                        <div className="flex justify-between items-start mb-3">
-                          <div>
-                            <h3 className="font-semibold text-slate-900">{scope.job_title}</h3>
-                            <p className="text-sm text-slate-600">Contractor: {scope.contractor_name}</p>
-                          </div>
-                          <Badge className={scopeStatusColor[scope.status] || 'bg-slate-100 text-slate-800'}>
-                            {scope.status.replace(/_/g, ' ')}
-                          </Badge>
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(217,119,6,0.3)', borderRadius: '12px', padding: '20px', backdropFilter: 'blur(12px)' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <TrendingUp className="w-5 h-5" style={{ color: '#d97706' }} />
+                <h2 className="font-semibold text-white text-base">Active Projects</h2>
+              </div>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Approved scopes in progress</p>
+              {scopesLoading ? (
+                <div className="text-center py-8" style={{ color: 'rgba(255,255,255,0.5)' }}>Loading...</div>
+              ) : activeScopes.length === 0 ? (
+                <p className="text-center py-8" style={{ color: 'rgba(255,255,255,0.4)' }}>No active projects yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {activeScopes.map((scope) => (
+                    <div key={scope.id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '14px' }}>
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-semibold text-white text-sm">{scope.job_title}</h3>
+                          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Contractor: {scope.contractor_name}</p>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 text-sm mb-3">
-                          <div>
-                            <p className="text-slate-600">Cost:</p>
-                            <p className="font-medium text-slate-900">${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
-                          </div>
-                          <div>
-                            <p className="text-slate-600">Scheduled:</p>
-                            <p className="font-medium text-slate-900">{scope.agreed_work_date || 'Pending'}</p>
-                          </div>
-                        </div>
-                        <Link to={`/ProjectManagement?scopeId=${scope.id}`}>
-                          <Button variant="outline" size="sm" className="w-full">Track Progress</Button>
-                        </Link>
+                        <span style={{ background: 'rgba(217,119,6,0.2)', color: '#fbbf24', fontSize: '11px', fontWeight: '600', padding: '3px 8px', borderRadius: '20px' }}>
+                          {scope.status.replace(/_/g, ' ')}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                      <div className="grid grid-cols-2 gap-4 text-xs mb-3">
+                        <div>
+                          <p style={{ color: 'rgba(255,255,255,0.45)' }}>Cost:</p>
+                          <p className="font-semibold text-white">${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
+                        </div>
+                        <div>
+                          <p style={{ color: 'rgba(255,255,255,0.45)' }}>Scheduled:</p>
+                          <p className="font-semibold text-white">{scope.agreed_work_date || 'Pending'}</p>
+                        </div>
+                      </div>
+                      <Link to={`/ProjectManagement?scopeId=${scope.id}`}>
+                        <button style={{ width: '100%', background: 'rgba(217,119,6,0.15)', color: '#fbbf24', border: '1px solid rgba(217,119,6,0.4)', borderRadius: '6px', padding: '7px 12px', fontWeight: '600', cursor: 'pointer', fontSize: '12px' }}>Track Progress</button>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Recent Messages */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
-                  Messages
-                </CardTitle>
-                <CardDescription>Recent unread messages</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {messagesLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading...</div>
-                ) : recentMessages.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No new messages</p>
-                ) : (
-                  <div className="space-y-3">
-                    {recentMessages.map((msg) => (
-                      <div key={msg.id} className="border-l-2 border-blue-500 pl-3 py-2">
-                        <p className="text-xs font-semibold text-slate-900">{msg.sender_name}</p>
-                        <p className="text-xs text-slate-600 line-clamp-2">{msg.body}</p>
-                        <p className="text-xs text-slate-400 mt-1">
-                          {new Date(msg.created_date).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <Link to="/Messaging" className="mt-4 block">
-                  <Button variant="outline" size="sm" className="w-full">View All Messages</Button>
-                </Link>
-              </CardContent>
-            </Card>
+          {/* Sidebar */}
+          <div className="space-y-4">
+            {/* Messages */}
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(45,140,200,0.3)', borderRadius: '12px', padding: '20px', backdropFilter: 'blur(12px)' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <MessageSquare className="w-5 h-5" style={{ color: '#1d6fa4' }} />
+                <h2 className="font-semibold text-white text-base">Messages</h2>
+              </div>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Recent unread messages</p>
+              {messagesLoading ? (
+                <div className="text-center py-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Loading...</div>
+              ) : recentMessages.length === 0 ? (
+                <p className="text-center py-6" style={{ color: 'rgba(255,255,255,0.4)' }}>No new messages</p>
+              ) : (
+                <div className="space-y-3 mb-4">
+                  {recentMessages.map((msg) => (
+                    <div key={msg.id} style={{ borderLeft: '2px solid #1d6fa4', paddingLeft: '10px', paddingTop: '4px', paddingBottom: '4px' }}>
+                      <p className="text-xs font-semibold text-white">{msg.sender_name}</p>
+                      <p className="text-xs line-clamp-2" style={{ color: 'rgba(255,255,255,0.6)' }}>{msg.body}</p>
+                      <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                        {new Date(msg.created_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Link to="/Messaging" className="block mt-3">
+                <button style={{ width: '100%', background: 'transparent', color: '#60b4e8', border: '1px solid rgba(29,111,164,0.5)', borderRadius: '8px', padding: '8px 12px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' }}>View All Messages</button>
+              </Link>
+            </div>
 
             {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '20px', backdropFilter: 'blur(12px)' }}>
+              <h2 className="font-semibold text-white text-base mb-4">Quick Actions</h2>
+              <div className="space-y-2">
                 <Link to="/QuickJobPost" className="block">
-                  <Button variant="outline" size="sm" className="w-full justify-start">
-                    <Briefcase className="w-4 h-4 mr-2" />
-                    Post New Job
-                  </Button>
+                  <button style={{ width: '100%', background: 'rgba(29,111,164,0.15)', color: '#60b4e8', border: '1px solid rgba(29,111,164,0.4)', borderRadius: '8px', padding: '10px 14px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Briefcase className="w-4 h-4" /> Post New Job
+                  </button>
                 </Link>
                 <Link to="/FindContractors" className="block">
-                  <Button variant="outline" size="sm" className="w-full justify-start">
-                    <Users className="w-4 h-4 mr-2" />
-                    Find Contractors
-                  </Button>
+                  <button style={{ width: '100%', background: 'rgba(217,119,6,0.15)', color: '#fbbf24', border: '1px solid rgba(217,119,6,0.4)', borderRadius: '8px', padding: '10px 14px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Users className="w-4 h-4" /> Find Contractors
+                  </button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
