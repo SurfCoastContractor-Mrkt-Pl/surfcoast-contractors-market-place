@@ -39,7 +39,7 @@ export default function Home() {
            <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
          </div>
          <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }}>
-            <button onClick={() => setDropdownOpen(!dropdownOpen)} style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer", gap:"6px", transition:"all 0.2s" }}>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(37,137,199,0.6)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => setDropdownOpen(!dropdownOpen)} style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer", gap:"6px", transition:"all 0.2s" }}>
               Enter <ChevronDown size={14} style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.2s" }} />
             </button>
             {dropdownOpen && (
