@@ -6,7 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CartTierDisplay from '@/components/consumer/CartTierDisplay';
 import MarketShopBrowser from '@/components/consumer/MarketShopBrowser';
 import MyOrders from '@/components/consumer/MyOrders';
-import { ShoppingBag, Award, Settings, ClipboardList } from 'lucide-react';
+import SavedVendors from '@/components/consumer/SavedVendors';
+import Wishlist from '@/components/consumer/Wishlist';
+import PaymentMethods from '@/components/consumer/PaymentMethods';
+import { ShoppingBag, Award, Settings, ClipboardList, Heart, CreditCard } from 'lucide-react';
 
 export default function ConsumerHub() {
   const [userEmail, setUserEmail] = useState(null);
