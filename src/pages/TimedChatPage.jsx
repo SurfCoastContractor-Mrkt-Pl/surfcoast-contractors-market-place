@@ -6,20 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Send, Clock, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
 
-const REDACT_URL = 'https://sage-c5f01224.base44.app/functions/redactMessage';
 const MAX_SECONDS = 600; // 10 minutes
 const INACTIVITY_PAUSE_SECONDS = 60;
 
 async function redactMessage(text) {
   try {
-    const res = await fetch(REDACT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text }),
-    });
-    if (!res.ok) return { message: text, was_redacted: false };
-    const data = await res.json();
-    return { message: data.message ?? text, was_redacted: data.was_redacted ?? false };
+    const response = await base44.functions.invoke('redactMessage', { message: text });
+    return { message: response.data.message ?? text, was_redacted: response.data.was_redacted ?? false };
   } catch {
     return { message: text, was_redacted: false };
   }

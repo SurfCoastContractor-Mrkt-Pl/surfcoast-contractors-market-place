@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle2, AlertTriangle, ChevronRight, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { base44 } from '@/api/base44Client';
 
 export default function TrialStatusBanner({ contractor }) {
   const [trialData, setTrialData] = useState(null);
@@ -12,26 +13,28 @@ export default function TrialStatusBanner({ contractor }) {
     if (!contractor?.id) return;
     const fetchTrialStatus = async () => {
       setLoading(true);
-      const res = await fetch('https://sage-c5f01224.base44.app/functions/activateTrial', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contractor_id: contractor.id }),
-      });
-      const data = await res.json();
-      setTrialData(data);
-      setLoading(false);
+      try {
+        const response = await base44.functions.invoke('activateTrial', { contractor_id: contractor.id });
+        setTrialData(response.data);
+      } catch (err) {
+        console.error('Failed to fetch trial status:', err);
+        setTrialData(null);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchTrialStatus();
   }, [contractor?.id]);
 
   const handleActivateTrial = async () => {
     setActivating(true);
-    await fetch('https://sage-c5f01224.base44.app/functions/activateTrial', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contractor_id: contractor.id }),
-    });
-    window.location.reload();
+    try {
+      await base44.functions.invoke('activateTrial', { contractor_id: contractor.id });
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to activate trial:', err);
+      setActivating(false);
+    }
   };
 
   if (loading) {
