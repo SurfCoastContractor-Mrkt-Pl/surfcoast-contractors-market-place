@@ -4,8 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Send, Paperclip, X } from 'lucide-react';
-import MessageConversation from '@/components/messaging/MessageConversation';
-import NewMessageForm from '@/components/messaging/NewMessageForm';
+import MessageConversation from '@/components/messaging/MessageConversation.jsx';
+import NewMessageForm from '@/components/messaging/NewMessageForm.jsx';
 
 export default function Messaging() {
   const [user, setUser] = useState(null);
