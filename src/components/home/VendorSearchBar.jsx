@@ -100,7 +100,8 @@ export default function VendorSearchBar() {
               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
               placeholder="Search vendors..."
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%' }}
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%', caretColor: '#fff' }}
+              placeholderStyle={{ color: 'rgba(255,255,255,0.45)' }}
             />
           </div>
 
