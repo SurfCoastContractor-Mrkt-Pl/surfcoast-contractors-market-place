@@ -3,6 +3,7 @@ import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
+import HomeInteractiveMap from "@/components/home/HomeInteractiveMap";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 import InstagramQRCode from "@/components/social/InstagramQRCode";
@@ -116,6 +117,7 @@ export default function Home() {
         </div>
 
         <VendorSearchBar />
+        <HomeInteractiveMap />
         <FarmersMarketBanner />
       </main>
 
