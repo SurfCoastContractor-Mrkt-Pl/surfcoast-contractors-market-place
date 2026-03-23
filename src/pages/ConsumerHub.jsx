@@ -68,7 +68,21 @@ export default function ConsumerHub() {
 
         {/* Tabs */}
         <Tabs defaultValue="badges" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList 
+            className="grid w-full grid-cols-6"
+            style={{
+              backgroundImage: `
+                linear-gradient(90deg, 
+                  #8B4513 0%, #A0522D 10%, #8B4513 20%, #A0522D 30%, 
+                  #8B4513 40%, #A0522D 50%, #8B4513 60%, #A0522D 70%, 
+                  #8B4513 80%, #A0522D 90%, #8B4513 100%),
+                linear-gradient(0deg, 
+                  rgba(0,0,0,0.1) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)
+              `,
+              backgroundBlendMode: 'multiply',
+              borderRadius: '8px'
+            }}
+          >
             <TabsTrigger value="badges" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges</span>
