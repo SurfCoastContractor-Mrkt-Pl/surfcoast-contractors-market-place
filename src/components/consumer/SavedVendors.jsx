@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, MapPin, Star, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import EmptyStateIllustration from './EmptyStateIllustration';
 
 export default function SavedVendors({ userEmail }) {
   const queryClient = useQueryClient();
