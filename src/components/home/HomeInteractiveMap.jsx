@@ -151,11 +151,11 @@ export default function HomeInteractiveMap() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+          <h3 className="font-bold text-white text-lg flex items-center gap-2">
             <MapPin className="w-5 h-5" />
             Nearby Vendors
           </h3>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-sm text-slate-300 mt-0.5">
             {nearbyShops.length} vendor{nearbyShops.length !== 1 ? 's' : ''} within {nearbyRadius} km
           </p>
         </div>
