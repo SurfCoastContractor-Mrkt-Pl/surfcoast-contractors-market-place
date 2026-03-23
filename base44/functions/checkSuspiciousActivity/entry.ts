@@ -56,6 +56,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing customer email' }, { status: 400 });
     }
 
+    // Authorization: only admin, internal service, or the account owner can check suspicious activity
+    if (!isValidInternalCall && user.role !== 'admin' && user.email !== customer_email) {
+      return Response.json({ error: 'Forbidden: Cannot check activity for other accounts' }, { status: 403 });
+    }
+
     // ── Payload integrity fingerprint ────────────────────────────────────────
     const payloadStr = JSON.stringify({ customer_email, ip_country, ts: new Date().toISOString() });
     const payloadHash = await sha256(payloadStr);
