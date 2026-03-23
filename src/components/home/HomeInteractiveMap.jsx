@@ -29,7 +29,7 @@ const SHOP_TYPE_LABELS = {
   both: 'Both',
 };
 
-// Custom icons for different shop types
+// Custom icons for different entity types
 const createShopIcon = (shopType) => {
   const colors = {
     farmers_market: '#10b981',
@@ -40,6 +40,17 @@ const createShopIcon = (shopType) => {
   return L.divIcon({
     html: `<div style="background-color: ${colors[shopType] || '#3b82f6'}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
       <span style="color: white; font-size: 18px;">🛍️</span>
+    </div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16],
+  });
+};
+
+const createContractorIcon = () => {
+  return L.divIcon({
+    html: `<div style="background-color: #ef4444; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+      <span style="color: white; font-size: 18px;">🔧</span>
     </div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 16],
