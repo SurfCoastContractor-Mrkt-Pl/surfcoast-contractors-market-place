@@ -70,8 +70,8 @@ export default function Home() {
           <div
             onMouseEnter={() => setHoveredCard("customer")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(45,140,200,0.4)", transform:hoveredCard==="customer"?"translateY(-2px)":"none", boxShadow:hoveredCard==="customer"?"0 12px 32px rgba(29,111,164,0.25)":"0 4px 16px rgba(0,0,0,0.3)" }}
-          >
+            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(45,140,200,0.4)", transform:hoveredCard==="customer"?"translateY(-2px)":"none", boxShadow:hoveredCard==="customer"?"0 0 32px rgba(29,111,164,0.4), 0 12px 32px rgba(29,111,164,0.25)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+           >
             <HomeIcon size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#1d6fa4" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"20px", fontWeight:"700", margin:"0 0 12px", color:"#fff" }}>Find a Pro</h2>
             <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.7)", margin:"0 0 16px", lineHeight:"1.6", flex:1 }}>Post your project, get competitive quotes, and hire a vetted tradesperson near you.</p>
