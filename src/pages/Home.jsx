@@ -115,6 +115,7 @@ export default function Home() {
           </div>
         </div>
 
+        <VendorSearchBar />
         <FarmersMarketBanner />
       </main>
 
