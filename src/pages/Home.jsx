@@ -100,9 +100,9 @@ export default function Home() {
 
           {/* Right Card - Join as a Pro */}
           <div
-            onMouseEnter={() => setHoveredCard("contractor")}
-            onMouseLeave={() => setHoveredCard(null)}
-            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(217,119,6,0.4)", transform:hoveredCard==="contractor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="contractor"?"0 12px 32px rgba(217,119,6,0.2)":"0 4px 16px rgba(0,0,0,0.3)" }}
+           onMouseEnter={() => setHoveredCard("contractor")}
+           onMouseLeave={() => setHoveredCard(null)}
+           style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(217,119,6,0.4)", transform:hoveredCard==="contractor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="contractor"?"0 0 32px rgba(217,119,6,0.5), 0 12px 32px rgba(217,119,6,0.2)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
           >
             <Wrench size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#d97706" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"20px", fontWeight:"700", margin:"0 0 12px", color:"#fff" }}>Join as a Pro</h2>
