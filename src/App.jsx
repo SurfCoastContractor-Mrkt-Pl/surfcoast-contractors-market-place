@@ -12,6 +12,7 @@ import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import About from './pages/About';
+import ConsumerMarketMap from './pages/ConsumerMarketMap';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
