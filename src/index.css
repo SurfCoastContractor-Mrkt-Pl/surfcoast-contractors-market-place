@@ -129,4 +129,13 @@
   .marketplace-spacing {
     letter-spacing: 0.15em;
   }
+
+  /* Wood Grain Texture */
+  .wood-grain {
+    background-image: 
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><pattern id="wood" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse"><rect width="200" height="200" fill="%236B4423"/><path d="M0 20 Q 10 22, 20 20 T 40 20 T 60 20" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/><path d="M0 50 Q 12 53, 24 50 T 48 50 T 72 50" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" fill="none"/><path d="M0 80 Q 15 83, 30 80 T 60 80 T 90 80" stroke="rgba(255,255,255,0.07)" stroke-width="1" fill="none"/><path d="M0 110 Q 11 113, 22 110 T 44 110 T 66 110" stroke="rgba(255,255,255,0.09)" stroke-width="0.8" fill="none"/><path d="M0 140 Q 13 143, 26 140 T 52 140 T 78 140" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/><path d="M0 170 Q 9 172, 18 170 T 36 170 T 54 170" stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/></pattern></defs><rect width="200" height="200" fill="%236B4423"/><rect width="200" height="200" fill="url(%23wood)"/></svg>'),
+      linear-gradient(90deg, #8B6F47 0%, #7A5C2F 25%, #8B6F47 50%, #7A5C2F 75%, #8B6F47 100%);
+    background-blend-mode: multiply;
+    position: relative;
+  }
 }
