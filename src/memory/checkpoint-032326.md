@@ -67,8 +67,23 @@
 
 ---
 
+## Routing Fix — Home Page White Nav Bar (2026-03-23)
+
+**Problem:** On the live published app, a white Layout nav bar was appearing over the Home page.
+
+**Root cause:** `"Home": Home` was included in the `PAGES` object in `pages.config.js`. The `pagesConfig` loop in `App.jsx` was creating a **second Layout-wrapped route** at `/Home`, and the `mainPage: "Home"` setting was causing the published app to render the Layout-wrapped version instead of the standalone `<Route path="/" element={<Home />} />`.
+
+**Fix applied:**
+- Removed `"Home": Home` from the `PAGES` object in `pages.config.js`
+- Removed the `import Home from './pages/Home'` from `pages.config.js`
+- Set `mainPage: null` in `pagesConfig` (Home is handled exclusively by the explicit route in `App.jsx`)
+- Home is now **only** served by: `<Route path="/" element={<Home />} />` in `App.jsx` — no Layout wrapper
+
+---
+
 ## Platform Notes
 - Stripe: Live mode, real payments active
 - Auth: App is public (no login required for browsing)
 - Routing: `pages.config.js` is NOT auto-generated — all new routes must be added manually as `<Route>` elements in `App.jsx`
+- **IMPORTANT:** Do NOT add `Home` back to the `PAGES` object in `pages.config.js` — it must remain only in the explicit route in `App.jsx`
 - Test DB available (set `data_env="dev"` for test operations)
