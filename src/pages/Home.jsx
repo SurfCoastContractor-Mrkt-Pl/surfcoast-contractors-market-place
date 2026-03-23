@@ -150,7 +150,15 @@ export default function Home() {
         </div>
       </div>
 
-      <footer style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", padding:"8px clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)", flexShrink:0 }}>
+      <footer style={{ position:"relative", zIndex:2, padding:"clamp(16px, 3vw, 24px) clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
+        <div style={{ maxWidth:"900px", margin:"0 auto", display:"flex", flexDirection:"column", alignItems:"center", gap:"8px", marginBottom:"12px" }}>
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"2px" }}>
+            <span style={{ fontSize:"22px", fontWeight:"800", color:"#ffffff", letterSpacing:"-0.5px", lineHeight:1 }}>SurfCoast</span>
+            <span style={{ fontSize:"9px", fontWeight:"700", letterSpacing:"3px", color:"rgba(255,255,255,0.5)", textTransform:"uppercase", lineHeight:1 }}>MARKETPLACE</span>
+          </div>
+          <p style={{ color:"rgba(255,255,255,0.45)", fontSize:"12px", textAlign:"center", margin:0 }}>Premium marketplace connecting exceptional professionals with discerning clients.</p>
+        </div>
+        <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.4)" }}>
         <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
         <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
         <a href={`${getAppBaseUrl()}/Terms`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Terms</a>
