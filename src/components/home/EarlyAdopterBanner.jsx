@@ -53,10 +53,10 @@ export default function EarlyAdopterBanner() {
         <Zap size={20} style={{ color: '#3b82f6', flexShrink: 0 }} />
         <div>
           <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>
-            🎉 Early Adopter Spots Available
+            🎉 Founding Member Spots Available
           </h3>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', margin: '4px 0 0', fontWeight: 500 }}>
-            Be part of our founding community and unlock exclusive benefits
+            Be part of our founding community and get 1 year free
           </p>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function EarlyAdopterBanner() {
       </div>
 
       <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
-        <strong style={{ color: '#fff' }}>{spotsLeft}</strong> spots left • First 100 get 1.5% platform fees for life
+        <strong style={{ color: '#fff' }}>{spotsLeft}</strong> spots left • First 100 members get 1 year free
       </p>
     </div>
   );
