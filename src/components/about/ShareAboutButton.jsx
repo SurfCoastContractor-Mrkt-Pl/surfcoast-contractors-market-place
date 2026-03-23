@@ -29,8 +29,9 @@ const PLATFORMS = [
     label: 'Instagram',
     icon: Instagram,
     color: '#E1306C',
-    hint: 'Copy link → paste in Story/Reel',
-    getUrl: () => null, // Instagram doesn't support direct web share — copy link instead
+    hint: 'Open Instagram to share',
+    getUrl: () => `https://www.instagram.com/`,
+    copyOnClick: true, // also copy caption to clipboard
   },
   {
     id: 'tiktok',
