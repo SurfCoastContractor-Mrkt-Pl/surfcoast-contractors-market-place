@@ -252,7 +252,7 @@ export default function ContractorLocationSearch() {
             ) : (
               <div style={{ textAlign: "center", padding: "20px" }}>
                 <p style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: "14px", margin: "0" }}>
-                  No contractors found in "{location}". Try a different location or browse all contractors.
+                  No {searchType === "contractors" ? "contractors" : searchType === "market-booths" ? "market booths" : searchType === "farmers-markets" ? "farmers markets" : searchType === "vendors" ? "vendors" : "swapmeets"} found in "{location}". Try a different location.
                 </p>
               </div>
             )}
