@@ -251,16 +251,7 @@ export default function MarketShopProfile() {
                 )}
               </div>
 
-              {reviews.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < Math.round(parseFloat(avgRating)) ? 'fill-amber-400 text-amber-400' : 'text-white/30'}`} />
-                    ))}
-                  </div>
-                  <span className="text-sm text-white/70">{avgRating} ({reviews.length})</span>
-                </div>
-              )}
+
 
               {/* Social Icons */}
               {shop.social_links && Object.keys(shop.social_links).some(k => shop.social_links[k]) && (
