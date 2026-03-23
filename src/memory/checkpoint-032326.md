@@ -33,13 +33,15 @@
 ## Active Pages & Key Components
 
 ### Home page (`pages/Home`)
-- Full-screen dark overlay with beach/ocean BG
+- Outer wrapper uses `position:"fixed", inset:0, overflowY:"auto", overflowX:"hidden"` to fill the full viewport with zero gap, bypassing any parent layout constraints
+- Full-screen dark overlay with beach/ocean BG (`position:"fixed", inset:0`)
 - Sticky header with stacked logo + Enter dropdown (Login/Signup, About Us)
 - Two CTA cards: "Find a Pro" (blue) + "Join as a Pro" (amber)
 - CampaignAdBanner + FarmersMarketBanner components
 - Trust bar with 4 icons
 - Social QR section (Instagram, Facebook, Facebook Group)
 - Footer with: brand logo block → links row → legal disclaimer strip
+- **NOT wrapped in LayoutWrapper** in App.jsx — standalone route `<Route path="/" element={<Home />} />`
 
 ### Layout footer (all non-Home pages)
 - `bg-slate-800` dark footer
