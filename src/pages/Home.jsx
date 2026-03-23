@@ -5,6 +5,7 @@ import VendorSearchBar from "@/components/home/VendorSearchBar";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import HomeInteractiveMap from "@/components/home/HomeInteractiveMap";
+import FeaturedVendors from "@/components/home/FeaturedVendors";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 import InstagramQRCode from "@/components/social/InstagramQRCode";
@@ -158,6 +159,7 @@ export default function Home() {
           </div>
         </div>
 
+        <FeaturedVendors />
         <VendorSearchBar />
         <HomeInteractiveMap />
         <FarmersMarketBanner />
