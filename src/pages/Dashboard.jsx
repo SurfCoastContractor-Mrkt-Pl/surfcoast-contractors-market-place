@@ -66,7 +66,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
         <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
       </div>
     );
@@ -74,7 +74,7 @@ export default function Dashboard() {
 
   if (!activeProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
         <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
       </div>
     );
