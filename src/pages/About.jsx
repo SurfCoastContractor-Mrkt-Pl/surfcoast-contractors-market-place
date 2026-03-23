@@ -188,6 +188,11 @@ export default function About() {
                   </span>
                 ))}
               </div>
+
+              {/* Share */}
+              <div className="pt-6">
+                <ShareAboutButton />
+              </div>
             </div>
           </div>
         </div>
