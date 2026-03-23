@@ -35,10 +35,12 @@ export default function Wishlist() {
           ))}
         </div>
       ) : (
-        <Card className="p-8 text-center">
-          <ShoppingCart className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-600">Your wishlist is empty. Add items to save them for later!</p>
-        </Card>
+        <EmptyStateIllustration 
+          icon={ShoppingCart}
+          title="Wishlist Empty"
+          description="Add items to your wishlist while browsing to save them for later."
+          actionLabel="Start Shopping"
+        />
       )}
     </div>
   );
