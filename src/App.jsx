@@ -94,6 +94,11 @@ const AuthenticatedApp = () => {
           <SearchAnalytics />
         </LayoutWrapper>
       } />
+      <Route path="/ContractorInquiries" element={
+        <LayoutWrapper currentPageName="ContractorInquiries">
+          <ContractorInquiries />
+        </LayoutWrapper>
+      } />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
