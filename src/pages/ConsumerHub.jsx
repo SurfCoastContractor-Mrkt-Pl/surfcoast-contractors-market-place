@@ -82,28 +82,28 @@ export default function ConsumerHub() {
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.3)'
             }}
           >
-            <TabsTrigger value="badges" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="badges" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges</span>
             </TabsTrigger>
-            <TabsTrigger value="purchases" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="purchases" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Shopping</span>
               <span className="sm:hidden">Shop</span>
             </TabsTrigger>
-            <TabsTrigger value="saved" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="saved" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <Heart className="w-4 h-4" />
               <span className="hidden sm:inline">Saved</span>
             </TabsTrigger>
-            <TabsTrigger value="wishlist" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="wishlist" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Wishlist</span>
             </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="orders" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Orders</span>
             </TabsTrigger>
-            <TabsTrigger value="payment" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+            <TabsTrigger value="payment" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <CreditCard className="w-4 h-4" />
               <span className="hidden sm:inline">Payment</span>
             </TabsTrigger>
