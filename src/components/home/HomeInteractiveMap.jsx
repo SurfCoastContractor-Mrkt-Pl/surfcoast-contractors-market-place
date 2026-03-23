@@ -6,7 +6,7 @@ import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Navigation, Filter, X, Loader2, AlertCircle, Store } from 'lucide-react';
+import { MapPin, Navigation, Filter, X, Loader2, AlertCircle, Store, Wrench } from 'lucide-react';
 
 const CATEGORY_LABELS = {
   electronics: 'Electronics',
