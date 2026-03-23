@@ -5,6 +5,7 @@ import { MapPin, Star, ChevronLeft, CalendarDays, Loader2, Send, Leaf, Tag, Chec
 import PhotoGalleryLightbox from '@/components/marketshop/PhotoGalleryLightbox';
 import MarketShopProfileSchedule from '@/components/marketshop/MarketShopProfileSchedule';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
+import ConsumerVendorMessaging from '@/components/consumer/ConsumerVendorMessaging';
 
 const SHOP_TYPE_ICONS = {
   farmers_market: Leaf,
@@ -102,6 +103,8 @@ export default function MarketShopProfile() {
   const [submittingInquiry, setSubmittingInquiry] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [userEmail, setUserEmail] = useState(null);
+  const [userName, setUserName] = useState('');
   
   const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 0, title: '', body: '' });
   const [inquiryForm, setInquiryForm] = useState({ name: '', email: '', message: '' });
@@ -109,6 +112,12 @@ export default function MarketShopProfile() {
   useEffect(() => {
     const load = async () => {
       try {
+        const user = await base44.auth.me();
+        if (user) {
+          setUserEmail(user.email);
+          setUserName(user.full_name || user.email);
+        }
+
         const shops = await base44.entities.MarketShop.filter({ custom_slug: id });
         setShop(shops?.[0] || null);
         
@@ -505,9 +514,18 @@ export default function MarketShopProfile() {
           </div>
         </div>
 
-        {/* Contact Vendor Form */}
+        {/* Messaging Section */}
         <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-bold mb-4">Contact Vendor</h2>
+          <h2 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
+            <MessageSquare className="w-5 h-5" />
+            Direct Message Vendor
+          </h2>
+          <ConsumerVendorMessaging shop={shop} userEmail={userEmail} userName={userName} />
+        </div>
+
+        {/* Contact Vendor Form (Legacy) */}
+        <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Alternative Contact</h2>
           <form onSubmit={handleInquirySubmit} className="space-y-3 sm:space-y-4">
             <input
               type="text"
