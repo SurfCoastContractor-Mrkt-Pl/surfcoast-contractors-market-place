@@ -49,6 +49,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/Home" element={<Navigate to="/" replace />} />
       <Route path="/BoothsAndVendorsMap" element={
         <LayoutWrapper currentPageName="BoothsAndVendorsMap">
           <BoothsAndVendorsMap />
