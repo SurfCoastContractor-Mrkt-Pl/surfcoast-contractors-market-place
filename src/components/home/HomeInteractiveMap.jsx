@@ -393,7 +393,34 @@ export default function HomeInteractiveMap() {
       </Card>
 
       {/* Results List */}
-      {nearbyShops.length === 0 ? (
+      {entityTypeFilter === 'contractors' || (entityTypeFilter === 'all' && nearbyShops.length === 0 && nearbyContractors.length > 0) ? (
+        nearbyContractors.length === 0 ? (
+          <Card className="p-8 text-center">
+            <Wrench className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-600 font-medium">No contractors found</p>
+            <p className="text-sm text-slate-500 mt-1">Try browsing in a different area.</p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {nearbyContractors.slice(0, 6).map((contractor) => (
+              <Card key={`contractor-list-${contractor.id}`} className="p-3 hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = `/contractor/${contractor.id}`}>
+                <div className="flex gap-3">
+                  {contractor.photo_url && (
+                    <img src={contractor.photo_url} alt={contractor.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-slate-900 text-sm truncate">{contractor.name}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{contractor.location}</p>
+                    <div className="flex gap-1 flex-wrap mt-1">
+                      <Badge className="text-xs">{contractor.line_of_work?.replace(/_/g, ' ') || 'Professional'}</Badge>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )
+      ) : nearbyShops.length === 0 ? (
         <Card className="p-8 text-center">
           <Store className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-600 font-medium">No vendors found</p>
@@ -406,17 +433,10 @@ export default function HomeInteractiveMap() {
             const lon1 = userLocation.lng;
             const lat2 = parseFloat(shop.latitude);
             const lon2 = parseFloat(shop.longitude);
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distance = (R * c * 0.621371).toFixed(1); // Convert km to miles
+            const distance = (calculateDistance(lat1, lon1, lat2, lon2) * 0.621371).toFixed(1);
 
             return (
-              <Card key={shop.id} className="p-3 hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}>
+              <Card key={`shop-list-${shop.id}`} className="p-3 hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}>
                 <div className="flex gap-3">
                   {shop.logo_url && (
                     <img src={shop.logo_url} alt={shop.shop_name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
