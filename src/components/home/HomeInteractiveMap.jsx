@@ -317,40 +317,77 @@ export default function HomeInteractiveMap() {
             <Popup>Your Location</Popup>
           </Marker>
 
-          {/* Shop markers */}
-          {nearbyShops.map((shop) => {
-            if (!shop.latitude || !shop.longitude) return null;
-            const lat = parseFloat(shop.latitude);
-            const lng = parseFloat(shop.longitude);
+          {/* Vendor markers */}
+          {(entityTypeFilter === 'all' || entityTypeFilter === 'vendors') && nearbyShops.map((shop) => {
+           if (!shop.latitude || !shop.longitude) return null;
+           const lat = parseFloat(shop.latitude);
+           const lng = parseFloat(shop.longitude);
 
-            return (
-              <Marker
-                key={shop.id}
-                position={[lat, lng]}
-                icon={createShopIcon(shop.shop_type)}
-              >
-                <Popup>
-                  <div className="space-y-2 min-w-[200px]">
-                    <p className="font-semibold text-slate-900">{shop.shop_name}</p>
-                    <p className="text-xs text-slate-600">{shop.city}, {shop.state}</p>
-                    <div className="flex gap-1 flex-wrap">
-                      <Badge variant="outline" className="text-xs">
-                        {SHOP_TYPE_LABELS[shop.shop_type] || shop.shop_type}
-                      </Badge>
-                    </div>
-                    {shop.products_summary && (
-                      <p className="text-xs text-slate-700">{shop.products_summary}</p>
-                    )}
-                    <button
-                      onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}
-                      className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-2"
-                    >
-                      View Profile →
-                    </button>
-                  </div>
-                </Popup>
-              </Marker>
-            );
+           return (
+             <Marker
+               key={`shop-${shop.id}`}
+               position={[lat, lng]}
+               icon={createShopIcon(shop.shop_type)}
+             >
+               <Popup>
+                 <div className="space-y-2 min-w-[200px]">
+                   <p className="font-semibold text-slate-900">{shop.shop_name}</p>
+                   <p className="text-xs text-slate-600">{shop.city}, {shop.state}</p>
+                   <div className="flex gap-1 flex-wrap">
+                     <Badge variant="outline" className="text-xs">
+                       {SHOP_TYPE_LABELS[shop.shop_type] || shop.shop_type}
+                     </Badge>
+                   </div>
+                   {shop.products_summary && (
+                     <p className="text-xs text-slate-700">{shop.products_summary}</p>
+                   )}
+                   <button
+                     onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}
+                     className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-2"
+                   >
+                     View Profile →
+                   </button>
+                 </div>
+               </Popup>
+             </Marker>
+           );
+          })}
+
+          {/* Contractor markers - placeholder positions based on location string */}
+          {(entityTypeFilter === 'all' || entityTypeFilter === 'contractors') && nearbyContractors.map((contractor) => {
+           // Generate a consistent but scattered position based on location hash
+           const hash = contractor.location.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+           const offsetLat = (hash % 100) / 1000 - 0.05;
+           const offsetLng = ((hash * 7) % 100) / 1000 - 0.05;
+           const lat = userLocation.lat + offsetLat;
+           const lng = userLocation.lng + offsetLng;
+
+           return (
+             <Marker
+               key={`contractor-${contractor.id}`}
+               position={[lat, lng]}
+               icon={createContractorIcon()}
+             >
+               <Popup>
+                 <div className="space-y-2 min-w-[200px]">
+                   <p className="font-semibold text-slate-900">{contractor.name}</p>
+                   <p className="text-xs text-slate-600">{contractor.location}</p>
+                   {contractor.line_of_work && (
+                     <Badge className="text-xs">{contractor.line_of_work.replace(/_/g, ' ')}</Badge>
+                   )}
+                   {contractor.rating && (
+                     <p className="text-xs text-slate-700">⭐ {contractor.rating.toFixed(1)} ({contractor.reviews_count || 0})</p>
+                   )}
+                   <button
+                     onClick={() => window.location.href = `/contractor/${contractor.id}`}
+                     className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-2"
+                   >
+                     View Profile →
+                   </button>
+                 </div>
+               </Popup>
+             </Marker>
+           );
           })}
         </MapContainer>
       </Card>
