@@ -30,6 +30,12 @@ Deno.serve(async (req) => {
       }
       // For single contractor checks, verify the user is authorized to view this contractor's data
       // Only admins or the contractor themselves can check hours
+      const contractor = await base44.asServiceRole.entities.Contractor.filter({ id: contractorId });
+      if (contractor && contractor.length > 0) {
+        if (user.role !== 'admin' && user.email !== contractor[0].email) {
+          return Response.json({ error: 'Forbidden: Cannot view compliance data for other contractors' }, { status: 403 });
+        }
+      }
     }
 
     // If automation call (no contractorId), check ALL minors
