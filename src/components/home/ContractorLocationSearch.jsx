@@ -167,7 +167,7 @@ export default function ContractorLocationSearch() {
             ) : results.length > 0 ? (
               <div>
                 <p style={{ fontSize: "13px", fontWeight: "600", color: "rgba(255, 255, 255, 0.8)", marginBottom: "12px" }}>
-                  Found {results.length} contractor{results.length !== 1 ? "s" : ""}
+                  Found {results.length} {searchType === "contractors" ? "contractor" : searchType === "market-booths" ? "market booth" : searchType === "farmers-markets" ? "farmers market" : searchType === "vendors" ? "vendor" : "swapmeet"}{results.length !== 1 ? "s" : ""}
                 </p>
                 <div style={{ display: "grid", gridTemplateColumns: window.innerWidth < 600 ? "1fr" : "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}>
                   {results.slice(0, 6).map((contractor) => (
