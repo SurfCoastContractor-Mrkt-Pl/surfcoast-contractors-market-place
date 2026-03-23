@@ -14,8 +14,9 @@ Deno.serve(async (req) => {
     const internalKey = req.headers.get('x-internal-service-key');
     const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
 
+    let user = null;
     if (!isValidInternalCall) {
-      const user = await base44.auth.me().catch(() => null);
+      user = await base44.auth.me().catch(() => null);
       if (!user) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
@@ -29,6 +30,11 @@ Deno.serve(async (req) => {
         { error: 'Missing required fields' },
         { status: 400 }
       );
+    }
+
+    // Authorization: only admin, internal service, or the account owner can check fraud for their account
+    if (!isValidInternalCall && user.role !== 'admin' && user.email !== customer_email) {
+      return Response.json({ error: 'Forbidden: Cannot check fraud for other accounts' }, { status: 403 });
     }
 
     const now = new Date();
