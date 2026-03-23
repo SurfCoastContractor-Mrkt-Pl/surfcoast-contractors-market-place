@@ -81,6 +81,45 @@
 
 ---
 
+## Real-Time Messaging System (2026-03-23)
+
+### Entity: ConsumerVendorMessage
+Real-time messaging restricted to **consumers without contractor/customer accounts** and **market vendors/booth operators**.
+
+### Components & Logic:
+- **pages/Messaging.jsx**: Main messaging hub with eligibility checks
+  - Validates user: no contractor + no customer accounts, OR has MarketShop
+  - Blocks ineligible users with full-screen message
+  - Fetches conversations grouping by consumer+vendor pair
+  - Real-time subscriptions to `ConsumerVendorMessage` events
+  
+- **components/messaging/MessageConversation.jsx**: Chat interface
+  - Text-only messaging (file attachments removed for simplicity)
+  - Tracks read status per message
+  - Auto-marks received messages as read
+  
+- **components/messaging/NewMessageForm.jsx**: New message composer
+  - Search MarketShop vendors by business name
+  - Creates ConsumerVendorMessage records with shop context
+
+### User Eligibility Rules:
+✅ **CAN message:** Pure consumers (no contractor/customer profile) + Market vendors
+❌ **CANNOT message:** Contractors, customers (even if they also own a market shop for vendor restriction)
+
+### Fields Used:
+- `shop_id`, `shop_name`: Vendor identification
+- `consumer_email`, `consumer_name`: Consumer info
+- `vendor_email`: Vendor info
+- `message`: Text content
+- `message_type`: Set to 'other' (can extend: availability, custom_order, event_details)
+- `read`: Read status
+- `created_date`: Timestamp
+
+### Routes:
+- Messaging page NOT YET ADDED to App.jsx — add explicit `<Route path="/Messaging" element={<LayoutWrapper><Messaging /></LayoutWrapper>} />` if needed
+
+---
+
 ## Platform Notes
 - Stripe: Live mode, real payments active
 - Auth: App is public (no login required for browsing)
