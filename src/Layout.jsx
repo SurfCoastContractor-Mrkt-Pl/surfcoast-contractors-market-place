@@ -240,7 +240,7 @@ export default function Layout({ children, currentPageName }) {
                 return (
                   <Link
                     key={link.page}
-                    to={createPageUrl(link.page)}
+                    to={link.page === '/' ? '/' : createPageUrl(link.page)}
                     onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}
                   >
                     <div className={`flex items-center gap-3 p-3 rounded-lg ${currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
