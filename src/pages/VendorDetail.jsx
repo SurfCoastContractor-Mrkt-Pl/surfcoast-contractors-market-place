@@ -8,13 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import ReviewForm from '@/components/reviews/ReviewForm';
 import ReviewsDisplay from '@/components/reviews/ReviewsDisplay';
 import BookingRequestForm from '@/components/booking/BookingRequestForm';
-import { MapPin, Calendar, MessageCircle, ArrowLeft, Phone, Mail } from 'lucide-react';
+import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
+import { MapPin, Calendar, MessageCircle, ArrowLeft, Phone, Mail, ClipboardList } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function VendorDetail() {
   const { vendorId } = useParams();
   const [reviewOpen, setReviewOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [serviceRequestOpen, setServiceRequestOpen] = useState(false);
 
   const { data: vendor, isLoading: vendorLoading } = useQuery({
     queryKey: ['vendor', vendorId],
@@ -188,6 +190,14 @@ export default function VendorDetail() {
                   <Calendar className="w-4 h-4 mr-2" />
                   Book a Visit
                 </Button>
+                <Button
+                  onClick={() => setServiceRequestOpen(true)}
+                  variant="outline"
+                  className="w-full"
+                >
+                  <ClipboardList className="w-4 h-4 mr-2" />
+                  Service Request
+                </Button>
               </div>
 
               {/* Hours */}
@@ -224,6 +234,13 @@ export default function VendorDetail() {
         isOpen={bookingOpen}
         onClose={() => setBookingOpen(false)}
       />
+      {vendor && (
+        <ServiceRequestForm
+          isOpen={serviceRequestOpen}
+          onClose={() => setServiceRequestOpen(false)}
+          professional={{ ...vendor, type: 'vendor' }}
+        />
+      )}
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft } from 'lucide-react';
+import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
 
 export default function ContractorPublicProfile() {
   const { contractorId } = useParams();
@@ -13,6 +14,7 @@ export default function ContractorPublicProfile() {
   const [portfolio, setPortfolio] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [serviceRequestOpen, setServiceRequestOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -159,13 +161,22 @@ export default function ContractorPublicProfile() {
                 </div>
               </div>
 
-              <a 
-                href={`/QuoteRequestDemo?contractor_id=${contractorId}`}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
-              >
-                <MessageSquare className="w-5 h-5" />
-                Request a Quote
-              </a>
+              <div className="flex flex-col gap-3">
+                <a 
+                  href={`/QuoteRequestDemo?contractor_id=${contractorId}`}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  Request a Quote
+                </a>
+                <button
+                  onClick={() => setServiceRequestOpen(true)}
+                  className="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors border border-slate-600"
+                >
+                  <ClipboardList className="w-5 h-5" />
+                  Submit Service Request
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -270,6 +281,15 @@ export default function ContractorPublicProfile() {
           </div>
         )}
       </main>
+
+      {/* Service Request Modal */}
+      {contractor && (
+        <ServiceRequestForm
+          isOpen={serviceRequestOpen}
+          onClose={() => setServiceRequestOpen(false)}
+          professional={{ ...contractor, type: 'contractor' }}
+        />
+      )}
 
       {/* Image Lightbox */}
       {selectedImage && (
