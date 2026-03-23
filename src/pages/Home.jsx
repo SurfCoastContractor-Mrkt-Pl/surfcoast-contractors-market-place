@@ -27,7 +27,7 @@ export default function Home() {
   };
 
   return (
-    <div style={{ position:"relative", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628", width:"100vw", marginLeft:"calc(-50vw + 50%)" }}>
+    <div style={{ position:"relative", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628", width:"100vw", marginLeft:"calc(-50vw + 50%)", marginTop:0 }}>
       <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
       <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.72)", zIndex:1 }} />
 
