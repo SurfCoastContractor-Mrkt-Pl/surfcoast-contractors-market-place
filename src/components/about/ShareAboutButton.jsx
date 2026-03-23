@@ -80,17 +80,15 @@ export default function ShareAboutButton() {
     }
   };
 
-  const handleNativeShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'SurfCoast Marketplace — About Us',
-          text: SHARE_TEXT,
-          url: PAGE_URL,
-        });
-      } catch {
-        // user cancelled
-      }
+  const handleNativeShare = () => {
+    // On mobile with native share support, use it; otherwise show dropdown immediately
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile && navigator.share) {
+      navigator.share({
+        title: 'SurfCoast Marketplace — About Us',
+        text: SHARE_TEXT,
+        url: PAGE_URL,
+      }).catch(() => {});
     } else {
       setOpen(true);
     }
