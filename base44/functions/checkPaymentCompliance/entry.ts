@@ -8,8 +8,9 @@ Deno.serve(async (req) => {
     const internalKey = req.headers.get('x-internal-service-key');
     const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
 
+    let user = null;
     if (!isValidInternalCall) {
-      const user = await base44.auth.me().catch(() => null);
+      user = await base44.auth.me().catch(() => null);
       if (!user) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
@@ -22,6 +23,11 @@ Deno.serve(async (req) => {
         { error: 'Missing contractor_email' },
         { status: 400 }
       );
+    }
+
+    // Authorization: only admin or the contractor themselves can check compliance for an email
+    if (!isValidInternalCall && user.role !== 'admin' && user.email !== contractor_email) {
+      return Response.json({ error: 'Forbidden: Cannot check compliance for other contractors' }, { status: 403 });
     }
 
     // Fetch contractor
