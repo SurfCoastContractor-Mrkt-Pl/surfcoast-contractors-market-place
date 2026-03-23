@@ -67,11 +67,19 @@ export default function ContractorSignup() {
         throw new Error(data.error || 'Signup failed');
       }
 
+      // Check and grant early adopter status
+      const earlyAdopterRes = await base44.functions.invoke('grantEarlyAdopterWaiver', {
+        email: formData.email,
+        full_name: formData.full_name,
+        signup_type: 'contractor',
+      });
+
       base44.analytics.track({
         eventName: 'contractor_signup_success',
         properties: {
           trade_specialty: formData.trade_specialty,
           location: formData.location,
+          early_adopter: earlyAdopterRes.data.qualified,
         },
       });
 
