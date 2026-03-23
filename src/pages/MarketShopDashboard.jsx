@@ -15,9 +15,11 @@ import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
 import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
 import LocationRatingForm from '@/components/locations/LocationRatingForm';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
+import VendorAnalyticsDashboard from '@/components/marketshop/VendorAnalyticsDashboard';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
+  { key: 'analytics', label: 'Analytics', icon: BarChart3 },
   { key: 'markets', label: 'My Markets', icon: MapPin },
   { key: 'reviews', label: 'Reviews', icon: Star },
   { key: 'ratings', label: 'Location Ratings', icon: BarChart3 },
@@ -180,6 +182,7 @@ export default function MarketShopDashboard() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
           {activeTab === 'listings' && <MarketShopListings shopId={shop.id} />}
+          {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
             shop.subscription_status === 'active' ? (
