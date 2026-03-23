@@ -86,13 +86,13 @@ export default function HomeInteractiveMap() {
         },
         (err) => {
           console.warn('Geolocation error:', err);
-          // Fallback to San Francisco area
-          setUserLocation({ lat: 37.7749, lng: -122.4194 });
+          // Fallback to San Diego area
+           setUserLocation({ lat: 32.7157, lng: -117.1611 });
           setLocationError('Using default location. Enable geolocation for better results.');
         }
       );
     } else {
-      setUserLocation({ lat: 37.7749, lng: -122.4194 });
+      setUserLocation({ lat: 32.7157, lng: -117.1611 });
       setLocationError('Geolocation not supported.');
     }
   }, []);
