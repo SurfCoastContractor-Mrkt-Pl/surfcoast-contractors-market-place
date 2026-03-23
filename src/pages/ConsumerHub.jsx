@@ -70,18 +70,16 @@ export default function ConsumerHub() {
         {/* Tabs */}
         <Tabs defaultValue="badges" className="space-y-6">
           <TabsList 
-            className="grid w-full grid-cols-6"
+            className="grid w-full grid-cols-6 relative overflow-hidden"
             style={{
               backgroundImage: `
-                linear-gradient(90deg, 
-                  #8B4513 0%, #A0522D 10%, #8B4513 20%, #A0522D 30%, 
-                  #8B4513 40%, #A0522D 50%, #8B4513 60%, #A0522D 70%, 
-                  #8B4513 80%, #A0522D 90%, #8B4513 100%),
-                linear-gradient(0deg, 
-                  rgba(0,0,0,0.1) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="wood" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="%236B4423"/><path d="M0 20 Q 5 22, 10 20 T 20 20" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none"/><path d="M0 35 Q 8 37, 15 35 T 30 35" stroke="rgba(255,255,255,0.08)" stroke-width="0.4" fill="none"/><path d="M0 50 Q 6 52, 12 50 T 25 50" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" fill="none"/><path d="M0 65 Q 7 67, 14 65 T 28 65" stroke="rgba(255,255,255,0.09)" stroke-width="0.4" fill="none"/><path d="M0 80 Q 5 82, 11 80 T 22 80" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none"/><rect width="100" height="100" fill="url(%23grain)" opacity="0.3"/></pattern><linearGradient id="grain" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgba(139,69,19,0.3)"/><stop offset="50%" style="stop-color:rgba(160,82,45,0.2)"/><stop offset="100%" style="stop-color:rgba(101,51,17,0.3)"/></linearGradient></defs><rect width="100" height="100" fill="%236B4423"/><rect width="100" height="100" fill="url(%23wood)"/></svg>')`,
+                linear-gradient(90deg, #8B6F47 0%, #7A5C2F 25%, #8B6F47 50%, #7A5C2F 75%, #8B6F47 100%),
+                linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.3) 100%)
               `,
-              backgroundBlendMode: 'multiply',
-              borderRadius: '8px'
+              backgroundBlendMode: 'multiply, overlay',
+              borderRadius: '8px',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.3)'
             }}
           >
             <TabsTrigger value="badges" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
