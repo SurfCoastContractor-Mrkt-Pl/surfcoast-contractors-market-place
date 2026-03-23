@@ -4,15 +4,23 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Allow scheduled automations (unauthenticated) OR authenticated admin users only
-    const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      const user = await base44.auth.me();
-      if (user?.role !== 'admin') {
-        return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    // Verify internal service key (for scheduled automations) OR admin user
+    const authHeader = req.headers.get('Authorization');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const hasValidServiceKey = authHeader && expectedKey && authHeader === `Bearer ${expectedKey}`;
+
+    if (!hasValidServiceKey) {
+      const isAuthenticated = await base44.auth.isAuthenticated();
+      if (isAuthenticated) {
+        const user = await base44.auth.me();
+        if (user?.role !== 'admin') {
+          return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+        }
+      } else {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
     }
-    // Unauthenticated calls are assumed to be scheduled automation invocations
+    // Requests with valid service key or admin user are allowed
 
     // This runs as a scheduled job, use service role
     const now = new Date();
