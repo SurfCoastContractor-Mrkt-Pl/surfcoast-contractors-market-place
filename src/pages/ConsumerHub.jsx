@@ -68,25 +68,31 @@ export default function ConsumerHub() {
 
         {/* Tabs */}
         <Tabs defaultValue="badges" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="badges" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
-              <span className="hidden sm:inline">Badges & Tiers</span>
-              <span className="sm:hidden">Badges</span>
+              <span className="hidden sm:inline">Badges</span>
             </TabsTrigger>
             <TabsTrigger value="purchases" className="flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Shopping</span>
               <span className="sm:hidden">Shop</span>
             </TabsTrigger>
+            <TabsTrigger value="saved" className="flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              <span className="hidden sm:inline">Saved</span>
+            </TabsTrigger>
+            <TabsTrigger value="wishlist" className="flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4" />
+              <span className="hidden sm:inline">Wishlist</span>
+            </TabsTrigger>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <ClipboardList className="w-4 h-4" />
-              <span className="hidden sm:inline">My Orders</span>
-              <span className="sm:hidden">Orders</span>
+              <span className="hidden sm:inline">Orders</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
+            <TabsTrigger value="payment" className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4" />
+              <span className="hidden sm:inline">Payment</span>
             </TabsTrigger>
           </TabsList>
 
