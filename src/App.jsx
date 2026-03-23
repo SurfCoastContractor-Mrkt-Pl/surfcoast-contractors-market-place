@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import ContractorPublicProfile from './pages/ContractorPublicProfile';
 import ConsumerSignup from './pages/ConsumerSignup';
+import SearchAnalytics from './pages/SearchAnalytics';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -85,6 +86,11 @@ const AuthenticatedApp = () => {
       <Route path="/ConsumerSignup" element={
         <LayoutWrapper currentPageName="ConsumerSignup">
           <ConsumerSignup />
+        </LayoutWrapper>
+      } />
+      <Route path="/SearchAnalytics" element={
+        <LayoutWrapper currentPageName="SearchAnalytics">
+          <SearchAnalytics />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
