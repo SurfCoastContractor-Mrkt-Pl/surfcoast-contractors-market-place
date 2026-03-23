@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Clock } from 'lucide-react';
 import ScopeApprovalSignature from './ScopeApprovalSignature';
+import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementGenerator';
 
 export default function ScopeApprovalCard({ scope, onApprovalSuccess }) {
   const [signatureModalOpen, setSignatureModalOpen] = useState(false);
@@ -89,14 +90,24 @@ export default function ScopeApprovalCard({ scope, onApprovalSuccess }) {
 
           {/* Action Buttons */}
           {scope.status === 'pending_approval' && (
-            <div className="pt-2 flex gap-2">
-              <Button
-                onClick={() => setSignatureModalOpen(true)}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-              >
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Review & Approve with Signature
-              </Button>
+            <div className="pt-2 space-y-4">
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setSignatureModalOpen(true)}
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Review & Approve with Signature
+                </Button>
+              </div>
+              {scope.contractor_id && (
+                <div className="pt-2 border-t border-slate-200">
+                  <p className="text-xs text-slate-600 mb-3">Generate a service agreement for this scope:</p>
+                  <ServiceAgreementGenerator 
+                    contractor={{ id: scope.contractor_id, name: scope.contractor_name, email: scope.contractor_email }} 
+                  />
+                </div>
+              )}
             </div>
           )}
         </CardContent>
