@@ -99,16 +99,13 @@ export default function MarketShopProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [shop, setShop] = useState(null);
-  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submittingReview, setSubmittingReview] = useState(false);
   const [submittingInquiry, setSubmittingInquiry] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [userEmail, setUserEmail] = useState(null);
   const [userName, setUserName] = useState('');
   
-  const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 0, title: '', body: '' });
   const [inquiryForm, setInquiryForm] = useState({ name: '', email: '', message: '' });
 
   useEffect(() => {
@@ -122,15 +119,6 @@ export default function MarketShopProfile() {
 
         const shops = await base44.entities.MarketShop.filter({ custom_slug: id });
         setShop(shops?.[0] || null);
-        
-        if (shops?.[0]) {
-          const shopReviews = await base44.entities.VendorReview.filter(
-            { shop_id: shops[0].id, status: 'visible' },
-            '-created_date',
-            100
-          );
-          setReviews(shopReviews || []);
-        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -140,54 +128,7 @@ export default function MarketShopProfile() {
     load();
   }, [id]);
 
-  const avgRating = useMemo(() => {
-    if (reviews.length === 0) return 0;
-    return (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
-  }, [reviews]);
 
-  const handleReviewSubmit = async (e) => {
-    e.preventDefault();
-    if (!reviewForm.name || !reviewForm.email || !reviewForm.rating || !reviewForm.title || !reviewForm.body) {
-      alert('Please fill all fields');
-      return;
-    }
-    
-    setSubmittingReview(true);
-    try {
-      const newReview = {
-        shop_id: shop.id,
-        shop_name: shop.shop_name,
-        reviewer_name: reviewForm.name,
-        reviewer_email: reviewForm.email,
-        rating: reviewForm.rating,
-        title: reviewForm.title,
-        body: reviewForm.body,
-        status: 'visible',
-      };
-      
-      await base44.entities.VendorReview.create(newReview);
-      
-      await base44.functions.invoke('submitVendorReview', {
-        shop_id: shop.id,
-        reviewer_name: reviewForm.name,
-        rating: reviewForm.rating,
-        review_title: reviewForm.title,
-        review_body: reviewForm.body,
-        vendor_email: shop.email,
-        vendor_name: shop.shop_name,
-        shop_name: shop.shop_name,
-      });
-      
-      setReviews(prev => [newReview, ...prev]);
-      setReviewForm({ name: '', email: '', rating: 0, title: '', body: '' });
-      alert('Review submitted successfully!');
-    } catch (err) {
-      console.error(err);
-      alert('Failed to submit review');
-    } finally {
-      setSubmittingReview(false);
-    }
-  };
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
