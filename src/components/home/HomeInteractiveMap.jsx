@@ -213,6 +213,30 @@ export default function HomeInteractiveMap() {
       {/* Filters */}
       {showFilters && (
         <Card className="p-4 space-y-4 bg-slate-50">
+          {/* Entity Type Selector */}
+          <div className="flex gap-2 border-b pb-3">
+            <button
+              onClick={() => setEntityTypeFilter('all')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${entityTypeFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 border border-slate-200'}`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setEntityTypeFilter('vendors')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${entityTypeFilter === 'vendors' ? 'bg-green-600 text-white' : 'bg-white text-slate-700 border border-slate-200'}`}
+            >
+              <Store className="w-4 h-4" />
+              Vendors
+            </button>
+            <button
+              onClick={() => setEntityTypeFilter('contractors')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${entityTypeFilter === 'contractors' ? 'bg-red-600 text-white' : 'bg-white text-slate-700 border border-slate-200'}`}
+            >
+              <Wrench className="w-4 h-4" />
+              Contractors
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Distance */}
             <div>
