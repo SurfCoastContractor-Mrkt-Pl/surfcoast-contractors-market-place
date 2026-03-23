@@ -5,6 +5,7 @@ import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { updateInventoryAfterSale, validateInventoryAvailability } from '@/lib/inventoryManager';
+import { base44 } from '@/api/base44Client';
 
 export default function ShoppingCart() {
   const {
