@@ -118,7 +118,7 @@ export default function CustomerDashboard() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <h1 className="text-4xl font-bold text-white">My Projects</h1>
+            <h1 className="text-4xl font-bold text-white">My Dashboard</h1>
             <TrialBadge profile={customerProfile} />
           </div>
           <p style={{ color: 'rgba(255,255,255,0.6)' }}>Track your posted jobs and active scopes</p>

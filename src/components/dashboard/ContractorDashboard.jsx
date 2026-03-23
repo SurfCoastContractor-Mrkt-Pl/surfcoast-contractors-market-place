@@ -156,7 +156,7 @@ export default function ContractorDashboard() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <h1 className="text-4xl font-bold text-slate-900">Contractor Dashboard</h1>
+            <h1 className="text-4xl font-bold text-slate-900">My Dashboard</h1>
             {/* Payouts Active Badge */}
             {contractorProfile?.stripe_account_charges_enabled && (
               <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>

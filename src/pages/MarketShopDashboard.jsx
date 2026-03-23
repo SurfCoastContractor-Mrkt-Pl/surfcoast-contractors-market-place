@@ -150,6 +150,7 @@ export default function MarketShopDashboard() {
             <div className="flex flex-col items-center gap-3">
               <LogoUploadWidget shop={shop} onUpdate={handleUpdate} />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-800 text-center">{shop.shop_name}</h1>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Dashboard</p>
               <div className="flex flex-row flex-wrap items-center justify-center gap-2">
                 {(shop.city || shop.state) && (
                   <span className="text-sm text-slate-500">
