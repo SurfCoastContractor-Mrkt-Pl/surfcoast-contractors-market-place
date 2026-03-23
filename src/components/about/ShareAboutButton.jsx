@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Share2, Instagram, Facebook, Twitter, Link, Check, X } from 'lucide-react';
 
-const PAGE_URL = 'https://surfcoastmarketplace.com/About';
+const PAGE_URL = 'https://surfcoastmarketplace.com/';
 const SHARE_TEXT = `Check out SurfCoast Marketplace — a platform built for the people who actually get things done. No shortcuts. Just work. 💪`;
 const HASHTAGS = '#SurfCoastMarketplace #Trades #WorkEthic #BuildSomethingReal';
 
