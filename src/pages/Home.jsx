@@ -112,7 +112,7 @@ export default function Home() {
               <li>✓ Get paid securely via Stripe</li>
               <li>✓ Build your reputation</li>
             </ul>
-            <button onClick={() => handleSignup('/BecomeContractor')} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#d97706", color:"#fff", marginTop:"auto" }}>Join as a Pro →</button>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(217,119,6,0.7), 0 4px 12px rgba(217,119,6,0.4)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => handleSignup('/BecomeContractor')} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#d97706", color:"#fff", marginTop:"auto" }}>Join as a Pro →</button>
           </div>
         </div>
 
