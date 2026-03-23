@@ -84,17 +84,17 @@ export default function VendorSearchBar() {
   return (
     <div ref={containerRef} style={{ width: '100%', maxWidth: '860px', margin: '0 auto 16px', position: 'relative' }}>
       {/* Search Box */}
-      <div style={{
+       <div style={{
         background: 'rgba(255,255,255,0.07)',
         border: '1px solid rgba(255,255,255,0.15)',
         borderRadius: '16px',
-        padding: '12px 16px',
+        padding: '8px 16px',
         backdropFilter: 'blur(12px)',
       }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
           {/* Name search */}
-          <div style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Search size={15} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '6px 12px' }}>
+            <Search size={14} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
             <input
               value={query}
               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
@@ -105,20 +105,20 @@ export default function VendorSearchBar() {
           </div>
 
           {/* Location */}
-          <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <MapPin size={15} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '6px 12px' }}>
+            <MapPin size={14} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
             <input
               value={location}
               onChange={e => { setLocation(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
-              placeholder="City or ZIP..."
+              placeholder="City, State, ZIP..."
               style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%' }}
             />
           </div>
 
           {/* Category */}
-          <div style={{ flex: '1 1 160px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Tag size={15} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 160px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '6px 12px' }}>
+            <Tag size={14} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
             <select
               value={category}
               onChange={e => { setCategory(e.target.value); setShowResults(true); }}
@@ -132,8 +132,8 @@ export default function VendorSearchBar() {
           </div>
 
           {/* Type */}
-          <div style={{ flex: '1 1 150px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Store size={15} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 150px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '6px 12px' }}>
+            <Store size={14} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
             <select
               value={shopType}
               onChange={e => { setShopType(e.target.value); setShowResults(true); }}
