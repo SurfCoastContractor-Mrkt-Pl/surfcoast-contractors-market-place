@@ -5,6 +5,14 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+    
+    // Auth: must be authenticated
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const prices = await stripe.prices.list({ active: true, limit: 20, expand: ['data.product'] });
     const summary = prices.data.map(p => ({
       id: p.id,
