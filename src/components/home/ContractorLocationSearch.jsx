@@ -218,7 +218,13 @@ export default function ContractorLocationSearch() {
                 </div>
                 {results.length > 6 && (
                   <button
-                    onClick={() => window.location.href = '/FindContractors'}
+                    onClick={() => {
+                      if (searchType === "contractors") {
+                        window.location.href = '/FindContractors';
+                      } else {
+                        window.location.href = '/BoothsAndVendorsMap';
+                      }
+                    }}
                     style={{
                       width: "100%",
                       marginTop: "16px",
