@@ -5,17 +5,17 @@ import { ArrowLeft } from 'lucide-react';
 // Text colors progress from light grey (top) to dark grey (bottom)
 // to contrast against the sunset gradient background (dark→light)
 const textColors = {
-  nav:       '#e5e7eb', // very light grey  — against dark burgundy
-  title:     '#f3f4f6', // near white        — top of page
-  accent:    '#d1d5db', // light grey
-  bodyTop:   '#d1d5db', // light grey        — mission section
-  divider:   'rgba(255,255,255,0.25)',
-  h2:        '#9ca3af', // mid-light grey    — founder section starts lower
-  founderH3: '#6b7280', // medium grey
-  founderSub:'#9ca3af',
-  bodyMid:   '#6b7280', // medium grey       — founder bio
-  quote:     '#6b7280',
-  footer:    '#4b5563', // darker grey       — very bottom (pale yellow bg)
+  nav:       '#374151', // dark grey         — against dark burgundy
+  title:     '#1f2937', // very dark grey    — top of page
+  accent:    '#374151', // dark grey
+  bodyTop:   '#374151', // dark grey         — mission section
+  divider:   'rgba(0,0,0,0.15)',
+  h2:        '#6b7280', // medium grey       — founder section starts lower
+  founderH3: '#9ca3af', // mid-light grey
+  founderSub:'#6b7280',
+  bodyMid:   '#9ca3af', // mid-light grey    — founder bio
+  quote:     '#9ca3af',
+  footer:    '#d1d5db', // light grey        — very bottom (pale yellow bg)
 };
 
 export default function About() {
