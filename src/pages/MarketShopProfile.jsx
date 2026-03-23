@@ -6,6 +6,8 @@ import PhotoGalleryLightbox from '@/components/marketshop/PhotoGalleryLightbox';
 import MarketShopProfileSchedule from '@/components/marketshop/MarketShopProfileSchedule';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
 import ConsumerVendorMessaging from '@/components/consumer/ConsumerVendorMessaging';
+import VendorReviewForm from '@/components/marketshop/VendorReviewForm';
+import VendorRatingsDisplay from '@/components/marketshop/VendorRatingsDisplay';
 
 const SHOP_TYPE_ICONS = {
   farmers_market: Leaf,
@@ -402,116 +404,13 @@ export default function MarketShopProfile() {
         <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Reviews & Feedback</h2>
 
-          {/* Reviews Summary */}
-          {reviews.length > 0 && (
-            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-white/20">
-              <div className="text-center">
-                <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">{avgRating}</div>
-                <StarRating rating={Math.round(parseFloat(avgRating))} />
-                <p className="text-xs sm:text-sm text-white/70 mt-2">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Reviews List */}
-          <div className="space-y-3 sm:space-y-5 mb-6 sm:mb-8">
-            {reviews.map(review => (
-              <div key={review.id} className="bg-white/20 rounded-xl p-5 border border-white/30">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <StarRating rating={review.rating} />
-                    <p className="font-semibold text-white mt-2">{review.title}</p>
-                    <p className="text-sm text-white/80 flex items-center gap-2 mt-1">
-                      <User className="w-4 h-4" />
-                      {review.reviewer_name} • 
-                      <CalendarDays className="w-4 h-4 ml-2" />
-                      {new Date(review.created_date).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-white text-sm leading-relaxed">{review.body}</p>
-                
-                {review.vendor_reply && (
-                  <div className="bg-white/15 rounded-lg p-4 mt-4 border-l-4 border-blue-400">
-                    <p className="text-xs font-semibold text-white/80 flex items-center gap-1.5 mb-2">
-                      <Store className="w-4 h-4" />
-                      Vendor Reply
-                    </p>
-                    <p className="text-white text-sm">{review.vendor_reply}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+          {/* Ratings Display */}
+          <div className="mb-6 sm:mb-8">
+            <VendorRatingsDisplay vendorId={shop.id} />
           </div>
 
-          {/* Leave a Review Form */}
-          <div className="bg-white/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/30 mb-6 sm:mb-8">
-            <h3 className="text-base sm:text-lg font-bold text-white mb-4">Leave a Review</h3>
-            <form onSubmit={handleReviewSubmit} className="space-y-3 sm:space-y-4">
-              <div className="grid grid-cols-1 gap-3 sm:gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-1">Your Name</label>
-                  <input
-                    type="text"
-                    placeholder="Enter your name"
-                    value={reviewForm.name}
-                    onChange={e => setReviewForm({ ...reviewForm, name: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-1">Your Email</label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={reviewForm.email}
-                    onChange={e => setReviewForm({ ...reviewForm, email: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-white mb-2">Rating</label>
-                <StarRating rating={reviewForm.rating} interactive onSelect={r => setReviewForm({ ...reviewForm, rating: r })} />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-white mb-1">Review Title</label>
-                <input
-                  type="text"
-                  placeholder="Summarize your experience"
-                  value={reviewForm.title}
-                  onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-white mb-1">Your Review</label>
-                <textarea
-                  placeholder="Share your experience..."
-                  value={reviewForm.body}
-                  onChange={e => setReviewForm({ ...reviewForm, body: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white/30 border border-white/50 rounded-lg text-white placeholder-white/60 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  rows="4"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={submittingReview}
-                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
-              >
-                {submittingReview ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                Submit Review
-              </button>
-            </form>
-          </div>
+          {/* Review Form */}
+          <VendorReviewForm vendorId={shop.id} vendorName={shop.shop_name} />
         </div>
 
         {/* Messaging Section */}
