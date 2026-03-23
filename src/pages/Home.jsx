@@ -161,6 +161,7 @@ export default function Home() {
         </div>
 
         <FeaturedVendors />
+        <ContractorLocationSearch />
         <VendorSearchBar />
         <HomeInteractiveMap />
         <FarmersMarketBanner />
