@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2, ShoppingCart } from 'lucide-react';
+import EmptyStateIllustration from './EmptyStateIllustration';
 
 export default function Wishlist() {
   const [wishlistItems, setWishlistItems] = useState([]);
