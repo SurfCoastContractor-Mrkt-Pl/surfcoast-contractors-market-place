@@ -50,6 +50,14 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Verify internal service key
+    const authHeader = req.headers.get('Authorization');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!authHeader || !expectedKey || authHeader !== `Bearer ${expectedKey}`) {
+      return Response.json({ error: 'Unauthorized: Invalid or missing service key' }, { status: 401 });
+    }
+
     const { password } = await req.json();
 
     if (!password || password.length < 8) {
