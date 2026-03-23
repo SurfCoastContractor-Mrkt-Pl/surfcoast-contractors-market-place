@@ -25,13 +25,33 @@ export default function ContractorLocationSearch() {
     setSearched(true);
 
     try {
-      const contractors = await base44.entities.Contractor.filter({
-        $or: [
-          { location: { $regex: location, $options: "i" } }
-        ]
-      });
+      let searchResults = [];
 
-      setResults(contractors || []);
+      if (searchType === "contractors") {
+        searchResults = await base44.entities.Contractor.filter({
+          location: { $regex: location, $options: "i" }
+        });
+      } else if (searchType === "market-booths") {
+        searchResults = await base44.entities.MarketShop.filter({
+          location: { $regex: location, $options: "i" }
+        });
+      } else if (searchType === "farmers-markets") {
+        searchResults = await base44.entities.MarketShop.filter({
+          location: { $regex: location, $options: "i" },
+          market_type: "farmers_market"
+        });
+      } else if (searchType === "vendors") {
+        searchResults = await base44.entities.MarketShop.filter({
+          location: { $regex: location, $options: "i" }
+        });
+      } else if (searchType === "swapmeets") {
+        searchResults = await base44.entities.MarketShop.filter({
+          location: { $regex: location, $options: "i" },
+          market_type: "swapmeet"
+        });
+      }
+
+      setResults(searchResults || []);
     } catch (err) {
       console.error("Search error:", err);
       setResults([]);
