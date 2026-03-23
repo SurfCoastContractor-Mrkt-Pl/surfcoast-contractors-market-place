@@ -86,16 +86,7 @@ export default function ConsumerHub() {
 
           {/* Shopping Tab */}
           <TabsContent value="purchases" className="space-y-6">
-            <Card className="p-12 text-center">
-              <ShoppingBag className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-600 mb-4">Browse vendors and booths in the marketplace</p>
-              <a 
-                href="/MarketDirectory" 
-                className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Go to Marketplace
-              </a>
-            </Card>
+            <MarketShopBrowser />
           </TabsContent>
 
           {/* Settings Tab */}
