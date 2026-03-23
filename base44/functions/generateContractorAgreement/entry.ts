@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Auth: must be authenticated admin or the contractor themselves
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { contractor_id } = await req.json();
 
     if (!contractor_id) {
@@ -13,6 +20,11 @@ Deno.serve(async (req) => {
     const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
     if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    // Authorization: only admin or the contractor themselves can generate agreements
+    if (user.role !== 'admin' && user.email !== contractor.email) {
+      return Response.json({ error: 'Forbidden: Cannot generate agreements for other contractors' }, { status: 403 });
     }
 
     // Get Google Docs connection
