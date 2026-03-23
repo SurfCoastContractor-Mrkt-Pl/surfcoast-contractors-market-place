@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CartTierDisplay from '@/components/consumer/CartTierDisplay';
+import MarketShopBrowser from '@/components/consumer/MarketShopBrowser';
 import { ShoppingBag, Award, Settings } from 'lucide-react';
 
 export default function ConsumerHub() {
