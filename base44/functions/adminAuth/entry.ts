@@ -1,23 +1,49 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 /**
- * SECURITY: Constant-time comparison prevents timing attacks on password verification
- * Current: plaintext password in env var (acceptable for admin-only dashboard)
- * PHASE 3 UPGRADE: Replace with bcrypt/argon2 hash in future
- *   - Store hashed password in secret: ADMIN_DASHBOARD_PASSWORD_HASH
- *   - Use: await bcrypt.compare(provided, hash)
- *   - Provides forward secrecy even if secrets are exposed
+ * SECURITY: Password verification using PBKDF2 hashing
+ * Stored password hash format: pbkdf2$iterations$salt$hash
  */
-async function constantTimeCompare(a, b) {
-  const encoder = new TextEncoder();
-  const aBytes = encoder.encode(a);
-  const bBytes = encoder.encode(b);
-  
-  let result = 0;
-  for (let i = 0; i < Math.max(aBytes.length, bBytes.length); i++) {
-    result |= (aBytes[i] || 0) ^ (bBytes[i] || 0);
+async function verifyPasswordHash(providedPassword, storedHash) {
+  try {
+    const [algorithm, iterationsStr, saltString, storedHashValue] = storedHash.split('$');
+    if (algorithm !== 'pbkdf2') return false;
+
+    const iterations = parseInt(iterationsStr, 10);
+    const salt = new Uint8Array(saltString.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+
+    const passwordBuffer = new TextEncoder().encode(providedPassword);
+    const derivedKey = await crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt: salt,
+        iterations: iterations,
+        hash: 'SHA-256',
+      },
+      await crypto.subtle.importKey(
+        'raw',
+        passwordBuffer,
+        'PBKDF2',
+        false,
+        ['deriveBits']
+      ),
+      256
+    );
+
+    const computedHash = Array.from(new Uint8Array(derivedKey))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
+    // Constant-time comparison to prevent timing attacks
+    let result = 0;
+    for (let i = 0; i < Math.max(computedHash.length, storedHashValue.length); i++) {
+      result |= (computedHash.charCodeAt(i) || 0) ^ (storedHashValue.charCodeAt(i) || 0);
+    }
+    return result === 0;
+  } catch (err) {
+    console.error('Password verification error:', err);
+    return false;
   }
-  return result === 0;
 }
 
 Deno.serve(async (req) => {
@@ -29,12 +55,12 @@ Deno.serve(async (req) => {
     const serviceKey = body?.service_key;
     const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
 
-    const dashboardPassword = Deno.env.get('ADMIN_DASHBOARD_PASSWORD');
+    const passwordHash = Deno.env.get('ADMIN_PASSWORD_HASH');
     const expectedServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY');
 
-    // Verify password if configured
-    if (!dashboardPassword) {
-      console.error(`[${requestId}] ADMIN_DASHBOARD_PASSWORD not configured`);
+    // Verify password hash is configured
+    if (!passwordHash) {
+      console.error(`[${requestId}] ADMIN_PASSWORD_HASH not configured`);
       return Response.json({ success: false, error: 'Admin dashboard not configured' }, { status: 500 });
     }
 
@@ -97,10 +123,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verify password using constant-time comparison to prevent timing attacks
-    const passwordMatch = providedPassword && dashboardPassword && 
-      providedPassword.length === dashboardPassword.length &&
-      await constantTimeCompare(providedPassword, dashboardPassword);
+    // Verify password against hash
+    const passwordMatch = providedPassword && await verifyPasswordHash(providedPassword, passwordHash);
     
     if (!passwordMatch) {
       console.warn(`[${requestId}] Invalid admin dashboard password attempt from ${rateLimitKey}`);
