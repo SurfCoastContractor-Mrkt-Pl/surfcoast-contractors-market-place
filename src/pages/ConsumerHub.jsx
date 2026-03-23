@@ -113,9 +113,24 @@ export default function ConsumerHub() {
             <MarketShopBrowser />
           </TabsContent>
 
+          {/* Saved Vendors Tab */}
+          <TabsContent value="saved" className="space-y-6">
+            <SavedVendors userEmail={userEmail} />
+          </TabsContent>
+
+          {/* Wishlist Tab */}
+          <TabsContent value="wishlist" className="space-y-6">
+            <Wishlist />
+          </TabsContent>
+
           {/* Orders Tab */}
           <TabsContent value="orders" className="space-y-6">
             <MyOrders userEmail={userEmail} />
+          </TabsContent>
+
+          {/* Payment Methods Tab */}
+          <TabsContent value="payment" className="space-y-6">
+            <PaymentMethods userEmail={userEmail} />
           </TabsContent>
 
           {/* Settings Tab */}
