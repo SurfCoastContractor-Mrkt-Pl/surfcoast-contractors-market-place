@@ -83,28 +83,28 @@ export default function ConsumerHub() {
               borderRadius: '8px'
             }}
           >
-            <TabsTrigger value="badges" className="flex items-center gap-2">
+            <TabsTrigger value="badges" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges</span>
             </TabsTrigger>
-            <TabsTrigger value="purchases" className="flex items-center gap-2">
+            <TabsTrigger value="purchases" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Shopping</span>
               <span className="sm:hidden">Shop</span>
             </TabsTrigger>
-            <TabsTrigger value="saved" className="flex items-center gap-2">
+            <TabsTrigger value="saved" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <Heart className="w-4 h-4" />
               <span className="hidden sm:inline">Saved</span>
             </TabsTrigger>
-            <TabsTrigger value="wishlist" className="flex items-center gap-2">
+            <TabsTrigger value="wishlist" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Wishlist</span>
             </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
+            <TabsTrigger value="orders" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Orders</span>
             </TabsTrigger>
-            <TabsTrigger value="payment" className="flex items-center gap-2">
+            <TabsTrigger value="payment" className="flex items-center gap-2 text-white data-[state=active]:bg-amber-600 data-[state=active]:text-white">
               <CreditCard className="w-4 h-4" />
               <span className="hidden sm:inline">Payment</span>
             </TabsTrigger>
