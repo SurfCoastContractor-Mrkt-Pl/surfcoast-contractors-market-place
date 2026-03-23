@@ -16,8 +16,9 @@ export default function AccountLockedBanner({ contractor, lockedScope }) {
   const handleSendAppeal = async () => {
     if (!appealText.trim()) return;
     setSendingAppeal(true);
+    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'support@surfcoast.com';
     await base44.integrations.Core.SendEmail({
-      to: 'admin@surfcoast.com.au',
+      to: adminEmail,
       subject: `Account Lock Appeal: ${contractor.name}`,
       body: `Contractor: ${contractor.name}\nEmail: ${contractor.email}\nJob: ${lockedScope?.job_title || contractor.locked_scope_id}\n\nAppeal message:\n${appealText}`,
     });
