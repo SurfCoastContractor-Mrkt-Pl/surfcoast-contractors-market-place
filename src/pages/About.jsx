@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import ShareAboutButton from '@/components/about/ShareAboutButton';
 
 export default function About() {
   return (
