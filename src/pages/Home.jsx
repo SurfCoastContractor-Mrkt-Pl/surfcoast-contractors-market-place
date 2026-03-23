@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown } from "lucide-react";
+import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown, Store, Users } from "lucide-react";
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
@@ -65,7 +65,8 @@ export default function Home() {
 
         <CampaignAdBanner />
 
-        <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"12px" }}>
+        {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
+        <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }}>
            {/* Left Card - Find a Pro */}
           <div
             onMouseEnter={() => setHoveredCard("customer")}
@@ -80,7 +81,7 @@ export default function Home() {
               <li>✓ Free 2-week trial</li>
               <li>✓ Secure payments</li>
             </ul>
-            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(29,111,164,0.6), 0 4px 12px rgba(29,111,164,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/FindContractors'} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(29,111,164,0.6), 0 4px 12px rgba(29,111,164,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/CustomerSignup'} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
           </div>
 
           {/* Horizontal/Vertical OR Divider */}
@@ -103,7 +104,7 @@ export default function Home() {
            onMouseEnter={() => setHoveredCard("contractor")}
            onMouseLeave={() => setHoveredCard(null)}
            style={{ flex:isMobile ? "unset" : 1, display:"flex", flexDirection:"column", borderRadius:"16px", padding:isMobile ? "22px 18px" : "32px 28px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(217,119,6,0.4)", transform:hoveredCard==="contractor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="contractor"?"0 0 32px rgba(217,119,6,0.5), 0 12px 32px rgba(217,119,6,0.2)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
-          >
+           >
             <Wrench size={28} style={{ marginBottom:"clamp(10px, 3vw, 14px)", color:"#d97706" }} strokeWidth={1.5} />
             <h2 style={{ fontSize:"20px", fontWeight:"700", margin:"0 0 12px", color:"#fff" }}>Join as a Pro</h2>
             <p style={{ fontSize:"14px", color:"rgba(255,255,255,0.7)", margin:"0 0 16px", lineHeight:"1.6", flex:1 }}>Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
@@ -113,6 +114,45 @@ export default function Home() {
               <li>✓ Build your reputation</li>
             </ul>
             <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(217,119,6,0.7), 0 4px 12px rgba(217,119,6,0.4)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => handleSignup('/BecomeContractor')} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#d97706", color:"#fff", marginTop:"auto" }}>Join as a Pro →</button>
+          </div>
+        </div>
+
+        {/* Secondary CTA Cards - Market Booth, Vendor, Consumer */}
+        <div style={{ display:"grid", gridTemplateColumns:isMobile ? "1fr" : "repeat(3, 1fr)", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(12px, 2vw, 16px)", justifyContent:"center", marginBottom:"24px" }}>
+          {/* Market Booth Card */}
+          <div
+            onMouseEnter={() => setHoveredCard("booth")}
+            onMouseLeave={() => setHoveredCard(null)}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(139,125,107,0.4)", transform:hoveredCard==="booth"?"translateY(-2px)":"none", boxShadow:hoveredCard==="booth"?"0 0 24px rgba(139,125,107,0.35), 0 8px 24px rgba(139,125,107,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+          >
+            <Store size={24} style={{ marginBottom:"10px", color:"#9d7a54" }} strokeWidth={1.5} />
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Market Booth</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at farmers markets and swap meets with your own booth.</p>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(139,125,107,0.5), 0 4px 8px rgba(139,125,107,0.25)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#9d7a54", color:"#fff" }}>Set Up Booth →</button>
+          </div>
+
+          {/* Vendor Card */}
+          <div
+            onMouseEnter={() => setHoveredCard("vendor")}
+            onMouseLeave={() => setHoveredCard(null)}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="vendor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="vendor"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+          >
+            <ShoppingBag size={24} style={{ marginBottom:"10px", color:"#f97316" }} strokeWidth={1.5} />
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Vendor Shop</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Create a shop listing to sell products at local markets.</p>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(249,115,22,0.6), 0 4px 8px rgba(249,115,22,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#f97316", color:"#fff" }}>Create Shop →</button>
+          </div>
+
+          {/* Consumer Card */}
+          <div
+            onMouseEnter={() => setHoveredCard("consumer")}
+            onMouseLeave={() => setHoveredCard(null)}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(34,197,94,0.4)", transform:hoveredCard==="consumer"?"translateY(-2px)":"none", boxShadow:hoveredCard==="consumer"?"0 0 24px rgba(34,197,94,0.4), 0 8px 24px rgba(34,197,94,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+          >
+            <Users size={24} style={{ marginBottom:"10px", color:"#22c55e" }} strokeWidth={1.5} />
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Consumer</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Shop booths and vendors at local farmers markets.</p>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(34,197,94,0.6), 0 4px 8px rgba(34,197,94,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/ConsumerSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#22c55e", color:"#fff" }}>Start Shopping →</button>
           </div>
         </div>
 
