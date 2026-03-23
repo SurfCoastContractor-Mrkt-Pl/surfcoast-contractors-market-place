@@ -3,10 +3,21 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { user_email, user_type, transaction_amount } = await req.json();
 
     if (!user_email || !user_type || !transaction_amount) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // User can only calculate fees for their own email
+    if (user.email !== user_email) {
+      return Response.json({ error: 'Forbidden: Can only calculate fees for your own account' }, { status: 403 });
     }
 
     // Check if user is an early adopter with active waiver
