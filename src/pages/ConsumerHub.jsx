@@ -56,7 +56,7 @@ export default function ConsumerHub() {
 
         {/* Tabs */}
         <Tabs defaultValue="badges" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="badges" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges & Tiers</span>

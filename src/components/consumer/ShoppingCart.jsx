@@ -56,6 +56,46 @@ export default function ShoppingCart() {
       const inventoryResult = await updateInventoryAfterSale(cartItems, `order-${Date.now()}`);
 
       if (inventoryResult.success) {
+        // Save orders to ConsumerOrder entity (grouped by shop)
+        try {
+          const user = await base44.auth.me();
+          if (user) {
+            const shopGroups = cartItems.reduce((acc, item) => {
+              if (!acc[item.shop_id]) acc[item.shop_id] = [];
+              acc[item.shop_id].push(item);
+              return acc;
+            }, {});
+
+            const orderNumber = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+            const placedAt = new Date().toISOString();
+
+            for (const [shopId, items] of Object.entries(shopGroups)) {
+              const shopTotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+              await base44.entities.ConsumerOrder.create({
+                consumer_email: user.email,
+                order_number: orderNumber,
+                shop_id: shopId,
+                shop_name: items[0]?.shop_name || shopId,
+                shop_type: items[0]?.shop_type || 'farmers_market',
+                items: items.map(i => ({
+                  listing_id: i.id,
+                  product_name: i.product_name,
+                  price: i.price,
+                  unit: i.unit,
+                  quantity: i.quantity,
+                  image_url: i.image_url || null,
+                  subtotal: parseFloat((i.price * i.quantity).toFixed(2)),
+                })),
+                total: parseFloat(shopTotal.toFixed(2)),
+                status: 'completed',
+                placed_at: placedAt,
+              });
+            }
+          }
+        } catch (err) {
+          console.error('Failed to save order record:', err);
+        }
+
         setCheckoutState('success');
         setCheckoutMessage(`Order complete! ${inventoryResult.summary?.outOfStockNow || 0} items now out of stock.`);
         
