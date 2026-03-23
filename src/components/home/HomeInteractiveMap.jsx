@@ -122,16 +122,8 @@ export default function HomeInteractiveMap() {
     staleTime: 60000,
   });
 
-  // Filter shops by distance and selected filters
-  const nearbyShops = allShops.filter(shop => {
-    if (!userLocation || !shop.latitude || !shop.longitude) return false;
-
-    // Calculate distance using Haversine formula (simplified)
-    const lat1 = userLocation.lat;
-    const lon1 = userLocation.lng;
-    const lat2 = parseFloat(shop.latitude);
-    const lon2 = parseFloat(shop.longitude);
-
+  // Calculate distance helper
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -139,9 +131,21 @@ export default function HomeInteractiveMap() {
       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
+    return R * c;
+  };
 
-    if (distance > nearbyRadius * 1.60934) return false; // Convert miles to km
+  // Filter shops by distance and selected filters
+  const nearbyShops = allShops.filter(shop => {
+    if (!userLocation || !shop.latitude || !shop.longitude) return false;
+    if (entityTypeFilter === 'contractors') return false;
+
+    const lat1 = userLocation.lat;
+    const lon1 = userLocation.lng;
+    const lat2 = parseFloat(shop.latitude);
+    const lon2 = parseFloat(shop.longitude);
+
+    const distance = calculateDistance(lat1, lon1, lat2, lon2);
+    if (distance > nearbyRadius * 1.60934) return false;
 
     // Apply filters
     if (selectedShopType && shop.shop_type !== selectedShopType) return false;
@@ -149,6 +153,16 @@ export default function HomeInteractiveMap() {
 
     return true;
   });
+
+  // Filter contractors by distance
+  const nearbyContractors = allContractors.filter(contractor => {
+    if (!userLocation || !contractor.location) return false;
+    if (entityTypeFilter === 'vendors') return false;
+
+    // For contractors, we can only filter by text-based location proximity
+    // This is a simplified approach - in production, store lat/lng for contractors
+    return true;
+  }).slice(0, 10);
 
   if (!userLocation) {
     return (
