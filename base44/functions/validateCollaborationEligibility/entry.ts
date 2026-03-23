@@ -2,6 +2,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { contractor_email, is_collaboration } = await req.json();
 
     if (!contractor_email || is_collaboration === undefined) {
@@ -11,7 +18,10 @@ Deno.serve(async (req) => {
       );
     }
 
-    const base44 = createClientFromRequest(req);
+    // Users can only check eligibility for their own account
+    if (user.email !== contractor_email) {
+      return Response.json({ error: 'Forbidden: Can only check eligibility for your own account' }, { status: 403 });
+    }
 
     // Fetch contractor
     const contractors = await base44.entities.Contractor.filter({
