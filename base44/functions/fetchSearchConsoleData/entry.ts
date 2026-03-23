@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
 
     // Get page performance
     const pageDataResponse = await fetch(
-      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query?key=${Deno.env.get('STRIPE_SECRET_KEY')}`,
+      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
       {
         method: 'POST',
         headers: {
