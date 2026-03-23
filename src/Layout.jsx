@@ -324,6 +324,11 @@ export default function Layout({ children, currentPageName }) {
                       Browse Markets & Vendors
                     </div>
                   </Link>
+                  <Link to="/About" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100">
+                      About Us
+                    </div>
+                  </Link>
                   <button
                     onClick={() => { setMobileMenuOpen(false); base44.auth.logout(); }}
                     className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
