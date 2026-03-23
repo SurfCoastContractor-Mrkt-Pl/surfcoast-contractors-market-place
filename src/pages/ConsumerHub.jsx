@@ -95,6 +95,11 @@ export default function ConsumerHub() {
             <MarketShopBrowser />
           </TabsContent>
 
+          {/* Orders Tab */}
+          <TabsContent value="orders" className="space-y-6">
+            <MyOrders userEmail={userEmail} />
+          </TabsContent>
+
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">
             <Card className="p-6">
