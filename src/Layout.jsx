@@ -15,7 +15,7 @@ import { ShoppingBag } from 'lucide-react';
 
 const getNavLinks = (isContractor) => {
   const baseLinks = [
-    { name: 'Home', page: 'Home', icon: Home },
+    { name: 'Home', page: '/', icon: Home },
   ];
   if (isContractor === true) {
     baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
