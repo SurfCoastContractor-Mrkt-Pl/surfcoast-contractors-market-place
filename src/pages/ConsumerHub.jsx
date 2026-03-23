@@ -9,6 +9,7 @@ import MyOrders from '@/components/consumer/MyOrders';
 import SavedVendors from '@/components/consumer/SavedVendors';
 import Wishlist from '@/components/consumer/Wishlist';
 import PaymentMethods from '@/components/consumer/PaymentMethods';
+import EmptyStateIllustration from '@/components/consumer/EmptyStateIllustration';
 import { ShoppingBag, Award, Settings, ClipboardList, Heart, CreditCard } from 'lucide-react';
 
 export default function ConsumerHub() {
