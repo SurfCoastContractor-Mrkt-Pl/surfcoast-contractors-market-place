@@ -76,6 +76,11 @@ const AuthenticatedApp = () => {
           <About />
         </LayoutWrapper>
       } />
+      <Route path="/ConsumerMarketMap" element={
+        <LayoutWrapper currentPageName="ConsumerMarketMap">
+          <ConsumerMarketMap />
+        </LayoutWrapper>
+      } />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
