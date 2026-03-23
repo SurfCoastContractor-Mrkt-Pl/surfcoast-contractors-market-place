@@ -83,7 +83,7 @@ export default function Dashboard() {
   const isAdmin = user?.role === 'admin';
 
    return (
-     <div className="min-h-screen bg-slate-50">
+     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
        {activeProfile === 'contractor' && <ContractorDashboard />}
        {activeProfile === 'customer' && <CustomerDashboard />}
 
