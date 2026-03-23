@@ -86,6 +86,7 @@ export default function HomeInteractiveMap() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [nearbyRadius, setNearbyRadius] = useState(15); // miles
+  const [entityTypeFilter, setEntityTypeFilter] = useState('all'); // all, vendors, contractors
 
   // Get user's location
   useEffect(() => {
@@ -108,10 +109,16 @@ export default function HomeInteractiveMap() {
     }
   }, []);
 
-  // Fetch all active shops
-  const { data: allShops = [], isLoading } = useQuery({
+  // Fetch all active shops and contractors
+  const { data: allShops = [] } = useQuery({
     queryKey: ['nearby-shops'],
     queryFn: () => base44.entities.MarketShop.filter({ is_active: true, status: 'active' }),
+    staleTime: 60000,
+  });
+
+  const { data: allContractors = [] } = useQuery({
+    queryKey: ['nearby-contractors'],
+    queryFn: () => base44.entities.Contractor.filter({ available: true }),
     staleTime: 60000,
   });
 
