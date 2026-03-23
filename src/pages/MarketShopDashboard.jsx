@@ -213,6 +213,7 @@ export default function MarketShopDashboard() {
               </div>
             </div>
           )}
+          {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} shopName={shop.shop_name} />}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
         </div>
       </div>
