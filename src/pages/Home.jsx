@@ -80,7 +80,7 @@ export default function Home() {
               <li>✓ Free 2-week trial</li>
               <li>✓ Secure payments</li>
             </ul>
-            <button onClick={() => window.location.href = '/FindContractors'} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(29,111,164,0.6), 0 4px 12px rgba(29,111,164,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/FindContractors'} style={{ width:"100%", padding:"12px 16px", borderRadius:"8px", border:"none", fontSize:"15px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"44px", background:"#1d6fa4", color:"#fff", marginTop:"auto" }}>Find a Pro →</button>
           </div>
 
           {/* Horizontal/Vertical OR Divider */}
