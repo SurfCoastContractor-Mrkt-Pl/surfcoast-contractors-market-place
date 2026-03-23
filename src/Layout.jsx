@@ -160,6 +160,9 @@ export default function Layout({ children, currentPageName }) {
                           <Link to={createPageUrl('ConsumerHub')}>
                             <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">Consumer Hub</div>
                           </Link>
+                          <Link to="/About">
+                            <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">About Us</div>
+                          </Link>
                         </>
                       )}
                       {(isContractor ? contractorLinks : customerLinks).map(link => (
