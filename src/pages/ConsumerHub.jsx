@@ -114,10 +114,12 @@ export default function ConsumerHub() {
             {consumerTier ? (
               <CartTierDisplay consumerTier={consumerTier} />
             ) : (
-              <Card className="p-12 text-center">
-                <Award className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-600">No tier data yet. Start shopping to begin earning badges!</p>
-              </Card>
+              <EmptyStateIllustration 
+                icon={Award}
+                title="No Badges Yet"
+                description="Start shopping to begin earning badges! Every $150 spent unlocks a new tier."
+                actionLabel="Browse Vendors"
+              />
             )}
           </TabsContent>
 
