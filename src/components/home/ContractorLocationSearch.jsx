@@ -7,6 +7,15 @@ export default function ContractorLocationSearch() {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [searchType, setSearchType] = useState("contractors");
+
+  const categories = [
+    { id: "contractors", label: "Contractors", icon: "🔧" },
+    { id: "market-booths", label: "Market Booths", icon: "🏪" },
+    { id: "farmers-markets", label: "Farmers Markets", icon: "🌾" },
+    { id: "vendors", label: "Vendors", icon: "🛍️" },
+    { id: "swapmeets", label: "SwapMeets", icon: "🏬" }
+  ];
 
   const handleSearch = async (e) => {
     e.preventDefault();
