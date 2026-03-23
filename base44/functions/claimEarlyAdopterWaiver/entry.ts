@@ -6,11 +6,22 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { user_email, user_type } = body;
 
     if (!user_email || !user_type) {
       return Response.json({ error: 'Missing user_email or user_type' }, { status: 400 });
+    }
+
+    // Users can only claim for their own email
+    if (user.email !== user_email) {
+      return Response.json({ error: 'Forbidden: Can only claim waiver for your own account' }, { status: 403 });
     }
 
     // Check if user has already claimed
