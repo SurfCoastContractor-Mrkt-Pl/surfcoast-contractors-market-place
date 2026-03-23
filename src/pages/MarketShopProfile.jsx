@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { MapPin, Star, ChevronLeft, CalendarDays, Loader2, Send, Leaf, Tag, CheckCircle, Clock, User, Store, MessageSquare, ArrowLeft, Image as ImageIcon, BarChart3 } from 'lucide-react';
+import { MapPin, Star, ChevronLeft, Loader2, Leaf, Tag, CheckCircle, User, Store, MessageSquare, ArrowLeft, Image as ImageIcon, BarChart3 } from 'lucide-react';
 import PhotoGalleryLightbox from '@/components/marketshop/PhotoGalleryLightbox';
 import MarketShopProfileSchedule from '@/components/marketshop/MarketShopProfileSchedule';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
