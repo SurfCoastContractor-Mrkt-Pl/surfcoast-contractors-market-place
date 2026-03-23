@@ -65,8 +65,48 @@ export default function ContractorLocationSearch() {
       <div style={{ background: "rgba(10, 22, 40, 0.6)", border: "1px solid rgba(29, 111, 164, 0.3)", borderRadius: "14px", padding: "24px 20px", backdropFilter: "blur(18px)" }}>
         <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#ffffff", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
           <MapPin size={20} style={{ color: "#1d6fa4" }} />
-          Find Contractors Near You
+          Search Near You
         </h3>
+
+        {/* Category Selector */}
+        <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSearchType(cat.id)}
+              style={{
+                padding: "8px 12px",
+                borderRadius: "6px",
+                border: searchType === cat.id ? "1px solid #1d6fa4" : "1px solid rgba(255, 255, 255, 0.2)",
+                background: searchType === cat.id ? "rgba(29, 111, 164, 0.2)" : "transparent",
+                color: searchType === cat.id ? "#1d6fa4" : "rgba(255, 255, 255, 0.7)",
+                fontSize: "12px",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                whiteSpace: "nowrap"
+              }}
+              onMouseEnter={(e) => {
+                if (searchType !== cat.id) {
+                  e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.4)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (searchType !== cat.id) {
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+                }
+              }}
+            >
+              <span>{cat.icon}</span>
+              {cat.label}
+            </button>
+          ))}
+        </div>
 
         <form onSubmit={handleSearch} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <div style={{ display: "flex", gap: "8px" }}>
