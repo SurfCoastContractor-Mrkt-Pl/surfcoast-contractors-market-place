@@ -40,7 +40,8 @@ export default function About() {
           >
             About SurfCoast Marketplace
           </h1>
-          <div style={{ width: '80px', height: '4px', background: 'rgba(255,255,255,0.5)', borderRadius: '2px' }} />
+          <div style={{ width: '80px', height: '4px', background: 'rgba(255,255,255,0.5)', borderRadius: '2px', marginBottom: '20px' }} />
+          <ShareAboutButton />
         </div>
 
         {/* Mission Paragraphs */}
