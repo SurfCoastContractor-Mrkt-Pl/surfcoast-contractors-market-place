@@ -341,11 +341,7 @@ export default function Layout({ children, currentPageName }) {
       <footer className="bg-slate-800 text-slate-50 py-6 sm:py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
-            <div className="sm:col-span-2 lg:col-span-2">
-              <div className="flex items-center gap-2 mb-1">
-                <img src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/40ba30b2c_footerlogo.png" alt="SurfCoast Marketplace" className="h-10 flex-shrink-0" />
-              </div>
-            </div>
+
             <div>
               <h4 className="font-semibold mb-3">For Contractors</h4>
               <ul className="space-y-1 text-slate-400">
