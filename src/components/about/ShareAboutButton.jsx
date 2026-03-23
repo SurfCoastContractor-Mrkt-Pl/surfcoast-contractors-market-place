@@ -162,7 +162,12 @@ export default function ShareAboutButton() {
                       <p className="text-sm font-semibold">{platform.label}</p>
                       <p className="text-xs" style={{ color: '#64748b' }}>{platform.hint}</p>
                     </div>
-                    {isInstagramOrTikTok && (
+                    {platform.copyOnClick && (
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(249,115,22,0.15)', color: '#F97316' }}>
+                        Copy + Open
+                      </span>
+                    )}
+                    {!platform.getUrl?.() && !platform.copyOnClick && (
                       <span className="ml-auto text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(249,115,22,0.15)', color: '#F97316' }}>
                         Copy
                       </span>
