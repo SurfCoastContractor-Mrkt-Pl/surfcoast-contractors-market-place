@@ -166,6 +166,7 @@ export default function Home() {
         <a href={`${getAppBaseUrl()}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Privacy</a>
         <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
         <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.45)", textDecoration:"none" }}>Markets</a>
+        </div>
       </footer>
 
       <div style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(0,0,0,0.55)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"6px clamp(16px, 4vw, 24px)", textAlign:"center", flexShrink:0 }}>
