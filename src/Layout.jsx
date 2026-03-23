@@ -114,7 +114,7 @@ export default function Layout({ children, currentPageName }) {
             {currentPageName !== 'Home' && (
               <div className="hidden lg:flex items-center gap-1 flex-shrink">
                 {getNavLinks(isContractor).map(link => (
-                  <Link key={link.page} to={createPageUrl(link.page)}>
+                  <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
                     <Button
                       variant="ghost"
                       className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
