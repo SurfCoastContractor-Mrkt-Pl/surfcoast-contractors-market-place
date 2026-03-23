@@ -64,7 +64,6 @@ import CustomerSignup from './pages/CustomerSignup';
 import Dashboard from './pages/Dashboard';
 import DisputeCenter from './pages/DisputeCenter';
 import FindContractors from './pages/FindContractors';
-import Home from './pages/Home';
 import JobDetails from './pages/JobDetails';
 import Jobs from './pages/Jobs';
 import MarketDirectory from './pages/MarketDirectory';
