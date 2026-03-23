@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Package, MapPin, Star, Settings, Store, BarChart3 } from 'lucide-react';
+import { Loader2, Package, MapPin, Star, Settings, Store, BarChart3, MessageCircle } from 'lucide-react';
 import MarketBoothMetrics from '@/components/marketshop/MarketBoothMetrics';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
@@ -16,10 +16,12 @@ import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
 import LocationRatingForm from '@/components/locations/LocationRatingForm';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
 import VendorAnalyticsDashboard from '@/components/marketshop/VendorAnalyticsDashboard';
+import VendorMessagingInbox from '@/components/marketshop/VendorMessagingInbox';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
   { key: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { key: 'messages', label: 'Messages', icon: MessageCircle },
   { key: 'markets', label: 'My Markets', icon: MapPin },
   { key: 'reviews', label: 'Reviews', icon: Star },
   { key: 'ratings', label: 'Location Ratings', icon: BarChart3 },
@@ -183,6 +185,7 @@ export default function MarketShopDashboard() {
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
           {activeTab === 'listings' && <MarketShopListings shopId={shop.id} />}
           {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} />}
+          {activeTab === 'messages' && <VendorMessagingInbox shopId={shop.id} vendorEmail={shop.email} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
             shop.subscription_status === 'active' ? (
