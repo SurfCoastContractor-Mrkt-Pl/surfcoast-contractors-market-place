@@ -14,6 +14,7 @@ export default function Messaging() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewMessage, setShowNewMessage] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [eligibleForMessaging, setEligibleForMessaging] = useState(false);
 
   useEffect(() => {
     const initializeMessaging = async () => {
@@ -25,17 +26,34 @@ export default function Messaging() {
         }
         setUser(currentUser);
         
-        // Fetch conversations for this user
-        await fetchConversations(currentUser.email);
-        
-        // Subscribe to message updates
-        const unsubscribe = base44.entities.Message.subscribe((event) => {
-          if (event.type === 'create' || event.type === 'update') {
-            fetchConversations(currentUser.email);
-          }
-        });
-        
-        return unsubscribe;
+        // Check eligibility: must be consumer without contractor/customer accounts OR vendor/market shop
+        const [contractors, customers, marketShops] = await Promise.all([
+          base44.entities.Contractor.filter({ email: currentUser.email }),
+          base44.entities.CustomerProfile.filter({ email: currentUser.email }),
+          base44.entities.MarketShop.filter({ email: currentUser.email }),
+        ]);
+
+        const isContractor = contractors && contractors.length > 0;
+        const isCustomer = customers && customers.length > 0;
+        const isMarketVendor = marketShops && marketShops.length > 0;
+
+        // Eligible if: (no contractor AND no customer) OR is a vendor/market shop
+        const eligible = (!isContractor && !isCustomer) || isMarketVendor;
+        setEligibleForMessaging(eligible);
+
+        if (eligible) {
+          // Fetch conversations
+          await fetchConversations(currentUser.email);
+          
+          // Subscribe to message updates
+          const unsubscribe = base44.entities.ConsumerVendorMessage.subscribe((event) => {
+            if (event.type === 'create' || event.type === 'update') {
+              fetchConversations(currentUser.email);
+            }
+          });
+          
+          return unsubscribe;
+        }
       } catch (error) {
         console.error('Error initializing messaging:', error);
       } finally {
@@ -51,20 +69,20 @@ export default function Messaging() {
 
   const fetchConversations = async (userEmail) => {
     try {
-      // Get messages where user is sender or recipient
-      const [sentMessages, receivedMessages] = await Promise.all([
-        base44.entities.Message.filter({ sender_email: userEmail }),
-        base44.entities.Message.filter({ recipient_email: userEmail }),
+      // Get messages where user is consumer or vendor
+      const [consumerMessages, vendorMessages] = await Promise.all([
+        base44.entities.ConsumerVendorMessage.filter({ consumer_email: userEmail }),
+        base44.entities.ConsumerVendorMessage.filter({ vendor_email: userEmail }),
       ]);
 
-      const allMessages = [...(sentMessages || []), ...(receivedMessages || [])];
+      const allMessages = [...(consumerMessages || []), ...(vendorMessages || [])];
       
-      // Group by conversation (sender + recipient pair)
+      // Group by conversation
       const conversationMap = new Map();
       
       allMessages.forEach(msg => {
-        const otherParty = msg.sender_email === userEmail ? msg.recipient_email : msg.sender_email;
-        const otherName = msg.sender_email === userEmail ? msg.recipient_name : msg.sender_name;
+        const otherParty = msg.consumer_email === userEmail ? msg.vendor_email : msg.consumer_email;
+        const otherName = msg.consumer_email === userEmail ? msg.shop_name : msg.consumer_name;
         const key = [userEmail, otherParty].sort().join('|');
         
         if (!conversationMap.has(key)) {
@@ -72,6 +90,7 @@ export default function Messaging() {
             key,
             otherParty,
             otherName,
+            shopId: msg.shop_id,
             messages: [],
             lastMessage: null,
             lastMessageTime: new Date(0),
@@ -83,11 +102,11 @@ export default function Messaging() {
         convo.messages.push(msg);
         
         if (new Date(msg.created_date) > convo.lastMessageTime) {
-          convo.lastMessage = msg.body;
+          convo.lastMessage = msg.message;
           convo.lastMessageTime = new Date(msg.created_date);
         }
         
-        if (!msg.read && msg.recipient_email === userEmail) {
+        if (!msg.read && msg.vendor_email === userEmail) {
           convo.unreadCount++;
         }
       });
@@ -103,20 +122,35 @@ export default function Messaging() {
     }
   };
 
-  const handleSendMessage = async (recipientId, recipientEmail, recipientName, body, fileUrls = []) => {
+  const handleSendMessage = async (shopId, vendorEmail, shopName, body) => {
     try {
-      await base44.entities.Message.create({
-        sender_name: user.full_name,
-        sender_email: user.email,
-        sender_type: user.role === 'contractor' ? 'contractor' : 'customer',
-        recipient_id: recipientId,
-        recipient_name: recipientName,
-        recipient_email: recipientEmail,
-        subject: 'Project Discussion',
-        body,
-        file_urls: fileUrls,
-        payment_id: null, // Could require payment in future
-      });
+      // Determine sender type based on whether they're a vendor or consumer
+      const isVendor = user && shopId && vendorEmail === user.email;
+      
+      if (isVendor) {
+        // Vendor sending to consumer
+        const conversation = conversations.find(c => c.shopId === shopId);
+        await base44.entities.ConsumerVendorMessage.create({
+          shop_id: shopId,
+          shop_name: shopName,
+          consumer_email: conversation?.otherParty,
+          consumer_name: conversation?.otherName,
+          vendor_email: user.email,
+          message: body,
+          message_type: 'other',
+        });
+      } else {
+        // Consumer sending to vendor
+        await base44.entities.ConsumerVendorMessage.create({
+          shop_id: shopId,
+          shop_name: shopName,
+          consumer_email: user.email,
+          consumer_name: user.full_name,
+          vendor_email: vendorEmail,
+          message: body,
+          message_type: 'other',
+        });
+      }
 
       setSelectedConversation(null);
       await fetchConversations(user.email);
@@ -134,6 +168,22 @@ export default function Messaging() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!eligibleForMessaging) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold text-slate-900 mb-3">Messaging Unavailable</h2>
+          <p className="text-slate-600 mb-4">
+            Real-time messaging is available for consumers without contractor or customer accounts, and for market vendors and booths. 
+          </p>
+          <p className="text-sm text-slate-500">
+            If you're a contractor or customer needing to discuss work, please use the work-related messaging system through your job postings or proposals.
+          </p>
+        </div>
       </div>
     );
   }
@@ -214,7 +264,7 @@ export default function Messaging() {
             <MessageConversation
               conversation={selectedConversation}
               user={user}
-              onSendMessage={handleSendMessage}
+              onSendMessage={(shopId, vendorEmail, shopName, body) => handleSendMessage(shopId, vendorEmail, shopName, body)}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-slate-500">
