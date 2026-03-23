@@ -74,7 +74,7 @@ export default function HomeInteractiveMap() {
   const [selectedShopType, setSelectedShopType] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [nearbyRadius, setNearbyRadius] = useState(25); // km
+  const [nearbyRadius, setNearbyRadius] = useState(15); // miles
 
   // Get user's location
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function HomeInteractiveMap() {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
 
-    if (distance > nearbyRadius) return false;
+    if (distance > nearbyRadius * 1.60934) return false; // Convert miles to km
 
     // Apply filters
     if (selectedShopType && shop.shop_type !== selectedShopType) return false;
@@ -156,7 +156,7 @@ export default function HomeInteractiveMap() {
             Nearby Vendors
           </h3>
           <p className="text-sm text-slate-300 mt-0.5">
-            {nearbyShops.length} vendor{nearbyShops.length !== 1 ? 's' : ''} within {nearbyRadius} km
+            {nearbyShops.length} vendor{nearbyShops.length !== 1 ? 's' : ''} within {nearbyRadius} miles
           </p>
         </div>
         <Button
@@ -184,13 +184,13 @@ export default function HomeInteractiveMap() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Distance */}
             <div>
-              <label className="text-xs font-semibold text-slate-600 uppercase">Distance: {nearbyRadius} km</label>
-              <input
-                type="range"
-                min="5"
-                max="50"
-                value={nearbyRadius}
-                onChange={(e) => setNearbyRadius(parseInt(e.target.value))}
+              <label className="text-xs font-semibold text-slate-600 uppercase">Distance: {nearbyRadius} miles</label>
+               <input
+                 type="range"
+                 min="3"
+                 max="30"
+                 value={nearbyRadius}
+                 onChange={(e) => setNearbyRadius(parseInt(e.target.value))}
                 className="w-full mt-2"
               />
             </div>
@@ -231,7 +231,7 @@ export default function HomeInteractiveMap() {
               onClick={() => {
                 setSelectedShopType('');
                 setSelectedCategory('');
-                setNearbyRadius(25);
+                setNearbyRadius(15);
               }}
               className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
             >
@@ -320,7 +320,7 @@ export default function HomeInteractiveMap() {
               Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
               Math.sin(dLon / 2) * Math.sin(dLon / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distance = (R * c).toFixed(1);
+            const distance = (R * c * 0.621371).toFixed(1); // Convert km to miles
 
             return (
               <Card key={shop.id} className="p-3 hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}>
@@ -330,7 +330,7 @@ export default function HomeInteractiveMap() {
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-slate-900 text-sm truncate">{shop.shop_name}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{distance} km away</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{distance} miles away</p>
                     <div className="flex gap-1 flex-wrap mt-1">
                       <Badge variant="outline" className="text-xs">{SHOP_TYPE_LABELS[shop.shop_type]}</Badge>
                     </div>
