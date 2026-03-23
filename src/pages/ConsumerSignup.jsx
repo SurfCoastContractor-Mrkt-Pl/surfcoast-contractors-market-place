@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Loader2, ShoppingBag } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import EarlyAdopterBanner from '@/components/home/EarlyAdopterBanner';
 
 export default function ConsumerSignup() {
   const navigate = useNavigate();
@@ -41,12 +42,6 @@ export default function ConsumerSignup() {
       if (!formData.phone.trim()) throw new Error('Phone number is required');
       if (!formData.location.trim()) throw new Error('City/Zip is required');
 
-      // Create consumer profile via base44
-      const user = await base44.auth.me();
-      if (!user) {
-        throw new Error('Authentication failed. Please try again.');
-      }
-
       // Create consumer tier profile
       const consumerTier = await base44.entities.ConsumerTier.create({
         email: formData.email,
@@ -60,9 +55,19 @@ export default function ConsumerSignup() {
         throw new Error('Failed to create consumer profile');
       }
 
+      // Check and grant early adopter status
+      const earlyAdopterRes = await base44.functions.invoke('grantEarlyAdopterWaiver', {
+        email: formData.email,
+        full_name: formData.full_name,
+        signup_type: 'consumer',
+      });
+
       base44.analytics.track({
         eventName: 'consumer_signup_success',
-        properties: { location: formData.location },
+        properties: { 
+          location: formData.location,
+          early_adopter: earlyAdopterRes.data.qualified,
+        },
       });
 
       // Redirect to consumer hub
@@ -98,6 +103,7 @@ export default function ConsumerSignup() {
       </div>
 
       <div className="max-w-md mx-auto px-4 py-8">
+        <EarlyAdopterBanner />
         <Card className="p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (

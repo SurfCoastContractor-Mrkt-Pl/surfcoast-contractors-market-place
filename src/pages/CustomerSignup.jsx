@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Loader2, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import EarlyAdopterBanner from '@/components/home/EarlyAdopterBanner';
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
@@ -59,9 +60,19 @@ export default function CustomerSignup() {
         throw new Error(data.error || 'Signup failed');
       }
 
+      // Check and grant early adopter status
+      const earlyAdopterRes = await base44.functions.invoke('grantEarlyAdopterWaiver', {
+        email: formData.email,
+        full_name: formData.full_name,
+        signup_type: 'customer',
+      });
+
       base44.analytics.track({
         eventName: 'customer_signup_success',
-        properties: { location: formData.location },
+        properties: { 
+          location: formData.location,
+          early_adopter: earlyAdopterRes.data.qualified,
+        },
       });
 
       // Redirect to customer dashboard
@@ -97,6 +108,7 @@ export default function CustomerSignup() {
       </div>
 
       <div className="max-w-md mx-auto px-4 py-8">
+        <EarlyAdopterBanner />
         <Card className="p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (

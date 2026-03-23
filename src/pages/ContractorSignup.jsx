@@ -108,6 +108,7 @@ export default function ContractorSignup() {
       </div>
 
       <div className="max-w-md mx-auto px-4 py-8">
+        <EarlyAdopterBanner />
         <Card className="p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (

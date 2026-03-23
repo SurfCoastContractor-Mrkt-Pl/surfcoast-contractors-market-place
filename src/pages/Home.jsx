@@ -3,6 +3,7 @@ import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
+import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import HomeInteractiveMap from "@/components/home/HomeInteractiveMap";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
@@ -64,6 +65,7 @@ export default function Home() {
         </div>
 
         <CampaignAdBanner />
+        <EarlyAdopterBanner />
 
         {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
         <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }}>
