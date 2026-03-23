@@ -145,7 +145,6 @@ export default function ShareAboutButton() {
               {PLATFORMS.map(platform => {
                 const Icon = platform.icon;
                 const CustomIcon = platform.customIcon;
-                const isInstagramOrTikTok = !platform.getUrl?.();
                 return (
                   <button
                     key={platform.id}
