@@ -15,10 +15,12 @@ import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
 import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
 import LocationRatingForm from '@/components/locations/LocationRatingForm';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
+import VendorAnalyticsDashboard from '@/components/marketshop/VendorAnalyticsDashboard';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
   { key: 'markets', label: 'My Markets', icon: MapPin },
+  { key: 'analytics', label: 'Analytics', icon: BarChart3 },
   { key: 'reviews', label: 'Reviews', icon: Star },
   { key: 'ratings', label: 'Location Ratings', icon: BarChart3 },
   { key: 'settings', label: 'Settings', icon: Settings },
