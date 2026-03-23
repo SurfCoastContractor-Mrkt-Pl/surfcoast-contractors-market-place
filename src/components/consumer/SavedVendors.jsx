@@ -73,10 +73,12 @@ export default function SavedVendors({ userEmail }) {
           ))}
         </div>
       ) : (
-        <Card className="p-8 text-center">
-          <Heart className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-600">No saved vendors yet. Save your favorites while browsing!</p>
-        </Card>
+        <EmptyStateIllustration 
+          icon={Heart}
+          title="No Saved Vendors"
+          description="Save your favorite vendors while browsing to quick access them later."
+          actionLabel="Explore Markets"
+        />
       )}
     </div>
   );
