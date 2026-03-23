@@ -129,20 +129,20 @@ export default function Home() {
           >
             <Store size={24} style={{ marginBottom:"10px", color:"#9d7a54" }} strokeWidth={1.5} />
             <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Market Booth</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at farmers markets and swap meets with your own booth.</p>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at farmers markets with your own booth.</p>
             <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(139,125,107,0.5), 0 4px 8px rgba(139,125,107,0.25)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#9d7a54", color:"#fff" }}>Set Up Booth →</button>
           </div>
 
-          {/* Vendor Card */}
+          {/* SwapMeets Card */}
           <div
-            onMouseEnter={() => setHoveredCard("vendor")}
+            onMouseEnter={() => setHoveredCard("swapmeets")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="vendor"?"translateY(-2px)":"none", boxShadow:hoveredCard==="vendor"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="swapmeets"?"translateY(-2px)":"none", boxShadow:hoveredCard==="swapmeets"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
           >
             <ShoppingBag size={24} style={{ marginBottom:"10px", color:"#f97316" }} strokeWidth={1.5} />
-            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Vendor Shop</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Create a shop listing to sell products at local markets.</p>
-            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(249,115,22,0.6), 0 4px 8px rgba(249,115,22,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#f97316", color:"#fff" }}>Create Shop →</button>
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>SwapMeets</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Reserve your space at swap meets and sell directly to buyers.</p>
+            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(249,115,22,0.6), 0 4px 8px rgba(249,115,22,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#f97316", color:"#fff" }}>Reserve Space →</button>
           </div>
 
           {/* Consumer Card */}
