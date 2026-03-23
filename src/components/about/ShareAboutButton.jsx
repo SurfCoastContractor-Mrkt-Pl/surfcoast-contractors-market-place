@@ -54,11 +54,12 @@ export default function ShareAboutButton() {
 
   const handlePlatform = (platform) => {
     const url = platform.getUrl?.();
-    if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer,width=600,height=500');
-    } else {
-      // Copy link to clipboard for Instagram / TikTok
+    if (platform.copyOnClick) {
+      // Copy caption first, then open the platform
       handleCopyLink();
+    }
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
     setOpen(false);
   };
