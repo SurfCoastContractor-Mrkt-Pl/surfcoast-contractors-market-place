@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown } from "lucide-react";
 import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
+import VendorSearchBar from "@/components/home/VendorSearchBar";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
