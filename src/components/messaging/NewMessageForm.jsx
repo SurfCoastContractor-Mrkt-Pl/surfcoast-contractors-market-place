@@ -22,51 +22,31 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
       try {
         setLoading(true);
         
-        // Search contractors
-        const contractors = await base44.entities.Contractor.filter(
-          { name: { $regex: searchTerm, $options: 'i' } },
-          'name',
-          10
-        );
-
-        // Search customers
-        const customers = await base44.entities.CustomerProfile.filter(
-          { full_name: { $regex: searchTerm, $options: 'i' } },
-          'full_name',
+        // Search market shops/vendors
+        const marketShops = await base44.entities.MarketShop.filter(
+          { business_name: { $regex: searchTerm, $options: 'i' } },
+          'business_name',
           10
         );
 
         const results = [];
 
-        if (contractors) {
+        if (marketShops) {
           results.push(
-            ...contractors
-              .filter(c => c.email !== user.email)
-              .map(c => ({
-                id: c.id,
-                name: c.name,
-                email: c.email,
-                type: 'contractor',
-              }))
-          );
-        }
-
-        if (customers) {
-          results.push(
-            ...customers
-              .filter(c => c.email !== user.email)
-              .map(c => ({
-                id: c.id,
-                name: c.full_name,
-                email: c.email,
-                type: 'customer',
+            ...marketShops
+              .filter(shop => shop.email !== user.email)
+              .map(shop => ({
+                id: shop.id,
+                name: shop.business_name,
+                email: shop.email,
+                type: 'vendor',
               }))
           );
         }
 
         setRecipients(results);
       } catch (error) {
-        console.error('Error searching recipients:', error);
+        console.error('Error searching vendors:', error);
       } finally {
         setLoading(false);
       }
@@ -82,17 +62,14 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
 
     setSending(true);
     try {
-      await base44.entities.Message.create({
-        sender_name: user.full_name,
-        sender_email: user.email,
-        sender_type: user.role === 'contractor' ? 'contractor' : 'customer',
-        recipient_id: selectedRecipient.id,
-        recipient_name: selectedRecipient.name,
-        recipient_email: selectedRecipient.email,
-        subject: 'Project Discussion',
-        body: messageBody,
-        file_urls: [],
-        payment_id: null,
+      await base44.entities.ConsumerVendorMessage.create({
+        shop_id: selectedRecipient.id,
+        shop_name: selectedRecipient.name,
+        consumer_email: user.email,
+        consumer_name: user.full_name,
+        vendor_email: selectedRecipient.email,
+        message: messageBody,
+        message_type: 'other',
       });
 
       onMessageSent();
@@ -122,14 +99,14 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
         <div className="flex-1 overflow-y-auto p-6">
           <div className="mb-6">
             <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Who would you like to message?
+              Which vendor would you like to message?
             </label>
             <div className="relative">
               <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
               <Input
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by name or email..."
+                placeholder="Search by vendor name..."
                 className="pl-10"
               />
             </div>
@@ -141,7 +118,7 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
             </div>
           ) : recipients.length === 0 && searchTerm ? (
             <div className="text-center py-8 text-slate-500">
-              <p>No results found</p>
+              <p>No vendors found</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -157,7 +134,7 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
                       <p className="text-sm text-slate-600 truncate">{recipient.email}</p>
                     </div>
                     <span className="ml-2 text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 flex-shrink-0">
-                      {recipient.type}
+                      vendor
                     </span>
                   </div>
                 </button>
@@ -181,7 +158,7 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
             <textarea
               value={messageBody}
               onChange={(e) => setMessageBody(e.target.value)}
-              placeholder="Type your message here. Share project details, photos, or discuss terms..."
+              placeholder="Type your message here..."
               className="w-full h-40 p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
             />
           </div>
