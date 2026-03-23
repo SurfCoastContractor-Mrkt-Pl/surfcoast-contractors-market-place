@@ -67,6 +67,11 @@ export default function ConsumerHub() {
               <span className="hidden sm:inline">Shopping</span>
               <span className="sm:hidden">Shop</span>
             </TabsTrigger>
+            <TabsTrigger value="orders" className="flex items-center gap-2">
+              <ClipboardList className="w-4 h-4" />
+              <span className="hidden sm:inline">My Orders</span>
+              <span className="sm:hidden">Orders</span>
+            </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
               Settings
