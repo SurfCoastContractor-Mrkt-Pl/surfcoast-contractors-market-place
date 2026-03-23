@@ -59,7 +59,7 @@ export default function Home() {
 
         <div style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "12px", maxWidth:"680px" }}>
           <h1 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h1>
-          <p style={{ fontSize:"clamp(16px, 4vw, 28px)", fontWeight:"700", color:"#d97706", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:1.3, letterSpacing:"-0.5px", textShadow:"0 2px 16px rgba(217,119,6,0.3)" }}>No Shortcuts. Just Work.</p>
+          <p style={{ fontSize:"clamp(16px, 4vw, 28px)", fontWeight:"700", color:"#d97706", margin:"0 0 clamp(12px, 3vw, 16px)", lineHeight:1.3, letterSpacing:"-0.5px", textShadow:"0 2px 16px rgba(217,119,6,0.3)" }}>No Shortcuts. Just Hard Work.</p>
           <p style={{ fontSize:"clamp(13px, 3vw, 16px)", color:"rgba(255,255,255,0.72)", margin:0, lineHeight:1.65 }}>Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </div>
 
