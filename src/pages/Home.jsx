@@ -172,8 +172,8 @@ export default function Home() {
              { icon: ShoppingBag, label: "Nationwide coverage" }
            ].map(({ icon: Icon, label }, i) => (
              <span key={i} style={{ display:"flex", alignItems:"center", gap:"6px", justifyContent:"center" }}>
-               <Icon size={14} style={{ color:"rgba(255,255,255,0.48)", flexShrink:0 }} strokeWidth={1.5} />
-               <span style={{ fontSize:"12px", color:"rgba(255,255,255,0.48)" }}>{label}</span>
+               <Icon size={14} style={{ color:"rgba(255,255,255,0.7)", flexShrink:0 }} strokeWidth={1.5} />
+               <span style={{ fontSize:"12px", color:"rgba(255,255,255,0.7)" }}>{label}</span>
              </span>
            ))}
         </div>
