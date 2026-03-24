@@ -6,11 +6,6 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const { shopId, paymentModel, shopName, ownerEmail, ownerName } = await req.json();
 
@@ -18,34 +13,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Verify owner email matches authenticated user
-    if (ownerEmail !== user.email) {
-      return Response.json({ error: 'Forbidden: Email does not match authenticated user' }, { status: 403 });
+    // Facilitation model is free upfront — just activate the shop directly
+    if (paymentModel === 'facilitation') {
+      await base44.asServiceRole.entities.MarketShop.update(shopId, {
+        payment_model: 'facilitation',
+        subscription_status: 'active',
+        is_active: true,
+      });
+      console.log(`Market shop ${shopId} activated with facilitation model`);
+      return Response.json({ activated: true, paymentModel: 'facilitation' });
     }
 
-    // Map payment model to price ID
-    const priceMap = {
-      subscription: Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID'),
-      facilitation: Deno.env.get('STRIPE_VENDOR_LISTING_PRICE_ID'),
-    };
-
-    const priceId = priceMap[paymentModel];
-    if (!priceId) {
-      console.error(`Invalid payment model: ${paymentModel}`);
+    // Subscription model requires Stripe checkout
+    if (paymentModel !== 'subscription') {
       return Response.json({ error: 'Invalid payment model' }, { status: 400 });
+    }
+
+    const priceId = Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID');
+    if (!priceId) {
+      console.error('STRIPE_SUBSCRIPTION_PRICE_ID not configured');
+      return Response.json({ error: 'Subscription price not configured' }, { status: 500 });
     }
 
     const origin = req.headers.get('origin') || new URL(req.url).origin;
 
-    // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
       customer_email: ownerEmail,
       success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}&shop_id=${shopId}`,
@@ -59,7 +53,7 @@ Deno.serve(async (req) => {
       },
     });
 
-    console.log(`Market shop checkout created for shop ${shopId}: ${session.id}`);
+    console.log(`Market shop subscription checkout created for shop ${shopId}: ${session.id}`);
 
     return Response.json({
       checkoutUrl: session.url,
@@ -67,7 +61,6 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('createMarketShopCheckout error:', error.message);
-    console.error('Full error:', JSON.stringify(error));
     return Response.json({ error: error.message || 'Failed to create checkout session' }, { status: 500 });
   }
 });

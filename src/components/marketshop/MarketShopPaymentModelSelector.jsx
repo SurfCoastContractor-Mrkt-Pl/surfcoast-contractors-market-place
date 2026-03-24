@@ -49,7 +49,10 @@ export default function MarketShopPaymentModelSelector({ shopId, shopName, owner
         ownerName,
       });
 
-      if (response.data?.checkoutUrl) {
+      if (response.data?.activated) {
+        // Facilitation model — shop activated directly, redirect to dashboard
+        window.location.href = '/MarketShopDashboard';
+      } else if (response.data?.checkoutUrl) {
         window.location.href = response.data.checkoutUrl;
       } else {
         alert('Error creating checkout session');

@@ -9,10 +9,11 @@ export default function EarlyAdopterBanner() {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const waivers = await base44.asServiceRole.entities.EarlyAdopterWaiver.list();
-        setWaiverCount(waivers ? waivers.length : 0);
-      } catch (error) {
-        console.error('Error fetching waiver count:', error);
+        const result = await base44.functions.invoke('grantEarlyAdopterWaiver', { action: 'count_only' });
+        setWaiverCount(result?.data?.count ?? 0);
+      } catch {
+        // Silently fail — banner just won't show spot count
+        setWaiverCount(0);
       }
     };
     fetchCount();
