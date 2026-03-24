@@ -21,13 +21,12 @@ const getNextTierThreshold = (currentTier) => {
 
 Deno.serve(async (req) => {
   try {
-    // Validate internal service key
-    const internalKey = req.headers.get('x-internal-key');
-    if (internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
     const { contractorId, contractorEmail, payoutAmount } = await req.json();
 
     if (!contractorId || !contractorEmail || payoutAmount === undefined) {

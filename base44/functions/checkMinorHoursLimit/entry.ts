@@ -17,19 +17,20 @@ Deno.serve(async (req) => {
       contractorId = null;
     }
 
-    // If no contractorId, this is an automation call to check ALL minors
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // If no contractorId, this is a bulk check - admin only
     const isAutomation = !contractorId;
-    
     if (isAutomation) {
-      // Automation call - no auth check needed, service role handles it
+      if (user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: Admin access required for bulk checks' }, { status: 403 });
+      }
       console.log('Running minor hours automation check');
     } else {
-      const user = await base44.auth.me();
-      if (!user) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-      // For single contractor checks, verify the user is authorized to view this contractor's data
-      // Only admins or the contractor themselves can check hours
+      // For single contractor checks, only admins or the contractor themselves
       const contractor = await base44.asServiceRole.entities.Contractor.filter({ id: contractorId });
       if (contractor && contractor.length > 0) {
         if (user.role !== 'admin' && user.email !== contractor[0].email) {

@@ -4,27 +4,10 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Validate authorization: internal key check for service-to-service calls
-    const providedKey = req.headers.get('x-internal-key');
-    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-
-    let user = null;
-    try {
-      user = await base44.auth.me();
-    } catch {
-      // User not authenticated
-    }
-
-    const isAdmin = user?.role === 'admin';
-    const isValidInternalCall = providedKey && expectedKey && providedKey === expectedKey;
-
-    // Only allow: (1) authenticated admin users, or (2) valid internal service calls
-    if (!isAdmin && !isValidInternalCall) {
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
       console.warn(`Unauthorized error log creation attempt from ${user?.email || 'unauthenticated'}`);
-      return Response.json(
-        { error: 'Unauthorized: only admins or internal service calls allowed' },
-        { status: 403 }
-      );
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
     const {

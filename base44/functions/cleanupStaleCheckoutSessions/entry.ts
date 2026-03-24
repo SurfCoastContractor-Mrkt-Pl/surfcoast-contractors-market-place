@@ -5,15 +5,12 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
-    // Authorization: check internal service key from header OR allow if called from scheduled automation
-    const internalKey = req.headers.get('x-internal-service-key');
-    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    
-    if (internalKey && internalKey !== expectedKey) {
-      return Response.json({ error: 'Unauthorized' }, { status: 403 });
-    }
-
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
 
     console.log('Starting stale payment cleanup...');
 

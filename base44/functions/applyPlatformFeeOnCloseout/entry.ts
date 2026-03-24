@@ -12,10 +12,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid automation payload' }, { status: 400 });
     }
 
-    // SECURITY: Only allow automation calls (service role)
-    const user = await base44.auth.me().catch(() => null);
-    if (user && user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden: only admins or automations can access this' }, { status: 403 });
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
     // Only process when scope is marked as closed
