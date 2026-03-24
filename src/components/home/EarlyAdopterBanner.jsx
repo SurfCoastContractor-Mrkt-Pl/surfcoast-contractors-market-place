@@ -9,7 +9,7 @@ export default function EarlyAdopterBanner() {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const result = await base44.functions.invoke('grantEarlyAdopterWaiver', { action: 'count_only' });
+        const result = await base44.functions.invoke('getEarlyAdopterCount', {});
         setWaiverCount(result?.data?.count ?? 0);
       } catch {
         // Silently fail — banner just won't show spot count
