@@ -5,7 +5,6 @@ import VendorSearchBar from "@/components/home/VendorSearchBar";
 import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
-import HomeInteractiveMap from "@/components/home/HomeInteractiveMap";
 import FeaturedVendors from "@/components/home/FeaturedVendors";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
