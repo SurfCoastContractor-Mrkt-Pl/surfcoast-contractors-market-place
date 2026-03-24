@@ -1,11 +1,30 @@
-# Checkpoint - March 23, 2026 (Latest Updates)
+# Checkpoint - March 24, 2026 (Latest Updates)
 
 ## Overview
-Major updates to service agreement generation, search analytics integration, and hardcoded URL removal.
+Recent updates focused on navigation UX improvements — the account dropdown's "Switch Profile" section now shows profiles the user is actually registered with, replacing the generic "Browse & Shop" button with a context-aware "Consumer" profile link.
+
+---
 
 ## Recent Additions & Changes
 
-### 1. Google Docs Service Agreement Generation
+### 1. Account Dropdown - Switch Profile Section (March 24, 2026)
+**File Modified:** `layout.jsx`
+
+**Changes:**
+- Added `hasCustomerProfile` state to track if logged-in user has a `CustomerProfile` record.
+- Added `CustomerProfile.filter({ email: user.email })` check alongside existing Contractor and MarketShop checks (all fetched in parallel).
+- Replaced the generic "Browse & Shop" toggle button (which toggled `isConsumerMode`) with a conditional "Consumer" link that:
+  - Only appears if the user has a registered `CustomerProfile`
+  - Links directly to `/ConsumerHub`
+  - Uses 🛒 icon for visual distinction
+- Applied the same change to both **desktop dropdown** and **mobile menu** Switch Profile sections.
+
+**Before:** "Browse & Shop" button always visible, toggled consumer mode context
+**After:** "Consumer" link only visible when user has a CustomerProfile, navigates to ConsumerHub
+
+---
+
+### 2. Google Docs Service Agreement Generation (March 23, 2026)
 **Files Created:**
 - `functions/generateContractorAgreement/entry.ts` - Automated service agreement generator
 - `components/contractor/ServiceAgreementGenerator.jsx` - React component for triggering agreement generation
@@ -22,7 +41,7 @@ Major updates to service agreement generation, search analytics integration, and
 
 ---
 
-### 2. Google Search Console Analytics Dashboard
+### 3. Google Search Console Analytics Dashboard (March 23, 2026)
 **Files Created:**
 - `functions/fetchSearchConsoleData.js` - Backend function to fetch search performance data
 - `pages/SearchAnalytics.jsx` - Full analytics dashboard page
@@ -36,45 +55,17 @@ Major updates to service agreement generation, search analytics integration, and
 
 **Route:** `/SearchAnalytics` (added to `App.jsx`)
 
-**Data Returned:**
-```
-{
-  queries: [{query, impressions, clicks, ctr, position}],
-  pages: [{page, impressions, clicks, ctr, position}],
-  summary: {totalImpressions, totalClicks, avgCtr, avgPosition}
-}
-```
-
 ---
 
-### 3. Hardcoded URL Removal & SDK Migration
+### 4. Hardcoded URL Removal & SDK Migration (March 23, 2026)
 
 #### File: `pages/TimedChatPage.jsx`
-**Before:**
-```javascript
-const REDACT_URL = 'https://sage-c5f01224.base44.app/functions/redactMessage';
-// Direct fetch calls to hardcoded URL
-```
-
-**After:**
-```javascript
-// Uses base44.functions.invoke('redactMessage', {...})
-// Dynamic SDK-based approach
-```
+- Removed hardcoded `REDACT_URL` constant
+- Migrated to `base44.functions.invoke('redactMessage', {...})`
 
 #### File: `components/contractor/TrialStatusBanner.jsx`
-**Before:**
-```javascript
-const res = await fetch('https://sage-c5f01224.base44.app/functions/activateTrial', {...});
-// Hardcoded environment URL in two places
-```
-
-**After:**
-```javascript
-import { base44 } from '@/api/base44Client';
-const response = await base44.functions.invoke('activateTrial', {...});
-// Dynamic SDK-based approach with proper error handling
-```
+- Removed hardcoded environment URL
+- Migrated to `base44.functions.invoke('activateTrial', {...})`
 
 ---
 
@@ -82,26 +73,15 @@ const response = await base44.functions.invoke('activateTrial', {...});
 - `google_search_console` - Read-only web master data
 - `googledocs` - Document creation and sharing
 
-## Environment Considerations
-- All hardcoded URLs removed from frontend
-- All external service calls now use Base44 SDK
-- This makes the app portable across environments
-- No dependency on specific app instance URLs
-
-## Testing Notes
-- Search Analytics requires Google Search Console property setup
-- Agreement generation requires Google Docs OAuth authorization
-- Timed chat redaction and trial activation use existing backend functions
+## Architecture Notes
+- Public-facing app (no login required by default)
+- All hardcoded URLs removed from frontend — fully SDK-based
+- Switch Profile section in nav dynamically shows only profiles the user has registered
 
 ## Database Entities Referenced
-- `Contractor` - For agreement generation and trial status
+- `Contractor` - Profile switch detection
+- `CustomerProfile` - Consumer profile switch detection
+- `MarketShop` - MarketShop profile switch detection
 - `ScopeOfWork` - For scope-specific agreements
 - `TimedChatSession` & `TimedChatMessage` - For chat functionality
-
----
-
-## Next Steps (Recommendations)
-1. Add caching layer to search analytics (Google APIs have rate limits)
-2. Create backend function error logging for agreement generation failures
-3. Add analytics tracking for agreement generation events
-4. Consider scheduled sync of search analytics data for trend analysis
+- `EarlyAdopterWaiver` - Public count endpoint via `getEarlyAdopterCount` function
