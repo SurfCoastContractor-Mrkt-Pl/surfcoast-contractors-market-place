@@ -72,12 +72,14 @@ export default function Layout({ children, currentPageName }) {
         const user = await base44.auth.me();
         if (user) {
           setIsLoggedIn(true);
-          const [contractors, marketShops] = await Promise.all([
+          const [contractors, marketShops, customers] = await Promise.all([
             base44.entities.Contractor.filter({ email: user.email }),
             base44.entities.MarketShop.filter({ email: user.email }),
+            base44.entities.CustomerProfile.filter({ email: user.email }),
           ]);
           setIsContractor(contractors && contractors.length > 0);
           setHasMarketShop(marketShops && marketShops.length > 0);
+          setHasCustomerProfile(customers && customers.length > 0);
         } else {
           setIsLoggedIn(false);
           setIsContractor(false);
