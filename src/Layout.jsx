@@ -299,13 +299,14 @@ export default function Layout({ children, currentPageName }) {
                           <span>{isContractor ? 'Contractor' : 'Customer'}</span>
                         </div>
                       </Link>
-                      <button
-                        onClick={() => { toggleConsumerMode(!isConsumerMode); setMobileMenuOpen(false); if (!isConsumerMode) window.location.href = createPageUrl('MarketDirectory'); }}
-                        className="w-full text-left flex items-center gap-3 p-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors"
-                      >
-                        <ShoppingBag className="w-5 h-5" />
-                        <span>{isConsumerMode ? 'Exit Shopping' : 'Browse & Shop'}</span>
-                      </button>
+                      {hasCustomerProfile && (
+                        <Link to={createPageUrl('ConsumerHub')} onClick={() => setMobileMenuOpen(false)}>
+                          <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                            <span>🛒</span>
+                            <span>Consumer</span>
+                          </div>
+                        </Link>
+                      )}
                       {hasMarketShop ? (
                         <Link to={createPageUrl('MarketShopDashboard')} onClick={() => setMobileMenuOpen(false)}>
                           <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
