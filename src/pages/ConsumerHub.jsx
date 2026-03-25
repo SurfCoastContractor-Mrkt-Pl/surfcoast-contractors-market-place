@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
@@ -13,14 +15,19 @@ import EmptyStateIllustration from '@/components/consumer/EmptyStateIllustration
 import { ShoppingBag, Award, ClipboardList, Heart, CreditCard, Leaf, Tag } from 'lucide-react';
 
 export default function ConsumerHub() {
+  const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const getUserEmail = async () => {
       try {
         const user = await base44.auth.me();
-        setUserEmail(user?.email || null);
+        if (!user) { navigate('/'); return; }
+        setUserEmail(user.email);
+        const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
+        setIsRegistered(profiles && profiles.length > 0);
       } catch (err) {
         console.error('Error fetching user:', err);
       } finally {
@@ -43,6 +50,31 @@ export default function ConsumerHub() {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!isRegistered) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="max-w-md w-full text-center">
+          <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-4">
+            <ShoppingBag className="w-8 h-8 text-blue-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Consumer Dashboard</h2>
+          <p className="text-slate-500 mb-6">
+            You need a Consumer account to access this dashboard. Sign up to browse local vendors, earn badges, and track your orders.
+          </p>
+          <Link
+            to={createPageUrl('ConsumerSignup')}
+            className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Register as a Consumer
+          </Link>
+          <p className="text-sm text-slate-400 mt-4">
+            <button onClick={() => navigate(-1)} className="underline hover:text-slate-600">Go back</button>
+          </p>
+        </div>
       </div>
     );
   }
