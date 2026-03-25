@@ -76,8 +76,6 @@ Deno.serve(async (req) => {
       console.log(`Market shop subscription checkout created for shop ${shopId}: ${session.id}`);
     }
 
-    console.log(`Market shop subscription checkout created for shop ${shopId}: ${session.id}`);
-
     return Response.json({
       checkoutUrl: session.url,
       sessionId: session.id,
