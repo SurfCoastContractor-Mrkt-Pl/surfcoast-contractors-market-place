@@ -8,9 +8,16 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    const user = await base44.auth.me();
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    // Verify internal service key (for scheduled automations) OR admin user
+    const authHeader = req.headers.get('Authorization');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const hasValidServiceKey = authHeader && expectedKey && authHeader === `Bearer ${expectedKey}`;
+
+    if (!hasValidServiceKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+      }
     }
 
     // Find all active campaigns
