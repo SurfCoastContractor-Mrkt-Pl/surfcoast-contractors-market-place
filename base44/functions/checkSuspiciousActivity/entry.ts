@@ -74,7 +74,7 @@ Deno.serve(async (req) => {
     // ── Payload integrity fingerprint ────────────────────────────────────────
     const payloadStr = JSON.stringify({ customer_email, ip_country, ts: new Date().toISOString() });
     const payloadHash = await sha256(payloadStr);
-    const hmacSig = await hmacSign(Deno.env.get('INTERNAL_SERVICE_KEY') || 'fallback', payloadStr);
+    const hmacSig = await hmacSign(Deno.env.get('INTERNAL_SERVICE_KEY') || '', payloadStr);
 
     const now = new Date();
     const lastHour = new Date(now.getTime() - 60 * 60 * 1000);
