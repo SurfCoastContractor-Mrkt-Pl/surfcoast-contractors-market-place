@@ -191,6 +191,27 @@ Thank you for using SurfCoast Marketplace.
     }
   };
 
+  // Vendor purchase success screen
+  const urlParamsCheck = new URLSearchParams(window.location.search);
+  if (!isVerifying && urlParamsCheck.get('type') === 'vendor_purchase') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center shadow-xl">
+          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+            <CheckCircle className="w-10 h-10 text-green-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Order Confirmed! 🎉</h2>
+          <p className="text-slate-600 text-sm mb-6">
+            Your purchase was successful. A receipt has been sent to your email. Redirecting you to your orders...
+          </p>
+          <Button onClick={() => navigate('/ConsumerHub')} className="w-full bg-green-600 hover:bg-green-700 text-white">
+            View My Orders
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
   if (isMarketShop) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
