@@ -70,7 +70,7 @@ export default function ConsumerHub() {
         {/* Tabs */}
         <Tabs defaultValue="badges" className="space-y-6">
           <TabsList 
-            className="grid w-full grid-cols-6 relative overflow-hidden"
+            className="grid w-full grid-cols-7 relative overflow-hidden"
             style={{
               background: 'linear-gradient(90deg, #8B6F47 0%, #7A5C2F 25%, #8B6F47 50%, #7A5C2F 75%, #8B6F47 100%), linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.3) 100%)',
               backgroundBlendMode: 'overlay',
