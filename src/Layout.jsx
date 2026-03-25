@@ -13,24 +13,11 @@ import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import ShoppingCart from '@/components/consumer/ShoppingCart';
 import { ShoppingBag } from 'lucide-react';
 
-const getNavLinks = (isContractor) => {
-  const baseLinks = [
-    { name: 'Home', page: '/', icon: Home },
-  ];
-  if (isContractor === true) {
-    baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
-  } else if (isContractor === false) {
-    baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
-  }
-  baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle, badge: unreadCount > 0 ? unreadCount : null });
-  return baseLinks;
-};
-
 const customerLinks = [
   { name: 'My Account', page: 'CustomerAccount' },
   { name: 'My Job Postings', page: 'MyJobs' },
   { name: 'Earn Credits', page: 'Referrals' },
-  ]; // Client links (formerly customerLinks)
+];
 
 const contractorLinks = [
   { name: 'My Account', page: 'ContractorAccount' },
@@ -52,6 +39,19 @@ export default function Layout({ children, currentPageName }) {
   const { isConsumerMode, toggleConsumerMode } = useConsumerMode();
 
   useGeoCheck();
+
+  const getNavLinks = (isContractor) => {
+    const baseLinks = [
+      { name: 'Home', page: '/', icon: Home },
+    ];
+    if (isContractor === true) {
+      baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
+    } else if (isContractor === false) {
+      baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
+    }
+    baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle, badge: unreadCount > 0 ? unreadCount : null });
+    return baseLinks;
+  };
 
   useEffect(() => {
     const handlePopState = () => { isBackNav.current = true; };
