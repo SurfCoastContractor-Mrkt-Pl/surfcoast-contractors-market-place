@@ -182,21 +182,21 @@ export default function Terms() {
             </p>
           </div>
 
-          {/* SurfCoast Vendor Listing */}
+          {/* MarketShop - Market Booths & Spaces */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">SurfCoast Vendor Listing - $100.00/month OR $35.00/month</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">MarketShop - Market Booths & Spaces - $35.00/month OR 5% Facilitation Fee</h3>
             <p className="text-slate-700 mb-3">
-              List your products and services on the SurfCoast Marketplace, reaching customers at farmers markets, swap meets, and other market events.
+              Rent booth or vendor space at farmers markets, swap meets, and community markets. Choose between a flat monthly fee or pay per transaction.
             </p>
             <div className="bg-slate-50 p-4 rounded-lg mb-3">
               <p className="text-sm font-semibold text-slate-900 mb-2">Two Pricing Options:</p>
               <ul className="list-disc list-inside space-y-2 text-sm text-slate-700">
-                <li><strong>Premium Plan ($100/month):</strong> Unlimited product listings, featured vendor placement, advanced analytics, and priority customer support.</li>
-                <li><strong>Basic Plan ($35/month):</strong> Up to 50 product listings, standard vendor placement, and basic analytics.</li>
+                <li><strong>Subscription Model ($35/month):</strong> Unlimited booth listings, space listings, and product uploads. One flat fee per month covers all market booth participation.</li>
+                <li><strong>Facilitation Fee Model (5% per transaction):</strong> No monthly subscription. Pay only 5% on each transaction. Example: a $100 sale results in a $95 payout to the vendor.</li>
               </ul>
             </div>
             <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Choose your preferred plan and pay monthly. Upload product photos, descriptions, and pricing. Your listings appear on the marketplace immediately. You receive notifications when customers express interest in your products.
+              <strong>How It Works:</strong> Select your preferred pricing model. Upload booth photos, booth descriptions, and product listings. Customers browse available booths and spaces, and you receive notifications of inquiries. Pay based on your chosen model: either a flat $35/month or 5% per transaction processed through the platform.
             </p>
           </div>
 
