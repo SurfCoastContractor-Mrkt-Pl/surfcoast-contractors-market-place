@@ -13,6 +13,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Verify authenticated user matches the owner email
+    const user = await base44.auth.me();
+    if (!user || user.email !== ownerEmail) {
+      console.warn(`Unauthorized checkout attempt: user ${user?.email} tried to create checkout for ${ownerEmail}`);
+      return Response.json({ error: 'Unauthorized: Email mismatch' }, { status: 403 });
+    }
+
     if (!['facilitation', 'subscription'].includes(paymentModel)) {
       return Response.json({ error: 'Invalid payment model' }, { status: 400 });
     }
