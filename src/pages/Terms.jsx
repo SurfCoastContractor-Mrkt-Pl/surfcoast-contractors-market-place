@@ -280,14 +280,14 @@ export default function Terms() {
                     <td className="p-3 text-slate-700">Trade contractors managing jobs & clients</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Vendor Listing (Premium)</td>
-                    <td className="p-3 text-slate-700">$100/month</td>
-                    <td className="p-3 text-slate-700">Market vendors with high inventory</td>
+                    <td className="p-3 text-slate-700">MarketShop (Subscription)</td>
+                    <td className="p-3 text-slate-700">$35/month</td>
+                    <td className="p-3 text-slate-700">Market booth vendors (flat fee)</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Vendor Listing (Basic)</td>
-                    <td className="p-3 text-slate-700">$35/month</td>
-                    <td className="p-3 text-slate-700">Market vendors with limited inventory</td>
+                    <td className="p-3 text-slate-700">MarketShop (Facilitation)</td>
+                    <td className="p-3 text-slate-700">5% per sale</td>
+                    <td className="p-3 text-slate-700">Market booth vendors (pay per transaction)</td>
                   </tr>
                   <tr className="border-b border-slate-200">
                     <td className="p-3 text-slate-700">Limited Communication</td>
