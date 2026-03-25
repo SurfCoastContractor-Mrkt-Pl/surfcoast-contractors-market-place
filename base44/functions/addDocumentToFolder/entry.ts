@@ -11,7 +11,7 @@ Deno.serve(async (req) => {
 
     const { folder_id, document_type, document_name, document_url } = await req.json();
 
-    // Fetch folder
+    // Fetch folder with user permission verification
     const folder = await base44.entities.ProjectFolder.filter({ id: folder_id });
     if (folder.length === 0) {
       return Response.json({ error: 'Folder not found' }, { status: 404 });
@@ -19,9 +19,18 @@ Deno.serve(async (req) => {
 
     const f = folder[0];
 
-    // Verify user is contractor or customer
+    // Verify user is the owner (contractor or customer) of the folder
     if (user.email !== f.contractor_email && user.email !== f.customer_email) {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+      return Response.json({ error: 'Forbidden: You do not have permission to modify this folder' }, { status: 403 });
+    }
+
+    // Additionally verify the associated ScopeOfWork matches user permissions
+    const scopes = await base44.entities.ScopeOfWork.filter({ id: f.scope_id });
+    if (scopes.length > 0) {
+      const scope = scopes[0];
+      if (user.email !== scope.contractor_email && user.email !== scope.customer_email) {
+        return Response.json({ error: 'Forbidden: No permission for this scope' }, { status: 403 });
+      }
     }
 
     // Add document to folder
