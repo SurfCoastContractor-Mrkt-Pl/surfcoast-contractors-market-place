@@ -124,9 +124,28 @@ export default function ConsumerHub() {
             )}
           </TabsContent>
 
-          {/* Shopping Tab */}
-          <TabsContent value="purchases" className="space-y-6">
-            <MarketShopBrowser />
+          {/* Farmers Market Tab */}
+          <TabsContent value="farmers" className="space-y-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🌽</div>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Farmers Market</h2>
+                <p className="text-sm text-slate-500">Fresh produce, dairy, baked goods & more from local farms</p>
+              </div>
+            </div>
+            <MarketShopBrowser lockedType="farmers_market" />
+          </TabsContent>
+
+          {/* Swap Meet Tab */}
+          <TabsContent value="swapmeet" className="space-y-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-xl">🏷️</div>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Swap Meet</h2>
+                <p className="text-sm text-slate-500">Crafts, collectibles, clothing, tools & unique finds</p>
+              </div>
+            </div>
+            <MarketShopBrowser lockedType="swap_meet" />
           </TabsContent>
 
           {/* Saved Vendors Tab */}
