@@ -37,6 +37,8 @@ export default function MarketShopSettings({ shop, onUpdate }) {
     products_summary: shop?.products_summary || '',
     categories: shop?.categories || [],
     payment_methods: shop?.payment_methods || [],
+    swap_meet_space_numbers: shop?.swap_meet_space_numbers || '',
+    swap_meet_next_weekend: shop?.swap_meet_next_weekend || { market_name: '', date: '', address: '', hours: '', notes: '' },
   });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
