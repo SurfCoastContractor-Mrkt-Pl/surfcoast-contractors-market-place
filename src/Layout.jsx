@@ -184,10 +184,10 @@ export default function Layout({ children, currentPageName }) {
                           <Link to={createPageUrl('Dashboard')}>
                             <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
                               <span>{isContractor ? '🔧' : '🏠'}</span>
-                              <span>{isContractor ? 'Contractor' : 'Customer'}</span>
-                            </div>
-                          </Link>
-                          {hasCustomerProfile && (
+                              <span>{isContractor ? 'Contractor' : 'Client'}</span>
+                              </div>
+                              </Link>
+                              {hasCustomerProfile && (
                             <Link to={createPageUrl('ConsumerHub')} onClick={() => setAccountMenuOpen(false)}>
                               <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
                                 <span>🛒</span>
@@ -296,10 +296,10 @@ export default function Layout({ children, currentPageName }) {
                       <Link to={createPageUrl('Dashboard')} onClick={() => setMobileMenuOpen(false)}>
                         <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                           <span>{isContractor ? '🔧' : '🏠'}</span>
-                          <span>{isContractor ? 'Contractor' : 'Customer'}</span>
-                        </div>
-                      </Link>
-                      {hasCustomerProfile && (
+                          <span>{isContractor ? 'Contractor' : 'Client'}</span>
+                          </div>
+                          </Link>
+                          {hasCustomerProfile && (
                         <Link to={createPageUrl('ConsumerHub')} onClick={() => setMobileMenuOpen(false)}>
                           <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                             <span>🛒</span>
