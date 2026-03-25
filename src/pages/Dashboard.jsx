@@ -44,18 +44,18 @@ export default function Dashboard() {
 
         const hasContractor = contractors && contractors.length > 0;
         const hasMarketShop = shops && shops.length > 0;
-        const primaryType = hasContractor ? 'contractor' : 'customer';
+        const primaryType = hasContractor ? 'contractor' : 'client';
 
-        setProfiles({ customer: !hasContractor, contractor: hasContractor, marketshop: hasMarketShop, primaryType, hasMarketShop });
+        setProfiles({ client: !hasContractor, contractor: hasContractor, marketshop: hasMarketShop, primaryType, hasMarketShop });
         setActiveProfile(primaryType);
       } catch (error) {
         console.error('Dashboard load error:', error);
         if (error?.status === 401 || error?.status === 403) {
           base44.auth.redirectToLogin('/Dashboard');
         } else {
-          // Non-auth error: default to customer view so something renders
-          setActiveProfile('customer');
-          setProfiles({ customer: true, contractor: false, marketshop: false, primaryType: 'customer', hasMarketShop: false });
+          // Non-auth error: default to client view so something renders
+          setActiveProfile('client');
+          setProfiles({ client: true, contractor: false, marketshop: false, primaryType: 'client', hasMarketShop: false });
         }
       } finally {
         setLoading(false);
@@ -85,7 +85,7 @@ export default function Dashboard() {
    return (
      <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
        {activeProfile === 'contractor' && <ContractorDashboard />}
-       {activeProfile === 'customer' && <CustomerDashboard />}
+       {activeProfile === 'client' && <CustomerDashboard />}
 
        {isAdmin && (
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

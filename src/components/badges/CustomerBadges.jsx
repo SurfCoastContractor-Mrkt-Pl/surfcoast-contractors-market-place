@@ -18,7 +18,7 @@ export const CUSTOMER_BADGE_TIERS = [
   },
   {
     tier: 2,
-    name: 'Loyal Customer',
+    name: 'Loyal Client',
     threshold: 3,
     description: '3 verified jobs closed out',
     iconColor: '#b45309',
@@ -44,7 +44,7 @@ export const CUSTOMER_BADGE_TIERS = [
   },
   {
     tier: 4,
-    name: 'Verified Customer',
+    name: 'Verified Client',
     threshold: 10,
     description: '10 verified jobs closed out',
     iconColor: '#15803d',
@@ -70,7 +70,7 @@ export const CUSTOMER_BADGE_TIERS = [
   },
   {
     tier: 6,
-    name: 'Dedicated Customer',
+    name: 'Dedicated Client',
     threshold: 50,
     description: '50 verified jobs closed out',
     iconColor: '#1d4ed8',
@@ -269,7 +269,7 @@ export default function CustomerBadges({ completedJobsCount = 0 }) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Heart className="w-5 h-5 text-rose-500" />
-          <h2 className="text-lg font-semibold text-slate-900">Customer Loyalty Badges</h2>
+          <h2 className="text-lg font-semibold text-slate-900">Client Loyalty Badges</h2>
         </div>
         <div className="text-sm text-slate-500">
           <span className="font-semibold text-slate-700">{completedJobsCount}</span> verified jobs ·{' '}

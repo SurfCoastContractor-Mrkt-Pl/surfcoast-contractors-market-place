@@ -101,7 +101,7 @@ export default function CustomerSignup() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white">Find a Contractor</h1>
-              <p className="text-white/75 mt-1">Create your account to post jobs and hire</p>
+              <p className="text-white/75 mt-1">Create your client account to post jobs and hire</p>
             </div>
           </div>
         </div>

@@ -230,7 +230,7 @@ export default function CustomerAccount() {
                <div>
                  <h4 className="font-semibold text-blue-800 mb-1">Admin Preview Mode</h4>
                  <p className="text-xs text-blue-700">
-                   You are viewing this customer's account setup as an admin. Edit, delete, and logout features are disabled in preview mode.
+                   You are viewing this client's account setup as an admin. Edit, delete, and logout features are disabled in preview mode.
                  </p>
                </div>
              </div>
@@ -468,7 +468,7 @@ export default function CustomerAccount() {
                               <FileText className="w-5 h-5 text-amber-500 shrink-0" />
                               <div className="min-w-0">
                                 <div className="text-sm font-medium text-slate-900 truncate">{s.job_title}</div>
-                                <div className="text-xs text-slate-700">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`}</div>
+                                <div className="text-xs text-slate-700">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`} </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
@@ -511,7 +511,7 @@ export default function CustomerAccount() {
                                     await base44.integrations.Core.SendEmail({
                                       to: s.contractor_email,
                                       subject: `✅ Scope Approved: "${s.job_title}"`,
-                                      body: `Dear ${s.contractor_name},\n\nThe customer ${s.customer_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
+                                      body: `Dear ${s.contractor_name},\n\nThe client ${s.customer_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
                                     });
                                     queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] });
                                   }}
@@ -522,7 +522,7 @@ export default function CustomerAccount() {
                                   size="sm" 
                                   variant="outline" 
                                   className="flex-1 border-red-300 text-red-700 hover:bg-red-50 text-xs h-7"
-                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by customer' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }))}
+                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by client' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }))}
                                 >
                                   Reject
                                 </Button>

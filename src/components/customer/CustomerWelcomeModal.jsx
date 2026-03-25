@@ -15,7 +15,7 @@ export default function CustomerWelcomeModal({ open, onClose, onStartWithAgent }
             </div>
             Welcome to SurfCoast Contractor Market Place!
           </DialogTitle>
-          <div className="sr-only">New customer welcome dialog</div>
+          <div className="sr-only">New client welcome dialog</div>
         </DialogHeader>
         
         <div className="space-y-6">
