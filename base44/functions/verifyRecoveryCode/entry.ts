@@ -1,5 +1,13 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
+// Helper to hash IP/UA for session binding without exposing raw values
+async function hashValue(value) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(value);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
