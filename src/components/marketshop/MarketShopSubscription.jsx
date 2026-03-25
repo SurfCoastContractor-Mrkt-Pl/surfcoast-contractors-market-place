@@ -71,14 +71,16 @@ export default function MarketShopSubscription({ shop }) {
   };
 
   const handleCancelSubscription = async () => {
+    if (!window.confirm('Are you sure you want to cancel? Your shop will be deactivated immediately and you will not be able to receive new business until you choose a plan again.')) return;
     setLoading(true);
     try {
-      const res = await base44.functions.invoke('getVendorBillingPortal', { shop_id: shop.id });
-      window.open(res.data.portal_url, '_blank');
+      await base44.functions.invoke('cancelMarketShopSubscription', { shop_id: shop.id });
       setShowCancelModal(false);
+      alert('Your subscription has been cancelled. Your shop is now inactive.');
+      window.location.reload();
     } catch (err) {
       console.error(err);
-      alert('Failed to open billing portal');
+      alert('Failed to cancel subscription. Please try again.');
     } finally {
       setLoading(false);
     }
