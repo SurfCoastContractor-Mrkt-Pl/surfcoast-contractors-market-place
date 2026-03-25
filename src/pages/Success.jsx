@@ -17,16 +17,28 @@ export default function Success() {
   const [paymentId, setPaymentId] = useState('');
   const [payerEmail, setPayerEmail] = useState('');
   const [confirmed, setConfirmed] = useState(false); // user clicked OK
+  const [isMarketShop, setIsMarketShop] = useState(false);
+  const [marketShopModel, setMarketShopModel] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const pId = urlParams.get('payment_id');
+    const shopId = urlParams.get('shop_id');
+    const paymentModel = urlParams.get('payment_model');
     const quoteMetaRaw = urlParams.get('quote_meta');
     const tierParam = urlParams.get('tier');
     const contractorEmail = urlParams.get('contractor_email');
     const contractorName = urlParams.get('contractor_name');
 
     setPaymentId(pId || '');
+
+    // MarketShop signup success — shop_id is present
+    if (shopId) {
+      setIsMarketShop(true);
+      setMarketShopModel(paymentModel || 'subscription');
+      setIsVerifying(false);
+      return;
+    }
 
     if (tierParam === 'timed') {
       setIsTimed(true);
