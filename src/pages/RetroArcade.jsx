@@ -154,7 +154,21 @@ export default function RetroArcade() {
               }}>
                 <NeonText color={NEON.cyan} size={13} spacing={4}>🕹️ NEON SNAKE</NeonText>
               </div>
-              <SnakeGame onGameOver={handleGameOver} />
+              {/* Active perk badges */}
+              {(hasGhostMode || hasSpeedMode || hasNeonTrail) && (
+                <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+                  {hasSpeedMode && <span style={{ fontSize: 10, color: NEON.yellow, border: `1px solid ${NEON.yellow}`, padding: '2px 8px', letterSpacing: 1 }}>⚡ SPEED MODE</span>}
+                  {hasGhostMode && <span style={{ fontSize: 10, color: NEON.cyan, border: `1px solid ${NEON.cyan}`, padding: '2px 8px', letterSpacing: 1 }}>👻 GHOST MODE</span>}
+                  {hasNeonTrail && <span style={{ fontSize: 10, color: NEON.pink, border: `1px solid ${NEON.pink}`, padding: '2px 8px', letterSpacing: 1 }}>🌈 NEON TRAIL</span>}
+                </div>
+              )}
+              <SnakeGame
+                onGameOver={handleGameOver}
+                ghostMode={hasGhostMode}
+                speedMode={hasSpeedMode}
+                neonTrail={hasNeonTrail}
+                doubleCredits={hasDoubleCredits}
+              />
             </div>
 
             {/* Right panel */}
