@@ -161,7 +161,6 @@ export default function Home() {
         <FeaturedVendors />
         <ContractorLocationSearch />
         <VendorSearchBar />
-<FarmersMarketBanner />
       </main>
 
       <div style={{ position:"relative", zIndex:2, width:"100%", padding:"6px 16px", background:"rgba(10,22,40,0.5)", flexShrink:0 }}>
