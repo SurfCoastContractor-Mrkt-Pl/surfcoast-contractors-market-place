@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Authenticate user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized: Authentication required' }, { status: 401 });
+    }
+
     const payload = await req.json();
 
     const {
@@ -23,6 +30,11 @@ Deno.serve(async (req) => {
     // Validate required fields
     if (!jobTitle || !description || !contractorId || !customerName || !customerEmail) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Authorize: User must be the customer making the request
+    if (user.email !== customerEmail) {
+      return Response.json({ error: 'Forbidden: You can only submit quote requests for yourself' }, { status: 403 });
     }
 
     // Create QuoteRequest record in database

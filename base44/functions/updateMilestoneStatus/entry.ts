@@ -1,8 +1,15 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // Authenticate user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized: Authentication required' }, { status: 401 });
+    }
+
     const { milestone_id, new_status, progress_percentage, approval_notes } = await req.json();
 
     if (!milestone_id || !new_status || !['pending', 'in_progress', 'completed', 'approved'].includes(new_status)) {
@@ -23,6 +30,14 @@ Deno.serve(async (req) => {
     }
 
     const scopeData = scope[0];
+
+    // Authorize: User must be contractor or customer involved in the scope
+    const isContractorInScope = user.email === scopeData.contractor_email;
+    const isCustomerInScope = user.email === scopeData.customer_email;
+    
+    if (!isContractorInScope && !isCustomerInScope) {
+      return Response.json({ error: 'Forbidden: You are not authorized to update this milestone' }, { status: 403 });
+    }
     const now = new Date();
     const updatePayload = { status: new_status };
 
