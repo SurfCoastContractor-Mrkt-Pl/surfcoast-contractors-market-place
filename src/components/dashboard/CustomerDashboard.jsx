@@ -132,7 +132,7 @@ export default function CustomerDashboard() {
                 <Briefcase className="w-5 h-5" style={{ color: '#1d6fa4' }} />
                 <h2 className="font-semibold text-white text-base">Posted Jobs</h2>
               </div>
-              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Jobs accepting contractor proposals</p>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>All your posted jobs and their current status</p>
               {jobsLoading ? (
                 <div className="text-center py-8" style={{ color: 'rgba(255,255,255,0.5)' }}>Loading jobs...</div>
               ) : myJobs.length === 0 ? (
