@@ -27,9 +27,9 @@ const CATEGORY_LABELS = {
   other: 'Other',
 };
 
-export default function MarketShopBrowser() {
+export default function MarketShopBrowser({ lockedType = null }) {
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState(lockedType || 'all');
   const [selectedShop, setSelectedShop] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState('all');
 
