@@ -150,21 +150,19 @@ export default function MarketShopSubscription({ shop }) {
               onClick={() => setSelectedModel('subscription')}
               className={`border-2 rounded-lg p-3 sm:p-4 text-left transition ${
                 selectedModel === 'subscription'
-                  ? 'border-blue-600 bg-blue-50'
-                  : 'border-blue-200 hover:bg-blue-50'
+                  ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-200'
+                  : 'border-slate-200 hover:border-blue-300 hover:bg-blue-50/50'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                  selectedModel === 'subscription'
-                    ? 'border-blue-600 bg-blue-600'
-                    : 'border-blue-200'
+                  selectedModel === 'subscription' ? 'border-blue-600 bg-blue-600' : 'border-slate-300'
                 }`}>
                   {selectedModel === 'subscription' && <Check className="w-3 h-3 text-white" />}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900 text-sm">Subscription</p>
-                  <p className="text-lg font-bold text-slate-900 mt-1">$35/month</p>
+                  <p className="font-semibold text-slate-900 text-sm">Monthly Subscription</p>
+                  <p className="text-lg font-bold text-blue-700 mt-1">$35/month</p>
                   <p className="text-xs text-slate-600 mt-2">• Unlimited listings<br/>• 0% transaction fee<br/>• Keep 100% of sales</p>
                 </div>
               </div>
@@ -175,33 +173,46 @@ export default function MarketShopSubscription({ shop }) {
               onClick={() => setSelectedModel('facilitation')}
               className={`border-2 rounded-lg p-3 sm:p-4 text-left transition ${
                 selectedModel === 'facilitation'
-                  ? 'border-blue-600 bg-blue-50'
-                  : 'border-slate-300 hover:bg-slate-50'
+                  ? 'border-green-600 bg-green-50 ring-2 ring-green-200'
+                  : 'border-slate-200 hover:border-green-300 hover:bg-green-50/50'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                  selectedModel === 'facilitation'
-                    ? 'border-blue-600 bg-blue-600'
-                    : 'border-slate-400'
+                  selectedModel === 'facilitation' ? 'border-green-600 bg-green-600' : 'border-slate-300'
                 }`}>
                   {selectedModel === 'facilitation' && <Check className="w-3 h-3 text-white" />}
                 </div>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">Facilitation Fee</p>
-                  <p className="text-lg font-bold text-slate-900 mt-1">5% per sale</p>
+                  <p className="text-lg font-bold text-green-700 mt-1">5% per sale</p>
                   <p className="text-xs text-slate-600 mt-2">• No monthly fee<br/>• Pay only on sales<br/>• Flexible pricing</p>
                 </div>
               </div>
             </button>
           </div>
+
+          {/* Next-cycle notice when switching from active */}
+          {selectedModel && (
+            <div className="mb-3 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-800">
+                {selectedModel === 'facilitation'
+                  ? 'Switching to the 5% Facilitation Fee model. This will take effect at the start of your next billing cycle — your current plan remains active until then.'
+                  : 'Switching to the $35/month Subscription. This will take effect at the start of your next billing cycle.'}
+              </p>
+            </div>
+          )}
+
           <button
-            onClick={() => selectedModel && handleCheckout(selectedModel)}
+            onClick={() => selectedModel && setShowSwitchConfirm(true)}
             disabled={!selectedModel || loading}
-            className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] flex items-center justify-center gap-2"
+            className={`w-full px-4 py-2 text-white text-sm font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] flex items-center justify-center gap-2 transition ${
+              selectedModel === 'facilitation' ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
+            }`}
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-            Start Subscription
+            {selectedModel === 'facilitation' ? 'Switch to Facilitation Fee' : selectedModel === 'subscription' ? 'Start $35/month Subscription' : 'Select a Plan'}
           </button>
         </div>
       )}
