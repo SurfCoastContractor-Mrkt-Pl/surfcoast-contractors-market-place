@@ -32,6 +32,12 @@ export default function ShoppingCart() {
   }, {});
 
   const handleCheckout = async () => {
+    // Check iframe restriction
+    if (window.self !== window.top) {
+      alert('Checkout must be opened from the published app. Please visit the app directly.');
+      return;
+    }
+
     try {
       setCheckoutState('validating');
       setCheckoutMessage('Verifying inventory...');
@@ -50,65 +56,43 @@ export default function ShoppingCart() {
       }
 
       setCheckoutState('processing');
-      setCheckoutMessage('Processing payment and updating inventory...');
+      setCheckoutMessage('Redirecting to secure checkout...');
 
-      // Update inventory
-      const inventoryResult = await updateInventoryAfterSale(cartItems, `order-${Date.now()}`);
+      const user = await base44.auth.me();
+      if (!user) {
+        setCheckoutState('error');
+        setCheckoutMessage('Please log in to complete your purchase.');
+        return;
+      }
 
-      if (inventoryResult.success) {
-        // Save orders to ConsumerOrder entity (grouped by shop)
-        try {
-          const user = await base44.auth.me();
-          if (user) {
-            const shopGroups = cartItems.reduce((acc, item) => {
-              if (!acc[item.shop_id]) acc[item.shop_id] = [];
-              acc[item.shop_id].push(item);
-              return acc;
-            }, {});
+      // Group items by shop and create a checkout session per shop
+      const shopGroups = cartItems.reduce((acc, item) => {
+        if (!acc[item.shop_id]) acc[item.shop_id] = [];
+        acc[item.shop_id].push(item);
+        return acc;
+      }, {});
 
-            const orderNumber = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
-            const placedAt = new Date().toISOString();
+      const shopIds = Object.keys(shopGroups);
 
-            for (const [shopId, items] of Object.entries(shopGroups)) {
-              const shopTotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-              await base44.entities.ConsumerOrder.create({
-                consumer_email: user.email,
-                order_number: orderNumber,
-                shop_id: shopId,
-                shop_name: items[0]?.shop_name || shopId,
-                shop_type: items[0]?.shop_type || 'farmers_market',
-                items: items.map(i => ({
-                  listing_id: i.id,
-                  product_name: i.product_name,
-                  price: i.price,
-                  unit: i.unit,
-                  quantity: i.quantity,
-                  image_url: i.image_url || null,
-                  subtotal: parseFloat((i.price * i.quantity).toFixed(2)),
-                })),
-                total: parseFloat(shopTotal.toFixed(2)),
-                status: 'completed',
-                placed_at: placedAt,
-              });
-            }
-          }
-        } catch (err) {
-          console.error('Failed to save order record:', err);
-        }
+      // For simplicity, process the first shop's items (multi-shop is handled by separate sessions)
+      const firstShopId = shopIds[0];
+      const firstShopItems = shopGroups[firstShopId];
+      const firstItem = firstShopItems[0];
 
-        setCheckoutState('success');
-        setCheckoutMessage(`Order complete! ${inventoryResult.summary?.outOfStockNow || 0} items now out of stock.`);
-        
-        // Clear cart after 2 seconds
-        setTimeout(() => {
-          clearCart();
-          setCartOpen(false);
-          setCheckoutState('idle');
-          setCheckoutMessage('');
-        }, 2000);
+      const res = await base44.functions.invoke('createVendorCheckout', {
+        cartItems: firstShopItems,
+        shopId: firstShopId,
+        shopName: firstItem?.shop_name || firstShopId,
+        shopType: firstItem?.shop_type || 'farmers_market',
+        consumerEmail: user.email,
+        consumerName: user.full_name || user.email,
+      });
+
+      if (res.data?.checkoutUrl) {
+        window.location.href = res.data.checkoutUrl;
       } else {
         setCheckoutState('error');
-        setCheckoutMessage(inventoryResult.error || 'Failed to process order');
+        setCheckoutMessage(res.data?.error || 'Failed to start checkout. Please try again.');
       }
     } catch (error) {
       console.error('Checkout error:', error);
