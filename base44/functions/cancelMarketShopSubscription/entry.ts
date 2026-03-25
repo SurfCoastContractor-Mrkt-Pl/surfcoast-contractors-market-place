@@ -1,60 +1,57 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 import Stripe from 'npm:stripe@16.12.0';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const body = await req.json();
-    const { shopId } = body;
-
-    // Verify admin
     const user = await base44.auth.me();
-    if (user?.role !== 'admin') {
-      return Response.json({ error: 'Admin access required' }, { status: 403 });
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get shop
-    const shops = await base44.asServiceRole.entities.MarketShop.filter({});
-    const shop = shops?.find(s => s.id === shopId);
+    const { shop_id } = await req.json();
+
+    if (!shop_id) {
+      return Response.json({ error: 'shop_id is required' }, { status: 400 });
+    }
+
+    // Fetch shop and verify ownership
+    const shops = await base44.asServiceRole.entities.MarketShop.filter({ id: shop_id });
+    const shop = shops?.[0];
+
     if (!shop) {
       return Response.json({ error: 'Shop not found' }, { status: 404 });
     }
 
-    // Check for Stripe subscription ID in shop data
-    const stripeSubscriptionId = shop.stripe_subscription_id;
-    let cancelResult = null;
+    if (shop.email !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
-    if (stripeSubscriptionId) {
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+    // If there's a Stripe subscription, cancel it
+    if (shop.stripe_subscription_id) {
       try {
-        // Cancel subscription
-        cancelResult = await stripe.subscriptions.cancel(stripeSubscriptionId);
-        console.log(`Canceled Stripe subscription: ${stripeSubscriptionId}`);
+        const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+        await stripe.subscriptions.cancel(shop.stripe_subscription_id);
+        console.log(`Cancelled Stripe subscription: ${shop.stripe_subscription_id}`);
       } catch (stripeErr) {
-        console.error(`Stripe error canceling ${stripeSubscriptionId}:`, stripeErr.message);
-        // Continue anyway—update the shop record
+        console.error('Stripe cancellation error (continuing):', stripeErr.message);
       }
     }
 
-    // Update shop: clear subscription fields and deactivate
-    await base44.asServiceRole.entities.MarketShop.update(shopId, {
-      subscription_status: 'cancelled',
+    // Deactivate the shop immediately
+    await base44.asServiceRole.entities.MarketShop.update(shop_id, {
+      subscription_status: 'inactive',
       is_active: false,
-      stripe_subscription_id: null,
-      stripe_customer_id: null
+      payment_model: null,
+      status: 'suspended',
     });
 
-    console.log(`Shop ${shopId} (${shop.shop_name}) subscription cancelled`);
+    console.log(`Shop ${shop_id} (${shop.shop_name}) cancelled by ${user.email}`);
 
-    return Response.json({
-      success: true,
-      shop_id: shopId,
-      shop_name: shop.shop_name,
-      stripe_subscription_cancelled: !!stripeSubscriptionId,
-      stripe_result: cancelResult ? 'cancelled' : 'none'
-    });
+    return Response.json({ success: true });
   } catch (error) {
-    console.error('Error canceling market shop subscription:', error);
+    console.error('Cancel subscription error:', error);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
