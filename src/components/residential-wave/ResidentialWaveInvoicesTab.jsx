@@ -152,6 +152,16 @@ export default function ResidentialWaveInvoicesTab({ userEmail }) {
                     <Eye className="w-4 h-4 mr-1" />
                     View
                   </Button>
+                  {invoice.status !== 'paid' && (
+                    <Button 
+                      size="sm" 
+                      className="bg-green-600 hover:bg-green-700"
+                      onClick={() => handlePaymentClick(invoice)}
+                    >
+                      <CreditCard className="w-4 h-4 mr-1" />
+                      Pay Now
+                    </Button>
+                  )}
                   <Button variant="destructive" size="sm" onClick={() => deleteInvoiceMutation.mutate(invoice.id)}>
                     <Trash2 className="w-4 h-4 mr-1" />
                     Delete
