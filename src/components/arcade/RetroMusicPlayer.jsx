@@ -118,7 +118,7 @@ export default function RetroMusicPlayer() {
       </div>
 
       <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, textAlign: 'center', marginTop: 8 }}>
-        * Music requires browser autoplay permission
+        * Click play to start the music
       </p>
     </div>
   );
