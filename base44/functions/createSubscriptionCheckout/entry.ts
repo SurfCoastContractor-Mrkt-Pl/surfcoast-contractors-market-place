@@ -50,33 +50,6 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'You already have an active subscription' }, { status: 400 });
     }
 
-    // Check for existing pending checkout sessions (prevents duplicates within 2 minutes)
-    const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
-    const pendingCheckouts = await base44.asServiceRole.entities.Subscription.filter({
-      user_email: email,
-      status: 'pending',
-      created_date: { '$gt': twoMinutesAgo },
-    });
-
-    if (pendingCheckouts && pendingCheckouts.length > 0) {
-      const pendingCheckout = pendingCheckouts[0];
-      if (pendingCheckout.stripe_session_id) {
-        try {
-          const existingSession = await stripe.checkout.sessions.retrieve(pendingCheckout.stripe_session_id);
-          if (existingSession && existingSession.status !== 'expired') {
-            console.log(`Returning existing checkout session: ${pendingCheckout.stripe_session_id}`);
-            return Response.json({
-              sessionId: existingSession.id,
-              url: existingSession.url,
-              isExisting: true,
-            });
-          }
-        } catch (e) {
-          console.warn(`Could not retrieve existing session, creating new one: ${e.message}`);
-        }
-      }
-    }
-
     const origin = req.headers.get('origin') || 'https://localhost:3000';
 
     const sessionConfig = {
