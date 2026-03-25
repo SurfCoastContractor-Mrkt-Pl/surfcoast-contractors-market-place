@@ -45,7 +45,6 @@ export default function CustomerDashboard() {
       if (!user?.email) return [];
       const jobs = await base44.entities.Job.filter({
         poster_email: user.email,
-        status: 'open'
       });
       return jobs || [];
     },
