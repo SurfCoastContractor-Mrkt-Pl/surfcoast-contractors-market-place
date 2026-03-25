@@ -5,6 +5,7 @@ import ContractorLocationSearch from "@/components/home/ContractorLocationSearch
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import FeaturedVendors from "@/components/home/FeaturedVendors";
+import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 import InstagramQRCode from "@/components/social/InstagramQRCode";
