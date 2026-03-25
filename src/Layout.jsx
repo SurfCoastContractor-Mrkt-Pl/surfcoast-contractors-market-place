@@ -251,6 +251,59 @@ export default function Layout({ children, currentPageName }) {
               )}
             </div>
 
+            {/* Mobile Account Button */}
+            {isLoggedIn && (
+              <div className="relative lg:hidden" ref={accountMenuRef}>
+                <button
+                  className="p-2 flex-shrink-0"
+                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                >
+                  <UserCircle className="w-6 h-6 text-slate-900" />
+                </button>
+                {accountMenuOpen && (
+                  <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                    <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
+                      {isContractor ? 'CONTRACTOR' : 'CLIENT'}
+                    </div>
+                    {isLoggedIn && (
+                      <>
+                        <Link to={createPageUrl('Dashboard')} onClick={() => setAccountMenuOpen(false)}>
+                          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
+                        </Link>
+                        <Link to={createPageUrl('ConsumerHub')} onClick={() => setAccountMenuOpen(false)}>
+                          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">Consumer Dashboard</div>
+                        </Link>
+                      </>
+                    )}
+                    {(isContractor ? contractorLinks : customerLinks).map(link => (
+                      <Link key={link.page} to={createPageUrl(link.page)} onClick={() => setAccountMenuOpen(false)}>
+                        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">{link.name}</div>
+                      </Link>
+                    ))}
+                    {isLoggedIn && (
+                      <div className="border-t border-slate-200 pt-2">
+                        {hasMarketShop ? (
+                          <Link to={createPageUrl('MarketShopDashboard')} onClick={() => setAccountMenuOpen(false)}>
+                            <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">🛍️ MarketShop</div>
+                          </Link>
+                        ) : (
+                          <Link to={createPageUrl('MarketShopSignup')} onClick={() => setAccountMenuOpen(false)}>
+                            <div className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">🛍️ + Add MarketShop</div>
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => { setAccountMenuOpen(false); base44.auth.logout(); }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden p-2 flex-shrink-0 ml-auto"
