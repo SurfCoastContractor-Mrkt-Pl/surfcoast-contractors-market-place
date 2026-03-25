@@ -28,19 +28,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  useEffect(() => {
-    const checkAuthAndRedirect = async () => {
-      try {
-        const isAuth = await base44.auth.isAuthenticated();
-        if (isAuth) {
-          navigate('/Dashboard');
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-      }
-    };
-    checkAuthAndRedirect();
-  }, [navigate]);
+
 
   const handleSignup = (destination) => {
     window.location.href = destination;
