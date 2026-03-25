@@ -438,49 +438,49 @@ export default function ReferralSignup() {
             </div>
 
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                onClick={() => {
-                  setStep('role');
-                  setSelectedRole(null);
-                  setReferralCode(null);
-                }}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: '1px solid #ddd',
-                  background: '#f9f9f9',
-                  color: '#333',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                }}
-              >
-                Back
-              </button>
-              <button
-                onClick={() => {
-                  const baseUrl = getAppBaseUrl();
-                  const fromUrl = encodeURIComponent(`${baseUrl}/Referrals`);
-                  window.location.href = `${baseUrl}/login?from_url=${fromUrl}&ref=${referralCode}`;
-                }}
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: '#1d6fa4',
-                  color: '#fff',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#153d69'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#1d6fa4'}
-              >
-                Continue to Sign Up
-              </button>
-            </div>
+               <button
+                 onClick={() => {
+                   setStep('method');
+                   setSelectedRole(null);
+                   setReferralCode(null);
+                 }}
+                 style={{
+                   flex: 1,
+                   padding: '12px',
+                   borderRadius: '8px',
+                   border: '1px solid #ddd',
+                   background: '#f9f9f9',
+                   color: '#333',
+                   fontSize: '14px',
+                   fontWeight: '600',
+                   cursor: 'pointer',
+                 }}
+               >
+                 Back
+               </button>
+               <button
+                 onClick={() => {
+                   const baseUrl = getAppBaseUrl();
+                   const fromUrl = encodeURIComponent(`${baseUrl}/Referrals`);
+                   window.location.href = `${baseUrl}/login?from_url=${fromUrl}&ref=${referralCode}`;
+                 }}
+                 style={{
+                   flex: 1,
+                   padding: '12px',
+                   borderRadius: '8px',
+                   border: 'none',
+                   background: '#1d6fa4',
+                   color: '#fff',
+                   fontSize: '14px',
+                   fontWeight: '600',
+                   cursor: 'pointer',
+                 }}
+                 onMouseEnter={(e) => e.currentTarget.style.background = '#153d69'}
+                 onMouseLeave={(e) => e.currentTarget.style.background = '#1d6fa4'}
+               >
+                 Continue to Sign Up
+               </button>
+             </div>
           </div>
         )}
       </div>
