@@ -4,6 +4,8 @@ import SnakeGame from '@/components/arcade/SnakeGame';
 import ArcadeLeaderboard from '@/components/arcade/ArcadeLeaderboard';
 import ScoreSubmitModal from '@/components/arcade/ScoreSubmitModal';
 import RetroMusicPlayer from '@/components/arcade/RetroMusicPlayer';
+import CreditWallet from '@/components/arcade/CreditWallet';
+import CreditStore from '@/components/arcade/CreditStore';
 
 const NEON = {
   pink: '#FF1493',
