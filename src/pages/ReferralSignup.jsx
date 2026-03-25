@@ -290,34 +290,56 @@ export default function ReferralSignup() {
               </div>
             </div>
 
-            <button
-              onClick={generateReferralCode}
-              disabled={!selectedRole || !email.trim() || loading}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '8px',
-                border: 'none',
-                background: selectedRole && email.trim() ? '#1d6fa4' : '#ccc',
-                color: '#fff',
-                fontSize: '15px',
-                fontWeight: '700',
-                cursor: selectedRole && email.trim() && !loading ? 'pointer' : 'not-allowed',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                if (selectedRole && email.trim() && !loading) {
-                  e.currentTarget.style.background = '#153d69';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedRole && email.trim() && !loading) {
-                  e.currentTarget.style.background = '#1d6fa4';
-                }
-              }}
-            >
-              {loading ? 'Generating...' : 'Get My Referral Link'}
-            </button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  setStep('method');
+                  setSelectedRole(null);
+                  setEmail('');
+                }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid #ddd',
+                  background: '#f9f9f9',
+                  color: '#333',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                Back
+              </button>
+              <button
+                onClick={generateReferralCode}
+                disabled={!selectedRole || !email.trim() || loading}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: selectedRole && email.trim() ? '#1d6fa4' : '#ccc',
+                  color: '#fff',
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  cursor: selectedRole && email.trim() && !loading ? 'pointer' : 'not-allowed',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedRole && email.trim() && !loading) {
+                    e.currentTarget.style.background = '#153d69';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedRole && email.trim() && !loading) {
+                    e.currentTarget.style.background = '#1d6fa4';
+                  }
+                }}
+              >
+                {loading ? 'Generating...' : 'Get My Referral Link'}
+              </button>
+            </div>
           </div>
         ) : (
           <div>
