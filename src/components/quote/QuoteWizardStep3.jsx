@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Upload, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 
 export default function QuoteWizardStep3({ formData, setFormData }) {
   const fileInputRef = useRef(null);
-  const [uploading, setUploading] = React.useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const handleFileSelect = async (e) => {
     const files = Array.from(e.target.files);
