@@ -1,190 +1,156 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useQuery } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Clock, AlertCircle } from 'lucide-react';
-import { format } from 'date-fns';
-import { createPageUrl } from '@/utils';
+import { Loader2, AlertCircle } from 'lucide-react';
+import ProjectOverview from '@/components/projects/ProjectOverview';
+import DisputeInitiationForm from '@/components/disputes/DisputeInitiationForm';
+import DisputeDetailModal from '@/components/disputes/DisputeDetailModal';
+import AdminDisputeReview from '@/components/disputes/AdminDisputeReview';
 
 export default function ProjectManagement() {
-  const [userType, setUserType] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [searchParams] = useSearchParams();
+  const scopeId = searchParams.get('scopeId');
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [selectedDispute, setSelectedDispute] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const { data: user } = useQuery({
-    queryKey: ['current-user'],
-    queryFn: () => base44.auth.me(),
-  });
+  // Load user
+  useEffect(() => {
+    const loadUser = async () => {
+      const currentUser = await base44.auth.me();
+      setUser(currentUser);
+      setIsAdmin(currentUser?.role === 'admin');
+    };
+    loadUser();
+  }, []);
 
-  const { data: projects, isLoading } = useQuery({
-    queryKey: ['user-projects', userType, user?.email],
+  // Fetch scope details
+  const { data: scope, isLoading: scopeLoading } = useQuery({
+    queryKey: ['scope', scopeId],
     queryFn: async () => {
-      if (!userType || !user?.email) return [];
-      
-      if (userType === 'contractor') {
-        return base44.entities.ScopeOfWork.filter({ contractor_email: user.email, status: 'approved' }, '-created_date');
-      } else {
-        return base44.entities.ScopeOfWork.filter({ customer_email: user.email, status: 'approved' }, '-created_date');
-      }
+      if (!scopeId) return null;
+      const scopes = await base44.entities.ScopeOfWork.filter({ id: scopeId });
+      return scopes?.[0] || null;
     },
-    enabled: !!userType && !!user?.email
+    enabled: !!scopeId,
   });
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'closed': return 'bg-green-100 text-green-800';
-      case 'in_progress': return 'bg-blue-100 text-blue-800';
-      case 'approved': return 'bg-amber-100 text-amber-800';
-      default: return 'bg-slate-100 text-slate-800';
-    }
-  };
+  // Fetch disputes related to this scope
+  const { data: disputes = [], refetch: refetchDisputes } = useQuery({
+    queryKey: ['scope-disputes', scopeId, user?.email],
+    queryFn: async () => {
+      if (!scopeId || !user?.email) return [];
+      const allDisputes = await base44.entities.Dispute.filter({ scope_id: scopeId });
+      return (allDisputes || []).filter(
+        d => d.initiator_email === user.email || d.respondent_email === user.email || isAdmin
+      );
+    },
+    enabled: !!scopeId && !!user?.email,
+  });
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'closed': return <CheckCircle2 className="w-4 h-4" />;
-      case 'in_progress': return <Clock className="w-4 h-4" />;
-      default: return <AlertCircle className="w-4 h-4" />;
-    }
-  };
-
-  if (!userType) {
+  if (!scopeId) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-8">Project Management</h1>
-        <div className="grid md:grid-cols-2 gap-4">
-          <Card className="cursor-pointer hover:border-amber-500 transition-colors" onClick={() => setUserType('contractor')}>
-            <CardHeader>
-              <CardTitle>🔧 Contractor</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-600">Manage your active projects and track milestones</p>
-            </CardContent>
-          </Card>
-          <Card className="cursor-pointer hover:border-amber-500 transition-colors" onClick={() => setUserType('customer')}>
-            <CardHeader>
-              <CardTitle>👤 Customer</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-600">Monitor contractor progress and share feedback</p>
-            </CardContent>
-          </Card>
+      <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 p-4 rounded-lg" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
+            <AlertCircle className="w-5 h-5 text-red-500" />
+            <p className="text-slate-300">No project selected. Please select a scope from your dashboard.</p>
+          </div>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">
-          {userType === 'contractor' ? 'My Projects' : 'Hired Projects'}
-        </h1>
-        <Button variant="outline" onClick={() => setUserType(null)}>
-          Switch Role
-        </Button>
+  if (scopeLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
+        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
       </div>
+    );
+  }
 
-      {isLoading ? (
-        <div className="text-center py-8">
-          <p className="text-slate-500">Loading projects...</p>
+  if (!scope) {
+    return (
+      <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 p-4 rounded-lg" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
+            <AlertCircle className="w-5 h-5 text-red-500" />
+            <p className="text-slate-300">Project not found.</p>
+          </div>
         </div>
-      ) : projects && projects.length > 0 ? (
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="completed">Completed</TabsTrigger>
-            <TabsTrigger value="all">All</TabsTrigger>
+      </div>
+    );
+  }
+
+  const isContractor = scope.contractor_email === user?.email;
+  const isCustomer = scope.customer_email === user?.email;
+  const canInitiateDispute = isContractor || isCustomer || isAdmin;
+
+  return (
+    <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">{scope.job_title}</h1>
+          <p style={{ color: 'rgba(255,255,255,0.6)' }}>
+            {isContractor ? `Client: ${scope.customer_name}` : `Contractor: ${scope.contractor_name}`}
+          </p>
+        </div>
+
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="overview">Project Overview</TabsTrigger>
+            {canInitiateDispute && <TabsTrigger value="dispute">Open Dispute</TabsTrigger>}
+            {isAdmin && <TabsTrigger value="admin">Admin Review</TabsTrigger>}
           </TabsList>
 
-          <TabsContent value="active" className="space-y-4">
-            {projects
-              .filter(p => p.status !== 'closed')
-              .map(project => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onSelect={setSelectedProject}
-                  userType={userType}
-                />
-              ))}
+          {/* Project Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <ProjectOverview scope={scope} disputes={disputes} />
           </TabsContent>
 
-          <TabsContent value="completed" className="space-y-4">
-            {projects
-              .filter(p => p.status === 'closed')
-              .map(project => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onSelect={setSelectedProject}
-                  userType={userType}
-                />
-              ))}
-          </TabsContent>
+          {/* Dispute Initiation Tab */}
+          {canInitiateDispute && (
+            <TabsContent value="dispute" className="space-y-6">
+              {disputes.length > 0 && (
+                <div style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)', borderRadius: '12px', padding: '16px' }}>
+                  <h3 className="font-semibold text-white mb-4">Active Disputes</h3>
+                  <div className="space-y-3">
+                    {disputes.map(dispute => (
+                      <button
+                        key={dispute.id}
+                        onClick={() => setSelectedDispute(dispute)}
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '12px', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+                        className="hover:opacity-80 transition-opacity"
+                      >
+                        <p className="text-white font-medium">{dispute.title}</p>
+                        <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                          Status: <span style={{ color: dispute.status === 'open' ? '#fbbf24' : '#4ade80' }}>{dispute.status}</span>
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <DisputeInitiationForm scope={scope} user={user} onDisputeCreated={refetchDisputes} />
+              {selectedDispute && (
+                <DisputeDetailModal dispute={selectedDispute} user={user} isAdmin={isAdmin} onClose={() => setSelectedDispute(null)} onUpdate={refetchDisputes} />
+              )}
+            </TabsContent>
+          )}
 
-          <TabsContent value="all" className="space-y-4">
-            {projects.map(project => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onSelect={setSelectedProject}
-                userType={userType}
-              />
-            ))}
-          </TabsContent>
+          {/* Admin Review Tab */}
+          {isAdmin && (
+            <TabsContent value="admin" className="space-y-6">
+              <AdminDisputeReview scopeId={scopeId} disputes={disputes} onUpdate={refetchDisputes} />
+            </TabsContent>
+          )}
         </Tabs>
-      ) : (
-        <Card>
-          <CardContent className="py-8 text-center text-slate-500">
-            <p>No projects yet.</p>
-          </CardContent>
-        </Card>
-      )}
+      </div>
     </div>
-  );
-}
-
-function ProjectCard({ project, onSelect, userType }) {
-  return (
-    <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onSelect(project)}>
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div>
-            <CardTitle className="text-xl">{project.job_title}</CardTitle>
-            <p className="text-sm text-slate-600 mt-1">{project.scope_summary}</p>
-          </div>
-          <Badge className={getStatusColor(project.status)}>
-            {project.status.replace('_', ' ')}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <p className="text-slate-600">Cost</p>
-            <p className="font-semibold">${project.cost_amount}</p>
-            {userType === 'contractor' && (
-              <p className="text-xs text-slate-500 mt-1">
-                Payout: ${(project.cost_amount - (project.cost_amount * (project.platform_fee_percentage || 3) / 100)).toFixed(2)}
-              </p>
-            )}
-          </div>
-          <div>
-            <p className="text-slate-600">Start Date</p>
-            <p className="font-semibold">{format(new Date(project.agreed_work_date), 'MMM d')}</p>
-          </div>
-          <div>
-            <p className="text-slate-600">{userType === 'contractor' ? 'Customer' : 'Contractor'}</p>
-            <p className="font-semibold truncate">{userType === 'contractor' ? project.customer_name : project.contractor_name}</p>
-          </div>
-          <div>
-            <p className="text-slate-600">Type</p>
-            <p className="font-semibold">{project.cost_type}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   );
 }

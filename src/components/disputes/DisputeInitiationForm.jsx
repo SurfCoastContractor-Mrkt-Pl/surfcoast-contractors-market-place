@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, Upload, X, Loader2 } from 'lucide-react';
+import { Upload, X, Loader2 } from 'lucide-react';
 
 const DISPUTE_CATEGORIES = [
   { value: 'payment_issue', label: 'Payment Issue' },
@@ -15,222 +10,239 @@ const DISPUTE_CATEGORIES = [
   { value: 'communication_problem', label: 'Communication Problem' },
   { value: 'contract_breach', label: 'Contract Breach' },
   { value: 'safety_concern', label: 'Safety Concern' },
-  { value: 'other', label: 'Other' }
+  { value: 'other', label: 'Other' },
 ];
 
-export default function DisputeInitiationForm({ scope, onClose, onSuccess }) {
-  const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState('');
-  const [severity, setSeverity] = useState('medium');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [evidenceFiles, setEvidenceFiles] = useState([]);
-  const [evidenceUrls, setEvidenceUrls] = useState([]);
+const SEVERITY_LEVELS = [
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+  { value: 'critical', label: 'Critical' },
+];
 
-  const handleFileSelect = (e) => {
+export default function DisputeInitiationForm({ scope, user, onDisputeCreated }) {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    category: 'other',
+    severity: 'medium',
+  });
+  const [evidence, setEvidence] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const isContractor = scope.contractor_email === user?.email;
+  const respondentEmail = isContractor ? scope.customer_email : scope.contractor_email;
+  const respondentName = isContractor ? scope.customer_name : scope.contractor_name;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    setEvidenceFiles(prev => [...prev, ...files]);
+    if (!files.length) return;
+
+    setUploading(true);
+    try {
+      for (const file of files) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        setEvidence(prev => [...prev, file_url]);
+      }
+    } catch (err) {
+      setError('Failed to upload evidence. Please try again.');
+      console.error(err);
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const removeFile = (index) => {
-    setEvidenceFiles(prev => prev.filter((_, i) => i !== index));
+  const removeEvidence = (idx) => {
+    setEvidence(prev => prev.filter((_, i) => i !== idx));
   };
 
-  const handleSubmit = async () => {
-    if (!category || !title || !description) {
-      alert('Please fill in all required fields');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!formData.title.trim() || !formData.description.trim()) {
+      setError('Please fill in all required fields.');
       return;
     }
 
-    setLoading(true);
+    setSubmitting(true);
     try {
-      // Upload evidence files if any
-      let uploadedUrls = [...evidenceUrls];
-      for (const file of evidenceFiles) {
-        const fileData = await file.arrayBuffer();
-        const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(fileData)));
-        const uploadResponse = await base44.integrations.Core.UploadFile({
-          file: base64
-        });
-        uploadedUrls.push(uploadResponse.file_url);
-      }
-
-      // Submit dispute
-      const response = await base44.functions.invoke('submitDisputeWithPaymentPause', {
-        initiator_type: scope.customer_email ? 'customer' : 'contractor',
-        respondent_email: scope.contractor_email || scope.customer_email,
-        respondent_name: scope.contractor_name || scope.customer_name,
-        respondent_type: scope.contractor_email ? 'contractor' : 'customer',
-        category,
-        severity,
-        title,
-        description,
-        evidence_urls: uploadedUrls,
+      await base44.entities.Dispute.create({
+        initiator_email: user.email,
+        initiator_name: user.full_name,
+        initiator_type: isContractor ? 'contractor' : 'customer',
+        respondent_email: respondentEmail,
+        respondent_name: respondentName,
+        respondent_type: isContractor ? 'customer' : 'contractor',
         scope_id: scope.id,
-        job_id: scope.job_id
+        job_id: scope.job_id,
+        job_title: scope.job_title,
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        severity: formData.severity,
+        evidence_urls: evidence,
+        status: 'open',
+        submitted_at: new Date().toISOString(),
       });
 
-      if (response.data.success) {
-        onSuccess(response.data.dispute_id);
-        onClose();
-      }
-    } catch (error) {
-      console.error('Dispute submission error:', error);
-      alert('Failed to submit dispute');
+      setFormData({ title: '', description: '', category: 'other', severity: 'medium' });
+      setEvidence([]);
+      onDisputeCreated();
+    } catch (err) {
+      setError('Failed to create dispute. Please try again.');
+      console.error(err);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={!!scope} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-600" />
-            File a Dispute
-          </DialogTitle>
-        </DialogHeader>
+    <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '24px' }}>
+      <h2 className="text-xl font-semibold text-white mb-6">Open a Dispute</h2>
 
-        <div className="space-y-4 max-h-[70vh] overflow-y-auto">
-          {/* Scope Summary */}
-          <Card className="bg-slate-50">
-            <CardContent className="pt-6">
-              <p className="text-sm text-slate-600 mb-2">This dispute is for:</p>
-              <p className="font-semibold">{scope?.job_title || 'Project'}</p>
-              <p className="text-xs text-slate-500 mt-1">
-                Scope ID: {scope?.id}
-              </p>
-            </CardContent>
-          </Card>
+      {error && (
+        <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '12px', marginBottom: '16px' }} className="text-red-400 text-sm">
+          {error}
+        </div>
+      )}
 
-          {/* Dispute Details */}
-          <div className="space-y-3">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Category *</label>
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select dispute category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DISPUTE_CATEGORIES.map(cat => (
-                    <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Title */}
+        <div>
+          <label className="block text-sm font-medium text-white mb-2">Dispute Title *</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder="Brief description of the issue"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', color: '#fff', width: '100%' }}
+            className="text-sm"
+          />
+        </div>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Severity</label>
-              <Select value={severity} onValueChange={setSeverity}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="critical">Critical</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-white mb-2">Description *</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            placeholder="Provide detailed information about the dispute"
+            rows={5}
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', color: '#fff', width: '100%', fontFamily: 'inherit' }}
+            className="text-sm resize-none"
+          />
+        </div>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Title *</label>
-              <Input
-                placeholder="Brief title of the dispute"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
+        {/* Category */}
+        <div>
+          <label className="block text-sm font-medium text-white mb-2">Category *</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', color: '#fff', width: '100%' }}
+            className="text-sm"
+          >
+            {DISPUTE_CATEGORIES.map(cat => (
+              <option key={cat.value} value={cat.value} style={{ background: '#1a1a1a', color: '#fff' }}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Description *</label>
-              <Textarea
-                placeholder="Provide detailed explanation of the issue and what you expect as resolution..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="h-32"
-              />
-            </div>
-
-            {/* Evidence Upload */}
-            <div>
-              <label className="text-sm font-medium mb-2 block">Evidence & Documentation</label>
-              <div className="border-2 border-dashed border-slate-300 rounded-lg p-6">
-                <input
-                  type="file"
-                  id="evidence-upload"
-                  multiple
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  accept="image/*,.pdf,.doc,.docx"
-                />
-                <label htmlFor="evidence-upload" className="cursor-pointer">
-                  <div className="flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
-                    <Upload className="w-5 h-5" />
-                    <span>Click to upload evidence (photos, documents, etc.)</span>
-                  </div>
-                </label>
-              </div>
-
-              {/* File List */}
-              {evidenceFiles.length > 0 && (
-                <div className="mt-3 space-y-2">
-                  <p className="text-xs font-medium text-slate-600">Selected files:</p>
-                  {evidenceFiles.map((file, idx) => (
-                    <div key={idx} className="flex items-center justify-between bg-slate-50 p-2 rounded">
-                      <span className="text-xs text-slate-700">{file.name}</span>
-                      <button
-                        onClick={() => removeFile(idx)}
-                        className="text-slate-400 hover:text-red-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Warning */}
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
-              <p className="font-medium mb-1">⚠️ Important</p>
-              <ul className="text-xs space-y-1">
-                <li>• Filing a dispute will automatically pause related payments</li>
-                <li>• An admin will review and contact both parties</li>
-                <li>• Provide clear evidence to support your case</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={onClose} disabled={loading}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  <AlertTriangle className="w-4 h-4 mr-2" />
-                  File Dispute
-                </>
-              )}
-            </Button>
+        {/* Severity */}
+        <div>
+          <label className="block text-sm font-medium text-white mb-2">Severity Level *</label>
+          <div className="flex gap-2">
+            {SEVERITY_LEVELS.map(level => (
+              <button
+                key={level.value}
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, severity: level.value }))}
+                style={{
+                  background: formData.severity === level.value ? '#1d6fa4' : 'rgba(255,255,255,0.05)',
+                  border: formData.severity === level.value ? '1px solid #1d6fa4' : '1px solid rgba(255,255,255,0.1)',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  flex: 1,
+                }}
+              >
+                {level.label}
+              </button>
+            ))}
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+
+        {/* Evidence Upload */}
+        <div>
+          <label className="block text-sm font-medium text-white mb-2">Evidence (Images/Documents)</label>
+          <div
+            style={{ background: 'rgba(59,130,246,0.1)', border: '2px dashed rgba(59,130,246,0.5)', borderRadius: '8px', padding: '20px', textAlign: 'center', cursor: 'pointer' }}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              handleFileUpload({ target: { files: e.dataTransfer.files } });
+            }}
+          >
+            <label style={{ cursor: 'pointer', display: 'block' }}>
+              <Upload className="w-6 h-6 mx-auto mb-2" style={{ color: 'rgba(59,130,246,0.7)' }} />
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '4px' }}>
+                Drag & drop files or <span style={{ color: '#3b82f6' }}>click to upload</span>
+              </p>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>PNG, JPG, PDF up to 10MB</p>
+              <input type="file" multiple accept="image/*,.pdf" onChange={handleFileUpload} disabled={uploading} style={{ display: 'none' }} />
+            </label>
+          </div>
+
+          {/* Evidence List */}
+          {evidence.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <p className="text-sm text-white font-medium">{evidence.length} file(s) attached</p>
+              {evidence.map((url, idx) => (
+                <div key={idx} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <p className="text-sm text-white truncate">{url.split('/').pop()}</p>
+                  <button type="button" onClick={() => removeEvidence(idx)} className="text-red-400 hover:text-red-500">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex gap-3">
+          <Button
+            type="submit"
+            disabled={submitting || uploading}
+            style={{ background: '#1d6fa4', color: '#fff', padding: '10px 20px', fontWeight: '600', flex: 1 }}
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              'Submit Dispute'
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
