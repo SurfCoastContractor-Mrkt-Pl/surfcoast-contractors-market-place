@@ -94,14 +94,6 @@ Deno.serve(async (req) => {
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
-    // Persist pending record so deduplication check has data to query against
-    await base44.asServiceRole.entities.Subscription.create({
-      user_email: email,
-      user_type: userType,
-      status: 'pending',
-      stripe_session_id: session.id,
-    });
-
     return Response.json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('Subscription checkout error:', error.message);
