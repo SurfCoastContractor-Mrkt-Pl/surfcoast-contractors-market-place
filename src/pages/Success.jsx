@@ -25,6 +25,7 @@ export default function Success() {
     const pId = urlParams.get('payment_id');
     const shopId = urlParams.get('shop_id');
     const paymentModel = urlParams.get('payment_model');
+    const sessionType = urlParams.get('type');
     const quoteMetaRaw = urlParams.get('quote_meta');
     const tierParam = urlParams.get('tier');
     const contractorEmail = urlParams.get('contractor_email');
@@ -32,8 +33,15 @@ export default function Success() {
 
     setPaymentId(pId || '');
 
-    // MarketShop signup success — shop_id is present
-    if (shopId) {
+    // Vendor purchase success — redirect to consumer hub
+    if (sessionType === 'vendor_purchase') {
+      setTimeout(() => navigate('/ConsumerHub'), 2500);
+      setIsVerifying(false);
+      return;
+    }
+
+    // MarketShop signup success — shop_id is present (without vendor_purchase type)
+    if (shopId && !sessionType) {
       setIsMarketShop(true);
       setMarketShopModel(paymentModel || 'subscription');
       setIsVerifying(false);
