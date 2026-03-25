@@ -64,7 +64,7 @@ function generateContractors(cityName, count, dayOffset) {
       completed_jobs_count: reviewCount,
       is_featured: Math.random() > 0.85, // 15% featured
       photo_url: '',
-      id_document_url: 'https://base44.app/api/apps/69a61a047827463e7cdbc1eb/files/public/69a61a047827463e7cdbc1eb/demo-id.jpg',
+      id_document_url: `https://base44.app/api/apps/${Deno.env.get('BASE44_APP_ID')}/files/public/${Deno.env.get('BASE44_APP_ID')}/demo-id.jpg`,
       face_photo_url: '',
       availability_status: Math.random() > 0.1 ? 'available' : 'booked',
       is_demo: true,
