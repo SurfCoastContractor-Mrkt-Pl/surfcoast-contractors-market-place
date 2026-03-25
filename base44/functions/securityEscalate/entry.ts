@@ -74,12 +74,7 @@ Deno.serve(async (req) => {
     const headerKey = req.headers.get('x-internal-service-key');
     const configKey = Deno.env.get('INTERNAL_SERVICE_KEY');
     
-    if (!configKey) {
-      console.error('CRITICAL: INTERNAL_SERVICE_KEY not configured — cannot accept security events');
-      return Response.json({ error: 'Internal service key not configured' }, { status: 500 });
-    }
-
-    if (!headerKey || headerKey !== configKey) {
+    if (!configKey || !headerKey || headerKey !== configKey) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 

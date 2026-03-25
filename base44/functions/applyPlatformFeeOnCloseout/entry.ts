@@ -1,20 +1,21 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const body = await req.json();
 
+    // Auth check FIRST — before processing any payload
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
+    const body = await req.json();
     const { event, data } = body;
 
     // Validate automation payload
     if (!event?.type || event?.entity_name !== 'ScopeOfWork') {
       return Response.json({ error: 'Invalid automation payload' }, { status: 400 });
-    }
-
-    const user = await base44.auth.me();
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
     // Only process when scope is marked as closed
