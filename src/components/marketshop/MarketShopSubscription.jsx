@@ -9,6 +9,8 @@ export default function MarketShopSubscription({ shop }) {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(shop.subscription_status !== 'active');
   const [selectedModel, setSelectedModel] = useState(null);
+  const [showSwitchConfirm, setShowSwitchConfirm] = useState(false);
+  const [switchSuccess, setSwitchSuccess] = useState(false);
 
   const handleCheckout = async (model) => {
     if (window.self !== window.top) {
