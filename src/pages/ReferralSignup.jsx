@@ -104,8 +104,93 @@ export default function ReferralSignup() {
           </p>
         </div>
 
-        {step === 'role' ? (
+        {step === 'method' ? (
           <div>
+            <div style={{ marginBottom: '32px' }}>
+              <p style={{ fontSize: '13px', fontWeight: '600', color: '#333', marginBottom: '12px' }}>
+                How do you want to share?
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    setSelectedMethod('own');
+                    setStep('own');
+                  }}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    background: '#f9f9f9',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#333',
+                    textAlign: 'left',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#1d6fa4';
+                    e.currentTarget.style.background = 'rgba(29, 111, 164, 0.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#ddd';
+                    e.currentTarget.style.background = '#f9f9f9';
+                  }}
+                >
+                  <Sparkles size={20} style={{ color: '#d97706' }} />
+                  <div>
+                    <div>Generate My Referral Link</div>
+                    <div style={{ fontSize: '12px', color: '#999', fontWeight: '400', marginTop: '4px' }}>
+                      Get a unique link to share however you want
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setSelectedMethod('direct');
+                    setStep('direct');
+                  }}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    background: '#f9f9f9',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#333',
+                    textAlign: 'left',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#1d6fa4';
+                    e.currentTarget.style.background = 'rgba(29, 111, 164, 0.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#ddd';
+                    e.currentTarget.style.background = '#f9f9f9';
+                  }}
+                >
+                  <Mail size={20} style={{ color: '#10b981' }} />
+                  <div>
+                    <div>Send to Specific People</div>
+                    <div style={{ fontSize: '12px', color: '#999', fontWeight: '400', marginTop: '4px' }}>
+                      Email your referral link directly to friends
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : step === 'own' ? (
+           <div>
             <div style={{ marginBottom: '20px' }}>
               <label style={{
                 display: 'block',
