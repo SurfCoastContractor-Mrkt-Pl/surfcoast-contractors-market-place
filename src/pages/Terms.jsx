@@ -150,9 +150,168 @@ export default function Terms() {
           </p>
         </div>
 
-        {/* Section 10 - Platform Fees */}
+        {/* Section 10 - Pricing & Service Costs */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Platform Facilitation Fees</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Pricing & Service Costs</h2>
+          <p className="text-slate-700 leading-relaxed mb-6">
+            SurfCoast Marketplace offers various premium services and tools to enhance your experience on the platform. Below is a detailed breakdown of all available services, their costs, and how they work.
+          </p>
+
+          {/* Residential Wave */}
+          <div className="mb-8 pb-8 border-b border-slate-200">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Residential Wave Dashboard - $100.00/month</h3>
+            <p className="text-slate-700 mb-3">
+              A premium business management suite designed for trade-specific contractors. This subscription provides advanced tools for professional project and client management.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-lg mb-3">
+              <p className="text-sm font-semibold text-slate-900 mb-2">Included Features:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Job scheduling and management dashboard</li>
+                <li>Lead tracking and pipeline management</li>
+                <li>Professional invoice generation and management</li>
+                <li>Document storage and organization (licenses, insurance, certifications)</li>
+                <li>Client communication tools</li>
+                <li>Project tracking and completion reporting</li>
+              </ul>
+            </div>
+            <p className="text-sm text-slate-600 mb-3">
+              <strong>Target Audience:</strong> Trade-specific contractors in all construction and skilled trade specialties, including but not limited to: plumbing, HVAC, electrical, carpentry, masonry, roofing, painting, welding, tiling, landscaping, and other licensed trade professionals.
+            </p>
+            <p className="text-sm text-slate-600">
+              <strong>How It Works:</strong> Subscribe to access the full Residential Wave dashboard. Your subscription renews automatically each month at $100. Cancel anytime from your account settings.
+            </p>
+          </div>
+
+          {/* SurfCoast Vendor Listing */}
+          <div className="mb-8 pb-8 border-b border-slate-200">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">SurfCoast Vendor Listing - $100.00/month OR $35.00/month</h3>
+            <p className="text-slate-700 mb-3">
+              List your products and services on the SurfCoast Marketplace, reaching customers at farmers markets, swap meets, and other market events.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-lg mb-3">
+              <p className="text-sm font-semibold text-slate-900 mb-2">Two Pricing Options:</p>
+              <ul className="list-disc list-inside space-y-2 text-sm text-slate-700">
+                <li><strong>Premium Plan ($100/month):</strong> Unlimited product listings, featured vendor placement, advanced analytics, and priority customer support.</li>
+                <li><strong>Basic Plan ($35/month):</strong> Up to 50 product listings, standard vendor placement, and basic analytics.</li>
+              </ul>
+            </div>
+            <p className="text-sm text-slate-600">
+              <strong>How It Works:</strong> Choose your preferred plan and pay monthly. Upload product photos, descriptions, and pricing. Your listings appear on the marketplace immediately. You receive notifications when customers express interest in your products.
+            </p>
+          </div>
+
+          {/* Limited Communication */}
+          <div className="mb-8 pb-8 border-b border-slate-200">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Limited Communication - $1.50 (one-time)</h3>
+            <p className="text-slate-700 mb-3">
+              Send a single message to another platform user (contractor, vendor, or customer) to initiate contact.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-lg mb-3">
+              <p className="text-sm font-semibold text-slate-900 mb-2">What's Included:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>One initial message to the recipient</li>
+                <li>Basic message delivery and read receipt</li>
+                <li>No ongoing conversation thread</li>
+              </ul>
+            </div>
+            <p className="text-sm text-slate-600">
+              <strong>How It Works:</strong> Pay $1.50 to send your first message to a contractor, vendor, or customer. This opens a limited communication window to introduce yourself or inquire about services. Further conversation may require a subscription communication plan.
+            </p>
+          </div>
+
+          {/* Quote Request */}
+          <div className="mb-8 pb-8 border-b border-slate-200">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Quote Request (No Additional Communication) - $1.75 (one-time)</h3>
+            <p className="text-slate-700 mb-3">
+              Request a quote from a contractor for a specific project or job.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-lg mb-3">
+              <p className="text-sm font-semibold text-slate-900 mb-2">What's Included:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Submission of your project details to the contractor</li>
+                <li>The contractor receives your quote request</li>
+                <li>Limited to quote response only (no ongoing conversation)</li>
+              </ul>
+            </div>
+            <p className="text-sm text-slate-600">
+              <strong>How It Works:</strong> Pay $1.75 to submit your project details to a contractor for a quote. The contractor reviews your request and may respond with pricing and availability. This fee covers request submission only; additional communication requires a subscription plan.
+            </p>
+          </div>
+
+          {/* Subscription Communication */}
+          <div className="mb-8 pb-8 border-b border-slate-200">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Subscription Communication - $50.00/month</h3>
+            <p className="text-slate-700 mb-3">
+              Unlimited messaging and ongoing conversations with platform users for an entire month.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-lg mb-3">
+              <p className="text-sm font-semibold text-slate-900 mb-2">What's Included:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Unlimited messages with any platform user</li>
+                <li>Full conversation threads with all contacts</li>
+                <li>File and photo attachments in messages</li>
+                <li>Message search and history</li>
+                <li>Read receipts and typing indicators</li>
+                <li>Active for 30 days from purchase</li>
+              </ul>
+            </div>
+            <p className="text-sm text-slate-600">
+              <strong>How It Works:</strong> Subscribe for $50/month to unlock unlimited messaging with all platform users. Send and receive unlimited messages, build ongoing conversations with multiple contractors or customers, and collaborate on projects. Your subscription renews automatically each month.
+            </p>
+          </div>
+
+          {/* Summary Table */}
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Service Summary</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-300 bg-slate-100">
+                    <th className="text-left p-3 font-semibold text-slate-900">Service</th>
+                    <th className="text-left p-3 font-semibold text-slate-900">Cost</th>
+                    <th className="text-left p-3 font-semibold text-slate-900">Best For</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">Residential Wave</td>
+                    <td className="p-3 text-slate-700">$100/month</td>
+                    <td className="p-3 text-slate-700">Trade contractors managing jobs & clients</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">Vendor Listing (Premium)</td>
+                    <td className="p-3 text-slate-700">$100/month</td>
+                    <td className="p-3 text-slate-700">Market vendors with high inventory</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">Vendor Listing (Basic)</td>
+                    <td className="p-3 text-slate-700">$35/month</td>
+                    <td className="p-3 text-slate-700">Market vendors with limited inventory</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">Limited Communication</td>
+                    <td className="p-3 text-slate-700">$1.50</td>
+                    <td className="p-3 text-slate-700">One-time contact inquiry</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">Quote Request</td>
+                    <td className="p-3 text-slate-700">$1.75</td>
+                    <td className="p-3 text-slate-700">Request contractor quote</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 text-slate-700">Subscription Communication</td>
+                    <td className="p-3 text-slate-700">$50/month</td>
+                    <td className="p-3 text-slate-700">Unlimited monthly messaging</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 11 - Platform Facilitation Fees */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Platform Facilitation Fees</h2>
           <p className="text-slate-700 leading-relaxed mb-4">
             SurfCoast Marketplace charges facilitation fees to cover payment processing and platform maintenance. Fees are calculated based on a contractor's annual earnings tier and deducted from completed transactions as follows:
           </p>
