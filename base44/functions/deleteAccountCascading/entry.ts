@@ -5,7 +5,7 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Must be authenticated
+    // Must be authenticated and authorized
     const user = await base44.auth.me();
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -21,10 +21,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'accountType must be contractor or customer' }, { status: 400 });
     }
 
-    // Only allow users to delete their own account (unless admin)
-    if (user.role !== 'admin' && user.email !== accountEmail) {
-      console.warn(`Unauthorized account deletion attempt: ${user.email} tried to delete ${accountEmail}`);
-      return Response.json({ error: 'Forbidden: You can only delete your own account.' }, { status: 403 });
+    // Strict authorization: only admin role can invoke cascading delete via service role
+    // Users cannot delete any account other than their own, but must use limited deletion only
+    if (user.role !== 'admin') {
+      if (user.email !== accountEmail) {
+        console.warn(`Unauthorized account deletion attempt: ${user.email} tried to delete ${accountEmail}`);
+        return Response.json({ error: 'Forbidden: You can only delete your own account.' }, { status: 403 });
+      }
+      // Non-admin users cannot use this function (requires service role escalation)
+      return Response.json({ error: 'Forbidden: Use your account settings to delete your account.' }, { status: 403 });
     }
 
     let contractorId = null;
