@@ -303,7 +303,7 @@ export default function Layout({ children, currentPageName }) {
                         <Link to={createPageUrl('ConsumerHub')} onClick={() => setMobileMenuOpen(false)}>
                           <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                             <span>🛒</span>
-                            <span>Consumer</span>
+                            <span>Consumer Dashboard</span>
                           </div>
                         </Link>
                       )}
