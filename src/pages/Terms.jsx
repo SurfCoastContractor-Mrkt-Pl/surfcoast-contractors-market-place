@@ -337,9 +337,9 @@ export default function Terms() {
           </p>
         </div>
 
-        {/* Section 11 - Modifications */}
+        {/* Section 12 - Modifications */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Modifications</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Modifications</h2>
           <p className="text-slate-700 leading-relaxed">
             SurfCoast Marketplace reserves the right to update these Terms at any time. Continued use of the platform after any update constitutes acceptance of the revised Terms. Users are encouraged to review this page periodically.
           </p>
