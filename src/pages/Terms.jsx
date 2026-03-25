@@ -327,9 +327,9 @@ export default function Terms() {
             Tier is automatically determined based on cumulative annual earnings and updates automatically. Tiers reset annually, with lifetime earnings tracked separately. Tier changes apply to future payouts.
           </p>
 
-          <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors</h3>
+          <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors (MarketShop)</h3>
           <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
-            <li><strong>Subscription Model:</strong> $35/month flat fee for unlimited listings and transactions.</li>
+            <li><strong>Subscription Model:</strong> $35/month flat fee for unlimited booth listings, space listings, and transactions with MarketShop.</li>
             <li><strong>Facilitation Fee Model:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
           </ul>
 
