@@ -191,7 +191,7 @@ export default function Layout({ children, currentPageName }) {
                             <Link to={createPageUrl('ConsumerHub')} onClick={() => setAccountMenuOpen(false)}>
                               <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
                                 <span>🛒</span>
-                                <span>Consumer</span>
+                                <span>Consumer Dashboard</span>
                               </div>
                             </Link>
                           )}
