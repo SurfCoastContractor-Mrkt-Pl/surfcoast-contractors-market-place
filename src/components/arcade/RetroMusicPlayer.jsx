@@ -14,19 +14,45 @@ const TRACKS = [
 ];
 
 export default function RetroMusicPlayer() {
+  const audioRef = useRef(null);
   const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const [key, setKey] = useState(0);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (playing) {
+      audio.src = TRACKS[current].url;
+      audio.play().catch(() => {
+        // Autoplay blocked - user must click play button
+        setPlaying(false);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [playing, current]);
+
+  // Auto-advance to next track when current finishes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => {
+      setCurrent(i => (i + 1) % TRACKS.length);
+    };
+
+    audio.addEventListener('ended', handleEnded);
+    return () => audio.removeEventListener('ended', handleEnded);
+  }, []);
 
   const play = (idx) => {
     setCurrent(idx);
     setPlaying(true);
-    setKey(k => k + 1);
   };
 
   const toggle = () => {
-    if (!playing) play(current);
-    else setPlaying(false);
+    setPlaying(!playing);
   };
 
   return (
