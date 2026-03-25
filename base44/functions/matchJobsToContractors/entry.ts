@@ -62,19 +62,26 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Verify admin or internal service role only
+    // For automations, we use service role. Verify the call is valid.
+    // When called via automation, there's no user context, so we verify it's an internal call
     const internalKey = req.headers.get('x-internal-service-key');
     const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
     const isValidInternalCall = internalKey && internalKey === expectedKey;
     
-    if (!isValidInternalCall) {
-      const user = await base44.auth.me().catch(() => null);
-      if (!user || user.role !== 'admin') {
-        return Response.json(
-          { error: 'Forbidden: admin access required for job matching' },
-          { status: 403 }
-        );
-      }
+    // Try to get user context for manual triggers
+    let user = null;
+    try {
+      user = await base44.auth.me();
+    } catch {
+      // No user context (automation call)
+    }
+    
+    // Only allow: internal service calls OR authenticated admin users
+    if (!isValidInternalCall && (!user || user.role !== 'admin')) {
+      return Response.json(
+        { error: 'Forbidden: admin access or internal service key required' },
+        { status: 403 }
+      );
     }
     
     // Fetch all unnotified jobs (created in last 24 hours) with limit
