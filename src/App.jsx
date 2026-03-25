@@ -21,6 +21,7 @@ import BecomeContractor from './pages/BecomeContractor';
 import MarketShopSignup from './pages/MarketShopSignup';
 import CustomerSignup from './pages/CustomerSignup';
 import ProjectManagement from './pages/ProjectManagement';
+import QuoteRequestWizard from './pages/QuoteRequestWizard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -115,6 +116,11 @@ const AuthenticatedApp = () => {
       <Route path="/ProjectManagement" element={
         <LayoutWrapper currentPageName="ProjectManagement">
           <ProjectManagement />
+        </LayoutWrapper>
+      } />
+      <Route path="/QuoteRequestWizard" element={
+        <LayoutWrapper currentPageName="QuoteRequestWizard">
+          <QuoteRequestWizard />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
