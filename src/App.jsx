@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import ContractorPublicProfile from './pages/ContractorPublicProfile';
 import ConsumerSignup from './pages/ConsumerSignup';
+import ReferralSignup from './pages/ReferralSignup';
 import SearchAnalytics from './pages/SearchAnalytics';
 import ContractorInquiries from './pages/ContractorInquiries';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
@@ -87,6 +88,11 @@ const AuthenticatedApp = () => {
       <Route path="/ConsumerSignup" element={
         <LayoutWrapper currentPageName="ConsumerSignup">
           <ConsumerSignup />
+        </LayoutWrapper>
+      } />
+      <Route path="/ReferralSignup" element={
+        <LayoutWrapper currentPageName="ReferralSignup">
+          <ReferralSignup />
         </LayoutWrapper>
       } />
       <Route path="/SearchAnalytics" element={
