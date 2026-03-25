@@ -13,45 +13,68 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Facilitation model is free upfront — just activate the shop directly
-    if (paymentModel === 'facilitation') {
-      await base44.asServiceRole.entities.MarketShop.update(shopId, {
-        payment_model: 'facilitation',
-        subscription_status: 'active',
-        is_active: true,
-      });
-      console.log(`Market shop ${shopId} activated with facilitation model`);
-      return Response.json({ activated: true, paymentModel: 'facilitation' });
-    }
-
-    // Subscription model requires Stripe checkout
-    if (paymentModel !== 'subscription') {
+    if (!['facilitation', 'subscription'].includes(paymentModel)) {
       return Response.json({ error: 'Invalid payment model' }, { status: 400 });
-    }
-
-    const priceId = Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID');
-    if (!priceId) {
-      console.error('STRIPE_SUBSCRIPTION_PRICE_ID not configured');
-      return Response.json({ error: 'Subscription price not configured' }, { status: 500 });
     }
 
     const origin = req.headers.get('origin') || new URL(req.url).origin;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      customer_email: ownerEmail,
-      success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}&shop_id=${shopId}`,
-      cancel_url: `${origin}/MarketShopSignup?shop_id=${shopId}&canceled=true`,
-      metadata: {
-        base44_app_id: Deno.env.get('BASE44_APP_ID'),
-        shop_id: shopId,
-        shop_name: shopName,
-        payment_model: paymentModel,
-        owner_email: ownerEmail,
-      },
-    });
+    let session;
+
+    if (paymentModel === 'facilitation') {
+      // Collect card via Stripe setup mode — no charge now, card saved for future 5% fees
+      // Find or create Stripe customer
+      let customerId;
+      const existing = await stripe.customers.list({ email: ownerEmail, limit: 1 });
+      if (existing.data.length > 0) {
+        customerId = existing.data[0].id;
+      } else {
+        const customer = await stripe.customers.create({ email: ownerEmail, name: ownerName });
+        customerId = customer.id;
+      }
+
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'setup',
+        customer: customerId,
+        success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}&shop_id=${shopId}&payment_model=facilitation`,
+        cancel_url: `${origin}/MarketShopSignup?shop_id=${shopId}&canceled=true`,
+        metadata: {
+          base44_app_id: Deno.env.get('BASE44_APP_ID'),
+          shop_id: shopId,
+          shop_name: shopName,
+          payment_model: 'facilitation',
+          owner_email: ownerEmail,
+        },
+      });
+
+      console.log(`Market shop facilitation setup checkout created for shop ${shopId}: ${session.id}`);
+    } else {
+      // Subscription model — $35/month recurring charge
+      const priceId = Deno.env.get('STRIPE_SUBSCRIPTION_PRICE_ID');
+      if (!priceId) {
+        console.error('STRIPE_SUBSCRIPTION_PRICE_ID not configured');
+        return Response.json({ error: 'Subscription price not configured' }, { status: 500 });
+      }
+
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        customer_email: ownerEmail,
+        success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}&shop_id=${shopId}`,
+        cancel_url: `${origin}/MarketShopSignup?shop_id=${shopId}&canceled=true`,
+        metadata: {
+          base44_app_id: Deno.env.get('BASE44_APP_ID'),
+          shop_id: shopId,
+          shop_name: shopName,
+          payment_model: paymentModel,
+          owner_email: ownerEmail,
+        },
+      });
+
+      console.log(`Market shop subscription checkout created for shop ${shopId}: ${session.id}`);
+    }
 
     console.log(`Market shop subscription checkout created for shop ${shopId}: ${session.id}`);
 
