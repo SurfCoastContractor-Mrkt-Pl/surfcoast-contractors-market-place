@@ -28,6 +28,20 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  useEffect(() => {
+    const redirectIfLoggedIn = async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          navigate('/Dashboard', { replace: true });
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+      }
+    };
+    redirectIfLoggedIn();
+  }, [navigate]);
+
 
 
   const handleSignup = (destination) => {
@@ -35,7 +49,7 @@ export default function Home() {
   };
 
   const handleLogin = () => {
-    base44.auth.redirectToLogin('/Dashboard');
+    base44.auth.redirectToLogin();
     setDropdownOpen(false);
   };
 
