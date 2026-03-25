@@ -5,11 +5,24 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   try {
+    // Authenticate the user
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    
+    if (!user) {
+      return Response.json({ error: 'Unauthorized: User must be authenticated' }, { status: 401 });
+    }
+
     const { invoiceId, invoiceNumber, customerEmail, customerName, amount, serviceName } = await req.json();
 
     // Validate required fields
     if (!invoiceId || !amount || !customerEmail) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Verify the customerEmail matches the authenticated user or is in their account
+    if (customerEmail !== user.email) {
+      return Response.json({ error: 'Forbidden: Invoice email does not match authenticated user' }, { status: 403 });
     }
 
     // Validate amount is positive
