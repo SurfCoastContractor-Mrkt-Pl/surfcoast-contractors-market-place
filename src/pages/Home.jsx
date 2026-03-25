@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown, Store, Users } from "lucide-react";
-import FarmersMarketBanner from "@/components/home/FarmersMarketBanner";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";
 import CampaignAdBanner from "@/components/home/CampaignAdBanner";
