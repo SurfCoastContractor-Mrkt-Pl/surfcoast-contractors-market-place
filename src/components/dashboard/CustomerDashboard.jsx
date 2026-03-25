@@ -4,21 +4,25 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Briefcase, MessageSquare, Users, TrendingUp } from 'lucide-react';
+import { Briefcase, MessageSquare, Users, TrendingUp, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import TrialBadge from '@/components/customer/TrialBadge';
 
-export default function CustomerDashboard() {
-  const [user, setUser] = useState(null);
+export default function CustomerDashboard({ user: propUser }) {
+  const [user, setUser] = useState(propUser || null);
 
   useEffect(() => {
-    const getUser = async () => {
-      const currentUser = await base44.auth.me();
-      setUser(currentUser);
-    };
-    getUser();
-  }, []);
+    if (!propUser) {
+      const getUser = async () => {
+        const currentUser = await base44.auth.me();
+        setUser(currentUser);
+      };
+      getUser();
+    } else {
+      setUser(propUser);
+    }
+  }, [propUser]);
 
   const { data: customerProfile } = useQuery({
     queryKey: ['customer-profile-dashboard', user?.email],
@@ -102,6 +106,17 @@ export default function CustomerDashboard() {
     rejected: 'bg-red-100 text-red-800',
     closed: 'bg-green-100 text-green-800',
   };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen p-6 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-slate-400 mx-auto mb-4" />
+          <p className="text-slate-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>

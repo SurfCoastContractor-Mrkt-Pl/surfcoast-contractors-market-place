@@ -74,8 +74,9 @@ export default function Dashboard() {
 
   if (!activeProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6" style={{ background: '#0a1628' }}>
         <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+        <p className="text-slate-400 text-sm">Setting up your dashboard...</p>
       </div>
     );
   }
@@ -84,8 +85,8 @@ export default function Dashboard() {
 
    return (
      <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
-       {activeProfile === 'contractor' && <ContractorDashboard />}
-       {activeProfile === 'client' && <CustomerDashboard />}
+       {activeProfile === 'contractor' && <ContractorDashboard user={user} />}
+       {activeProfile === 'client' && <CustomerDashboard user={user} />}
 
        {isAdmin && (
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
