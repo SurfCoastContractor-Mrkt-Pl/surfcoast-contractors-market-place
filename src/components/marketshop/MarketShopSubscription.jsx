@@ -95,7 +95,17 @@ export default function MarketShopSubscription({ shop }) {
   const statusColors = {
     active: 'bg-green-100 text-green-700',
     past_due: 'bg-amber-100 text-amber-700',
-    canceled: 'bg-red-100 text-red-700',
+    canceled: 'bg-slate-100 text-slate-600',
+    cancelled: 'bg-slate-100 text-slate-600',
+    inactive: 'bg-slate-100 text-slate-600',
+  };
+
+  const statusLabels = {
+    active: 'Active',
+    past_due: 'Payment Failed',
+    canceled: 'Cancelled',
+    cancelled: 'Cancelled',
+    inactive: 'No Active Plan',
   };
 
   const nextBillingDate = shop.subscription_ends_at
