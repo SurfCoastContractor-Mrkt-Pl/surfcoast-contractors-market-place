@@ -160,6 +160,74 @@ export default function MarketShopSettings({ shop, onUpdate }) {
           </div>
         </div>
 
+        {/* Swap Meet Space Numbers */}
+        {(form.shop_type === 'swap_meet' || form.shop_type === 'both') && (
+          <>
+            <div className="sm:col-span-2 border-t border-slate-200 pt-4">
+              <p className="text-xs font-bold text-amber-700 uppercase tracking-wide mb-3">🏷️ Swap Meet Space Info</p>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Space Number(s)</label>
+              <input
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                placeholder="e.g. 42, A12 & A13, 101-103"
+                value={form.swap_meet_space_numbers}
+                onChange={e => setForm(p => ({ ...p, swap_meet_space_numbers: e.target.value }))}
+              />
+              <p className="text-xs text-slate-400 mt-1">This will appear prominently on your public profile so shoppers can find you easily.</p>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-slate-700 mb-3">📅 Upcoming Weekend Info</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">Market / Event Name</label>
+                  <input
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="e.g. Orange County Swap Meet"
+                    value={form.swap_meet_next_weekend.market_name}
+                    onChange={e => setForm(p => ({ ...p, swap_meet_next_weekend: { ...p.swap_meet_next_weekend, market_name: e.target.value } }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">Date(s)</label>
+                  <input
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="e.g. Sat & Sun, March 29-30"
+                    value={form.swap_meet_next_weekend.date}
+                    onChange={e => setForm(p => ({ ...p, swap_meet_next_weekend: { ...p.swap_meet_next_weekend, date: e.target.value } }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">Address / Location</label>
+                  <input
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="e.g. 88 Fair Dr, Costa Mesa, CA"
+                    value={form.swap_meet_next_weekend.address}
+                    onChange={e => setForm(p => ({ ...p, swap_meet_next_weekend: { ...p.swap_meet_next_weekend, address: e.target.value } }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">Hours</label>
+                  <input
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="e.g. 7am – 3pm"
+                    value={form.swap_meet_next_weekend.hours}
+                    onChange={e => setForm(p => ({ ...p, swap_meet_next_weekend: { ...p.swap_meet_next_weekend, hours: e.target.value } }))}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">Extra Notes (optional)</label>
+                  <input
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="e.g. Rain or shine! Look for the blue tent."
+                    value={form.swap_meet_next_weekend.notes}
+                    onChange={e => setForm(p => ({ ...p, swap_meet_next_weekend: { ...p.swap_meet_next_weekend, notes: e.target.value } }))}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="sm:col-span-2">
           <label className="block text-xs font-medium text-slate-600 mb-2">Payment Methods</label>
           <div className="flex flex-wrap gap-2">
