@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown, Store, Users } from "lucide-react";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";
@@ -15,6 +16,7 @@ import FacebookGroupQRCode from "@/components/social/FacebookGroupQRCode";
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -26,8 +28,27 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  useEffect(() => {
+    const checkAuthAndRedirect = async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          navigate('/Dashboard');
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+      }
+    };
+    checkAuthAndRedirect();
+  }, [navigate]);
+
   const handleSignup = (destination) => {
     window.location.href = destination;
+  };
+
+  const handleLogin = () => {
+    base44.auth.redirectToLogin(window.location.href);
+    setDropdownOpen(false);
   };
 
   return (
@@ -47,7 +68,7 @@ export default function Home() {
             </button>
             {dropdownOpen && (
               <div style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}>
-                <button onClick={() => { base44.auth.redirectToLogin('/Dashboard'); setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
+                <button onClick={handleLogin} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
                   Login / Sign Up
                 </button>
                 <button onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}>
