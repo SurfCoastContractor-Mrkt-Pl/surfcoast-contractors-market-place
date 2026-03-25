@@ -25,16 +25,21 @@ export default function MarketShopSubscription({ shop }) {
         return;
       }
       
-      const res = await base44.functions.invoke('createSubscriptionCheckout', {
-        shop_id: shop.id,
-        email: user.email,
-        payment_model: model,
+      const res = await base44.functions.invoke('createMarketShopCheckout', {
+        shopId: shop.id,
+        paymentModel: model,
+        ownerEmail: user.email,
+        shopName: shop.shop_name,
+        ownerName: shop.owner_name,
       });
       
-      if (res.data?.url) {
-        window.location.href = res.data.url;
+      if (res.data?.activated) {
+        // Facilitation model — shop activated directly
+        window.location.reload();
+      } else if (res.data?.checkoutUrl) {
+        window.location.href = res.data.checkoutUrl;
       } else {
-        alert('Failed to create checkout session. Please try again.');
+        alert('Failed to start checkout. Please try again.');
       }
     } catch (err) {
       console.error(err);
