@@ -95,6 +95,7 @@ const AuthenticatedApp = () => {
           <SearchAnalytics />
         </LayoutWrapper>
       } />
+      <Route path="/RetroArcade" element={<RetroArcade />} />
       <Route path="/ContractorInquiries" element={
         <LayoutWrapper currentPageName="ContractorInquiries">
           <ContractorInquiries />
