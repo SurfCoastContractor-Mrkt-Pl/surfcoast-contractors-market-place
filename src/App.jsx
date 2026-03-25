@@ -108,21 +108,9 @@ const AuthenticatedApp = () => {
           <ContractorInquiries />
         </LayoutWrapper>
       } />
-      <Route path="/BecomeContractor" element={
-        <LayoutWrapper currentPageName="BecomeContractor">
-          <BecomeContractor />
-        </LayoutWrapper>
-      } />
-      <Route path="/MarketShopSignup" element={
-        <LayoutWrapper currentPageName="MarketShopSignup">
-          <MarketShopSignup />
-        </LayoutWrapper>
-      } />
-      <Route path="/CustomerSignup" element={
-        <LayoutWrapper currentPageName="CustomerSignup">
-          <CustomerSignup />
-        </LayoutWrapper>
-      } />
+      <Route path="/BecomeContractor" element={<BecomeContractor />} />
+      <Route path="/MarketShopSignup" element={<MarketShopSignup />} />
+      <Route path="/CustomerSignup" element={<CustomerSignup />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
