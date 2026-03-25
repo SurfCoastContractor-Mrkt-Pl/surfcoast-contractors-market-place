@@ -135,14 +135,14 @@ Deno.serve(async (req) => {
       }
     }
     
-    // Create notification records
+    // Create notification records - use asServiceRole for proper RLS context
     if (matchRecords.length > 0) {
+      const serviceBase44 = base44.asServiceRole;
       for (const record of matchRecords) {
         try {
-          await base44.asServiceRole.entities.JobNotification.create(record);
+          await serviceBase44.entities.JobNotification.create(record);
         } catch (createError) {
-          console.error(`Failed to create notification for job ${record.job_id}:`, createError);
-          // Continue with next record rather than failing entire automation
+          console.error(`Failed to create JobNotification for job ${record.job_id}, contractor ${record.contractor_id}:`, createError.message);
         }
       }
     }
