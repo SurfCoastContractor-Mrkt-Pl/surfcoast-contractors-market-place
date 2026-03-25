@@ -9,6 +9,8 @@ import InvoicePaymentModal from './InvoicePaymentModal';
 
 export default function ResidentialWaveInvoicesTab({ userEmail }) {
   const [showForm, setShowForm] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     invoice_number: '',
     customer_name: '',
