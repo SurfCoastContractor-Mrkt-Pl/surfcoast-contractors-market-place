@@ -15,6 +15,8 @@ export default function ResidentialWaveDashboard() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [hasAccess, setHasAccess] = useState(null);
+  const [accessError, setAccessError] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -25,6 +27,15 @@ export default function ResidentialWaveDashboard() {
           return;
         }
         setUser(currentUser);
+
+        // Check Residential Wave access
+        const accessRes = await base44.functions.invoke('validateResidentialWaveAccess', {});
+        if (accessRes.data.hasAccess) {
+          setHasAccess(true);
+        } else {
+          setHasAccess(false);
+          setAccessError(accessRes.data.reason);
+        }
       } catch (err) {
         console.error('Auth error:', err);
         base44.auth.redirectToLogin('/ResidentialWaveDashboard');
@@ -59,10 +70,88 @@ export default function ResidentialWaveDashboard() {
     enabled: !!user?.email,
   });
 
+  const handleSubscribe = async () => {
+    try {
+      const response = await base44.functions.invoke('createResidentialWaveCheckout', {});
+      if (response.data.checkoutUrl) {
+        window.location.href = response.data.checkoutUrl;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to start subscription. Please try again.');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  // Access denied for non-construction trades
+  if (hasAccess === false && accessError === 'invalid_trade') {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-12">
+        <Card className="border-red-200 bg-red-50">
+          <CardHeader>
+            <CardTitle className="text-red-900">Access Restricted</CardTitle>
+          </CardHeader>
+          <CardContent className="text-red-800">
+            <p className="mb-4">Residential Wave is exclusively available for construction trade contractors.</p>
+            <p className="mb-6 font-medium">Supported trades:</p>
+            <ul className="list-disc list-inside space-y-1 mb-6">
+              <li>Plumbing</li>
+              <li>HVAC</li>
+              <li>Electrical</li>
+              <li>Concrete</li>
+              <li>Drywall</li>
+              <li>Painting</li>
+              <li>Lawn Services</li>
+            </ul>
+            <p className="text-sm">If you believe this is an error, please update your contractor profile trade specialty.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // No subscription
+  if (hasAccess === false && accessError === 'no_subscription') {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-12">
+        <Card>
+          <CardHeader>
+            <CardTitle>Residential Wave - Premium Invoice Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-slate-600 mb-6">
+              Manage invoices, process customer payments, and track your residential projects with our premium system.
+            </p>
+            <div className="bg-slate-50 rounded-lg p-6 mb-6">
+              <div className="text-4xl font-bold text-slate-900 mb-2">$100<span className="text-lg">/month</span></div>
+              <p className="text-slate-600 mb-4">Includes:</p>
+              <ul className="space-y-2 text-slate-600 text-sm">
+                <li className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span> Unlimited invoices
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span> Secure customer payment processing
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span> Payment tracking & receipts
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span> Document management
+                </li>
+              </ul>
+            </div>
+            <Button onClick={handleSubscribe} className="w-full bg-blue-600 hover:bg-blue-700 h-11">
+              Subscribe Now
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
