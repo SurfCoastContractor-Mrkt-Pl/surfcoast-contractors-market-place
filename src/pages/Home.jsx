@@ -141,8 +141,8 @@ export default function Home() {
             style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"pointer", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="swapmeets"?"translateY(-2px)":"none", boxShadow:hoveredCard==="swapmeets"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden", textAlign:"left" }}
           >
             <ShoppingBag size={24} style={{ marginBottom:"10px", color:"#f97316" }} strokeWidth={1.5} />
-            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Welcome to the Marketplace</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Pick Your Market — Select Swap Meet to reserve your space and sell directly to consumers.</p>
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Reserve Your Swap Meet Space</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Secure your booth, list your goods, and start selling to local buyers today.</p>
           </button>
 
           {/* Consumer Card */}
