@@ -101,11 +101,18 @@ export default function MarketShopPaymentModelSelector({ shopId, shopName, owner
           ))}
         </div>
 
-        {/* Warning for Subscription */}
+        {/* Info box based on selection */}
         {selected === 'subscription' && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-green-900">
               <strong>Payment Due Now:</strong> Your first $35 monthly charge will be processed immediately upon checkout completion.
+            </p>
+          </div>
+        )}
+        {selected === 'facilitation' && (
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+            <p className="text-sm text-orange-900">
+              <strong>No charge today.</strong> You'll enter your card details so we can collect the 5% fee automatically when you make a sale.
             </p>
           </div>
         )}
