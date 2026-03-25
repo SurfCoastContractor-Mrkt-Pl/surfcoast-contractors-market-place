@@ -93,7 +93,7 @@ export default function ConsumerHub() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Consumer Hub</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Consumer Dashboard</h1>
           <p className="text-slate-600">
             Shop from local vendors and booths, earn badges with every $150 purchase.
           </p>
