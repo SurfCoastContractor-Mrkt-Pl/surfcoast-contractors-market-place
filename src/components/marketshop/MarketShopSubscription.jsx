@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2, Check } from 'lucide-react';
+import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2, Check, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function MarketShopSubscription({ shop }) {
