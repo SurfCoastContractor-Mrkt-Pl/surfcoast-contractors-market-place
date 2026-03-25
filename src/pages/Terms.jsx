@@ -223,7 +223,7 @@ export default function Terms() {
           <div className="mb-8 pb-8 border-b border-slate-200">
             <h3 className="text-xl font-semibold text-slate-900 mb-3">Quote Request (No Additional Communication) - $1.75 (one-time)</h3>
             <p className="text-slate-700 mb-3">
-              Request a quote from a contractor for a specific project or job.
+              <strong>For Clients Only:</strong> Request a quote from a contractor for a specific project or job.
             </p>
             <div className="bg-slate-50 p-4 rounded-lg mb-3">
               <p className="text-sm font-semibold text-slate-900 mb-2">What's Included:</p>
@@ -231,10 +231,11 @@ export default function Terms() {
                 <li>Submission of your project details to the contractor</li>
                 <li>The contractor receives your quote request</li>
                 <li>Limited to quote response only (no ongoing conversation)</li>
+                <li>You receive the contractor's pricing and availability estimate</li>
               </ul>
             </div>
             <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Pay $1.75 to submit your project details to a contractor for a quote. The contractor reviews your request and may respond with pricing and availability. This fee covers request submission only; additional communication requires a subscription plan.
+              <strong>How It Works:</strong> As a client, pay $1.75 to submit your project details to a contractor for a quote. The contractor reviews your request and responds with their pricing and availability. This is a one-time fee that covers the quote request only; it does not enable ongoing messaging. To continue discussions beyond the quote response, you'll need a Subscription Communication plan.
             </p>
           </div>
 
