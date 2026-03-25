@@ -129,17 +129,26 @@ export default function Layout({ children, currentPageName }) {
             {/* Desktop Nav - Left (next to logo) */}
             {currentPageName !== 'Home' && (
               <div className="hidden lg:flex items-center gap-1 flex-shrink">
-                {getNavLinks(isContractor).map(link => (
-                  <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
-                    <Button
-                      variant="ghost"
-                      className={`text-sm ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
-                      style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
-                    >
-                      {link.name}
-                    </Button>
-                  </Link>
-                ))}
+                {getNavLinks(isContractor).map(link => {
+                  const Icon = link.icon;
+                  return (
+                    <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
+                      <Button
+                        variant="ghost"
+                        className={`text-sm relative ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
+                        style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
+                      >
+                        {Icon && <Icon className="w-4 h-4 mr-1" />}
+                        {link.name}
+                        {link.badge && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                            {link.badge > 99 ? '99+' : link.badge}
+                          </span>
+                        )}
+                      </Button>
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -268,9 +277,14 @@ export default function Layout({ children, currentPageName }) {
                     to={link.page === '/' ? '/' : createPageUrl(link.page)}
                     onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}
                   >
-                    <div className={`flex items-center gap-3 p-3 rounded-lg ${currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
+                    <div className={`flex items-center gap-3 p-3 rounded-lg relative ${currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
                       <Icon className="w-5 h-5" />
                       {link.name}
+                      {link.badge && (
+                        <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                          {link.badge > 99 ? '99+' : link.badge}
+                        </span>
+                      )}
                     </div>
                   </Link>
                 );
