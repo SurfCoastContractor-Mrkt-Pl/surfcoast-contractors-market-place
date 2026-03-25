@@ -132,6 +132,12 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Desktop Nav - Right */}
             <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+              <Link to="/RetroArcade">
+                <Button variant="ghost" className="text-sm font-bold" style={{ color: '#FF1493', textShadow: '0 0 8px #FF1493' }}>
+                  <Gamepad2 className="w-4 h-4 mr-1" />
+                  ARCADE
+                </Button>
+              </Link>
               {!isLoggedIn && (
                 <>
                   <Link to="/About">
