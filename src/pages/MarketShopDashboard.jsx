@@ -182,8 +182,8 @@ export default function MarketShopDashboard() {
                   </span>
                 )}
               </div>
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status]}`}>
-                {status}
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_STYLES[status]}`}>
+                {STATUS_LABELS[status] || status}
               </span>
             </div>
           </div>
