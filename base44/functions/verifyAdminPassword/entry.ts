@@ -54,9 +54,11 @@ Deno.serve(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
+  const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
     const { password } = await req.json();
+    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
 
     if (!password) {
       return Response.json({ error: 'Password required' }, { status: 400 });
@@ -66,21 +68,56 @@ Deno.serve(async (req) => {
     const storedHash = Deno.env.get('ADMIN_PASSWORD_HASH');
     
     if (!storedHash) {
-      console.error('ADMIN_PASSWORD_HASH not configured');
+      console.error(`[${requestId}] ADMIN_PASSWORD_HASH not configured`);
       return Response.json(
         { error: 'Admin password not configured' },
         { status: 500 }
       );
     }
 
+    // Rate limiting (max 5 attempts per hour per IP)
+    const now = new Date();
+    const windowStart = new Date(now.getTime() - 3600000); // 1 hour ago
+
+    const existingLimit = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `admin_password_verify:${clientIP}`,
+      limit_type: 'admin_password_verify',
+      window_start: { $gte: windowStart.toISOString() }
+    });
+
+    if (existingLimit?.length > 0) {
+      const tracker = existingLimit[0];
+      if (tracker.request_count >= 5) {
+        console.warn(`[${requestId}] Rate limit exceeded for admin password attempt from ${clientIP}`);
+        return Response.json({ 
+          success: false, 
+          error: 'Too many attempts. Please try again later.' 
+        }, { status: 429 });
+      }
+
+      // Increment attempt counter
+      await base44.asServiceRole.entities.RateLimitTracker.update(tracker.id, {
+        request_count: tracker.request_count + 1
+      });
+    } else {
+      // Create new rate limit record
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: `admin_password_verify:${clientIP}`,
+        limit_type: 'admin_password_verify',
+        request_count: 1,
+        window_start: now.toISOString(),
+        window_duration_seconds: 3600
+      });
+    }
+
     // Verify the password
     const isValid = await verifyPassword(password, storedHash);
 
     if (!isValid) {
-      console.warn('Invalid admin password attempt');
+      console.warn(`[${requestId}] Invalid admin password attempt from ${clientIP}`);
       return Response.json(
         { error: 'Invalid password' },
-        { status: 401 }
+        { status: 403 }
       );
     }
 
@@ -90,13 +127,14 @@ Deno.serve(async (req) => {
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
 
+    console.log(`[${requestId}] Admin password verified successfully for ${clientIP}`);
     return Response.json({
       success: true,
       token: tokenHex,
       message: 'Admin password verified'
     });
   } catch (error) {
-    console.error('Admin password verification error:', error);
+    console.error(`[${requestId}] Admin password verification error:`, error);
     return Response.json(
       { error: 'Internal server error' },
       { status: 500 }

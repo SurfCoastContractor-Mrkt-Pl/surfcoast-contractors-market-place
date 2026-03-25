@@ -62,16 +62,22 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Failed to verify code' }, { status: 500 });
     }
 
-    // Create temporary recovery token (valid for 30 minutes) with HMAC signature
+    // Create temporary recovery token (valid for 30 minutes) with HMAC signature + session binding
     const signingKey = Deno.env.get('ACCOUNT_RECOVERY_SECRET');
     if (!signingKey) {
       console.error('CRITICAL: ACCOUNT_RECOVERY_SECRET is not configured');
       return Response.json({ error: 'Account recovery is temporarily unavailable' }, { status: 500 });
     }
+    
+    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+    const userAgent = req.headers.get('user-agent') || 'unknown';
+    
     const tokenData = {
       email,
       timestamp: Date.now(),
-      type: 'account_recovery'
+      type: 'account_recovery',
+      ipHash: await hashValue(clientIP),
+      uaHash: await hashValue(userAgent)
     };
     const tokenPayload = JSON.stringify(tokenData);
     const encoder = new TextEncoder();
