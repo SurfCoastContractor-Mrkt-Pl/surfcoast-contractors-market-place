@@ -35,10 +35,7 @@ export default function MarketShopSubscription({ shop }) {
         ownerName: shop.owner_name,
       });
       
-      if (res.data?.activated) {
-        // Facilitation model — shop activated directly
-        window.location.reload();
-      } else if (res.data?.checkoutUrl) {
+      if (res.data?.checkoutUrl) {
         window.location.href = res.data.checkoutUrl;
       } else {
         alert('Failed to start checkout. Please try again.');
