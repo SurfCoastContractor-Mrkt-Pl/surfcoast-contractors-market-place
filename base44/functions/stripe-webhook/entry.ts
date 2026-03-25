@@ -416,6 +416,12 @@ async function handleCheckoutSessionCompleted(session, base44) {
       return;
     }
 
+    // Handle vendor purchase (consumer buying from a market shop)
+    if (session.metadata?.type === 'vendor_purchase' && session.payment_status === 'paid') {
+      await handleVendorPurchaseCompleted(session, base44);
+      return;
+    }
+
     if (session.payment_status !== 'paid') {
       console.warn(`Session ${session.id} payment status is ${session.payment_status}, skipping`);
       return;
