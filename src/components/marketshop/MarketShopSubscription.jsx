@@ -270,23 +270,37 @@ export default function MarketShopSubscription({ shop }) {
       {showCancelModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 max-w-sm w-full">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Manage Subscription</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Manage Subscription</h3>
+            <p className="text-xs text-slate-500 mb-4">Choose an option below to manage your plan.</p>
             <div className="space-y-3 mb-6">
+              {/* Billing Portal — Pause / Update Payment / Cancel */}
+              <button
+                onClick={() => { setShowCancelModal(false); handleManageBilling(); }}
+                className="w-full px-4 py-3 border-2 border-blue-200 text-slate-900 text-sm rounded-lg hover:bg-blue-50 min-h-[44px] text-left"
+              >
+                <p className="font-bold">Pause, Update Payment or Cancel</p>
+                <p className="text-xs text-slate-500 mt-0.5">Opens the secure Stripe billing portal</p>
+              </button>
+
+              {/* Switch to Facilitation */}
               <button
                 onClick={() => handleSwitchModel('facilitation')}
                 disabled={loading}
-                className="w-full px-4 py-3 border-2 border-blue-200 text-slate-900 text-sm font-semibold rounded-lg hover:bg-blue-50 disabled:opacity-50 min-h-[44px] text-left"
+                className="w-full px-4 py-3 border-2 border-slate-200 text-slate-900 text-sm rounded-lg hover:bg-slate-50 disabled:opacity-50 min-h-[44px] text-left"
               >
                 <p className="font-bold">Switch to Facilitation Fee</p>
-                <p className="text-xs text-slate-500 mt-0.5">5% per sale, no monthly fee</p>
+                <p className="text-xs text-slate-500 mt-0.5">5% per sale, no monthly fee — takes effect next cycle</p>
               </button>
+
+              {/* Hard Cancel */}
               <button
                 onClick={handleCancelSubscription}
                 disabled={loading}
-                className="w-full px-4 py-3 border-2 border-red-200 text-slate-900 text-sm font-semibold rounded-lg hover:bg-red-50 disabled:opacity-50 min-h-[44px] text-left"
+                className="w-full px-4 py-3 border-2 border-red-200 text-red-700 text-sm rounded-lg hover:bg-red-50 disabled:opacity-50 min-h-[44px] text-left"
               >
-                <p className="font-bold">Manage in Billing Portal</p>
-                <p className="text-xs text-slate-500 mt-0.5">Pause, update payment, or cancel</p>
+                {loading ? <Loader2 className="w-4 h-4 animate-spin inline mr-2" /> : null}
+                <p className="font-bold">Cancel Immediately</p>
+                <p className="text-xs text-red-400 mt-0.5">Deactivates your shop right away — no refund</p>
               </button>
             </div>
             <button
