@@ -96,13 +96,12 @@ export default function VendorSearchBar() {
           <div style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
             <Search size={15} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }} />
             <input
-              value={query}
-              onChange={e => { setQuery(e.target.value); setShowResults(true); }}
-              onFocus={() => setShowResults(true)}
-              placeholder="Search vendors..."
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%', caretColor: '#fff' }}
-              placeholderStyle={{ color: 'rgba(255,255,255,0.45)' }}
-            />
+               value={query}
+               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
+               onFocus={() => setShowResults(true)}
+               placeholder="Search vendors..."
+               style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%', caretColor: '#fff' }}
+             />
           </div>
 
           {/* Location */}
