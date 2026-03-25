@@ -17,6 +17,9 @@ import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
 import SearchAnalytics from './pages/SearchAnalytics';
 import ContractorInquiries from './pages/ContractorInquiries';
+import BecomeContractor from './pages/BecomeContractor';
+import MarketShopSignup from './pages/MarketShopSignup';
+import CustomerSignup from './pages/CustomerSignup';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -103,6 +106,21 @@ const AuthenticatedApp = () => {
       <Route path="/ContractorInquiries" element={
         <LayoutWrapper currentPageName="ContractorInquiries">
           <ContractorInquiries />
+        </LayoutWrapper>
+      } />
+      <Route path="/BecomeContractor" element={
+        <LayoutWrapper currentPageName="BecomeContractor">
+          <BecomeContractor />
+        </LayoutWrapper>
+      } />
+      <Route path="/MarketShopSignup" element={
+        <LayoutWrapper currentPageName="MarketShopSignup">
+          <MarketShopSignup />
+        </LayoutWrapper>
+      } />
+      <Route path="/CustomerSignup" element={
+        <LayoutWrapper currentPageName="CustomerSignup">
+          <CustomerSignup />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
