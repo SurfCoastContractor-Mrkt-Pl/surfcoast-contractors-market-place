@@ -83,16 +83,8 @@ export default function RetroMusicPlayer() {
         <div style={{ color: '#FF69B4', fontSize: 11 }}>{TRACKS[current].artist}</div>
       </div>
 
-      {/* Hidden iframe player */}
-      {playing && (
-        <iframe
-          key={key}
-          style={{ display: 'none' }}
-          src={`https://www.youtube.com/embed/${TRACKS[current].yt}?autoplay=1&controls=0`}
-          allow="autoplay"
-          title="music"
-        />
-      )}
+      {/* Hidden audio element */}
+      <audio ref={audioRef} crossOrigin="anonymous" />
 
       {/* Controls */}
       <div className="flex justify-center gap-3 mb-3">
