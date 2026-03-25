@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle, Instagram, Facebook, Twitter, Linkedin, ArrowLeft, Gamepad2 } from 'lucide-react';
+import { Menu, X, Briefcase, Users, Home, UserCircle, Lightbulb, MessageCircle, Instagram, Facebook, Twitter, Linkedin, ArrowLeft } from 'lucide-react';
 
 import SuggestionForm from './components/suggestions/SuggestionForm';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
@@ -22,7 +22,7 @@ const getNavLinks = (isContractor) => {
   } else if (isContractor === false) {
     baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
   }
-  baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle });
+  baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle, badge: unreadCount > 0 ? unreadCount : null });
   return baseLinks;
 };
 
@@ -46,6 +46,7 @@ export default function Layout({ children, currentPageName }) {
   const [hasMarketShop, setHasMarketShop] = useState(false);
   const [hasCustomerProfile, setHasCustomerProfile] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const isBackNav = useRef(false);
   const accountMenuRef = useRef(null);
   const { isConsumerMode, toggleConsumerMode } = useConsumerMode();
@@ -80,6 +81,18 @@ export default function Layout({ children, currentPageName }) {
           setIsContractor(contractors && contractors.length > 0);
           setHasMarketShop(marketShops && marketShops.length > 0);
           setHasCustomerProfile(customers && customers.length > 0);
+
+          // Fetch unread messages count
+          try {
+            const [unreadMessages, unreadProjectMessages] = await Promise.all([
+              base44.entities.Message.filter({ recipient_email: user.email, read: false }),
+              base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false })
+            ]);
+            const totalUnread = (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
+            setUnreadCount(totalUnread);
+          } catch {
+            setUnreadCount(0);
+          }
         } else {
           setIsLoggedIn(false);
           setIsContractor(false);
