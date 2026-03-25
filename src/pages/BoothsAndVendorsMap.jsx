@@ -195,11 +195,10 @@ export default function BoothsAndVendorsMap() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredVendors.length > 0 ? (
               filteredVendors.map(vendor => (
+                <Link to={`/vendor/${vendor.id}`} key={vendor.id}>
                 <Card
-                  key={vendor.id}
-                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => setSelectedVendor(vendor)}
-                >
+                   className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                 >
                   {vendor.banner_url && (
                     <img src={vendor.banner_url} alt={vendor.shop_name} className="w-full h-48 object-cover" />
                   )}
@@ -245,29 +244,7 @@ export default function BoothsAndVendorsMap() {
                       </div>
                     )}
 
-                    {/* Rating Display */}
-                    {vendorRatings[vendor.id] && (
-                      <div className="flex items-center gap-2 mb-4 pb-4 border-b">
-                        <div className="flex gap-0.5">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-3 h-3 ${
-                                i < Math.round(vendorRatings[vendor.id].average)
-                                  ? 'fill-amber-400 text-amber-400'
-                                  : 'text-slate-300'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-sm font-medium text-slate-900">
-                          {vendorRatings[vendor.id].average}
-                        </span>
-                        <span className="text-xs text-slate-600">
-                          ({vendorRatings[vendor.id].count} {vendorRatings[vendor.id].count === 1 ? 'review' : 'reviews'})
-                        </span>
-                      </div>
-                    )}
+
 
                     <div className="grid grid-cols-3 gap-2">
                       <Link to={`/vendor/${vendor.id}`}>
@@ -298,10 +275,11 @@ export default function BoothsAndVendorsMap() {
                         Book
                       </Button>
                     </div>
-                  </div>
-                </Card>
-              ))
-            ) : (
+                    </div>
+                    </Card>
+                    </Link>
+                    ))
+                    ) : (
               <div className="col-span-full text-center py-12">
                 <p className="text-slate-600">No vendors found matching your filters</p>
               </div>
