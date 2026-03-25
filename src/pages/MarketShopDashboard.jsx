@@ -11,6 +11,7 @@ import ShareYourListing from '@/components/marketshop/ShareYourListing';
 import PhotoGalleryManager from '@/components/marketshop/PhotoGalleryManager';
 import MarketShopSchedule from '@/components/marketshop/MarketShopSchedule';
 import MarketShopSubscription from '@/components/marketshop/MarketShopSubscription';
+import StripeConnectSetup from '@/components/marketshop/StripeConnectSetup';
 import MarketShopInquiries from '@/components/marketshop/MarketShopInquiries';
 import LogoUploadWidget from '@/components/marketshop/LogoUploadWidget';
 import LocationRatingForm from '@/components/locations/LocationRatingForm';
