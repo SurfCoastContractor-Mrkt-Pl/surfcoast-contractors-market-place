@@ -129,7 +129,7 @@ export default function Home() {
           >
             <Store size={24} style={{ marginBottom:"10px", color:"#9d7a54" }} strokeWidth={1.5} />
             <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Market Booth</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at your online Farmers Market. Set up your own Booth. Or let customers know what Farmers Market you will be at next!</p>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at your online Farmers Market. Set up your own Booth. Or let clients know what Farmers Market you will be at next!</p>
             <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(139,125,107,0.5), 0 4px 8px rgba(139,125,107,0.25)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#9d7a54", color:"#fff" }}>Set Up Booth →</button>
           </div>
 

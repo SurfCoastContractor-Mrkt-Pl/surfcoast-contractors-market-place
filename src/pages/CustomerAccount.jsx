@@ -331,7 +331,7 @@ export default function CustomerAccount() {
                     <p>Loading form...</p>
                   </Card>
                 ) : (
-                  <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name || 'Customer'} />
+                  <QuickJobPostForm userEmail={userEmail} userName={customerProfile?.full_name || 'Client'} />
                 )}
               </TabsContent>
 

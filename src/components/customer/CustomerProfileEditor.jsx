@@ -124,8 +124,8 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         error_type: 'profile_setup',
         severity: 'high',
         user_email: userEmail,
-        user_type: 'customer',
-        action: 'Save customer profile',
+        user_type: 'client',
+        action: 'Save client profile',
         error_message: error.message || 'Failed to save profile',
       });
     },
@@ -174,7 +174,7 @@ export default function CustomerProfileEditor({ profile, userEmail, onAskAgent }
         error_type: 'profile_setup',
         severity: 'high',
         user_email: userEmail,
-        user_type: 'customer',
+        user_type: 'client',
         action: 'Verify account before saving profile',
         error_message: err.message || 'Failed to verify account',
       });
