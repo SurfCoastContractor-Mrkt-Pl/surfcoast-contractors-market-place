@@ -122,28 +122,28 @@ export default function Home() {
         {/* Secondary CTA Cards - Market Booth, Vendor, Consumer */}
         <div style={{ display:"grid", gridTemplateColumns:isMobile ? "1fr" : "repeat(3, 1fr)", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(12px, 2vw, 16px)", justifyContent:"center", marginBottom:"24px" }}>
           {/* Market Booth Card */}
-          <div
+          <button
             onMouseEnter={() => setHoveredCard("booth")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(139,125,107,0.4)", transform:hoveredCard==="booth"?"translateY(-2px)":"none", boxShadow:hoveredCard==="booth"?"0 0 24px rgba(139,125,107,0.35), 0 8px 24px rgba(139,125,107,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+            onClick={() => window.location.href = '/MarketShopSignup'}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"pointer", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(139,125,107,0.4)", transform:hoveredCard==="booth"?"translateY(-2px)":"none", boxShadow:hoveredCard==="booth"?"0 0 24px rgba(139,125,107,0.35), 0 8px 24px rgba(139,125,107,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden", textAlign:"left" }}
           >
             <Store size={24} style={{ marginBottom:"10px", color:"#9d7a54" }} strokeWidth={1.5} />
-            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Market Booth</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Sell at your online Farmers Market. Set up your own Booth. Or let clients know what Farmers Market you will be at next!</p>
-            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(139,125,107,0.5), 0 4px 8px rgba(139,125,107,0.25)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#9d7a54", color:"#fff" }}>Set Up Booth →</button>
-          </div>
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Welcome to the Marketplace</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Pick Your Market — Select Farmers Market to set up your booth and sell fresh goods.</p>
+          </button>
 
           {/* SwapMeets Card */}
-          <div
+          <button
             onMouseEnter={() => setHoveredCard("swapmeets")}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"default", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="swapmeets"?"translateY(-2px)":"none", boxShadow:hoveredCard==="swapmeets"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden" }}
+            onClick={() => window.location.href = '/MarketShopSignup'}
+            style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"pointer", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="swapmeets"?"translateY(-2px)":"none", boxShadow:hoveredCard==="swapmeets"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden", textAlign:"left" }}
           >
             <ShoppingBag size={24} style={{ marginBottom:"10px", color:"#f97316" }} strokeWidth={1.5} />
-            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>SwapMeets</h3>
-            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Reserve your space at your online swapmeet and sell directly to consumers.</p>
-            <button onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(249,115,22,0.6), 0 4px 8px rgba(249,115,22,0.3)"} onMouseLeave={(e) => e.target.style.boxShadow = "none"} onClick={() => window.location.href = '/MarketShopSignup'} style={{ width:"100%", padding:"10px 14px", borderRadius:"8px", border:"none", fontSize:"13px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"40px", background:"#f97316", color:"#fff" }}>Reserve Space →</button>
-          </div>
+            <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Welcome to the Marketplace</h3>
+            <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.65)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Pick Your Market — Select Swap Meet to reserve your space and sell directly to consumers.</p>
+          </button>
 
           {/* Consumer Card */}
           <div
