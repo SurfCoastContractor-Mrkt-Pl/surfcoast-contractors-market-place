@@ -69,6 +69,8 @@ function CreditTierInfo() {
 export default function RetroArcade() {
   const [pendingScore, setPendingScore] = useState(null);
   const [leaderboardRefresh, setLeaderboardRefresh] = useState(0);
+  const [wallet, setWallet] = useState(null);
+  const [unlockedPerks, setUnlockedPerks] = useState([]);
 
   const handleGameOver = (score, level) => {
     if (score > 0) {
