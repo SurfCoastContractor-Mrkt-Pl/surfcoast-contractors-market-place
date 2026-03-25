@@ -151,8 +151,13 @@ export default function CustomerDashboard() {
                           <h3 className="font-semibold text-white text-sm">{job.title}</h3>
                           <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{job.location}</p>
                         </div>
-                        <span style={{ background: 'rgba(29,111,164,0.25)', color: '#60b4e8', fontSize: '11px', fontWeight: '600', padding: '3px 8px', borderRadius: '20px', border: '1px solid rgba(29,111,164,0.4)' }}>
-                          {job.status.replace(/_/g, ' ')}
+                        <span style={{
+                          background: job.status === 'open' ? 'rgba(34,197,94,0.2)' : job.status === 'in_progress' ? 'rgba(234,179,8,0.2)' : job.status === 'completed' ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.2)',
+                          color: job.status === 'open' ? '#4ade80' : job.status === 'in_progress' ? '#fbbf24' : job.status === 'completed' ? '#94a3b8' : '#f87171',
+                          fontSize: '11px', fontWeight: '600', padding: '3px 8px', borderRadius: '20px',
+                          border: `1px solid ${job.status === 'open' ? 'rgba(34,197,94,0.4)' : job.status === 'in_progress' ? 'rgba(234,179,8,0.4)' : job.status === 'completed' ? 'rgba(148,163,184,0.3)' : 'rgba(239,68,68,0.4)'}`
+                        }}>
+                          {job.status === 'in_progress' ? 'in progress' : job.status.replace(/_/g, ' ')}
                         </span>
                       </div>
                       <p className="text-xs mb-3 line-clamp-2" style={{ color: 'rgba(255,255,255,0.6)' }}>{job.description}</p>
