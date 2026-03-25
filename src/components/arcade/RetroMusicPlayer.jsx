@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 const TRACKS = [
   { title: "Everybody Have Fun Tonight", artist: "Wang Chung", yt: "AbrUmHOQkS4" },
   { title: "Good Enough", artist: "Cyndi Lauper", yt: "rMuAGN5DPBM" },
+  { title: "The Future's So Bright, I Gotta Wear Shades", artist: "Timbuk 3", yt: "uPUD3jRQoS0" },
   { title: "Take On Me", artist: "a-ha", yt: "djV11Xbc914" },
   { title: "Don't You (Forget About Me)", artist: "Simple Minds", yt: "CdqoNKCCt7A" },
   { title: "Girls Just Want to Have Fun", artist: "Cyndi Lauper", yt: "PIb6AZdTr-A" },
