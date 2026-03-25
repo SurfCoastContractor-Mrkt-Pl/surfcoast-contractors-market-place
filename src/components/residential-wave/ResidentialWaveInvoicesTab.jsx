@@ -178,6 +178,22 @@ export default function ResidentialWaveInvoicesTab({ userEmail }) {
           </CardContent>
         </Card>
       )}
+
+      {selectedInvoice && (
+        <InvoicePaymentModal
+          invoice={selectedInvoice}
+          isOpen={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false);
+            setSelectedInvoice(null);
+          }}
+          onPaymentSuccess={() => {
+            setPaymentModalOpen(false);
+            setSelectedInvoice(null);
+            queryClient.invalidateQueries({ queryKey: ['residentialWaveInvoices', userEmail] });
+          }}
+        />
+      )}
     </div>
   );
 }
