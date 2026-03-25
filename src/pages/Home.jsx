@@ -47,7 +47,7 @@ export default function Home() {
             </button>
             {dropdownOpen && (
               <div style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}>
-                <button onClick={() => { base44.auth.redirectToLogin('/'); setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
+                <button onClick={() => { base44.auth.redirectToLogin('/Dashboard'); setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
                   Login / Sign Up
                 </button>
                 <button onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}>
