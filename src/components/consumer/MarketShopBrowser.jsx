@@ -53,7 +53,7 @@ export default function MarketShopBrowser({ lockedType = null }) {
         shop.city?.toLowerCase().includes(search.toLowerCase()) ||
         shop.products_summary?.toLowerCase().includes(search.toLowerCase());
       const matchesType =
-        typeFilter === 'all' || shop.shop_type === typeFilter || shop.shop_type === 'both';
+        typeFilter === 'all' || shop.shop_type === typeFilter || (shop.shop_type === 'both' && typeFilter !== 'all');
       return matchesSearch && matchesType;
     });
   }, [shops, search, typeFilter]);
