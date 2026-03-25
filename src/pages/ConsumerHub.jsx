@@ -82,10 +82,15 @@ export default function ConsumerHub() {
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges</span>
             </TabsTrigger>
-            <TabsTrigger value="purchases" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Shopping</span>
-              <span className="sm:hidden">Shop</span>
+            <TabsTrigger value="farmers" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
+              <Leaf className="w-4 h-4" />
+              <span className="hidden sm:inline">Farmers</span>
+              <span className="sm:hidden">🌽</span>
+            </TabsTrigger>
+            <TabsTrigger value="swapmeet" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
+              <Tag className="w-4 h-4" />
+              <span className="hidden sm:inline">Swap Meet</span>
+              <span className="sm:hidden">🏷️</span>
             </TabsTrigger>
             <TabsTrigger value="saved" className="flex items-center gap-2 text-amber-50 font-semibold transition-all duration-200 hover:bg-black/10 data-[state=active]:bg-amber-900/60 data-[state=active]:text-white data-[state=active]:shadow-inner">
               <Heart className="w-4 h-4" />
