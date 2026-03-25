@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, Eye, Trash2 } from 'lucide-react';
+import { Plus, Eye, Trash2, CreditCard } from 'lucide-react';
+import InvoicePaymentModal from './InvoicePaymentModal';
 
 export default function ResidentialWaveInvoicesTab({ userEmail }) {
   const [showForm, setShowForm] = useState(false);
