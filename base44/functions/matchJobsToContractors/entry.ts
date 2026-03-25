@@ -130,7 +130,9 @@ Deno.serve(async (req) => {
     
     // Create notification records
     if (matchRecords.length > 0) {
-      await base44.asServiceRole.entities.JobNotification.bulkCreate(matchRecords);
+      for (const record of matchRecords) {
+        await base44.asServiceRole.entities.JobNotification.create(record);
+      }
     }
     
     // Send email notifications (batch them to avoid rate limits)
