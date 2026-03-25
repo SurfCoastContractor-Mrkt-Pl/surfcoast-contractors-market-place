@@ -44,7 +44,7 @@ Your project "${scopeData.job_title}" has been completed!
 Contractor: ${scopeData.contractor_name}
 Total Cost: $${scopeData.cost_amount}
 
-Please review the work and leave a verified review. Your feedback helps other customers find great professionals.
+Please review the work and leave a verified review. Your feedback helps other clients find great professionals.
 
 [LEAVE A REVIEW]
 

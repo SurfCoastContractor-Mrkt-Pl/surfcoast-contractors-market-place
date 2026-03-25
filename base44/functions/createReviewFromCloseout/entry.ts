@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
 
     // Only the customer or admin can trigger review creation for a scope
     if (user.role !== 'admin' && user.email !== scope.customer_email) {
-      return Response.json({ error: 'Forbidden: You are not the customer for this scope.' }, { status: 403 });
+      return Response.json({ error: 'Forbidden: You are not the client for this scope.' }, { status: 403 });
     }
 
     // Check if review already exists for this contractor from this customer
@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
       contractor_name: scope.contractor_name,
       reviewer_name: scope.customer_name,
       reviewer_email: scope.customer_email,
-      reviewer_type: 'customer',
+      reviewer_type: 'client',
       scope_id: scopeId,
       job_title: scope.job_title,
       overall_rating: 5, // Default to 5, customer can update

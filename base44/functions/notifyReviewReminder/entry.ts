@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     // Verify user is the customer who owns this scope
     if (scopeData.customer_email !== user.email) {
       return Response.json(
-        { error: 'Unauthorized - only the customer can request review reminders' },
+        { error: 'Unauthorized - only the client can request review reminders' },
         { status: 403 }
       );
     }

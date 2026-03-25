@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       subject: 'Welcome to SurfCoast Contractor Market Place!',
       body: `Hello ${full_name},
 
-Welcome to SurfCoast Contractor Market Place! We're excited to have you join our community of customers and contractors.
+Welcome to SurfCoast Contractor Market Place! We're excited to have you join our community of clients and contractors.
 
 Get started:
 • Browse skilled contractors in your area

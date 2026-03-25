@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
 
     return Response.json({
       success: true,
-      message: 'Customer account created.',
+      message: 'Client account created.',
       data: {
         full_name,
         email,

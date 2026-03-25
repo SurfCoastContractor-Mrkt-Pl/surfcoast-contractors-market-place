@@ -175,7 +175,7 @@ Deno.serve(async (req) => {
     const uploadResult = await base44.asServiceRole.integrations.Core.UploadFile({ file: pdfBlob });
     const pdfUrl = uploadResult.file_url;
 
-    // Send email to customer
+    // Send email to client
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: scopeData.customer_email,
       subject: `Invoice for ${scopeData.job_title} - ${invoiceDate}`,
@@ -186,7 +186,7 @@ Deno.serve(async (req) => {
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: scopeData.contractor_email,
       subject: `Invoice Generated for ${scopeData.job_title} - ${invoiceDate}`,
-      body: `Hello ${scopeData.contractor_name},\n\nYour job "${scopeData.job_title}" has been marked as complete. Your invoice has been generated and sent to the customer.\n\nInvoice Details:\n- Customer: ${scopeData.customer_name}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
+      body: `Hello ${scopeData.contractor_name},\n\nYour job "${scopeData.job_title}" has been marked as complete. Your invoice has been generated and sent to the client.\n\nInvoice Details:\n- Client: ${scopeData.customer_name}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
     });
 
     console.log(`Invoice generated and sent for scope: ${scope_id}`);

@@ -86,7 +86,7 @@ Deno.serve(async (req) => {
     // Customer info
     doc.setFontSize(11);
     doc.setTextColor(50, 50, 50);
-    doc.text('Customer:', 120, yPos - 6);
+    doc.text('Client:', 120, yPos - 6);
     doc.setFontSize(10);
     doc.text(scope.customer_name || 'N/A', 120, yPos);
     doc.text(scope.customer_email || 'N/A', 120, yPos + 5);
@@ -207,7 +207,7 @@ Deno.serve(async (req) => {
       console.error('Error sending email to contractor:', e.message);
     }
 
-    // Send email to customer
+    // Send email to client
     try {
       const jobCost = scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount;
       await base44.integrations.Core.SendEmail({
@@ -216,7 +216,7 @@ Deno.serve(async (req) => {
         body: `Hello ${scope.customer_name},\n\nYour job "${scope.job_title}" has been completed.\n\nTotal Amount: $${jobCost.toFixed(2)}\n\nThank you for using SurfCoast!\n\nSurfCoast Contractor Market Place`,
       });
     } catch (e) {
-      console.error('Error sending email to customer:', e.message);
+      console.error('Error sending email to client:', e.message);
     }
 
     return Response.json({ 
