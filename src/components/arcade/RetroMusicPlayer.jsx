@@ -14,7 +14,7 @@ const TRACKS = [
 
 export default function RetroMusicPlayer() {
   const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [key, setKey] = useState(0);
 
   const play = (idx) => {
