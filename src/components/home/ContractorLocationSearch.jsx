@@ -170,51 +170,51 @@ export default function ContractorLocationSearch() {
                   Found {results.length} {searchType === "contractors" ? "contractor" : searchType === "market-booths" ? "market booth" : searchType === "farmers-markets" ? "farmers market" : searchType === "vendors" ? "vendor" : "swapmeet"}{results.length !== 1 ? "s" : ""}
                 </p>
                 <div style={{ display: "grid", gridTemplateColumns: window.innerWidth < 600 ? "1fr" : "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}>
-                  {results.slice(0, 6).map((contractor) => (
-                    <div
-                       key={result.id}
-                       onClick={() => {
-                         if (searchType === "contractors") {
-                           window.location.href = `/contractor/${result.id}`;
-                         } else {
-                           window.location.href = `/vendor/${result.id}`;
-                         }
-                       }}
-                       style={{
-                         padding: "14px 12px",
-                         background: "rgba(255, 255, 255, 0.08)",
-                         border: "1px solid rgba(29, 111, 164, 0.2)",
-                         borderRadius: "8px",
-                         cursor: "pointer",
-                         transition: "all 0.2s",
-                       }}
-                       onMouseEnter={(e) => {
-                         e.currentTarget.style.background = "rgba(29, 111, 164, 0.15)";
-                         e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.5)";
-                       }}
-                       onMouseLeave={(e) => {
-                         e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                         e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.2)";
-                       }}
-                     >
-                       <p style={{ margin: "0 0 4px", fontSize: "14px", fontWeight: "700", color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                         {result.name}
-                       </p>
-                       {searchType === "contractors" && result.line_of_work && (
-                         <p style={{ margin: "0 0 4px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                           {result.line_of_work.replace(/_/g, " ")}
-                         </p>
-                       )}
-                       <p style={{ margin: "0", fontSize: "12px", color: "#1d6fa4", fontWeight: "600" }}>
-                         {result.location}
-                       </p>
-                       {result.rating && (
-                         <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255, 255, 255, 0.5)" }}>
-                           ⭐ {result.rating.toFixed(1)} ({result.reviews_count || 0})
-                         </p>
-                       )}
-                     </div>
-                  ))}
+                   {results.slice(0, 6).map((result) => (
+                     <div
+                        key={result.id}
+                        onClick={() => {
+                          if (searchType === "contractors") {
+                            window.location.href = `/contractor/${result.id}`;
+                          } else {
+                            window.location.href = `/vendor/${result.id}`;
+                          }
+                        }}
+                        style={{
+                          padding: "14px 12px",
+                          background: "rgba(255, 255, 255, 0.08)",
+                          border: "1px solid rgba(29, 111, 164, 0.2)",
+                          borderRadius: "8px",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "rgba(29, 111, 164, 0.15)";
+                          e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.5)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                          e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.2)";
+                        }}
+                      >
+                        <p style={{ margin: "0 0 4px", fontSize: "14px", fontWeight: "700", color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {result.name}
+                        </p>
+                        {searchType === "contractors" && result.line_of_work && (
+                          <p style={{ margin: "0 0 4px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {result.line_of_work.replace(/_/g, " ")}
+                          </p>
+                        )}
+                        <p style={{ margin: "0", fontSize: "12px", color: "#1d6fa4", fontWeight: "600" }}>
+                          {result.location}
+                        </p>
+                        {result.rating && (
+                          <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255, 255, 255, 0.5)" }}>
+                            ⭐ {result.rating.toFixed(1)} ({result.reviews_count || 0})
+                          </p>
+                        )}
+                      </div>
+                   ))}
                 </div>
                 {results.length > 6 && (
                   <button
