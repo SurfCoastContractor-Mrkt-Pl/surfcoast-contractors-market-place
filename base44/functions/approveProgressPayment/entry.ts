@@ -32,8 +32,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Phase is not in pending status' }, { status: 400 });
     }
 
-    // Update payment to contractor_completed
-    const updated = await base44.asServiceRole.entities.ProgressPayment.update(paymentId, {
+    // Update payment to contractor_completed using user-level access to enforce RLS
+    const updated = await base44.entities.ProgressPayment.update(paymentId, {
       status: 'contractor_completed',
       contractor_completed_date: new Date().toISOString(),
       contractor_completion_notes: completionNotes || '',
