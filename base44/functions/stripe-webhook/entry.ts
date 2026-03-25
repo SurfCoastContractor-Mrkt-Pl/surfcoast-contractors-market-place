@@ -530,6 +530,102 @@ async function handlePaymentMethodAttached(paymentMethod, base44) {
   }
 }
 
+async function handleVendorPurchaseCompleted(session, base44) {
+  try {
+    const orderId = session.metadata?.order_id;
+    if (!orderId) {
+      console.warn('vendor_purchase session missing order_id metadata');
+      return;
+    }
+
+    const order = await base44.asServiceRole.entities.ConsumerOrder.get(orderId);
+    if (!order) {
+      console.warn(`ConsumerOrder ${orderId} not found`);
+      return;
+    }
+
+    if (order.status === 'completed') {
+      console.log(`Order ${orderId} already completed — skipping`);
+      return;
+    }
+
+    // Retrieve payment intent to get transfer info
+    let transferId = null;
+    if (session.payment_intent) {
+      try {
+        const pi = await stripe.paymentIntents.retrieve(session.payment_intent);
+        transferId = pi.transfer_data?.destination ? pi.latest_charge : null;
+        // Get the actual transfer from the charge
+        if (pi.latest_charge) {
+          const charge = await stripe.charges.retrieve(pi.latest_charge);
+          transferId = charge.transfer || null;
+        }
+      } catch (e) {
+        console.warn('Could not retrieve transfer info:', e.message);
+      }
+    }
+
+    // Update inventory for each item
+    try {
+      const { updateInventoryAfterSale } = await import('./updateInventoryOnSale.js').catch(() => null) || {};
+      if (!updateInventoryAfterSale) {
+        // Call via SDK instead
+        await base44.asServiceRole.functions.invoke('updateInventoryOnSale', {
+          cartItems: order.items.map(i => ({ id: i.listing_id, quantity: i.quantity })),
+          orderId: order.id,
+        });
+      }
+    } catch (invErr) {
+      console.warn('Could not update inventory from webhook:', invErr.message);
+    }
+
+    // Mark order as completed
+    await base44.asServiceRole.entities.ConsumerOrder.update(orderId, {
+      status: 'completed',
+      stripe_payment_intent_id: session.payment_intent || null,
+      ...(transferId ? { stripe_transfer_id: transferId } : {}),
+    });
+
+    console.log(`Vendor purchase order ${orderId} marked completed. Payment: ${session.payment_intent}`);
+
+    // Send receipt email to consumer
+    try {
+      const itemList = order.items.map(i => `  • ${i.product_name} x${i.quantity} — $${i.subtotal?.toFixed(2)}`).join('\n');
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: order.consumer_email,
+        from_name: 'SurfCoast Marketplace',
+        subject: `Order Confirmed — ${order.shop_name} (${order.order_number})`,
+        body: `Hi there,\n\nThank you for your order from ${order.shop_name}!\n\nOrder #: ${order.order_number}\n\nItems:\n${itemList}\n\nTotal Charged: $${order.total?.toFixed(2)}\n\nYour payment has been processed securely. Please contact the vendor directly to arrange pickup or delivery.\n\n— SurfCoast Marketplace`,
+      });
+    } catch (emailErr) {
+      console.warn('Failed to send order receipt email:', emailErr.message);
+    }
+  } catch (error) {
+    console.error('Error handling vendor purchase completed:', error.message);
+  }
+}
+
+async function handleConnectAccountUpdated(account, base44) {
+  try {
+    if (!account.id) return;
+    const shops = await base44.asServiceRole.entities.MarketShop.filter({
+      stripe_connect_account_id: account.id,
+    });
+    if (!shops || shops.length === 0) return;
+
+    const chargesEnabled = account.charges_enabled === true;
+    const onboarded = account.details_submitted === true;
+
+    await base44.asServiceRole.entities.MarketShop.update(shops[0].id, {
+      stripe_connect_charges_enabled: chargesEnabled,
+      stripe_connect_onboarded: onboarded,
+    });
+    console.log(`Synced Connect account ${account.id}: charges_enabled=${chargesEnabled}, onboarded=${onboarded}`);
+  } catch (error) {
+    console.error('Error handling Connect account updated:', error.message);
+  }
+}
+
 async function handleCheckoutSessionExpired(session, base44) {
   try {
     console.log(`Checkout session expired: ${session.id}, customer: ${session.customer_email}`);
