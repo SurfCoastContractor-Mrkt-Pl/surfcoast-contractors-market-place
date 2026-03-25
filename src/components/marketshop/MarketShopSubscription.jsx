@@ -62,8 +62,10 @@ export default function MarketShopSubscription({ shop }) {
         shop_id: shop.id,
         new_model: newModel,
       });
-      alert(`Switched to ${newModel} model. Changes take effect next billing cycle.`);
+      setShowSwitchConfirm(false);
+      setShowCancelModal(false);
       setShowModelSelector(false);
+      setSwitchSuccess(true);
     } catch (err) {
       console.error(err);
       alert('Failed to switch payment model. Please try again.');
