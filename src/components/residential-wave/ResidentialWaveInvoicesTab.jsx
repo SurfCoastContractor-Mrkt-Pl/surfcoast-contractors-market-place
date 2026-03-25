@@ -61,6 +61,11 @@ export default function ResidentialWaveInvoicesTab({ userEmail }) {
     createInvoiceMutation.mutate(formData);
   };
 
+  const handlePaymentClick = (invoice) => {
+    setSelectedInvoice(invoice);
+    setPaymentModalOpen(true);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
