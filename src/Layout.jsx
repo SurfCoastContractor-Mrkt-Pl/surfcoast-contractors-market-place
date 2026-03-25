@@ -30,7 +30,7 @@ const customerLinks = [
   { name: 'My Account', page: 'CustomerAccount' },
   { name: 'My Job Postings', page: 'MyJobs' },
   { name: 'Earn Credits', page: 'Referrals' },
-];
+  ]; // Client links (formerly customerLinks)
 
 const contractorLinks = [
   { name: 'My Account', page: 'ContractorAccount' },
@@ -158,7 +158,7 @@ export default function Layout({ children, currentPageName }) {
                   {accountMenuOpen && (
                     <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
                       <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-                        {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
+                        {isContractor ? 'CONTRACTOR' : 'CLIENT'}
                       </div>
                       {isLoggedIn && (
                         <>
@@ -265,7 +265,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="pt-4 border-t border-slate-100 space-y-2">
                 <div className="border-t border-slate-100 pt-2 space-y-1">
                   <div className="px-3 py-2 text-xs font-semibold text-slate-500">
-                    {isContractor ? 'CONTRACTOR' : 'CUSTOMER'}
+                    {isContractor ? 'CONTRACTOR' : 'CLIENT'}
                   </div>
                   {isLoggedIn && (
                     <>
