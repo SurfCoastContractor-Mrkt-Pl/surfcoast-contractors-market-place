@@ -3,17 +3,29 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Clock, MessageSquare, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Clock, MessageSquare, FileText, AlertCircle, CheckCircle2, Search, ChevronDown } from 'lucide-react';
 import QuoteResponseModal from '@/components/quotes/QuoteResponseModal';
+import QuoteDetailModal from '@/components/quotes/QuoteDetailModal';
 
 export default function ContractorQuotesManagement() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('pending');
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [responseModalOpen, setResponseModalOpen] = useState(false);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [actionType, setActionType] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -74,16 +86,36 @@ export default function ContractorQuotesManagement() {
   };
 
   const filteredQuotes = quotes?.filter(quote => {
-    if (activeTab === 'pending') return quote.status === 'pending';
-    if (activeTab === 'in_progress') return ['in_progress', 'quoted'].includes(quote.status);
-    if (activeTab === 'completed') return ['accepted', 'completed', 'rejected'].includes(quote.status);
-    return true;
+    const matchesTab = activeTab === 'pending' ? quote.status === 'pending'
+      : activeTab === 'in_progress' ? ['in_progress', 'quoted'].includes(quote.status)
+      : ['accepted', 'completed', 'rejected'].includes(quote.status);
+    
+    const matchesSearch = !searchTerm || 
+      quote.job_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      quote.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      quote.customer_email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return matchesTab && matchesSearch;
+  })?.sort((a, b) => {
+    if (sortBy === 'newest') return new Date(b.created_at) - new Date(a.created_at);
+    if (sortBy === 'oldest') return new Date(a.created_at) - new Date(b.created_at);
+    if (sortBy === 'deadline') {
+      if (!a.response_deadline) return 1;
+      if (!b.response_deadline) return -1;
+      return new Date(a.response_deadline) - new Date(b.response_deadline);
+    }
+    return 0;
   }) || [];
 
   const openAction = (quote, type) => {
     setSelectedQuote(quote);
     setActionType(type);
     setResponseModalOpen(true);
+  };
+
+  const openDetailView = (quote) => {
+    setSelectedQuote(quote);
+    setDetailModalOpen(true);
   };
 
   if (!user) {
@@ -101,6 +133,31 @@ export default function ContractorQuotesManagement() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Quote Requests</h1>
           <p className="text-slate-600">Manage incoming client quote requests and send estimates</p>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="mb-6 space-y-4">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+              <Input
+                placeholder="Search by job title, client name, or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem>
+                <SelectItem value="deadline">Deadline Soon</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Status Tabs */}
@@ -131,7 +188,10 @@ export default function ContractorQuotesManagement() {
               filteredQuotes.map(quote => (
                 <Card key={quote.id} className="p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
+                    <div
+                      className="flex-1 cursor-pointer hover:text-blue-600"
+                      onClick={() => openDetailView(quote)}
+                    >
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold text-slate-900">{quote.job_title}</h3>
                         <Badge className={getStatusColor(quote.status)}>
@@ -139,7 +199,7 @@ export default function ContractorQuotesManagement() {
                           <span className="ml-1 capitalize">{quote.status}</span>
                         </Badge>
                       </div>
-                      <p className="text-sm text-slate-600 mb-3">{quote.work_description}</p>
+                      <p className="text-sm text-slate-600 mb-3 line-clamp-2">{quote.work_description}</p>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="font-medium text-slate-900">{quote.customer_name}</p>
@@ -193,7 +253,11 @@ export default function ContractorQuotesManagement() {
               </Card>
             ) : (
               filteredQuotes.map(quote => (
-                <Card key={quote.id} className="p-6 hover:shadow-lg transition-shadow">
+                <Card
+                  key={quote.id}
+                  className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => openDetailView(quote)}
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -203,7 +267,7 @@ export default function ContractorQuotesManagement() {
                           <span className="ml-1 capitalize">{quote.status}</span>
                         </Badge>
                       </div>
-                      <p className="text-sm text-slate-600 mb-3">{quote.work_description}</p>
+                      <p className="text-sm text-slate-600 mb-3 line-clamp-2">{quote.work_description}</p>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="font-medium text-slate-900">{quote.customer_name}</p>
@@ -217,16 +281,17 @@ export default function ContractorQuotesManagement() {
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => openAction(quote, 'message')}
-                        className="gap-2 whitespace-nowrap"
-                      >
-                        <MessageSquare className="w-4 h-4" />
-                        Message
-                      </Button>
-                    </div>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openAction(quote, 'message');
+                      }}
+                      className="flex-shrink-0"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                    </Button>
                   </div>
                 </Card>
               ))
@@ -245,7 +310,11 @@ export default function ContractorQuotesManagement() {
               </Card>
             ) : (
               filteredQuotes.map(quote => (
-                <Card key={quote.id} className="p-6 hover:shadow-lg transition-shadow opacity-75">
+                <Card
+                  key={quote.id}
+                  className="p-6 hover:shadow-lg transition-shadow opacity-75 cursor-pointer"
+                  onClick={() => openDetailView(quote)}
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -255,7 +324,7 @@ export default function ContractorQuotesManagement() {
                           <span className="ml-1 capitalize">{quote.status}</span>
                         </Badge>
                       </div>
-                      <p className="text-sm text-slate-600 mb-3">{quote.work_description}</p>
+                      <p className="text-sm text-slate-600 mb-3 line-clamp-2">{quote.work_description}</p>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="font-medium text-slate-900">{quote.customer_name}</p>
@@ -276,6 +345,23 @@ export default function ContractorQuotesManagement() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Detail Modal */}
+      {selectedQuote && (
+        <QuoteDetailModal
+          open={detailModalOpen}
+          onOpenChange={setDetailModalOpen}
+          quote={selectedQuote}
+          onSendEstimate={() => {
+            setDetailModalOpen(false);
+            openAction(selectedQuote, 'estimate');
+          }}
+          onSendMessage={() => {
+            setDetailModalOpen(false);
+            openAction(selectedQuote, 'message');
+          }}
+        />
+      )}
 
       {/* Response Modal */}
       {selectedQuote && (
