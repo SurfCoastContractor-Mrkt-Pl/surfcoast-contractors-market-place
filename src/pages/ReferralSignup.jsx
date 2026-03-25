@@ -341,8 +341,208 @@ export default function ReferralSignup() {
               </button>
             </div>
           </div>
-        ) : (
+        ) : step === 'direct' ? (
           <div>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#333',
+                marginBottom: '8px',
+              }}>
+                Your Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #ddd',
+                  fontSize: '14px',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#333',
+                marginBottom: '8px',
+              }}>
+                Which describes you best?
+              </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <button
+                  onClick={() => setSelectedRole('pro')}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: selectedRole === 'pro' ? '2px solid #1d6fa4' : '1px solid #ddd',
+                    background: selectedRole === 'pro' ? 'rgba(29, 111, 164, 0.05)' : '#f9f9f9',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#333',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedRole !== 'pro') {
+                      e.currentTarget.style.borderColor = '#1d6fa4';
+                      e.currentTarget.style.background = 'rgba(29, 111, 164, 0.02)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedRole !== 'pro') {
+                      e.currentTarget.style.borderColor = '#ddd';
+                      e.currentTarget.style.background = '#f9f9f9';
+                    }
+                  }}
+                >
+                  <Wrench size={20} style={{ color: '#d97706' }} />
+                  <span>I'm a Pro (Contractor)</span>
+                </button>
+
+                <button
+                  onClick={() => setSelectedRole('customer')}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: selectedRole === 'customer' ? '2px solid #1d6fa4' : '1px solid #ddd',
+                    background: selectedRole === 'customer' ? 'rgba(29, 111, 164, 0.05)' : '#f9f9f9',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#333',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedRole !== 'customer') {
+                      e.currentTarget.style.borderColor = '#1d6fa4';
+                      e.currentTarget.style.background = 'rgba(29, 111, 164, 0.02)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedRole !== 'customer') {
+                      e.currentTarget.style.borderColor = '#ddd';
+                      e.currentTarget.style.background = '#f9f9f9';
+                    }
+                  }}
+                >
+                  <Users size={20} style={{ color: '#1d6fa4' }} />
+                  <span>I Need a Pro (Customer)</span>
+                </button>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '32px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#333',
+                marginBottom: '8px',
+              }}>
+                Friend's Email
+              </label>
+              <input
+                type="email"
+                value={directEmail}
+                onChange={(e) => setDirectEmail(e.target.value)}
+                placeholder="friend@example.com"
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #ddd',
+                  fontSize: '14px',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  setStep('method');
+                  setSelectedRole(null);
+                  setEmail('');
+                  setDirectEmail('');
+                }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid #ddd',
+                  background: '#f9f9f9',
+                  color: '#333',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                Back
+              </button>
+              <button
+                onClick={async () => {
+                  if (!email.trim() || !selectedRole || !directEmail.trim()) {
+                    alert('Please fill in all fields');
+                    return;
+                  }
+                  setDirectSending(true);
+                  try {
+                    const response = await base44.functions.invoke('generateReferralCode', { email });
+                    if (response.data?.code) {
+                      await base44.functions.invoke('sendReferralLink', {
+                        senderEmail: email,
+                        recipientEmail: directEmail.trim(),
+                        referralCode: response.data.code,
+                      });
+                      alert(`Referral link sent to ${directEmail}!`);
+                      setStep('method');
+                      setSelectedRole(null);
+                      setEmail('');
+                      setDirectEmail('');
+                    }
+                  } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to send referral link. Please try again.');
+                  } finally {
+                    setDirectSending(false);
+                  }
+                }}
+                disabled={!email.trim() || !selectedRole || !directEmail.trim() || directSending}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: email.trim() && selectedRole && directEmail.trim() ? '#10b981' : '#ccc',
+                  color: '#fff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: email.trim() && selectedRole && directEmail.trim() && !directSending ? 'pointer' : 'not-allowed',
+                }}
+              >
+                {directSending ? 'Sending...' : 'Send Referral Link'}
+              </button>
+            </div>
+          </div>
+        ) : (
+           <div>
             <div style={{
               padding: '20px',
               borderRadius: '8px',
