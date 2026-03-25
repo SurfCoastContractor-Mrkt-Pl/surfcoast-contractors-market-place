@@ -1,7 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
-import Stripe from 'npm:stripe@16.0.0';
-
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
@@ -12,61 +9,34 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { subscriptionId, newPaymentModel } = await req.json();
+    const { shop_id, new_model } = await req.json();
 
-    if (!subscriptionId || !newPaymentModel) {
-      return Response.json(
-        { error: 'Missing subscriptionId or newPaymentModel' },
-        { status: 400 }
-      );
+    if (!shop_id || !new_model) {
+      return Response.json({ error: 'Missing shop_id or new_model' }, { status: 400 });
     }
 
-    // Fetch subscription from database
-    const subscriptions = await base44.entities.Subscription.filter({
-      stripe_subscription_id: subscriptionId,
-      user_email: user.email
-    });
+    // Fetch the shop and verify ownership
+    const shops = await base44.asServiceRole.entities.MarketShop.filter({ id: shop_id });
+    const shop = shops?.[0];
 
-    const subscription = subscriptions?.[0];
-    if (!subscription) {
-      return Response.json({ error: 'Subscription not found' }, { status: 404 });
+    if (!shop) {
+      return Response.json({ error: 'Shop not found' }, { status: 404 });
     }
 
-    // Check if subscription is in good standing
-    if (subscription.status === 'past_due' || subscription.status === 'cancelled') {
-      return Response.json(
-        {
-          error: 'Cannot switch payment models. Subscription must be active and in good standing.',
-          status: subscription.status
-        },
-        { status: 400 }
-      );
+    if (shop.email !== user.email) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Get Stripe subscription to check billing cycle
-    const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
-
-    // Schedule the model change for next billing cycle
-    const nextBillingDate = new Date(stripeSubscription.current_period_end * 1000);
-
-    // Store the pending model switch in database (you'll need to add this field to Subscription entity)
-    await base44.entities.Subscription.update(subscription.id, {
-      pending_model_switch: newPaymentModel,
-      pending_switch_effective_date: nextBillingDate.toISOString()
+    // Update the shop's payment model directly
+    await base44.asServiceRole.entities.MarketShop.update(shop_id, {
+      payment_model: new_model,
     });
 
-    console.log(`Payment model switch scheduled for ${user.email} on ${nextBillingDate}`);
+    console.log(`Payment model switched to ${new_model} for shop ${shop_id} (${user.email})`);
 
-    return Response.json({
-      success: true,
-      message: `Payment model will switch to ${newPaymentModel} on ${nextBillingDate.toLocaleDateString()}`,
-      effectiveDate: nextBillingDate.toISOString()
-    });
+    return Response.json({ success: true, new_model });
   } catch (error) {
     console.error('Payment model switch error:', error);
-    return Response.json(
-      { error: error.message || 'Failed to process payment model switch' },
-      { status: 500 }
-    );
+    return Response.json({ error: error.message || 'Failed to process payment model switch' }, { status: 500 });
   }
 });
