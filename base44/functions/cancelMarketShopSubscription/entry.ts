@@ -24,8 +24,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Shop not found' }, { status: 404 });
     }
 
-    if (shop.email !== user.email && user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    // Only allow user to cancel their own shop OR admin can cancel any shop
+    if (user.role !== 'admin' && shop.email !== user.email) {
+      return Response.json({ error: 'Forbidden: You can only cancel your own shop' }, { status: 403 });
     }
 
     // If there's a Stripe subscription, cancel it
