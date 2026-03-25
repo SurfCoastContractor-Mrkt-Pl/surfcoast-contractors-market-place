@@ -243,8 +243,8 @@ export default function MarketShopSubscription({ shop }) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs sm:text-sm text-slate-500 font-semibold">Status</p>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full mt-1 inline-block capitalize ${statusColors[shop.subscription_status] || statusColors.active}`}>
-              {shop.subscription_status || 'active'}
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full mt-1 inline-block ${statusColors[shop.subscription_status] || 'bg-slate-100 text-slate-600'}`}>
+              {statusLabels[shop.subscription_status] || 'No Active Plan'}
             </span>
           </div>
         </div>
