@@ -400,7 +400,21 @@ async function handlePaymentIntentSucceeded(paymentIntent, base44) {
 
 async function handleCheckoutSessionCompleted(session, base44) {
   try {
-    console.log(`Checkout session completed: ${session.id}, payment status: ${session.payment_status}`);
+    console.log(`Checkout session completed: ${session.id}, mode: ${session.mode}, payment status: ${session.payment_status}`);
+
+    // Handle facilitation setup session — no payment, just card saved
+    if (session.mode === 'setup' && session.metadata?.payment_model === 'facilitation') {
+      const shopId = session.metadata?.shop_id;
+      if (shopId) {
+        await base44.asServiceRole.entities.MarketShop.update(shopId, {
+          payment_model: 'facilitation',
+          subscription_status: 'active',
+          is_active: true,
+        });
+        console.log(`Market shop ${shopId} activated with facilitation model via setup session`);
+      }
+      return;
+    }
 
     if (session.payment_status !== 'paid') {
       console.warn(`Session ${session.id} payment status is ${session.payment_status}, skipping`);
