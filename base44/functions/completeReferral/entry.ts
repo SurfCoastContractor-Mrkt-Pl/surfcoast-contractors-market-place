@@ -37,13 +37,13 @@ Deno.serve(async (req) => {
 
     const referral = referrals[0];
 
-    // Mark as completed
+    // Mark as completed (use service role for automation/admin-only operation)
     await base44.asServiceRole.entities.Referral.update(referral.id, {
       status: 'completed_first_job',
       completed_at: new Date().toISOString()
     });
 
-    // Get referrer's profile to extend trial
+    // Get referrer's profile to extend trial (service role needed for admin operation)
     const referrerProfiles = await base44.asServiceRole.entities.Contractor.filter({
       email: referral.referrer_email
     });
