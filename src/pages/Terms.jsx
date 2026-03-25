@@ -345,9 +345,9 @@ export default function Terms() {
           </p>
         </div>
 
-        {/* Section 12 */}
+        {/* Section 13 */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Contact</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Contact</h2>
           <p className="text-slate-700 leading-relaxed">
             For questions regarding these Terms, contact us through the platform's support channel.
           </p>
