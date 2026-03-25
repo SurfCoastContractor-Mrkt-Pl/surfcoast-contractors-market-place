@@ -9,6 +9,7 @@ import ResidentialWaveJobsTab from '@/components/residential-wave/ResidentialWav
 import ResidentialWaveLeadsTab from '@/components/residential-wave/ResidentialWaveLeadsTab';
 import ResidentialWaveInvoicesTab from '@/components/residential-wave/ResidentialWaveInvoicesTab';
 import ResidentialWaveSubscriptionTab from '@/components/residential-wave/ResidentialWaveSubscriptionTab';
+import ResidentialWaveDocumentsTab from '@/components/residential-wave/ResidentialWaveDocumentsTab';
 
 export default function ResidentialWaveDashboard() {
   const [user, setUser] = useState(null);
@@ -140,11 +141,12 @@ export default function ResidentialWaveDashboard() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
             <TabsTrigger value="leads">Leads</TabsTrigger>
             <TabsTrigger value="invoices">Invoices</TabsTrigger>
+            <TabsTrigger value="documents">Documents</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">
@@ -227,6 +229,10 @@ export default function ResidentialWaveDashboard() {
 
           <TabsContent value="invoices" className="mt-6">
             <ResidentialWaveInvoicesTab userEmail={user?.email} />
+          </TabsContent>
+
+          <TabsContent value="documents" className="mt-6">
+            <ResidentialWaveDocumentsTab userEmail={user?.email} />
           </TabsContent>
         </Tabs>
       </div>
