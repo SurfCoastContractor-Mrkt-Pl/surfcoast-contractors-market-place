@@ -119,6 +119,10 @@ Deno.serve(async (req) => {
       case 'payment_method.attached':
         await handlePaymentMethodAttached(event.data.object, base44);
         break;
+
+      case 'account.updated':
+        await handleConnectAccountUpdated(event.data.object, base44);
+        break;
       
       default:
         console.debug(`Unhandled Stripe event type: ${eventType}`);
