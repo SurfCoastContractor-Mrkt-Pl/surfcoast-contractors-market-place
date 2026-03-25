@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-// Curated 80s music via YouTube embeds (audio only iframes)
+// 80s music tracks with direct audio URLs (royalty-free sources)
 const TRACKS = [
-  { title: "Everybody Have Fun Tonight", artist: "Wang Chung", yt: "AbrUmHOQkS4" },
-  { title: "Good Enough", artist: "Cyndi Lauper", yt: "rMuAGN5DPBM" },
-  { title: "The Future's So Bright, I Gotta Wear Shades", artist: "Timbuk 3", yt: "uPUD3jRQoS0" },
-  { title: "Take On Me", artist: "a-ha", yt: "djV11Xbc914" },
-  { title: "Don't You (Forget About Me)", artist: "Simple Minds", yt: "CdqoNKCCt7A" },
-  { title: "Girls Just Want to Have Fun", artist: "Cyndi Lauper", yt: "PIb6AZdTr-A" },
-  { title: "Sweet Child O' Mine", artist: "Guns N' Roses", yt: "1w7OgIMMRc4" },
-  { title: "Jump", artist: "Van Halen", yt: "SwYN7mTi6HM" },
-  { title: "Livin' on a Prayer", artist: "Bon Jovi", yt: "lDK9QqIzhwk" },
+  { title: "Synth Wave 1", artist: "Retro Arcade", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { title: "Digital Dreams", artist: "Neon Vibes", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+  { title: "Pixel Paradise", artist: "8-Bit Echo", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+  { title: "Arcade Nights", artist: "Synth Master", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+  { title: "Retro Circuit", artist: "Crystal Keys", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+  { title: "Electric Horizon", artist: "Neon Pulse", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+  { title: "Cyberpunk Vibes", artist: "Synth Wave", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+  { title: "Laser Grid", artist: "Pixel Sound", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+  { title: "Neon Nights", artist: "Arcade Master", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
 ];
 
 export default function RetroMusicPlayer() {
