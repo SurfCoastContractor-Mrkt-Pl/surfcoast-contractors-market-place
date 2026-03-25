@@ -183,6 +183,42 @@ Thank you for using SurfCoast Marketplace.
     }
   };
 
+  if (isMarketShop) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center shadow-xl">
+          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+            <CheckCircle className="w-10 h-10 text-green-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Your Shop is Live! 🎉</h2>
+          <p className="text-slate-600 text-sm mb-6">
+            {marketShopModel === 'facilitation'
+              ? 'Your card has been saved. You\'ll be charged a 5% fee automatically on each completed sale — no monthly cost.'
+              : 'Your $35/month subscription is active. Your listing is now live on the marketplace.'}
+          </p>
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-left">
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-slate-600">Plan:</span>
+              <span className="font-semibold text-slate-900">
+                {marketShopModel === 'facilitation' ? '5% Facilitation Fee' : '$35/month Subscription'}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-600">Status:</span>
+              <span className="font-semibold text-green-700">Active</span>
+            </div>
+          </div>
+          <Button
+            onClick={() => navigate('/MarketShopDashboard')}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-5"
+          >
+            Go to My Shop Dashboard
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full p-8 text-center shadow-xl">
