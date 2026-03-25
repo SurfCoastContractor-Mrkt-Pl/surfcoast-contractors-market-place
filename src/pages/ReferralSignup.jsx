@@ -4,16 +4,19 @@ import { base44 } from '@/api/base44Client';
 import { getAppBaseUrl } from '@/lib/env';
 
 export default function ReferralSignup() {
-  const [step, setStep] = useState('role'); // 'role' or 'share'
+  const [step, setStep] = useState('method'); // 'method', 'own', 'direct'
+  const [selectedMethod, setSelectedMethod] = useState(null); // 'own' or 'direct'
   const [selectedRole, setSelectedRole] = useState(null);
   const [referralCode, setReferralCode] = useState(null);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [directEmail, setDirectEmail] = useState('');
   const [showSendModal, setShowSendModal] = useState(false);
   const [recipientEmail, setRecipientEmail] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
+  const [directSending, setDirectSending] = useState(false);
 
   const generateReferralCode = async () => {
     if (!email.trim()) {
