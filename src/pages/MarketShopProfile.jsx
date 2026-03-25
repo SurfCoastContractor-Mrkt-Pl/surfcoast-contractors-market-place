@@ -284,6 +284,42 @@ export default function MarketShopProfile() {
           )}
         </div>
 
+        {/* Swap Meet Space & Upcoming Weekend — swap_meet vendors only */}
+        {(shop.shop_type === 'swap_meet' || shop.shop_type === 'both') &&
+          (shop.swap_meet_space_numbers || shop.swap_meet_next_weekend?.market_name) && (
+          <div className="bg-amber-500/20 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-amber-400/40 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
+              🏷️ Find Us at the Swap Meet
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {shop.swap_meet_space_numbers && (
+                <div className="bg-white/20 rounded-xl px-5 py-4 flex flex-col items-center justify-center text-center">
+                  <p className="text-xs font-semibold text-white/70 uppercase tracking-widest mb-1">Space Number(s)</p>
+                  <p className="text-3xl sm:text-4xl font-black text-amber-300 leading-none">{shop.swap_meet_space_numbers}</p>
+                </div>
+              )}
+              {shop.swap_meet_next_weekend?.market_name && (
+                <div className="bg-white/20 rounded-xl px-5 py-4 space-y-2">
+                  <p className="text-xs font-semibold text-white/70 uppercase tracking-widest mb-2">This Weekend</p>
+                  <p className="font-bold text-white text-base">{shop.swap_meet_next_weekend.market_name}</p>
+                  {shop.swap_meet_next_weekend.date && (
+                    <p className="text-sm text-amber-200 flex items-center gap-1.5">📅 {shop.swap_meet_next_weekend.date}</p>
+                  )}
+                  {shop.swap_meet_next_weekend.address && (
+                    <p className="text-sm text-white/80 flex items-center gap-1.5">📍 {shop.swap_meet_next_weekend.address}</p>
+                  )}
+                  {shop.swap_meet_next_weekend.hours && (
+                    <p className="text-sm text-white/80 flex items-center gap-1.5">🕐 {shop.swap_meet_next_weekend.hours}</p>
+                  )}
+                  {shop.swap_meet_next_weekend.notes && (
+                    <p className="text-xs text-amber-200/80 italic mt-2">{shop.swap_meet_next_weekend.notes}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Photo Gallery Section */}
         {(shop.gallery_images || []).length > 0 && (
           <div className="bg-white/15 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20 p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
