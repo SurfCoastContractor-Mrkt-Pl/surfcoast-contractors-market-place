@@ -123,11 +123,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Pass just the path so the platform can handle the redirect correctly
-    const currentPath = window.location.pathname;
-    const isLoginPage = currentPath.includes('/login');
-    const nextPath = isLoginPage ? '/Dashboard' : currentPath;
-    base44.auth.redirectToLogin(nextPath);
+    // Redirect to login with callback to return to home/dashboard
+    base44.auth.redirectToLogin('/');
   };
 
   return (
