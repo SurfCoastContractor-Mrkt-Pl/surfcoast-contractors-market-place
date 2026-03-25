@@ -125,7 +125,7 @@ export default function Home() {
           <button
             onMouseEnter={() => setHoveredCard("booth")}
             onMouseLeave={() => setHoveredCard(null)}
-            onClick={() => window.location.href = '/MarketShopSignup'}
+            onClick={() => window.location.href = '/MarketShopSignup?type=farmers_market'}
             style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"pointer", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(139,125,107,0.4)", transform:hoveredCard==="booth"?"translateY(-2px)":"none", boxShadow:hoveredCard==="booth"?"0 0 24px rgba(139,125,107,0.35), 0 8px 24px rgba(139,125,107,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden", textAlign:"left" }}
           >
             <Store size={24} style={{ marginBottom:"10px", color:"#9d7a54" }} strokeWidth={1.5} />
@@ -137,7 +137,7 @@ export default function Home() {
           <button
             onMouseEnter={() => setHoveredCard("swapmeets")}
             onMouseLeave={() => setHoveredCard(null)}
-            onClick={() => window.location.href = '/MarketShopSignup'}
+            onClick={() => window.location.href = '/MarketShopSignup?type=swap_meet'}
             style={{ display:"flex", flexDirection:"column", borderRadius:"14px", padding:isMobile ? "20px 16px" : "24px 20px", backdropFilter:"blur(18px)", transition:"all 0.22s ease", cursor:"pointer", background:"rgba(10,22,40,0.5)", border:"1px solid rgba(249,115,22,0.4)", transform:hoveredCard==="swapmeets"?"translateY(-2px)":"none", boxShadow:hoveredCard==="swapmeets"?"0 0 24px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.15)":"0 4px 16px rgba(0,0,0,0.3)", position:"relative", overflow:"hidden", textAlign:"left" }}
           >
             <ShoppingBag size={24} style={{ marginBottom:"10px", color:"#f97316" }} strokeWidth={1.5} />
