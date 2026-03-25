@@ -82,6 +82,15 @@ export default function RetroArcade() {
     setLeaderboardRefresh(k => k + 1);
   };
 
+  const handlePurchase = ({ perk }) => {
+    setUnlockedPerks(prev => [...prev, perk.id]);
+  };
+
+  const hasGhostMode = unlockedPerks.includes('ghost_mode');
+  const hasSpeedMode = unlockedPerks.includes('neon_speed_mode');
+  const hasNeonTrail = unlockedPerks.includes('neon_trail');
+  const hasDoubleCredits = unlockedPerks.includes('double_credits');
+
   return (
     <div style={{
       minHeight: '100vh',
