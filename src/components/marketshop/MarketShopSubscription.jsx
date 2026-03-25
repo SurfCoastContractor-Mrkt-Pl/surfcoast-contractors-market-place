@@ -281,6 +281,62 @@ export default function MarketShopSubscription({ shop }) {
         </div>
       </div>
 
+      {/* Switch Confirmed Success Banner */}
+      {switchSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center">
+            <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Request Received!</h3>
+            <p className="text-sm text-slate-600 mb-2">
+              Your payment model switch to <span className="font-semibold text-green-700">Facilitation Fee (5% per sale)</span> has been saved.
+            </p>
+            <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-5">
+              ⏳ This change will take effect at the start of your <strong>next billing cycle</strong>. Your current plan remains active until then.
+            </p>
+            <button
+              onClick={() => setSwitchSuccess(false)}
+              className="w-full px-4 py-2 bg-slate-800 text-white text-sm font-semibold rounded-lg hover:bg-slate-700 min-h-[44px]"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Switch Confirmation Modal */}
+      {showSwitchConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Confirm Plan Switch</h3>
+            <p className="text-sm text-slate-600 mb-3">
+              You are switching to the <span className="font-semibold text-green-700">Facilitation Fee — 5% per sale</span> model.
+            </p>
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-5 flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-800">
+                This change <strong>cannot be reversed mid-cycle</strong>. It will take effect at the start of your next billing cycle. Your current plan continues until then.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSwitchConfirm(false)}
+                className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50 min-h-[44px]"
+              >
+                Go Back
+              </button>
+              <button
+                onClick={() => handleSwitchModel('facilitation')}
+                disabled={loading}
+                className="flex-1 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 disabled:opacity-50 min-h-[44px] flex items-center justify-center gap-2"
+              >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                Confirm Switch
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cancel/Switch Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
