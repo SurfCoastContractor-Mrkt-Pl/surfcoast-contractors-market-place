@@ -2,6 +2,9 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 // ─── SHA-256 payload fingerprint ──────────────────────────────────────────────
 async function sha256(text) {
+  if (typeof text !== 'string') {
+    throw new Error('sha256 input must be a string');
+  }
   const enc = new TextEncoder();
   const buf = await crypto.subtle.digest('SHA-256', enc.encode(text));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -9,9 +12,16 @@ async function sha256(text) {
 
 // ─── HMAC signature ───────────────────────────────────────────────────────────
 async function hmacSign(secret, payload) {
+  if (typeof secret !== 'string' || typeof payload !== 'string') {
+    throw new Error('hmacSign inputs must be strings');
+  }
+  const signingSecret = secret || Deno.env.get('INTERNAL_SERVICE_KEY');
+  if (!signingSecret) {
+    throw new Error('No signing secret available');
+  }
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    'raw', enc.encode(signingSecret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
   );
   const sig = await crypto.subtle.sign('HMAC', key, enc.encode(payload));
   return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
