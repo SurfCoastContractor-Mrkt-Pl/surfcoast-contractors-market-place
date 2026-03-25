@@ -36,7 +36,7 @@ export default function ReferralSignup() {
     }
   };
 
-  const referralLink = referralCode ? `${getAppBaseUrl()}/join?ref=${referralCode}` : '';
+  const referralLink = referralCode ? `https://surfcoastcmp.com/join?ref=${referralCode}` : '';
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(referralLink);
