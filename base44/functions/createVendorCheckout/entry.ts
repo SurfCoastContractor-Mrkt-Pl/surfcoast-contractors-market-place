@@ -12,6 +12,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Verify authenticated user matches the consumer email
+    const user = await base44.auth.me();
+    if (!user || user.email !== consumerEmail) {
+      console.warn(`Unauthorized checkout attempt: user ${user?.email} tried to create checkout for ${consumerEmail}`);
+      return Response.json({ error: 'Unauthorized: Email mismatch' }, { status: 403 });
+    }
+
     // Fetch the shop to get Stripe Connect account
     const shop = await base44.asServiceRole.entities.MarketShop.get(shopId);
     if (!shop) {
