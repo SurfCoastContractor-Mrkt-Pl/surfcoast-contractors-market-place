@@ -31,12 +31,22 @@ const TABS = [
 const STATUS_STYLES = {
   active: 'bg-green-100 text-green-700 border border-green-200',
   pending: 'bg-amber-100 text-amber-700 border border-amber-200',
+  inactive: 'bg-slate-100 text-slate-600 border border-slate-200',
   suspended: 'bg-red-100 text-red-700 border border-red-200',
+};
+
+const STATUS_LABELS = {
+  active: 'Active',
+  pending: 'Pending Setup',
+  inactive: 'No Active Plan',
+  suspended: 'Suspended by Admin',
 };
 
 function getShopStatus(shop) {
   if (!shop) return 'pending';
   if (shop.is_active === false) return 'suspended';
+  if (shop.subscription_status === 'active') return 'active';
+  if (shop.subscription_status && shop.subscription_status !== 'active') return 'inactive';
   if (shop.waiver_accepted_at) return 'active';
   return 'pending';
 }
