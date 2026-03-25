@@ -6,9 +6,23 @@ import { Send, X, Loader2, Minimize2, Maximize2, MessageSquare, Expand } from 'l
 
 const DEFAULT_GREETING = `👋 Welcome to SurfCoast Contractors Market Place!
 
-I'm your AI Assistant. I can help you understand how the app works, our pricing, and how to get started — whether you're a customer or a contractor.
+I'm your AI Assistant, and I'm excited to help you discover what we're all about! 🚀
 
-Ask me anything about the platform! 😊`;
+**Here's what you should know:**
+We connect people who need work done (customers) with skilled individuals who offer services (contractors). And "contractor" here means ANYONE offering services — from licensed electricians to freelance designers, handymen, artists, creators, coaches, and even skilled teens! No trade license required.
+
+**You're here because:**
+• You're looking to hire someone to help with a project, OR
+• You have skills/services and want to find work
+
+**Let me help you get oriented:**
+Would you like me to explain:
+- 💼 How to find a contractor for your project?
+- 🎯 How to set up as a contractor and find work?
+- 💰 How our pricing works?
+- 📖 Key terms and what they mean?
+
+Or ask me anything else! I'm here to make sure you feel confident navigating the platform. 😊`;
 
 const getGreetingMessage = () => {
   // Load from environment variable if available, otherwise use default
