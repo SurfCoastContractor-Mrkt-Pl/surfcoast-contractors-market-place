@@ -277,7 +277,7 @@ export default function Layout({ children, currentPageName }) {
                       </Link>
                       <Link to={createPageUrl('ConsumerHub')} onClick={() => { setMobileMenuOpen(false); window.scrollTo(0, 0); }}>
                         <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100 pt-3 mt-1">
-                          🎖️ Consumer Hub
+                          🎖️ Consumer Dashboard
                         </div>
                       </Link>
                     </>
