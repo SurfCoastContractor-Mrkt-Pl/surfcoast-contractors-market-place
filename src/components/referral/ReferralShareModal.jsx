@@ -16,8 +16,8 @@ export default function ReferralShareModal({ referralCode, open, onClose }) {
   };
 
   const shareViaEmail = () => {
-    const subject = "Join SurfCoast - Get $50 Credit";
-    const body = `Check out SurfCoast! Use my referral link to get $50 credit: ${referralUrl}`;
+    const subject = "Join SurfCoast - Get $50 Platform Credit";
+    const body = `Check out SurfCoast! Use my referral link to get a $50 platform credit (applied to your account, not cash): ${referralUrl}`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
@@ -27,7 +27,7 @@ export default function ReferralShareModal({ referralCode, open, onClose }) {
         <DialogHeader>
           <DialogTitle>Share & Earn Credits</DialogTitle>
           <DialogDescription>
-            Invite friends and earn $50 credit for every friend who completes their first job.
+            Invite friends and earn a <strong>$50 platform credit</strong> (not cash) for every friend who completes their first job.
           </DialogDescription>
         </DialogHeader>
 
@@ -69,7 +69,7 @@ export default function ReferralShareModal({ referralCode, open, onClose }) {
                 onClick={() => {
                   navigator.share?.({
                     title: 'Join SurfCoast',
-                    text: 'Get $50 credit when you join SurfCoast',
+                    text: 'Get a $50 platform credit when you join SurfCoast',
                     url: referralUrl,
                   });
                 }}
@@ -85,7 +85,8 @@ export default function ReferralShareModal({ referralCode, open, onClose }) {
             <ul className="text-xs text-slate-600 space-y-1">
               <li>✓ Friend signs up with your link</li>
               <li>✓ They complete their first job</li>
-              <li>✓ You both get $50 credit</li>
+              <li>✓ You both get a <strong>$50 platform credit</strong> applied to your account</li>
+              <li className="text-slate-400 italic">Credits are not redeemable for cash</li>
             </ul>
           </div>
 

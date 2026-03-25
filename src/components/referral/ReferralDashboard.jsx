@@ -50,7 +50,7 @@ export default function ReferralDashboard({ userEmail }) {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-slate-900">${totalCredits}</p>
-            <p className="text-xs text-slate-500 mt-1">{completed.length} completed</p>
+            <p className="text-xs text-slate-500 mt-1">{completed.length} completed · platform credit</p>
           </CardContent>
         </Card>
 
@@ -63,7 +63,7 @@ export default function ReferralDashboard({ userEmail }) {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-slate-900">${pending.length * 50}</p>
-            <p className="text-xs text-slate-500 mt-1">{pending.length} in progress</p>
+            <p className="text-xs text-slate-500 mt-1">{pending.length} in progress · platform credit</p>
           </CardContent>
         </Card>
       </div>
@@ -102,7 +102,7 @@ export default function ReferralDashboard({ userEmail }) {
                       {ref.status === 'completed_first_job' ? 'Completed' : ref.status === 'signed_up' ? 'Signed Up' : 'Pending'}
                     </Badge>
                     {ref.status === 'completed_first_job' && (
-                      <span className="font-semibold text-green-600">+$50</span>
+                      <span className="font-semibold text-green-600">+$50 credit</span>
                     )}
                   </div>
                 </div>

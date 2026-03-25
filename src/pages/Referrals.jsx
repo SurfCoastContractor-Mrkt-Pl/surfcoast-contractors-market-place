@@ -46,7 +46,7 @@ export default function Referrals() {
         <div className="max-w-7xl mx-auto px-4 py-12">
           <h1 className="text-4xl font-bold text-slate-900 mb-3">Earn Credits</h1>
           <p className="text-lg text-slate-600">
-            Invite friends and earn $50 credit for every friend who completes their first job
+            Invite friends and earn a <strong>$50 platform credit</strong> (not cash) for every friend who completes their first job
           </p>
         </div>
       </div>
