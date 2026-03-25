@@ -131,7 +131,12 @@ Deno.serve(async (req) => {
     // Create notification records
     if (matchRecords.length > 0) {
       for (const record of matchRecords) {
-        await base44.asServiceRole.entities.JobNotification.create(record);
+        try {
+          await base44.asServiceRole.entities.JobNotification.create(record);
+        } catch (createError) {
+          console.error(`Failed to create notification for job ${record.job_id}:`, createError);
+          // Continue with next record rather than failing entire automation
+        }
       }
     }
     
