@@ -260,6 +260,11 @@ export default function MarketShopDashboard() {
         </div>
       </div>
 
+      {/* Stripe Connect / Payouts Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+        <StripeConnectSetup shop={shop} />
+      </div>
+
       {/* Share Your Listing Section - Bottom */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 relative z-10">
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
