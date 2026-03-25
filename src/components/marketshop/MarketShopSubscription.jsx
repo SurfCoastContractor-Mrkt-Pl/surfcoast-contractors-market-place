@@ -299,7 +299,7 @@ export default function MarketShopSubscription({ shop }) {
 
               {/* Switch to Facilitation */}
               <button
-                onClick={() => handleSwitchModel('facilitation')}
+                onClick={() => { setShowCancelModal(false); setSelectedModel('facilitation'); setShowSwitchConfirm(true); }}
                 disabled={loading}
                 className="w-full px-4 py-3 border-2 border-slate-200 text-slate-900 text-sm rounded-lg hover:bg-slate-50 disabled:opacity-50 min-h-[44px] text-left"
               >
