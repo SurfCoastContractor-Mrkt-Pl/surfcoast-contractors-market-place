@@ -22,6 +22,7 @@ import MarketShopSignup from './pages/MarketShopSignup';
 import CustomerSignup from './pages/CustomerSignup';
 import ProjectManagement from './pages/ProjectManagement';
 import QuoteRequestWizard from './pages/QuoteRequestWizard';
+import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -121,6 +122,11 @@ const AuthenticatedApp = () => {
       <Route path="/QuoteRequestWizard" element={
         <LayoutWrapper currentPageName="QuoteRequestWizard">
           <QuoteRequestWizard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ResidentialWaveDashboard" element={
+        <LayoutWrapper currentPageName="ResidentialWaveDashboard">
+          <ResidentialWaveDashboard />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
