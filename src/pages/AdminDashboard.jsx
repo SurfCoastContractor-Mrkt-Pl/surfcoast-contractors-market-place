@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves } from 'lucide-react';
+import HISLicenseReview from '@/components/admin/HISLicenseReview';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -198,6 +199,7 @@ export default function AdminDashboard() {
               { key: 'vendors', label: 'Vendors', icon: Store },
               { key: 'contractors', label: 'Contractors', icon: HardHat },
               { key: 'reviews', label: 'Reviews', icon: Star },
+              { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -405,6 +407,16 @@ export default function AdminDashboard() {
               </table>
             </div>
           </div>
+        )}
+
+        {/* HIS LICENSES */}
+        {activeTab === 'his_licenses' && (
+          <HISLicenseReview
+            contractors={contractors}
+            onContractorUpdate={(id, updates) =>
+              setContractors(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c))
+            }
+          />
         )}
 
         {/* REVIEWS */}

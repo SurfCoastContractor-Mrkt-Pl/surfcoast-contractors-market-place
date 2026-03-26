@@ -169,7 +169,7 @@ export default function FieldOpsAccessGate({ contractor }) {
   const uniqueCustomersCount = contractor?.unique_customers_count || 0;
   const highestBadge = getHighestBadge(uniqueCustomersCount);
   const highestBadgeTier = highestBadge?.tier || 0;
-  const hasHIS = !!contractor?.his_license_number;
+  const hasHIS = !!contractor?.his_license_verified;
 
   // Determine current wave
   const unlockedWaves = SURFCOAST_WAVES.filter(w => highestBadgeTier >= w.badgeTierRequired);
