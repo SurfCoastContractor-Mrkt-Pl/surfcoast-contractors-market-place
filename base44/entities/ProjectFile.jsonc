@@ -1,0 +1,137 @@
+{
+  "name": "ProjectFile",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork this file belongs to"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Name of the file"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL of the uploaded file"
+    },
+    "file_type": {
+      "type": "string",
+      "enum": [
+        "blueprint",
+        "photo",
+        "document",
+        "other"
+      ],
+      "description": "Type of file"
+    },
+    "uploaded_by": {
+      "type": "string",
+      "description": "Email of the person who uploaded"
+    },
+    "uploaded_at": {
+      "type": "string",
+      "description": "Timestamp of upload"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description of the file"
+    }
+  },
+  "required": [
+    "scope_id",
+    "file_name",
+    "file_url",
+    "file_type",
+    "uploaded_by"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "$and": [
+            {
+              "created_by": "{{user.email}}"
+            },
+            {
+              "data.scope_id": {
+                "$in": {
+                  "entity": "ScopeOfWork",
+                  "query": {
+                    "$or": [
+                      {
+                        "data.contractor_email": "{{user.email}}"
+                      },
+                      {
+                        "data.customer_email": "{{user.email}}"
+                      }
+                    ]
+                  },
+                  "field": "id"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.scope_id": {
+            "$in": {
+              "entity": "ScopeOfWork",
+              "query": {
+                "$or": [
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  {
+                    "data.customer_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
