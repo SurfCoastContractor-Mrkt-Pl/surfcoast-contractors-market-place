@@ -106,10 +106,14 @@ Deno.serve(async (req) => {
       ],
       payment_intent_data: {
         capture_method: 'manual', // CRITICAL: holds funds, does not charge yet
-        application_fee_amount: platformFeeCents,
-        transfer_data: contractor.stripe_connected_account_id && contractor.stripe_account_charges_enabled
-          ? { destination: contractor.stripe_connected_account_id }
-          : undefined,
+        // Only set application_fee + transfer_data when contractor has a valid connected account
+        // Stripe rejects application_fee_amount without a transfer destination
+        ...(contractor.stripe_connected_account_id && contractor.stripe_account_charges_enabled
+          ? {
+              application_fee_amount: platformFeeCents,
+              transfer_data: { destination: contractor.stripe_connected_account_id },
+            }
+          : {}),
         metadata: {
           base44_app_id: Deno.env.get('BASE44_APP_ID'),
           escrow_id: escrow.id,

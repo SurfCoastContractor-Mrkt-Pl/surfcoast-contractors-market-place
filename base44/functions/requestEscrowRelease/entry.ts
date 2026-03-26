@@ -56,9 +56,11 @@ Your contractor ${escrow.contractor_name} has marked the job "${escrow.job_title
 ${completion_notes ? `Contractor's notes:\n"${completion_notes}"\n` : ''}
 Please log in to your account to review the completed work and either:
 ✅ APPROVE — Release $${escrow.contractor_payout_amount?.toFixed(2)} to the contractor
-❌ DISPUTE — Flag an issue for admin review
+❌ CANCEL ESCROW — Dispute the work and receive a full refund
 
-Important: If you do not respond within 7 days, funds will be automatically released.
+Important: Per our Terms & Conditions, SurfCoast does not mediate disputes. If you cancel the escrow, you will be automatically refunded and must resolve any disagreements directly with the contractor.
+
+If you do not respond within 7 days, funds will be automatically released to the contractor.
 
 Escrow ID: ${escrow_id}
 
