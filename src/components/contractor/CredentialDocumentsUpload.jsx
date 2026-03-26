@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { logError } from '@/lib/errorHandler';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +24,7 @@ export default function CredentialDocumentsUpload({ credentials, onChange, legal
   const [newCred, setNewCred] = useState({ type: '', label: '', legal_name_on_document: '', sole_proprietor_confirmed: false, file_url: '' });
   const [fileSelected, setFileSelected] = useState(null);
   const [addingNew, setAddingNew] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
 
   const isDegree = DEGREE_TYPES.includes(newCred.type);
   const isLicense = LICENSE_TYPES.includes(newCred.type);
@@ -38,19 +40,26 @@ export default function CredentialDocumentsUpload({ credentials, onChange, legal
     if (isLicense && !newCred.sole_proprietor_confirmed) return;
 
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file: fileSelected });
-    const entry = {
-      type: newCred.type,
-      label: newCred.label,
-      legal_name_on_document: isDegree ? newCred.legal_name_on_document : '',
-      sole_proprietor_confirmed: isLicense ? newCred.sole_proprietor_confirmed : false,
-      file_url,
-    };
-    onChange([...(credentials || []), entry]);
-    setNewCred({ type: '', label: '', legal_name_on_document: '', sole_proprietor_confirmed: false, file_url: '' });
-    setFileSelected(null);
-    setAddingNew(false);
-    setUploading(false);
+    setUploadError(null);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file: fileSelected });
+      const entry = {
+        type: newCred.type,
+        label: newCred.label,
+        legal_name_on_document: isDegree ? newCred.legal_name_on_document : '',
+        sole_proprietor_confirmed: isLicense ? newCred.sole_proprietor_confirmed : false,
+        file_url,
+      };
+      onChange([...(credentials || []), entry]);
+      setNewCred({ type: '', label: '', legal_name_on_document: '', sole_proprietor_confirmed: false, file_url: '' });
+      setFileSelected(null);
+      setAddingNew(false);
+    } catch (error) {
+      setUploadError('Failed to upload credential document. Please try again.');
+      logError('CredentialDocumentsUpload.handleAdd', error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleRemove = (idx) => {
@@ -63,6 +72,22 @@ export default function CredentialDocumentsUpload({ credentials, onChange, legal
 
   return (
     <div className="space-y-4">
+      {/* Error Display */}
+      {uploadError && (
+        <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
+          <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm text-red-700">{uploadError}</p>
+            <button
+              onClick={() => setUploadError(null)}
+              className="text-xs text-red-600 hover:text-red-700 mt-1 underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Existing credentials */}
       {(credentials || []).length > 0 && (
         <div className="space-y-2">

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Camera, ImagePlus, Loader2, X, CheckCircle, AlertTriangle, Upload } from 'lucide-react';
+import { logError } from '@/lib/errorHandler';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -18,6 +19,7 @@ export default function PhotoUploadZone({
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState([]);
   const [dragging, setDragging] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
   const inputRef = useRef(null);
 
   const colorMap = {
@@ -30,9 +32,19 @@ export default function PhotoUploadZone({
 
   const processFiles = async (files) => {
     const valid = [];
+    setUploadError(null);
+    
     for (const file of files) {
-      if (file.size > MAX_FILE_SIZE) { alert(`"${file.name}" exceeds 10MB limit.`); continue; }
-      if (!ALLOWED_TYPES.includes(file.type)) { alert(`"${file.name}" must be JPEG, PNG, or WebP.`); continue; }
+      if (file.size > MAX_FILE_SIZE) {
+        setUploadError(`"${file.name}" exceeds 10MB limit.`);
+        logError('PhotoUploadZone.processFiles', new Error(`File too large: ${file.name}`));
+        continue;
+      }
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setUploadError(`"${file.name}" must be JPEG, PNG, or WebP.`);
+        logError('PhotoUploadZone.processFiles', new Error(`Invalid file type: ${file.name}`));
+        continue;
+      }
       if (maxPhotos && photos.length + valid.length >= maxPhotos) break;
       valid.push(file);
     }
@@ -41,16 +53,23 @@ export default function PhotoUploadZone({
     setUploading(true);
     setUploadProgress(valid.map(f => ({ name: f.name, done: false })));
 
-    const uploaded = [];
-    for (let i = 0; i < valid.length; i++) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file: valid[i] });
-      uploaded.push(file_url);
-      setUploadProgress(prev => prev.map((p, idx) => idx === i ? { ...p, done: true } : p));
-    }
+    try {
+      const uploaded = [];
+      for (let i = 0; i < valid.length; i++) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file: valid[i] });
+        uploaded.push(file_url);
+        setUploadProgress(prev => prev.map((p, idx) => idx === i ? { ...p, done: true } : p));
+      }
 
-    onChange([...photos, ...uploaded]);
-    setUploading(false);
-    setUploadProgress([]);
+      onChange([...photos, ...uploaded]);
+      setUploading(false);
+      setUploadProgress([]);
+    } catch (error) {
+      setUploadError('Photo upload failed. Please try again.');
+      logError('PhotoUploadZone.processFiles', error);
+      setUploading(false);
+      setUploadProgress([]);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -71,6 +90,22 @@ export default function PhotoUploadZone({
 
   return (
     <div className="space-y-3">
+      {/* Error Display */}
+      {uploadError && (
+        <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
+          <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm text-red-700">{uploadError}</p>
+            <button
+              onClick={() => setUploadError(null)}
+              className="text-xs text-red-600 hover:text-red-700 mt-1 underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Drop Zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
