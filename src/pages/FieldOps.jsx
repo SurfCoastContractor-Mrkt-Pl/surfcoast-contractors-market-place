@@ -131,13 +131,16 @@ export default function FieldOps() {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-950 flex flex-col lg:flex-row overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div className="fixed inset-0 bg-slate-950 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Admin Test Mode Banner */}
       {isAdmin && (
-        <div className={`${isAdmin && !contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4 flex-shrink-0 w-full`}>
+        <div className={`${!contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4`}>
           {!contractor ? '⚠️ ADMIN TEST MODE — No contractor profile linked to your account' : '🔧 ADMIN TEST MODE — Tier restrictions bypassed'}
         </div>
       )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
       {/* Desktop Sidebar Navigation */}
       <div className="hidden lg:flex flex-col w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0">
@@ -302,6 +305,7 @@ export default function FieldOps() {
             })}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
