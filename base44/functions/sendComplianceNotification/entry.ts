@@ -3,6 +3,17 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Only admins or automated systems can send compliance notifications
+    const user = await base44.auth.me();
+    if (user && user.role !== 'admin') {
+      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger sendComplianceNotification`);
+      return Response.json(
+        { error: 'Forbidden: Only admins or scheduled automations can send compliance notifications' },
+        { status: 403 }
+      );
+    }
+    
     const { contractor_id, violation_type, grace_until } = await req.json();
 
     if (!contractor_id || !violation_type) {

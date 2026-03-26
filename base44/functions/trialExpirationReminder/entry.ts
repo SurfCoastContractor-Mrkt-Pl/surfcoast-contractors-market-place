@@ -3,6 +3,16 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Only admins or automated systems can trigger trial reminders
+    const user = await base44.auth.me();
+    if (user && user.role !== 'admin') {
+      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger trialExpirationReminder`);
+      return Response.json(
+        { error: 'Forbidden: Only admins or scheduled automations can send trial reminders' },
+        { status: 403 }
+      );
+    }
 
     // Fetch contractors with active trials
     const contractors = await base44.asServiceRole.entities.Contractor.list();
