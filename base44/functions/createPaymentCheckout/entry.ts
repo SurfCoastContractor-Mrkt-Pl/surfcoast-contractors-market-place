@@ -37,6 +37,7 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
 
     if (!user) {
+      console.error('Payment checkout: Unauthorized request (no user)');
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -74,6 +75,7 @@ Deno.serve(async (req) => {
 
     // PCI Compliance: Never accept raw card data
     if (body.card || body.cardNumber || body.cvv) {
+      console.error('Payment checkout: PCI violation - raw card data in request');
       return Response.json({ error: 'Card data not allowed' }, { status: 400 });
     }
 
@@ -81,15 +83,29 @@ Deno.serve(async (req) => {
 
     // Verify payer email matches authenticated user
     if (payerEmail !== user.email) {
+      console.error(`Payment checkout: Email mismatch - user ${user.email} trying to pay for ${payerEmail}`);
       return Response.json({ error: 'Forbidden: You can only create payments for your own account' }, { status: 403 });
     }
 
-    if (!payerEmail || !payerName || !payerType || !idempotencyKey) {
-      return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    // Validate required fields
+    const missingFields = [];
+    if (!payerEmail) missingFields.push('payerEmail');
+    if (!payerName) missingFields.push('payerName');
+    if (!payerType) missingFields.push('payerType');
+    if (!idempotencyKey) missingFields.push('idempotencyKey');
+
+    if (missingFields.length > 0) {
+      console.error(`Payment checkout: Missing required fields - ${missingFields.join(', ')}`);
+      return Response.json({ 
+        error: 'Missing required fields',
+        details: missingFields 
+      }, { status: 400 });
     }
 
+    // Validate email format
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payerEmail)) {
-      return Response.json({ error: 'Invalid email' }, { status: 400 });
+      console.error(`Payment checkout: Invalid email format - ${payerEmail}`);
+      return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
     const PRICE_MAP = {
@@ -99,8 +115,15 @@ Deno.serve(async (req) => {
     const priceId = PRICE_MAP[tier] || PRICE_MAP.quote;
 
     if (!priceId) {
-      console.error(`Missing price ID for tier: ${tier}`);
-      return Response.json({ error: 'Configuration error' }, { status: 500 });
+      console.error(`Payment checkout: Missing price ID for tier '${tier}' - check environment variables`);
+      return Response.json({ 
+        error: 'Payment configuration error. Please contact support.',
+        code: 'CONFIG_ERROR'
+      }, { status: 500 });
+    }
+
+    if (!tier) {
+      console.warn(`Payment checkout: No tier specified, using default 'quote'`);
     }
 
     // Idempotency check — use filter instead of listing ALL payments
@@ -180,12 +203,34 @@ Deno.serve(async (req) => {
       sessionParams.customer_email = payerEmail;
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create(sessionParams);
+    } catch (stripeError) {
+      console.error(`Payment checkout: Stripe session creation failed for ${payerEmail}`, {
+        stripeErrorCode: stripeError.code,
+        stripeErrorMessage: stripeError.message,
+        tier,
+      });
+      return Response.json({
+        error: 'Failed to create checkout session. Please try again.',
+        code: 'STRIPE_SESSION_ERROR'
+      }, { status: 500 });
+    }
 
-    await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
-      stripe_session_id: session.id,
-      stripe_checkout_url: session.url,
-    });
+    try {
+      await base44.asServiceRole.entities.Payment.update(paymentRecord.id, {
+        stripe_session_id: session.id,
+        stripe_checkout_url: session.url,
+      });
+    } catch (dbError) {
+      console.error(`Payment checkout: Failed to save session to database for ${payerEmail}`, {
+        sessionId: session.id,
+        paymentId: paymentRecord.id,
+        dbErrorMessage: dbError.message,
+      });
+      // Don't fail here - session is created, just missing from DB
+    }
 
     // Store/update the stripe_customer_id on a SavedPaymentMethod record if we have one
     if (customerId) {
@@ -207,9 +252,17 @@ Deno.serve(async (req) => {
       url: session.url,
     });
   } catch (error) {
-    console.error('Payment checkout error - request failed');
+    console.error('Payment checkout: Unhandled error', {
+      errorMessage: error?.message,
+      errorCode: error?.code,
+      errorType: error?.type,
+      stack: error?.stack,
+    });
+    
+    // Don't expose internal error details to client
     return Response.json({
-      error: 'Checkout failed - please try again',
-    }, { status: error.statusCode || 500 });
+      error: 'Payment processing failed. Please try again or contact support.',
+      code: 'PAYMENT_ERROR'
+    }, { status: 500 });
   }
 });
