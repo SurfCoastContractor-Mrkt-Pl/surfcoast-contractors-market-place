@@ -14,6 +14,9 @@ import FieldOpsAccessGate from '@/components/fieldops/FieldOpsAccessGate';
 import FieldOpsBreakerView from '@/components/fieldops/FieldOpsBreakerView';
 import FieldOpsReporting from '@/pages/FieldOpsReporting';
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
+import JobAlertBanner from '@/components/fieldops/JobAlertBanner';
+import { useJobAlerts } from '@/hooks/useJobAlerts';
+import { useOfflineCache } from '@/hooks/useOfflineCache';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
@@ -34,6 +37,8 @@ export default function FieldOps() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
+  const { isInitialized: cacheReady, saveData, getData } = useOfflineCache();
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -227,6 +232,18 @@ export default function FieldOps() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Job Alert Banner */}
+        {newJobs.length > 0 && (
+          <JobAlertBanner 
+            jobs={newJobs} 
+            onDismiss={dismissJob}
+            onViewJob={(job) => {
+              setActiveTab('jobs');
+              window.scrollTo(0, 0);
+            }}
+          />
+        )}
+
         {/* Desktop Top Bar */}
         <div className="hidden lg:flex items-center justify-between bg-slate-900 px-6 py-4 border-b border-slate-800 flex-shrink-0">
           <h1 className="text-white font-semibold text-lg">
@@ -241,6 +258,18 @@ export default function FieldOps() {
             )}
           </button>
         </div>
+
+        {/* Job Alert Banner (Mobile) */}
+        {newJobs.length > 0 && (
+          <JobAlertBanner 
+            jobs={newJobs} 
+            onDismiss={dismissJob}
+            onViewJob={(job) => {
+              setActiveTab('jobs');
+              window.scrollTo(0, 0);
+            }}
+          />
+        )}
 
         {/* Mobile Header */}
         <div className="lg:hidden bg-slate-900 px-4 py-3 flex items-center justify-between flex-shrink-0 border-b border-slate-800">
