@@ -7,6 +7,7 @@ import CampaignAdBanner from "@/components/home/CampaignAdBanner";
 import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import FeaturedVendors from "@/components/home/FeaturedVendors";
 import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
+import MissionStatement from "@/components/home/MissionStatement";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 import InstagramQRCode from "@/components/social/InstagramQRCode";
@@ -91,6 +92,9 @@ export default function Home() {
 
         <CampaignAdBanner />
         <EarlyAdopterBanner />
+
+        {/* Mission Statement */}
+        <MissionStatement />
 
         {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
         <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }}>
