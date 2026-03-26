@@ -7,8 +7,10 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
  * Step 3 of Escrow Flow (Customer):
  * Customer approves job completion. Platform captures the held PaymentIntent,
  * triggering the transfer to the contractor minus the platform fee.
- * 
- * OR customer can dispute, freezing funds for admin review.
+ *
+ * OR customer can dispute — per platform T&C, the platform does NOT arbitrate disputes.
+ * A dispute immediately cancels the PaymentIntent and refunds the customer.
+ * Parties must resolve disagreements directly between themselves.
  */
 Deno.serve(async (req) => {
   try {
@@ -49,58 +51,71 @@ Deno.serve(async (req) => {
     }
 
     // --- DISPUTE PATH ---
+    // Per platform T&C: SurfCoast does not arbitrate disputes between parties.
+    // A dispute immediately cancels the PaymentIntent — customer is automatically refunded.
+    // Parties are directed to resolve the matter directly between themselves.
     if (action === 'dispute') {
       if (!dispute_reason?.trim()) {
         return Response.json({ error: 'dispute_reason is required when disputing' }, { status: 400 });
       }
 
+      // Cancel the Stripe PaymentIntent — uncaptured funds are automatically returned to customer
+      try {
+        await stripe.paymentIntents.cancel(escrow.stripe_payment_intent_id);
+        console.log(`Escrow ${escrow_id} disputed — PaymentIntent ${escrow.stripe_payment_intent_id} cancelled, customer refunded`);
+      } catch (stripeErr) {
+        console.error('Stripe cancel on dispute failed:', stripeErr.message);
+        return Response.json({ error: 'Failed to cancel payment — please contact support' }, { status: 500 });
+      }
+
       await base44.asServiceRole.entities.EscrowPayment.update(escrow_id, {
-        status: 'disputed',
+        status: 'refunded',
         dispute_reason: dispute_reason.trim(),
       });
 
-      // Alert admin
-      const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL');
-      if (adminEmail) {
-        try {
-          await base44.asServiceRole.integrations.Core.SendEmail({
-            to: adminEmail,
-            from_name: 'SurfCoast Escrow System',
-            subject: `[ESCROW DISPUTE] ${escrow.job_title} — $${escrow.amount.toFixed(2)}`,
-            body: `An escrow payment has been disputed and requires admin review.
+      // Notify customer their refund is on the way
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: escrow.customer_email,
+          from_name: 'SurfCoast Marketplace',
+          subject: `Escrow Cancelled & Refund Issued — ${escrow.job_title}`,
+          body: `Hi ${escrow.customer_name},
 
-Escrow ID: ${escrow_id}
-Job: ${escrow.job_title}
-Amount: $${escrow.amount.toFixed(2)}
-Customer: ${escrow.customer_name} (${escrow.customer_email})
-Contractor: ${escrow.contractor_name} (${escrow.contractor_email})
+You have cancelled the escrow for "${escrow.job_title}". Your payment of $${escrow.amount.toFixed(2)} will be refunded to your original payment method within 5-10 business days.
 
-Dispute Reason:
-"${dispute_reason}"
+Please note: Per our Terms & Conditions, SurfCoast Marketplace does not mediate or arbitrate disputes between customers and contractors. We encourage you to resolve any disagreements directly with ${escrow.contractor_name}.
 
-Stripe PaymentIntent: ${escrow.stripe_payment_intent_id}
-
-Please review and resolve this dispute in the Admin Dashboard.`,
-          });
-        } catch (e) {
-          console.warn('Failed to send dispute alert to admin:', e.message);
-        }
+— SurfCoast Marketplace`,
+        });
+      } catch (e) {
+        console.warn('Failed to send refund notice to customer:', e.message);
       }
 
-      // Notify both parties
+      // Notify contractor the escrow was cancelled
       try {
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: escrow.contractor_email,
           from_name: 'SurfCoast Marketplace',
-          subject: `Escrow Disputed — ${escrow.job_title}`,
-          body: `Hi ${escrow.contractor_name},\n\nThe customer has filed a dispute for the escrow payment on "${escrow.job_title}".\n\nFunds will remain held until an admin reviews and resolves the dispute. You will be notified of the outcome.\n\nDispute reason: "${dispute_reason}"\n\n— SurfCoast Marketplace`,
+          subject: `Escrow Cancelled — ${escrow.job_title}`,
+          body: `Hi ${escrow.contractor_name},
+
+The customer (${escrow.customer_name}) has cancelled the escrow for "${escrow.job_title}" and received a refund.
+
+Reason provided: "${dispute_reason}"
+
+Per our Terms & Conditions, SurfCoast Marketplace does not mediate or arbitrate disputes. We encourage you to resolve this matter directly with the customer.
+
+— SurfCoast Marketplace`,
         });
       } catch (e) {
-        console.warn('Failed to notify contractor of dispute:', e.message);
+        console.warn('Failed to notify contractor of cancellation:', e.message);
       }
 
-      console.log(`Escrow ${escrow_id} disputed by customer ${user.email}`);
-      return Response.json({ success: true, status: 'disputed', message: 'Dispute filed. Admin team has been notified.' });
+      return Response.json({
+        success: true,
+        status: 'refunded',
+        message: 'Escrow cancelled. Your payment will be refunded within 5-10 business days. Per our Terms & Conditions, please resolve any disputes directly with the contractor.'
+      });
     }
 
     // --- APPROVE PATH ---
