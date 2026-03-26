@@ -4,12 +4,21 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2, LogOut } from 'lucide-react';
+import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2, LogOut, Lock, Waves } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementGenerator';
+import { getHighestBadge } from '@/components/badges/ContractorBadges';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
+
+const SURFCOAST_WAVES = [
+  { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
+  { id: 'swell', wave: 2, name: 'Swell', label: 'SurfCoast Swell', badgeTierRequired: 2, customersRequired: 3, color: '#0ea5e9', emoji: '🌊', description: 'Building momentum with your clients' },
+  { id: 'breaker', wave: 3, name: 'Breaker', label: 'SurfCoast Breaker', badgeTierRequired: 3, customersRequired: 5, color: '#3b82f6', emoji: '🏄', description: 'Full Field Ops access unlocked', isFieldOpsUnlock: true },
+  { id: 'pipeline', wave: 4, name: 'Pipeline', label: 'SurfCoast Pipeline', badgeTierRequired: 5, customersRequired: 20, color: '#6366f1', emoji: '🌀', description: 'Elite contractor status' },
+  { id: 'residential_wave', wave: 5, name: 'Residential Wave', label: 'Residential Wave Rider', badgeTierRequired: 6, customersRequired: 50, color: '#f59e0b', emoji: '🏆', description: 'Top tier — HIS licensed professionals only', requiresHIS: true },
+];
 
 export default function ContractorDashboard() {
   const [user, setUser] = useState(null);
@@ -191,6 +200,72 @@ export default function ContractorDashboard() {
             <ServiceAgreementGenerator contractor={contractorProfile} />
           </div>
         )}
+
+        {/* SurfCoast-Waves Progress */}
+        {contractorProfile && (() => {
+          const uniqueCustomers = contractorProfile.unique_customers_count || 0;
+          const highestBadge = getHighestBadge(uniqueCustomers);
+          const highestTier = highestBadge?.tier || 0;
+          const unlockedWaves = SURFCOAST_WAVES.filter(w => highestTier >= w.badgeTierRequired);
+          const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
+
+          return (
+            <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <Waves className="w-5 h-5 text-blue-500" />
+                <h2 className="text-base font-bold text-slate-800">SurfCoast-Waves Progress</h2>
+                {currentWave && (
+                  <span className="ml-auto text-xs font-semibold px-2.5 py-1 rounded-full text-white" style={{ background: currentWave.color }}>
+                    {currentWave.emoji} {currentWave.label}
+                  </span>
+                )}
+                {!currentWave && (
+                  <span className="ml-auto text-xs text-slate-400 font-medium">No wave yet — complete your first verified job</span>
+                )}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                {SURFCOAST_WAVES.map(w => {
+                  const isUnlocked = highestTier >= w.badgeTierRequired;
+                  const isCurrent = currentWave?.id === w.id;
+                  const progress = Math.min(100, Math.round((uniqueCustomers / w.customersRequired) * 100));
+                  return (
+                    <div
+                      key={w.id}
+                      className="rounded-xl border p-3 transition-all"
+                      style={{
+                        borderColor: isCurrent ? w.color : isUnlocked ? '#cbd5e1' : '#e2e8f0',
+                        background: isCurrent ? `${w.color}18` : isUnlocked ? '#f8fafc' : '#f8fafc',
+                        opacity: isUnlocked ? 1 : 0.45,
+                        boxShadow: isCurrent ? `0 0 0 2px ${w.color}44` : 'none',
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-lg">{w.emoji}</span>
+                        {isUnlocked
+                          ? <CheckCircle className="w-3.5 h-3.5" style={{ color: w.color }} />
+                          : <Lock className="w-3 h-3 text-slate-400" />
+                        }
+                      </div>
+                      <p className="text-xs font-bold text-slate-800 leading-tight mb-0.5">{w.name}</p>
+                      <p className="text-[10px] text-slate-500 leading-tight mb-2">{w.customersRequired} customer{w.customersRequired !== 1 ? 's' : ''}</p>
+                      {w.isFieldOpsUnlock && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">Field Ops</span>
+                      )}
+                      {!isUnlocked && (
+                        <div className="mt-2">
+                          <div className="w-full h-1 bg-slate-200 rounded-full">
+                            <div className="h-1 rounded-full" style={{ width: `${progress}%`, background: w.color }} />
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-0.5">{uniqueCustomers}/{w.customersRequired}</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
            {/* Active Jobs */}
