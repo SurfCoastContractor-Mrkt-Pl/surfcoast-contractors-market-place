@@ -26,7 +26,7 @@ function isRateLimited(ip) {
 
 async function logSecurityAlert(eventType, clientIp, details) {
   try {
-    const { createClientFromRequest } = await import('npm:@base44/sdk@0.8.21');
+    const { createClientFromRequest } = await import('npm:@base44/sdk@0.8.23');
     // Create a minimal request object for SDK initialization
     const base44 = createClientFromRequest(new Request('http://localhost', { method: 'POST' }));
     
