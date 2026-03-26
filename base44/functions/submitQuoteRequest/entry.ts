@@ -32,6 +32,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Sanitize inputs to prevent email injection
+    const sanitize = (str) => String(str).replace(/[\r\n]/g, ' ').slice(0, 1000);
+    const safeJobTitle = sanitize(jobTitle);
+    const safeDescription = sanitize(description);
+    const safeCustomerName = sanitize(customerName);
+    const safeContractorName = sanitize(contractorName || '');
+    const safeBudget = sanitize(budget || '');
+    const safeTimeline = sanitize(timeline || '');
+    const safeTradeCategory = sanitize(tradeCategory || '');
+
     // Authorize: User must be the customer making the request
     if (user.email !== customerEmail) {
       return Response.json({ error: 'Forbidden: You can only submit quote requests for yourself' }, { status: 403 });
@@ -40,12 +50,12 @@ Deno.serve(async (req) => {
     // Create QuoteRequest record in database
     const quoteRequest = await base44.asServiceRole.entities.QuoteRequest.create({
       contractor_id: contractorId,
-      contractor_name: contractorName,
+      contractor_name: safeContractorName,
       contractor_email: contractorEmail,
       customer_email: customerEmail,
-      customer_name: customerName,
-      job_title: jobTitle,
-      work_description: description,
+      customer_name: safeCustomerName,
+      job_title: safeJobTitle,
+      work_description: safeDescription,
       status: 'pending',
       read_by_contractor: false,
       created_at: new Date().toISOString()
@@ -57,19 +67,19 @@ Deno.serve(async (req) => {
         ? `\n\nPhotos Attached: ${photos.length}\nCustomer provided photos for reference.\n\nProject Details:\n${description}`
         : `\n\nProject Details:\n${description}`;
 
-      const emailBody = `Hello ${contractorName},
+      const emailBody = `Hello ${safeContractorName},
 
 You have received a new quote request from a customer!
 
 CUSTOMER INFORMATION:
-Name: ${customerName}
+Name: ${safeCustomerName}
 Email: ${customerEmail}
 
 PROJECT DETAILS:
-Title: ${jobTitle}
-Trade: ${tradeCategory}
-${budget ? `Budget: ${budget}` : ''}
-${timeline ? `Timeline: ${timeline}` : ''}
+Title: ${safeJobTitle}
+Trade: ${safeTradeCategory}
+${safeBudget ? `Budget: ${safeBudget}` : ''}
+${safeTimeline ? `Timeline: ${safeTimeline}` : ''}
 
 ${photoText}
 
@@ -94,15 +104,15 @@ SurfCoast Marketplace
 
     // Send confirmation email to customer
     try {
-      const customerEmailBody = `Hello ${customerName},
+      const customerEmailBody = `Hello ${safeCustomerName},
 
 Thank you for submitting your quote request on SurfCoast Marketplace!
 
-We've sent your project details and photos to ${contractorName}. They will review your request and contact you directly within 24-48 hours to discuss your project and provide a quote.
+We've sent your project details and photos to ${safeContractorName}. They will review your request and contact you directly within 24-48 hours to discuss your project and provide a quote.
 
 PROJECT SUMMARY:
-Title: ${jobTitle}
-Contractor: ${contractorName}
+Title: ${safeJobTitle}
+Contractor: ${safeContractorName}
 Quote Request ID: ${quoteRequest.id}
 
 In the meantime, you can:

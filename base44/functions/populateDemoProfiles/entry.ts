@@ -46,7 +46,7 @@ function generateContractors(cityName, count, dayOffset) {
     
     contractors.push({
       name: `${firstName} ${lastName}`,
-      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_demo@surfcoast.local`,
+      email: `demo.${randomBetween(10000, 99999)}@example.com`,
       phone: `(${randomBetween(200, 999)}) ${randomBetween(200, 999)}-${randomBetween(1000, 9999)}`,
       contractor_type: 'trade_specific',
       trade_specialty: trade,

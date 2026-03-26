@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
 
       contractors.push({
         name: `${name.first} ${name.last}`,
-        email: `${name.first.toLowerCase()}.${name.last.toLowerCase()}_contractor_demo@surfcoast.local`,
+        email: `demo.contractor.${String(i).padStart(2, '0')}@example.com`,
         phone: `(${randomBetween(200, 999)}) ${randomBetween(200, 999)}-${randomBetween(1000, 9999)}`,
         contractor_type: 'trade_specific',
         trade_specialty: trade,
@@ -124,7 +124,7 @@ Deno.serve(async (req) => {
       const city = randomPick(CITIES);
 
       customers.push({
-        email: `${name.first.toLowerCase()}.${name.last.toLowerCase()}_customer_demo@surfcoast.local`,
+        email: `demo.customer.${String(i).padStart(2, '0')}@example.com`,
         full_name: `${name.first} ${name.last}`,
         phone: `(${randomBetween(200, 999)}) ${randomBetween(200, 999)}-${randomBetween(1000, 9999)}`,
         location: city,

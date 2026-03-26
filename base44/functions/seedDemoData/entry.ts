@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
     const demoContractors = [
       {
         name: "Marcus Johnson",
-        email: "marcus.plumber@demo.local",
+        email: "demo.marcus.plumber.001@example.com",
         phone: "555-0101",
         contractor_type: "trade_specific",
         trade_specialty: "plumber",
@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       },
       {
         name: "Sarah Chen",
-        email: "sarah.electrician@demo.local",
+        email: "demo.sarah.electrician.002@example.com",
         phone: "555-0102",
         contractor_type: "trade_specific",
         trade_specialty: "electrician",
@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
       },
       {
         name: "David Rodriguez",
-        email: "david.carpenter@demo.local",
+        email: "demo.david.carpenter.003@example.com",
         phone: "555-0103",
         contractor_type: "trade_specific",
         trade_specialty: "carpenter",
@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
     const demoJobs = [
       {
         title: "Kitchen Faucet Replacement",
-        customer_email: "customer1@demo.local",
+        customer_email: "demo.customer.001@example.com",
         customer_name: "Jennifer Smith",
         description: "Need to replace old kitchen faucet with new modern one. Single hole, stainless steel preferred.",
         category: "plumbing",
@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
       },
       {
         title: "Electrical Panel Upgrade",
-        customer_email: "customer2@demo.local",
+        customer_email: "demo.customer.002@example.com",
         customer_name: "Michael Brown",
         description: "Need to upgrade 100-amp panel to 200-amp to support new HVAC system.",
         category: "electrical",
@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
       },
       {
         title: "Deck Repair and Staining",
-        customer_email: "customer3@demo.local",
+        customer_email: "demo.customer.003@example.com",
         customer_name: "Amanda Lee",
         description: "Back deck needs repair of loose boards and restaining. 16x12 area.",
         category: "carpentry",
@@ -147,7 +147,7 @@ Deno.serve(async (req) => {
       },
       {
         title: "Bathroom Remodel",
-        customer_email: "customer4@demo.local",
+        customer_email: "demo.customer.004@example.com",
         customer_name: "Robert Wilson",
         description: "Full bathroom remodel. New tiles, fixtures, shower enclosure. Looking for complete solution.",
         category: "general",

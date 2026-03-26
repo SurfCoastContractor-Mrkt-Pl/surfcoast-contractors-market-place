@@ -48,7 +48,7 @@ function generateDemoCustomers(count) {
     expiresAt.setDate(expiresAt.getDate() + 30);
     
     customers.push({
-      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_demo@surfcoast.local`,
+      email: `demo.customer.${String(i).padStart(3, '0')}@example.com`,
       full_name: `${firstName} ${lastName}`,
       phone: `(${randomBetween(200, 999)}) ${randomBetween(200, 999)}-${randomBetween(1000, 9999)}`,
       location: ['San Francisco, CA', 'Los Angeles, CA', 'New York, NY', 'Chicago, IL', 'Austin, TX'][i % 5],
@@ -116,7 +116,7 @@ function generateTestimonies(count) {
 
      testimonies.push({
        reviewer_name: `${firstName} ${lastName}`,
-       reviewer_email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}_testimony@surfcoast.local`,
+       reviewer_email: `demo.reviewer.${String(i).padStart(2, '0')}@example.com`,
        reviewer_type: 'customer',
        overall_rating: rating,
        comment: randomPick(TESTIMONY_COMMENTS),
