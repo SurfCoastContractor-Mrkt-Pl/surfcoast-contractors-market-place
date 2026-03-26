@@ -13,10 +13,9 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'shop_id is required' }, { status: 400 });
     }
 
-    // Verify user owns this shop
-    const shops = await base44.asServiceRole.entities.MarketShop.filter({ 
-      id: shop_id,
-      email: user.email
+    // Verify user owns this shop (RLS-enforced)
+    const shops = await base44.entities.MarketShop.filter({ 
+      id: shop_id
     });
 
     if (!shops || shops.length === 0) {
