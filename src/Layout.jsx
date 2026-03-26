@@ -78,29 +78,33 @@ export default function Layout({ children, currentPageName }) {
             base44.entities.MarketShop.filter({ email: user.email }),
             base44.entities.CustomerProfile.filter({ email: user.email }),
           ]);
-          setIsContractor(contractors && contractors.length > 0);
-          setHasMarketShop(marketShops && marketShops.length > 0);
-          setHasCustomerProfile(customers && customers.length > 0);
+          setIsContractor(contractors?.length > 0);
+          setHasMarketShop(marketShops?.length > 0);
+          setHasCustomerProfile(customers?.length > 0);
 
           // Fetch unread messages count
           try {
             const [unreadMessages, unreadProjectMessages] = await Promise.all([
               base44.entities.Message.filter({ recipient_email: user.email, read: false }),
-              base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false })
+              base44.entities.ProjectMessage.filter({ recipient_email: user.email, sender_email: { $ne: user.email }, read: false })
             ]);
             const totalUnread = (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
             setUnreadCount(totalUnread);
-          } catch {
+          } catch (e) {
+            console.error('Failed to fetch unread count:', e);
             setUnreadCount(0);
           }
         } else {
           setIsLoggedIn(false);
           setIsContractor(false);
           setHasMarketShop(false);
+          setHasCustomerProfile(false);
         }
-      } catch {
+      } catch (e) {
+        console.error('Failed to check user type:', e);
         setIsContractor(false);
         setHasMarketShop(false);
+        setHasCustomerProfile(false);
       }
     };
     checkUserType();
@@ -114,6 +118,18 @@ export default function Layout({ children, currentPageName }) {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setAccountMenuOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
   return (
@@ -162,6 +178,7 @@ export default function Layout({ children, currentPageName }) {
                   <button
                     onClick={() => base44.auth.redirectToLogin()}
                     className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
+                    aria-label="Login to your account"
                   >
                     Login
                   </button>
@@ -173,6 +190,8 @@ export default function Layout({ children, currentPageName }) {
                     variant="ghost" 
                     className="text-slate-600 hover:text-slate-900 text-sm"
                     onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                    aria-haspopup="menu"
+                    aria-expanded={accountMenuOpen}
                   >
                     <UserCircle className="w-5 h-5 mr-1" />
                     Account
@@ -308,6 +327,9 @@ export default function Layout({ children, currentPageName }) {
             <button
               className="lg:hidden p-2 flex-shrink-0 ml-auto"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-controls="mobile-menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-slate-900" />
@@ -320,7 +342,7 @@ export default function Layout({ children, currentPageName }) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-slate-200">
+          <div className="lg:hidden bg-white border-b border-slate-200" id="mobile-menu">
             <div className="px-4 py-4 space-y-2">
               {getNavLinks(isContractor).map(link => {
                 const Icon = link.icon;
@@ -457,17 +479,15 @@ export default function Layout({ children, currentPageName }) {
                 <li className="text-xs"><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
               </ul>
             </div>
-            {isContractor === false && (
-              <div>
-                <h4 className="font-semibold mb-3">For Clients</h4>
-                <ul className="space-y-1 text-slate-400">
-                  <li className="text-xs"><Link to={createPageUrl('FindContractors')} className="hover:text-white">Find Contractors</Link></li>
-                  <li className="text-xs"><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
-                  <li className="text-xs"><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
-                  <li className="text-xs"><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
-                </ul>
-              </div>
-            )}
+            <div>
+              <h4 className="font-semibold mb-3">For Clients</h4>
+              <ul className="space-y-1 text-slate-400">
+                <li className="text-xs"><Link to={createPageUrl('FindContractors')} className="hover:text-white">Find Contractors</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('PostJob')} className="hover:text-white">Post a Job</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('MyJobs')} className="hover:text-white">My Job Postings</Link></li>
+                <li className="text-xs"><Link to={createPageUrl('Blog')} className="hover:text-white">Blog & Resources</Link></li>
+              </ul>
+            </div>
             <div>
               <h4 className="font-semibold mb-3">Markets & Vendors</h4>
               <ul className="space-y-1 text-slate-400">

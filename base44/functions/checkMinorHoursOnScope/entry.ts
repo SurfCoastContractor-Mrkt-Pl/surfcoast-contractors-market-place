@@ -2,9 +2,14 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
+    // SECURITY: Only allow POST requests
+    if (req.method !== 'POST') {
+      return Response.json({ error: 'Method not allowed' }, { status: 405 });
+    }
+
     const base44 = createClientFromRequest(req);
     
-    // SECURITY: Authenticate the user
+    // SECURITY: Authenticate the user - must be admin or the contractor
     const user = await base44.auth.me();
     if (!user) {
       return Response.json(
@@ -22,33 +27,26 @@ Deno.serve(async (req) => {
       );
     }
     
-    // SECURITY: Authorization - only admins or the contractor themselves can update hours
-    if (user.role !== 'admin') {
-      // Fetch contractor to verify email match
-      let contractor = null;
-      try {
-        contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
-      } catch (e) {
-        console.warn('Contractor not found:', contractor_id);
-        return Response.json({ error: 'Contractor not found' }, { status: 404 });
-      }
-      
-      if (!contractor || contractor.email !== user.email) {
-        console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to update hours for contractor ${contractor_id}`);
-        return Response.json(
-          { error: 'Forbidden: You can only update your own minor hours' },
-          { status: 403 }
-        );
-      }
-    }
-
-    // Fetch contractor (already done in auth check if non-admin)
+    // Fetch contractor once for both auth and business logic
     let contractor = null;
     try {
       contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
     } catch (e) {
       console.warn('Contractor not found:', contractor_id);
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    if (!contractor) {
+      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    // SECURITY: Authorization - only admins or the contractor themselves can update hours
+    if (user.role !== 'admin' && contractor.email !== user.email) {
+      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to update hours for contractor ${contractor_id}`);
+      return Response.json(
+        { error: 'Forbidden: You can only update your own minor hours' },
+        { status: 403 }
+      );
     }
 
     if (!contractor) {
