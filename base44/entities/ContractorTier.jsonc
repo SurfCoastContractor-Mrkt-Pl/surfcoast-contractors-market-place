@@ -1,0 +1,113 @@
+{
+  "name": "ContractorTier",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "current_tier": {
+      "type": "string",
+      "enum": [
+        "bronze",
+        "silver",
+        "gold"
+      ],
+      "default": "bronze",
+      "description": "Current tier level"
+    },
+    "previous_tier": {
+      "type": "string",
+      "enum": [
+        "bronze",
+        "silver",
+        "gold"
+      ],
+      "description": "Previous tier before last change"
+    },
+    "annual_earnings": {
+      "type": "number",
+      "default": 0,
+      "description": "Total earnings in current year (cents)"
+    },
+    "lifetime_earnings": {
+      "type": "number",
+      "default": 0,
+      "description": "Total lifetime earnings (cents)"
+    },
+    "current_facilitation_fee": {
+      "type": "number",
+      "enum": [
+        2,
+        10,
+        15
+      ],
+      "description": "Current facilitation fee percentage based on tier"
+    },
+    "tier_changed_at": {
+      "type": "string",
+      "description": "ISO timestamp of last tier change"
+    },
+    "next_tier_earnings_needed": {
+      "type": "number",
+      "description": "Amount in cents needed to reach next tier"
+    },
+    "earnings_to_next_tier": {
+      "type": "number",
+      "description": "Remaining earnings needed to reach next tier"
+    },
+    "year": {
+      "type": "number",
+      "description": "Calendar year for annual earnings tracking"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "current_tier",
+    "annual_earnings",
+    "current_facilitation_fee"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
