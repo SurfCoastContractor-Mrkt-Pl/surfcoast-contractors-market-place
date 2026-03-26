@@ -8,6 +8,19 @@ import { base44 } from '@/api/base44Client';
 import PaymentGate from '@/components/payment/PaymentGate';
 import QuoteRequestForm from '@/components/quote/QuoteRequestForm';
 
+// Track contact info view clicks
+const trackContactInfoClick = (contractorId, contractorName, planType) => {
+  base44.analytics.track({
+    eventName: 'contact_information_view_clicked',
+    properties: {
+      contractor_id: contractorId,
+      contractor_name: contractorName,
+      plan_type: planType, // 'quote', 'timed', 'subscription'
+      timestamp: new Date().toISOString(),
+    },
+  });
+};
+
 export default function MessagingPricingTable({ contractorId, contractorName, contractorEmail, open, onClose, onMessagingUnlocked }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [paymentOpen, setPaymentOpen] = useState(false);
@@ -89,6 +102,7 @@ export default function MessagingPricingTable({ contractorId, contractorName, co
   };
 
   const handleSelectPlan = (plan) => {
+    trackContactInfoClick(contractorId, contractorName, plan.id);
     setSelectedPlan(plan);
     if (plan.id === 'quote') {
       // Quote flow requires project details — open QuoteRequestForm instead
