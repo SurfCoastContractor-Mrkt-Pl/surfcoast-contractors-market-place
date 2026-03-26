@@ -26,6 +26,7 @@ import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
 import ContractorQuotesManagement from './pages/ContractorQuotesManagement';
 import FieldOps from './pages/FieldOps';
 import AdminFieldOps from './pages/AdminFieldOps';
+import ContractorBillingHistory from './pages/ContractorBillingHistory';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -139,6 +140,7 @@ const AuthenticatedApp = () => {
       } />
       <Route path="/FieldOps" element={<FieldOps />} />
       <Route path="/adminfieldops" element={<AdminFieldOps />} />
+      <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
