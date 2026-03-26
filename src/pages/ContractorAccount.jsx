@@ -47,6 +47,7 @@ import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWi
 import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfessionalDocuments';
 import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilityManager';
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
+import ContractorMyJobs from '@/components/contractor/ContractorMyJobs';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
 import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
@@ -295,8 +296,9 @@ export default function ContractorAccount() {
               <AccountLockedBanner contractor={contractor} lockedScope={lockedScope} />
             )}
 
-            <Tabs defaultValue="profile">
+            <Tabs defaultValue="my-jobs">
              <TabsList className="w-full grid-cols-22 overflow-x-auto">
+                 <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap font-semibold">My Jobs</TabsTrigger>
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
                  <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
@@ -351,8 +353,12 @@ export default function ContractorAccount() {
                  </TabsTrigger>
                </TabsList>
 
+              <TabsContent value="my-jobs">
+                <ContractorMyJobs contractorId={contractor?.id} contractorEmail={userEmail} />
+              </TabsContent>
+
               <TabsContent value="dashboard">
-                 <div className="space-y-4">
+                  <div className="space-y-4">
                    <RealTimeAvailabilityManager contractor={contractor} />
                    <ContractorJobDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
                    <ContractorAnalyticsDashboard contractor={contractor} />
