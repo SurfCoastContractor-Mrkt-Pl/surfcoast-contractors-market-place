@@ -1,0 +1,61 @@
+{
+  "name": "MarketWaiverLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who accepted the waiver"
+    },
+    "profile_type": {
+      "type": "string",
+      "description": "Profile type (e.g. MarketShop)"
+    },
+    "shop_id": {
+      "type": "string",
+      "description": "ID of the associated MarketShop record"
+    },
+    "accepted_at": {
+      "type": "string",
+      "description": "ISO timestamp when waiver was accepted"
+    },
+    "checkboxes_accepted": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of waiver checkbox keys that were accepted"
+    }
+  },
+  "required": [
+    "user_email",
+    "profile_type",
+    "accepted_at"
+  ],
+  "rls": {
+    "create": {
+      "data.user_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
