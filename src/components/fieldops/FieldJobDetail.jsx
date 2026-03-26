@@ -1,0 +1,316 @@
+import React, { useState, useRef } from 'react';
+import { base44 } from '@/api/base44Client';
+import {
+  ArrowLeft, Phone, MessageSquare, MapPin, Camera,
+  CheckCircle, Clock, DollarSign, FileText, Upload,
+  User, AlertCircle, Send, X, Image, ChevronRight,
+  Navigation, Star
+} from 'lucide-react';
+
+const ACTION_BUTTONS = [
+  { id: 'photos', label: 'Add Photos', icon: Camera, color: 'bg-purple-600' },
+  { id: 'message', label: 'Message Client', icon: MessageSquare, color: 'bg-blue-600' },
+  { id: 'notes', label: 'Job Notes', icon: FileText, color: 'bg-amber-600' },
+  { id: 'complete', label: 'Mark Complete', icon: CheckCircle, color: 'bg-green-600' },
+];
+
+export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
+  const [activeAction, setActiveAction] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [note, setNote] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState('');
+  const [sendingMsg, setSendingMsg] = useState(false);
+  const [completionNotes, setCompletionNotes] = useState('');
+  const fileInputRef = useRef();
+
+  const handlePhotoUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const uploaded = [];
+      for (const file of files) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        uploaded.push(file_url);
+      }
+      const existing = scope.after_photo_urls || [];
+      const updated = await base44.entities.ScopeOfWork.update(scope.id, {
+        after_photo_urls: [...existing, ...uploaded]
+      });
+      onUpdate(updated);
+      setActiveAction(null);
+    } catch (err) {
+      alert('Upload failed. Please try again.');
+    }
+    setUploading(false);
+  };
+
+  const handleSaveNote = async () => {
+    if (!note.trim()) return;
+    setSaving(true);
+    try {
+      const existing = scope.scope_summary || '';
+      const updated = await base44.entities.ScopeOfWork.update(scope.id, {
+        scope_summary: existing ? `${existing}\n\n[Field Note - ${new Date().toLocaleDateString()}]: ${note}` : note
+      });
+      onUpdate(updated);
+      setNote('');
+      setActiveAction(null);
+    } catch {}
+    setSaving(false);
+  };
+
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    setSendingMsg(true);
+    try {
+      await base44.entities.ProjectMessage.create({
+        scope_id: scope.id,
+        sender_email: user.email,
+        sender_name: user.full_name || scope.contractor_name,
+        sender_type: 'contractor',
+        message: message.trim(),
+      });
+      await base44.integrations.Core.SendEmail({
+        to: scope.customer_email,
+        subject: `Message from ${scope.contractor_name} — ${scope.job_title}`,
+        body: `Hi ${scope.customer_name},\n\n${message.trim()}\n\n— ${scope.contractor_name}`,
+      });
+      setMessage('');
+      setActiveAction(null);
+    } catch {}
+    setSendingMsg(false);
+  };
+
+  const handleMarkComplete = async () => {
+    setSaving(true);
+    try {
+      const updated = await base44.entities.ScopeOfWork.update(scope.id, {
+        contractor_closeout_confirmed: true,
+        completion_notes: completionNotes,
+        status: 'pending_ratings',
+      });
+      onUpdate(updated);
+      setActiveAction(null);
+    } catch {}
+    setSaving(false);
+  };
+
+  const payout = scope.cost_amount ? (scope.cost_amount * 0.82).toFixed(2) : null;
+
+  return (
+    <div className="bg-slate-950 min-h-full">
+      {/* Header */}
+      <div className="sticky top-0 bg-slate-900 border-b border-slate-800 z-10">
+        <div className="flex items-center gap-3 px-4 py-3">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full active:bg-slate-800">
+            <ArrowLeft className="w-6 h-6 text-white" />
+          </button>
+          <div className="flex-1 min-w-0">
+            <p className="text-white font-semibold truncate">{scope.job_title}</p>
+            <p className="text-slate-400 text-xs">{scope.customer_name}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 py-4 space-y-4">
+        {/* Status Card */}
+        <div className={`rounded-2xl p-4 border ${
+          scope.status === 'approved' ? 'bg-blue-900/20 border-blue-500/30' :
+          scope.status === 'pending_ratings' ? 'bg-green-900/20 border-green-500/30' :
+          'bg-slate-900 border-slate-800'
+        }`}>
+          <div className="flex items-center gap-3">
+            {scope.status === 'pending_ratings' ? (
+              <CheckCircle className="w-8 h-8 text-green-400 flex-shrink-0" />
+            ) : (
+              <Clock className="w-8 h-8 text-blue-400 flex-shrink-0" />
+            )}
+            <div>
+              <p className="text-white font-semibold capitalize">{scope.status?.replace(/_/g, ' ')}</p>
+              {scope.agreed_work_date && (
+                <p className="text-slate-400 text-sm">
+                  {new Date(scope.agreed_work_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Financial Summary */}
+        <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">Financials</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-slate-400 text-sm">Job Amount</span>
+              <span className="text-white font-semibold">
+                ${scope.cost_amount?.toLocaleString()} {scope.cost_type === 'hourly' ? '/hr' : ''}
+              </span>
+            </div>
+            {payout && (
+              <>
+                <div className="flex justify-between">
+                  <span className="text-slate-400 text-sm">Platform Fee (18%)</span>
+                  <span className="text-red-400 text-sm">-${(scope.cost_amount * 0.18).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t border-slate-800">
+                  <span className="text-slate-300 text-sm font-semibold">Your Payout</span>
+                  <span className="text-green-400 font-bold text-lg">${payout}</span>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Client Info */}
+        <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">Client</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center">
+              <User className="w-5 h-5 text-slate-400" />
+            </div>
+            <div className="flex-1">
+              <p className="text-white font-semibold">{scope.customer_name}</p>
+              <p className="text-slate-400 text-sm">{scope.customer_email}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Job Notes */}
+        {scope.scope_summary && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Scope / Notes</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{scope.scope_summary}</p>
+          </div>
+        )}
+
+        {/* After Photos */}
+        {scope.after_photo_urls?.length > 0 && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">
+              After Photos ({scope.after_photo_urls.length})
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {scope.after_photo_urls.map((url, i) => (
+                <img key={i} src={url} alt="" className="w-full aspect-square object-cover rounded-xl" />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quick Action Buttons */}
+        {scope.status !== 'closed' && (
+          <div className="grid grid-cols-2 gap-3">
+            {ACTION_BUTTONS.filter(a => {
+              if (a.id === 'complete' && scope.status === 'pending_ratings') return false;
+              return true;
+            }).map(action => {
+              const Icon = action.icon;
+              return (
+                <button
+                  key={action.id}
+                  onClick={() => setActiveAction(activeAction === action.id ? null : action.id)}
+                  className={`${action.color} text-white rounded-2xl p-4 flex flex-col items-center gap-2 active:scale-95 transition-transform`}
+                >
+                  <Icon className="w-6 h-6" />
+                  <span className="text-sm font-semibold">{action.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Action Panels */}
+        {activeAction === 'photos' && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+            <p className="text-white font-semibold mb-3">Upload After Photos</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              capture="environment"
+              className="hidden"
+              onChange={handlePhotoUpload}
+            />
+            <button
+              onClick={() => fileInputRef.current.click()}
+              disabled={uploading}
+              className="w-full bg-purple-600 text-white rounded-xl py-4 font-semibold flex items-center justify-center gap-2"
+            >
+              {uploading ? (
+                <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Uploading...</>
+              ) : (
+                <><Camera className="w-5 h-5" /> Take Photo / Choose from Gallery</>
+              )}
+            </button>
+          </div>
+        )}
+
+        {activeAction === 'message' && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+            <p className="text-white font-semibold mb-3">Message {scope.customer_name}</p>
+            <textarea
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              placeholder="Type your message..."
+              rows={4}
+              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-blue-500 placeholder-slate-500"
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={sendingMsg || !message.trim()}
+              className="w-full mt-3 bg-blue-600 disabled:opacity-50 text-white rounded-xl py-3 font-semibold flex items-center justify-center gap-2"
+            >
+              {sendingMsg ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Send className="w-5 h-5" />}
+              Send Message
+            </button>
+          </div>
+        )}
+
+        {activeAction === 'notes' && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+            <p className="text-white font-semibold mb-3">Add Field Note</p>
+            <textarea
+              value={note}
+              onChange={e => setNote(e.target.value)}
+              placeholder="Enter field notes, observations, or updates..."
+              rows={4}
+              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-amber-500 placeholder-slate-500"
+            />
+            <button
+              onClick={handleSaveNote}
+              disabled={saving || !note.trim()}
+              className="w-full mt-3 bg-amber-600 disabled:opacity-50 text-white rounded-xl py-3 font-semibold"
+            >
+              {saving ? 'Saving...' : 'Save Note'}
+            </button>
+          </div>
+        )}
+
+        {activeAction === 'complete' && (
+          <div className="bg-slate-900 rounded-2xl p-4 border border-green-500/30">
+            <p className="text-white font-semibold mb-1">Mark Job as Complete</p>
+            <p className="text-slate-400 text-sm mb-3">This will notify the client to approve completion and release payment.</p>
+            <textarea
+              value={completionNotes}
+              onChange={e => setCompletionNotes(e.target.value)}
+              placeholder="Describe the completed work (optional)..."
+              rows={3}
+              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500"
+            />
+            <button
+              onClick={handleMarkComplete}
+              disabled={saving}
+              className="w-full mt-3 bg-green-600 text-white rounded-xl py-4 font-bold text-lg flex items-center justify-center gap-2"
+            >
+              {saving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-5 h-5" />}
+              Confirm Job Complete
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

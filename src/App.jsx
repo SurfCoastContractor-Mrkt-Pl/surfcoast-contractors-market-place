@@ -24,6 +24,7 @@ import ProjectManagement from './pages/ProjectManagement';
 import QuoteRequestWizard from './pages/QuoteRequestWizard';
 import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
 import ContractorQuotesManagement from './pages/ContractorQuotesManagement';
+import FieldOps from './pages/FieldOps';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -135,6 +136,7 @@ const AuthenticatedApp = () => {
           <ContractorQuotesManagement />
         </LayoutWrapper>
       } />
+      <Route path="/FieldOps" element={<FieldOps />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
