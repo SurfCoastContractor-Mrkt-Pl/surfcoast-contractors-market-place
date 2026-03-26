@@ -23,6 +23,17 @@ const PAYMENT_KEYWORDS = [
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Only service role or admins can trigger this function
+    const user = await base44.auth.me();
+    if (user && user.role !== 'admin') {
+      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to call detectOffPlatformPayment`);
+      return Response.json(
+        { error: 'Forbidden: Only admins or automated systems can scan for payment compliance' },
+        { status: 403 }
+      );
+    }
+    
     const { message_id, sender_email, body } = await req.json();
 
     if (!message_id || !sender_email || !body) {
