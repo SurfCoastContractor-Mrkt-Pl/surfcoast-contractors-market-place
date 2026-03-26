@@ -257,6 +257,9 @@ export default function FieldOpsAccessGate({ contractor }) {
       <Link to="/" className="block text-center text-slate-500 text-sm py-2 hover:text-white transition-colors">
         ← Back to SurfCoast Platform
       </Link>
+      <Link to="/adminfieldops" className="block text-center text-slate-700 text-xs py-2 hover:text-slate-400 transition-colors mt-1">
+        Admin Field Ops →
+      </Link>
     </div>
   );
 }
