@@ -1,0 +1,143 @@
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
+import { AlertCircle, Loader2, Filter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ContractorVerificationCard from '@/components/admin/ContractorVerificationCard';
+
+export default function ContractorVerificationDashboard() {
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [filterVerified, setFilterVerified] = useState('all');
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const currentUser = await base44.auth.me();
+        if (currentUser && currentUser.role === 'admin') {
+          setUser(currentUser);
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setIsAdmin(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  const { data: contractors = [], isLoading, error } = useQuery({
+    queryKey: ['pending-verification-contractors'],
+    queryFn: async () => {
+      try {
+        const all = await base44.asServiceRole.entities.Contractor.list();
+        return (all || []).filter(c => c.admin_review_requested === true);
+      } catch (error) {
+        console.error('Failed to fetch contractors:', error);
+        return [];
+      }
+    },
+    enabled: isAdmin,
+  });
+
+  const filteredContractors = contractors.filter(c => {
+    if (filterVerified === 'verified') return c.identity_verified === true;
+    if (filterVerified === 'unverified') return c.identity_verified !== true;
+    return true;
+  });
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">Access Denied</h1>
+          <p className="text-slate-600">You must be an admin to access this dashboard.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Contractor Verification</h1>
+          <p className="text-slate-600">Review contractors requesting admin verification</p>
+        </div>
+
+        {/* Stats */}
+        <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white rounded-lg border border-slate-200 p-4">
+            <p className="text-sm text-slate-600 mb-1">Pending Review</p>
+            <p className="text-3xl font-bold text-slate-900">{contractors.length}</p>
+          </div>
+          <div className="bg-white rounded-lg border border-slate-200 p-4">
+            <p className="text-sm text-slate-600 mb-1">Verified</p>
+            <p className="text-3xl font-bold text-green-600">
+              {contractors.filter(c => c.identity_verified).length}
+            </p>
+          </div>
+          <div className="bg-white rounded-lg border border-slate-200 p-4">
+            <p className="text-sm text-slate-600 mb-1">Unverified</p>
+            <p className="text-3xl font-bold text-yellow-600">
+              {contractors.filter(c => !c.identity_verified).length}
+            </p>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="mb-6 flex items-center gap-2">
+          <Filter className="w-4 h-4 text-slate-600" />
+          <Button
+            variant={filterVerified === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilterVerified('all')}
+          >
+            All ({contractors.length})
+          </Button>
+          <Button
+            variant={filterVerified === 'verified' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilterVerified('verified')}
+          >
+            Verified ({contractors.filter(c => c.identity_verified).length})
+          </Button>
+          <Button
+            variant={filterVerified === 'unverified' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilterVerified('unverified')}
+          >
+            Unverified ({contractors.filter(c => !c.identity_verified).length})
+          </Button>
+        </div>
+
+        {/* Content */}
+        {isLoading ? (
+          <div className="text-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-slate-400 mx-auto mb-4" />
+            <p className="text-slate-600">Loading contractors...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-800 font-medium">Error loading contractors</p>
+            <p className="text-red-700 text-sm mt-1">{error.message}</p>
+          </div>
+        ) : filteredContractors.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg border border-slate-200">
+            <p className="text-slate-600">No contractors match the selected filter.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {filteredContractors.map(contractor => (
+              <ContractorVerificationCard key={contractor.id} contractor={contractor} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
