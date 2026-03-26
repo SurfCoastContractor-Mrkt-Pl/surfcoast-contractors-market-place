@@ -30,6 +30,7 @@ import ContractorBillingHistory from './pages/ContractorBillingHistory';
 import FieldOpsReporting from './pages/FieldOpsReporting';
 import ContractorVerificationDashboard from './pages/ContractorVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
+import ComplianceGuide from './pages/ComplianceGuide';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -147,6 +148,7 @@ const AuthenticatedApp = () => {
       <Route path="/FieldOpsReporting" element={<FieldOpsReporting />} />
       <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
       <Route path="/ComplianceDashboard" element={<ComplianceDashboard />} />
+      <Route path="/ComplianceGuide" element={<ComplianceGuide />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
