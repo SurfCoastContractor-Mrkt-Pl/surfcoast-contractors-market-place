@@ -12,15 +12,17 @@ Deno.serve(async (req) => {
       );
     }
 
-    const contractors = await base44.asServiceRole.entities.Contractor.filter({
-      id: contractor_id,
-    });
-
-    if (!contractors || contractors.length === 0) {
-      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    let contractor = null;
+    try {
+      contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
+    } catch (e) {
+      console.warn('Contractor not found or invalid ID:', contractor_id);
+      return Response.json({ success: true, message: 'Contractor not found — notification skipped' }, { status: 200 });
     }
 
-    const contractor = contractors[0];
+    if (!contractor) {
+      return Response.json({ success: true, message: 'Contractor not found — notification skipped' }, { status: 200 });
+    }
 
     const emailSubjects = {
       payment_compliance: '⚠️ Payment Compliance Alert - SurfCoast',

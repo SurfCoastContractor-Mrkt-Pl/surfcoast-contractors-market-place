@@ -13,15 +13,17 @@ Deno.serve(async (req) => {
     }
 
     // Fetch contractor
-    const contractors = await base44.asServiceRole.entities.Contractor.filter({
-      id: contractor_id,
-    });
-
-    if (!contractors || contractors.length === 0) {
+    let contractor = null;
+    try {
+      contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
+    } catch (e) {
+      console.warn('Contractor not found:', contractor_id);
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
     }
 
-    const contractor = contractors[0];
+    if (!contractor) {
+      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
 
     // Only check if this is a minor
     if (!contractor.is_minor) {

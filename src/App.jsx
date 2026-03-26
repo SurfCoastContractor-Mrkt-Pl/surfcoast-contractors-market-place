@@ -147,8 +147,16 @@ const AuthenticatedApp = () => {
       <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
       <Route path="/FieldOpsReporting" element={<FieldOpsReporting />} />
       <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
-      <Route path="/ComplianceDashboard" element={<ComplianceDashboard />} />
-      <Route path="/ComplianceGuide" element={<ComplianceGuide />} />
+      <Route path="/ComplianceDashboard" element={
+        <LayoutWrapper currentPageName="ComplianceDashboard">
+          <ComplianceDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ComplianceGuide" element={
+        <LayoutWrapper currentPageName="ComplianceGuide">
+          <ComplianceGuide />
+        </LayoutWrapper>
+      } />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
