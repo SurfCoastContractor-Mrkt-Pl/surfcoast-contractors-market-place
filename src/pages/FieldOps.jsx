@@ -10,6 +10,8 @@ import FieldJobsList from '@/components/fieldops/FieldJobsList';
 import FieldSchedule from '@/components/fieldops/FieldSchedule';
 import FieldInvoices from '@/components/fieldops/FieldInvoices';
 import FieldProfile from '@/components/fieldops/FieldProfile';
+import FieldOpsAccessGate from '@/components/fieldops/FieldOpsAccessGate';
+import { getHighestBadge } from '@/components/badges/ContractorBadges';
 
 const NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
@@ -65,6 +67,18 @@ export default function FieldOps() {
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-slate-400 text-sm">Loading Field Ops...</p>
         </div>
+      </div>
+    );
+  }
+
+  // Check badge-based access — Field Ops requires at least Badge Tier 3 (5 unique customers)
+  const highestBadge = getHighestBadge(contractor?.unique_customers_count || 0);
+  const hasFieldOpsAccess = (highestBadge?.tier || 0) >= 3;
+
+  if (contractor && !hasFieldOpsAccess) {
+    return (
+      <div className="fixed inset-0 overflow-y-auto bg-slate-950">
+        <FieldOpsAccessGate contractor={contractor} />
       </div>
     );
   }
