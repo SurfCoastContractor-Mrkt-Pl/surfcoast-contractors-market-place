@@ -101,10 +101,12 @@ Deno.serve(async (req) => {
         break;
       
       case 'charge.failed':
+        console.warn(`Charge failed: ${event.data.object.id}`);
         await handleChargeFailed(event.data.object, base44);
         break;
       
       case 'payment_intent.succeeded':
+        console.debug(`Payment intent succeeded: ${event.data.object.id}`);
         await handlePaymentIntentSucceeded(event.data.object, base44);
         break;
       
@@ -125,7 +127,7 @@ Deno.serve(async (req) => {
         break;
       
       default:
-        console.debug(`Unhandled Stripe event type: ${eventType}`);
+        console.debug(`Unhandled Stripe event type: ${eventType} (${event.id})`);
     }
 
     return Response.json({ received: true }, { status: 200 });
@@ -331,14 +333,15 @@ async function handleChargeFailed(charge, base44) {
 
     if (email) {
       try {
+        const amount = charge.amount ? `$${(charge.amount / 100).toFixed(2)}` : '$0.00';
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: email,
           from_name: 'SurfCoast Payments',
           subject: 'Payment Unsuccessful — Action Required',
-          body: `Your payment of $1.75 could not be processed.\n\nReason: ${failureMessage}\n\nPlease return to SurfCoast Contractor Market Place and try again with a different card or ensure your card has sufficient funds.\n\nIf you believe this is an error, please contact your bank.\n\n— SurfCoast Contractor Market Place`,
+          body: `Your payment of ${amount} could not be processed.\n\nReason: ${failureMessage}\n\nPlease return to SurfCoast Contractor Market Place and try again with a different card or ensure your card has sufficient funds.\n\nIf you believe this is an error, please contact your bank.\n\n— SurfCoast Contractor Market Place`,
         });
       } catch (emailErr) {
-        console.warn('Failed to send decline notification email');
+        console.warn('Failed to send decline notification email:', emailErr.message);
       }
     }
   } catch (error) {

@@ -60,20 +60,35 @@ export default function FieldOps() {
           if (me.role === 'admin') setIsAdmin(true);
           const contractors = await base44.entities.Contractor.filter({ email: me.email });
           if (contractors?.length > 0) setContractor(contractors[0]);
-
-          // Unread messages
-          try {
-            const unread = await base44.entities.Message.filter({ recipient_email: me.email, read: false });
-            setNotifCount(unread?.length || 0);
-          } catch {}
         }
       } catch (e) {
         console.error('FieldOps auth error:', e);
       }
       setLoading(false);
-    };
-    init();
-  }, []);
+      };
+      init();
+      }, []);
+
+      // Batch fetch unread messages count with optional batching in init
+      useEffect(() => {
+      if (!user?.email) return;
+
+      const fetchUnreadCount = async () => {
+      try {
+        const [messages, projectMessages] = await Promise.all([
+          base44.entities.Message.filter({ recipient_email: user.email, read: false }),
+          base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false })
+        ]);
+        setNotifCount((messages?.length || 0) + (projectMessages?.length || 0));
+      } catch (error) {
+        console.warn('Failed to fetch message counts:', error.message);
+      }
+      };
+
+      fetchUnreadCount();
+      const interval = setInterval(fetchUnreadCount, 30000);
+      return () => clearInterval(interval);
+      }, [user?.email]);
 
   if (loading) {
     return (

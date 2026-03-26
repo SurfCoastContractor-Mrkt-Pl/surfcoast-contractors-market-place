@@ -43,24 +43,8 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
       // Determine amount in cents
       const amountCents = tier === 'timed' ? 150 : 175;
 
-      // Create the Payment record first
-      const paymentRecord = await base44.entities.Payment.create({
-        payer_email: data.email,
-        payer_name: data.name,
-        payer_type: payerType,
-        contractor_id: contractorId || null,
-        contractor_email: contractorEmail || null,
-        amount: amountCents / 100,
-        status: 'pending',
-        purpose: tier === 'timed'
-          ? `10-minute chat with ${contractorName}`
-          : `Quote request from ${contractorName}`,
-        idempotency_key: `${data.email}_${contractorId}_${tier}_${Date.now()}`,
-      });
-
-      // Call createJobPayment with the new payload
+      // Create checkout session first (atomic operation)
       const response = await base44.functions.invoke('createJobPayment', {
-        payment_id: paymentRecord.id,
         amount_cents: amountCents,
         contractor_id: contractorId || null,
         customer_email: data.email,
@@ -68,7 +52,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
         purpose: tier === 'timed' ? 'chat' : 'estimate',
       });
 
-      if (!response.data?.checkout_url) {
+      if (!response.data?.checkout_url || !response.data?.payment_id) {
         throw new Error('Failed to create checkout session');
       }
 
@@ -112,7 +96,7 @@ export default function PaymentGate({ open, onClose, onPaid, payerType, contract
     onClose();
   };
 
-  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+  const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email);
   const canSubmit = !checkingout && formData.name.length >= 2 && isValidEmail;
 
   return (

@@ -23,10 +23,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Start date must be before end date' }, { status: 400 });
     }
 
-    // Fetch all closed scopes for the contractor
+    // Fetch closed scopes with limit to prevent timeout
     const scopes = await base44.entities.ScopeOfWork.filter({
       contractor_email: user.email,
-      status: 'closed'
+      status: 'closed',
+      limit: 500
     });
 
     if (!scopes || scopes.length === 0) {
@@ -81,9 +82,10 @@ Deno.serve(async (req) => {
     const totalJobs = filtered.length;
     const averageJobTime = totalJobs > 0 ? (totalHours / totalJobs).toFixed(2) : 0;
 
-    // Fetch contractor to get current wave tier
+    // Fetch contractor to get current wave tier (info only)
     const contractor = await base44.asServiceRole.entities.Contractor.filter({ email: user.email });
     const completedJobsCount = contractor?.[0]?.completed_jobs_count || 0;
+    // Note: Wave tier shown is current tier, not historical tier at time of job completion
 
     // Categorize data
     let groupedData = {};

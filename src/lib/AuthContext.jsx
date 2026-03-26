@@ -88,12 +88,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const checkUserAuth = async () => {
+    let controller;
     try {
       setIsLoadingAuth(true);
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Auth check timeout')), 10000)
-      );
-      const currentUser = await Promise.race([base44.auth.me(), timeoutPromise]);
+      controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
+      const currentUser = await base44.auth.me();
+      clearTimeout(timeoutId);
       setUser(currentUser);
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
@@ -102,15 +104,20 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setIsAuthenticated(false);
       
-      if (error.status === 401 || error.status === 403) {
+      if (error.name === 'AbortError') {
+        setAuthError({
+          type: 'timeout',
+          message: 'Auth check timed out'
+        });
+      } else if (error.status === 401 || error.status === 403) {
         setAuthError({
           type: 'auth_required',
           message: 'Authentication required'
         });
-      } else if (error.message === 'Auth check timeout') {
+      } else {
         setAuthError({
-          type: 'timeout',
-          message: 'Auth check timed out'
+          type: 'error',
+          message: error.message
         });
       }
     }
