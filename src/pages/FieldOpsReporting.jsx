@@ -8,9 +8,11 @@ export default function FieldOpsReporting() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleGenerateReport = async (filters) => {
     setLoading(true);
+    setError(null);
     try {
       const result = await base44.functions.invoke('generateFieldOpsReport', {
         startDate: filters.startDate,
@@ -18,10 +20,10 @@ export default function FieldOpsReporting() {
         categorizeBy: filters.categorizeBy,
         format: 'json'
       });
-      setReport(result.data);
+      setReport({ ...result.data, startDate: filters.startDate, endDate: filters.endDate });
     } catch (error) {
       console.error('Error generating report:', error);
-      alert('Failed to generate report. Please try again.');
+      setError('Failed to generate report. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -32,12 +34,15 @@ export default function FieldOpsReporting() {
     try {
       if (!report) return;
 
-      // Call the backend to get CSV
-      const user = await base44.auth.me();
+      // Determine categorization from grouped data keys
+      const groupedKeys = Object.keys(report.grouped || {});
+      const waveKeys = ['Ripple', 'Swell', 'Breaker', 'Pipeline', 'Residential Wave'];
+      const categorizeBy = groupedKeys.some(k => waveKeys.includes(k)) ? 'wave' : 'customer';
+
       const csvResult = await base44.functions.invoke('generateFieldOpsReport', {
-        startDate: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0],
-        endDate: new Date().toISOString().split('T')[0],
-        categorizeBy: report.grouped ? Object.keys(report.grouped)[0] === 'Ripple' || Object.keys(report.grouped)[0] === 'Swell' ? 'wave' : 'customer' : 'customer',
+        startDate: report.startDate,
+        endDate: report.endDate,
+        categorizeBy,
         format: 'csv'
       });
 
@@ -52,7 +57,7 @@ export default function FieldOpsReporting() {
       document.body.removeChild(element);
     } catch (error) {
       console.error('Error exporting CSV:', error);
-      alert('Failed to export CSV. Please try again.');
+      setError('Failed to export CSV. Please try again.');
     } finally {
       setExporting(false);
     }
@@ -72,6 +77,13 @@ export default function FieldOpsReporting() {
 
         {/* Filters */}
         <FieldOpsReportFilters onFilterChange={handleGenerateReport} loading={loading} />
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700">
+            {error}
+          </div>
+        )}
 
         {/* Report Display */}
         <FieldOpsReportDisplay

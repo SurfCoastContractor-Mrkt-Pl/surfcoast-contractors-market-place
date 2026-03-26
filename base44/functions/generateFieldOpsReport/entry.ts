@@ -16,6 +16,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Start and end dates are required' }, { status: 400 });
     }
 
+    // Validate date range
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (start > end) {
+      return Response.json({ error: 'Start date must be before end date' }, { status: 400 });
+    }
+
     // Fetch all closed scopes for the contractor
     const scopes = await base44.entities.ScopeOfWork.filter({
       contractor_email: user.email,
@@ -35,8 +42,6 @@ Deno.serve(async (req) => {
     }
 
     // Filter by date range
-    const start = new Date(startDate);
-    const end = new Date(endDate);
     end.setHours(23, 59, 59, 999);
 
     const filtered = scopes.filter(scope => {
@@ -76,6 +81,10 @@ Deno.serve(async (req) => {
     const totalJobs = filtered.length;
     const averageJobTime = totalJobs > 0 ? (totalHours / totalJobs).toFixed(2) : 0;
 
+    // Fetch contractor to get current wave tier
+    const contractor = await base44.asServiceRole.entities.Contractor.filter({ email: user.email });
+    const completedJobsCount = contractor?.[0]?.completed_jobs_count || 0;
+
     // Categorize data
     let groupedData = {};
     if (categorizeBy === 'customer') {
@@ -94,22 +103,12 @@ Deno.serve(async (req) => {
         groupedData[customer].hours += hours;
       });
     } else {
-      // Categorize by wave (using simple job count tiers)
+      // Categorize by wave using contractor's current tier progression
+      const wave = getWaveTier(completedJobsCount);
+      if (!groupedData[wave]) {
+        groupedData[wave] = { jobs: 0, earnings: 0, hours: 0 };
+      }
       filtered.forEach(scope => {
-        const jobCount = filtered.indexOf(scope) + 1;
-        let wave = 'Ripple'; // 0-15 jobs
-        if (jobCount > 100) wave = 'Residential Wave';
-        else if (jobCount > 75) wave = 'Pipeline';
-        else if (jobCount > 55) wave = 'Breaker';
-        else if (jobCount > 35) wave = 'Swell';
-
-        if (!groupedData[wave]) {
-          groupedData[wave] = {
-            jobs: 0,
-            earnings: 0,
-            hours: 0
-          };
-        }
         groupedData[wave].jobs += 1;
         groupedData[wave].earnings += scope.contractor_payout_amount || 0;
         const hours = scope.estimated_hours || 0;
@@ -139,6 +138,23 @@ Deno.serve(async (req) => {
   }
 });
 
+function escapeCSV(str) {
+  if (!str) return '""';
+  if (typeof str !== 'string') return str;
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function getWaveTier(completedJobsCount) {
+  if (completedJobsCount >= 100) return 'Residential Wave';
+  if (completedJobsCount >= 75) return 'Pipeline';
+  if (completedJobsCount >= 55) return 'Breaker';
+  if (completedJobsCount >= 35) return 'Swell';
+  return 'Ripple';
+}
+
 function generateCSV(scopes, categorizeBy, groupedData) {
   const lines = [];
 
@@ -159,14 +175,14 @@ function generateCSV(scopes, categorizeBy, groupedData) {
     lines.push('Customer Name,Jobs Completed,Total Earnings,Avg Hours per Job');
     Object.entries(groupedData).forEach(([customer, data]) => {
       const avgHours = data.jobs > 0 ? (data.hours / data.jobs).toFixed(2) : 0;
-      lines.push(`"${customer}",${data.jobs},$${data.earnings.toFixed(2)},${avgHours}`);
+      lines.push(`${escapeCSV(customer)},${data.jobs},$${data.earnings.toFixed(2)},${avgHours}`);
     });
   } else {
     lines.push('BREAKDOWN BY WAVE');
     lines.push('Wave Tier,Jobs Completed,Total Earnings,Avg Hours per Job');
     Object.entries(groupedData).forEach(([wave, data]) => {
       const avgHours = data.jobs > 0 ? (data.hours / data.jobs).toFixed(2) : 0;
-      lines.push(`"${wave}",${data.jobs},$${data.earnings.toFixed(2)},${avgHours}`);
+      lines.push(`${escapeCSV(wave)},${data.jobs},$${data.earnings.toFixed(2)},${avgHours}`);
     });
   }
 
@@ -178,7 +194,7 @@ function generateCSV(scopes, categorizeBy, groupedData) {
   scopes.forEach(scope => {
     const date = scope.closed_date || scope.updated_date;
     const hours = scope.estimated_hours || 0;
-    lines.push(`${date},"${scope.job_title}","${scope.customer_name}",$${(scope.contractor_payout_amount || 0).toFixed(2)},${hours},${scope.cost_type},$${scope.cost_amount}`);
+    lines.push(`${date},${escapeCSV(scope.job_title)},${escapeCSV(scope.customer_name)},$${(scope.contractor_payout_amount || 0).toFixed(2)},${hours},${scope.cost_type},$${scope.cost_amount}`);
   });
 
   return lines.join('\n');
