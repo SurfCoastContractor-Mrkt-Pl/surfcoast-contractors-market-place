@@ -2,6 +2,28 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 const US_COUNTRY_CODES = ['US'];
 
+// Simple in-memory rate limiting (per IP, per minute)
+const rateLimitMap = new Map();
+const RATE_LIMIT_THRESHOLD = 10; // max 10 checks per minute per IP
+const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  
+  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now });
+    return false;
+  }
+  
+  record.count++;
+  if (record.count > RATE_LIMIT_THRESHOLD) {
+    console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${record.count} requests in 1 min)`);
+    return true;
+  }
+  return false;
+}
+
 Deno.serve(async (req) => {
   const clientIp = req.headers.get('cf-connecting-ip') || 
                    req.headers.get('x-forwarded-for') || 
@@ -12,6 +34,16 @@ Deno.serve(async (req) => {
     if (req.method !== 'GET') {
       console.warn(`[GEO] Invalid method: ${req.method} from IP: ${clientIp}`);
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
+    }
+
+    // SECURITY: Rate limit to prevent brute-force/probing
+    if (isRateLimited(clientIp)) {
+      return Response.json({ 
+        allowed: false, 
+        country: 'RATE_LIMITED', 
+        countryName: 'Rate Limited',
+        reason: 'Too many requests' 
+      }, { status: 429 });
     }
 
     // Get IP-based country from Cloudflare headers (available on Deno Deploy)
