@@ -127,22 +127,23 @@ export default function AdminFieldOps() {
   // Full Field Ops view for selected contractor (admin-impersonated)
   return (
     <div className="fixed inset-0 bg-slate-950 flex flex-col overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
-      {/* Admin Banner */}
-      <div className="bg-amber-600 px-4 py-1.5 flex items-center justify-between flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <Shield className="w-3.5 h-3.5 text-amber-100" />
-          <span className="text-amber-100 text-xs font-semibold">Admin View: {selectedContractor.name}</span>
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Admin Banner */}
+        <div className="bg-amber-600 px-4 py-1.5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Shield className="w-3.5 h-3.5 text-amber-100" />
+            <span className="text-amber-100 text-xs font-semibold">Admin View: {selectedContractor.name}</span>
+          </div>
+          <button
+            onClick={() => setSelectedContractor(null)}
+            className="text-amber-100 text-xs hover:text-white underline"
+          >
+            Change Contractor
+          </button>
         </div>
-        <button
-          onClick={() => setSelectedContractor(null)}
-          className="text-amber-100 text-xs hover:text-white underline"
-        >
-          Change Contractor
-        </button>
-      </div>
 
-      {/* Header */}
-      <div className="bg-slate-900 px-4 py-3 flex-shrink-0 border-b border-slate-800">
+        {/* Header */}
+        <div className="bg-slate-900 px-4 py-3 flex-shrink-0 border-b border-slate-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden flex-shrink-0">
             {selectedContractor.photo_url
@@ -170,26 +171,27 @@ export default function AdminFieldOps() {
         {activeTab === 'profile' && <FieldProfile contractor={selectedContractor} user={user} onUpdate={() => {}} />}
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="bg-slate-900 border-t border-slate-800 flex-shrink-0">
-        <div className="flex">
-          {NAV_TABS.map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex flex-col items-center py-3 gap-1 transition-colors ${
-                  isActive ? 'text-blue-400' : 'text-slate-500'
-                }`}
-              >
-                <Icon className="w-6 h-6" />
-                <span className="text-[10px] font-medium">{tab.label}</span>
-                {isActive && <div className="w-1 h-1 rounded-full bg-blue-400" />}
-              </button>
-            );
-          })}
+        {/* Bottom Navigation */}
+        <div className="bg-slate-900 border-t border-slate-800 flex-shrink-0">
+          <div className="flex">
+            {NAV_TABS.map(tab => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 flex flex-col items-center py-3 gap-1 transition-colors ${
+                    isActive ? 'text-blue-400' : 'text-slate-500'
+                  }`}
+                >
+                  <Icon className="w-6 h-6" />
+                  <span className="text-[10px] font-medium">{tab.label}</span>
+                  {isActive && <div className="w-1 h-1 rounded-full bg-blue-400" />}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
