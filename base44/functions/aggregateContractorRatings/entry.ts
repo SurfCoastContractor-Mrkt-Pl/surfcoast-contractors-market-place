@@ -8,6 +8,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { contractor_id } = await req.json();
 
     if (!contractor_id) {
