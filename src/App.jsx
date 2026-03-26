@@ -44,6 +44,9 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
 
+// NOTE: Explicit routes (lines 73-177) take precedence over pagesConfig loop (lines 180-188).
+// If adding pages to this file, check pagesConfig to avoid duplicate route definitions.
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
@@ -175,6 +178,7 @@ const AuthenticatedApp = () => {
           <QuoteRequestSuccess />
         </LayoutWrapper>
       } />
+      {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}

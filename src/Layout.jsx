@@ -40,6 +40,20 @@ export default function Layout({ children, currentPageName }) {
 
   useGeoCheck();
 
+  const fetchUnreadCount = async (email) => {
+    try {
+      const [unreadMessages, unreadProjectMessages] = await Promise.all([
+        base44.entities.Message.filter({ recipient_email: email, read: false }),
+        base44.entities.ProjectMessage.filter({ recipient_email: email, sender_email: { $ne: email }, read: false })
+      ]);
+      const totalUnread = (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
+      setUnreadCount(totalUnread);
+    } catch (e) {
+      console.error('Failed to fetch unread count:', e);
+      setUnreadCount(0);
+    }
+  };
+
   const getNavLinks = (isContractor) => {
     const baseLinks = [
       { name: 'Home', page: '/', icon: Home },
@@ -82,29 +96,21 @@ export default function Layout({ children, currentPageName }) {
           setHasMarketShop(marketShops?.length > 0);
           setHasCustomerProfile(customers?.length > 0);
 
-          // Fetch unread messages count
-          try {
-            const [unreadMessages, unreadProjectMessages] = await Promise.all([
-              base44.entities.Message.filter({ recipient_email: user.email, read: false }),
-              base44.entities.ProjectMessage.filter({ recipient_email: user.email, sender_email: { $ne: user.email }, read: false })
-            ]);
-            const totalUnread = (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
-            setUnreadCount(totalUnread);
-          } catch (e) {
-            console.error('Failed to fetch unread count:', e);
-            setUnreadCount(0);
-          }
+          // Only fetch unread messages if user is logged in
+          fetchUnreadCount(user.email);
         } else {
           setIsLoggedIn(false);
           setIsContractor(false);
           setHasMarketShop(false);
           setHasCustomerProfile(false);
+          setUnreadCount(0);
         }
       } catch (e) {
         console.error('Failed to check user type:', e);
         setIsContractor(false);
         setHasMarketShop(false);
         setHasCustomerProfile(false);
+        setUnreadCount(0);
       }
     };
     checkUserType();
