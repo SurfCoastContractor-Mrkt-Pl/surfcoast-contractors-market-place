@@ -1,0 +1,118 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user with the subscription"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether user is contractor or customer"
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "description": "Stripe subscription ID"
+    },
+    "payment_model": {
+      "type": "string",
+      "enum": [
+        "subscription",
+        "facilitation"
+      ],
+      "description": "Current payment model"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "cancelled",
+        "past_due"
+      ],
+      "default": "active",
+      "description": "Subscription status"
+    },
+    "start_date": {
+      "type": "string",
+      "description": "ISO timestamp when subscription started"
+    },
+    "current_period_end": {
+      "type": "string",
+      "description": "ISO timestamp when current billing period ends"
+    },
+    "amount_paid": {
+      "type": "number",
+      "description": "Amount paid in cents (2000 = $20)"
+    },
+    "pending_model_switch": {
+      "type": "string",
+      "enum": [
+        "subscription",
+        "facilitation"
+      ],
+      "description": "Pending payment model switch for next billing cycle"
+    },
+    "pending_switch_effective_date": {
+      "type": "string",
+      "description": "ISO timestamp when pending model switch becomes effective"
+    },
+    "facilitation_fee_percentage": {
+      "type": "number",
+      "default": 5,
+      "description": "Facilitation fee percentage when using facilitation model"
+    },
+    "total_facilitation_fees_paid": {
+      "type": "number",
+      "default": 0,
+      "description": "Total facilitation fees paid in cents"
+    }
+  },
+  "required": [
+    "user_email",
+    "user_type",
+    "stripe_subscription_id",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
