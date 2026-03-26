@@ -1,12 +1,23 @@
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { AlertCircle, RefreshCw, X } from 'lucide-react';
 import { PAYMENT_ERROR_TYPES } from '@/lib/paymentErrorHandler';
 
 export default function PaymentErrorDisplay({
   error,
   onRetry,
   onDismiss,
+  autoClose = false,
+  autoCloseDuration = 5000,
 }) {
   if (!error) return null;
+
+  // Auto-close if enabled
+  useEffect(() => {
+    if (autoClose && autoCloseDuration > 0 && onDismiss) {
+      const timer = setTimeout(onDismiss, autoCloseDuration);
+      return () => clearTimeout(timer);
+    }
+  }, [autoClose, autoCloseDuration, onDismiss]);
 
   const isRetryable = [
     PAYMENT_ERROR_TYPES.NETWORK,
@@ -41,6 +52,11 @@ export default function PaymentErrorDisplay({
             )}
           </div>
         </div>
+        {onDismiss && (
+          <button onClick={onDismiss} className="text-red-600 hover:text-red-700 flex-shrink-0" aria-label="Close">
+            <X size={18} />
+          </button>
+        )}
       </div>
     </div>
   );
