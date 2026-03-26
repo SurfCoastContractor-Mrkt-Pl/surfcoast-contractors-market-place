@@ -1,0 +1,85 @@
+import React, { useState } from 'react';
+import { base44 } from '@/api/base44Client';
+import { BarChart3 } from 'lucide-react';
+import FieldOpsReportFilters from '@/components/fieldops/FieldOpsReportFilters';
+import FieldOpsReportDisplay from '@/components/fieldops/FieldOpsReportDisplay';
+
+export default function FieldOpsReporting() {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleGenerateReport = async (filters) => {
+    setLoading(true);
+    try {
+      const result = await base44.functions.invoke('generateFieldOpsReport', {
+        startDate: filters.startDate,
+        endDate: filters.endDate,
+        categorizeBy: filters.categorizeBy,
+        format: 'json'
+      });
+      setReport(result.data);
+    } catch (error) {
+      console.error('Error generating report:', error);
+      alert('Failed to generate report. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExportCSV = async () => {
+    setExporting(true);
+    try {
+      if (!report) return;
+
+      // Call the backend to get CSV
+      const user = await base44.auth.me();
+      const csvResult = await base44.functions.invoke('generateFieldOpsReport', {
+        startDate: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0],
+        endDate: new Date().toISOString().split('T')[0],
+        categorizeBy: report.grouped ? Object.keys(report.grouped)[0] === 'Ripple' || Object.keys(report.grouped)[0] === 'Swell' ? 'wave' : 'customer' : 'customer',
+        format: 'csv'
+      });
+
+      // Create and download CSV file
+      const csvContent = csvResult.data.csv;
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+      element.setAttribute('download', `field-ops-report-${new Date().toISOString().split('T')[0]}.csv`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      alert('Failed to export CSV. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <BarChart3 className="w-8 h-8 text-blue-600" />
+            <h1 className="text-4xl font-bold text-slate-900">Field Operations Reports</h1>
+          </div>
+          <p className="text-slate-600">Analyze your completed jobs with detailed metrics and breakdowns</p>
+        </div>
+
+        {/* Filters */}
+        <FieldOpsReportFilters onFilterChange={handleGenerateReport} loading={loading} />
+
+        {/* Report Display */}
+        <FieldOpsReportDisplay
+          report={report}
+          onExport={handleExportCSV}
+          exporting={exporting}
+        />
+      </div>
+    </div>
+  );
+}

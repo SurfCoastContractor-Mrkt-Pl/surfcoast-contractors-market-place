@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   Briefcase, Clock, DollarSign, CheckCircle, MapPin,
   Camera, FileText, MessageSquare, Calendar, ChevronRight,
-  Wifi, WifiOff, Bell, User, Home, Plus, Menu, X, Waves
+  Wifi, WifiOff, Bell, User, Home, Plus, Menu, X, Waves, BarChart3
 } from 'lucide-react';
 import FieldJobsList from '@/components/fieldops/FieldJobsList';
 import FieldSchedule from '@/components/fieldops/FieldSchedule';
@@ -12,12 +12,14 @@ import FieldInvoices from '@/components/fieldops/FieldInvoices';
 import FieldProfile from '@/components/fieldops/FieldProfile';
 import FieldOpsAccessGate from '@/components/fieldops/FieldOpsAccessGate';
 import FieldOpsBreakerView from '@/components/fieldops/FieldOpsBreakerView';
+import FieldOpsReporting from '@/pages/FieldOpsReporting';
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
   { id: 'schedule', label: 'Schedule', icon: Calendar },
   { id: 'invoices', label: 'Invoices', icon: DollarSign },
+  { id: 'reports', label: 'Reports', icon: BarChart3 },
   { id: 'profile', label: 'Profile', icon: User },
 ];
 
@@ -275,6 +277,7 @@ export default function FieldOps() {
           {activeTab === 'jobs' && <FieldJobsList contractor={effectiveContractor} user={user} />}
           {activeTab === 'schedule' && <FieldSchedule contractor={effectiveContractor} user={user} />}
           {activeTab === 'invoices' && <FieldInvoices contractor={effectiveContractor} user={user} />}
+          {activeTab === 'reports' && <FieldOpsReporting contractor={effectiveContractor} user={user} />}
           {activeTab === 'profile' && <FieldProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
           {activeTab === 'breaker' && <FieldOpsBreakerView contractor={effectiveContractor} user={user} />}
         </div>
