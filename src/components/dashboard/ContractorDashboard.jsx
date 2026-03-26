@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2, LogOut, Lock, Waves } from 'lucide-react';
@@ -11,6 +12,8 @@ import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementG
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
+import MetricsPanel from './MetricsPanel';
+import { calculateContractorMetrics } from '@/lib/metricsCalculator';
 
 const SURFCOAST_WAVES = [
   { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
@@ -23,6 +26,7 @@ const SURFCOAST_WAVES = [
 export default function ContractorDashboard() {
   const [user, setUser] = useState(null);
   const [payoutLoading, setPayoutLoading] = useState(false);
+  const [metricsPeriod, setMetricsPeriod] = useState('all_time');
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -118,6 +122,23 @@ export default function ContractorDashboard() {
     enabled: !!user?.email,
   });
 
+  const { data: allReviews = [] } = useQuery({
+    queryKey: ['contractor-reviews', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const reviews = await base44.entities.Review.filter({
+        contractor_id: contractorProfile?.id
+      });
+      return reviews || [];
+    },
+    enabled: !!contractorProfile?.id,
+  });
+
+  const metrics = useMemo(() => {
+    if (!contractorProfile) return null;
+    return calculateContractorMetrics(activeScopes, allReviews, metricsPeriod);
+  }, [activeScopes, allReviews, metricsPeriod, contractorProfile]);
+
   const statusColor = {
     pending_approval: 'bg-yellow-100 text-yellow-800',
     approved: 'bg-blue-100 text-blue-800',
@@ -193,6 +214,13 @@ export default function ContractorDashboard() {
           </div>
           <p className="text-slate-600">Track your active jobs and communications</p>
         </div>
+
+        {/* Metrics Panel */}
+        {metrics && (
+          <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <MetricsPanel metrics={metrics} onPeriodChange={setMetricsPeriod} currentPeriod={metricsPeriod} />
+          </div>
+        )}
 
         {/* Service Agreement Generator */}
         {contractorProfile && (
