@@ -10,16 +10,25 @@ import { Edit2, X, Upload } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { logError } from '@/components/utils/logError';
 
-export default function ContractorProfileEditor({ contractor }) {
+export default function ContractorProfileEditor({ contractor, currentUser }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
+  const [authError, setAuthError] = useState(null);
   const queryClient = useQueryClient();
+
+  // Verify user owns this contractor profile
+  if (currentUser && contractor?.email !== currentUser.email) {
+    return (
+      <Card className="p-6 border border-red-200 bg-red-50">
+        <div className="text-red-700 text-sm font-semibold">Unauthorized: You can only edit your own profile.</div>
+      </Card>
+    );
+  }
 
   useEffect(() => {
     if (contractor) {
       setEditData({
         name: contractor.name || '',
-        email: contractor.email || '',
         phone: contractor.phone || '',
         location: contractor.location || '',
         bio: contractor.bio || '',
@@ -34,6 +43,22 @@ export default function ContractorProfileEditor({ contractor }) {
 
   const updateMutation = useMutation({
     mutationFn: async (data) => {
+      // Validate rate values
+      if (data.rate_type === 'hourly' && (data.hourly_rate <= 0 || data.hourly_rate > 999)) {
+        throw new Error('Hourly rate must be between $0.01 and $999');
+      }
+      if (data.rate_type === 'fixed' && (data.fixed_rate <= 0 || data.fixed_rate > 999999)) {
+        throw new Error('Fixed rate must be between $0.01 and $999,999');
+      }
+      if (data.phone && !/^[\d\-\+\(\)\s]+$/.test(data.phone)) {
+        throw new Error('Phone number is invalid');
+      }
+      if (data.location && data.location.length > 100) {
+        throw new Error('Location must be 100 characters or less');
+      }
+      if (data.bio && data.bio.length > 1000) {
+        throw new Error('Bio must be 1000 characters or less');
+      }
       return base44.entities.Contractor.update(contractor.id, data);
     },
     onSuccess: () => {
@@ -147,17 +172,7 @@ export default function ContractorProfileEditor({ contractor }) {
             <Input
               value={editData.name || ''}
               onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-              className="mt-1"
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <Label className="text-sm font-medium">Email</Label>
-            <Input
-              type="email"
-              value={editData.email || ''}
-              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+              maxLength="100"
               className="mt-1"
             />
           </div>
@@ -169,6 +184,7 @@ export default function ContractorProfileEditor({ contractor }) {
               type="tel"
               value={editData.phone || ''}
               onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
+              maxLength="20"
               className="mt-1"
             />
           </div>
@@ -179,6 +195,7 @@ export default function ContractorProfileEditor({ contractor }) {
             <Input
               value={editData.location || ''}
               onChange={(e) => setEditData({ ...editData, location: e.target.value })}
+              maxLength="100"
               className="mt-1"
             />
           </div>
@@ -209,7 +226,8 @@ export default function ContractorProfileEditor({ contractor }) {
                 value={editData.hourly_rate || ''}
                 onChange={(e) => setEditData({ ...editData, hourly_rate: parseFloat(e.target.value) })}
                 className="mt-1"
-                min="0"
+                min="0.01"
+                max="999"
                 step="5"
               />
             </div>
@@ -225,7 +243,8 @@ export default function ContractorProfileEditor({ contractor }) {
                   value={editData.fixed_rate || ''}
                   onChange={(e) => setEditData({ ...editData, fixed_rate: parseFloat(e.target.value) })}
                   className="mt-1"
-                  min="0"
+                  min="0.01"
+                  max="999999"
                   placeholder="e.g., 500"
                 />
               </div>
@@ -236,6 +255,7 @@ export default function ContractorProfileEditor({ contractor }) {
                   onChange={(e) => setEditData({ ...editData, fixed_rate_details: e.target.value })}
                   placeholder="Describe what your fixed rate covers (e.g., full bathroom renovation, includes materials and labor...)"
                   rows={3}
+                  maxLength="500"
                   className="mt-1 resize-none"
                 />
               </div>
@@ -250,6 +270,7 @@ export default function ContractorProfileEditor({ contractor }) {
               onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
               placeholder="Tell customers about yourself..."
               rows={4}
+              maxLength="1000"
               className="mt-1 resize-none"
             />
           </div>

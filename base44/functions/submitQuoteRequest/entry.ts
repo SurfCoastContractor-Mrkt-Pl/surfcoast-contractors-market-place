@@ -32,6 +32,30 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Authorize: User must be the customer making the request
+    if (user.email !== customerEmail) {
+      return Response.json({ error: 'Forbidden: You can only submit quote requests for yourself' }, { status: 403 });
+    }
+
+    // Rate limiting: Check if user already submitted to this contractor in the last hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const recentRequests = await base44.asServiceRole.entities.QuoteRequest.filter({
+      customer_email: customerEmail,
+      contractor_id: contractorId,
+      created_at: { $gte: oneHourAgo }
+    });
+    if (recentRequests && recentRequests.length > 0) {
+      return Response.json({ 
+        error: 'Too many requests. Please wait at least 1 hour before requesting another quote from the same contractor.' 
+      }, { status: 429 });
+    }
+
+    // Validate contractor exists
+    const contractor = await base44.asServiceRole.entities.Contractor.get(contractorId);
+    if (!contractor || contractor.email !== contractorEmail) {
+      return Response.json({ error: 'Invalid contractor' }, { status: 400 });
+    }
+
     // Sanitize inputs to prevent email injection
     const sanitize = (str) => String(str).replace(/[\r\n]/g, ' ').slice(0, 1000);
     const safeJobTitle = sanitize(jobTitle);
@@ -41,11 +65,6 @@ Deno.serve(async (req) => {
     const safeBudget = sanitize(budget || '');
     const safeTimeline = sanitize(timeline || '');
     const safeTradeCategory = sanitize(tradeCategory || '');
-
-    // Authorize: User must be the customer making the request
-    if (user.email !== customerEmail) {
-      return Response.json({ error: 'Forbidden: You can only submit quote requests for yourself' }, { status: 403 });
-    }
 
     // Create QuoteRequest record in database
     const quoteRequest = await base44.asServiceRole.entities.QuoteRequest.create({
