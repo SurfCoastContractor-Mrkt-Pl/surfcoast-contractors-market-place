@@ -1,4 +1,5 @@
 import Stripe from 'npm:stripe@14.21.0';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
@@ -8,7 +9,19 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const base44 = createClientFromRequest(req);
     const { payerEmail, payerName, payerType, jobId, jobTitle, idempotencyKey } = await req.json();
+
+    // Verify user is authenticated
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized: User must be logged in' }, { status: 401 });
+    }
+
+    // Verify payerEmail matches authenticated user
+    if (payerEmail !== user.email) {
+      return Response.json({ error: 'Unauthorized: Email mismatch' }, { status: 403 });
+    }
 
     if (!payerEmail || !payerName || !payerType || !jobId || !jobTitle) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
