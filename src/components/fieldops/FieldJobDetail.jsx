@@ -4,7 +4,7 @@ import {
   ArrowLeft, Phone, MessageSquare, MapPin, Camera,
   CheckCircle, Clock, DollarSign, FileText, Upload,
   User, AlertCircle, Send, X, Image, ChevronRight,
-  Navigation, Star
+  Navigation, Star, Download, Loader
 } from 'lucide-react';
 
 const ACTION_BUTTONS = [
@@ -22,6 +22,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const [message, setMessage] = useState('');
   const [sendingMsg, setSendingMsg] = useState(false);
   const [completionNotes, setCompletionNotes] = useState('');
+  const [downloadingInvoice, setDownloadingInvoice] = useState(false);
   const fileInputRef = useRef();
 
   const handlePhotoUpload = async (e) => {
@@ -97,6 +98,32 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
     setSaving(false);
   };
 
+  const handleDownloadInvoice = async () => {
+    setDownloadingInvoice(true);
+    try {
+      const response = await base44.functions.invoke('generateFieldJobInvoice', {
+        scope_id: scope.id
+      });
+
+      if (response?.data) {
+        // If response contains blob data, download it
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `invoice_${scope.id}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      alert('Failed to download invoice. Please try again.');
+    }
+    setDownloadingInvoice(false);
+  };
+
   const payout = scope.cost_amount ? (scope.cost_amount * 0.82).toFixed(2) : null;
 
   return (
@@ -140,7 +167,26 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
 
         {/* Financial Summary */}
         <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">Financials</p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Financials</p>
+            <button
+              onClick={handleDownloadInvoice}
+              disabled={downloadingInvoice}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg font-semibold text-xs transition-colors"
+            >
+              {downloadingInvoice ? (
+                <>
+                  <Loader className="w-3 h-3 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="w-3 h-3" />
+                  Invoice
+                </>
+              )}
+            </button>
+          </div>
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-slate-400 text-sm">Job Amount</span>
