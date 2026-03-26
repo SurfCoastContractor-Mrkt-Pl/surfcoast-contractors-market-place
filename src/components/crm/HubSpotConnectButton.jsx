@@ -3,16 +3,14 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Loader, CheckCircle, Link as LinkIcon } from 'lucide-react';
 
-const CONNECTOR_ID = 'hubspot-crm-contractors-vendors';
-
-export default function HubSpotConnectButton({ onConnected }) {
+export default function HubSpotConnectButton({ connectorName = "-build as needed", onConnected }) {
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(false);
 
   const handleConnect = async () => {
     setLoading(true);
     try {
-      const url = await base44.connectors.connectAppUser(CONNECTOR_ID);
+      const url = await base44.connectors.connectAppUser(connectorName);
       const popup = window.open(url, '_blank', 'width=600,height=700');
       
       // Poll for completion
@@ -33,8 +31,12 @@ export default function HubSpotConnectButton({ onConnected }) {
   };
 
   const handleDisconnect = async () => {
-    await base44.connectors.disconnectAppUser(CONNECTOR_ID);
-    setConnected(false);
+    try {
+      await base44.connectors.disconnectAppUser(connectorName);
+      setConnected(false);
+    } catch (error) {
+      console.error('HubSpot disconnection failed:', error);
+    }
   };
 
   return (
@@ -47,7 +49,7 @@ export default function HubSpotConnectButton({ onConnected }) {
             variant="outline"
             size="sm"
             onClick={handleDisconnect}
-            className="text-red-600 hover:text-red-700"
+            className="text-red-600 hover:text-red-700 ml-auto"
           >
             Disconnect
           </Button>
