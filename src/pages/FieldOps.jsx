@@ -42,6 +42,11 @@ export default function FieldOps() {
   useEffect(() => {
     const init = async () => {
       try {
+        const isAuthed = await base44.auth.isAuthenticated();
+        if (!isAuthed) {
+          setLoading(false);
+          return;
+        }
         const me = await base44.auth.me();
         setUser(me);
         if (me) {
@@ -54,7 +59,9 @@ export default function FieldOps() {
             setNotifCount(unread?.length || 0);
           } catch {}
         }
-      } catch {}
+      } catch (e) {
+        console.error('FieldOps auth error:', e);
+      }
       setLoading(false);
     };
     init();
