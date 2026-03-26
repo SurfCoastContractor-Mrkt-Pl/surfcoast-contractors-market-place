@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 
 export default function AdminDashboard() {
@@ -200,6 +201,7 @@ export default function AdminDashboard() {
               { key: 'contractors', label: 'Contractors', icon: HardHat },
               { key: 'reviews', label: 'Reviews', icon: Star },
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
+              { key: 'field_ops', label: 'Field Ops', icon: Briefcase },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -406,6 +408,22 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* FIELD OPS */}
+        {activeTab === 'field_ops' && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Briefcase className="w-12 h-12 text-blue-400 mb-4" />
+            <h2 className="text-xl font-bold text-white mb-2">Admin Field Ops</h2>
+            <p className="text-slate-400 text-sm mb-6">Impersonate any contractor and view their Field Ops dashboard.</p>
+            <Link
+              to="/adminfieldops"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
+            >
+              <Briefcase className="w-4 h-4" />
+              Open Admin Field Ops
+            </Link>
           </div>
         )}
 
