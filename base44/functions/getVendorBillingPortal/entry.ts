@@ -28,8 +28,8 @@ Deno.serve(async (req) => {
 
     const shop = shops[0];
 
-    // Verify the authenticated user owns this shop
-    if (shop.owner_email !== user.email) {
+    // Verify the authenticated user owns this shop (use 'email' field from MarketShop schema)
+    if (shop.email !== user.email) {
       return Response.json({ error: 'Forbidden: You do not own this shop' }, { status: 403 });
     }
 

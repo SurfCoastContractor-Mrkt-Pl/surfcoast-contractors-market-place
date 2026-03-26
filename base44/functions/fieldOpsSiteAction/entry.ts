@@ -18,6 +18,11 @@ Deno.serve(async (req) => {
     const scope = scopes?.[0];
     if (!scope) return Response.json({ error: 'Scope not found' }, { status: 404 });
 
+    // Verify ownership: only the assigned contractor can perform actions
+    if (scope.contractor_email !== user.email) {
+      return Response.json({ error: 'Forbidden: You are not assigned to this job' }, { status: 403 });
+    }
+
     const now = new Date().toISOString();
     let updateData = {};
     let emailSubject = '';

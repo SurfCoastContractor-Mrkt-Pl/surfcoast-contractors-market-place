@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
     // within its 5-minute tolerance window. We do not add our own timestamp check
     // here because it would reject legitimate delayed/retried webhook deliveries.
     
-    // Create base44 client after auth (webhook may not have auth context)
+    // Create base44 client for database operations (webhook doesn't have auth context)
     const base44 = createClientFromRequest(req);
 
     // Check idempotency (database-backed)
