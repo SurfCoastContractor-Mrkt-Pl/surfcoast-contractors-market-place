@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { getErrorMessage, logError } from '@/lib/errorHandler';
 import QuoteWizardStep1 from '@/components/quote/QuoteWizardStep1';
 import QuoteWizardStep2 from '@/components/quote/QuoteWizardStep2';
 import QuoteWizardStep3 from '@/components/quote/QuoteWizardStep3';
@@ -20,6 +21,7 @@ export default function QuoteRequestWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [contractors, setContractors] = useState([]);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     jobTitle: '',
     description: '',
@@ -41,7 +43,8 @@ export default function QuoteRequestWizard() {
         const data = await base44.entities.Contractor.list();
         setContractors(data || []);
       } catch (err) {
-        console.error('Error fetching contractors:', err);
+        logError('QuoteRequestWizard.fetchContractors', err);
+        setError('Unable to load contractors. Please refresh and try again.');
       }
     };
     fetchContractors();
@@ -61,6 +64,7 @@ export default function QuoteRequestWizard() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
+    setError(null);
     try {
       const response = await base44.functions.invoke('submitQuoteRequest', {
         jobTitle: formData.jobTitle,
@@ -80,11 +84,11 @@ export default function QuoteRequestWizard() {
       if (response.data?.success) {
         navigate('/Success?type=quote');
       } else {
-        alert('Failed to submit quote request');
+        setError('Failed to submit quote request. Please try again.');
       }
     } catch (err) {
-      console.error('Submission error:', err);
-      alert('Error submitting quote request');
+      logError('QuoteRequestWizard.handleSubmit', err);
+      setError(getErrorMessage(err));
     } finally {
       setSubmitting(false);
     }
@@ -118,6 +122,22 @@ export default function QuoteRequestWizard() {
             ))}
           </div>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+            <div className="text-red-600 mt-0.5">⚠️</div>
+            <div>
+              <p className="text-red-900 font-semibold text-sm mb-2">{error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="text-red-600 hover:text-red-700 text-sm font-medium"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Step Content */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
