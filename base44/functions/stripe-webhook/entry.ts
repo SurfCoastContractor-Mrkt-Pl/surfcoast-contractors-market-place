@@ -406,6 +406,24 @@ async function handleCheckoutSessionCompleted(session, base44) {
   try {
     console.log(`Checkout session completed: ${session.id}, mode: ${session.mode}, payment status: ${session.payment_status}`);
 
+    // Handle escrow funding — mark escrow as funded and store PaymentIntent ID
+    if (session.metadata?.type === 'escrow' && session.metadata?.escrow_id) {
+      const escrowId = session.metadata.escrow_id;
+      const paymentIntentId = session.payment_intent;
+      if (paymentIntentId) {
+        // Capture deadline is 7 days from authorization
+        const captureDeadline = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+        await base44.asServiceRole.entities.EscrowPayment.update(escrowId, {
+          status: 'funded',
+          stripe_payment_intent_id: paymentIntentId,
+          funded_at: new Date().toISOString(),
+          capture_deadline: captureDeadline,
+        });
+        console.log(`Escrow ${escrowId} funded. PaymentIntent: ${paymentIntentId}. Capture deadline: ${captureDeadline}`);
+      }
+      return;
+    }
+
     // Handle facilitation setup session — no payment, just card saved
     if (session.mode === 'setup' && session.metadata?.payment_model === 'facilitation') {
       const shopId = session.metadata?.shop_id;
