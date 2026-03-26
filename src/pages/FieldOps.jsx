@@ -27,6 +27,7 @@ export default function FieldOps() {
   const [activeTab, setActiveTab] = useState('jobs');
   const [user, setUser] = useState(null);
   const [contractor, setContractor] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
@@ -53,6 +54,7 @@ export default function FieldOps() {
         const me = await base44.auth.me();
         setUser(me);
         if (me) {
+          if (me.role === 'admin') setIsAdmin(true);
           const contractors = await base44.entities.Contractor.filter({ email: me.email });
           if (contractors?.length > 0) setContractor(contractors[0]);
 
@@ -82,9 +84,10 @@ export default function FieldOps() {
   }
 
   // Check badge-based access — Field Ops requires at least Badge Tier 3 (5 unique customers)
+  // Admins bypass all tier/contractor requirements for testing
   const highestBadge = getHighestBadge(contractor?.unique_customers_count || 0);
-  const hasFieldOpsAccess = (highestBadge?.tier || 0) >= 3;
-  const hasBreakerAccess = (highestBadge?.tier || 0) >= 3;
+  const hasFieldOpsAccess = isAdmin || (highestBadge?.tier || 0) >= 3;
+  const hasBreakerAccess = isAdmin || (highestBadge?.tier || 0) >= 3;
   const NAV_TABS = hasBreakerAccess
     ? [...BASE_NAV_TABS, BREAKER_TAB]
     : BASE_NAV_TABS;
@@ -97,7 +100,7 @@ export default function FieldOps() {
     );
   }
 
-  if (!user || !contractor) {
+  if (!user || (!contractor && !isAdmin)) {
     return (
       <div className="fixed inset-0 bg-slate-900 flex items-center justify-center px-6">
         <div className="text-center text-white max-w-sm">
@@ -116,8 +119,29 @@ export default function FieldOps() {
     );
   }
 
+  // Admin test mode — create a mock contractor shell if no contractor profile exists
+  const effectiveContractor = contractor || {
+    name: user?.full_name || 'Admin Test',
+    email: user?.email,
+    availability_status: 'available',
+    unique_customers_count: 999,
+    photo_url: null,
+    line_of_work: 'admin_test_mode',
+  };
+
   return (
     <div className="fixed inset-0 bg-slate-950 flex flex-col overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
+      {/* Admin Test Mode Banner */}
+      {isAdmin && !contractor && (
+        <div className="bg-amber-600 text-white text-xs font-bold text-center py-1.5 px-4 flex-shrink-0">
+          ⚠️ ADMIN TEST MODE — No contractor profile linked to your account
+        </div>
+      )}
+      {isAdmin && contractor && (
+        <div className="bg-amber-700 text-white text-xs font-bold text-center py-1.5 px-4 flex-shrink-0">
+          🔧 ADMIN TEST MODE — Tier restrictions bypassed
+        </div>
+      )}
       {/* Status Bar */}
       <div className="bg-slate-900 px-4 pt-safe-top pb-2 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-2">
@@ -142,34 +166,34 @@ export default function FieldOps() {
       <div className="bg-slate-900 px-4 py-3 flex-shrink-0 border-b border-slate-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden flex-shrink-0">
-            {contractor.photo_url
-              ? <img src={contractor.photo_url} alt="" className="w-full h-full object-cover" />
-              : <span className="text-white font-bold text-sm">{contractor.name?.charAt(0)}</span>
+            {effectiveContractor.photo_url
+              ? <img src={effectiveContractor.photo_url} alt="" className="w-full h-full object-cover" />
+              : <span className="text-white font-bold text-sm">{effectiveContractor.name?.charAt(0)}</span>
             }
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white font-semibold text-sm truncate">{contractor.name}</p>
+            <p className="text-white font-semibold text-sm truncate">{effectiveContractor.name}</p>
             <p className="text-slate-400 text-xs truncate capitalize">
-              {contractor.line_of_work?.replace(/_/g, ' ') || contractor.trade_specialty || 'Contractor'}
+              {effectiveContractor.line_of_work?.replace(/_/g, ' ') || effectiveContractor.trade_specialty || 'Contractor'}
             </p>
           </div>
           <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            contractor.availability_status === 'available' ? 'bg-green-900 text-green-400' :
-            contractor.availability_status === 'booked' ? 'bg-yellow-900 text-yellow-400' :
+            effectiveContractor.availability_status === 'available' ? 'bg-green-900 text-green-400' :
+            effectiveContractor.availability_status === 'booked' ? 'bg-yellow-900 text-yellow-400' :
             'bg-slate-700 text-slate-400'
           }`}>
-            {contractor.availability_status || 'Available'}
+            {effectiveContractor.availability_status || 'Available'}
           </div>
         </div>
       </div>
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto overscroll-contain">
-        {activeTab === 'jobs' && <FieldJobsList contractor={contractor} user={user} />}
-        {activeTab === 'schedule' && <FieldSchedule contractor={contractor} user={user} />}
-        {activeTab === 'invoices' && <FieldInvoices contractor={contractor} user={user} />}
-        {activeTab === 'profile' && <FieldProfile contractor={contractor} user={user} onUpdate={setContractor} />}
-        {activeTab === 'breaker' && <FieldOpsBreakerView contractor={contractor} user={user} />}
+        {activeTab === 'jobs' && <FieldJobsList contractor={effectiveContractor} user={user} />}
+        {activeTab === 'schedule' && <FieldSchedule contractor={effectiveContractor} user={user} />}
+        {activeTab === 'invoices' && <FieldInvoices contractor={effectiveContractor} user={user} />}
+        {activeTab === 'profile' && <FieldProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
+        {activeTab === 'breaker' && <FieldOpsBreakerView contractor={effectiveContractor} user={user} />}
       </div>
 
       {/* Bottom Navigation */}
