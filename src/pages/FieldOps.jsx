@@ -91,7 +91,7 @@ export default function FieldOps() {
           <h1 className="text-2xl font-bold mb-2">Field Ops</h1>
           <p className="text-slate-400 mb-6">Sign in with a contractor account to access the Field Ops system.</p>
           <button
-            onClick={() => base44.auth.redirectToLogin('/FieldOps')}
+            onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/FieldOps`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
           >
             Sign In
