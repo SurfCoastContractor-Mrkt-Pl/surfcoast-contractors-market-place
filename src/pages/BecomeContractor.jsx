@@ -11,12 +11,13 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle, MapPin } from 'lucide-react';
+import { ArrowLeft, HardHat, Loader2, CheckCircle, Plus, X, Upload, AlertTriangle, MapPin, ChevronRight } from 'lucide-react';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import StripeConnectOnboarding from '@/components/contractor/StripeConnectOnboarding';
+import OnboardingProgressIndicator from '@/components/contractor/OnboardingProgressIndicator';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 const trades = [
@@ -33,11 +34,14 @@ const trades = [
   { id: 'other', name: 'Other' },
 ];
 
+const ONBOARDING_STEPS = ['Basic Info', 'Professional', 'Identity', 'Credentials', 'Policies'];
+
 export default function BecomeContractor() {
   const navigate = useNavigate();
   const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true';
   const [authChecked, setAuthChecked] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     if (isPreview) { setAuthChecked(true); return; }
@@ -147,39 +151,98 @@ export default function BecomeContractor() {
     },
   });
 
+  const validateStep = (step) => {
+    switch (step) {
+      case 1: // Basic Info
+        if (!formData.name?.trim()) {
+          setDobError('Full name is required');
+          return false;
+        }
+        if (!formData.date_of_birth) {
+          setDobError('Date of birth is required');
+          return false;
+        }
+        if (age === null || age < 13) {
+          setDobError('You must be at least 13 years old to register as a contractor');
+          return false;
+        }
+        if (!formData.location?.trim()) {
+          setDobError('Location is required');
+          return false;
+        }
+        setDobError('');
+        return true;
+
+      case 2: // Professional
+        if (!formData.line_of_work) {
+          setDobError('Please select your line of work');
+          return false;
+        }
+        if (formData.line_of_work === 'other' && !formData.line_of_work_other?.trim()) {
+          setDobError('Please specify your line of work');
+          return false;
+        }
+        setDobError('');
+        return true;
+
+      case 3: // Identity
+        if (!formData.id_document_url) {
+          setDobError('Government-issued ID is required');
+          return false;
+        }
+        if (!formData.face_photo_url) {
+          setDobError('Face photo is required');
+          return false;
+        }
+        setDobError('');
+        return true;
+
+      case 4: // Credentials (skip for minors unless they have docs)
+        if (isMinor) {
+          const pd = formData.parental_consent_docs;
+          if (!pd?.parent_name || !pd?.parent_email || !pd?.parent_phone) {
+            setDobError('Please fill in parent/guardian contact information');
+            return false;
+          }
+          if (!pd?.parental_consent_form_url || !pd?.child_id_url || !pd?.parent_id_url ||
+              !pd?.proof_of_relationship_url || !pd?.child_proof_of_residence_url || !pd?.parent_proof_of_residence_url) {
+            setDobError('Please upload all required parental consent documents');
+            return false;
+          }
+        }
+        setDobError('');
+        return true;
+
+      case 5: // Policies
+        setDobError('');
+        return true;
+
+      default:
+        return true;
+    }
+  };
+
+  const handleNextStep = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(currentStep + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.date_of_birth) {
-      setDobError('Date of birth is required');
+    if (!validateStep(currentStep)) {
       return;
     }
-    if (age === null || age < 13) {
-       setDobError('You must be at least 13 years old to register as a contractor');
-       return;
-     }
-     if (!formData.line_of_work) {
-       setDobError('Please select your line of work');
-       return;
-     }
-     if (formData.line_of_work === 'other' && !formData.line_of_work_other?.trim()) {
-       setDobError('Please specify your line of work');
-       return;
-     }
-    if (isMinor) {
-      const pd = formData.parental_consent_docs;
-      if (!pd?.parent_name || !pd?.parent_email || !pd?.parent_phone) {
-        setDobError('Please fill in parent/guardian contact information');
-        return;
-      }
-      if (!pd?.parental_consent_form_url || !pd?.child_id_url || !pd?.parent_id_url ||
-          !pd?.proof_of_relationship_url || !pd?.child_proof_of_residence_url || !pd?.parent_proof_of_residence_url) {
-        setDobError('Please upload all required parental consent documents');
-        return;
-      }
-    }
-    
+
     if (!isPreview) {
-      // Verify user is authenticated before submitting
       try {
         const user = await base44.auth.me();
         if (!user?.email) {
@@ -425,101 +488,112 @@ export default function BecomeContractor() {
           .contractor-form .border-slate-200 { border-color: rgba(255,255,255,0.15) !important; }
           .contractor-form [data-radix-select-trigger] { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
         `}</style>
-        <form onSubmit={handleSubmit} className="contractor-form">
-          {/* Photo & Basic Info */}
-          <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
-            <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Basic Information</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="name">Full Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
-                  required
-                  className="mt-1.5"
-                />
-              </div>
-              <div>
-                <Label htmlFor="dob">Date of Birth * <span className="text-slate-400 font-normal">(must be 13+)</span></Label>
-                <Input
-                  id="dob"
-                  type="date"
-                  value={formData.date_of_birth}
-                  onChange={(e) => { handleChange('date_of_birth', e.target.value); setDobError(''); }}
-                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0]}
-                  className="mt-1.5"
-                />
-                {dobError && <p className="text-xs text-red-600 mt-1">{dobError}</p>}
-                {isMinor && (
-                  <p className="text-xs text-orange-600 mt-1 font-medium">⚠ Parental consent required — see section below</p>
-                )}
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
+
+        {/* Progress Indicator */}
+        <OnboardingProgressIndicator 
+          currentStep={currentStep} 
+          totalSteps={ONBOARDING_STEPS.length} 
+          steps={ONBOARDING_STEPS}
+        />
+
+        <form onSubmit={currentStep === ONBOARDING_STEPS.length ? handleSubmit : (e) => { e.preventDefault(); handleNextStep(); }} className="contractor-form">
+          {/* STEP 1: Basic Info */}
+          {currentStep === 1 && (
+            <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+              <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Basic Information</h2>
+              
+              <div className="space-y-4">
                 <div>
-                  <Label htmlFor="email">Email *</Label>
+                  <Label htmlFor="name">Full Name *</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange('email', e.target.value)}
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => handleChange('name', e.target.value)}
                     required
                     className="mt-1.5"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="dob">Date of Birth * <span className="text-slate-400 font-normal">(must be 13+)</span></Label>
                   <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleChange('phone', e.target.value)}
+                    id="dob"
+                    type="date"
+                    value={formData.date_of_birth}
+                    onChange={(e) => { handleChange('date_of_birth', e.target.value); setDobError(''); }}
+                    max={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0]}
+                    className="mt-1.5"
+                  />
+                  {dobError && <p className="text-xs text-red-600 mt-1">{dobError}</p>}
+                  {isMinor && (
+                    <p className="text-xs text-orange-600 mt-1 font-medium">⚠ Parental consent required — see later steps</p>
+                  )}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleChange('email', e.target.value)}
+                      required
+                      className="mt-1.5"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleChange('phone', e.target.value)}
+                      className="mt-1.5"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label htmlFor="location">Location *</Label>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={detectLocation}
+                      disabled={detectionLoading}
+                      className="text-xs text-blue-600 hover:text-blue-700"
+                    >
+                      {detectionLoading ? (
+                        <>
+                          <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                          Detecting...
+                        </>
+                      ) : (
+                        <>
+                          <MapPin className="w-3 h-3 mr-1" />
+                          Auto-Detect
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <Input
+                    id="location"
+                    value={formData.location}
+                    onChange={(e) => handleChange('location', e.target.value)}
+                    placeholder="City, State"
+                    required
                     className="mt-1.5"
                   />
                 </div>
               </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="location">Location *</Label>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={detectLocation}
-                    disabled={detectionLoading}
-                    className="text-xs text-blue-600 hover:text-blue-700"
-                  >
-                    {detectionLoading ? (
-                      <>
-                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                        Detecting...
-                      </>
-                    ) : (
-                      <>
-                        <MapPin className="w-3 h-3 mr-1" />
-                        Auto-Detect
-                      </>
-                    )}
-                  </Button>
-                </div>
-                <Input
-                  id="location"
-                  value={formData.location}
-                  onChange={(e) => handleChange('location', e.target.value)}
-                  placeholder="City, State"
-                  required
-                  className="mt-1.5"
-                />
-              </div>
             </div>
-          </div>
+          )}
 
-          {/* Professional Info */}
-          <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
-            <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Professional Details</h2>
-            
-            <div className="space-y-6">
+          {/* STEP 2: Professional Info */}
+          {currentStep === 2 && (
+            <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+              <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Professional Details</h2>
+              
+              <div className="space-y-6">
               <div>
                 <LineOfWorkSelector
                   value={formData.line_of_work}
@@ -689,8 +763,15 @@ export default function BecomeContractor() {
                   onCheckedChange={(v) => handleChange('available', v)}
                 />
               </div>
+              </div>
+            </div>
+          )}
 
-              {/* Identity Verification */}
+          {/* STEP 3: Identity Verification */}
+          {currentStep === 3 && (
+            <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+              <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Identity Verification</h2>
+              
               <div className="p-5 rounded-xl border-2 border-blue-200 bg-blue-50 space-y-5">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
@@ -764,8 +845,16 @@ export default function BecomeContractor() {
                     )}
                   </div>
                 </div>
-                </div>
+              </div>
+            </div>
+          )}
 
+          {/* STEP 4: Credentials & Parental Consent */}
+          {currentStep === 4 && (
+            <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+              <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Credentials & Documents</h2>
+              
+              <div className="space-y-6">
                 {/* Credential Documents */}
                 <div>
                   <Label className="text-base font-semibold text-slate-900 block mb-1">Credential Documents</Label>
@@ -789,7 +878,16 @@ export default function BecomeContractor() {
                     age={age}
                   />
                 )}
+              </div>
+            </div>
+          )}
 
+          {/* STEP 5: Policies & Fee Disclosure */}
+          {currentStep === 5 && (
+            <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
+              <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Policies & Acknowledgment</h2>
+              
+              <div className="space-y-6">
                 {/* Platform Fee Disclosure */}
                 <div className="p-5 rounded-xl border-2 border-amber-200 bg-amber-50 space-y-3">
                   <div>
@@ -827,23 +925,45 @@ export default function BecomeContractor() {
                     </label>
                   </div>
                 </div>
+              </div>
             </div>
-          </div>
+          )}
 
-          <button
-            type="submit"
-            disabled={mutation.isPending}
-            style={{ width:"100%", padding:"16px", borderRadius:"12px", border:"none", fontSize:"16px", fontWeight:"700", cursor:mutation.isPending ? "not-allowed" : "pointer", transition:"all 0.2s", minHeight:"52px", background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", color:"#fff", opacity:mutation.isPending ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", boxShadow:"0 4px 24px rgba(217,119,6,0.35)" }}
-          >
-            {mutation.isPending ? (
-              <>
-                <Loader2 style={{ width:"18px", height:"18px", animation:"spin 0.8s linear infinite" }} />
-                Creating Profile...
-              </>
-            ) : (
-              'Create My Profile →'
+          {/* Error Message */}
+          {dobError && (
+            <div className="p-4 mb-6 rounded-lg bg-red-50 border border-red-200">
+              <p className="text-sm text-red-700">{dobError}</p>
+            </div>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="flex gap-3">
+            {currentStep > 1 && (
+              <button
+                type="button"
+                onClick={handlePrevStep}
+                style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"1px solid rgba(255,255,255,0.2)", fontSize:"16px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"52px", background:"rgba(255,255,255,0.07)", color:"#fff" }}
+              >
+                ← Back
+              </button>
             )}
-          </button>
+            <button
+              type="submit"
+              disabled={mutation.isPending}
+              style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"none", fontSize:"16px", fontWeight:"700", cursor:mutation.isPending ? "not-allowed" : "pointer", transition:"all 0.2s", minHeight:"52px", background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", color:"#fff", opacity:mutation.isPending ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", boxShadow:"0 4px 24px rgba(217,119,6,0.35)" }}
+            >
+              {mutation.isPending ? (
+                <>
+                  <Loader2 style={{ width:"18px", height:"18px", animation:"spin 0.8s linear infinite" }} />
+                  Creating Profile...
+                </>
+              ) : currentStep === ONBOARDING_STEPS.length ? (
+                'Create My Profile →'
+              ) : (
+                <>Next <ChevronRight style={{ width:"18px", height:"18px" }} /></>
+              )}
+            </button>
+          </div>
         </form>
       </div>
 
