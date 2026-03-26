@@ -133,9 +133,9 @@ export default function FieldOps() {
   return (
     <div className="fixed inset-0 bg-slate-950 flex flex-col lg:flex-row overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Admin Test Mode Banner */}
-      {(isAdmin && !contractor || isAdmin && contractor) && (
-        <div className={`${isAdmin && !contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4 flex-shrink-0 lg:col-span-full w-full`}>
-          {isAdmin && !contractor ? '⚠️ ADMIN TEST MODE — No contractor profile linked to your account' : '🔧 ADMIN TEST MODE — Tier restrictions bypassed'}
+      {isAdmin && (
+        <div className={`${isAdmin && !contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4 flex-shrink-0 w-full`}>
+          {!contractor ? '⚠️ ADMIN TEST MODE — No contractor profile linked to your account' : '🔧 ADMIN TEST MODE — Tier restrictions bypassed'}
         </div>
       )}
 
