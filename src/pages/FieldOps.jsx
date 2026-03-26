@@ -4,21 +4,24 @@ import { Link } from 'react-router-dom';
 import {
   Briefcase, Clock, DollarSign, CheckCircle, MapPin,
   Camera, FileText, MessageSquare, Calendar, ChevronRight,
-  Wifi, WifiOff, Bell, User, Home, Plus, Menu, X
+  Wifi, WifiOff, Bell, User, Home, Plus, Menu, X, Waves
 } from 'lucide-react';
 import FieldJobsList from '@/components/fieldops/FieldJobsList';
 import FieldSchedule from '@/components/fieldops/FieldSchedule';
 import FieldInvoices from '@/components/fieldops/FieldInvoices';
 import FieldProfile from '@/components/fieldops/FieldProfile';
 import FieldOpsAccessGate from '@/components/fieldops/FieldOpsAccessGate';
+import FieldOpsBreakerView from '@/components/fieldops/FieldOpsBreakerView';
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
 
-const NAV_TABS = [
+const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
   { id: 'schedule', label: 'Schedule', icon: Calendar },
   { id: 'invoices', label: 'Invoices', icon: DollarSign },
   { id: 'profile', label: 'Profile', icon: User },
 ];
+
+const BREAKER_TAB = { id: 'breaker', label: 'Field Ops', icon: Waves };
 
 export default function FieldOps() {
   const [activeTab, setActiveTab] = useState('jobs');
@@ -81,6 +84,10 @@ export default function FieldOps() {
   // Check badge-based access — Field Ops requires at least Badge Tier 3 (5 unique customers)
   const highestBadge = getHighestBadge(contractor?.unique_customers_count || 0);
   const hasFieldOpsAccess = (highestBadge?.tier || 0) >= 3;
+  const hasBreakerAccess = (highestBadge?.tier || 0) >= 3;
+  const NAV_TABS = hasBreakerAccess
+    ? [...BASE_NAV_TABS, BREAKER_TAB]
+    : BASE_NAV_TABS;
 
   if (contractor && !hasFieldOpsAccess) {
     return (
@@ -162,6 +169,7 @@ export default function FieldOps() {
         {activeTab === 'schedule' && <FieldSchedule contractor={contractor} user={user} />}
         {activeTab === 'invoices' && <FieldInvoices contractor={contractor} user={user} />}
         {activeTab === 'profile' && <FieldProfile contractor={contractor} user={user} onUpdate={setContractor} />}
+        {activeTab === 'breaker' && <FieldOpsBreakerView contractor={contractor} user={user} />}
       </div>
 
       {/* Bottom Navigation */}
@@ -170,17 +178,22 @@ export default function FieldOps() {
           {NAV_TABS.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+            const isBreaker = tab.id === 'breaker';
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 flex flex-col items-center py-3 gap-1 transition-colors ${
-                  isActive ? 'text-blue-400' : 'text-slate-500'
+                  isActive
+                    ? isBreaker ? 'text-blue-300' : 'text-blue-400'
+                    : 'text-slate-500'
                 }`}
               >
                 <Icon className="w-6 h-6" />
                 <span className="text-[10px] font-medium">{tab.label}</span>
-                {isActive && <div className="w-1 h-1 rounded-full bg-blue-400" />}
+                {isActive && (
+                  <div className={`w-1 h-1 rounded-full ${isBreaker ? 'bg-blue-300' : 'bg-blue-400'}`} />
+                )}
               </button>
             );
           })}
