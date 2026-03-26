@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
     }
 
     if (emailSubject) {
-      await base44.integrations.Core.SendEmail({
+      await base44.asServiceRole.integrations.Core.SendEmail({
         to: event_type === 'quote_provided' ? quote.customer_email : quote.contractor_email,
         subject: emailSubject,
         body: emailBody

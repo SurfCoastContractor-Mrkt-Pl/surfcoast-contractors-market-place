@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const LOCATION_MATCH_KEYWORDS = {
   'california': ['ca', 'calif', 'los angeles', 'san francisco', 'san diego'],
@@ -150,8 +150,9 @@ Deno.serve(async (req) => {
     // Send email notifications (batch them to avoid rate limits)
     for (const record of matchRecords) {
       try {
-        await base44.integrations.Core.SendEmail({
+        await base44.asServiceRole.integrations.Core.SendEmail({
           to: record.contractor_email,
+          from_name: 'SurfCoast Marketplace',
           subject: `New ${record.job_title} Project Match in Your Area`,
           body: `Hi,\n\nWe found a project that matches your expertise!\n\nProject: ${record.job_title}\nReason: ${record.match_reason}\n\nCheck it out and submit a quote if interested: ${getJobUrl()}\n\nBest,\nSurfCoast Marketplace`,
         });

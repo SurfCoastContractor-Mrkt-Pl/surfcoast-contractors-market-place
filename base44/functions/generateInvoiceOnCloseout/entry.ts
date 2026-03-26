@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
@@ -152,10 +152,10 @@ Deno.serve(async (req) => {
     yPos += 8;
     doc.setFontSize(9);
     doc.setTextColor(100, 100, 100);
-    const platformFeePercentage = scope.platform_fee_percentage || 3;
+    const platformFeePercentage = scope.platform_fee_percentage || 18;
     const platformFee = (totalCost * platformFeePercentage) / 100;
     doc.text('Platform Facilitation Fee:', tableLeft, yPos);
-    doc.text(`-$${platformFee.toFixed(2)} (${platformFeePercentage}%)`, tableLeft + colWidth, yPos);
+    doc.text(`-$${((totalCost * (scope.platform_fee_percentage || 18)) / 100).toFixed(2)} (${scope.platform_fee_percentage || 18}%)`, tableLeft + colWidth, yPos);
 
     // Contractor payout
     yPos += 8;
@@ -183,7 +183,7 @@ Deno.serve(async (req) => {
     // Upload PDF to storage
     let fileUrl = '';
     try {
-      const uploadRes = await base44.integrations.Core.UploadFile({
+      const uploadRes = await base44.asServiceRole.integrations.Core.UploadFile({
         file: `data:application/pdf;base64,${pdfBase64}`,
       });
       fileUrl = uploadRes.file_url;
@@ -195,11 +195,12 @@ Deno.serve(async (req) => {
     // Send email to contractor
     try {
       const jobCost = scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount;
-      const platformFeePercentage = scope.platform_fee_percentage || 3;
+      const platformFeePercentage = scope.platform_fee_percentage || 18;
       const platformFee = (jobCost * platformFeePercentage) / 100;
       const payoutAmount = jobCost - platformFee;
-      await base44.integrations.Core.SendEmail({
+      await base44.asServiceRole.integrations.Core.SendEmail({
         to: scope.contractor_email,
+        from_name: 'SurfCoast Marketplace',
         subject: `Invoice: ${scope.job_title}`,
         body: `Hello ${scope.contractor_name},\n\nYour job "${scope.job_title}" has been closed out.\n\nJob Amount: $${jobCost.toFixed(2)}\nPlatform Facilitation Fee (${platformFeePercentage}%): -$${platformFee.toFixed(2)}\nYour Payout: $${payoutAmount.toFixed(2)}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
       });
@@ -210,8 +211,9 @@ Deno.serve(async (req) => {
     // Send email to client
     try {
       const jobCost = scope.cost_type === 'hourly' ? scope.cost_amount * scope.estimated_hours : scope.cost_amount;
-      await base44.integrations.Core.SendEmail({
+      await base44.asServiceRole.integrations.Core.SendEmail({
         to: scope.customer_email,
+        from_name: 'SurfCoast Marketplace',
         subject: `Invoice: ${scope.job_title}`,
         body: `Hello ${scope.customer_name},\n\nYour job "${scope.job_title}" has been completed.\n\nTotal Amount: $${jobCost.toFixed(2)}\n\nThank you for using SurfCoast!\n\nSurfCoast Contractor Market Place`,
       });

@@ -1,5 +1,5 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
-import Stripe from 'npm:stripe@17.0.0';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import Stripe from 'npm:stripe@17.5.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     }
 
     // Get contractor
-    const contractors = await base44.entities.Contractor.filter({ email: user.email });
+    const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: user.email });
     const contractor = contractors[0];
 
     if (!contractor) {
@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     });
 
     // Save account ID to contractor
-    await base44.entities.Contractor.update(contractor.id, {
+    await base44.asServiceRole.entities.Contractor.update(contractor.id, {
       stripe_connected_account_id: account.id
     });
 
