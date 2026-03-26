@@ -13,10 +13,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing scope_id or action' }, { status: 400 });
     }
 
-    // Fetch scope
-    const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ id: scope_id });
+    // Fetch scope with user context (respects RLS)
+    const scopes = await base44.entities.ScopeOfWork.filter({ id: scope_id });
     const scope = scopes?.[0];
-    if (!scope) return Response.json({ error: 'Scope not found' }, { status: 404 });
+    if (!scope) return Response.json({ error: 'Scope not found', details: 'You do not have access to this scope' }, { status: 404 });
 
     // Verify ownership: only the assigned contractor can perform actions
     if (scope.contractor_email !== user.email) {
@@ -55,8 +55,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unknown action' }, { status: 400 });
     }
 
-    // Update scope
-    await base44.asServiceRole.entities.ScopeOfWork.update(scope_id, updateData);
+    // Update scope with user context (respects RLS and contractor ownership)
+    await base44.entities.ScopeOfWork.update(scope_id, updateData);
 
     // Send email notification to customer
     if (scope.customer_email) {
