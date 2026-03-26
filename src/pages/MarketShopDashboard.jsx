@@ -18,6 +18,7 @@ import LocationRatingForm from '@/components/locations/LocationRatingForm';
 import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay';
 import VendorAnalyticsDashboard from '@/components/marketshop/VendorAnalyticsDashboard';
 import VendorMessagingInbox from '@/components/marketshop/VendorMessagingInbox';
+import CRMSyncPanel from '@/components/crm/CRMSyncPanel';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
@@ -263,6 +264,14 @@ export default function MarketShopDashboard() {
       {/* Stripe Connect / Payouts Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
         <StripeConnectSetup shop={shop} />
+      </div>
+
+      {/* CRM Integration Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
+          <h2 className="text-lg font-bold text-slate-800 mb-4">CRM Integration</h2>
+          <CRMSyncPanel connectorName="-build as needed" userType="marketshop" />
+        </div>
       </div>
 
       {/* Share Your Listing Section - Bottom */}

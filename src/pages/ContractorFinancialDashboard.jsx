@@ -5,6 +5,7 @@ import EarningsSummaryCard from '@/components/contractor/EarningsSummaryCard';
 import JobsCompletedWidget from '@/components/contractor/JobsCompletedWidget';
 import PlatformFeesBreakdown from '@/components/contractor/PlatformFeesBreakdown';
 import RecentPaymentsTable from '@/components/contractor/RecentPaymentsTable';
+import CRMSyncPanel from '@/components/crm/CRMSyncPanel';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, Calendar } from 'lucide-react';
@@ -195,6 +196,12 @@ export default function ContractorFinancialDashboard() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+        </Card>
+
+        {/* CRM Integration */}
+        <Card className="p-6 mb-8">
+          <h3 className="text-lg font-bold text-slate-900 mb-4">CRM Integration</h3>
+          <CRMSyncPanel connectorName="-build as needed" userType="contractor" />
         </Card>
 
         {/* Recent Payouts */}
