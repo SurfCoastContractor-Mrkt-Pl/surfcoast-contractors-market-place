@@ -1,128 +1,162 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Lock, Shield, ChevronRight, Star, CheckCircle, AlertCircle } from 'lucide-react';
-import { BADGE_TIERS, getHighestBadge, getEarnedBadges } from '@/components/badges/ContractorBadges';
+import { Lock, Waves, ChevronRight, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { BADGE_TIERS, getHighestBadge } from '@/components/badges/ContractorBadges';
 
-// Field Ops requires at least Tier 3 "Reliable" badge (5 unique customers)
-// Tiers 1-2 are locked/greyed out — visible but not accessible
-// Top-tier access (Tier 6+) also requires HIS license number
-
-const FIELDOPS_TIERS = [
+// SurfCoast-Waves tier system
+// Each tier is a "wave" progressing toward the highest
+const SURFCOAST_WAVES = [
   {
-    tier: 1,
-    name: 'Newcomer',
-    badgeRequired: 1,
-    description: 'First unique customer',
-    features: ['View assigned jobs', 'Basic job status'],
-    locked: true, // Always locked - just greyed preview
+    id: 'ripple',
+    wave: 1,
+    name: 'Ripple',
+    label: 'SurfCoast Ripple',
+    badgeTierRequired: 1,
+    customersRequired: 1,
+    color: '#64748b',
+    glowColor: 'rgba(100,116,139,0.3)',
+    borderClass: 'border-slate-600',
+    bgClass: 'bg-slate-800/40',
+    emoji: '〰️',
+    description: 'Your first step into the platform',
+    features: ['View assigned jobs', 'Basic job status updates', 'Customer contact info'],
   },
   {
-    tier: 2,
-    name: 'Rising Star',
-    badgeRequired: 3,
-    description: '3 unique customers',
-    features: ['View assigned jobs', 'Basic job status', 'View schedule'],
-    locked: true,
+    id: 'swell',
+    wave: 2,
+    name: 'Swell',
+    label: 'SurfCoast Swell',
+    badgeTierRequired: 2,
+    customersRequired: 3,
+    color: '#0ea5e9',
+    glowColor: 'rgba(14,165,233,0.25)',
+    borderClass: 'border-sky-600',
+    bgClass: 'bg-sky-900/20',
+    emoji: '🌊',
+    description: 'Building momentum with your clients',
+    features: ['All Ripple features', 'Schedule & calendar view', 'Job photo uploads', 'Invoice tracking'],
   },
   {
-    tier: 3,
-    name: 'Reliable',
-    badgeRequired: 5,
-    description: '5 unique customers',
-    features: ['Full job management', 'Schedule view', 'Invoice tracking', 'Photo uploads'],
-    unlocksTier: true,
+    id: 'breaker',
+    wave: 3,
+    name: 'Breaker',
+    label: 'SurfCoast Breaker',
+    badgeTierRequired: 3,
+    customersRequired: 5,
+    color: '#3b82f6',
+    glowColor: 'rgba(59,130,246,0.3)',
+    borderClass: 'border-blue-500',
+    bgClass: 'bg-blue-900/20',
+    emoji: '🏄',
+    description: 'Full Field Ops access unlocked',
+    features: ['All Swell features', 'Full job management', 'Completion requests', 'Field messaging', 'Advanced invoicing'],
+    isFieldOpsUnlock: true, // This is the minimum for Field Ops
   },
   {
-    tier: 4,
-    name: 'Skilled Tradesperson',
-    badgeRequired: 10,
-    description: '10 unique customers',
-    features: ['All Tier 3 features', 'Field messaging', 'Completion requests'],
-    unlocksTier: true,
+    id: 'pipeline',
+    wave: 4,
+    name: 'Pipeline',
+    label: 'SurfCoast Pipeline',
+    badgeTierRequired: 5,
+    customersRequired: 20,
+    color: '#6366f1',
+    glowColor: 'rgba(99,102,241,0.3)',
+    borderClass: 'border-indigo-500',
+    bgClass: 'bg-indigo-900/20',
+    emoji: '🌀',
+    description: 'Elite contractor status achieved',
+    features: ['All Breaker features', 'Priority support', 'Advanced analytics', 'Project milestones'],
   },
   {
-    tier: 5,
-    name: 'Journeyman Pro',
-    badgeRequired: 20,
-    description: '20 unique customers',
-    features: ['All Tier 4 features', 'Advanced invoicing', 'Priority support'],
-    unlocksTier: true,
-  },
-  {
-    tier: 6,
-    name: 'Residential Wave Pro',
-    badgeRequired: 50,
-    description: '50 unique customers + HIS License',
-    features: ['All Tier 5 features', 'Residential Wave module', 'Full Field Ops suite'],
+    id: 'residential_wave',
+    wave: 5,
+    name: 'Residential Wave',
+    label: 'Residential Wave Rider',
+    badgeTierRequired: 6,
+    customersRequired: 50,
+    color: '#f59e0b',
+    glowColor: 'rgba(245,158,11,0.35)',
+    borderClass: 'border-amber-500',
+    bgClass: 'bg-amber-900/20',
+    emoji: '🏆',
+    description: 'Top tier — HIS licensed professionals only',
+    features: ['All Pipeline features', 'Residential Wave module', 'Licensed contractor tools', 'Full Field Ops suite'],
     requiresHIS: true,
-    unlocksTier: true,
   },
 ];
 
-function TierCard({ tierDef, uniqueCustomersCount, isUnlocked, isActive, isHISRequired, hasHIS }) {
-  const badgeInfo = BADGE_TIERS.find(b => b.tier === tierDef.tier);
-  const progress = Math.min(100, Math.round((uniqueCustomersCount / tierDef.badgeRequired) * 100));
-  const missingHIS = isHISRequired && !hasHIS;
+function WaveCard({ waveDef, uniqueCustomersCount, isUnlocked, isCurrentWave, hasHIS }) {
+  const progress = Math.min(100, Math.round((uniqueCustomersCount / waveDef.customersRequired) * 100));
+  const missingHIS = waveDef.requiresHIS && !hasHIS;
+  const fullyUnlocked = isUnlocked && !missingHIS;
 
   return (
-    <div className={`rounded-2xl border p-4 transition-all ${
-      isActive
-        ? 'border-blue-500 bg-blue-900/20'
-        : isUnlocked && !missingHIS
-        ? 'border-slate-600 bg-slate-800/60'
-        : 'border-slate-800 bg-slate-900/40 opacity-50 grayscale'
-    }`}>
-      <div className="flex items-center justify-between mb-3">
+    <div
+      className={`rounded-2xl border p-4 transition-all ${
+        isCurrentWave && fullyUnlocked
+          ? `${waveDef.borderClass} ${waveDef.bgClass}`
+          : fullyUnlocked
+          ? 'border-slate-600 bg-slate-800/50'
+          : 'border-slate-800 bg-slate-900/30 opacity-40 grayscale'
+      }`}
+      style={isCurrentWave && fullyUnlocked ? { boxShadow: `0 0 20px ${waveDef.glowColor}` } : {}}
+    >
+      <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-2">
-          {isUnlocked && !missingHIS ? (
-            <CheckCircle className="w-4 h-4 text-green-400" />
-          ) : (
-            <Lock className="w-4 h-4 text-slate-600" />
-          )}
-          <span className={`text-xs font-bold uppercase tracking-wider ${
-            isActive ? 'text-blue-400' : isUnlocked ? 'text-slate-400' : 'text-slate-600'
-          }`}>
-            Badge Tier {tierDef.tier}
-          </span>
+          <span className="text-xl">{waveDef.emoji}</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <p className={`font-bold text-sm ${fullyUnlocked ? 'text-white' : 'text-slate-600'}`}>
+                {waveDef.label}
+              </p>
+              {isCurrentWave && fullyUnlocked && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: waveDef.color, color: '#fff' }}>
+                  YOUR WAVE
+                </span>
+              )}
+              {waveDef.isFieldOpsUnlock && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-700 text-blue-100">
+                  FIELD OPS UNLOCK
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500">{waveDef.description}</p>
+          </div>
         </div>
-        {isActive && (
-          <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full font-semibold">Active</span>
-        )}
+        {fullyUnlocked
+          ? <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+          : <Lock className="w-4 h-4 text-slate-700 flex-shrink-0 mt-0.5" />
+        }
       </div>
 
-      <p className={`font-bold text-sm mb-1 ${isUnlocked ? 'text-white' : 'text-slate-600'}`}>
-        {tierDef.name}
-      </p>
-      <p className="text-slate-500 text-xs mb-3">{tierDef.description}</p>
-
-      <ul className="space-y-1 mb-3">
-        {tierDef.features.map((f, i) => (
-          <li key={i} className={`text-xs flex items-center gap-1.5 ${isUnlocked ? 'text-slate-300' : 'text-slate-700'}`}>
-            <div className={`w-1 h-1 rounded-full flex-shrink-0 ${isUnlocked ? 'bg-blue-400' : 'bg-slate-700'}`} />
+      <ul className="space-y-1 mb-3 mt-3">
+        {waveDef.features.map((f, i) => (
+          <li key={i} className={`text-xs flex items-center gap-1.5 ${fullyUnlocked ? 'text-slate-300' : 'text-slate-700'}`}>
+            <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: fullyUnlocked ? waveDef.color : '#334155' }} />
             {f}
           </li>
         ))}
       </ul>
 
-      {isHISRequired && (
+      {waveDef.requiresHIS && (
         <div className={`text-xs px-2 py-1.5 rounded-lg flex items-center gap-1.5 mb-3 ${
-          hasHIS ? 'bg-green-900/30 text-green-400' : 'bg-yellow-900/30 text-yellow-400'
+          hasHIS ? 'bg-green-900/30 text-green-400' : 'bg-yellow-900/30 text-yellow-500'
         }`}>
           {hasHIS ? <CheckCircle className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
-          HIS License: {hasHIS ? 'Verified ✓' : 'Required — add in your profile'}
+          HIS License: {hasHIS ? 'Verified ✓' : 'Required — add via your profile'}
         </div>
       )}
 
       {!isUnlocked && (
         <div className="mt-2">
-          <div className="flex justify-between text-xs text-slate-600 mb-1">
-            <span>Progress</span>
-            <span>{uniqueCustomersCount}/{tierDef.badgeRequired} customers</span>
+          <div className="flex justify-between text-xs text-slate-700 mb-1">
+            <span>{uniqueCustomersCount}/{waveDef.customersRequired} customers</span>
+            <span>{progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-slate-800 rounded-full">
             <div
-              className="h-1.5 rounded-full bg-blue-600 transition-all"
-              style={{ width: `${progress}%` }}
+              className="h-1.5 rounded-full transition-all"
+              style={{ width: `${progress}%`, background: waveDef.color }}
             />
           </div>
         </div>
@@ -137,99 +171,92 @@ export default function FieldOpsAccessGate({ contractor }) {
   const highestBadgeTier = highestBadge?.tier || 0;
   const hasHIS = !!contractor?.his_license_number;
 
-  // Minimum badge tier required to access Field Ops at all = Tier 3 (5 unique customers)
-  const MIN_BADGE_TIER = 3;
-  const hasAccess = highestBadgeTier >= MIN_BADGE_TIER;
-  const nextRequired = BADGE_TIERS.find(b => b.threshold > uniqueCustomersCount);
+  // Determine current wave
+  const unlockedWaves = SURFCOAST_WAVES.filter(w => highestBadgeTier >= w.badgeTierRequired);
+  const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
+  const nextWave = SURFCOAST_WAVES.find(w => highestBadgeTier < w.badgeTierRequired);
+
+  // Field Ops requires Breaker (wave 3 = badge tier 3 = 5 customers)
+  const BREAKER_WAVE = SURFCOAST_WAVES.find(w => w.id === 'breaker');
+  const toBreaker = Math.max(0, BREAKER_WAVE.customersRequired - uniqueCustomersCount);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col px-4 py-8">
+    <div className="min-h-screen bg-slate-950 flex flex-col px-4 py-8 max-w-lg mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-700">
-          <Shield className="w-8 h-8 text-blue-400" />
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-800"
+          style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a5f)' }}>
+          <Waves className="w-8 h-8 text-blue-400" />
         </div>
+        <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast-Waves</p>
         <h1 className="text-white text-2xl font-bold mb-2">Field Ops</h1>
         <p className="text-slate-400 text-sm leading-relaxed max-w-xs mx-auto">
-          Field Ops is an optional service available as you grow on the SurfCoast platform.
-          Earn badges by completing verified jobs to unlock access.
+          Field Ops grows with you. Earn your waves by completing verified jobs and building your reputation on SurfCoast.
         </p>
       </div>
 
-      {/* Current Badge Status */}
-      <div className={`rounded-2xl border p-4 mb-6 ${
-        hasAccess ? 'border-green-700 bg-green-900/20' : 'border-slate-700 bg-slate-900'
-      }`}>
-        <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Your Progress</p>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-white font-bold text-lg">
-              {highestBadge ? highestBadge.name : 'No Badge Yet'}
-            </p>
-            <p className="text-slate-400 text-sm">
-              {uniqueCustomersCount} unique customer{uniqueCustomersCount !== 1 ? 's' : ''} verified
-            </p>
-          </div>
-          {hasAccess
-            ? <CheckCircle className="w-8 h-8 text-green-400" />
-            : <Lock className="w-8 h-8 text-slate-600" />
-          }
-        </div>
-
-        {!hasAccess && nextRequired && (
-          <div className="mt-3">
-            <div className="flex justify-between text-xs text-slate-500 mb-1">
-              <span>Next: <span className="text-slate-300">{nextRequired.name}</span></span>
-              <span>{uniqueCustomersCount}/{nextRequired.threshold}</span>
+      {/* Current Wave Status */}
+      <div className="rounded-2xl border border-slate-700 bg-slate-900 p-4 mb-6">
+        <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">Your Current Wave</p>
+        {currentWave ? (
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">{currentWave.emoji}</span>
+            <div className="flex-1">
+              <p className="text-white font-bold">{currentWave.label}</p>
+              <p className="text-slate-400 text-xs">{uniqueCustomersCount} verified customers · Badge Tier {highestBadgeTier}</p>
             </div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: currentWave.color }}>
+              <TrendingUp className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">🌅</span>
+            <div>
+              <p className="text-white font-bold">No Wave Yet</p>
+              <p className="text-slate-400 text-xs">Complete your first verified job to start your wave journey</p>
+            </div>
+          </div>
+        )}
+
+        {/* Progress to Field Ops unlock */}
+        {toBreaker > 0 && (
+          <div className="mt-4 pt-4 border-t border-slate-800">
+            <p className="text-xs text-yellow-400 mb-2 font-semibold">
+              🏄 Field Ops unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more verified customer{toBreaker !== 1 ? 's' : ''} needed
+            </p>
             <div className="w-full h-2 bg-slate-800 rounded-full">
               <div
-                className="h-2 rounded-full bg-blue-600"
-                style={{ width: `${Math.min(100, Math.round((uniqueCustomersCount / nextRequired.threshold) * 100))}%` }}
+                className="h-2 rounded-full bg-blue-500 transition-all"
+                style={{ width: `${Math.min(100, Math.round((uniqueCustomersCount / 5) * 100))}%` }}
               />
             </div>
-            <p className="text-xs text-yellow-400 mt-2">
-              Field Ops unlocks at Badge Tier 3 — need {Math.max(0, 5 - uniqueCustomersCount)} more verified customer{5 - uniqueCustomersCount !== 1 ? 's' : ''}.
-            </p>
           </div>
         )}
       </div>
 
-      {/* Tier Cards */}
-      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">Available Tiers</p>
-      <div className="grid grid-cols-1 gap-3 mb-8">
-        {FIELDOPS_TIERS.map(tierDef => {
-          const isUnlocked = highestBadgeTier >= tierDef.tier;
-          const isActive = highestBadgeTier === tierDef.tier;
-          const isHISRequired = !!tierDef.requiresHIS;
+      {/* Wave Tiers */}
+      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">The Waves</p>
+      <div className="space-y-3 mb-8">
+        {SURFCOAST_WAVES.map(waveDef => {
+          const isUnlocked = highestBadgeTier >= waveDef.badgeTierRequired;
+          const isCurrentWave = currentWave?.id === waveDef.id;
           return (
-            <TierCard
-              key={tierDef.tier}
-              tierDef={tierDef}
+            <WaveCard
+              key={waveDef.id}
+              waveDef={waveDef}
               uniqueCustomersCount={uniqueCustomersCount}
               isUnlocked={isUnlocked}
-              isActive={isActive}
-              isHISRequired={isHISRequired}
+              isCurrentWave={isCurrentWave}
               hasHIS={hasHIS}
             />
           );
         })}
       </div>
 
-      {/* CTA */}
-      <div className="space-y-3">
-        {!hasAccess && (
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-4 text-center">
-            <p className="text-slate-300 text-sm font-semibold mb-1">Keep working, keep growing!</p>
-            <p className="text-slate-500 text-xs">
-              Complete verified jobs with satisfied customers to earn badges and unlock Field Ops.
-            </p>
-          </div>
-        )}
-        <Link to="/" className="block text-center text-slate-500 text-sm py-2 hover:text-white">
-          ← Back to SurfCoast Platform
-        </Link>
-      </div>
+      <Link to="/" className="block text-center text-slate-500 text-sm py-2 hover:text-white transition-colors">
+        ← Back to SurfCoast Platform
+      </Link>
     </div>
   );
 }
