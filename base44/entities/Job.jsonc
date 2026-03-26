@@ -1,0 +1,168 @@
+{
+  "name": "Job",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed job description"
+    },
+    "contractor_type_needed": {
+      "type": "string",
+      "enum": [
+        "trade_specific",
+        "general",
+        "either"
+      ],
+      "description": "Type of contractor needed"
+    },
+    "trade_needed": {
+      "type": "string",
+      "enum": [
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "mason",
+        "roofer",
+        "painter",
+        "welder",
+        "tiler",
+        "landscaper",
+        "other"
+      ],
+      "description": "Specific trade if needed"
+    },
+    "location": {
+      "type": "string",
+      "description": "Job location (address or description)"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Job location latitude coordinate"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Job location longitude coordinate"
+    },
+    "budget_min": {
+      "type": "number",
+      "description": "Minimum budget"
+    },
+    "budget_max": {
+      "type": "number",
+      "description": "Maximum budget"
+    },
+    "budget_type": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "fixed",
+        "negotiable"
+      ],
+      "description": "Type of budget"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Expected start date"
+    },
+    "duration": {
+      "type": "string",
+      "description": "Expected duration"
+    },
+    "poster_name": {
+      "type": "string",
+      "description": "Name of person posting the job"
+    },
+    "poster_email": {
+      "type": "string",
+      "description": "Contact email"
+    },
+    "poster_phone": {
+      "type": "string",
+      "description": "Contact phone"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_progress",
+        "completed",
+        "cancelled"
+      ],
+      "default": "open"
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium"
+    },
+    "before_photo_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of before photos uploaded by customer (minimum 5 required)"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "location",
+    "poster_name",
+    "poster_email"
+  ],
+  "rls": {
+    "create": {
+      "data.poster_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.poster_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.status": "open"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.poster_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.poster_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

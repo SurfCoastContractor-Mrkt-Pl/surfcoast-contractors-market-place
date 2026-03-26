@@ -15,11 +15,13 @@ import FieldOpsBreakerView from '@/components/fieldops/FieldOpsBreakerView';
 import FieldOpsReporting from '@/pages/FieldOpsReporting';
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
 import JobAlertBanner from '@/components/fieldops/JobAlertBanner';
+import JobMapDisplay from '@/components/fieldops/JobMapDisplay';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
+  { id: 'map', label: 'Map', icon: MapPin },
   { id: 'schedule', label: 'Schedule', icon: Calendar },
   { id: 'invoices', label: 'Invoices', icon: DollarSign },
   { id: 'reports', label: 'Reports', icon: BarChart3 },
@@ -319,6 +321,7 @@ export default function FieldOps() {
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
           {activeTab === 'jobs' && <FieldJobsList contractor={effectiveContractor} user={user} />}
+          {activeTab === 'map' && <JobMapDisplay contractor={effectiveContractor} />}
           {activeTab === 'schedule' && <FieldSchedule contractor={effectiveContractor} user={user} />}
           {activeTab === 'invoices' && <FieldInvoices contractor={effectiveContractor} user={user} />}
           {activeTab === 'reports' && <FieldOpsReporting contractor={effectiveContractor} user={user} />}
