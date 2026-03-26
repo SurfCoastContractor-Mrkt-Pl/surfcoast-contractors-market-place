@@ -91,7 +91,7 @@ export default function CustomerSignup() {
       <div className="relative py-14 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.58)'}}></div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-5">
+          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-5 focus:outline-2 focus:outline-offset-2 focus:outline-white rounded">
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
@@ -112,8 +112,12 @@ export default function CustomerSignup() {
         <Card className="p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-                {error}
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-start gap-3">
+                <span className="text-lg leading-none">⚠</span>
+                <div>
+                  <p className="font-semibold">Error</p>
+                  <p className="text-red-600 mt-1">{error}</p>
+                </div>
               </div>
             )}
 
@@ -182,9 +186,16 @@ export default function CustomerSignup() {
 
             <Button
               type="submit"
-              className="w-full text-white font-semibold mt-6"
-              style={{backgroundColor: '#1E5A96'}}
+              className="w-full text-white font-semibold mt-6 transition-all"
+              style={{
+                backgroundColor: loading ? '#1a3d5c' : '#1E5A96',
+                opacity: loading ? 0.8 : 1,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                minHeight: '44px'
+              }}
               disabled={loading}
+              onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#153d69')}
+              onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#1E5A96')}
             >
               {loading ? (
                 <>
@@ -201,8 +212,14 @@ export default function CustomerSignup() {
               <button
                 type="button"
                 onClick={() => base44.auth.redirectToLogin()}
-                className="font-semibold hover:underline"
-                style={{color: '#d4a843', background: 'none', border: 'none', cursor: 'pointer'}}
+                className="font-semibold transition-colors"
+                style={{
+                  color: '#d4a843',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'underline'
+                }}
               >
                 Login here
               </button>

@@ -497,8 +497,9 @@ export default function BecomeContractor() {
 
           {/* Error Message */}
           {dobError && (
-            <div className="p-4 mb-6 rounded-lg bg-red-50 border border-red-200">
-              <p className="text-sm text-red-700">{dobError}</p>
+            <div className="p-4 mb-6 rounded-lg bg-red-50 border border-red-200 flex items-start gap-3">
+              <span className="text-lg leading-none">⚠</span>
+              <p className="text-sm text-red-700 flex-1">{dobError}</p>
             </div>
           )}
 
@@ -508,6 +509,8 @@ export default function BecomeContractor() {
               <button
                 type="button"
                 onClick={handlePrevStep}
+                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.12)"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.07)"}
                 style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"1px solid rgba(255,255,255,0.2)", fontSize:"16px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"52px", background:"rgba(255,255,255,0.07)", color:"#fff" }}
               >
                 ← Back
@@ -516,6 +519,8 @@ export default function BecomeContractor() {
             <button
               type="submit"
               disabled={mutation.isPending}
+              onMouseEnter={(e) => !mutation.isPending && (e.target.style.boxShadow = "0 8px 32px rgba(217,119,6,0.5)")}
+              onMouseLeave={(e) => !mutation.isPending && (e.target.style.boxShadow = "0 4px 24px rgba(217,119,6,0.35)")}
               style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"none", fontSize:"16px", fontWeight:"700", cursor:mutation.isPending ? "not-allowed" : "pointer", transition:"all 0.2s", minHeight:"52px", background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", color:"#fff", opacity:mutation.isPending ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", boxShadow:"0 4px 24px rgba(217,119,6,0.35)" }}
             >
               {mutation.isPending ? (
