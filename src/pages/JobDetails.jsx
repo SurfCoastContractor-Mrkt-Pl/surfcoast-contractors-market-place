@@ -11,6 +11,7 @@ import {
   ArrowLeft, MapPin, Calendar, DollarSign, Clock, 
   User, AlertCircle, ShieldAlert, MessageSquare, Camera, Eye
 } from 'lucide-react';
+import QuoteSubmitForm from '@/components/jobs/QuoteSubmitForm';
 import DisclaimerModal from '@/components/disclaimer/DisclaimerModal';
 import PaymentGate from '@/components/payment/PaymentGate';
 import InAppMessageForm from '@/components/messaging/InAppMessageForm';
@@ -61,7 +62,8 @@ export default function JobDetails() {
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [isCustomer, setIsCustomer] = useState(null);
 
-  const [contractor, setContractor] = useState(null);
+  const [contractor, setContractor] = useState(null); // job poster's contractor profile (for warnings)
+  const [myContractor, setMyContractor] = useState(null); // logged-in contractor profile (for quote form)
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job', jobId],
@@ -103,7 +105,9 @@ export default function JobDetails() {
         const user = await base44.auth.me();
         if (user) {
           const contractors = await base44.entities.Contractor.filter({ email: user.email });
-          setIsCustomer(!(contractors && contractors.length > 0));
+          const isContractor = contractors && contractors.length > 0;
+          setIsCustomer(!isContractor);
+          if (isContractor) setMyContractor(contractors[0]);
         }
       } catch {
         setIsCustomer(null);
@@ -420,6 +424,13 @@ export default function JobDetails() {
           </div>
           </div>
           </div>
+
+          {/* Quote Submit Form — visible to contractors after paying */}
+          {!isCustomer && disclaimerSigned && contractorPaid && myContractor && (
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+            <QuoteSubmitForm job={job} contractor={myContractor} />
+          </div>
+          )}
 
           {/* Contractor Proposal Form */}
           {!isCustomer && disclaimerSigned && contractorPaid && customerScope && (
