@@ -31,6 +31,7 @@ import FieldOpsReporting from './pages/FieldOpsReporting';
 import ContractorVerificationDashboard from './pages/ContractorVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
 import ComplianceGuide from './pages/ComplianceGuide';
+import PaymentDemo from './pages/PaymentDemo';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -155,6 +156,11 @@ const AuthenticatedApp = () => {
       <Route path="/ComplianceGuide" element={
         <LayoutWrapper currentPageName="ComplianceGuide">
           <ComplianceGuide />
+        </LayoutWrapper>
+      } />
+      <Route path="/PaymentDemo" element={
+        <LayoutWrapper currentPageName="PaymentDemo">
+          <PaymentDemo />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
