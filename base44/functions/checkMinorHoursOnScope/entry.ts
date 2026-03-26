@@ -3,6 +3,16 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Authenticate the user
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json(
+        { error: 'Unauthorized: Authentication required' },
+        { status: 401 }
+      );
+    }
+    
     const { scope_id, contractor_id, estimated_hours } = await req.json();
 
     if (!scope_id || !contractor_id || estimated_hours === undefined) {
@@ -11,8 +21,28 @@ Deno.serve(async (req) => {
         { status: 400 }
       );
     }
+    
+    // SECURITY: Authorization - only admins or the contractor themselves can update hours
+    if (user.role !== 'admin') {
+      // Fetch contractor to verify email match
+      let contractor = null;
+      try {
+        contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
+      } catch (e) {
+        console.warn('Contractor not found:', contractor_id);
+        return Response.json({ error: 'Contractor not found' }, { status: 404 });
+      }
+      
+      if (!contractor || contractor.email !== user.email) {
+        console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to update hours for contractor ${contractor_id}`);
+        return Response.json(
+          { error: 'Forbidden: You can only update your own minor hours' },
+          { status: 403 }
+        );
+      }
+    }
 
-    // Fetch contractor
+    // Fetch contractor (already done in auth check if non-admin)
     let contractor = null;
     try {
       contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
