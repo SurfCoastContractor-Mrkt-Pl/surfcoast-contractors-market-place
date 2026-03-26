@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Briefcase, MessageSquare, Users, TrendingUp, Loader2 } from 'lucide-react';
+import { Briefcase, MessageSquare, Users, TrendingUp, Loader2, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import TrialBadge from '@/components/customer/TrialBadge';
@@ -131,9 +131,17 @@ export default function CustomerDashboard({ user: propUser }) {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <h1 className="text-4xl font-bold text-white">My Dashboard</h1>
-            <TrialBadge profile={customerProfile} />
+          <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-4xl font-bold text-white">My Dashboard</h1>
+              <TrialBadge profile={customerProfile} />
+            </div>
+            <button
+              onClick={() => base44.auth.logout()}
+              style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '8px 14px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <LogOut style={{ width: '14px', height: '14px' }} /> Logout
+            </button>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.6)' }}>Track your posted jobs and active scopes</p>
         </div>

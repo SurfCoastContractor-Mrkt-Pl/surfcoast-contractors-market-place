@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2 } from 'lucide-react';
+import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementGenerator';
@@ -156,24 +156,31 @@ export default function ContractorDashboard() {
 
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <h1 className="text-4xl font-bold text-slate-900">My Dashboard</h1>
-            {/* Payouts Active Badge */}
-            {contractorProfile?.stripe_account_charges_enabled && (
-              <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                💸 Payouts Active — deposits within 2 business days
-              </div>
-            )}
-            {contractorProfile?.trial_active && (
-              <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
-                🟢 Free Trial Active — {differenceInDays(new Date(contractorProfile.trial_ends_at), new Date())} days remaining
-              </div>
-            )}
-            {contractorProfile?.trial_expired && !contractorProfile?.trial_active && (
-              <div style={{ background: '#fee2e2', color: '#991b1b', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
-                ⛔ Trial Expired — Upgrade to continue
-              </div>
-            )}
+          <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-4xl font-bold text-slate-900">My Dashboard</h1>
+              {contractorProfile?.stripe_account_charges_enabled && (
+                <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  💸 Payouts Active — deposits within 2 business days
+                </div>
+              )}
+              {contractorProfile?.trial_active && (
+                <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
+                  🟢 Free Trial Active — {differenceInDays(new Date(contractorProfile.trial_ends_at), new Date())} days remaining
+                </div>
+              )}
+              {contractorProfile?.trial_expired && !contractorProfile?.trial_active && (
+                <div style={{ background: '#fee2e2', color: '#991b1b', borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: '600', display: 'inline-block' }}>
+                  ⛔ Trial Expired — Upgrade to continue
+                </div>
+              )}
+            </div>
+            <button
+              onClick={() => base44.auth.logout()}
+              className="flex items-center gap-1.5 text-sm font-semibold text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 rounded-lg px-3 py-2 transition-colors"
+            >
+              <LogOut className="w-4 h-4" /> Logout
+            </button>
           </div>
           <p className="text-slate-600">Track your active jobs and communications</p>
         </div>
