@@ -135,15 +135,12 @@ Deno.serve(async (req) => {
       }
     }
     
-    // Create notification records - use asServiceRole for proper RLS context
+    // Create notification records in bulk via service role
     if (matchRecords.length > 0) {
-      const serviceBase44 = base44.asServiceRole;
-      for (const record of matchRecords) {
-        try {
-          await serviceBase44.entities.JobNotification.create(record);
-        } catch (createError) {
-          console.error(`Failed to create JobNotification for job ${record.job_id}, contractor ${record.contractor_id}:`, createError.message);
-        }
+      try {
+        await base44.asServiceRole.entities.JobNotification.bulkCreate(matchRecords);
+      } catch (createError) {
+        console.error('Failed to bulk create JobNotifications:', createError.message);
       }
     }
     
