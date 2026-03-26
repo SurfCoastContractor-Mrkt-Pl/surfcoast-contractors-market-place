@@ -1,0 +1,91 @@
+{
+  "name": "SecurityAlert",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "geo_blocked",
+        "rate_limited",
+        "suspicious_activity",
+        "vpn_detected",
+        "proxy_detected",
+        "missing_headers"
+      ],
+      "description": "Type of security event"
+    },
+    "client_ip": {
+      "type": "string",
+      "description": "Client IP address that triggered the alert"
+    },
+    "country_code": {
+      "type": "string",
+      "description": "Detected country code from headers"
+    },
+    "country_name": {
+      "type": "string",
+      "description": "Human-readable country name"
+    },
+    "is_vpn": {
+      "type": "boolean",
+      "description": "Whether VPN/proxy was detected"
+    },
+    "http_method": {
+      "type": "string",
+      "description": "HTTP method of the request"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "User agent header"
+    },
+    "request_path": {
+      "type": "string",
+      "description": "Path that was accessed"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Alert severity level"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional context or details"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO timestamp when event occurred"
+    }
+  },
+  "required": [
+    "event_type",
+    "client_ip",
+    "severity",
+    "timestamp"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

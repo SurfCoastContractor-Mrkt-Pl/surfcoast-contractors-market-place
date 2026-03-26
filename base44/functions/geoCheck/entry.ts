@@ -24,10 +24,36 @@ function isRateLimited(ip) {
   return false;
 }
 
+async function logSecurityAlert(eventType, clientIp, details) {
+  try {
+    const { createClientFromRequest } = await import('npm:@base44/sdk@0.8.21');
+    // Create a minimal request object for SDK initialization
+    const base44 = createClientFromRequest(new Request('http://localhost', { method: 'POST' }));
+    
+    await base44.asServiceRole.entities.SecurityAlert.create({
+      event_type: eventType,
+      client_ip: clientIp,
+      severity: details.severity || 'medium',
+      country_code: details.countryCode,
+      country_name: details.countryName,
+      is_vpn: details.isVpn || false,
+      http_method: details.method,
+      user_agent: details.userAgent,
+      request_path: details.path,
+      notes: details.notes,
+      timestamp: new Date().toISOString()
+    });
+  } catch (logError) {
+    console.error('[SECURITY-LOG-ERROR]', logError.message);
+  }
+}
+
 Deno.serve(async (req) => {
   const clientIp = req.headers.get('cf-connecting-ip') || 
                    req.headers.get('x-forwarded-for') || 
                    'unknown';
+  const userAgent = req.headers.get('user-agent') || 'unknown';
+  const path = new URL(req.url).pathname;
   
   try {
     // Only allow GET requests
@@ -38,6 +64,13 @@ Deno.serve(async (req) => {
 
     // SECURITY: Rate limit to prevent brute-force/probing
     if (isRateLimited(clientIp)) {
+      logSecurityAlert('rate_limited', clientIp, {
+        severity: 'high',
+        method: req.method,
+        userAgent,
+        path,
+        notes: 'Exceeded rate limit threshold'
+      });
       return Response.json({ 
         allowed: false, 
         country: 'RATE_LIMITED', 
@@ -53,6 +86,13 @@ Deno.serve(async (req) => {
 
     // SECURITY: Fail closed — block if country header is missing
     if (!cfCountry) {
+      logSecurityAlert('missing_headers', clientIp, {
+        severity: 'medium',
+        method: req.method,
+        userAgent,
+        path,
+        notes: 'Missing CDN country header'
+      });
       console.warn(`[GEO-BLOCK] Missing country header from IP: ${clientIp}. Possible VPN/proxy or misconfigured CDN.`);
       
       // Secondary check: Query IPinfo.io free API for VPN/proxy detection
@@ -113,6 +153,16 @@ Deno.serve(async (req) => {
             });
           }
           if (ipinfoData.privacy?.vpn === true || ipinfoData.privacy?.proxy === true) {
+            logSecurityAlert('vpn_detected', clientIp, {
+              severity: 'high',
+              countryCode: 'XX',
+              countryName: 'VPN/Proxy',
+              method: req.method,
+              userAgent,
+              path,
+              isVpn: true,
+              notes: 'VPN/proxy confirmed via IPinfo'
+            });
             console.warn(`[GEO-BLOCK] VPN/Proxy confirmed for XX country from IP: ${clientIp}`);
             return Response.json({ 
               allowed: false, 
@@ -137,6 +187,15 @@ Deno.serve(async (req) => {
     const allowed = US_COUNTRY_CODES.includes(country);
 
     if (!allowed) {
+      logSecurityAlert('geo_blocked', clientIp, {
+        severity: 'low',
+        countryCode: country,
+        countryName,
+        method: req.method,
+        userAgent,
+        path,
+        notes: `Non-US access attempt from ${country}`
+      });
       console.warn(`[GEO-BLOCK] Non-US access from ${country} (IP: ${clientIp})`);
     } else {
       console.info(`[GEO-ALLOW] US access from ${country} (IP: ${clientIp})`);
@@ -152,13 +211,20 @@ Deno.serve(async (req) => {
 
     return Response.json({ allowed, country, countryName });
   } catch (error) {
-    console.error(`[GEO-ERROR] Unexpected error from IP: ${clientIp}`, error);
-    // SECURITY: Fail closed — block access if geo check fails (don't allow errors to bypass)
-    return Response.json({ 
-      allowed: false, 
-      country: 'ERROR', 
-      countryName: 'System Error',
-      reason: 'Geo-check failed' 
-    });
+  logSecurityAlert('suspicious_activity', clientIp, {
+    severity: 'high',
+    method: req.method,
+    userAgent,
+    path,
+    notes: `Geo-check error: ${error.message}`
+  });
+  console.error(`[GEO-ERROR] Unexpected error from IP: ${clientIp}`, error);
+  // SECURITY: Fail closed — block access if geo check fails (don't allow errors to bypass)
+  return Response.json({ 
+    allowed: false, 
+    country: 'ERROR', 
+    countryName: 'System Error',
+    reason: 'Geo-check failed' 
+  });
   }
 });
