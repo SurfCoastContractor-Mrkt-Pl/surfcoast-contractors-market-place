@@ -8,6 +8,7 @@ import { Briefcase, MessageSquare, Users, TrendingUp, Loader2, LogOut } from 'lu
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import TrialBadge from '@/components/customer/TrialBadge';
+import RatingBlockStatusWidget from '@/components/ratings/RatingBlockStatusWidget';
 
 export default function CustomerDashboard({ user: propUser }) {
   const [user, setUser] = useState(propUser || null);
@@ -129,8 +130,13 @@ export default function CustomerDashboard({ user: propUser }) {
         />
       )}
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
+         {/* Rating Block Status Widget */}
+         {user?.email && (
+           <RatingBlockStatusWidget userEmail={user.email} userType="customer" />
+         )}
+
+         {/* Header */}
+         <div className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-4xl font-bold text-white">My Dashboard</h1>

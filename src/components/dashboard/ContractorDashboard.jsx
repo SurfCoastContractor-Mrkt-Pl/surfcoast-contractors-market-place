@@ -8,6 +8,7 @@ import { Briefcase, MessageSquare, Clock, CheckCircle, AlertCircle, Zap, Loader2
 import { Link } from 'react-router-dom';
 import PendingRatingModal from '@/components/ratings/PendingRatingModal';
 import ServiceAgreementGenerator from '@/components/contractor/ServiceAgreementGenerator';
+import RatingBlockStatusWidget from '@/components/ratings/RatingBlockStatusWidget';
 import { getHighestBadge } from '@/components/badges/ContractorBadges';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
@@ -219,6 +220,11 @@ export default function ContractorDashboard() {
           <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <MetricsPanel metrics={metrics} onPeriodChange={setMetricsPeriod} currentPeriod={metricsPeriod} />
           </div>
+        )}
+
+        {/* Rating Block Status Widget */}
+        {user?.email && (
+          <RatingBlockStatusWidget userEmail={user.email} userType="contractor" />
         )}
 
         {/* Service Agreement Generator */}
