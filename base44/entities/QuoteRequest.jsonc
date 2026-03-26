@@ -1,0 +1,151 @@
+{
+  "name": "QuoteRequest",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who received the quote request"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer who sent the quote request"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job"
+    },
+    "work_description": {
+      "type": "string",
+      "description": "Detailed description of the work requested"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_progress",
+        "quoted",
+        "accepted",
+        "rejected",
+        "completed"
+      ],
+      "default": "pending",
+      "description": "Status of the quote request"
+    },
+    "read_by_contractor": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor has read the request"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the request was created"
+    },
+    "response_deadline": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Deadline for the contractor to respond"
+    },
+    "payment_id": {
+      "type": "string",
+      "description": "ID of the associated payment record"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Optional ID of linked Job entity"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of photos provided by customer"
+    },
+    "budget": {
+      "type": "string",
+      "description": "Customer's budget"
+    },
+    "timeline": {
+      "type": "string",
+      "description": "Preferred timeline"
+    },
+    "trade_category": {
+      "type": "string",
+      "description": "Trade category for the work"
+    },
+    "contractor_estimate": {
+      "type": "number",
+      "description": "Contractor's price estimate"
+    },
+    "contractor_message": {
+      "type": "string",
+      "description": "Contractor's proposal message"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_name",
+    "contractor_email",
+    "customer_email",
+    "customer_name",
+    "job_title",
+    "work_description",
+    "payment_id"
+  ],
+  "rls": {
+    "create": {
+      "data.customer_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
