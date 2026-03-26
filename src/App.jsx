@@ -32,6 +32,7 @@ import ContractorVerificationDashboard from './pages/ContractorVerificationDashb
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
 import ComplianceGuide from './pages/ComplianceGuide';
 import PaymentDemo from './pages/PaymentDemo';
+import TimedChatSession from './pages/TimedChatSession';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -161,6 +162,11 @@ const AuthenticatedApp = () => {
       <Route path="/PaymentDemo" element={
         <LayoutWrapper currentPageName="PaymentDemo">
           <PaymentDemo />
+        </LayoutWrapper>
+      } />
+      <Route path="/TimedChatSession" element={
+        <LayoutWrapper currentPageName="TimedChatSession">
+          <TimedChatSession />
         </LayoutWrapper>
       } />
       {Object.entries(Pages).map(([path, Page]) => (
