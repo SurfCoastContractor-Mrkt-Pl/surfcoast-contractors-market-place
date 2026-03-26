@@ -1,0 +1,168 @@
+{
+  "name": "ProjectMilestone",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork this milestone belongs to"
+    },
+    "title": {
+      "type": "string",
+      "description": "Milestone title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the milestone"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Target completion date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_progress",
+        "completed",
+        "approved"
+      ],
+      "default": "pending",
+      "description": "Current status of the milestone"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when milestone was marked complete"
+    },
+    "completed_by": {
+      "type": "string",
+      "description": "Email of the contractor who completed it"
+    },
+    "approved_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when milestone was approved by client"
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Email of the client who approved it"
+    },
+    "approval_notes": {
+      "type": "string",
+      "description": "Optional notes from client on approval"
+    },
+    "progress_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Progress completion percentage (0-100)"
+    }
+  },
+  "required": [
+    "scope_id",
+    "title",
+    "due_date"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "$and": [
+            {
+              "created_by": "{{user.email}}"
+            },
+            {
+              "data.scope_id": {
+                "$in": {
+                  "entity": "ScopeOfWork",
+                  "query": {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  "field": "id"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.scope_id": {
+            "$in": {
+              "entity": "ScopeOfWork",
+              "query": {
+                "$or": [
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  {
+                    "data.customer_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.scope_id": {
+            "$in": {
+              "entity": "ScopeOfWork",
+              "query": {
+                "$or": [
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  {
+                    "data.customer_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
