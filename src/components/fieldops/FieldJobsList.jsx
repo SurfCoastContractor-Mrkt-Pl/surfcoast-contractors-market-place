@@ -3,9 +3,10 @@ import { base44 } from '@/api/base44Client';
 import {
   MapPin, Clock, DollarSign, ChevronRight, Plus,
   CheckCircle, AlertCircle, Camera, FileText, Phone,
-  MessageSquare, Navigation, Wrench, Filter
+  MessageSquare, Navigation, Wrench, Filter, Sparkles
 } from 'lucide-react';
 import FieldJobDetail from './FieldJobDetail';
+import RecommendedJobs from './RecommendedJobs';
 
 const STATUS_CONFIG = {
   pending_approval: { label: 'Pending', color: 'text-yellow-400', bg: 'bg-yellow-900/40', dot: 'bg-yellow-400' },
@@ -16,12 +17,14 @@ const STATUS_CONFIG = {
 };
 
 const FILTER_TABS = ['All', 'Active', 'Upcoming', 'Completed'];
+const VIEW_TABS = ['My Jobs', 'Recommended'];
 
 export default function FieldJobsList({ contractor, user }) {
   const [scopes, setScopes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
   const [selectedScope, setSelectedScope] = useState(null);
+  const [viewTab, setViewTab] = useState('My Jobs');
 
   useEffect(() => {
     const load = async () => {
@@ -57,52 +60,77 @@ export default function FieldJobsList({ contractor, user }) {
 
   return (
     <div className="bg-slate-950 min-h-full">
-      {/* Today's Summary */}
-      {todayJobs.length > 0 && (
-        <div className="mx-4 mt-4 bg-blue-600/20 border border-blue-500/30 rounded-2xl p-4">
-          <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-1">Today's Jobs</p>
-          <p className="text-white text-2xl font-bold">{todayJobs.length} Job{todayJobs.length !== 1 ? 's' : ''} Scheduled</p>
-          <p className="text-slate-400 text-sm mt-1">
-            {todayJobs.map(j => j.job_title).join(', ')}
-          </p>
-        </div>
-      )}
-
-      {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-3 mx-4 mt-4">
-        <div className="bg-slate-900 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-white">{scopes.filter(s => ['approved','active'].includes(s.status)).length}</p>
-          <p className="text-slate-500 text-xs mt-0.5">Active</p>
-        </div>
-        <div className="bg-slate-900 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-white">{contractor.completed_jobs_count || 0}</p>
-          <p className="text-slate-500 text-xs mt-0.5">Completed</p>
-        </div>
-        <div className="bg-slate-900 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-white">{contractor.rating ? contractor.rating.toFixed(1) : '—'}</p>
-          <p className="text-slate-500 text-xs mt-0.5">Rating</p>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="flex gap-2 px-4 mt-4 overflow-x-auto scrollbar-none pb-1">
-        {FILTER_TABS.map(f => (
+      {/* View Tabs */}
+      <div className="flex gap-2 px-4 mt-4 border-b border-slate-800">
+        {VIEW_TABS.map(tab => (
           <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-              filter === f
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-800 text-slate-400'
+            key={tab}
+            onClick={() => {
+              setViewTab(tab);
+              setFilter('All');
+            }}
+            className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-colors ${
+              viewTab === tab
+                ? 'border-blue-400 text-blue-400'
+                : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
-            {f}
+            {tab === 'Recommended' && <Sparkles className="w-4 h-4" />}
+            {tab}
           </button>
         ))}
       </div>
 
-      {/* Jobs List */}
-      <div className="px-4 mt-4 pb-6 space-y-3">
+      {viewTab === 'Recommended' ? (
+        <RecommendedJobs contractor={contractor} user={user} />
+      ) : (
+        <>
+          {/* Today's Summary */}
+          {todayJobs.length > 0 && (
+            <div className="mx-4 mt-4 bg-blue-600/20 border border-blue-500/30 rounded-2xl p-4">
+              <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-1">Today's Jobs</p>
+              <p className="text-white text-2xl font-bold">{todayJobs.length} Job{todayJobs.length !== 1 ? 's' : ''} Scheduled</p>
+              <p className="text-slate-400 text-sm mt-1">
+                {todayJobs.map(j => j.job_title).join(', ')}
+              </p>
+            </div>
+          )}
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-3 mx-4 mt-4">
+            <div className="bg-slate-900 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-white">{scopes.filter(s => ['approved','active'].includes(s.status)).length}</p>
+              <p className="text-slate-500 text-xs mt-0.5">Active</p>
+            </div>
+            <div className="bg-slate-900 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-white">{contractor.completed_jobs_count || 0}</p>
+              <p className="text-slate-500 text-xs mt-0.5">Completed</p>
+            </div>
+            <div className="bg-slate-900 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-white">{contractor.rating ? contractor.rating.toFixed(1) : '—'}</p>
+              <p className="text-slate-500 text-xs mt-0.5">Rating</p>
+            </div>
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="flex gap-2 px-4 mt-4 overflow-x-auto scrollbar-none pb-1">
+            {FILTER_TABS.map(f => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                  filter === f
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-800 text-slate-400'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          {/* Jobs List */}
+          <div className="px-4 mt-4 pb-6 space-y-3">
         {loading ? (
           <div className="text-center py-12 text-slate-500">
             <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
@@ -149,8 +177,10 @@ export default function FieldJobsList({ contractor, user }) {
               </button>
             );
           })
-        )}
-      </div>
+          )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
