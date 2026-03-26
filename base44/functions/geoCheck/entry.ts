@@ -22,6 +22,26 @@ Deno.serve(async (req) => {
     // SECURITY: Fail closed — block if country header is missing
     if (!cfCountry) {
       console.warn(`[GEO-BLOCK] Missing country header from IP: ${clientIp}. Possible VPN/proxy or misconfigured CDN.`);
+      
+      // Secondary check: Query IPinfo.io free API for VPN/proxy detection
+      try {
+        const ipinfoRes = await fetch(`https://ipinfo.io/${clientIp}/json`);
+        if (ipinfoRes.ok) {
+          const ipinfoData = await ipinfoRes.json();
+          if (ipinfoData.bogon === true || ipinfoData.privacy?.vpn === true || ipinfoData.privacy?.proxy === true) {
+            console.warn(`[GEO-BLOCK] VPN/Proxy detected via IPinfo for IP: ${clientIp}`);
+            return Response.json({ 
+              allowed: false, 
+              country: 'VPN_DETECTED', 
+              countryName: 'VPN/Proxy Blocked',
+              reason: 'VPN or proxy service detected' 
+            });
+          }
+        }
+      } catch (e) {
+        console.debug(`[GEO] IPinfo lookup failed (non-critical):`, e.message);
+      }
+
       return Response.json({ 
         allowed: false, 
         country: 'UNKNOWN', 
@@ -46,6 +66,34 @@ Deno.serve(async (req) => {
     // SECURITY: Block 'XX' (unknown location) — likely VPN/proxy or datacenter IP
     if (country === 'XX') {
       console.warn(`[GEO-BLOCK] Unknown location (XX) from IP: ${clientIp}. Possible VPN/proxy/datacenter.`);
+      
+      // Verify with IPinfo
+      try {
+        const ipinfoRes = await fetch(`https://ipinfo.io/${clientIp}/json`);
+        if (ipinfoRes.ok) {
+          const ipinfoData = await ipinfoRes.json();
+          if (ipinfoData.country && ipinfoData.country !== 'US') {
+            return Response.json({ 
+              allowed: false, 
+              country: ipinfoData.country, 
+              countryName: ipinfoData.country_name || ipinfoData.country,
+              reason: 'Non-US location' 
+            });
+          }
+          if (ipinfoData.privacy?.vpn === true || ipinfoData.privacy?.proxy === true) {
+            console.warn(`[GEO-BLOCK] VPN/Proxy confirmed for XX country from IP: ${clientIp}`);
+            return Response.json({ 
+              allowed: false, 
+              country: 'XX', 
+              countryName: 'VPN/Proxy Detected',
+              reason: 'VPN or proxy service detected' 
+            });
+          }
+        }
+      } catch (e) {
+        console.debug(`[GEO] IPinfo lookup failed for XX:`, e.message);
+      }
+
       return Response.json({ 
         allowed: false, 
         country: 'XX', 
