@@ -63,21 +63,22 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     
     // For automations, we use service role. Verify the call is valid.
-    // When called via automation, there's no user context, so we verify it's an internal call
     const internalKey = req.headers.get('x-internal-service-key');
     const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
     const isValidInternalCall = internalKey && internalKey === expectedKey;
-    
+
     // Try to get user context for manual triggers
     let user = null;
     try {
       user = await base44.auth.me();
     } catch {
-      // No user context (automation call)
+      // No user context (automation call) — this is expected
     }
-    
-    // Only allow: internal service calls OR authenticated admin users
-    if (!isValidInternalCall && (!user || user.role !== 'admin')) {
+
+    // Allow: scheduled automations (no user, no key), internal service calls, or admin users
+    // Scheduled automations have no auth context at all — that's how the platform calls them
+    const isScheduledAutomation = !user && !internalKey;
+    if (!isScheduledAutomation && !isValidInternalCall && (!user || user.role !== 'admin')) {
       return Response.json(
         { error: 'Forbidden: admin access or internal service key required' },
         { status: 403 }
