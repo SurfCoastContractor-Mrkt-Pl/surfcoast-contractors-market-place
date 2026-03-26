@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { logError } from '@/lib/errorHandler';
 import { ArrowLeft, HardHat, Loader2, CheckCircle, ChevronRight } from 'lucide-react';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import StripeConnectOnboarding from '@/components/contractor/StripeConnectOnboarding';
@@ -71,6 +72,7 @@ export default function BecomeContractor() {
   });
   const [dobError, setDobError] = useState('');
   const [detectionLoading, setDetectionLoading] = useState(false);
+  const [uploadingFace, setUploadingFace] = useState(false);
 
   const getAge = (dob) => {
     if (!dob) return null;
@@ -296,8 +298,8 @@ export default function BecomeContractor() {
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
       handleChange('id_document_url', file_url);
     } catch (error) {
-      alert('Failed to upload ID document. Please try again.');
-      console.error('ID upload error:', error);
+      setDobError('Failed to upload ID document. Please try again.');
+      logError('BecomeContractor.handleIdUpload', error);
     } finally {
       setUploadingId(false);
     }
@@ -311,8 +313,8 @@ export default function BecomeContractor() {
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
       handleChange('face_photo_url', file_url);
     } catch (error) {
-      alert('Failed to upload face photo. Please try again.');
-      console.error('Face photo upload error:', error);
+      setDobError('Failed to upload face photo. Please try again.');
+      logError('BecomeContractor.handleFaceUpload', error);
     } finally {
       setUploadingFace(false);
     }
