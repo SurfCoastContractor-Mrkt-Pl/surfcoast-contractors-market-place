@@ -1,0 +1,105 @@
+{
+  "name": "ConsumerTier",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the consumer"
+    },
+    "current_tier": {
+      "type": "number",
+      "default": 0,
+      "description": "Current tier level (0-5+)"
+    },
+    "total_spent": {
+      "type": "number",
+      "default": 0,
+      "description": "Total amount spent on purchases in cents"
+    },
+    "badges_earned": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "badge_number": {
+            "type": "number",
+            "description": "Badge sequence number (1, 2, 3, etc.)"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "vendors",
+              "booths",
+              "mixed"
+            ],
+            "description": "Type of purchases that earned this badge"
+          },
+          "amount_spent": {
+            "type": "number",
+            "description": "Amount spent to earn this badge in cents"
+          },
+          "earned_at": {
+            "type": "string",
+            "description": "ISO timestamp when badge was earned"
+          }
+        }
+      },
+      "description": "Array of earned badges with details"
+    },
+    "vendor_spent": {
+      "type": "number",
+      "default": 0,
+      "description": "Amount spent on vendors in cents"
+    },
+    "booth_spent": {
+      "type": "number",
+      "default": 0,
+      "description": "Amount spent on booths in cents"
+    },
+    "last_purchase_at": {
+      "type": "string",
+      "description": "ISO timestamp of last purchase"
+    }
+  },
+  "required": [
+    "user_email"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
