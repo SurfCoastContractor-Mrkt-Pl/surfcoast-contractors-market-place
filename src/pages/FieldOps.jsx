@@ -78,7 +78,7 @@ export default function FieldOps() {
       <div className="fixed inset-0 bg-slate-900 flex items-center justify-center">
         <div className="text-center text-white">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400 text-sm">Loading Field Ops...</p>
+          <p className="text-slate-400 text-sm">Loading SurfCoast Waves FO...</p>
         </div>
       </div>
     );
@@ -107,13 +107,13 @@ export default function FieldOps() {
       <div className="fixed inset-0 bg-slate-900 flex items-center justify-center px-6">
         <div className="text-center text-white max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Field Ops</h1>
-          <p className="text-slate-400 mb-6">Sign in with a contractor account to access the Field Ops system.</p>
+          <h1 className="text-2xl font-bold mb-2">SurfCoast Waves FO</h1>
+          <p className="text-slate-400 mb-6">Sign in with a contractor account to access the SurfCoast Waves Field Operations system.</p>
           <button
             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/FieldOps`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
           >
-            Sign In
+            Sign In to SurfCoast Waves FO
           </button>
           <Link to="/" className="block mt-4 text-slate-400 text-sm hover:text-white">← Back to Home</Link>
         </div>
@@ -147,7 +147,7 @@ export default function FieldOps() {
       <div className="hidden lg:flex flex-col w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0">
         {/* Sidebar Header */}
         <div className="px-4 py-4 border-b border-slate-800">
-          <h2 className="text-white font-bold text-sm">FIELD OPS</h2>
+          <h2 className="text-white font-bold text-sm">SURFCOAST WAVES FO</h2>
           <p className="text-blue-400 text-xs font-semibold mt-0.5">PRO</p>
         </div>
 
@@ -232,7 +232,7 @@ export default function FieldOps() {
             <span className="text-xs text-slate-400">{isOnline ? 'Online' : 'Offline'}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-xs font-bold text-white">FIELD OPS</span>
+            <span className="text-xs font-bold text-white">SURFCOAST WAVES FO</span>
             <span className="text-xs text-blue-400 font-semibold ml-1">PRO</span>
           </div>
           <button className="relative p-1">

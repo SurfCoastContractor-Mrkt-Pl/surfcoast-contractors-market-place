@@ -189,8 +189,8 @@ export default function FieldOpsAccessGate({ contractor }) {
           style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a5f)' }}>
           <Waves className="w-8 h-8 text-blue-400" />
         </div>
-        <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast-Waves</p>
-        <h1 className="text-white text-2xl font-bold mb-2">Field Ops</h1>
+        <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast Waves</p>
+        <h1 className="text-white text-2xl font-bold mb-2">SurfCoast Waves FO</h1>
         <p className="text-slate-400 text-sm leading-relaxed max-w-xs mx-auto">
           Field Ops grows with you. Earn your waves by completing verified jobs and building your reputation on SurfCoast.
         </p>
@@ -215,7 +215,7 @@ export default function FieldOpsAccessGate({ contractor }) {
             <span className="text-3xl">🌅</span>
             <div>
               <p className="text-white font-bold">No Wave Yet</p>
-              <p className="text-slate-400 text-xs">Complete 15 jobs to earn your Ripple wave</p>
+              <p className="text-slate-400 text-xs">Complete 15 jobs to unlock SurfCoast Waves FO</p>
             </div>
           </div>
         )}

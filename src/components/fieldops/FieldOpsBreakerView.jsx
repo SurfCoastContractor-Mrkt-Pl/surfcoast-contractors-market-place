@@ -348,10 +348,10 @@ export default function FieldOpsBreakerView({ contractor, user }) {
   return (
     <div className="p-4">
       <div className="flex items-center gap-2 mb-4">
-        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-900 rounded-full">
-          <span className="text-blue-300 text-[10px] font-bold">🏄 BREAKER</span>
-        </div>
-        <p className="text-slate-400 text-xs">Field Ops — select a job to check in</p>
+       <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-900 rounded-full">
+         <span className="text-blue-300 text-[10px] font-bold">🏄 BREAKER</span>
+       </div>
+       <p className="text-slate-400 text-xs">SurfCoast Waves FO — select a job to check in</p>
       </div>
 
       <div className="space-y-3">
