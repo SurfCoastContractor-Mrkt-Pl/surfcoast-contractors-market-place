@@ -5,6 +5,7 @@ import { BADGE_TIERS, getHighestBadge } from '@/components/badges/ContractorBadg
 
 // SurfCoast-Waves tier system
 // Each tier is a "wave" progressing toward the highest
+// Thresholds based on completed_jobs_count to help new entrepreneurs get comfortable with the system
 const SURFCOAST_WAVES = [
   {
     id: 'ripple',
@@ -12,7 +13,7 @@ const SURFCOAST_WAVES = [
     name: 'Ripple',
     label: 'SurfCoast Ripple',
     badgeTierRequired: 1,
-    customersRequired: 1,
+    jobsRequired: 15,
     color: '#64748b',
     glowColor: 'rgba(100,116,139,0.3)',
     borderClass: 'border-slate-600',
@@ -27,7 +28,7 @@ const SURFCOAST_WAVES = [
     name: 'Swell',
     label: 'SurfCoast Swell',
     badgeTierRequired: 2,
-    customersRequired: 3,
+    jobsRequired: 35,
     color: '#0ea5e9',
     glowColor: 'rgba(14,165,233,0.25)',
     borderClass: 'border-sky-600',
@@ -42,7 +43,7 @@ const SURFCOAST_WAVES = [
     name: 'Breaker',
     label: 'SurfCoast Breaker',
     badgeTierRequired: 3,
-    customersRequired: 5,
+    jobsRequired: 55,
     color: '#3b82f6',
     glowColor: 'rgba(59,130,246,0.3)',
     borderClass: 'border-blue-500',
@@ -58,7 +59,7 @@ const SURFCOAST_WAVES = [
     name: 'Pipeline',
     label: 'SurfCoast Pipeline',
     badgeTierRequired: 5,
-    customersRequired: 20,
+    jobsRequired: 75,
     color: '#6366f1',
     glowColor: 'rgba(99,102,241,0.3)',
     borderClass: 'border-indigo-500',
@@ -73,7 +74,7 @@ const SURFCOAST_WAVES = [
     name: 'Residential Wave',
     label: 'Residential Wave Rider',
     badgeTierRequired: 6,
-    customersRequired: 50,
+    jobsRequired: 100,
     color: '#f59e0b',
     glowColor: 'rgba(245,158,11,0.35)',
     borderClass: 'border-amber-500',
@@ -85,8 +86,8 @@ const SURFCOAST_WAVES = [
   },
 ];
 
-function WaveCard({ waveDef, uniqueCustomersCount, isUnlocked, isCurrentWave, hasHIS }) {
-  const progress = Math.min(100, Math.round((uniqueCustomersCount / waveDef.customersRequired) * 100));
+function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasHIS }) {
+  const progress = Math.min(100, Math.round((completedJobsCount / waveDef.jobsRequired) * 100));
   const missingHIS = waveDef.requiresHIS && !hasHIS;
   const fullyUnlocked = isUnlocked && !missingHIS;
 
@@ -150,7 +151,7 @@ function WaveCard({ waveDef, uniqueCustomersCount, isUnlocked, isCurrentWave, ha
       {!isUnlocked && (
         <div className="mt-2">
           <div className="flex justify-between text-xs text-slate-700 mb-1">
-            <span>{uniqueCustomersCount}/{waveDef.customersRequired} customers</span>
+            <span>{completedJobsCount}/{waveDef.jobsRequired} jobs</span>
             <span>{progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-slate-800 rounded-full">
@@ -166,19 +167,19 @@ function WaveCard({ waveDef, uniqueCustomersCount, isUnlocked, isCurrentWave, ha
 }
 
 export default function FieldOpsAccessGate({ contractor }) {
-  const uniqueCustomersCount = contractor?.unique_customers_count || 0;
-  const highestBadge = getHighestBadge(uniqueCustomersCount);
+  const completedJobsCount = contractor?.completed_jobs_count || 0;
+  const highestBadge = getHighestBadge(contractor?.unique_customers_count || 0);
   const highestBadgeTier = highestBadge?.tier || 0;
   const hasHIS = !!contractor?.his_license_verified;
 
-  // Determine current wave
-  const unlockedWaves = SURFCOAST_WAVES.filter(w => highestBadgeTier >= w.badgeTierRequired);
+  // Determine current wave based on completed jobs
+  const unlockedWaves = SURFCOAST_WAVES.filter(w => completedJobsCount >= w.jobsRequired);
   const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
-  const nextWave = SURFCOAST_WAVES.find(w => highestBadgeTier < w.badgeTierRequired);
+  const nextWave = SURFCOAST_WAVES.find(w => completedJobsCount < w.jobsRequired);
 
-  // Field Ops requires Breaker (wave 3 = badge tier 3 = 5 customers)
+  // Field Ops requires Breaker (wave 3 = 55 completed jobs)
   const BREAKER_WAVE = SURFCOAST_WAVES.find(w => w.id === 'breaker');
-  const toBreaker = Math.max(0, BREAKER_WAVE.customersRequired - uniqueCustomersCount);
+  const toBreaker = Math.max(0, BREAKER_WAVE.jobsRequired - completedJobsCount);
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col px-4 py-8 max-w-lg mx-auto">
@@ -203,7 +204,7 @@ export default function FieldOpsAccessGate({ contractor }) {
             <span className="text-3xl">{currentWave.emoji}</span>
             <div className="flex-1">
               <p className="text-white font-bold">{currentWave.label}</p>
-              <p className="text-slate-400 text-xs">{uniqueCustomersCount} verified customers · Badge Tier {highestBadgeTier}</p>
+              <p className="text-slate-400 text-xs">{completedJobsCount} completed jobs · Wave {currentWave.wave}</p>
             </div>
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: currentWave.color }}>
               <TrendingUp className="w-4 h-4 text-white" />
@@ -214,7 +215,7 @@ export default function FieldOpsAccessGate({ contractor }) {
             <span className="text-3xl">🌅</span>
             <div>
               <p className="text-white font-bold">No Wave Yet</p>
-              <p className="text-slate-400 text-xs">Complete your first verified job to start your wave journey</p>
+              <p className="text-slate-400 text-xs">Complete 15 jobs to earn your Ripple wave</p>
             </div>
           </div>
         )}
@@ -223,12 +224,12 @@ export default function FieldOpsAccessGate({ contractor }) {
         {toBreaker > 0 && (
           <div className="mt-4 pt-4 border-t border-slate-800">
             <p className="text-xs text-yellow-400 mb-2 font-semibold">
-              🏄 Field Ops unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more verified customer{toBreaker !== 1 ? 's' : ''} needed
+              🏄 Field Ops unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more job{toBreaker !== 1 ? 's' : ''} needed
             </p>
             <div className="w-full h-2 bg-slate-800 rounded-full">
               <div
                 className="h-2 rounded-full bg-blue-500 transition-all"
-                style={{ width: `${Math.min(100, Math.round((uniqueCustomersCount / 5) * 100))}%` }}
+                style={{ width: `${Math.min(100, Math.round((completedJobsCount / BREAKER_WAVE.jobsRequired) * 100))}%` }}
               />
             </div>
           </div>
@@ -239,13 +240,13 @@ export default function FieldOpsAccessGate({ contractor }) {
       <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">The Waves</p>
       <div className="space-y-3 mb-8">
         {SURFCOAST_WAVES.map(waveDef => {
-          const isUnlocked = highestBadgeTier >= waveDef.badgeTierRequired;
+          const isUnlocked = completedJobsCount >= waveDef.jobsRequired;
           const isCurrentWave = currentWave?.id === waveDef.id;
           return (
             <WaveCard
               key={waveDef.id}
               waveDef={waveDef}
-              uniqueCustomersCount={uniqueCustomersCount}
+              completedJobsCount={completedJobsCount}
               isUnlocked={isUnlocked}
               isCurrentWave={isCurrentWave}
               hasHIS={hasHIS}

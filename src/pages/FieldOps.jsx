@@ -84,11 +84,12 @@ export default function FieldOps() {
     );
   }
 
-  // Check badge-based access — Field Ops requires at least Badge Tier 3 (5 unique customers)
+  // Check Field Ops access — requires Breaker wave (55 completed jobs)
   // Admins bypass all tier/contractor requirements for testing
-  const highestBadge = getHighestBadge(contractor?.unique_customers_count || 0);
-  const hasFieldOpsAccess = isAdmin || (highestBadge?.tier || 0) >= 3;
-  const hasBreakerAccess = isAdmin || (highestBadge?.tier || 0) >= 3;
+  const completedJobsCount = contractor?.completed_jobs_count || 0;
+  const BREAKER_JOBS_REQUIRED = 55;
+  const hasFieldOpsAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const hasBreakerAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
   const NAV_TABS = hasBreakerAccess
     ? [...BASE_NAV_TABS, BREAKER_TAB]
     : BASE_NAV_TABS;
