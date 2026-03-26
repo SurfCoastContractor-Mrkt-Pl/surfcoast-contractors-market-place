@@ -1,0 +1,103 @@
+{
+  "name": "TimedChatSession",
+  "type": "object",
+  "properties": {
+    "checkout_session_id": {
+      "type": "string",
+      "description": "Stripe checkout session ID"
+    },
+    "initiator_email": {
+      "type": "string",
+      "description": "Email of the person who initiated the paid chat"
+    },
+    "initiator_name": {
+      "type": "string",
+      "description": "Name of the initiator"
+    },
+    "recipient_email": {
+      "type": "string",
+      "description": "Email of the recipient (contractor)"
+    },
+    "recipient_name": {
+      "type": "string",
+      "description": "Name of the recipient"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Amount paid in dollars"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "failed"
+      ],
+      "default": "pending",
+      "description": "Payment confirmation status"
+    },
+    "session_started_at": {
+      "type": "string",
+      "description": "ISO timestamp when the session started"
+    },
+    "session_ended_at": {
+      "type": "string",
+      "description": "ISO timestamp when the session ended"
+    },
+    "messages_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of messages exchanged in the session"
+    }
+  },
+  "required": [
+    "checkout_session_id",
+    "initiator_email",
+    "initiator_name",
+    "recipient_email",
+    "recipient_name",
+    "amount",
+    "payment_status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.initiator_email": "{{user.email}}"
+        },
+        {
+          "data.recipient_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
