@@ -1,47 +1,55 @@
-/**
- * Secure Payment Validation Utility
- * Prevents sensitive data exposure in logs/errors
- */
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import Stripe from 'npm:stripe@16.0.0';
 
-export function validatePaymentRequest(body) {
-  const errors = [];
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
-  // Reject raw card data
-  if (body.card || body.cardNumber || body.cvv || body.token) {
-    errors.push('Invalid request structure');
+Deno.serve(async (req) => {
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
-  // Required fields
-  if (!body.payerEmail?.trim()) errors.push('Missing payer email');
-  if (!body.payerName?.trim()) errors.push('Missing payer name');
-  if (!body.payerType) errors.push('Missing payer type');
-  if (!body.idempotencyKey?.trim()) errors.push('Missing idempotency key');
+  try {
+    const base44 = createClientFromRequest(req);
+    const payload = await req.json();
 
-  // Email format
-  if (body.payerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.payerEmail)) {
-    errors.push('Invalid email format');
-  }
+    // Validate required fields
+    const { amount, currency, email, purpose } = payload;
 
-  return { valid: errors.length === 0, errors };
-}
+    if (!amount || typeof amount !== 'number' || amount <= 0 || amount > 999999.99) {
+      return Response.json({ error: 'Invalid amount' }, { status: 400 });
+    }
 
-export function sanitizePaymentError(error) {
-  const message = String(error?.message || '').toLowerCase();
-  
-  // Log generic version internally, return safe version to client
-  if (message.includes('stripe')) {
-    console.error('Payment processing error - Stripe API');
-    return 'Payment processing failed';
+    if (!currency || typeof currency !== 'string' || currency !== 'usd') {
+      return Response.json({ error: 'Invalid currency' }, { status: 400 });
+    }
+
+    if (!email || !email.includes('@')) {
+      return Response.json({ error: 'Invalid email' }, { status: 400 });
+    }
+
+    if (!purpose || typeof purpose !== 'string' || purpose.length > 200) {
+      return Response.json({ error: 'Invalid purpose' }, { status: 400 });
+    }
+
+    // Verify payment amount matches Stripe product
+    const validAmounts = {
+      'quote': 175, // $1.75 in cents
+      'limited_comm': 150, // $1.50
+      'subscription_comm': 5000, // $50.00
+    };
+
+    if (!validAmounts[purpose]) {
+      return Response.json({ error: 'Invalid payment purpose' }, { status: 400 });
+    }
+
+    if (amount * 100 !== validAmounts[purpose]) {
+      console.error(`[Payment Validation] Amount mismatch for ${purpose}`, { requested: amount * 100, expected: validAmounts[purpose] });
+      return Response.json({ error: 'Invalid amount for this payment type' }, { status: 400 });
+    }
+
+    return Response.json({ valid: true, amount, currency, purpose });
+  } catch (error) {
+    console.error('[securePaymentValidator] Error:', error.message);
+    return Response.json({ error: 'Validation failed', details: error.message }, { status: 500 });
   }
-  if (message.includes('database') || message.includes('entity')) {
-    console.error('Payment processing error - Database');
-    return 'Payment processing failed';
-  }
-  if (message.includes('auth') || message.includes('unauthorized')) {
-    console.error('Payment processing error - Authorization');
-    return 'Unauthorized';
-  }
-  
-  console.error('Payment processing error - Unknown');
-  return 'Payment processing failed';
-}
+});

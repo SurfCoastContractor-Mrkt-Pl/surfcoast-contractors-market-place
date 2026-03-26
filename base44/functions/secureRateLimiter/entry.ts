@@ -1,45 +1,64 @@
-/**
- * Secure Rate Limiting Utility
- * Tracks sensitive operations per user with configurable windows
- * Never exposes rate limit info in error messages
- */
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
-export async function checkRateLimit(base44, key, limitType, maxRequests, windowSeconds) {
+// In-memory rate limit tracker (resets on function restart, so also use DB for persistence)
+const rateLimitMap = new Map();
+
+Deno.serve(async (req) => {
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  }
+
   try {
-    const now = new Date();
-    const windowStart = new Date(now.getTime() - windowSeconds * 1000);
+    const payload = await req.json();
+    const { action, identifier, maxAttempts = 5, windowSeconds = 300 } = payload;
 
-    const existing = await base44.asServiceRole.entities.RateLimitTracker.filter({
-      key,
-      limit_type: limitType,
-      created_date: { $gte: windowStart.toISOString() }
-    });
-
-    if (existing && existing.length > 0) {
-      const tracker = existing[0];
-      if (tracker.request_count >= maxRequests) {
-        return { allowed: false, retryAfter: Math.ceil(windowSeconds / 60) };
-      }
-      // Increment counter
-      await base44.asServiceRole.entities.RateLimitTracker.update(tracker.id, {
-        request_count: tracker.request_count + 1
-      });
-      return { allowed: true };
+    if (!action || !identifier) {
+      return Response.json({ error: 'Missing action or identifier' }, { status: 400 });
     }
 
-    // Create new tracker
-    await base44.asServiceRole.entities.RateLimitTracker.create({
-      key,
-      limit_type: limitType,
-      request_count: 1,
-      window_start: now.toISOString(),
-      window_duration_seconds: windowSeconds
-    });
+    const key = `${action}:${identifier}`;
+    const now = Date.now();
+    const windowMs = windowSeconds * 1000;
 
-    return { allowed: true };
+    // Get or create tracker
+    let tracker = rateLimitMap.get(key) || { attempts: [], blocked: false, blockUntil: 0 };
+
+    // Check if currently blocked
+    if (tracker.blocked && now < tracker.blockUntil) {
+      const remainingSeconds = Math.ceil((tracker.blockUntil - now) / 1000);
+      return Response.json(
+        { allowed: false, reason: 'Rate limit exceeded', retryAfter: remainingSeconds },
+        { status: 429 }
+      );
+    }
+
+    // Clean old attempts outside window
+    tracker.attempts = tracker.attempts.filter(time => now - time < windowMs);
+
+    // Check if over limit
+    if (tracker.attempts.length >= maxAttempts) {
+      tracker.blocked = true;
+      tracker.blockUntil = now + windowMs;
+      rateLimitMap.set(key, tracker);
+
+      return Response.json(
+        { allowed: false, reason: 'Rate limit exceeded', retryAfter: windowSeconds },
+        { status: 429 }
+      );
+    }
+
+    // Record attempt
+    tracker.attempts.push(now);
+    tracker.blocked = false;
+    rateLimitMap.set(key, tracker);
+
+    return Response.json({
+      allowed: true,
+      attempts: tracker.attempts.length,
+      remaining: maxAttempts - tracker.attempts.length
+    });
   } catch (error) {
-    console.error('Rate limit check failed:', limitType);
-    // Fail open on database errors (allow request)
-    return { allowed: true };
+    console.error('[secureRateLimiter] Error:', error.message);
+    return Response.json({ error: 'Rate limit check failed' }, { status: 500 });
   }
-}
+});

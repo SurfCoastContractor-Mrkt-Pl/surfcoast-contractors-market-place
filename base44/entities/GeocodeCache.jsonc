@@ -1,0 +1,56 @@
+{
+  "name": "GeocodeCache",
+  "type": "object",
+  "properties": {
+    "address": {
+      "type": "string",
+      "description": "Original address string"
+    },
+    "address_hash": {
+      "type": "string",
+      "description": "Hash of the address for fast lookups"
+    },
+    "result": {
+      "type": "object",
+      "description": "Geocoding result with lat/lon",
+      "properties": {
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "address",
+    "address_hash",
+    "result"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    }
+  }
+}

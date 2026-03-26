@@ -23,12 +23,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Start date must be before end date' }, { status: 400 });
     }
 
-    // Fetch closed scopes with limit to prevent timeout
+    // Fetch closed scopes with pagination to prevent timeout (max 1000 per request)
     const scopes = await base44.entities.ScopeOfWork.filter({
       contractor_email: user.email,
-      status: 'closed',
-      limit: 500
-    });
+      status: 'closed'
+    }, '-closed_date', 1000); // Sort by date descending, limit 1000
 
     if (!scopes || scopes.length === 0) {
       return Response.json({
