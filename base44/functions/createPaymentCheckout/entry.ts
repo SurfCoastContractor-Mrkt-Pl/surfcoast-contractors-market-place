@@ -98,13 +98,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Configuration error' }, { status: 500 });
     }
 
-    // Idempotency check
+    // Idempotency check — use filter instead of listing ALL payments
     let existingPayment = null;
     try {
-      const payments = await base44.asServiceRole.entities.Payment.list();
-      existingPayment = payments.find(p =>
-        p.idempotency_key === idempotencyKey &&
-        (p.status === 'pending' || p.status === 'confirmed')
+      const payments = await base44.asServiceRole.entities.Payment.filter({
+        idempotency_key: idempotencyKey,
+      });
+      existingPayment = payments?.find(p =>
+        p.status === 'pending' || p.status === 'confirmed'
       );
     } catch (e) {
       console.warn('Idempotency check skipped:', e.message);

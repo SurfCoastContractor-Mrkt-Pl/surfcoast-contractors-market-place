@@ -40,14 +40,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized: email does not match authenticated user' }, { status: 403 });
     }
 
-    // Check if user already has active subscription
-    const existingSubscriptions = await base44.asServiceRole.entities.Subscription.filter({
-      user_email: email,
-      status: 'active',
-    });
+    // Check if user already has active subscription (skip check for market vendor/facilitation model)
+    if (payment_model !== 'facilitation') {
+      const existingSubscriptions = await base44.asServiceRole.entities.Subscription.filter({
+        user_email: email,
+        status: 'active',
+      });
 
-    if (existingSubscriptions && existingSubscriptions.length > 0) {
-      return Response.json({ error: 'You already have an active subscription' }, { status: 400 });
+      if (existingSubscriptions && existingSubscriptions.length > 0) {
+        return Response.json({ error: 'You already have an active subscription' }, { status: 400 });
+      }
     }
 
     const origin = req.headers.get('origin') || 'https://localhost:3000';
@@ -55,13 +57,14 @@ Deno.serve(async (req) => {
     const sessionConfig = {
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
+      mode: payment_model === 'facilitation' ? 'setup' : 'subscription',
       customer_email: email,
       success_url: `${origin}/Success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/Cancel`,
       metadata: {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),
         user_type: userType,
+        ...(shop_id ? { shop_id, payment_model } : {}),
       },
     };
 

@@ -22,18 +22,17 @@ Deno.serve(async (req) => {
       }, { status: 403 });
     }
 
-    // Fetch the scope record
-    const scope = await base44.entities.ScopeOfWork.filter({ 
-      id: scope_id 
-    });
-
-    if (!scope || scope.length === 0) {
-      return Response.json({ 
-        error: 'Scope of Work not found' 
-      }, { status: 404 });
+    // Fetch the scope record (use service role to ensure it can be found)
+    let scopeRecord;
+    try {
+      scopeRecord = await base44.asServiceRole.entities.ScopeOfWork.get(scope_id);
+    } catch (e) {
+      return Response.json({ error: 'Scope of Work not found' }, { status: 404 });
     }
 
-    const scopeRecord = scope[0];
+    if (!scopeRecord) {
+      return Response.json({ error: 'Scope of Work not found' }, { status: 404 });
+    }
 
     // Verify customer email matches
     if (scopeRecord.customer_email !== customer_email) {
@@ -42,15 +41,22 @@ Deno.serve(async (req) => {
       }, { status: 403 });
     }
 
+    // Verify scope is in a state that can be approved
+    if (scopeRecord.status !== 'pending_approval') {
+      return Response.json({ 
+        error: `Scope cannot be approved — current status: ${scopeRecord.status}` 
+      }, { status: 409 });
+    }
+
     // Update scope status to approved and store signature in dedicated field
-    await base44.entities.ScopeOfWork.update(scope_id, {
+    await base44.asServiceRole.entities.ScopeOfWork.update(scope_id, {
       status: 'approved',
       customer_signature_url: signature_url,
       customer_signed_scope_at: new Date().toISOString(),
     });
 
     // Send approval email to contractor
-    await base44.integrations.Core.SendEmail({
+    await base44.asServiceRole.integrations.Core.SendEmail({
       to: scopeRecord.contractor_email,
       subject: `Scope & Estimate Approved - ${scopeRecord.job_title}`,
       body: `
@@ -73,7 +79,7 @@ SurfCoast Marketplace
     });
 
     // Send confirmation email to customer
-    await base44.integrations.Core.SendEmail({
+    await base44.asServiceRole.integrations.Core.SendEmail({
       to: customer_email,
       subject: `Scope & Estimate Approved - ${scopeRecord.job_title}`,
       body: `

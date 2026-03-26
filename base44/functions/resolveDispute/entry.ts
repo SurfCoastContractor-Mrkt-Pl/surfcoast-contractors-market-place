@@ -95,18 +95,22 @@ ${admin_notes || 'No notes'}
 If you have questions, please contact our support team.
     `.trim();
 
-    await Promise.all([
-      base44.integrations.Core.SendEmail({
+    const emailPromises = [];
+    if (dispute.initiator_email) {
+      emailPromises.push(base44.asServiceRole.integrations.Core.SendEmail({
         to: dispute.initiator_email,
         subject: emailSubject,
         body: emailBody
-      }),
-      base44.integrations.Core.SendEmail({
+      }));
+    }
+    if (dispute.respondent_email) {
+      emailPromises.push(base44.asServiceRole.integrations.Core.SendEmail({
         to: dispute.respondent_email,
         subject: emailSubject,
         body: emailBody
-      })
-    ]);
+      }));
+    }
+    await Promise.all(emailPromises);
 
     return Response.json({
       success: true,

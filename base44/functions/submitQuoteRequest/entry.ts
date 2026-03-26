@@ -81,7 +81,7 @@ Quote Request ID: ${quoteRequest.id}
 SurfCoast Marketplace
 `;
 
-      await base44.integrations.Core.SendEmail({
+      await base44.asServiceRole.integrations.Core.SendEmail({
         to: contractorEmail,
         from_name: 'SurfCoast Marketplace',
         subject: `New Quote Request: ${jobTitle}`,
@@ -116,7 +116,7 @@ Best regards,
 SurfCoast Marketplace Team
 `;
 
-      await base44.integrations.Core.SendEmail({
+      await base44.asServiceRole.integrations.Core.SendEmail({
         to: customerEmail,
         from_name: 'SurfCoast Marketplace',
         subject: `Quote Request Confirmation: ${jobTitle}`,

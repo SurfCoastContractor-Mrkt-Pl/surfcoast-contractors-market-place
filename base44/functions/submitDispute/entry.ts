@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
       initiator_name: finalInitiatorName,
       initiator_type: finalInitiatorType,
       respondent_email,
-      respondent_name,
+      respondent_name: body.respondent_name || respondent_email,
       respondent_type,
       scope_id: scope_id || null,
       job_id: job_id || null,
