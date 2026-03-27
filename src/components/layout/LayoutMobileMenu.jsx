@@ -60,7 +60,7 @@ export default function LayoutMobileMenu({
         <div className="pt-4 border-t border-slate-100 space-y-2">
           <div className="border-t border-slate-100 pt-2 space-y-1">
             <div className="px-3 py-2 text-xs font-semibold text-slate-500">
-              {isContractor ? 'CONTRACTOR' : 'CLIENT'}
+              ACCOUNT
             </div>
             {isLoggedIn && (
               <>
@@ -88,10 +88,18 @@ export default function LayoutMobileMenu({
             {isLoggedIn && (
               <div className="border-t border-slate-100 pt-2">
                 <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
+                {isContractor && (
+                  <Link to={createPageUrl('ContractorFinancialDashboard')} onClick={handleNavClick}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                      <span>🔧</span>
+                      <span>Contractor</span>
+                    </div>
+                  </Link>
+                )}
                 <Link to={createPageUrl('Dashboard')} onClick={handleNavClick}>
                   <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                    <span>{isContractor ? '🔧' : '🏠'}</span>
-                    <span>{isContractor ? 'Contractor' : 'Client'}</span>
+                    <span>🏠</span>
+                    <span>Client</span>
                   </div>
                 </Link>
                 {hasCustomerProfile && (

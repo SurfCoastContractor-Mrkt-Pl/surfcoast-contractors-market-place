@@ -179,22 +179,30 @@ function AccountDropdown({
   return (
     <div className={cn("bg-white border border-slate-200 rounded-xl shadow-lg z-50 w-full", !isMobile && "absolute right-0 top-full mt-1 w-52")}>
       <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-        {isContractor ? 'CONTRACTOR' : 'CLIENT'}
+        ACCOUNT
       </div>
       <Item path={createPageUrl('Dashboard')}>My Dashboard</Item>
-      <Item path={createPageUrl('ConsumerHub')}>Consumer Dashboard</Item>
       <Item path="/About">About Us</Item>
       {(isContractor ? contractorLinks : customerLinks).map(link => (
         <Item key={link.page} path={createPageUrl(link.page)}>{link.name}</Item>
       ))}
       <div className="border-t border-slate-200">
         <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
+        {isContractor && (
+          <button
+            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('ContractorFinancialDashboard')); }}
+            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+          >
+            <span>🔧</span>
+            <span>Contractor</span>
+          </button>
+        )}
         <button
           onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('Dashboard')); }}
           className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
         >
-          <span>{isContractor ? '🔧' : '🏠'}</span>
-          <span>{isContractor ? 'Contractor' : 'Client'}</span>
+          <span>🏠</span>
+          <span>Client</span>
         </button>
         {hasCustomerProfile && (
           <button
