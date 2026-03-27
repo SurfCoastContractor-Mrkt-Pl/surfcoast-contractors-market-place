@@ -7,8 +7,9 @@ import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { TrendingUp, ShoppingCart, Users, DollarSign, Loader2, AlertCircle } from 'lucide-react';
+import MarketEventPayoutAnalytics from './MarketEventPayoutAnalytics';
 
-export default function VendorAnalyticsDashboard({ shopId }) {
+export default function VendorAnalyticsDashboard({ shopId, shopEmail }) {
   const [period, setPeriod] = useState(90); // days
 
   const { data: analytics, isLoading, error } = useQuery({
@@ -55,6 +56,14 @@ export default function VendorAnalyticsDashboard({ shopId }) {
 
   return (
     <div className="space-y-6">
+      {/* Market Event Payout Analytics */}
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">Market Event Sales & Payouts</h2>
+        <MarketEventPayoutAnalytics shopId={shopId} shopEmail={shopEmail} />
+      </div>
+
+      <hr className="my-8 border-slate-200" />
+
       {/* Period Selector */}
       <div className="flex gap-2 flex-wrap">
         {[7, 30, 90].map((days) => (

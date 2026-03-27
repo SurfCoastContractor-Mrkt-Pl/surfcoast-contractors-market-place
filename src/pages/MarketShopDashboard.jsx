@@ -189,7 +189,7 @@ export default function MarketShopDashboard() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
           {activeTab === 'listings' && <MarketShopListings shopId={shop.id} />}
-          {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} />}
+          {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} shopEmail={shop.email} />}
           {activeTab === 'messages' && <VendorMessagingInbox shopId={shop.id} vendorEmail={shop.email} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
