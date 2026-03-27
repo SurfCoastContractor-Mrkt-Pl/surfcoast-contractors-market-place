@@ -25,10 +25,10 @@ import ProjectManagement from './pages/ProjectManagement';
 import QuoteRequestWizard from './pages/QuoteRequestWizard';
 import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
 import ContractorQuotesManagement from './pages/ContractorQuotesManagement';
-import FieldOps from './pages/FieldOps';
-import AdminFieldOps from './pages/AdminFieldOps';
+import WaveFo from './pages/FieldOps';
+import AdminWaveFo from './pages/AdminFieldOps';
 import ContractorBillingHistory from './pages/ContractorBillingHistory';
-import FieldOpsReporting from './pages/FieldOpsReporting';
+import WaveFoReporting from './pages/FieldOpsReporting';
 import ContractorVerificationDashboard from './pages/ContractorVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
 import ComplianceGuide from './pages/ComplianceGuide';
@@ -172,10 +172,13 @@ const AuthenticatedApp = () => {
           <ContractorQuotesManagement />
         </LayoutWrapper>
       } />
-      <Route path="/FieldOps" element={<FieldOps />} />
-      <Route path="/adminfieldops" element={<AdminFieldOps />} />
+      <Route path="/WaveFo" element={<WaveFo />} />
+      <Route path="/FieldOps" element={<WaveFo />} /> {/* Legacy redirect */}
+      <Route path="/AdminWaveFo" element={<AdminWaveFo />} />
+      <Route path="/adminfieldops" element={<AdminWaveFo />} /> {/* Legacy redirect */}
       <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
-      <Route path="/FieldOpsReporting" element={<FieldOpsReporting />} />
+      <Route path="/WaveFoReporting" element={<WaveFoReporting />} />
+      <Route path="/FieldOpsReporting" element={<WaveFoReporting />} /> {/* Legacy redirect */}
       <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
       <Route path="/ComplianceDashboard" element={
         <LayoutWrapper currentPageName="ComplianceDashboard">

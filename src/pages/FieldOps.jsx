@@ -26,7 +26,7 @@ const BASE_NAV_TABS = [
 ];
 const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave FO' };
 
-export default function FieldOps() {
+export default function WaveFo() {
   const [activeTab, setActiveTab] = useState('jobs');
   const [user, setUser] = useState(null);
   const [contractor, setContractor] = useState(null);
@@ -65,7 +65,7 @@ export default function FieldOps() {
           if (contractors?.length > 0) setContractor(contractors[0]);
         }
       } catch (e) {
-        console.error('FieldOps auth error:', e);
+        console.error('Wave FO auth error:', e);
       }
       setLoading(false);
       };
@@ -130,7 +130,7 @@ export default function FieldOps() {
           <h1 className="text-2xl font-bold mb-2">Wave FO</h1>
           <p className="text-slate-400 mb-6">Sign in with a contractor account to access Wave FO.</p>
           <button
-            onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/FieldOps`)}
+            onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveFo`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
           >
             Sign In to Wave FO
