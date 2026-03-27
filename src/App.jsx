@@ -39,6 +39,7 @@ import NotionHub from './pages/NotionHub';
 import SurfCoastPerformanceDashboard from './pages/SurfCoastPerformanceDashboard';
 import SurfCoastReviewRequestsManager from './pages/SurfCoastReviewRequestsManager';
 import ActivityConsolidationDashboard from './pages/ActivityConsolidationDashboard';
+import SubmitConsumerOrderReview from './pages/SubmitConsumerOrderReview';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -214,6 +215,11 @@ const AuthenticatedApp = () => {
       <Route path="/ActivityConsolidationDashboard" element={
         <LayoutWrapper currentPageName="ActivityConsolidationDashboard">
           <ActivityConsolidationDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/review-consumer-order" element={
+        <LayoutWrapper currentPageName="SubmitConsumerOrderReview">
+          <SubmitConsumerOrderReview />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

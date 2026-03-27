@@ -1,0 +1,107 @@
+{
+  "name": "VendorReview",
+  "type": "object",
+  "properties": {
+    "shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop being reviewed"
+    },
+    "shop_name": {
+      "type": "string",
+      "description": "Name of the shop at time of review"
+    },
+    "reviewer_email": {
+      "type": "string",
+      "description": "Email of the reviewer (customer)"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "description": "Name of the reviewer"
+    },
+    "rating": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Star rating from 1-5"
+    },
+    "title": {
+      "type": "string",
+      "description": "Review title"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Review text"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "visible",
+        "hidden",
+        "flagged"
+      ],
+      "default": "visible",
+      "description": "Visibility status of the review"
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this review is from a verified purchase"
+    },
+    "flagged": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this review has been flagged for moderation"
+    },
+    "helpful_count": {
+      "type": "integer",
+      "default": 0,
+      "description": "Number of users who marked this review as helpful"
+    }
+  },
+  "required": [
+    "shop_id",
+    "shop_name",
+    "reviewer_email",
+    "reviewer_name",
+    "rating",
+    "title",
+    "comment"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.status": "visible"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.reviewer_email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
