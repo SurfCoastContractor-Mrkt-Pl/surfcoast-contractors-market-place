@@ -31,7 +31,7 @@ export default function LayoutHeader({
   return (
     <nav className="z-50 bg-white border-b border-slate-200">
       {/* Main nav bar */}
-      <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4">
+      <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4 relative">
         {/* Desktop Nav - Left */}
         {currentPageName !== 'Home' && (
           <div className="hidden lg:flex items-center gap-1 flex-shrink">
@@ -104,7 +104,7 @@ export default function LayoutHeader({
 
         {/* Mobile Account Button */}
         {isLoggedIn && (
-          <div className="relative lg:hidden" ref={accountMenuRef}>
+          <div className="lg:hidden" ref={accountMenuRef}>
             <button
               className="p-2 flex-shrink-0"
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
@@ -113,17 +113,19 @@ export default function LayoutHeader({
               <UserCircle className="w-6 h-6 text-slate-900" />
             </button>
             {accountMenuOpen && (
-              <AccountDropdown
-                isContractor={isContractor}
-                hasCustomerProfile={hasCustomerProfile}
-                hasMarketShop={hasMarketShop}
-                createPageUrl={createPageUrl}
-                contractorLinks={contractorLinks}
-                customerLinks={customerLinks}
-                onLogout={handleLogout}
-                setAccountMenuOpen={setAccountMenuOpen}
-                isMobile
-              />
+              <div className="fixed left-0 right-0 top-14 z-50 px-4">
+                <AccountDropdown
+                  isContractor={isContractor}
+                  hasCustomerProfile={hasCustomerProfile}
+                  hasMarketShop={hasMarketShop}
+                  createPageUrl={createPageUrl}
+                  contractorLinks={contractorLinks}
+                  customerLinks={customerLinks}
+                  onLogout={handleLogout}
+                  setAccountMenuOpen={setAccountMenuOpen}
+                  isMobile
+                />
+              </div>
             )}
           </div>
         )}
@@ -131,7 +133,7 @@ export default function LayoutHeader({
         {/* Mobile Menu Button */}
         <button
           className="lg:hidden p-2 flex-shrink-0 ml-auto"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setAccountMenuOpen(false); }}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-controls="mobile-menu"
           aria-expanded={mobileMenuOpen}
@@ -175,7 +177,7 @@ function AccountDropdown({
   );
 
   return (
-    <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+    <div className={cn("bg-white border border-slate-200 rounded-xl shadow-lg z-50 w-full", !isMobile && "absolute right-0 top-full mt-1 w-52")}>
       <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
         {isContractor ? 'CONTRACTOR' : 'CLIENT'}
       </div>
