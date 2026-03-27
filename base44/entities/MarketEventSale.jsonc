@@ -1,0 +1,109 @@
+{
+  "name": "MarketEventSale",
+  "type": "object",
+  "properties": {
+    "market_shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop (vendor) that made the sale"
+    },
+    "market_shop_email": {
+      "type": "string",
+      "description": "Email of the MarketShop owner"
+    },
+    "sale_amount": {
+      "type": "number",
+      "description": "The total amount of the sale in cents (e.g., 1500 for $15.00)"
+    },
+    "sale_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp when the sale occurred"
+    },
+    "market_event_name": {
+      "type": "string",
+      "description": "Name of the market event where the sale happened"
+    },
+    "market_event_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the specific market event"
+    },
+    "payout_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "failed"
+      ],
+      "default": "pending",
+      "description": "Status of whether this sale has been paid out to the vendor"
+    },
+    "payout_id": {
+      "type": "string",
+      "description": "ID of the Stripe payout transaction once the payout is made"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer (optional)"
+    },
+    "transaction_id": {
+      "type": "string",
+      "description": "Stripe transaction ID for the individual sale (optional)"
+    }
+  },
+  "required": [
+    "market_shop_id",
+    "market_shop_email",
+    "sale_amount",
+    "sale_date",
+    "market_event_name",
+    "market_event_date"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.market_shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
