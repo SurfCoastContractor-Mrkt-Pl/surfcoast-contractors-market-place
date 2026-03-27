@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, UserCircle } from 'lucide-react';
+import { ArrowLeft, UserCircle, Briefcase } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function LayoutMobileMenu({
@@ -88,43 +88,55 @@ export default function LayoutMobileMenu({
             {isLoggedIn && (
               <div className="border-t border-slate-100 pt-2">
                 <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-                {isContractor && (
+                <Link to={createPageUrl('Dashboard')} onClick={handleNavClick}>
+                  <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                    🏠 Client Dashboard
+                  </div>
+                </Link>
+                {isContractor ? (
                   <Link to={createPageUrl('ContractorFinancialDashboard')} onClick={handleNavClick}>
                     <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      <span>🔧</span>
-                      <span>Contractor</span>
+                      🔧 Contractor Dashboard
+                    </div>
+                  </Link>
+                ) : (
+                  <Link to={createPageUrl('BecomeContractor')} onClick={handleNavClick}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
+                      + Become a Contractor
                     </div>
                   </Link>
                 )}
-                <Link to={createPageUrl('Dashboard')} onClick={handleNavClick}>
-                  <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                    <span>🏠</span>
-                    <span>Client</span>
-                  </div>
-                </Link>
-                {hasCustomerProfile && (
+                {hasCustomerProfile ? (
                   <Link to={createPageUrl('ConsumerHub')} onClick={handleNavClick}>
                     <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      <span>🛒</span>
-                      <span>Consumer Dashboard</span>
+                      🛒 Consumer Dashboard
+                    </div>
+                  </Link>
+                ) : (
+                  <Link to={createPageUrl('ConsumerSignup')} onClick={handleNavClick}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
+                      + Become a Consumer
                     </div>
                   </Link>
                 )}
                 {hasMarketShop ? (
                   <Link to={createPageUrl('MarketShopDashboard')} onClick={handleNavClick}>
                     <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      <span>🛍️</span>
-                      <span>MarketShop</span>
+                      🛍️ MarketShop
                     </div>
                   </Link>
                 ) : (
                   <Link to={createPageUrl('MarketShopSignup')} onClick={handleNavClick}>
                     <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
-                      <span>🛍️</span>
-                      <span>+ Add MarketShop</span>
+                      + Add MarketShop
                     </div>
                   </Link>
                 )}
+                <Link to="/" onClick={handleNavClick}>
+                  <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                    Go to Homepage
+                  </div>
+                </Link>
               </div>
             )}
             <Link to={createPageUrl('MarketDirectory')} onClick={handleNavClick}>

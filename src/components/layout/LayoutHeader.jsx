@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle } from 'lucide-react';
+import { Menu, X, UserCircle, Briefcase } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 
@@ -188,48 +188,23 @@ function AccountDropdown({
       ))}
       <div className="border-t border-slate-200">
         <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-        {isContractor && (
-          <button
-            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('ContractorFinancialDashboard')); }}
-            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-          >
-            <span>🔧</span>
-            <span>Contractor</span>
-          </button>
+        <Item path={createPageUrl('Dashboard')}>🏠 Client Dashboard</Item>
+        {isContractor ? (
+          <Item path={createPageUrl('ContractorFinancialDashboard')}>🔧 Contractor Dashboard</Item>
+        ) : (
+          <Item path={createPageUrl('BecomeContractor')} className="text-blue-600 hover:bg-blue-50">+ Become a Contractor</Item>
         )}
-        <button
-          onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('Dashboard')); }}
-          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-        >
-          <span>🏠</span>
-          <span>Client</span>
-        </button>
-        {hasCustomerProfile && (
-          <button
-            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('ConsumerHub')); }}
-            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-          >
-            <span>🛒</span>
-            <span>Consumer Dashboard</span>
-          </button>
+        {hasCustomerProfile ? (
+          <Item path={createPageUrl('ConsumerHub')}>🛒 Consumer Dashboard</Item>
+        ) : (
+          <Item path={createPageUrl('ConsumerSignup')} className="text-blue-600 hover:bg-blue-50">+ Become a Consumer</Item>
         )}
         {hasMarketShop ? (
-          <button
-            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketShopDashboard')); }}
-            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-          >
-            <span>🛍️</span>
-            <span>MarketShop</span>
-          </button>
+          <Item path={createPageUrl('MarketShopDashboard')}>🛍️ MarketShop</Item>
         ) : (
-          <button
-            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketShopSignup')); }}
-            className="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2"
-          >
-            <span>🛍️</span>
-            <span>+ Add MarketShop</span>
-          </button>
+          <Item path={createPageUrl('MarketShopSignup')} className="text-blue-600 hover:bg-blue-50">+ Add MarketShop</Item>
         )}
+        <Item path="/">Go to Homepage</Item>
       </div>
       <button
         onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketDirectory')); }}
