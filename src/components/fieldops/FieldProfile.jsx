@@ -12,7 +12,7 @@ const STATUS_OPTIONS = [
   { value: 'on_vacation', label: 'On Vacation', color: 'bg-slate-500' },
 ];
 
-export default function FieldProfile({ contractor, user, onUpdate }) {
+export default function WaveFOProfile({ contractor, user, onUpdate }) {
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [showStatusPicker, setShowStatusPicker] = useState(false);
 

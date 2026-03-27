@@ -14,7 +14,7 @@ const STATUS_CONFIG = {
   refunded: { label: 'Refunded', color: 'text-red-400', bg: 'bg-red-900/20' },
 };
 
-export default function FieldInvoices({ contractor, user }) {
+export default function WaveFOInvoices({ contractor, user }) {
   const [escrows, setEscrows] = useState([]);
   const [scopes, setScopes] = useState([]);
   const [loading, setLoading] = useState(true);

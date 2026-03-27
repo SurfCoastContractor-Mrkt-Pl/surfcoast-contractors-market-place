@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { BarChart3 } from 'lucide-react';
-import FieldOpsReportFilters from '@/components/fieldops/FieldOpsReportFilters';
-import FieldOpsReportDisplay from '@/components/fieldops/FieldOpsReportDisplay';
+import WaveFOReportFilters from '@/components/fieldops/FieldOpsReportFilters';
+import WaveFOReportDisplay from '@/components/fieldops/FieldOpsReportDisplay';
 
-export default function FieldOpsReporting() {
+export default function WaveFOReporting() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -14,7 +14,7 @@ export default function FieldOpsReporting() {
     setLoading(true);
     setError(null);
     try {
-      const result = await base44.functions.invoke('generateFieldOpsReport', {
+      const result = await base44.functions.invoke('generateWaveFOReport', {
         startDate: filters.startDate,
         endDate: filters.endDate,
         categorizeBy: filters.categorizeBy,
@@ -39,7 +39,7 @@ export default function FieldOpsReporting() {
       const waveKeys = ['Ripple', 'Swell', 'Breaker', 'Pipeline', 'Residential Wave'];
       const categorizeBy = groupedKeys.some(k => waveKeys.includes(k)) ? 'wave' : 'customer';
 
-      const csvResult = await base44.functions.invoke('generateFieldOpsReport', {
+      const csvResult = await base44.functions.invoke('generateWaveFOReport', {
         startDate: report.startDate,
         endDate: report.endDate,
         categorizeBy,
@@ -76,7 +76,7 @@ export default function FieldOpsReporting() {
         </div>
 
         {/* Filters */}
-        <FieldOpsReportFilters onFilterChange={handleGenerateReport} loading={loading} />
+        <WaveFOReportFilters onFilterChange={handleGenerateReport} loading={loading} />
 
         {/* Error Display */}
         {error && (
@@ -86,7 +86,7 @@ export default function FieldOpsReporting() {
         )}
 
         {/* Report Display */}
-        <FieldOpsReportDisplay
+        <WaveFOReportDisplay
           report={report}
           onExport={handleExportCSV}
           exporting={exporting}

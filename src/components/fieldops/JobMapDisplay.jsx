@@ -31,7 +31,7 @@ const MapCenter = ({ center }) => {
   return null;
 };
 
-export default function JobMapDisplay({ contractor }) {
+export default function WaveFOJobMapDisplay({ contractor }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [contractorLocation, setContractorLocation] = useState(null);

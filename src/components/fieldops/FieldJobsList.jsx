@@ -19,7 +19,7 @@ const STATUS_CONFIG = {
 const FILTER_TABS = ['All', 'Active', 'Upcoming', 'Completed'];
 const VIEW_TABS = ['My Jobs', 'Recommended'];
 
-export default function FieldJobsList({ contractor, user }) {
+export default function WaveFOJobsList({ contractor, user }) {
   const [scopes, setScopes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');

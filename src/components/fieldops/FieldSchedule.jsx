@@ -17,7 +17,7 @@ function getWeekDays(centerDate) {
   return days;
 }
 
-export default function FieldSchedule({ contractor, user }) {
+export default function WaveFOSchedule({ contractor, user }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [scopes, setScopes] = useState([]);
   const [slots, setSlots] = useState([]);

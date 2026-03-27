@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { Briefcase, Bell } from 'lucide-react';
-import FieldJobsList from '@/components/fieldops/FieldJobsList';
-import FieldSchedule from '@/components/fieldops/FieldSchedule';
-import FieldInvoices from '@/components/fieldops/FieldInvoices';
-import FieldProfile from '@/components/fieldops/FieldProfile';
+import WaveFOJobsList from '@/components/fieldops/FieldJobsList';
+import WaveFOSchedule from '@/components/fieldops/FieldSchedule';
+import WaveFOInvoices from '@/components/fieldops/FieldInvoices';
+import WaveFOProfile from '@/components/fieldops/FieldProfile';
 import FieldOpsAccessGate from '@/components/fieldops/FieldOpsAccessGate';
-import FieldOpsBreakerView from '@/components/fieldops/FieldOpsBreakerView';
-import FieldOpsReporting from '@/pages/FieldOpsReporting';
+import SurfCoastWaveFOView from '@/components/fieldops/FieldOpsBreakerView';
+import WaveFOReporting from '@/pages/FieldOpsReporting';
 import JobAlertBanner from '@/components/fieldops/JobAlertBanner';
-import JobMapDisplay from '@/components/fieldops/JobMapDisplay';
-import FieldOpsSidebar from '@/components/fieldops/FieldOpsSidebar';
-import FieldOpsMobileNav from '@/components/fieldops/FieldOpsMobileNav';
+import WaveFOJobMapDisplay from '@/components/fieldops/JobMapDisplay';
+import WaveFOSidebar from '@/components/fieldops/FieldOpsSidebar';
+import WaveFOMobileNav from '@/components/fieldops/FieldOpsMobileNav';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
@@ -24,7 +24,7 @@ const BASE_NAV_TABS = [
   { id: 'reports', label: 'Wave FO Reports' },
   { id: 'profile', label: 'Wave FO Profile' },
 ];
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave FO' };
 
 export default function FieldOps() {
   const [activeTab, setActiveTab] = useState('jobs');
@@ -104,17 +104,17 @@ export default function FieldOps() {
     );
   }
 
-  // Check Wave FO access — requires Breaker wave (55 completed jobs)
+  // Check Wave FO access — requires SurfCoast Wave FO (55 completed jobs)
   // Admins bypass all tier/contractor requirements for testing
   const completedJobsCount = contractor?.completed_jobs_count || 0;
   const BREAKER_JOBS_REQUIRED = 55;
-  const hasFieldOpsAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const hasBreakerAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const NAV_TABS = hasBreakerAccess
+  const hasWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const hasSurfCoastWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const NAV_TABS = hasSurfCoastWaveFOAccess
     ? [...BASE_NAV_TABS, BREAKER_TAB]
     : BASE_NAV_TABS;
 
-  if (contractor && !hasFieldOpsAccess) {
+  if (contractor && !hasWaveFOAccess) {
     return (
       <div className="fixed inset-0 overflow-y-auto bg-slate-950">
         <FieldOpsAccessGate contractor={contractor} />
@@ -164,11 +164,11 @@ export default function FieldOps() {
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
       {/* Desktop Sidebar Navigation */}
-      <FieldOpsSidebar
+      <WaveFOSidebar
         contractor={effectiveContractor}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        hasBreakerAccess={hasBreakerAccess}
+        hasBreakerAccess={hasSurfCoastWaveFOAccess}
         isOnline={isOnline}
       />
 
@@ -202,24 +202,24 @@ export default function FieldOps() {
         )}
 
         {/* Mobile Navigation */}
-        <FieldOpsMobileNav
+        <WaveFOMobileNav
           contractor={effectiveContractor}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          hasBreakerAccess={hasBreakerAccess}
+          hasBreakerAccess={hasSurfCoastWaveFOAccess}
           isOnline={isOnline}
           notifCount={notifCount}
         />
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
-          {activeTab === 'jobs' && <FieldJobsList contractor={effectiveContractor} user={user} />}
-          {activeTab === 'map' && <JobMapDisplay contractor={effectiveContractor} />}
-          {activeTab === 'schedule' && <FieldSchedule contractor={effectiveContractor} user={user} />}
-          {activeTab === 'invoices' && <FieldInvoices contractor={effectiveContractor} user={user} />}
-          {activeTab === 'reports' && <FieldOpsReporting contractor={effectiveContractor} user={user} />}
-          {activeTab === 'profile' && <FieldProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
-          {activeTab === 'breaker' && <FieldOpsBreakerView contractor={effectiveContractor} user={user} />}
+          {activeTab === 'jobs' && <WaveFOJobsList contractor={effectiveContractor} user={user} />}
+          {activeTab === 'map' && <WaveFOJobMapDisplay contractor={effectiveContractor} />}
+          {activeTab === 'schedule' && <WaveFOSchedule contractor={effectiveContractor} user={user} />}
+          {activeTab === 'invoices' && <WaveFOInvoices contractor={effectiveContractor} user={user} />}
+          {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
+          {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
+          {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
         </div>
 
 

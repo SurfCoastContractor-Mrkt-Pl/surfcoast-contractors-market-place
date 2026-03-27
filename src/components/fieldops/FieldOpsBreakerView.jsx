@@ -260,7 +260,7 @@ function PhotoUploadPanel({ scope, onRefresh }) {
   );
 }
 
-export default function FieldOpsBreakerView({ contractor, user }) {
+export default function SurfCoastWaveFOView({ contractor, user }) {
   const [activeScopes, setActiveScopes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedScope, setSelectedScope] = useState(null);
