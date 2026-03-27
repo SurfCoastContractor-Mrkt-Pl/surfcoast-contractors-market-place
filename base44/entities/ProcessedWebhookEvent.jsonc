@@ -1,0 +1,54 @@
+{
+  "name": "ProcessedWebhookEvent",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Stripe webhook event ID"
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Type of webhook event (checkout.session.completed, charge.refunded, etc.)"
+    },
+    "processed_at": {
+      "type": "string",
+      "description": "ISO timestamp when event was processed"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failed"
+      ],
+      "default": "success",
+      "description": "Processing status"
+    }
+  },
+  "required": [
+    "event_id",
+    "event_type",
+    "processed_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
