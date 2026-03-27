@@ -10,9 +10,10 @@ import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal
 import MissionStatement from "@/components/home/MissionStatement";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
-import InstagramQRCode from "@/components/social/InstagramQRCode";
-import FacebookQRCode from "@/components/social/FacebookQRCode";
-import FacebookGroupQRCode from "@/components/social/FacebookGroupQRCode";
+// QRCode imports temporarily disabled due to package resolution issue
+// import InstagramQRCode from "@/components/social/InstagramQRCode";
+// import FacebookQRCode from "@/components/social/FacebookQRCode";
+// import FacebookGroupQRCode from "@/components/social/FacebookGroupQRCode";
 
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
 
@@ -299,7 +300,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(10,22,40,0.8)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"clamp(24px, 4vw, 32px) clamp(16px, 4vw, 24px)", flexShrink:0 }} aria-label="Connect with us on social media">
+      {/* QR Code section temporarily disabled due to package resolution issue */}
+      {/* <section style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(10,22,40,0.8)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"clamp(24px, 4vw, 32px) clamp(16px, 4vw, 24px)", flexShrink:0 }} aria-label="Connect with us on social media">
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <h2 style={{ color:"#ffffff", fontSize:"16px", fontWeight:"700", marginBottom:"20px", textAlign:"center" }}>Connect With Us</h2>
           <div style={{ display:"grid", gridTemplateColumns:isMobile ? "1fr" : "repeat(3, 1fr)", gap:"20px", justifyContent:"center", alignItems:"start" }}>
@@ -314,7 +316,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <footer style={{ position:"relative", zIndex:2, padding:"clamp(16px, 3vw, 24px) clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
         <div style={{ maxWidth:"900px", margin:"0 auto", display:"flex", flexDirection:"column", alignItems:"center", gap:"8px", marginBottom:"12px" }}>

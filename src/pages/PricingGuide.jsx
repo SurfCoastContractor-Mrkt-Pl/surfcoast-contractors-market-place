@@ -30,9 +30,159 @@ export default function PricingGuide() {
             <h2 className="text-3xl font-bold text-slate-900">For Contractors</h2>
           </div>
 
-          <p className="text-slate-600 mb-6">
-            Our sliding scale facilitation fees start low to reduce barriers to entry and reward professionals as they grow.
+          <p className="text-slate-600 mb-8">
+            Choose a Wave FO plan to access field operations tools. Then, earn on jobs and pay facilitation fees based on your annual earnings tier.
           </p>
+
+          {/* Wave FO Plans Subtitle */}
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Wave FO Plans - Choose Your Toolkit</h3>
+            <p className="text-slate-600 mb-6">
+              Manage your business with tools tailored to your level. Upgrade anytime as your operations grow.
+            </p>
+          </div>
+
+          {/* Wave FO Plan Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+            {/* Wave Starter */}
+            <Card className="border border-slate-200">
+              <CardHeader>
+                <CardTitle className="text-xl">Wave Starter</CardTitle>
+                <CardDescription>Getting Started</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-3xl font-bold text-slate-900">$19<span className="text-lg text-slate-600">/mo</span></div>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Basic job scheduling (5 concurrent)</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Simple invoicing (10/month)</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Text messaging</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Mobile app access</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Wave Pro */}
+            <Card className="border-2 border-blue-200 bg-blue-50">
+              <CardHeader>
+                <CardTitle className="text-xl">Wave Pro</CardTitle>
+                <CardDescription>Recommended</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-3xl font-bold text-slate-900">$39<span className="text-lg text-slate-600">/mo</span></div>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Unlimited job scheduling</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Unlimited invoicing</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Lead tracking & pipeline</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>1GB document storage</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>File attachments</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Wave Max */}
+            <Card className="border border-slate-200">
+              <CardHeader>
+                <CardTitle className="text-xl">Wave Max</CardTitle>
+                <CardDescription>Professional</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-3xl font-bold text-slate-900">$59<span className="text-lg text-slate-600">/mo</span></div>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>All Wave Pro features</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Project tracking & reporting</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Advanced analytics</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>5GB storage</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Templates</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Licensed Sole Proprietor */}
+            <Card className="border-2 border-amber-200 bg-amber-50">
+              <CardHeader>
+                <CardTitle className="text-xl">Wave FO Premium</CardTitle>
+                <CardDescription>Licensed Pros Only</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-3xl font-bold text-amber-600">$100+<span className="text-lg text-slate-600">/mo</span></div>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>All Wave Max features</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>CSLB contract tools</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Full team management</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>Priority support</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span>✓</span>
+                    <span>HIS license tools</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Facilitation Fee Tier Section */}
+          <div className="mb-8 pb-8 border-t pt-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Facilitation Fees - Based on Earnings</h3>
+            <p className="text-slate-600 mb-6">
+              Your sliding scale facilitation fees start low to reduce barriers to entry and reward professionals as they grow.
+            </p>
+          </div>
+
+          {/* Tier Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
           {/* Tier Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
