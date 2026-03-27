@@ -12,9 +12,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
+    const productId = Deno.env.get('STRIPE_WAVE_FO_PREMIUM_PRODUCT_ID');
+    if (!productId) {
+      return Response.json({ error: 'STRIPE_WAVE_FO_PREMIUM_PRODUCT_ID environment variable not set' }, { status: 500 });
+    }
+
     // Create a new price for Wave FO Premium at $100/month
     const price = await stripe.prices.create({
-      product: 'prod_UDvVKupuinsT6F', // Wave FO Premium product
+      product: productId,
       unit_amount: 10000, // $100.00 in cents
       currency: 'usd',
       recurring: {

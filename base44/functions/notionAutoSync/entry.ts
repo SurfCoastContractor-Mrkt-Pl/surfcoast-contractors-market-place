@@ -36,7 +36,10 @@ Deno.serve(async (req) => {
       'Notion-Version': '2022-06-28',
     };
 
-    const PARENT_PAGE_ID = '330c3b3d-27dd-8159-a260-fdfc73c2368b';
+    const PARENT_PAGE_ID = Deno.env.get('NOTION_PROJECT_PARENT_PAGE_ID');
+    if (!PARENT_PAGE_ID) {
+      return Response.json({ error: 'NOTION_PROJECT_PARENT_PAGE_ID environment variable not set' }, { status: 500 });
+    }
 
     // Handle ScopeOfWork events
     if (event.entity_name === 'ScopeOfWork') {
