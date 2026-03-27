@@ -248,6 +248,18 @@ export default function MarketShopSignup() {
     e.preventDefault();
     setSubmitLoading(true);
     try {
+      // Validate that user doesn't already have max accounts
+      const validationRes = await base44.functions.invoke('validateMarketShopCreation', {
+        email: formData.email,
+        shop_type: type
+      });
+
+      if (!validationRes.data.allowed) {
+        alert(validationRes.data.reason);
+        setSubmitLoading(false);
+        return;
+      }
+
       const shopPayload = {
         shop_name: formData.shop_name,
         shop_type: type,

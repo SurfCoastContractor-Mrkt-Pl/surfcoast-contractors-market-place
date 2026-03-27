@@ -210,20 +210,53 @@ export default function AdminDashboard() {
             </div>
 
             <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6">
-              <h2 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-4 sm:w-5 h-4 sm:h-5" />Recent Activity</h2>
+              <h2 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-4 sm:w-5 h-4 sm:h-5" />Recent Activity by Account</h2>
               <div className="space-y-2 sm:space-y-3 max-h-96 overflow-y-auto">
-                {vendors.slice(0, 10).map(v => (
-                  <div key={v.id} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-                    <div>
-                      <p className="text-white font-medium">{v.shop_name}</p>
-                      <p className="text-xs text-slate-400">{v.email}</p>
-                    </div>
-                    <div className="text-right">
-                      <StatusBadge status={v.status} />
-                      <p className="text-xs text-slate-400 mt-1">{new Date(v.created_date).toLocaleDateString()}</p>
-                    </div>
-                  </div>
-                ))}
+                {/* Group vendors by email, show latest first */}
+                {useMemo(() => {
+                  const grouped = {};
+                  vendors.forEach(v => {
+                    if (!grouped[v.email]) grouped[v.email] = [];
+                    grouped[v.email].push(v);
+                  });
+                  
+                  return Object.entries(grouped)
+                    .sort((a, b) => {
+                      const latestA = new Date(a[1][0].created_date).getTime();
+                      const latestB = new Date(b[1][0].created_date).getTime();
+                      return latestB - latestA;
+                    })
+                    .slice(0, 10)
+                    .map(([email, shops]) => {
+                      const latestShop = shops[0];
+                      const statuses = shops.map(s => s.status);
+                      const uniqueStatuses = [...new Set(statuses)];
+                      
+                      return (
+                        <div key={email} className="p-3 bg-slate-700 rounded-lg">
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <p className="text-white font-medium text-sm">{email}</p>
+                              <p className="text-xs text-slate-400 mt-0.5">{shops.length} shop{shops.length !== 1 ? 's' : ''}</p>
+                            </div>
+                            <div className="text-right">
+                              <div className="flex gap-1 flex-wrap justify-end mb-1">
+                                {uniqueStatuses.map(s => <StatusBadge key={s} status={s} />)}
+                              </div>
+                              <p className="text-xs text-slate-400">{new Date(latestShop.created_date).toLocaleDateString()}</p>
+                            </div>
+                          </div>
+                          {shops.length > 1 && (
+                            <div className="text-xs text-slate-400 space-y-1 mt-2 pl-2 border-l border-slate-600">
+                              {shops.map(s => (
+                                <p key={s.id}>{s.shop_name} <span className="text-slate-500">({s.shop_type.replace('_', ' ')})</span></p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    });
+                }, [vendors])}
               </div>
             </div>
           </div>
