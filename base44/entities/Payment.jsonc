@@ -1,0 +1,115 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "payer_email": {
+      "type": "string",
+      "description": "Email of the person paying"
+    },
+    "payer_name": {
+      "type": "string",
+      "description": "Name of the person paying"
+    },
+    "payer_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether the payer is a contractor or customer"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "Contractor ID involved in this payment (for customer payments)"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor involved"
+    },
+    "amount": {
+      "type": "number",
+      "default": 1.5,
+      "description": "Amount paid in dollars"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "work_scheduled",
+        "expired"
+      ],
+      "default": "pending",
+      "description": "Payment/session status"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "What the payment is for"
+    },
+    "session_expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when the 1-hour communication session expires"
+    },
+    "confirmed_at": {
+      "type": "string",
+      "description": "ISO timestamp when payment was confirmed"
+    },
+    "stripe_session_id": {
+      "type": "string",
+      "description": "Stripe checkout session ID"
+    },
+    "stripe_checkout_url": {
+      "type": "string",
+      "description": "Stripe checkout URL for this payment"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Idempotency key to prevent duplicate checkouts"
+    }
+  },
+  "required": [
+    "payer_email",
+    "payer_name",
+    "payer_type",
+    "amount"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.payer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.payer_email": "{{user.email}}"
+        },
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
