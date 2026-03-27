@@ -10,8 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const KB_CATEGORIES = ['General', 'Compliance', 'Payments', 'Safety', 'Onboarding', 'FAQ'];
 
 export default function NotionIntegrationPanel({ isAdmin = false }) {
-  const [projectParentId, setProjectParentId] = useState('');
-  const [kbParentId, setKbParentId] = useState('');
+  const [projectParentId, setProjectParentId] = useState('330c3b3d-27dd-8159-a260-fdfc73c2368b');
+  const [kbParentId, setKbParentId] = useState('330c3b3d-27dd-815d-b342-cec5f8bc81d3');
   const [projectPages, setProjectPages] = useState([]);
   const [kbPages, setKbPages] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(false);

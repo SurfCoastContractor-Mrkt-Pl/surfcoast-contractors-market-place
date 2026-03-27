@@ -34,7 +34,75 @@ Deno.serve(async (req) => {
       'Notion-Version': '2022-06-28',
     };
 
-    if (action === 'createProjectPage') {
+    if (action === 'listPages') {
+      // Search for all pages accessible to the integration
+      const res = await fetch('https://api.notion.com/v1/search', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          filter: { value: 'page', property: 'object' },
+          page_size: 50
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('[notionProjectDoc] listPages error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to list pages' }, { status: res.status });
+      }
+
+      const pages = (data.results || []).map(p => ({
+        id: p.id,
+        title: p.properties?.title?.title?.[0]?.plain_text || p.object || 'Untitled',
+        url: p.url,
+        type: p.object,
+        last_edited: p.last_edited_time
+      }));
+
+      console.log(`[notionProjectDoc] Found ${pages.length} pages`);
+      return Response.json({ success: true, pages });
+
+    } else if (action === 'createRootPage') {
+      // Creates a top-level page in the workspace (no parent needed)
+      const { title, emoji } = params;
+
+      const res = await fetch('https://api.notion.com/v1/pages', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          parent: { type: 'workspace', workspace: true },
+          icon: { type: 'emoji', emoji: emoji || '🏄' },
+          properties: {
+            title: { title: [{ text: { content: title || 'SurfCoast Hub' } }] }
+          },
+          children: [
+            {
+              object: 'block', type: 'callout',
+              callout: {
+                rich_text: [{ text: { content: 'This is the SurfCoast project documentation hub. All project pages and knowledge base articles live here.' } }],
+                icon: { emoji: '🏄' },
+                color: 'blue_background'
+              }
+            },
+            { object: 'block', type: 'divider', divider: {} },
+            { object: 'block', type: 'heading_1', heading_1: { rich_text: [{ text: { content: '📁 Project Documentation' } }] } },
+            { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ text: { content: 'Individual project pages will be created here for each scope of work.' } }] } },
+            { object: 'block', type: 'heading_1', heading_1: { rich_text: [{ text: { content: '📚 Knowledge Base' } }] } },
+            { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ text: { content: 'FAQs, compliance guides, and internal articles live here.' } }] } }
+          ]
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] createRootPage error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to create root page' }, { status: res.status });
+      }
+      console.log(`[notionProjectDoc] Created root page: ${data.id}`);
+      return Response.json({ success: true, pageId: data.id, pageUrl: data.url });
+
+    } else if (action === 'createProjectPage') {
       const { scopeId, jobTitle, contractorName, customerName, costType, costAmount, agreedWorkDate, scopeSummary, parentPageId } = params;
 
       if (!parentPageId) {
