@@ -1,9 +1,17 @@
 import Stripe from 'npm:stripe@14.21.0';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     // Create a new price for Wave FO Premium at $100/month
     const price = await stripe.prices.create({
       product: 'prod_UDvVKupuinsT6F', // Wave FO Premium product

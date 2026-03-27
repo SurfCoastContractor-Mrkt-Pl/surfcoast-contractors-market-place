@@ -15,6 +15,20 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid event data' }, { status: 400 });
     }
 
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if user is authorized (contractor or customer involved, or admin)
+    const isAuthorized = user.role === 'admin' || 
+      data.contractor_email === user.email || 
+      data.customer_email === user.email;
+
+    if (!isAuthorized) {
+      return Response.json({ error: 'Forbidden: You do not have access to this scope' }, { status: 403 });
+    }
+
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('notion');
     const notionHeaders = {
       'Authorization': `Bearer ${accessToken}`,
