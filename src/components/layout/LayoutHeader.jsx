@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, UserCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { cn } from '@/lib/utils';
 
 export default function LayoutHeader({
   mobileMenuOpen,
@@ -157,64 +158,77 @@ function AccountDropdown({
   setAccountMenuOpen,
   isMobile,
 }) {
+  const navigate = useNavigate();
+
+  const go = (path) => {
+    setAccountMenuOpen(false);
+    navigate(path);
+  };
+
+  const Item = ({ path, children, className }) => (
+    <button
+      onMouseDown={(e) => { e.preventDefault(); go(path); }}
+      className={cn("w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50", className)}
+    >
+      {children}
+    </button>
+  );
+
   return (
-    <div className={`${isMobile ? 'absolute right-0 top-full mt-1' : 'absolute right-0 top-full mt-1'} w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50`}>
+    <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
       <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
         {isContractor ? 'CONTRACTOR' : 'CLIENT'}
       </div>
-      <Link to={createPageUrl('Dashboard')} onClick={() => setAccountMenuOpen(false)}>
-        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">My Dashboard</div>
-      </Link>
-      <Link to={createPageUrl('ConsumerHub')} onClick={() => setAccountMenuOpen(false)}>
-        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">Consumer Dashboard</div>
-      </Link>
-      <Link to="/About" onClick={() => setAccountMenuOpen(false)}>
-        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">About Us</div>
-      </Link>
+      <Item path={createPageUrl('Dashboard')}>My Dashboard</Item>
+      <Item path={createPageUrl('ConsumerHub')}>Consumer Dashboard</Item>
+      <Item path="/About">About Us</Item>
       {(isContractor ? contractorLinks : customerLinks).map(link => (
-        <Link key={link.page} to={createPageUrl(link.page)} onClick={() => setAccountMenuOpen(false)}>
-          <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">{link.name}</div>
-        </Link>
+        <Item key={link.page} path={createPageUrl(link.page)}>{link.name}</Item>
       ))}
       <div className="border-t border-slate-200">
         <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-        <Link to={createPageUrl('Dashboard')} onClick={() => setAccountMenuOpen(false)}>
-          <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-            <span>{isContractor ? '🔧' : '🏠'}</span>
-            <span>{isContractor ? 'Contractor' : 'Client'}</span>
-          </div>
-        </Link>
+        <button
+          onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('Dashboard')); }}
+          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+        >
+          <span>{isContractor ? '🔧' : '🏠'}</span>
+          <span>{isContractor ? 'Contractor' : 'Client'}</span>
+        </button>
         {hasCustomerProfile && (
-          <Link to={createPageUrl('ConsumerHub')} onClick={() => setAccountMenuOpen(false)}>
-            <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-              <span>🛒</span>
-              <span>Consumer Dashboard</span>
-            </div>
-          </Link>
+          <button
+            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('ConsumerHub')); }}
+            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+          >
+            <span>🛒</span>
+            <span>Consumer Dashboard</span>
+          </button>
         )}
         {hasMarketShop ? (
-          <Link to={createPageUrl('MarketShopDashboard')} onClick={() => setAccountMenuOpen(false)}>
-            <div className="px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-              <span>🛍️</span>
-              <span>MarketShop</span>
-            </div>
-          </Link>
+          <button
+            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketShopDashboard')); }}
+            className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+          >
+            <span>🛍️</span>
+            <span>MarketShop</span>
+          </button>
         ) : (
-          <Link to={createPageUrl('MarketShopSignup')} onClick={() => setAccountMenuOpen(false)}>
-            <div className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2">
-              <span>🛍️</span>
-              <span>+ Add MarketShop</span>
-            </div>
-          </Link>
+          <button
+            onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketShopSignup')); }}
+            className="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2"
+          >
+            <span>🛍️</span>
+            <span>+ Add MarketShop</span>
+          </button>
         )}
       </div>
-      <Link to={createPageUrl('MarketDirectory')} onClick={() => setAccountMenuOpen(false)}>
-        <div className="px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200">
-          Browse Markets & Vendors
-        </div>
-      </Link>
       <button
-        onClick={onLogout}
+        onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketDirectory')); }}
+        className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200"
+      >
+        Browse Markets & Vendors
+      </button>
+      <button
+        onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
         className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
       >
         Logout
