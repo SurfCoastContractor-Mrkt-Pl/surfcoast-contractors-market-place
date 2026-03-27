@@ -44,6 +44,7 @@ import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
 import MarketShopInventory from './pages/MarketShopInventory';
 import ContractorServices from './pages/ContractorServices';
 import JobExpenseTracker from './pages/JobExpenseTracker';
+import ContractorInventoryDashboard from './pages/ContractorInventoryDashboard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -244,6 +245,11 @@ const AuthenticatedApp = () => {
       <Route path="/job-expense-tracker" element={
         <LayoutWrapper currentPageName="JobExpenseTracker">
           <JobExpenseTracker />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-inventory" element={
+        <LayoutWrapper currentPageName="ContractorInventoryDashboard">
+          <ContractorInventoryDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

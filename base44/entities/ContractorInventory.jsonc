@@ -1,0 +1,112 @@
+{
+  "name": "ContractorInventory",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this inventory item"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "material_name": {
+      "type": "string",
+      "description": "Name of the material (e.g., PVC Pipe 1-inch, Copper Wire)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "electrical",
+        "plumbing",
+        "hvac",
+        "carpentry",
+        "tools",
+        "safety",
+        "fasteners",
+        "other"
+      ],
+      "description": "Material category"
+    },
+    "unit": {
+      "type": "string",
+      "description": "Unit of measurement (piece, ft, lb, roll, box, etc.)"
+    },
+    "current_quantity": {
+      "type": "number",
+      "description": "Current quantity in stock"
+    },
+    "low_stock_threshold": {
+      "type": "number",
+      "default": 5,
+      "description": "Quantity threshold for low-stock alert"
+    },
+    "unit_cost": {
+      "type": "number",
+      "description": "Cost per unit (for inventory value tracking)"
+    },
+    "supplier": {
+      "type": "string",
+      "description": "Supplier or source of the material"
+    },
+    "last_restocked_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of last restock"
+    },
+    "low_stock_alert_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether low-stock alert has been sent"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "material_name",
+    "category",
+    "unit",
+    "current_quantity"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
