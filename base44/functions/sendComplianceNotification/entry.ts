@@ -4,14 +4,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // SECURITY: Only admins or automated systems can send compliance notifications
-    const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger sendComplianceNotification`);
-      return Response.json(
-        { error: 'Forbidden: Only admins or scheduled automations can send compliance notifications' },
-        { status: 403 }
-      );
+    // SECURITY: Validate internal service key for scheduled automation
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        console.warn(`[AUTH_VIOLATION] Unauthorized access attempt to sendComplianceNotification`);
+        return Response.json(
+          { error: 'Forbidden: Only admins or scheduled automations can send compliance notifications' },
+          { status: 403 }
+        );
+      }
     }
     
     const { contractor_id, violation_type, grace_until } = await req.json();

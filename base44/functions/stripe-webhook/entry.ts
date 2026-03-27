@@ -20,14 +20,36 @@ Deno.serve(async (req) => {
     let event;
     
     try {
-      event = crypto.constructEventAsync(body, signature, webhookSecret);
+      event = await crypto.constructEventAsync(body, signature, webhookSecret);
     } catch (err) {
       console.error('Webhook signature verification failed:', err.message);
       return Response.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    // Initialize Base44 client
+    // Initialize Base44 client (CRITICAL: must be after signature verification)
     const base44 = createClientFromRequest(req);
+
+    // SECURITY: Database-backed idempotency to prevent duplicate processing
+    const eventIdRecord = await base44.asServiceRole.entities.ProcessedWebhookEvent.filter({
+      event_id: event.id
+    });
+
+    if (eventIdRecord && eventIdRecord.length > 0) {
+      console.log(`Duplicate webhook event received and skipped: ${event.id}`);
+      return Response.json({ received: true, duplicate: true }, { status: 200 });
+    }
+
+    // Record event as processed (idempotency key)
+    try {
+      await base44.asServiceRole.entities.ProcessedWebhookEvent.create({
+        event_id: event.id,
+        event_type: event.type,
+        processed_at: new Date().toISOString()
+      });
+    } catch (idempotencyErr) {
+      console.warn('Failed to record webhook idempotency:', idempotencyErr.message);
+      // Continue processing even if logging fails
+    }
 
     // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {

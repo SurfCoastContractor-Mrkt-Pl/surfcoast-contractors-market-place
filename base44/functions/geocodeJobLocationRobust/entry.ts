@@ -4,19 +4,41 @@ const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 const RATE_LIMIT_DELAY_MS = 1000; // 1 second between requests
 
-let lastRequestTime = 0;
-
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function geocodeWithNominatim(address) {
-  // Rate limiting
-  const now = Date.now();
-  if (now - lastRequestTime < RATE_LIMIT_DELAY_MS) {
-    await sleep(RATE_LIMIT_DELAY_MS - (now - lastRequestTime));
+async function geocodeWithNominatim(address, base44) {
+  // Database-backed rate limiting (1 second between requests per user)
+  try {
+    const userEmail = (await base44.auth.me())?.email || 'anonymous';
+    const now = new Date().toISOString();
+    const windowStart = new Date(Date.now() - 2000).toISOString(); // 2 second window for safety
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `geocode:${userEmail}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      const lastRequest = new Date(records[0].window_start).getTime();
+      const elapsed = Date.now() - lastRequest;
+      if (elapsed < RATE_LIMIT_DELAY_MS) {
+        await sleep(RATE_LIMIT_DELAY_MS - elapsed);
+      }
+    }
+
+    // Record this request
+    await base44.asServiceRole.entities.RateLimitTracker.create({
+      key: `geocode:${userEmail}`,
+      limit_type: 'geocode_request',
+      request_count: 1,
+      window_start: now,
+      window_duration_seconds: 2
+    }).catch(e => console.debug('Rate limit record creation failed (non-critical):', e.message));
+  } catch (error) {
+    console.debug('Geocode rate limit check failed (non-critical):', error.message);
   }
-  lastRequestTime = Date.now();
 
   try {
     const params = new URLSearchParams({
@@ -96,8 +118,8 @@ Deno.serve(async (req) => {
       console.warn('Cache lookup failed:', e.message);
     }
 
-    // Geocode
-    const result = await geocodeWithNominatim(trimmedAddress);
+    // Geocode (pass base44 for database-backed rate limiting)
+    const result = await geocodeWithNominatim(trimmedAddress, base44);
 
     if (!result) {
       return Response.json(

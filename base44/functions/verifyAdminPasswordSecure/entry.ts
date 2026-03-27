@@ -2,57 +2,118 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const RATE_LIMIT_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW_MINUTES = 15;
-const failedAttempts = new Map(); // Maps IP to [timestamp, count]
 
-async function checkRateLimit(ip) {
-  const now = Date.now();
-  const window = RATE_LIMIT_WINDOW_MINUTES * 60 * 1000;
-
-  const attempt = failedAttempts.get(ip);
-  
-  if (attempt && now - attempt.timestamp < window) {
-    if (attempt.count >= RATE_LIMIT_ATTEMPTS) {
-      const remainingSeconds = Math.ceil((attempt.timestamp + window - now) / 1000);
-      return {
-        allowed: false,
-        locked: true,
-        remainingSeconds
-      };
-    }
-  }
-
-  return { allowed: true, locked: false };
-}
-
-async function recordFailedAttempt(ip) {
-  const now = Date.now();
-  const attempt = failedAttempts.get(ip);
-
-  if (attempt) {
+async function checkRateLimit(base44, ip) {
+  try {
+    const now = new Date().toISOString();
     const window = RATE_LIMIT_WINDOW_MINUTES * 60 * 1000;
-    if (now - attempt.timestamp < window) {
-      attempt.count += 1;
-    } else {
-      failedAttempts.set(ip, { timestamp: now, count: 1 });
+    const windowStart = new Date(Date.now() - window).toISOString();
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `admin_password:${ip}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      const record = records[0];
+      if (record.request_count >= RATE_LIMIT_ATTEMPTS) {
+        const remainingSeconds = Math.ceil((new Date(record.window_start).getTime() + window - Date.now()) / 1000);
+        return { allowed: false, locked: true, remainingSeconds };
+      }
     }
-  } else {
-    failedAttempts.set(ip, { timestamp: now, count: 1 });
+    return { allowed: true, locked: false };
+  } catch (error) {
+    console.warn('[RATE_LIMIT_ERROR]', error.message);
+    return { allowed: true, locked: false };
   }
 }
 
-async function clearAttempts(ip) {
-  failedAttempts.delete(ip);
+async function recordFailedAttempt(base44, ip) {
+  try {
+    const now = new Date().toISOString();
+    const window = RATE_LIMIT_WINDOW_MINUTES * 60 * 1000;
+    const windowStart = new Date(Date.now() - window).toISOString();
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `admin_password:${ip}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      await base44.asServiceRole.entities.RateLimitTracker.update(records[0].id, {
+        request_count: records[0].request_count + 1
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: `admin_password:${ip}`,
+        limit_type: 'admin_password',
+        request_count: 1,
+        window_start: now,
+        window_duration_seconds: Math.floor(window / 1000)
+      });
+    }
+  } catch (error) {
+    console.warn('[RECORD_ATTEMPT_ERROR]', error.message);
+  }
 }
 
-function hashPassword(password) {
-  // Simple hash for verification (in production, use bcrypt)
-  let hash = 0;
-  for (let i = 0; i < password.length; i++) {
-    const char = password.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+async function clearAttempts(base44, ip) {
+  try {
+    const window = RATE_LIMIT_WINDOW_MINUTES * 60 * 1000;
+    const windowStart = new Date(Date.now() - window).toISOString();
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `admin_password:${ip}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      await base44.asServiceRole.entities.RateLimitTracker.delete(records[0].id);
+    }
+  } catch (error) {
+    console.warn('[CLEAR_ATTEMPTS_ERROR]', error.message);
   }
-  return Math.abs(hash).toString(36);
+}
+
+async function verifyPassword(password, hash) {
+  try {
+    // Secure PBKDF2 verification
+    const [algorithm, iterations, salt, storedHash] = hash.split('$');
+    
+    if (algorithm !== 'pbkdf2') {
+      return false;
+    }
+
+    const saltBuffer = new TextEncoder().encode(salt);
+    const passwordBuffer = new TextEncoder().encode(password);
+    const iterCount = parseInt(iterations, 10);
+
+    const derivedKey = await crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt: saltBuffer,
+        iterations: iterCount,
+        hash: 'SHA-256',
+      },
+      await crypto.subtle.importKey(
+        'raw',
+        passwordBuffer,
+        'PBKDF2',
+        false,
+        ['deriveBits']
+      ),
+      256
+    );
+
+    const derivedHash = Array.from(new Uint8Array(derivedKey))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
+    return derivedHash === storedHash;
+  } catch (error) {
+    console.error('Password verification error:', error);
+    return false;
+  }
 }
 
 Deno.serve(async (req) => {
@@ -68,8 +129,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing credentials' }, { status: 400 });
     }
 
+    const base44 = createClientFromRequest(req);
+
     // Check rate limit
-    const rateLimitCheck = await checkRateLimit(ip);
+    const rateLimitCheck = await checkRateLimit(base44, ip);
     if (!rateLimitCheck.allowed) {
       console.warn(`[Admin Auth] Rate limit exceeded for IP: ${ip}`);
       return Response.json(
@@ -82,18 +145,18 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Verify password
+    // Verify password using secure PBKDF2
     const storedHash = Deno.env.get('ADMIN_PASSWORD_HASH');
-    const providedHash = hashPassword(password);
+    const isValid = await verifyPassword(password, storedHash);
 
-    if (providedHash !== storedHash) {
+    if (!isValid) {
       console.warn(`[Admin Auth] Failed login attempt from IP: ${ip}`);
-      await recordFailedAttempt(ip);
+      await recordFailedAttempt(base44, ip);
       return Response.json({ error: 'Invalid password' }, { status: 401 });
     }
 
     // Clear failed attempts on success
-    await clearAttempts(ip);
+    await clearAttempts(base44, ip);
 
     console.log(`[Admin Auth] Successful login from IP: ${ip}`);
 
@@ -109,6 +172,9 @@ Deno.serve(async (req) => {
 
 function generateSessionToken(ip) {
   const timestamp = Date.now();
-  const token = `${ip}:${timestamp}:${Math.random().toString(36).substring(7)}`;
-  return Buffer.from(token).toString('base64');
+  const randomBytes = new Uint8Array(32);
+  crypto.getRandomValues(randomBytes);
+  const randomHex = Array.from(randomBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  const token = `admin:${timestamp}:${randomHex}`;
+  return token;
 }

@@ -3,6 +3,14 @@ import { v4 as uuidv4 } from 'npm:uuid@9.0.1';
 
 Deno.serve(async (req) => {
   try {
+    // SECURITY: Validate internal service key for automated function
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      console.warn('[SECURITY] Unauthorized access attempt to triggerReviewEmailOnJobClose');
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
     const { scope_id } = await req.json();
 

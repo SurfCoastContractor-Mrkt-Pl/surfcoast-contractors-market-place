@@ -2,25 +2,42 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const maxMessageLength = 5000;
-const rateLimitMap = new Map();
 const RATE_LIMIT_THRESHOLD = 5; // max 5 submissions per IP per hour
 const RATE_LIMIT_WINDOW = 3600000; // 1 hour in milliseconds
 
-function isRateLimited(ip) {
-  const now = Date.now();
-  const record = rateLimitMap.get(ip);
-  
-  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { count: 1, timestamp: now });
+async function isRateLimited(base44, ip) {
+  try {
+    const now = new Date().toISOString();
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW).toISOString();
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `contact_form:${ip}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      const record = records[0];
+      if (record.request_count >= RATE_LIMIT_THRESHOLD) {
+        console.warn(`[Contact Form] IP ${ip} exceeded rate limit (${record.request_count} submissions)`);
+        return true;
+      }
+      await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
+        request_count: record.request_count + 1
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: `contact_form:${ip}`,
+        limit_type: 'contact_form',
+        request_count: 1,
+        window_start: now,
+        window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
+      });
+    }
+    return false;
+  } catch (error) {
+    console.warn('[RATE_LIMIT_ERROR]', error.message);
     return false;
   }
-  
-  record.count++;
-  if (record.count > RATE_LIMIT_THRESHOLD) {
-    console.warn(`[Contact Form] IP ${ip} exceeded rate limit (${record.count} submissions)`);
-    return true;
-  }
-  return false;
 }
 
 Deno.serve(async (req) => {
@@ -32,12 +49,12 @@ Deno.serve(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
-  if (isRateLimited(clientIp)) {
-    return Response.json({ error: 'Too many submissions. Please try again later.' }, { status: 429 });
-  }
-
   try {
     const base44 = createClientFromRequest(req);
+    if (await isRateLimited(base44, clientIp)) {
+      return Response.json({ error: 'Too many submissions. Please try again later.' }, { status: 429 });
+    }
+
     const payload = await req.json();
 
     // Input validation

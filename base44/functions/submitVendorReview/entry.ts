@@ -29,20 +29,35 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Rating must be 1-5' }, { status: 400 });
     }
 
-    // Rate limit: max 10 reviews per IP per day
+    // Rate limit: max 10 reviews per IP per day (database-backed)
     const ipAddress = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+    const now = new Date().toISOString();
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
     try {
-      const recentReviews = await base44.asServiceRole.entities.VendorReview.filter({
-        created_date: { $gte: oneDayAgo }
+      const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+        key: `vendor_review:${ipAddress}`,
+        window_start: { $gte: oneDayAgo }
       });
-      const ipReviews = recentReviews?.filter(r => r.ip_address === ipAddress) || [];
 
-      if (ipReviews.length >= 10) {
-        return Response.json({ 
-          error: 'Rate limit exceeded. Maximum 10 reviews per day.' 
-        }, { status: 429 });
+      if (records && records.length > 0) {
+        const record = records[0];
+        if (record.request_count >= 10) {
+          return Response.json({ 
+            error: 'Rate limit exceeded. Maximum 10 reviews per day.' 
+          }, { status: 429 });
+        }
+        await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
+          request_count: record.request_count + 1
+        });
+      } else {
+        await base44.asServiceRole.entities.RateLimitTracker.create({
+          key: `vendor_review:${ipAddress}`,
+          limit_type: 'vendor_review',
+          request_count: 1,
+          window_start: now,
+          window_duration_seconds: 86400
+        });
       }
     } catch (e) {
       console.warn('Rate limit check failed:', e.message);

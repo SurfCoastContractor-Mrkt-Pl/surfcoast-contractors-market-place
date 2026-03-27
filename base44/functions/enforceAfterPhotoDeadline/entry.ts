@@ -9,14 +9,18 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
     
-    // SECURITY: Only admins or automated systems can enforce this
-    const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger enforceAfterPhotoDeadline`);
-      return Response.json(
-        { error: 'Forbidden: Only admins or scheduled automations can enforce photo deadlines' },
-        { status: 403 }
-      );
+    // SECURITY: Validate internal service key for scheduled automation
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        console.warn(`[AUTH_VIOLATION] Unauthorized access attempt to enforceAfterPhotoDeadline`);
+        return Response.json(
+          { error: 'Forbidden: Only admins or scheduled automations can enforce photo deadlines' },
+          { status: 403 }
+        );
+      }
     }
 
     // Fetch all approved scopes

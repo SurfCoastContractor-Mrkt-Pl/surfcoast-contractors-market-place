@@ -1,22 +1,41 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
-const ipRateLimitMap = new Map();
-const emailRateLimitMap = new Map();
 const IP_LIMIT_THRESHOLD = 10; // max 10 requests per IP per hour
 const EMAIL_LIMIT_THRESHOLD = 3; // max 3 requests per email per hour
 const RATE_LIMIT_WINDOW = 3600000; // 1 hour in milliseconds
 
-function checkRateLimit(key, map, threshold) {
-  const now = Date.now();
-  const record = map.get(key);
-  
-  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
-    map.set(key, { count: 1, timestamp: now });
+async function checkRateLimit(base44, type, key, threshold) {
+  try {
+    const now = new Date().toISOString();
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW).toISOString();
+
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `recovery_${type}:${key}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      const record = records[0];
+      if (record.request_count >= threshold) {
+        return true;
+      }
+      await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
+        request_count: record.request_count + 1
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: `recovery_${type}:${key}`,
+        limit_type: `recovery_${type}`,
+        request_count: 1,
+        window_start: now,
+        window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
+      });
+    }
+    return false;
+  } catch (error) {
+    console.warn('[RECOVERY_RATE_LIMIT_ERROR]', error.message);
     return false;
   }
-  
-  record.count++;
-  return record.count > threshold;
 }
 
 Deno.serve(async (req) => {
@@ -34,15 +53,15 @@ Deno.serve(async (req) => {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    // Rate limit: per IP and per email
-    if (checkRateLimit(clientIp, ipRateLimitMap, IP_LIMIT_THRESHOLD)) {
+    // Rate limit: per IP and per email (database-backed)
+    if (await checkRateLimit(base44, 'ip', clientIp, IP_LIMIT_THRESHOLD)) {
       console.warn(`[Recovery] IP ${clientIp} exceeded rate limit`);
       return Response.json({ 
         message: 'If this email exists in our system, you will receive recovery instructions.' 
       }, { status: 429 });
     }
 
-    if (checkRateLimit(cleanEmail, emailRateLimitMap, EMAIL_LIMIT_THRESHOLD)) {
+    if (await checkRateLimit(base44, 'email', cleanEmail, EMAIL_LIMIT_THRESHOLD)) {
       console.warn(`[Recovery] Email ${cleanEmail} exceeded rate limit`);
       return Response.json({ 
         message: 'If this email exists in our system, you will receive recovery instructions.' 

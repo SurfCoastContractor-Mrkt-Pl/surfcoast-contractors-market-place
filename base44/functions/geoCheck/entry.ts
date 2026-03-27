@@ -1,27 +1,46 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 const US_COUNTRY_CODES = ['US'];
-
-// Simple in-memory rate limiting (per IP, per minute)
-const rateLimitMap = new Map();
 const RATE_LIMIT_THRESHOLD = 10; // max 10 checks per minute per IP
 const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
 
-function isRateLimited(ip) {
-  const now = Date.now();
-  const record = rateLimitMap.get(ip);
-  
-  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { count: 1, timestamp: now });
+async function isRateLimited(base44, ip) {
+  try {
+    const now = new Date().toISOString();
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW).toISOString();
+
+    // Check for existing rate limit record
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: `geo_check:${ip}`,
+      window_start: { $gte: windowStart }
+    });
+
+    if (records && records.length > 0) {
+      const record = records[0];
+      if (record.request_count >= RATE_LIMIT_THRESHOLD) {
+        console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${record.request_count} requests)`);
+        return true;
+      }
+      // Increment counter
+      await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
+        request_count: record.request_count + 1
+      });
+    } else {
+      // Create new rate limit record
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key: `geo_check:${ip}`,
+        limit_type: 'geo_check',
+        request_count: 1,
+        window_start: now,
+        window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
+      });
+    }
+    return false;
+  } catch (error) {
+    console.error('[GEO-RATELIMIT-ERROR]', error.message);
+    // Fail open on rate limit check errors
     return false;
   }
-  
-  record.count++;
-  if (record.count > RATE_LIMIT_THRESHOLD) {
-    console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${record.count} requests in 1 min)`);
-    return true;
-  }
-  return false;
 }
 
 async function logSecurityAlert(eventType, clientIp, details) {
@@ -62,8 +81,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
-    // SECURITY: Rate limit to prevent brute-force/probing
-    if (isRateLimited(clientIp)) {
+    // Initialize Base44 client for rate limiting checks
+    const base44 = createClientFromRequest(req);
+
+    // SECURITY: Rate limit to prevent brute-force/probing (database-backed)
+    if (await isRateLimited(base44, clientIp)) {
       logSecurityAlert('rate_limited', clientIp, {
         severity: 'high',
         method: req.method,

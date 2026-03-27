@@ -7,6 +7,15 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Validate internal service key for automated email function
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      console.warn('[SECURITY] Unauthorized access attempt to sendConsumerReviewEmail');
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     const payload = await req.json();
     const { order_id } = payload;
 

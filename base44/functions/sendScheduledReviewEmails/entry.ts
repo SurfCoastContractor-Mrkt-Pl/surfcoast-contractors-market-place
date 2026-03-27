@@ -2,6 +2,14 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   try {
+    // SECURITY: Validate internal service key for scheduled automation
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      console.warn('[SECURITY] Unauthorized access attempt to sendScheduledReviewEmails');
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
 
     // Fetch all pending review requests that are due to be sent

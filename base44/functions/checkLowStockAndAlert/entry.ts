@@ -7,6 +7,15 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+    
+    // SECURITY: Validate internal service key for automated function
+    const serviceKey = req.headers.get('x-service-key');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !expectedKey || serviceKey !== expectedKey) {
+      console.warn('[SECURITY] Unauthorized access attempt to checkLowStockAndAlert');
+      return Response.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     const { listing_id } = await req.json();
 
     if (!listing_id) {
