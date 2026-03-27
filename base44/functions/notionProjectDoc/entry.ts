@@ -369,15 +369,215 @@ Deno.serve(async (req) => {
       return Response.json({ success: true });
 
     } else if (action === 'linkScopeToPage') {
-      // Store a Notion page link on a ScopeOfWork record
       const { scopeId, notionPageUrl, notionPageId } = params;
       if (!scopeId || !notionPageUrl) return Response.json({ error: 'scopeId and notionPageUrl required' }, { status: 400 });
-
       await base44.asServiceRole.entities.ScopeOfWork.update(scopeId, {
         notion_page_url: notionPageUrl,
         notion_page_id: notionPageId
       });
       return Response.json({ success: true });
+
+    } else if (action === 'updatePageTitle') {
+      // Update page title and/or icon
+      const { pageId, title, emoji } = params;
+      if (!pageId) return Response.json({ error: 'pageId is required' }, { status: 400 });
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const body = { properties: { title: { title: [{ text: { content: title } }] } } };
+      if (emoji) body.icon = { type: 'emoji', emoji };
+
+      const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+        method: 'PATCH',
+        headers: notionHeaders,
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] updatePageTitle error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to update page' }, { status: res.status });
+      }
+      return Response.json({ success: true, pageUrl: data.url });
+
+    } else if (action === 'archivePage') {
+      // Archive (soft-delete) a page
+      const { pageId } = params;
+      if (!pageId) return Response.json({ error: 'pageId is required' }, { status: 400 });
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+        method: 'PATCH',
+        headers: notionHeaders,
+        body: JSON.stringify({ archived: true })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] archivePage error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to archive page' }, { status: res.status });
+      }
+      return Response.json({ success: true });
+
+    } else if (action === 'listDatabases') {
+      // List all Notion databases accessible to the integration
+      const res = await fetch('https://api.notion.com/v1/search', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify({ filter: { value: 'database', property: 'object' }, page_size: 20 })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] listDatabases error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to list databases' }, { status: res.status });
+      }
+      const databases = (data.results || []).map(db => ({
+        id: db.id,
+        title: db.title?.[0]?.plain_text || 'Untitled Database',
+        url: db.url
+      }));
+      return Response.json({ success: true, databases });
+
+    } else if (action === 'queryDatabase') {
+      // Query rows from a Notion database
+      const { databaseId, filter, sorts, pageSize } = params;
+      if (!databaseId) return Response.json({ error: 'databaseId is required' }, { status: 400 });
+
+      const body = { page_size: pageSize || 50 };
+      if (filter) body.filter = filter;
+      if (sorts) body.sorts = sorts;
+
+      const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] queryDatabase error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to query database' }, { status: res.status });
+      }
+      const rows = (data.results || []).map(row => {
+        // Flatten properties for easy use
+        const props = {};
+        for (const [key, val] of Object.entries(row.properties || {})) {
+          if (val.type === 'title') props[key] = val.title?.[0]?.plain_text || '';
+          else if (val.type === 'rich_text') props[key] = val.rich_text?.[0]?.plain_text || '';
+          else if (val.type === 'select') props[key] = val.select?.name || '';
+          else if (val.type === 'multi_select') props[key] = val.multi_select?.map(s => s.name) || [];
+          else if (val.type === 'date') props[key] = val.date?.start || '';
+          else if (val.type === 'checkbox') props[key] = val.checkbox;
+          else if (val.type === 'number') props[key] = val.number;
+          else if (val.type === 'url') props[key] = val.url;
+          else if (val.type === 'email') props[key] = val.email;
+          else props[key] = null;
+        }
+        return { id: row.id, url: row.url, last_edited: row.last_edited_time, properties: props };
+      });
+      return Response.json({ success: true, rows, has_more: data.has_more });
+
+    } else if (action === 'createDatabaseRow') {
+      // Create a new row in a Notion database
+      const { databaseId, properties } = params;
+      if (!databaseId || !properties) return Response.json({ error: 'databaseId and properties required' }, { status: 400 });
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const res = await fetch('https://api.notion.com/v1/pages', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify({ parent: { database_id: databaseId }, properties })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] createDatabaseRow error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to create row' }, { status: res.status });
+      }
+      return Response.json({ success: true, rowId: data.id, rowUrl: data.url });
+
+    } else if (action === 'createRichPage') {
+      // Create a page with advanced block types (toggles, code, columns callout, etc.)
+      const { parentPageId, title, emoji, blocks } = params;
+      if (!parentPageId) return Response.json({ error: 'parentPageId is required' }, { status: 400 });
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const body = {
+        parent: { page_id: parentPageId },
+        icon: emoji ? { type: 'emoji', emoji } : undefined,
+        properties: { title: { title: [{ text: { content: title || 'Untitled' } }] } },
+        children: blocks || []
+      };
+
+      const res = await fetch('https://api.notion.com/v1/pages', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] createRichPage error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to create rich page' }, { status: res.status });
+      }
+      return Response.json({ success: true, pageId: data.id, pageUrl: data.url });
+
+    } else if (action === 'syncScopeToNotion') {
+      // Two-way: push current scope status/details to its linked Notion page
+      const { scopeId } = params;
+      if (!scopeId) return Response.json({ error: 'scopeId is required' }, { status: 400 });
+
+      const scope = await base44.asServiceRole.entities.ScopeOfWork.get(scopeId);
+      if (!scope?.notion_page_id) return Response.json({ error: 'No Notion page linked to this scope' }, { status: 404 });
+
+      // Append a sync status block
+      const statusEmoji = { pending_approval:'⏳', approved:'✅', rejected:'❌', cancelled:'🚫', pending_ratings:'⭐', closed:'🏁' };
+      const res = await fetch(`https://api.notion.com/v1/blocks/${scope.notion_page_id}/children`, {
+        method: 'PATCH',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          children: [
+            {
+              object: 'block', type: 'callout',
+              callout: {
+                rich_text: [{ text: { content: `Sync — ${new Date().toLocaleDateString()}: Status changed to "${scope.status}"` } }],
+                icon: { emoji: statusEmoji[scope.status] || '🔄' },
+                color: scope.status === 'closed' ? 'green_background' : scope.status === 'rejected' ? 'red_background' : 'blue_background'
+              }
+            }
+          ]
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] syncScopeToNotion error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Sync failed' }, { status: res.status });
+      }
+      // Also update page title to reflect latest status
+      await fetch(`https://api.notion.com/v1/pages/${scope.notion_page_id}`, {
+        method: 'PATCH',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          properties: { title: { title: [{ text: { content: `Project: ${scope.job_title} [${scope.status}]` } }] } }
+        })
+      });
+      return Response.json({ success: true });
+
+    } else if (action === 'pollNotionForUpdates') {
+      // Workflow: scan all scopes with notion links and check if Notion page was updated
+      // If last_edited on Notion is newer than our updated_date, append a note to scope
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const scopes = await base44.asServiceRole.entities.ScopeOfWork.filter({ notion_page_id: { $exists: true } });
+      const results = [];
+
+      for (const scope of scopes) {
+        if (!scope.notion_page_id) continue;
+        const pageRes = await fetch(`https://api.notion.com/v1/pages/${scope.notion_page_id}`, { headers: notionHeaders });
+        if (!pageRes.ok) continue;
+        const pageData = await pageRes.json();
+        const notionEdited = new Date(pageData.last_edited_time);
+        const scopeUpdated = new Date(scope.updated_date);
+        if (notionEdited > scopeUpdated) {
+          results.push({ scopeId: scope.id, jobTitle: scope.job_title, notionEdited: pageData.last_edited_time });
+        }
+      }
+
+      return Response.json({ success: true, updated_in_notion: results });
 
     } else {
       return Response.json({ error: `Unknown action: ${action}` }, { status: 400 });

@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, BookOpen, FolderOpen, Plus, Loader2, FileText, Search, Settings, Link, Edit3, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { ExternalLink, BookOpen, FolderOpen, Plus, Loader2, FileText, Search, Settings, Link, Edit3, Check, Database, RefreshCw, Pencil, Wand2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import NotionDatabasesTab from './NotionDatabasesTab';
+import NotionRichPageBuilder from './NotionRichPageBuilder';
+import NotionSyncTab from './NotionSyncTab';
+import NotionManageTab from './NotionManageTab';
 
 const KB_CATEGORIES = ['General', 'Compliance', 'Payments', 'Safety', 'Onboarding', 'FAQ'];
 
@@ -137,9 +141,13 @@ export default function NotionIntegrationPanel({ isAdmin = false }) {
     { key: 'projects', label: 'Projects', icon: FolderOpen },
     { key: 'kb', label: 'Knowledge Base', icon: BookOpen },
     { key: 'search', label: 'Search', icon: Search },
+    { key: 'databases', label: 'Databases', icon: Database },
     ...(isAdmin ? [
+      { key: 'rich', label: 'Rich Builder', icon: Wand2 },
       { key: 'edit', label: 'Edit Page', icon: Edit3 },
-      { key: 'link', label: 'Link to Scope', icon: Link },
+      { key: 'manage', label: 'Manage', icon: Pencil },
+      { key: 'sync', label: 'Sync', icon: RefreshCw },
+      { key: 'link', label: 'Link Scope', icon: Link },
     ] : []),
   ];
 
@@ -404,6 +412,26 @@ export default function NotionIntegrationPanel({ isAdmin = false }) {
             </div>
           )}
         </div>
+      )}
+
+      {/* Databases Tab */}
+      {activeTab === 'databases' && (
+        <NotionDatabasesTab isAdmin={isAdmin} />
+      )}
+
+      {/* Rich Page Builder (admin only) */}
+      {activeTab === 'rich' && isAdmin && (
+        <NotionRichPageBuilder projectParentId={projectParentId} />
+      )}
+
+      {/* Manage Tab (admin only) */}
+      {activeTab === 'manage' && isAdmin && (
+        <NotionManageTab />
+      )}
+
+      {/* Sync Tab (admin only) */}
+      {activeTab === 'sync' && isAdmin && (
+        <NotionSyncTab />
       )}
 
       {/* Link to Scope Tab (admin only) */}
