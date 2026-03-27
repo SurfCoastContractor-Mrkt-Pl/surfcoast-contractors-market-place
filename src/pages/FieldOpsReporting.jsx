@@ -70,7 +70,7 @@ export default function FieldOpsReporting() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <BarChart3 className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-slate-900">Field Operations Reports</h1>
+            <h1 className="text-4xl font-bold text-slate-900">Wave FO Reports</h1>
           </div>
           <p className="text-slate-600">Analyze your completed jobs with detailed metrics and breakdowns</p>
         </div>

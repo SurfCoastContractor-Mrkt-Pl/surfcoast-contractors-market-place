@@ -98,13 +98,13 @@ export default function FieldOps() {
       <div className="fixed inset-0 bg-slate-900 flex items-center justify-center">
         <div className="text-center text-white">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400 text-sm">Loading SurfCoast Waves FO...</p>
+          <p className="text-slate-400 text-sm">Loading Wave FO...</p>
         </div>
       </div>
     );
   }
 
-  // Check Field Ops access — requires Breaker wave (55 completed jobs)
+  // Check Wave FO access — requires Breaker wave (55 completed jobs)
   // Admins bypass all tier/contractor requirements for testing
   const completedJobsCount = contractor?.completed_jobs_count || 0;
   const BREAKER_JOBS_REQUIRED = 55;
@@ -128,7 +128,7 @@ export default function FieldOps() {
         <div className="text-center text-white max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">SurfCoast Waves FO</h1>
-          <p className="text-slate-400 mb-6">Sign in with a contractor account to access the SurfCoast Waves Field Operations system.</p>
+          <p className="text-slate-400 mb-6">Sign in with a contractor account to access Wave FO.</p>
           <button
             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/FieldOps`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
@@ -177,7 +177,7 @@ export default function FieldOps() {
         {/* Desktop Top Bar */}
         <div className="hidden lg:flex items-center justify-between bg-slate-900 px-6 py-4 border-b border-slate-800 flex-shrink-0">
           <h1 className="text-white font-semibold text-lg">
-            {NAV_TABS.find(t => t.id === activeTab)?.label || 'Field Ops'}
+            {NAV_TABS.find(t => t.id === activeTab)?.label || 'Wave FO'}
           </h1>
           <button className="relative p-2">
             <Bell className="w-5 h-5 text-slate-400" />

@@ -75,9 +75,9 @@ export default function AdminFieldOps() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-amber-400" />
-              <span className="text-white font-bold">Admin Field Ops</span>
+              <span className="text-white font-bold">Admin Wave FO</span>
             </div>
-            <Link to="/FieldOps" className="text-slate-400 hover:text-white text-xs">← Field Ops</Link>
+            <Link to="/FieldOps" className="text-slate-400 hover:text-white text-xs">← Wave FO</Link>
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
