@@ -10,7 +10,7 @@ const BASE_NAV_TABS = [
   { id: 'profile', label: 'Profile', icon: null },
 ];
 
-const BREAKER_TAB = { id: 'breaker', label: 'Field Ops', icon: null };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave', icon: null };
 
 export default function FieldOpsSidebar({
   contractor,

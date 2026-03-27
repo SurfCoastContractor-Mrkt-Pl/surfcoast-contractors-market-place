@@ -24,7 +24,7 @@ const BASE_NAV_TABS = [
   { id: 'reports', label: 'Reports' },
   { id: 'profile', label: 'Profile' },
 ];
-const BREAKER_TAB = { id: 'breaker', label: 'Field Ops' };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
 
 export default function FieldOps() {
   const [activeTab, setActiveTab] = useState('jobs');
