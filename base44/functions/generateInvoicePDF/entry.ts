@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import { jsPDF } from 'npm:jspdf@4.0.0';
+import Stripe from 'npm:stripe@16.0.0';
 
 Deno.serve(async (req) => {
   try {
@@ -175,11 +176,54 @@ Deno.serve(async (req) => {
     const uploadResult = await base44.asServiceRole.integrations.Core.UploadFile({ file: pdfBlob });
     const pdfUrl = uploadResult.file_url;
 
-    // Send email to client
+    // Create Stripe checkout session for invoice payment
+    let paymentLink = null;
+    try {
+      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+      const amountInCents = Math.round(totalAmount * 100);
+      
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: scopeData.job_title,
+                description: `Invoice for completed work by ${scopeData.contractor_name}`,
+              },
+              unit_amount: amountInCents,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        customer_email: scopeData.customer_email,
+        metadata: {
+          base44_app_id: Deno.env.get('BASE44_APP_ID'),
+          scope_id: scope_id,
+          contractor_email: scopeData.contractor_email,
+        },
+        success_url: `${Deno.env.get('APP_URL')}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${Deno.env.get('APP_URL')}/cancel`,
+      });
+      
+      paymentLink = session.url;
+      console.log(`Stripe session created: ${session.id}`);
+    } catch (stripeError) {
+      console.error('Stripe checkout creation error:', stripeError.message);
+      // Continue with email even if Stripe fails
+    }
+
+    // Send email to client with payment link
+    const paymentSection = paymentLink 
+      ? `\n\nPay your invoice now: ${paymentLink}\n\nYour payment is secured by Stripe.`
+      : '';
+    
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: scopeData.customer_email,
       subject: `Invoice for ${scopeData.job_title} - ${invoiceDate}`,
-      body: `Hello ${scopeData.customer_name},\n\nThank you for using SurfCoast! Your job with ${scopeData.contractor_name} is now complete.\n\nYour invoice is attached. Please review it and ensure all work meets your expectations.\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
+      body: `Hello ${scopeData.customer_name},\n\nThank you for using SurfCoast! Your job with ${scopeData.contractor_name} is now complete.\n\nYour invoice is attached. Please review it and ensure all work meets your expectations.${paymentSection}\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
     });
 
     // Send email to contractor
@@ -195,7 +239,8 @@ Deno.serve(async (req) => {
       success: true, 
       pdfUrl,
       invoiceAmount: totalAmount,
-      invoiceId: scope_id.substring(0, 8).toUpperCase()
+      invoiceId: scope_id.substring(0, 8).toUpperCase(),
+      paymentLink: paymentLink || null
     });
   } catch (error) {
     console.error('Invoice generation error:', error.message);
