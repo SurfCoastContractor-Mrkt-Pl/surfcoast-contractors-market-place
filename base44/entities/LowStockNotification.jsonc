@@ -1,0 +1,103 @@
+{
+  "name": "LowStockNotification",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "inventory_item_id": {
+      "type": "string",
+      "description": "ID of the ContractorInventory item"
+    },
+    "material_name": {
+      "type": "string",
+      "description": "Name of the material"
+    },
+    "current_quantity": {
+      "type": "number",
+      "description": "Current quantity in stock"
+    },
+    "low_stock_threshold": {
+      "type": "number",
+      "description": "Low stock threshold that was breached"
+    },
+    "triggered_by": {
+      "type": "string",
+      "enum": [
+        "expense_deduction",
+        "manual_adjustment"
+      ],
+      "description": "What triggered the notification"
+    },
+    "expense_id": {
+      "type": "string",
+      "description": "Associated JobExpense ID (if triggered by expense)"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the notification has been read"
+    },
+    "read_at": {
+      "type": "string",
+      "description": "ISO timestamp when notification was read"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "inventory_item_id",
+    "material_name",
+    "current_quantity",
+    "low_stock_threshold",
+    "triggered_by"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

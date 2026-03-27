@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, Plus, ArrowLeft } from 'lucide-react';
 import ExpenseForm from '@/components/fieldops/ExpenseForm';
 import ExpenseSummary from '@/components/fieldops/ExpenseSummary';
+import LowStockNotifications from '@/components/contractor/LowStockNotifications';
 
 export default function JobExpenseTracker() {
   const [searchParams] = useSearchParams();
@@ -105,6 +106,7 @@ export default function JobExpenseTracker() {
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
+      <LowStockNotifications contractorEmail={user?.email} />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">

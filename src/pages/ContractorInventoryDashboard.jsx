@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, Package, TrendingDown, DollarSign, Plus, ArrowLeft } from 'lucide-react';
 import InventoryForm from '@/components/contractor/InventoryForm';
 import InventoryList from '@/components/contractor/InventoryList';
+import LowStockNotifications from '@/components/contractor/LowStockNotifications';
 
 export default function ContractorInventoryDashboard() {
   const [user, setUser] = useState(null);
@@ -74,6 +75,7 @@ export default function ContractorInventoryDashboard() {
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
+      <LowStockNotifications contractorEmail={user?.email} />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
