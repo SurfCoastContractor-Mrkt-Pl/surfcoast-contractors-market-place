@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Clock, MapPin, ChevronRight, Calendar, CheckCircle, AlertCircle } from 'lucide-react';
+import WaveFOMonthlyCalendar from './WaveFOMonthlyCalendar';
+import WaveFOJobDensityChart from './WaveFOJobDensityChart';
+import WaveFOStatusSummary from './WaveFOStatusSummary';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -50,11 +53,19 @@ export default function WaveFOSchedule({ contractor, user }) {
 
   return (
     <div className="bg-slate-950 min-h-full">
-      {/* Month Header */}
-      <div className="px-4 pt-4 pb-2">
-        <p className="text-white text-xl font-bold">
-          {MONTHS[selectedDate.getMonth()]} {selectedDate.getFullYear()}
-        </p>
+      <div className="px-4 pt-4">
+        {/* Monthly Calendar */}
+        <WaveFOMonthlyCalendar
+          scopes={scopes}
+          selectedDate={selectedDate}
+          onDateSelect={setSelectedDate}
+        />
+
+        {/* Job Density Chart */}
+        <WaveFOJobDensityChart scopes={scopes} selectedDate={selectedDate} />
+
+        {/* Status Summary */}
+        <WaveFOStatusSummary scopes={scopes} />
       </div>
 
       {/* Week Strip */}
@@ -86,7 +97,7 @@ export default function WaveFOSchedule({ contractor, user }) {
       </div>
 
       {/* Selected Day Content */}
-      <div className="px-4 mt-4 pb-6">
+      <div className="px-4 mt-6 pb-6">
         <p className="text-slate-400 text-sm font-semibold mb-3">
           {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         </p>
