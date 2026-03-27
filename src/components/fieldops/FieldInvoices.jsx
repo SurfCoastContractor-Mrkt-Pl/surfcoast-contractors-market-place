@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import {
   DollarSign, CheckCircle, Clock, AlertCircle,
-  ChevronRight, Send, FileText, TrendingUp, Plus
+  ChevronRight, Send, FileText, TrendingUp, Plus, Download
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -20,6 +20,7 @@ export default function FieldInvoices({ contractor, user }) {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
   const [sending, setSending] = useState(null);
+  const [generating, setGenerating] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -64,18 +65,40 @@ export default function FieldInvoices({ contractor, user }) {
     setSending(null);
   };
 
-  const handleSendInvoiceEmail = async (escrow) => {
+  const handleGenerateAndDownloadPDF = async (scopeId) => {
+    setGenerating(scopeId);
+    try {
+      const response = await base44.functions.invoke('generateInvoicePDF', { scope_id: scopeId });
+      if (response.data?.pdfUrl) {
+        const link = document.createElement('a');
+        link.href = response.data.pdfUrl;
+        link.download = `invoice-${response.data.invoiceId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (e) {
+      alert('Could not generate invoice PDF. Try again.');
+      console.error(e);
+    }
+    setGenerating(null);
+  };
+
+  const handleSendInvoiceEmail = async (escrow, scopeId) => {
     setSending(escrow.id + '_email');
     try {
-      const scope = scopes.find(s => s.id === escrow.scope_id);
+      const response = await base44.functions.invoke('generateInvoicePDF', { scope_id: scopeId });
+      const pdfUrl = response.data?.pdfUrl;
+      
       await base44.integrations.Core.SendEmail({
         to: escrow.customer_email,
         subject: `Invoice: ${escrow.job_title} — $${escrow.amount}`,
-        body: `Hi ${escrow.customer_name},\n\nHere's a summary of your invoice for the recent work:\n\nJob: ${escrow.job_title}\nAmount: $${escrow.amount}\nContractor: ${escrow.contractor_name}\n\nThank you for your business!\n\n— ${escrow.contractor_name}`,
+        body: `Hi ${escrow.customer_name},\n\nThank you for using SurfCoast! Your job with ${escrow.contractor_name} is now complete.\n\nInvoice Details:\n- Job: ${escrow.job_title}\n- Amount: $${escrow.amount}\n- Invoice ID: ${response.data?.invoiceId}\n\nYour invoice PDF is available here: ${pdfUrl}\n\nThank you for your business!\n\n— ${escrow.contractor_name}`,
       });
       alert('Invoice sent to ' + escrow.customer_email);
-    } catch {
+    } catch (e) {
       alert('Could not send email.');
+      console.error(e);
     }
     setSending(null);
   };
@@ -132,7 +155,7 @@ export default function FieldInvoices({ contractor, user }) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-semibold truncate">{escrow.job_title}</p>
-                    <p className="text-slate-400 text-sm">{escrow.customer_name}</p>
+                    <p className="text-slate-400 text-sm">Client: {escrow.customer_name}</p>
                     <span className={`text-xs font-semibold ${status.color} mt-1 inline-block`}>
                       {status.label}
                     </span>
@@ -146,7 +169,20 @@ export default function FieldInvoices({ contractor, user }) {
                 {/* Action Buttons */}
                 <div className="flex gap-2 mt-3 pt-3 border-t border-slate-800/50">
                   <button
-                    onClick={() => handleSendInvoiceEmail(escrow)}
+                    onClick={() => handleGenerateAndDownloadPDF(escrow.id)}
+                    disabled={generating === escrow.id}
+                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
+                  >
+                    {generating === escrow.id ? (
+                      <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4" />
+                    )}
+                    Download PDF
+                  </button>
+
+                  <button
+                    onClick={() => handleSendInvoiceEmail(escrow, escrow.id)}
                     disabled={sending === escrow.id + '_email'}
                     className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
                   >
