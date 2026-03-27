@@ -3,15 +3,17 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Package, TrendingDown, DollarSign, Plus, ArrowLeft } from 'lucide-react';
+import { AlertCircle, Package, TrendingDown, DollarSign, Plus, ArrowLeft, MapPin } from 'lucide-react';
 import InventoryForm from '@/components/contractor/InventoryForm';
 import InventoryList from '@/components/contractor/InventoryList';
 import LowStockNotifications from '@/components/contractor/LowStockNotifications';
+import SupplyHousesFinder from '@/components/contractor/SupplyHousesFinder';
 
 export default function ContractorInventoryDashboard() {
   const [user, setUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [showSupplyHouses, setShowSupplyHouses] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -143,15 +145,23 @@ export default function ContractorInventoryDashboard() {
           </div>
         )}
 
-        {/* Add Item Button */}
+        {/* Action Buttons */}
         {!showForm && (
-          <div className="mb-8">
+          <div className="mb-8 flex gap-3">
             <Button
               onClick={() => setShowForm(true)}
               className="bg-blue-600 hover:bg-blue-700 gap-2"
             >
               <Plus className="w-4 h-4" />
               Add Inventory Item
+            </Button>
+            <Button
+              onClick={() => setShowSupplyHouses(true)}
+              variant="outline"
+              className="gap-2"
+            >
+              <MapPin className="w-4 h-4" />
+              Find Supply Houses
             </Button>
           </div>
         )}
@@ -179,6 +189,13 @@ export default function ContractorInventoryDashboard() {
           />
         </div>
       </div>
+
+      {/* Supply Houses Modal */}
+      <SupplyHousesFinder
+        contractor={contractor}
+        isOpen={showSupplyHouses}
+        onClose={() => setShowSupplyHouses(false)}
+      />
     </div>
   );
 }

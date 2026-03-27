@@ -30,7 +30,7 @@ export default function SupplyHousesFinder({ contractor, isOpen, onClose }) {
               latitude,
               longitude,
               trade_specialty: contractor?.trade_specialty || 'general',
-              radius: 5 // 5-mile radius
+              radius: 5
             });
 
             if (response.data.success) {
@@ -45,7 +45,7 @@ export default function SupplyHousesFinder({ contractor, isOpen, onClose }) {
           setLoading(false);
         },
         (err) => {
-          setError(`Location error: ${err.message}`);
+          setError(`Please enable location access to find nearby supply houses`);
           setLoading(false);
         }
       );
