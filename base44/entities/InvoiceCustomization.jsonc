@@ -1,0 +1,138 @@
+{
+  "name": "InvoiceCustomization",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this customization"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "starter",
+        "pro",
+        "max",
+        "rider"
+      ],
+      "description": "Contractor tier level"
+    },
+    "company_logo_url": {
+      "type": "string",
+      "description": "URL of company logo (Pro+ feature)"
+    },
+    "payment_terms": {
+      "type": "string",
+      "enum": [
+        "net_30",
+        "net_15",
+        "due_on_receipt",
+        "custom"
+      ],
+      "description": "Payment terms setting (Pro+ feature)"
+    },
+    "custom_payment_terms_text": {
+      "type": "string",
+      "description": "Custom payment terms text (Pro+ feature)"
+    },
+    "invoice_notes": {
+      "type": "string",
+      "description": "Custom notes to appear on invoices (Max+ feature)"
+    },
+    "template_colors": {
+      "type": "object",
+      "description": "Custom template colors - header, accent, text (Rider feature)",
+      "properties": {
+        "header_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$"
+        },
+        "accent_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$"
+        },
+        "text_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$"
+        }
+      }
+    },
+    "auto_send_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable automated invoice delivery (Rider feature)"
+    },
+    "auto_send_delay_days": {
+      "type": "number",
+      "default": 0,
+      "description": "Days to wait after job completion before auto-sending (Rider feature)"
+    },
+    "digital_signature_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable digital signature on invoices (Rider feature)"
+    },
+    "signature_url": {
+      "type": "string",
+      "description": "URL of uploaded digital signature (Rider feature)"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "tier"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
