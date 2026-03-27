@@ -73,7 +73,7 @@ export default function AdminDashboard() {
   }, [reviews, reviewStatusFilter, reviewRatingFilter]);
 
   // Early returns AFTER all hooks
-  if (loading || authLoading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
         <Loader2 className="w-8 h-8 animate-spin text-blue-400" />

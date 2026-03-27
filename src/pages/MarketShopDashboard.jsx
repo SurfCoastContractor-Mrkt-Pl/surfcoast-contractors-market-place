@@ -65,12 +65,11 @@ export default function MarketShopDashboard() {
   const [activeTab, setActiveTab] = useState('listings');
 
   useEffect(() => {
-    if (!user) return;
+    if (authLoading) return;
+    if (!user) { setLoading(false); return; }
     const load = async () => {
       try {
-        const [shops] = await Promise.all([
-          base44.entities.MarketShop.filter({ email: user.email }),
-        ]);
+        const shops = await base44.entities.MarketShop.filter({ email: user.email });
         setShop(shops?.[0] || null);
       } catch (err) {
         console.error(err);
@@ -80,7 +79,7 @@ export default function MarketShopDashboard() {
       }
     };
     load();
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
 
   const handleUpdate = async (data) => {
     if (!shop?.id) return;
