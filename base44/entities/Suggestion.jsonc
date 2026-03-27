@@ -1,0 +1,75 @@
+{
+  "name": "Suggestion",
+  "type": "object",
+  "properties": {
+    "submitter_name": {
+      "type": "string",
+      "description": "Name of the person submitting the suggestion"
+    },
+    "submitter_email": {
+      "type": "string",
+      "description": "Email of the submitter"
+    },
+    "submitter_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether the submitter is a contractor or customer"
+    },
+    "suggestion": {
+      "type": "string",
+      "description": "The suggestion text"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "feature_request",
+        "bug_report",
+        "general_feedback",
+        "other"
+      ],
+      "description": "Category of the suggestion"
+    },
+    "admin_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the admin has read this suggestion"
+    }
+  },
+  "required": [
+    "submitter_name",
+    "submitter_email",
+    "submitter_type",
+    "suggestion",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
