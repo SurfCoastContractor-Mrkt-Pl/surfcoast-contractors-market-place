@@ -206,7 +206,7 @@ export default function Terms() {
 
             {/* Wave FO Premium */}
             <div className="mb-6 pl-4 border-l-4 border-amber-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave FO Premium - $100.00/month (Licensed Sole Proprietors)</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">Wave FO Premium - $99.00/month (Licensed Sole Proprietors)</h4>
               <p className="text-sm text-slate-700 mb-2">Exclusive tier for verified licensed sole proprietors (HIS license). Includes all features plus specialized tools.</p>
               <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
                 <li>All Wave Max features</li>
@@ -364,7 +364,7 @@ export default function Terms() {
                   </tr>
                   <tr className="border-b border-slate-200">
                     <td className="p-3 text-slate-700">Wave FO Premium</td>
-                    <td className="p-3 text-slate-700">$100/month</td>
+                    <td className="p-3 text-slate-700">$99/month</td>
                     <td className="p-3 text-slate-700">Licensed sole proprietors with all features</td>
                   </tr>
                   <tr className="border-b border-slate-200">

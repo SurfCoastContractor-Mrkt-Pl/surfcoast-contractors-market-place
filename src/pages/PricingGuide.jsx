@@ -146,7 +146,7 @@ export default function PricingGuide() {
                 <CardDescription>Licensed Pros Only</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="text-3xl font-bold text-amber-600">$100+<span className="text-lg text-slate-600">/mo</span></div>
+                <div className="text-3xl font-bold text-amber-600">$99<span className="text-lg text-slate-600">/mo</span></div>
                 <ul className="space-y-2 text-sm text-slate-700">
                   <li className="flex gap-2">
                     <span>✓</span>
