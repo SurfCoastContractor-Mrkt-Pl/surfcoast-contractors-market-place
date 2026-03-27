@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Briefcase, Bell } from 'lucide-react';
+import { Briefcase, Bell, MapPin } from 'lucide-react';
+import SupplyHousesFinder from '@/components/contractor/SupplyHousesFinder';
 import WaveFOJobsList from '@/components/fieldops/FieldJobsList';
 import WaveFOSchedule from '@/components/fieldops/FieldSchedule';
 import WaveFOInvoices from '@/components/fieldops/FieldInvoices';
@@ -23,6 +24,7 @@ const BASE_NAV_TABS = [
   { id: 'invoices', label: 'Wave FO Invoices' },
   { id: 'reports', label: 'Wave FO Reports' },
   { id: 'profile', label: 'Wave FO Profile' },
+  { id: 'supplies', label: 'Supply Houses' },
 ];
 const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave FO' };
 
@@ -35,6 +37,7 @@ export default function WaveFo() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSupplyHouses, setShowSupplyHouses] = useState(false);
   const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
   const { isInitialized: cacheReady, saveData, getData } = useOfflineCache();
 
@@ -212,19 +215,40 @@ export default function WaveFo() {
         />
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto overscroll-contain">
-          {activeTab === 'jobs' && <WaveFOJobsList contractor={effectiveContractor} user={user} />}
-          {activeTab === 'map' && <WaveFOJobMapDisplay contractor={effectiveContractor} />}
-          {activeTab === 'schedule' && <WaveFOSchedule contractor={effectiveContractor} user={user} />}
-          {activeTab === 'invoices' && <WaveFOInvoices contractor={effectiveContractor} user={user} />}
-          {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
-          {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
-          {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
-        </div>
+         <div className="flex-1 overflow-y-auto overscroll-contain">
+           {activeTab === 'jobs' && <WaveFOJobsList contractor={effectiveContractor} user={user} />}
+           {activeTab === 'map' && <WaveFOJobMapDisplay contractor={effectiveContractor} />}
+           {activeTab === 'schedule' && <WaveFOSchedule contractor={effectiveContractor} user={user} />}
+           {activeTab === 'invoices' && <WaveFOInvoices contractor={effectiveContractor} user={user} />}
+           {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
+           {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
+           {activeTab === 'supplies' && (
+             <div className="p-6">
+               <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                 <MapPin className="w-6 h-6" />
+                 Find Supply Houses
+               </h2>
+               <button
+                 onClick={() => setShowSupplyHouses(true)}
+                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
+               >
+                 Find Nearby Supply Houses
+               </button>
+             </div>
+           )}
+           {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
+         </div>
 
 
       </div>
       </div>
+
+      {/* Supply Houses Modal */}
+      <SupplyHousesFinder
+        contractor={effectiveContractor}
+        isOpen={showSupplyHouses}
+        onClose={() => setShowSupplyHouses(false)}
+      />
     </div>
   );
 }

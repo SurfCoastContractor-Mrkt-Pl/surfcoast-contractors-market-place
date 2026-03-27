@@ -81,9 +81,9 @@ export default function ContractorInventoryDashboard() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <a href="/FieldOps" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4">
+          <a href="/WaveFo" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4">
             <ArrowLeft className="w-4 h-4" />
-            Back to Field Ops
+            Back to Wave FO
           </a>
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Inventory Management</h1>
           <p className="text-slate-600">Track materials, monitor stock levels, and manage inventory</p>
