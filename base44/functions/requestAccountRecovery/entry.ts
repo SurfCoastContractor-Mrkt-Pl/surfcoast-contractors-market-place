@@ -1,6 +1,29 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+
+const ipRateLimitMap = new Map();
+const emailRateLimitMap = new Map();
+const IP_LIMIT_THRESHOLD = 10; // max 10 requests per IP per hour
+const EMAIL_LIMIT_THRESHOLD = 3; // max 3 requests per email per hour
+const RATE_LIMIT_WINDOW = 3600000; // 1 hour in milliseconds
+
+function checkRateLimit(key, map, threshold) {
+  const now = Date.now();
+  const record = map.get(key);
+  
+  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
+    map.set(key, { count: 1, timestamp: now });
+    return false;
+  }
+  
+  record.count++;
+  return record.count > threshold;
+}
 
 Deno.serve(async (req) => {
+  const clientIp = req.headers.get('cf-connecting-ip') || 
+                   req.headers.get('x-forwarded-for') || 
+                   'unknown';
+
   try {
     const base44 = createClientFromRequest(req);
     const { email } = await req.json();
@@ -9,9 +32,26 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Rate limit: per IP and per email
+    if (checkRateLimit(clientIp, ipRateLimitMap, IP_LIMIT_THRESHOLD)) {
+      console.warn(`[Recovery] IP ${clientIp} exceeded rate limit`);
+      return Response.json({ 
+        message: 'If this email exists in our system, you will receive recovery instructions.' 
+      }, { status: 429 });
+    }
+
+    if (checkRateLimit(cleanEmail, emailRateLimitMap, EMAIL_LIMIT_THRESHOLD)) {
+      console.warn(`[Recovery] Email ${cleanEmail} exceeded rate limit`);
+      return Response.json({ 
+        message: 'If this email exists in our system, you will receive recovery instructions.' 
+      }, { status: 429 });
+    }
+
     // Check if email exists as contractor or customer
-    const contractors = await base44.asServiceRole.entities.Contractor.filter({ email });
-    const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email });
+    const contractors = await base44.asServiceRole.entities.Contractor.filter({ email: cleanEmail });
+    const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ email: cleanEmail });
 
     if (contractors.length === 0 && customers.length === 0) {
       // Don't reveal if email exists (security)
@@ -20,41 +60,9 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Rate limit: max 2 recovery requests per email per 30 minutes
-    const thirtyMinsAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
-    let recentRequests = [];
-    try {
-      recentRequests = await base44.asServiceRole.entities.EmailVerification.filter({
-        email,
-        created_date: { '$gte': thirtyMinsAgo }
-      });
-    } catch (e) {
-      console.error('Error checking rate limit:', e.message);
-    }
+    // Log recovery request for security audit
+    console.log(`[Recovery] Request from IP ${clientIp} for email ${cleanEmail.substring(0, 3)}***`);
 
-    // Progressive lockout: block after 2 attempts in 30 mins, then 5 in 24 hours
-    if (recentRequests.length >= 2) {
-      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      let dailyRequests = [];
-      try {
-        dailyRequests = await base44.asServiceRole.entities.EmailVerification.filter({
-          email,
-          created_date: { '$gte': oneDayAgo }
-        });
-      } catch (e) {
-        console.error('Error checking daily rate limit:', e.message);
-      }
-
-      if (dailyRequests.length >= 5) {
-        return Response.json({ 
-          error: 'Too many recovery attempts. Please try again in 24 hours.' 
-        }, { status: 429 });
-      }
-
-      return Response.json({ 
-        error: 'Too many recovery attempts. Please try again in 30 minutes.' 
-      }, { status: 429 });
-    }
 
     // Generate 6-digit recovery code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -75,19 +83,19 @@ Deno.serve(async (req) => {
 
     // Send recovery email
     try {
-      await base44.integrations.Core.SendEmail({
-        to: email,
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: cleanEmail,
         subject: 'Account Recovery - Verification Code',
         body: `We received a request to recover your account. Use this code to proceed:\n\n${code}\n\nThis code expires in 15 minutes.\n\nIf you didn't request this, ignore this email.`
       });
     } catch (emailError) {
-      console.error('Error sending recovery email:', emailError.message);
+      console.error('[Recovery] Email send failed:', emailError.message);
       return Response.json({ error: 'Failed to send recovery email' }, { status: 500 });
     }
 
     return Response.json({ 
       message: 'Recovery instructions sent to your email',
-      email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3') // Mask email
+      email: cleanEmail.replace(/(.{2})(.*)(@.*)/, '$1***$3') // Mask email
     });
   } catch (error) {
     console.error('Account recovery request error:', error.message);
