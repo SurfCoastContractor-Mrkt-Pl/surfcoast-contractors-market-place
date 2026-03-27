@@ -1,0 +1,132 @@
+{
+  "name": "ReviewEmailRequest",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the associated ScopeOfWork"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer to send review request to"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the completed job"
+    },
+    "scope_closed_at": {
+      "type": "string",
+      "description": "ISO timestamp when the scope was marked as closed"
+    },
+    "email_send_at": {
+      "type": "string",
+      "description": "ISO timestamp when the review email should be sent (24 hours after closure)"
+    },
+    "email_sent_at": {
+      "type": "string",
+      "description": "ISO timestamp when the review email was actually sent"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "sent",
+        "failed",
+        "cancelled"
+      ],
+      "default": "pending",
+      "description": "Current status of the review request"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error message if email sending failed"
+    },
+    "review_link_token": {
+      "type": "string",
+      "description": "Unique token for direct review submission link"
+    },
+    "review_submitted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the customer has submitted a review"
+    },
+    "review_submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp when the review was submitted"
+    }
+  },
+  "required": [
+    "scope_id",
+    "contractor_email",
+    "contractor_id",
+    "customer_email",
+    "customer_name",
+    "job_title",
+    "scope_closed_at",
+    "email_send_at"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
