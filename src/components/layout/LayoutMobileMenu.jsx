@@ -28,7 +28,14 @@ export default function LayoutMobileMenu({
   };
 
   return (
-    <div className="lg:hidden bg-white border-b border-slate-200" id="mobile-menu">
+    <>
+      {/* Backdrop */}
+      <div
+        className="lg:hidden fixed inset-0 bg-black/40 z-40"
+        onClick={() => setMobileMenuOpen(false)}
+      />
+      {/* Drawer */}
+      <div className="lg:hidden fixed top-14 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto" id="mobile-menu">
       <div className="px-4 py-4 space-y-2">
         {getNavLinks(isContractor).map(link => {
           const Icon = link.icon;
@@ -131,6 +138,7 @@ export default function LayoutMobileMenu({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
