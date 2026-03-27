@@ -1,0 +1,98 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug (e.g., 'how-to-hire-plumber')"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary/preview text"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full markdown content"
+    },
+    "featured_image_url": {
+      "type": "string",
+      "description": "URL of featured image"
+    },
+    "author_name": {
+      "type": "string",
+      "description": "Name of the post author"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "guide",
+        "contractor_spotlight",
+        "industry_tips",
+        "success_story",
+        "announcement",
+        "other"
+      ],
+      "description": "Post category"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of tags (e.g., 'plumbing', 'hiring-tips')"
+    },
+    "published": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether post is published"
+    },
+    "published_at": {
+      "type": "string",
+      "description": "ISO timestamp when published"
+    },
+    "views_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of views"
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "content",
+    "author_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.published": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
