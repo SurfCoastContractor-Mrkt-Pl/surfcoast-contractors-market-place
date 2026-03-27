@@ -1,0 +1,160 @@
+{
+  "name": "SwapMeetLocationRating",
+  "type": "object",
+  "properties": {
+    "location_name": {
+      "type": "string",
+      "description": "Name of the swap meet location or farmers market"
+    },
+    "city": {
+      "type": "string",
+      "description": "City where the location is"
+    },
+    "state": {
+      "type": "string",
+      "description": "State where the location is"
+    },
+    "rater_email": {
+      "type": "string",
+      "description": "Email of the vendor/booth owner who rated"
+    },
+    "rater_name": {
+      "type": "string",
+      "description": "Name of the rater"
+    },
+    "location_type": {
+      "type": "string",
+      "enum": [
+        "farmers_market",
+        "swap_meet"
+      ],
+      "description": "Type of location"
+    },
+    "cleanliness": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "How clean the location was (1-5)"
+    },
+    "environment_comfort": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Comfort/environment rating (1-5)"
+    },
+    "customer_purchase_rate": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Average customer purchase rate observed (1-5)"
+    },
+    "safety_security": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Safety and security of the location (1-5)"
+    },
+    "foot_traffic": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Foot traffic and visibility (1-5)"
+    },
+    "space_layout": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Space availability and layout (1-5)"
+    },
+    "overall_experience": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Overall experience rating (1-5)"
+    },
+    "comments": {
+      "type": "string",
+      "description": "Optional comments or additional feedback about the location"
+    }
+  },
+  "required": [
+    "location_name",
+    "city",
+    "state",
+    "rater_email",
+    "rater_name",
+    "location_type",
+    "cleanliness",
+    "environment_comfort",
+    "customer_purchase_rate",
+    "safety_security",
+    "foot_traffic",
+    "space_layout",
+    "overall_experience"
+  ],
+  "rls": {
+    "create": {
+      "data.rater_email": "{{user.email}}"
+    },
+    "read": true,
+    "update": {
+      "$or": [
+        {
+          "data.rater_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.rater_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
