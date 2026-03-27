@@ -8,7 +8,7 @@ export default function Terms() {
     <div className="min-h-screen bg-slate-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Back to Home Button - Top */}
-        <Link to="/Landing" className="inline-block mb-8">
+        <Link to="/" className="inline-block mb-8">
           <Button variant="outline" className="gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -362,7 +362,7 @@ export default function Terms() {
         </div>
 
         {/* Back to Home Button - Bottom */}
-        <Link to="/Landing" className="block text-center">
+        <Link to="/" className="block text-center">
           <Button variant="outline" className="gap-2 mx-auto">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
