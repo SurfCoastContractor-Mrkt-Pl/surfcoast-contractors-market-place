@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 
@@ -202,6 +202,7 @@ export default function AdminDashboard() {
               { key: 'reviews', label: 'Reviews', icon: Star },
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
               { key: 'field_ops', label: 'Field Ops', icon: Briefcase },
+              { key: 'notion', label: 'Notion', icon: BookOpen },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -423,6 +424,24 @@ export default function AdminDashboard() {
             >
               <Briefcase className="w-4 h-4" />
               Open Admin Field Ops
+            </Link>
+          </div>
+        )}
+
+        {/* NOTION */}
+        {activeTab === 'notion' && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-14 h-14 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center mb-4">
+              <BookOpen className="w-7 h-7 text-blue-400" />
+            </div>
+            <h2 className="text-xl font-bold text-white mb-2">Notion Hub</h2>
+            <p className="text-slate-400 text-sm mb-6 text-center max-w-sm">Manage project documentation and knowledge base articles linked to your Notion workspace.</p>
+            <Link
+              to="/NotionHub"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Open Notion Hub
             </Link>
           </div>
         )}
