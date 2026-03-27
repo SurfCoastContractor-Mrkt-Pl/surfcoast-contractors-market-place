@@ -20,10 +20,12 @@ import LocationRatingDisplay from '@/components/locations/LocationRatingDisplay'
 import VendorAnalyticsDashboard from '@/components/marketshop/VendorAnalyticsDashboard';
 import VendorMessagingInbox from '@/components/marketshop/VendorMessagingInbox';
 import CRMSyncPanel from '@/components/crm/CRMSyncPanel';
+import VendorCampaignManager from '@/components/marketshop/VendorCampaignManager';
 
 const TABS = [
   { key: 'listings', label: 'My Listings', icon: Package },
   { key: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { key: 'campaigns', label: 'Campaigns', icon: BarChart3 },
   { key: 'messages', label: 'Messages', icon: MessageCircle },
   { key: 'markets', label: 'My Markets', icon: MapPin },
   { key: 'schedule', label: 'Schedule', icon: MapPin },
@@ -190,6 +192,7 @@ export default function MarketShopDashboard() {
         <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8 relative z-10">
           {activeTab === 'listings' && <MarketShopListings shopId={shop.id} />}
           {activeTab === 'analytics' && <VendorAnalyticsDashboard shopId={shop.id} shopEmail={shop.email} />}
+          {activeTab === 'campaigns' && <VendorCampaignManager shopId={shop.id} shopEmail={shop.email} />}
           {activeTab === 'messages' && <VendorMessagingInbox shopId={shop.id} vendorEmail={shop.email} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (

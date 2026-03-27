@@ -1,0 +1,118 @@
+{
+  "name": "MarketEventCampaign",
+  "type": "object",
+  "properties": {
+    "market_shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop (vendor) that owns this campaign"
+    },
+    "market_shop_email": {
+      "type": "string",
+      "description": "Email of the MarketShop owner"
+    },
+    "campaign_name": {
+      "type": "string",
+      "description": "Name of the digital sales campaign"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the campaign"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Campaign start date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Campaign end date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "active",
+        "completed",
+        "paused"
+      ],
+      "default": "planned",
+      "description": "Current status of the campaign"
+    },
+    "target_audience": {
+      "type": "string",
+      "description": "Description of target audience for this campaign"
+    },
+    "expected_revenue": {
+      "type": "number",
+      "description": "Expected revenue in dollars"
+    },
+    "actual_revenue": {
+      "type": "number",
+      "default": 0,
+      "description": "Actual revenue generated in dollars"
+    },
+    "total_sales": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of sales tagged to this campaign"
+    }
+  },
+  "required": [
+    "market_shop_id",
+    "market_shop_email",
+    "campaign_name",
+    "start_date",
+    "end_date"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.market_shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.market_shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.market_shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.market_shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
