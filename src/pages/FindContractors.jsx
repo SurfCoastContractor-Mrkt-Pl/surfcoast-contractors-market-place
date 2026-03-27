@@ -239,9 +239,9 @@ export default function FindContractors() {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>All Types</SelectItem>
-                <SelectItem value="trade_specific">Trade Specific</SelectItem>
-                <SelectItem value="general">General Contractor</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="trade_specific">Trade Specific</SelectItem>
+                  <SelectItem value="general">General Contractor</SelectItem>
               </SelectContent>
             </Select>
 
@@ -250,7 +250,7 @@ export default function FindContractors() {
                 <SelectValue placeholder="Trade" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>All Trades</SelectItem>
+                <SelectItem value="all">All Trades</SelectItem>
                 {trades.map(trade => (
                   <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
                 ))}
@@ -262,7 +262,7 @@ export default function FindContractors() {
                 <SelectValue placeholder="Service" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>All Services</SelectItem>
+                <SelectItem value="all">All Services</SelectItem>
                 <SelectItem value="freelance_writer">Freelance Writer</SelectItem>
                 <SelectItem value="freelance_designer">Freelance Designer</SelectItem>
                 <SelectItem value="freelance_developer">Freelance Developer</SelectItem>
@@ -278,7 +278,7 @@ export default function FindContractors() {
                 <SelectValue placeholder="Rating" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>All Ratings</SelectItem>
+                <SelectItem value="all">All Ratings</SelectItem>
                 <SelectItem value="5">⭐⭐⭐⭐⭐ 5.0</SelectItem>
                 <SelectItem value="4">⭐⭐⭐⭐ 4.0+</SelectItem>
                 <SelectItem value="3">⭐⭐⭐ 3.0+</SelectItem>

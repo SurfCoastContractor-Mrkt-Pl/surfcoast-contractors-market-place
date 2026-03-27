@@ -314,7 +314,7 @@ export default function ContractorAccount() {
                  <TabsTrigger value="case-studies" className="text-xs sm:text-sm whitespace-nowrap">Case Studies</TabsTrigger>
                  <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
                  <TabsTrigger value="proposals" className="text-xs sm:text-sm whitespace-nowrap">Proposals</TabsTrigger>
-                 <TabsTrigger value="analytics" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
+                 <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Performance</TabsTrigger>
                  <TabsTrigger value="scheduling" className="text-xs sm:text-sm whitespace-nowrap">Scheduling</TabsTrigger>
                  <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
                  <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
@@ -430,9 +430,9 @@ export default function ContractorAccount() {
                  <ProposalTemplateManager contractorId={contractor?.id} />
                </TabsContent>
 
-               <TabsContent value="analytics">
-                 <PerformanceAnalyticsDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
-               </TabsContent>
+               <TabsContent value="performance">
+                  <PerformanceAnalyticsDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
+                </TabsContent>
 
                <TabsContent value="scheduling">
                  <AdvancedSchedulingManager contractorId={contractor?.id} />

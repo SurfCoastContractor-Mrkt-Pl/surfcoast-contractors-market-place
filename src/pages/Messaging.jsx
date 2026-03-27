@@ -21,7 +21,7 @@ export default function Messaging() {
       try {
         const currentUser = await base44.auth.me();
         if (!currentUser) {
-          window.location.href = '/';
+          base44.auth.redirectToLogin('/Messaging');
           return;
         }
         setUser(currentUser);

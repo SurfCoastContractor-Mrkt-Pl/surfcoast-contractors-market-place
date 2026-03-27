@@ -16,6 +16,16 @@ import FieldOpsMobileNav from '@/components/fieldops/FieldOpsMobileNav';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
+const BASE_NAV_TABS = [
+  { id: 'jobs', label: 'Jobs' },
+  { id: 'map', label: 'Map' },
+  { id: 'schedule', label: 'Schedule' },
+  { id: 'invoices', label: 'Invoices' },
+  { id: 'reports', label: 'Reports' },
+  { id: 'profile', label: 'Profile' },
+];
+const BREAKER_TAB = { id: 'breaker', label: 'Field Ops' };
+
 export default function FieldOps() {
   const [activeTab, setActiveTab] = useState('jobs');
   const [user, setUser] = useState(null);
@@ -164,18 +174,6 @@ export default function FieldOps() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Job Alert Banner */}
-        {newJobs.length > 0 && (
-          <JobAlertBanner 
-            jobs={newJobs} 
-            onDismiss={dismissJob}
-            onViewJob={(job) => {
-              setActiveTab('jobs');
-              window.scrollTo(0, 0);
-            }}
-          />
-        )}
-
         {/* Desktop Top Bar */}
         <div className="hidden lg:flex items-center justify-between bg-slate-900 px-6 py-4 border-b border-slate-800 flex-shrink-0">
           <h1 className="text-white font-semibold text-lg">
