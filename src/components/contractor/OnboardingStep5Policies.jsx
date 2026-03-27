@@ -8,14 +8,20 @@ export default function OnboardingStep5Policies() {
       
       <div className="space-y-6">
         {/* Platform Fee Disclosure */}
-        <div className="p-5 rounded-xl border-2 border-amber-200 bg-amber-50 space-y-3">
-          <div>
-            <h3 className="font-bold text-amber-900 mb-2">Platform Facilitation Fee</h3>
-            <p className="text-sm text-amber-800 leading-relaxed">
-              An 18% facilitation fee is deducted from each completed job. This fee covers payment processing and platform maintenance. Example: a $1,000 job pays out $820 to the contractor. All liability terms are outlined in the <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a>.
-            </p>
-          </div>
-        </div>
+         <div className="p-5 rounded-xl border-2 border-amber-200 bg-amber-50 space-y-3">
+           <div>
+             <h3 className="font-bold text-amber-900 mb-2">Sliding-Scale Facilitation Fees</h3>
+             <p className="text-sm text-amber-800 leading-relaxed mb-3">
+               SurfCoast charges a facilitation fee based on your annual earnings tier. Your tier automatically updates each calendar year, rewarding growth and activity:
+             </p>
+             <ul className="text-sm text-amber-800 space-y-2 ml-4 list-disc">
+               <li><strong>Bronze</strong> ($0–$15,000): 2% fee</li>
+               <li><strong>Silver</strong> ($15,000–$50,000): 10% fee</li>
+               <li><strong>Gold</strong> ($50,000+): 15% fee</li>
+             </ul>
+             <p className="text-sm text-amber-700 mt-3 italic">Example: In your first year (Bronze tier), a $1,000 job pays out $980. As you earn more, move up tiers and save on fees. All terms are outlined in the <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a>.</p>
+           </div>
+         </div>
 
         {/* Single-Person Policy */}
         <div className="p-5 rounded-xl border-2 border-red-200 bg-red-50 space-y-4">
