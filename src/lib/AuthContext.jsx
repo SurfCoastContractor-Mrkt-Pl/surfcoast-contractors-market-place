@@ -34,7 +34,10 @@ export const AuthProvider = ({ children }) => {
       });
       
       try {
-        const publicSettings = await appClient.get(`/prod/public-settings/by-id/${appParams.appId}`);
+        const publicSettings = await Promise.race([
+          appClient.get(`/prod/public-settings/by-id/${appParams.appId}`),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+        ]);
         setAppPublicSettings(publicSettings);
         
         setIsLoadingPublicSettings(false);
@@ -83,14 +86,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const checkUserAuth = async () => {
-    let controller;
     try {
       setIsLoadingAuth(true);
-      controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const currentUser = await base44.auth.me();
-      clearTimeout(timeoutId);
+
+      // Race the auth call against a 5s timeout so loading never hangs forever
+      const currentUser = await Promise.race([
+        base44.auth.me(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+      ]);
+
       setUser(currentUser);
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
@@ -98,16 +102,11 @@ export const AuthProvider = ({ children }) => {
       console.error('User auth check failed:', error);
       setIsLoadingAuth(false);
       setIsAuthenticated(false);
-      
+
       if (error.status === 401 || error.status === 403) {
-        // Only set auth_required for explicit 401/403 — not network/timeout errors
-        setAuthError({
-          type: 'auth_required',
-          message: 'Authentication required'
-        });
+        setAuthError({ type: 'auth_required', message: 'Authentication required' });
       }
-      // For all other errors (network issues, timeouts, etc.), don't set an auth error
-      // so the public app can still render normally
+      // All other errors (network, timeout) — let the public app render normally
     }
   };
 
