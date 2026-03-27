@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { BarChart3 } from 'lucide-react';
-import WaveFOReportFilters from '@/components/fieldops/FieldOpsReportFilters';
-import WaveFOReportDisplay from '@/components/fieldops/FieldOpsReportDisplay';
+import WaveFOReportFilters from '@/components/fieldops/WaveFOReportFilters';
+import WaveFOReportDisplay from '@/components/fieldops/WaveFOReportDisplay';
 
 export default function WaveFOReporting() {
   const [report, setReport] = useState(null);
