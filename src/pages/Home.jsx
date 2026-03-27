@@ -302,7 +302,7 @@ export default function Home() {
       <section style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(10,22,40,0.8)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"clamp(24px, 4vw, 32px) clamp(16px, 4vw, 24px)", flexShrink:0 }} aria-label="Connect with us on social media">
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <h2 style={{ color:"#ffffff", fontSize:"16px", fontWeight:"700", marginBottom:"20px", textAlign:"center" }}>Connect With Us</h2>
-          <div style={{ display:"grid", gridTemplateColumns:window.innerWidth < 600 ? "1fr" : "repeat(3, 1fr)", gap:"20px", justifyContent:"center", alignItems:"start" }}>
+          <div style={{ display:"grid", gridTemplateColumns:isMobile ? "1fr" : "repeat(3, 1fr)", gap:"20px", justifyContent:"center", alignItems:"start" }}>
             <div style={{ display:"flex", justifyContent:"center" }}>
               <InstagramQRCode size={60} />
             </div>

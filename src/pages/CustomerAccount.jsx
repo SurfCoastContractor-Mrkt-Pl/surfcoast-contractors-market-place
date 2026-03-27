@@ -295,7 +295,6 @@ export default function CustomerAccount() {
                         <h3 className="text-2xl font-bold text-slate-900">Your Profile</h3>
                       </div>
                       <CustomerProfileDisplay profile={customerProfile} jobCount={postedJobs?.length || 0} />
-                      <CustomerBadges completedJobsCount={customerProfile?.completed_jobs_count || 0} />
                       </div>
                   )}
                 </div>

@@ -35,7 +35,7 @@ export default function AdminDashboard() {
           console.warn('AdminDashboard: auth.me() failed:', authErr);
         }
 
-        console.log('AdminDashboard: user =', user, '| role =', user?.role);
+        // Auth check complete
 
         if (!user) {
           base44.auth.redirectToLogin('/admin');

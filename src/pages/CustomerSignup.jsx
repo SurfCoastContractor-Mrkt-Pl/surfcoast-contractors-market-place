@@ -71,7 +71,7 @@ export default function CustomerSignup() {
         eventName: 'customer_signup_success',
         properties: { 
           location: formData.location,
-          early_adopter: earlyAdopterRes.data.qualified,
+          early_adopter: earlyAdopterRes?.data?.qualified ?? false,
         },
       });
 

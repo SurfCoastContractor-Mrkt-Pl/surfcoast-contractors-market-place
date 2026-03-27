@@ -297,7 +297,7 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="my-jobs">
-             <TabsList className="w-full grid-cols-22 overflow-x-auto">
+             <TabsList className="w-full flex flex-wrap overflow-x-auto h-auto gap-0.5 p-1">
                  <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap font-semibold">My Jobs</TabsTrigger>
                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
