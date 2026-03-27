@@ -1,0 +1,127 @@
+{
+  "name": "MarketListing",
+  "type": "object",
+  "properties": {
+    "shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop that owns this product"
+    },
+    "shop_email": {
+      "type": "string",
+      "description": "Email of the shop owner"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Name of the product"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product description"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price in dollars"
+    },
+    "unit": {
+      "type": "string",
+      "description": "Unit of measurement (e.g., lb, dozen, each)"
+    },
+    "stock_level": {
+      "type": "integer",
+      "default": 0,
+      "description": "Current inventory count"
+    },
+    "low_stock_threshold": {
+      "type": "integer",
+      "default": 5,
+      "description": "Threshold for low stock alerts"
+    },
+    "is_visible": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether product is visible on storefront (hidden when out of stock)"
+    },
+    "category": {
+      "type": "string",
+      "description": "Product category"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Product image URL"
+    },
+    "last_low_stock_alert_sent": {
+      "type": "string",
+      "description": "ISO timestamp of last low stock alert"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "discontinued"
+      ],
+      "default": "active",
+      "description": "Product status"
+    }
+  },
+  "required": [
+    "shop_id",
+    "shop_email",
+    "product_name",
+    "price",
+    "stock_level"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.is_visible": true
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

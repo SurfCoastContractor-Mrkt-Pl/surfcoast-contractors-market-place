@@ -41,6 +41,7 @@ import SurfCoastReviewRequestsManager from './pages/SurfCoastReviewRequestsManag
 import ActivityConsolidationDashboard from './pages/ActivityConsolidationDashboard';
 import SubmitConsumerOrderReview from './pages/SubmitConsumerOrderReview';
 import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
+import MarketShopInventory from './pages/MarketShopInventory';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -226,6 +227,11 @@ const AuthenticatedApp = () => {
       <Route path="/market-shop-analytics" element={
         <LayoutWrapper currentPageName="MarketShopAnalyticsDashboard">
           <MarketShopAnalyticsDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/market-shop-inventory" element={
+        <LayoutWrapper currentPageName="MarketShopInventory">
+          <MarketShopInventory />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
