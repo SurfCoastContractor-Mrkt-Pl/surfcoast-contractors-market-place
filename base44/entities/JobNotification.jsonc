@@ -1,0 +1,79 @@
+{
+  "name": "JobNotification",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the Job that was notified"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who was notified"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor notified"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job"
+    },
+    "match_score": {
+      "type": "number",
+      "description": "Match score (0-100) based on specialty and location match"
+    },
+    "match_reason": {
+      "type": "string",
+      "description": "Why this contractor was matched"
+    },
+    "notified_at": {
+      "type": "string",
+      "description": "ISO timestamp when notification was sent"
+    },
+    "contractor_opened": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor opened/clicked the notification"
+    },
+    "contractor_responded": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor submitted a quote"
+    }
+  },
+  "required": [
+    "job_id",
+    "contractor_id",
+    "contractor_email",
+    "job_title"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
