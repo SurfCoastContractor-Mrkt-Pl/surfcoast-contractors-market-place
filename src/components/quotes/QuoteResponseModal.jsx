@@ -10,11 +10,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import ServiceSelector from '@/components/quote/ServiceSelector';
 
 export default function QuoteResponseModal({ open, onOpenChange, quote, actionType, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [useServices, setUseServices] = useState(false);
   const [formData, setFormData] = useState({
     estimate: '',
     message: ''
@@ -48,6 +50,52 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
       onSuccess();
     } catch (err) {
       setError(err.message || 'Failed to send estimate');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleServiceQuoteSubmit = async (serviceData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Generate PDF
+      const pdfResponse = await base44.functions.invoke('generateQuotePDF', {
+        quoteRequestId: quote.id,
+        contractorName: quote.contractor_name,
+        contractorEmail: quote.contractor_email,
+        customerName: quote.customer_name,
+        jobTitle: quote.job_title,
+        services: serviceData.services,
+        subtotal: serviceData.total,
+        notes: serviceData.notes
+      });
+
+      if (!pdfResponse.data?.pdf) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      // Update quote with service-based estimate
+      await base44.entities.QuoteRequest.update(quote.id, {
+        contractor_estimate: serviceData.total,
+        contractor_message: serviceData.notes || '',
+        status: 'quoted',
+        read_by_contractor: true
+      });
+
+      // Send email with PDF attachment
+      const emailBody = `Hello ${quote.customer_name},\n\n${quote.contractor_name} has sent you a professional quote for your project:\n\n${quote.job_title}\n\nQuote Total: $${serviceData.total.toFixed(2)}\n\n${serviceData.notes ? `Notes:\n${serviceData.notes}\n\n` : ''}Please review the attached PDF and let us know if you'd like to proceed or if you have any questions.\n\nBest regards,\nSurfCoast Marketplace`;
+
+      await base44.integrations.Core.SendEmail({
+        to: quote.customer_email,
+        subject: `Professional Quote for ${quote.job_title} from ${quote.contractor_name}`,
+        body: emailBody
+      });
+
+      onSuccess();
+    } catch (err) {
+      setError(err.message || 'Failed to send quote');
     } finally {
       setLoading(false);
     }
@@ -106,69 +154,107 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
         </DialogHeader>
 
         <div className="space-y-4">
-          {error && (
-            <div className="flex gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <p>{error}</p>
+           {error && (
+             <div className="flex gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+               <p>{error}</p>
+             </div>
+           )}
+
+           {actionType === 'estimate' ? (
+             useServices ? (
+               <ServiceSelector
+                 contractorEmail={quote.contractor_email}
+                 onServicesSelected={handleServiceQuoteSubmit}
+                 onCancel={() => setUseServices(false)}
+               />
+             ) : (
+               <>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-900 mb-2">
+                     How would you like to send your estimate?
+                   </label>
+                   <div className="space-y-2">
+                     <Button
+                       onClick={() => setUseServices(false)}
+                       variant="outline"
+                       className="w-full justify-start text-left"
+                     >
+                       <span className="font-semibold">Simple Estimate</span>
+                       <span className="text-xs text-slate-600 ml-2">Quick text-based estimate</span>
+                     </Button>
+                     <Button
+                       onClick={() => setUseServices(true)}
+                       variant="outline"
+                       className="w-full justify-start text-left"
+                     >
+                       <span className="font-semibold">Service-Based Quote</span>
+                       <span className="text-xs text-slate-600 ml-2">Professional PDF quote with services</span>
+                     </Button>
+                   </div>
+                 </div>
+
+                 <div>
+                   <label className="block text-sm font-medium text-slate-900 mb-1">
+                     Estimate Amount ($)
+                   </label>
+                   <Input
+                     type="number"
+                     placeholder="0.00"
+                     value={formData.estimate}
+                     onChange={(e) => setFormData({ ...formData, estimate: e.target.value })}
+                     step="0.01"
+                     min="0"
+                   />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-900 mb-1">
+                     Additional Message (Optional)
+                   </label>
+                   <Textarea
+                     placeholder="e.g., Timeline, materials, approach..."
+                     value={formData.message}
+                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                     rows={4}
+                   />
+                 </div>
+               </>
+             )
+           ) : (
+             <div>
+               <label className="block text-sm font-medium text-slate-900 mb-1">
+                 Your Message
+               </label>
+               <Textarea
+                 placeholder="Type your message..."
+                 value={formData.message}
+                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                 rows={4}
+               />
+             </div>
+           )}
+
+          {!useServices && (
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</>
+                ) : (
+                  actionType === 'estimate' ? 'Send Estimate' : 'Send Message'
+                )}
+              </Button>
             </div>
           )}
-
-          {actionType === 'estimate' ? (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-slate-900 mb-1">
-                  Estimate Amount ($)
-                </label>
-                <Input
-                  type="number"
-                  placeholder="0.00"
-                  value={formData.estimate}
-                  onChange={(e) => setFormData({ ...formData, estimate: e.target.value })}
-                  step="0.01"
-                  min="0"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-900 mb-1">
-                  Additional Message (Optional)
-                </label>
-                <Textarea
-                  placeholder="e.g., Timeline, materials, approach..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={4}
-                />
-              </div>
-            </>
-          ) : (
-            <div>
-              <label className="block text-sm font-medium text-slate-900 mb-1">
-                Your Message
-              </label>
-              <Textarea
-                placeholder="Type your message..."
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                rows={4}
-              />
-            </div>
-          )}
-
-          <div className="flex gap-3 justify-end">
-            <Button
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={loading}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={loading}
-            >
-              {loading ? 'Sending...' : actionType === 'estimate' ? 'Send Estimate' : 'Send Message'}
-            </Button>
-          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,0 +1,165 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import jsPDF from 'npm:jspdf@4.0.0';
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+    const payload = await req.json();
+    
+    const {
+      quoteRequestId,
+      contractorName,
+      contractorEmail,
+      customerName,
+      jobTitle,
+      services,
+      subtotal,
+      taxRate = 0,
+      notes = ''
+    } = payload;
+
+    if (!quoteRequestId || !contractorName || !customerName || !jobTitle || !services || !subtotal) {
+      return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 15;
+    const contentWidth = pageWidth - (margin * 2);
+    let yPosition = margin;
+
+    // Header with company info
+    doc.setFontSize(24);
+    doc.setFont(undefined, 'bold');
+    doc.text('QUOTE', margin, yPosition);
+    
+    yPosition += 12;
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    doc.text(`From: ${contractorName}`, margin, yPosition);
+    doc.text(`Email: ${contractorEmail}`, margin, yPosition + 6);
+    doc.text(`Quote ID: ${quoteRequestId}`, margin, yPosition + 12);
+    
+    // Customer info (right side)
+    doc.setFont(undefined, 'bold');
+    doc.text('Bill To:', pageWidth - margin - 50, yPosition);
+    doc.setFont(undefined, 'normal');
+    doc.text(customerName, pageWidth - margin - 50, yPosition + 6);
+    
+    yPosition += 28;
+
+    // Job title
+    doc.setFont(undefined, 'bold');
+    doc.setFontSize(12);
+    doc.text(`Project: ${jobTitle}`, margin, yPosition);
+    doc.setFontSize(10);
+    
+    yPosition += 12;
+
+    // Services table header
+    doc.setFillColor(41, 128, 185);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont(undefined, 'bold');
+    
+    const colWidth = contentWidth / 4;
+    doc.rect(margin, yPosition - 5, contentWidth, 8, 'F');
+    doc.text('Service', margin + 3, yPosition);
+    doc.text('Qty/Hours', margin + colWidth + 3, yPosition);
+    doc.text('Unit Price', margin + (colWidth * 2) + 3, yPosition);
+    doc.text('Amount', margin + (colWidth * 3) + 3, yPosition);
+    
+    yPosition += 12;
+    doc.setTextColor(0, 0, 0);
+    doc.setFont(undefined, 'normal');
+
+    // Service rows
+    let totalAmount = 0;
+    services.forEach((service) => {
+      const serviceName = service.service_name || 'Service';
+      const quantity = service.quantity || 1;
+      const price = service.price_amount || 0;
+      const amount = quantity * price;
+      totalAmount += amount;
+
+      // Wrap long service names
+      const lines = doc.splitTextToSize(serviceName, colWidth - 6);
+      const lineHeight = lines.length > 1 ? lines.length * 4 : 5;
+      
+      doc.text(lines, margin + 3, yPosition);
+      doc.text(quantity.toString(), margin + colWidth + 3, yPosition);
+      doc.text(`$${price.toFixed(2)}`, margin + (colWidth * 2) + 3, yPosition);
+      doc.text(`$${amount.toFixed(2)}`, margin + (colWidth * 3) + 3, yPosition);
+      
+      yPosition += lineHeight + 2;
+
+      // Add page if needed
+      if (yPosition > pageHeight - 40) {
+        doc.addPage();
+        yPosition = margin;
+      }
+    });
+
+    // Calculations
+    yPosition += 4;
+    const taxAmount = subtotal * (taxRate / 100);
+    const total = subtotal + taxAmount;
+
+    // Summary box
+    doc.setDrawColor(200, 200, 200);
+    doc.rect(margin + (colWidth * 2), yPosition, colWidth * 2, 20);
+    
+    doc.setFont(undefined, 'normal');
+    doc.text('Subtotal:', margin + (colWidth * 2) + 3, yPosition + 5);
+    doc.text(`$${subtotal.toFixed(2)}`, margin + (colWidth * 3) + 3, yPosition + 5);
+    
+    if (taxRate > 0) {
+      doc.text(`Tax (${taxRate}%):`, margin + (colWidth * 2) + 3, yPosition + 10);
+      doc.text(`$${taxAmount.toFixed(2)}`, margin + (colWidth * 3) + 3, yPosition + 10);
+    }
+    
+    doc.setFont(undefined, 'bold');
+    doc.setFontSize(12);
+    doc.text('Total:', margin + (colWidth * 2) + 3, yPosition + 15);
+    doc.text(`$${total.toFixed(2)}`, margin + (colWidth * 3) + 3, yPosition + 15);
+
+    yPosition += 26;
+
+    // Notes section
+    if (notes) {
+      doc.setFont(undefined, 'bold');
+      doc.setFontSize(10);
+      doc.text('Notes:', margin, yPosition);
+      yPosition += 5;
+      doc.setFont(undefined, 'normal');
+      const noteLines = doc.splitTextToSize(notes, contentWidth);
+      doc.text(noteLines, margin, yPosition);
+      yPosition += noteLines.length * 4 + 4;
+    }
+
+    // Footer
+    yPosition = pageHeight - 15;
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text('This quote is valid for 30 days from the date of issue.', margin, yPosition);
+    doc.text('Generated by SurfCoast Marketplace', margin, yPosition + 5);
+
+    // Convert to base64
+    const pdfBase64 = doc.output('datauristring').split(',')[1];
+
+    return Response.json({
+      success: true,
+      pdf: pdfBase64,
+      total: total,
+      subtotal: subtotal
+    });
+  } catch (error) {
+    console.error('generateQuotePDF error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+});
