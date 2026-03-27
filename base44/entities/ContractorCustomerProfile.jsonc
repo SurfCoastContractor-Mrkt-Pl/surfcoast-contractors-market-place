@@ -1,0 +1,143 @@
+{
+  "name": "ContractorCustomerProfile",
+  "type": "object",
+  "properties": {
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor managing this customer"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "customer_phone": {
+      "type": "string",
+      "description": "Phone number of the customer"
+    },
+    "customer_address": {
+      "type": "string",
+      "description": "Customer's address"
+    },
+    "service_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scope_id": {
+            "type": "string"
+          },
+          "service_type": {
+            "type": "string"
+          },
+          "completed_date": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "List of services provided to this customer"
+    },
+    "total_spent": {
+      "type": "number",
+      "default": 0,
+      "description": "Total amount customer has spent"
+    },
+    "total_jobs": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of jobs completed"
+    },
+    "contractor_notes": {
+      "type": "string",
+      "description": "Private notes about this customer"
+    },
+    "preferred_services": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Types of services this customer has used before"
+    },
+    "last_service_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of last service provided"
+    },
+    "communication_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "email",
+              "phone",
+              "message",
+              "in_person"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Log of communications with this customer"
+    }
+  },
+  "required": [
+    "contractor_email",
+    "customer_email",
+    "customer_name"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

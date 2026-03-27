@@ -8,6 +8,16 @@ export const TIER_FEATURES = {
     emailTracking: false,
     serviceCategories: ['electrical', 'plumbing', 'hvac', 'carpentry', 'roofing', 'painting', 'general_labor'],
     advancedAnalytics: false,
+    // New features
+    maxCampaigns: 0,
+    crm: 'none', // none, basic, advanced
+    reviewManagement: false,
+    maxActiveCampaigns: 0,
+    campaignAnalytics: false,
+    customerNotes: false,
+    communicationHistory: false,
+    reviewRequests: false,
+    reviewAnalytics: false,
   },
   licensed: {
     maxServices: 50,
@@ -17,6 +27,16 @@ export const TIER_FEATURES = {
     emailTracking: false,
     serviceCategories: ['electrical', 'plumbing', 'hvac', 'carpentry', 'roofing', 'painting', 'landscaping', 'masonry', 'welding', 'tiling', 'general_labor', 'consulting'],
     advancedAnalytics: false,
+    // New features
+    maxCampaigns: 3,
+    crm: 'basic', // basic customer profiles
+    reviewManagement: true,
+    maxActiveCampaigns: 3,
+    campaignAnalytics: true,
+    customerNotes: true,
+    communicationHistory: true,
+    reviewRequests: true,
+    reviewAnalytics: false,
   },
   premium: {
     maxServices: -1, // unlimited
@@ -26,6 +46,16 @@ export const TIER_FEATURES = {
     emailTracking: true,
     serviceCategories: '*', // all
     advancedAnalytics: true,
+    // New features
+    maxCampaigns: -1, // unlimited
+    crm: 'advanced', // full CRM with integrations
+    reviewManagement: true,
+    maxActiveCampaigns: -1,
+    campaignAnalytics: true,
+    customerNotes: true,
+    communicationHistory: true,
+    reviewRequests: true,
+    reviewAnalytics: true,
   },
 };
 
