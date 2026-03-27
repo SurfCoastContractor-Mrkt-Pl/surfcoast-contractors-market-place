@@ -326,13 +326,13 @@ export default function Jobs() {
           )}
         </div>
 
-        {/* Enter Button */}
+        {/* Apply Filters Button */}
         <div className="mb-8">
           <Button 
             onClick={applyFilters}
             className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-lg"
           >
-            Enter
+            Apply Filters
           </Button>
         </div>
 

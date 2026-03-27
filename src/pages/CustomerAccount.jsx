@@ -521,7 +521,11 @@ export default function CustomerAccount() {
                                   size="sm" 
                                   variant="outline" 
                                   className="flex-1 border-red-300 text-red-700 hover:bg-red-50 text-xs h-7"
-                                  onClick={() => base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by client' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }))}
+                                  onClick={() => {
+                                    if (window.confirm(`Are you sure you want to reject the scope "${s.job_title}"? This cannot be undone.`)) {
+                                      base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by client' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }));
+                                    }
+                                  }}
                                 >
                                   Reject
                                 </Button>

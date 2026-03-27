@@ -178,10 +178,10 @@ export default function Messaging() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-md text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-3">Messaging Unavailable</h2>
           <p className="text-slate-600 mb-4">
-            Real-time messaging is available for consumers without contractor or customer accounts, and for market vendors and booths. 
+            This messaging hub is for consumers and market vendors. Contractors and customers have a dedicated messaging system built into their job postings, scopes of work, and proposals.
           </p>
           <p className="text-sm text-slate-500">
-            If you're a contractor or customer needing to discuss work, please use the work-related messaging system through your job postings or proposals.
+            Go to your <strong>Account → Scopes</strong> tab to open project chats with your contractor or customer.
           </p>
         </div>
       </div>
