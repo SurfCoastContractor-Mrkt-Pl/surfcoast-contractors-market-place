@@ -17,12 +17,12 @@ import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
 const BASE_NAV_TABS = [
-  { id: 'jobs', label: 'Jobs' },
-  { id: 'map', label: 'Map' },
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'invoices', label: 'Invoices' },
-  { id: 'reports', label: 'Reports' },
-  { id: 'profile', label: 'Profile' },
+  { id: 'jobs', label: 'Wave FO Jobs' },
+  { id: 'map', label: 'Wave FO Map' },
+  { id: 'schedule', label: 'Wave FO Schedule' },
+  { id: 'invoices', label: 'Wave FO Invoices' },
+  { id: 'reports', label: 'Wave FO Reports' },
+  { id: 'profile', label: 'Wave FO Profile' },
 ];
 const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
 
@@ -127,13 +127,13 @@ export default function FieldOps() {
       <div className="fixed inset-0 bg-slate-900 flex items-center justify-center px-6">
         <div className="text-center text-white max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">SurfCoast Waves FO</h1>
+          <h1 className="text-2xl font-bold mb-2">Wave FO</h1>
           <p className="text-slate-400 mb-6">Sign in with a contractor account to access Wave FO.</p>
           <button
             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/FieldOps`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
           >
-            Sign In to SurfCoast Waves FO
+            Sign In to Wave FO
           </button>
           <Link to="/" className="block mt-4 text-slate-400 text-sm hover:text-white">← Back to Home</Link>
         </div>

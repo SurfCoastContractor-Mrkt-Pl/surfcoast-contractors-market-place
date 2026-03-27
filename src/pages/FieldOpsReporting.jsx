@@ -50,7 +50,7 @@ export default function FieldOpsReporting() {
       const csvContent = csvResult.data.csv;
       const element = document.createElement('a');
       element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-      element.setAttribute('download', `field-ops-report-${new Date().toISOString().split('T')[0]}.csv`);
+      element.setAttribute('download', `wave-fo-report-${new Date().toISOString().split('T')[0]}.csv`);
       element.style.display = 'none';
       document.body.appendChild(element);
       element.click();

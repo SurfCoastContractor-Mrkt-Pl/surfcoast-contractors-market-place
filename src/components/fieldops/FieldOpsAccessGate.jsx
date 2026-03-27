@@ -49,9 +49,9 @@ const SURFCOAST_WAVES = [
     borderClass: 'border-blue-500',
     bgClass: 'bg-blue-900/20',
     emoji: '🏄',
-    description: 'Full Field Ops access unlocked',
+    description: 'Full Wave FO access unlocked',
     features: ['All Swell features', 'Full job management', 'Completion requests', 'Field messaging', 'Advanced invoicing'],
-    isFieldOpsUnlock: true, // This is the minimum for Field Ops
+    isFieldOpsUnlock: true, // This is the minimum for Wave FO
   },
   {
     id: 'pipeline',
@@ -66,7 +66,7 @@ const SURFCOAST_WAVES = [
     bgClass: 'bg-indigo-900/20',
     emoji: '🌀',
     description: 'Elite contractor status achieved',
-    features: ['All Breaker features', 'Priority support', 'Advanced analytics', 'Project milestones'],
+    features: ['All Breaker features', 'Priority support', 'Wave FO analytics', 'Project milestones'],
   },
   {
     id: 'residential_wave',
@@ -81,7 +81,7 @@ const SURFCOAST_WAVES = [
     bgClass: 'bg-amber-900/20',
     emoji: '🏆',
     description: 'Top tier — HIS licensed professionals only',
-    features: ['All Pipeline features', 'Residential Wave module', 'Licensed contractor tools', 'Full Field Ops suite'],
+    features: ['All Pipeline features', 'Residential Wave module', 'Licensed contractor tools', 'Full Wave FO suite'],
     requiresHIS: true,
   },
 ];
@@ -117,7 +117,7 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
               )}
               {waveDef.isFieldOpsUnlock && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-700 text-blue-100">
-                  FIELD OPS UNLOCK
+                  WAVE FO UNLOCK
                 </span>
               )}
             </div>
@@ -177,7 +177,7 @@ export default function FieldOpsAccessGate({ contractor }) {
   const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
   const nextWave = SURFCOAST_WAVES.find(w => completedJobsCount < w.jobsRequired);
 
-  // Field Ops requires Breaker (wave 3 = 55 completed jobs)
+  // Wave FO requires Breaker (wave 3 = 55 completed jobs)
   const BREAKER_WAVE = SURFCOAST_WAVES.find(w => w.id === 'breaker');
   const toBreaker = Math.max(0, BREAKER_WAVE.jobsRequired - completedJobsCount);
 
@@ -190,9 +190,9 @@ export default function FieldOpsAccessGate({ contractor }) {
           <Waves className="w-8 h-8 text-blue-400" />
         </div>
         <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast Waves</p>
-        <h1 className="text-white text-2xl font-bold mb-2">SurfCoast Waves FO</h1>
+        <h1 className="text-white text-2xl font-bold mb-2">Wave FO</h1>
         <p className="text-slate-400 text-sm leading-relaxed max-w-xs mx-auto">
-          Field Ops grows with you. Earn your waves by completing verified jobs and building your reputation on SurfCoast.
+          Wave FO grows with you. Earn your waves by completing verified jobs and building your reputation on SurfCoast.
         </p>
       </div>
 
@@ -215,17 +215,17 @@ export default function FieldOpsAccessGate({ contractor }) {
             <span className="text-3xl">🌅</span>
             <div>
               <p className="text-white font-bold">No Wave Yet</p>
-              <p className="text-slate-400 text-xs">Complete 15 jobs to unlock SurfCoast Waves FO</p>
+              <p className="text-slate-400 text-xs">Complete 15 jobs to unlock Wave FO</p>
             </div>
           </div>
         )}
 
-        {/* Progress to Field Ops unlock */}
-        {toBreaker > 0 && (
-          <div className="mt-4 pt-4 border-t border-slate-800">
-            <p className="text-xs text-yellow-400 mb-2 font-semibold">
-              🏄 Field Ops unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more job{toBreaker !== 1 ? 's' : ''} needed
-            </p>
+        {/* Progress to Wave FO unlock */}
+         {toBreaker > 0 && (
+           <div className="mt-4 pt-4 border-t border-slate-800">
+             <p className="text-xs text-yellow-400 mb-2 font-semibold">
+               🏄 Wave FO unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more job{toBreaker !== 1 ? 's' : ''} needed
+             </p>
             <div className="w-full h-2 bg-slate-800 rounded-full">
               <div
                 className="h-2 rounded-full bg-blue-500 transition-all"
