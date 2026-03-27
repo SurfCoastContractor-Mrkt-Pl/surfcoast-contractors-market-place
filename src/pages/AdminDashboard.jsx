@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { user, loading: authLoading } = useRequireAuth('/admin');
+  const isAdmin = user?.role === 'admin';
   const [activeTab, setActiveTab] = useState('overview');
   
   // Data states
@@ -26,50 +27,23 @@ export default function AdminDashboard() {
   const [reviewRatingFilter, setReviewRatingFilter] = useState('all');
 
   useEffect(() => {
-    const checkAdmin = async () => {
+    if (!user || user.role !== 'admin') return;
+    const loadData = async () => {
       try {
-        let user = null;
-        try {
-          user = await base44.auth.me();
-        } catch (authErr) {
-          console.warn('AdminDashboard: auth.me() failed:', authErr);
-        }
-
-        // Auth check complete
-
-        if (!user) {
-          base44.auth.redirectToLogin('/admin');
-          setLoading(false);
-          return;
-        }
-
-        if (user.role !== 'admin') {
-          console.warn('AdminDashboard: access denied — role is:', user.role);
-          setIsAdmin(false);
-          setLoading(false);
-          return;
-        }
-
-        setIsAdmin(true);
-
-        // Load data
         const [v, c, r] = await Promise.all([
           base44.entities.MarketShop.list('-created_date', 1000),
           base44.entities.Contractor.list('-created_date', 1000),
           base44.entities.VendorReview.list('-created_date', 1000),
         ]);
-
         setVendors(v || []);
         setContractors(c || []);
         setReviews(r || []);
       } catch (err) {
-        console.error('AdminDashboard: unexpected error:', err);
-      } finally {
-        setLoading(false);
+        console.error('AdminDashboard: data load error:', err);
       }
     };
-    checkAdmin();
-  }, []);
+    loadData();
+  }, [user]);
 
   // All hooks must be declared before any conditional returns
   const filteredVendors = useMemo(() => {
@@ -99,7 +73,7 @@ export default function AdminDashboard() {
   }, [reviews, reviewStatusFilter, reviewRatingFilter]);
 
   // Early returns AFTER all hooks
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
         <Loader2 className="w-8 h-8 animate-spin text-blue-400" />

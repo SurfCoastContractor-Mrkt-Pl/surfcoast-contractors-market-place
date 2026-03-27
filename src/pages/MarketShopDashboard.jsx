@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { Loader2, Package, MapPin, Star, Settings, Store, BarChart3, MessageCircle } from 'lucide-react';
 import MarketBoothMetrics from '@/components/marketshop/MarketBoothMetrics';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
@@ -25,8 +26,11 @@ const TABS = [
   { key: 'analytics', label: 'Analytics', icon: BarChart3 },
   { key: 'messages', label: 'Messages', icon: MessageCircle },
   { key: 'markets', label: 'My Markets', icon: MapPin },
+  { key: 'schedule', label: 'Schedule', icon: MapPin },
+  { key: 'gallery', label: 'Gallery', icon: Package },
   { key: 'reviews', label: 'Reviews', icon: Star },
   { key: 'ratings', label: 'Location Ratings', icon: BarChart3 },
+  { key: 'subscription', label: 'Subscription', icon: Star },
   { key: 'settings', label: 'Settings', icon: Settings },
 ];
 
@@ -55,29 +59,19 @@ function getShopStatus(shop) {
 
 export default function MarketShopDashboard() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useRequireAuth('/MarketShopDashboard');
   const [loading, setLoading] = useState(true);
   const [shop, setShop] = useState(null);
-  const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: true });
   const [activeTab, setActiveTab] = useState('listings');
 
   useEffect(() => {
+    if (!user) return;
     const load = async () => {
       try {
-        const user = await base44.auth.me();
-        if (!user) { navigate('/'); return; }
-
-        const [shops, contractors, customers] = await Promise.all([
+        const [shops] = await Promise.all([
           base44.entities.MarketShop.filter({ email: user.email }),
-          base44.entities.Contractor.filter({ email: user.email }),
-          base44.entities.CustomerProfile.filter({ email: user.email }),
         ]);
-
         setShop(shops?.[0] || null);
-        setProfiles({
-          customer: customers?.length > 0,
-          contractor: contractors?.length > 0,
-          marketshop: true,
-        });
       } catch (err) {
         console.error(err);
         navigate('/');
@@ -86,7 +80,7 @@ export default function MarketShopDashboard() {
       }
     };
     load();
-  }, [navigate]);
+  }, [user, navigate]);
 
   const handleUpdate = async (data) => {
     if (!shop?.id) return;
@@ -94,7 +88,7 @@ export default function MarketShopDashboard() {
     setShop(prev => ({ ...prev, ...data }));
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
@@ -229,55 +223,21 @@ export default function MarketShopDashboard() {
               </div>
             </div>
           )}
+          {activeTab === 'schedule' && <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />}
+          {activeTab === 'gallery' && <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />}
+          {activeTab === 'subscription' && (
+            <div className="space-y-6">
+              <MarketShopInquiries shop={shop} />
+              <MarketShopSubscription shop={shop} />
+              <StripeConnectSetup shop={shop} />
+              <div>
+                <h2 className="text-lg font-bold text-slate-800 mb-4">CRM Integration</h2>
+                <CRMSyncPanel connectorName="-build as needed" userType="marketshop" />
+              </div>
+              <ShareYourListing shop={shop} />
+            </div>
+          )}
           {activeTab === 'settings' && <MarketShopSettings shop={shop} onUpdate={handleUpdate} />}
-        </div>
-      </div>
-
-      {/* Market Schedule Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <MarketShopSchedule shop={shop} onUpdate={handleUpdate} />
-        </div>
-      </div>
-
-      {/* Photo Gallery Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <PhotoGalleryManager shop={shop} onUpdate={handleUpdate} />
-        </div>
-      </div>
-
-      {/* Inquiries Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <MarketShopInquiries shop={shop} />
-        </div>
-      </div>
-
-      {/* Subscription Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <MarketShopSubscription shop={shop} />
-        </div>
-      </div>
-
-      {/* Stripe Connect / Payouts Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
-        <StripeConnectSetup shop={shop} />
-      </div>
-
-      {/* CRM Integration Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">CRM Integration</h2>
-          <CRMSyncPanel connectorName="-build as needed" userType="marketshop" />
-        </div>
-      </div>
-
-      {/* Share Your Listing Section - Bottom */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 relative z-10">
-        <div className="bg-white/65 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/30 shadow-lg p-4 sm:p-6 lg:p-8">
-          <ShareYourListing shop={shop} />
         </div>
       </div>
       </div>
