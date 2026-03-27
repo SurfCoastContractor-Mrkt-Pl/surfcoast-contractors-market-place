@@ -68,20 +68,15 @@ export const AuthProvider = ({ children }) => {
             });
           }
         } else {
-          setAuthError({
-            type: 'unknown',
-            message: appError.message || 'Failed to load app'
-          });
+          // Non-critical error — don't block the public app from rendering
+          console.warn('Non-critical app state error:', appError.message);
         }
         setIsLoadingPublicSettings(false);
         setIsLoadingAuth(false);
       }
     } catch (error) {
       console.error('Unexpected error:', error);
-      setAuthError({
-        type: 'unknown',
-        message: error.message || 'An unexpected error occurred'
-      });
+      // Don't block the public app — just stop loading
       setIsLoadingPublicSettings(false);
       setIsLoadingAuth(false);
     }
@@ -104,22 +99,15 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setIsAuthenticated(false);
       
-      if (error.name === 'AbortError') {
-        setAuthError({
-          type: 'timeout',
-          message: 'Auth check timed out'
-        });
-      } else if (error.status === 401 || error.status === 403) {
+      if (error.status === 401 || error.status === 403) {
+        // Only set auth_required for explicit 401/403 — not network/timeout errors
         setAuthError({
           type: 'auth_required',
           message: 'Authentication required'
         });
-      } else {
-        setAuthError({
-          type: 'error',
-          message: error.message
-        });
       }
+      // For all other errors (network issues, timeouts, etc.), don't set an auth error
+      // so the public app can still render normally
     }
   };
 

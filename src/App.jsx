@@ -80,6 +80,8 @@ const AuthenticatedApp = () => {
         </div>
       );
     }
+    // For all other errors (unknown, timeout, etc.) — this is a public app,
+    // so just render routes normally rather than blocking the entire app
   }
 
   // Render the main app
