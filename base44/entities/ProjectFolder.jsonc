@@ -1,0 +1,163 @@
+{
+  "name": "ProjectFolder",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork this folder belongs to"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "ID of the customer"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer"
+    },
+    "customer_last_name": {
+      "type": "string",
+      "description": "Customer's last name for folder organization"
+    },
+    "customer_first_name": {
+      "type": "string",
+      "description": "Customer's first name for folder organization"
+    },
+    "folder_name": {
+      "type": "string",
+      "description": "Generated folder name: 'LastName, FirstName'"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job/project"
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "description": "Unique ID for this document"
+          },
+          "document_type": {
+            "type": "string",
+            "enum": [
+              "contract",
+              "signed_contract",
+              "communication",
+              "photo",
+              "estimate",
+              "other"
+            ]
+          },
+          "document_name": {
+            "type": "string"
+          },
+          "document_url": {
+            "type": "string"
+          },
+          "added_at": {
+            "type": "string",
+            "description": "ISO timestamp when document was added"
+          }
+        }
+      },
+      "description": "Array of all documents in this folder"
+    },
+    "shared_with_customer": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a copy has been shared with customer (true after closeout+ratings)"
+    },
+    "shared_at": {
+      "type": "string",
+      "description": "ISO timestamp when folder was shared with customer"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when folder was created"
+    }
+  },
+  "required": [
+    "scope_id",
+    "contractor_id",
+    "contractor_email",
+    "customer_email",
+    "customer_last_name",
+    "customer_first_name",
+    "folder_name",
+    "job_title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
