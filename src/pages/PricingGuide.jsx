@@ -194,16 +194,35 @@ export default function PricingGuide() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-2 border-blue-200 bg-blue-50 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">BEST VALUE</div>
               <CardHeader>
                 <CardTitle>Unlimited Messaging</CardTitle>
-                <CardDescription>Monthly subscription</CardDescription>
+                <CardDescription>Monthly subscription — includes Pro Collaboration Tools</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-3xl font-bold text-slate-900">$50/month</div>
                 <p className="text-sm text-slate-600">
-                  Unlimited communication for ongoing projects and collaborations.
+                  Unlimited communication plus a full suite of professional project collaboration tools — exclusively for subscribers.
                 </p>
+                <div className="bg-white rounded-lg p-3 border border-blue-100 space-y-2">
+                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wide">Subscriber-Only Features:</p>
+                  <ul className="space-y-1.5 text-sm text-slate-700">
+                    <li className="flex gap-2 items-start">
+                      <span className="text-blue-500 mt-0.5">📋</span>
+                      <span><span className="font-semibold">Project Milestones</span> — set checkpoints and track progress together</span>
+                    </li>
+                    <li className="flex gap-2 items-start">
+                      <span className="text-blue-500 mt-0.5">📁</span>
+                      <span><span className="font-semibold">File Sharing</span> — share blueprints, photos & documents in one place</span>
+                    </li>
+                    <li className="flex gap-2 items-start">
+                      <span className="text-blue-500 mt-0.5">💬</span>
+                      <span><span className="font-semibold">Dedicated Project Chat</span> — private message thread per project</span>
+                    </li>
+                  </ul>
+                </div>
+                <p className="text-xs text-slate-500 italic">These collaboration tools are unlocked automatically for all active projects once you subscribe.</p>
               </CardContent>
             </Card>
           </div>

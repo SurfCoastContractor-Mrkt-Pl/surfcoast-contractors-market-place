@@ -66,6 +66,54 @@ Deno.serve(async (req) => {
       console.log('Payment record created successfully');
     }
 
+    // Handle customer.subscription.created — send welcome inbox message to subscriber
+    if (event.type === 'customer.subscription.created') {
+      const subscription = event.data.object;
+      const customerEmail = subscription.metadata?.contractor_email || subscription.customer_email;
+
+      if (customerEmail) {
+        try {
+          await base44.asServiceRole.entities.Message.create({
+            sender_name: 'SurfCoast Team',
+            sender_email: 'hello@surfcoastmarket.com',
+            sender_type: 'customer',
+            recipient_email: customerEmail,
+            recipient_name: subscription.metadata?.contractor_name || customerEmail,
+            subject: '🎉 Welcome to Unlimited — Your Collaboration Tools Are Unlocked!',
+            body: `Hi there,
+
+Thank you for subscribing to the SurfCoast Unlimited Messaging plan!
+
+Your subscription has been activated and you now have access to a full suite of professional collaboration tools — included at no extra cost:
+
+📋 PROJECT MILESTONES
+Break any job down into clear checkpoints. Both you and your client can track progress together in real time, so everyone stays aligned from start to finish.
+
+📁 FILE SHARING
+Share blueprints, photos, contracts, and any other project documents directly within the project workspace. No more hunting through emails — everything lives in one secure place.
+
+💬 DEDICATED PROJECT CHAT
+Every project gets its own private message thread. All conversations about a specific job stay organized and separate, making it easy to reference past discussions and avoid confusion across multiple projects.
+
+🔒 HOW TO ACCESS THESE FEATURES
+These tools are available inside your active project workspaces (linked to an approved Scope of Work). When you have an active project with a client, open the project from your dashboard and you'll find the Milestones, Files, and Project Chat tabs ready to go.
+
+These features are exclusively available to subscribers — a thank-you for your commitment to working professionally on the platform.
+
+If you have any questions, reply to this message or visit your account dashboard.
+
+Welcome aboard,
+The SurfCoast Team`,
+            payment_id: subscription.id,
+            read: false,
+          });
+          console.log(`Welcome subscription message sent to ${customerEmail}`);
+        } catch (msgErr) {
+          console.error('Failed to send subscription welcome message:', msgErr.message);
+        }
+      }
+    }
+
     // Handle payment_intent.payment_failed
     if (event.type === 'payment_intent.payment_failed') {
       const intent = event.data.object;
