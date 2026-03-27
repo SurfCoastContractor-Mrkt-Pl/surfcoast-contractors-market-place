@@ -175,7 +175,7 @@ export default function AdminDashboard() {
               { key: 'contractors', label: 'Contractors', icon: HardHat },
               { key: 'reviews', label: 'Reviews', icon: Star },
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
-              { key: 'field_ops', label: 'Field Ops', icon: Briefcase },
+              { key: 'field_ops', label: 'Wave FO', icon: Briefcase },
               { key: 'notion', label: 'Notion', icon: BookOpen },
             ].map(({ key, label, icon: Icon }) => (
               <button
@@ -386,18 +386,18 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* FIELD OPS */}
+        {/* WAVE FO */}
         {activeTab === 'field_ops' && (
           <div className="flex flex-col items-center justify-center py-20">
             <Briefcase className="w-12 h-12 text-blue-400 mb-4" />
-            <h2 className="text-xl font-bold text-white mb-2">Admin Field Ops</h2>
-            <p className="text-slate-400 text-sm mb-6">Impersonate any contractor and view their Field Ops dashboard.</p>
+            <h2 className="text-xl font-bold text-white mb-2">Admin Wave FO</h2>
+            <p className="text-slate-400 text-sm mb-6">Impersonate any contractor and view their Wave FO dashboard.</p>
             <Link
               to="/adminfieldops"
               className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
             >
               <Briefcase className="w-4 h-4" />
-              Open Admin Field Ops
+              Open Admin Wave FO
             </Link>
           </div>
         )}
