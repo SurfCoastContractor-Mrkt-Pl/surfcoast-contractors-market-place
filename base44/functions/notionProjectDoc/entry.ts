@@ -314,6 +314,71 @@ Deno.serve(async (req) => {
 
       return Response.json({ success: true, pages });
 
+    } else if (action === 'searchPages') {
+      const { query } = params;
+      const res = await fetch('https://api.notion.com/v1/search', {
+        method: 'POST',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          query: query || '',
+          filter: { value: 'page', property: 'object' },
+          page_size: 20
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] searchPages error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Search failed' }, { status: res.status });
+      }
+      const pages = (data.results || []).map(p => ({
+        id: p.id,
+        title: p.properties?.title?.title?.[0]?.plain_text || p.properties?.Name?.title?.[0]?.plain_text || 'Untitled',
+        url: p.url,
+        last_edited: p.last_edited_time
+      }));
+      return Response.json({ success: true, pages });
+
+    } else if (action === 'appendToPage') {
+      // Append blocks to an existing page (edit/update)
+      const { pageId, content } = params;
+      if (!pageId) return Response.json({ error: 'pageId is required' }, { status: 400 });
+      if (user.role !== 'admin') return Response.json({ error: 'Admins only' }, { status: 403 });
+
+      const res = await fetch(`https://api.notion.com/v1/blocks/${pageId}/children`, {
+        method: 'PATCH',
+        headers: notionHeaders,
+        body: JSON.stringify({
+          children: [
+            {
+              object: 'block',
+              type: 'callout',
+              callout: {
+                rich_text: [{ text: { content: `Update — ${new Date().toLocaleDateString()}: ${content}` } }],
+                icon: { emoji: '📝' },
+                color: 'yellow_background'
+              }
+            }
+          ]
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('[notionProjectDoc] appendToPage error:', JSON.stringify(data));
+        return Response.json({ error: data.message || 'Failed to append' }, { status: res.status });
+      }
+      return Response.json({ success: true });
+
+    } else if (action === 'linkScopeToPage') {
+      // Store a Notion page link on a ScopeOfWork record
+      const { scopeId, notionPageUrl, notionPageId } = params;
+      if (!scopeId || !notionPageUrl) return Response.json({ error: 'scopeId and notionPageUrl required' }, { status: 400 });
+
+      await base44.asServiceRole.entities.ScopeOfWork.update(scopeId, {
+        notion_page_url: notionPageUrl,
+        notion_page_id: notionPageId
+      });
+      return Response.json({ success: true });
+
     } else {
       return Response.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }

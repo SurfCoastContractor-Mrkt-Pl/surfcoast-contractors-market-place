@@ -1,0 +1,252 @@
+{
+  "name": "ScopeOfWork",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the associated Job"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor submitting the scope"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the contractor"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Brief title of the work"
+    },
+    "customer_scope_details": {
+      "type": "string",
+      "description": "Customer's description of what needs to be done"
+    },
+    "customer_scope_photo_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of photos uploaded by customer describing scope"
+    },
+    "scope_summary": {
+      "type": "string",
+      "description": "Contractor's detailed summary of the scope of work to be performed"
+    },
+    "cost_type": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "fixed"
+      ],
+      "description": "Whether the cost is hourly or a fixed total"
+    },
+    "cost_amount": {
+      "type": "number",
+      "description": "The hourly rate or fixed total cost"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "description": "Estimated hours (if hourly)"
+    },
+    "agreed_work_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date agreed between customer and contractor for work to take place"
+    },
+    "after_photo_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of after photos uploaded by contractor, required 72 hours after agreed work date"
+    },
+    "job_together_photo_url": {
+      "type": "string",
+      "description": "Photo of contractor and customer together at the completed job site \u2014 used as the job thumbnail on both profiles"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_approval",
+        "approved",
+        "rejected",
+        "cancelled",
+        "pending_ratings",
+        "closed"
+      ],
+      "default": "pending_approval",
+      "description": "Customer approval status"
+    },
+    "customer_notes": {
+      "type": "string",
+      "description": "Notes from the customer on approval or rejection"
+    },
+    "customer_signature_url": {
+      "type": "string",
+      "description": "URL of customer's digital signature on the approved scope"
+    },
+    "customer_signed_scope_at": {
+      "type": "string",
+      "description": "ISO timestamp when customer signed/approved the scope"
+    },
+    "contractor_closeout_confirmed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Contractor has confirmed job closeout"
+    },
+    "customer_closeout_confirmed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Customer has confirmed job closeout (payment made, satisfied with work)"
+    },
+    "contractor_satisfaction_rating": {
+      "type": "string",
+      "enum": [
+        "unsatisfactory",
+        "satisfactory",
+        "good",
+        "excellent"
+      ],
+      "description": "Contractor's satisfaction rating of the customer/engagement at closeout"
+    },
+    "customer_satisfaction_rating": {
+      "type": "string",
+      "enum": [
+        "unsatisfactory",
+        "satisfactory",
+        "good",
+        "excellent"
+      ],
+      "description": "Customer's satisfaction rating of the contractor's work at closeout"
+    },
+    "closed_date": {
+      "type": "string",
+      "description": "Date the job was officially closed out"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "platform_fee_percentage": {
+      "type": "number",
+      "default": 18,
+      "description": "Platform facilitation fee percentage (18%)"
+    },
+    "platform_fee_amount": {
+      "type": "number",
+      "description": "Calculated platform fee in dollars"
+    },
+    "contractor_payout_amount": {
+      "type": "number",
+      "description": "Final payout to contractor after platform fee"
+    },
+    "contract_id": {
+      "type": "string",
+      "description": "ID of the HomeImprovementContract being used (optional)"
+    },
+    "contract_status": {
+      "type": "string",
+      "enum": [
+        "not_sent",
+        "pending",
+        "contractor_signed",
+        "customer_signed",
+        "fully_signed",
+        "declined"
+      ],
+      "default": "not_sent",
+      "description": "Status of contract signature flow"
+    },
+    "contractor_signed_at": {
+      "type": "string",
+      "description": "ISO timestamp when contractor signed"
+    },
+    "customer_signed_at": {
+      "type": "string",
+      "description": "ISO timestamp when customer signed"
+    },
+    "signed_contract_url": {
+      "type": "string",
+      "description": "URL of the fully signed contract"
+    },
+    "contract_declined_reason": {
+      "type": "string",
+      "description": "Reason customer declined to sign (if applicable)"
+    },
+    "notion_page_url": {
+      "type": "string",
+      "description": "URL of the linked Notion project page"
+    },
+    "notion_page_id": {
+      "type": "string",
+      "description": "ID of the linked Notion project page"
+    }
+  },
+  "required": [
+    "contractor_name",
+    "customer_name",
+    "customer_email",
+    "job_title",
+    "cost_type",
+    "cost_amount"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
