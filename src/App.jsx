@@ -34,6 +34,7 @@ import ComplianceGuide from './pages/ComplianceGuide';
 import PaymentDemo from './pages/PaymentDemo';
 import TimedChatSession from './pages/TimedChatSession';
 import QuoteRequestSuccess from './pages/QuoteRequestSuccess';
+import NotionHub from './pages/NotionHub';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -176,6 +177,11 @@ const AuthenticatedApp = () => {
       <Route path="/QuoteRequestSuccess" element={
         <LayoutWrapper currentPageName="QuoteRequestSuccess">
           <QuoteRequestSuccess />
+        </LayoutWrapper>
+      } />
+      <Route path="/NotionHub" element={
+        <LayoutWrapper currentPageName="NotionHub">
+          <NotionHub />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
