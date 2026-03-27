@@ -1,0 +1,76 @@
+{
+  "name": "IntegrationConnection",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "service_name": {
+      "type": "string",
+      "enum": [
+        "slack",
+        "microsoft_teams",
+        "zapier",
+        "integromat",
+        "custom_webhook"
+      ],
+      "description": "External service to integrate with"
+    },
+    "connection_name": {
+      "type": "string",
+      "description": "Custom name for this connection"
+    },
+    "auth_token": {
+      "type": "string",
+      "description": "Encrypted authentication token or webhook URL"
+    },
+    "config": {
+      "type": "object",
+      "description": "Service-specific configuration"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this connection is active"
+    },
+    "test_status": {
+      "type": "string",
+      "enum": [
+        "untested",
+        "success",
+        "failed"
+      ],
+      "default": "untested",
+      "description": "Result of last connection test"
+    },
+    "connected_at": {
+      "type": "string",
+      "description": "ISO timestamp when connection was established"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "service_name",
+    "connection_name"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "update": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.contractor_email": "{{user.email}}"
+    }
+  }
+}

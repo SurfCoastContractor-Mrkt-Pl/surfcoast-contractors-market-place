@@ -1,0 +1,79 @@
+{
+  "name": "WorkflowAutomation",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this automation"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "automation_name": {
+      "type": "string",
+      "description": "Name of the automation"
+    },
+    "trigger_type": {
+      "type": "string",
+      "enum": [
+        "scope_created",
+        "scope_approved",
+        "scope_closed",
+        "payment_received",
+        "deadline_approaching"
+      ],
+      "description": "What triggers this automation"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "send_email",
+        "create_task",
+        "update_status",
+        "send_notification",
+        "create_reminder"
+      ],
+      "description": "What action to perform"
+    },
+    "action_details": {
+      "type": "object",
+      "description": "Details for the action (e.g., email template, task description)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this automation is active"
+    },
+    "execution_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of times this automation has been executed"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when automation was created"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "automation_name",
+    "trigger_type",
+    "action_type"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "update": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.contractor_email": "{{user.email}}"
+    }
+  }
+}

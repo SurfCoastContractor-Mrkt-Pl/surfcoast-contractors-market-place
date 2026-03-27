@@ -1,0 +1,105 @@
+{
+  "name": "ProjectTask",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the associated ScopeOfWork"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of task creator"
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Email of person assigned to task"
+    },
+    "task_title": {
+      "type": "string",
+      "description": "Title of the task"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed task description"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium",
+      "description": "Task priority level"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "todo",
+        "in_progress",
+        "review",
+        "completed"
+      ],
+      "default": "todo",
+      "description": "Current task status"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "When task is due"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when task was completed"
+    },
+    "subtasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "description": "List of subtasks"
+    }
+  },
+  "required": [
+    "scope_id",
+    "contractor_email",
+    "task_title"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.assigned_to": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.assigned_to": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "data.contractor_email": "{{user.email}}"
+    }
+  }
+}

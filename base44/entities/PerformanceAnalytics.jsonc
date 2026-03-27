@@ -1,0 +1,121 @@
+{
+  "name": "PerformanceAnalytics",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "period": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "weekly",
+        "monthly",
+        "quarterly",
+        "annual"
+      ],
+      "description": "Analytics period"
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Start date of the period"
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date",
+      "description": "End date of the period"
+    },
+    "jobs_completed": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of jobs completed in period"
+    },
+    "total_earnings": {
+      "type": "number",
+      "default": 0,
+      "description": "Total earnings in period (cents)"
+    },
+    "average_rating": {
+      "type": "number",
+      "description": "Average customer rating in period"
+    },
+    "response_time_hours": {
+      "type": "number",
+      "description": "Average response time to inquiries (hours)"
+    },
+    "customer_satisfaction_score": {
+      "type": "number",
+      "description": "Overall satisfaction percentage"
+    },
+    "on_time_completion_percent": {
+      "type": "number",
+      "description": "Percentage of jobs completed on time"
+    },
+    "repeat_customer_rate": {
+      "type": "number",
+      "description": "Percentage of repeat customers"
+    },
+    "custom_metrics": {
+      "type": "object",
+      "description": "Any custom metrics tracked by contractor"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "period",
+    "period_start",
+    "period_end"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

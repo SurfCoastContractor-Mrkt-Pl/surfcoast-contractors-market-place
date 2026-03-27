@@ -1,0 +1,71 @@
+{
+  "name": "DocumentTemplate",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this template"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "template_name": {
+      "type": "string",
+      "description": "Name of the template"
+    },
+    "template_type": {
+      "type": "string",
+      "enum": [
+        "proposal",
+        "contract",
+        "quote",
+        "scope_of_work",
+        "estimate",
+        "agreement"
+      ],
+      "description": "Type of document template"
+    },
+    "content": {
+      "type": "string",
+      "description": "Template content with merge fields"
+    },
+    "merge_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Available merge fields (e.g., {{customer_name}}, {{job_title}})"
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is the default template"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when template was created"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "template_name",
+    "template_type",
+    "content"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "update": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.contractor_email": "{{user.email}}"
+    }
+  }
+}
