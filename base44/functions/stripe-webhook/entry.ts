@@ -61,6 +61,56 @@ Deno.serve(async (req) => {
           stripe_session_id: session.id,
           confirmed_at: new Date().toISOString(),
         });
+      } else if (session.metadata?.session_type === 'consumer_order' && session.metadata?.shop_id) {
+        // Handle consumer order payout to vendor
+        try {
+          const totalAmount = session.amount_total; // in cents
+          const platformFee = Math.round(totalAmount * 0.05); // 5% platform fee
+          const vendorPayout = totalAmount - platformFee; // 95% to vendor
+
+          // Retrieve vendor's Stripe Connect account
+          const shop = await base44.asServiceRole.entities.MarketShop.get(session.metadata.shop_id);
+          
+          if (!shop || !shop.stripe_connect_account_id) {
+            console.error(`Shop ${session.metadata.shop_id} has no Stripe Connect account`);
+            return Response.json({ error: 'Vendor not ready for payouts' }, { status: 400 });
+          }
+
+          // Initialize Stripe client
+          const stripeModule = await import('npm:stripe@14.21.0');
+          const stripe = new stripeModule.default(Deno.env.get('STRIPE_SECRET_KEY'));
+
+          // Create transfer to vendor's connected account
+          const transfer = await stripe.transfers.create({
+            amount: vendorPayout,
+            currency: 'usd',
+            destination: shop.stripe_connect_account_id,
+            metadata: {
+              session_id: session.id,
+              shop_id: session.metadata.shop_id,
+            },
+          });
+
+          console.log(`Transfer created: ${transfer.id} for shop ${session.metadata.shop_id}`);
+
+          // Update ConsumerOrder with payout details
+          const consumerOrder = await base44.asServiceRole.entities.ConsumerOrder.filter({
+            stripe_checkout_session_id: session.id,
+          });
+
+          if (consumerOrder && consumerOrder.length > 0) {
+            await base44.asServiceRole.entities.ConsumerOrder.update(consumerOrder[0].id, {
+              status: 'completed',
+              platform_fee: platformFee / 100, // Convert back to dollars
+              vendor_payout: vendorPayout / 100,
+              stripe_transfer_id: transfer.id,
+            });
+            console.log(`ConsumerOrder ${consumerOrder[0].id} updated with transfer ${transfer.id}`);
+          }
+        } catch (payoutErr) {
+          console.error('Failed to process vendor payout:', payoutErr.message);
+          // Don't fail the webhook response, but log the error for admin review
+        }
       }
 
       console.log('Payment record created successfully');
