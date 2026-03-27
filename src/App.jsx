@@ -38,6 +38,7 @@ import QuoteRequestSuccess from './pages/QuoteRequestSuccess';
 import NotionHub from './pages/NotionHub';
 import SurfCoastPerformanceDashboard from './pages/SurfCoastPerformanceDashboard';
 import SurfCoastReviewRequestsManager from './pages/SurfCoastReviewRequestsManager';
+import ActivityConsolidationDashboard from './pages/ActivityConsolidationDashboard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -208,6 +209,11 @@ const AuthenticatedApp = () => {
       <Route path="/SurfCoastReviewRequestsManager" element={
         <LayoutWrapper currentPageName="SurfCoastReviewRequestsManager">
           <SurfCoastReviewRequestsManager />
+        </LayoutWrapper>
+      } />
+      <Route path="/ActivityConsolidationDashboard" element={
+        <LayoutWrapper currentPageName="ActivityConsolidationDashboard">
+          <ActivityConsolidationDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
