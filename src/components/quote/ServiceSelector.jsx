@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, X, AlertCircle, Loader2 } from 'lucide-react';
+import useTierAccess from '@/hooks/useTierAccess';
+import TierUpgradeModal from '@/components/tiergate/TierUpgradeModal';
 
 export default function ServiceSelector({ contractorEmail, onServicesSelected, onCancel }) {
   const [services, setServices] = useState([]);
@@ -12,6 +14,9 @@ export default function ServiceSelector({ contractorEmail, onServicesSelected, o
   const [selectedServices, setSelectedServices] = useState([]);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState(null);
+  const [tierModalOpen, setTierModalOpen] = useState(false);
+  const [tierModalFeature, setTierModalFeature] = useState(null);
+  const { hasFeature, profileTier, tierFeatures } = useTierAccess(contractorEmail);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -32,6 +37,13 @@ export default function ServiceSelector({ contractorEmail, onServicesSelected, o
   }, [contractorEmail]);
 
   const handleAddService = (service) => {
+    const maxServices = tierFeatures?.maxServices;
+    if (maxServices && maxServices !== -1 && selectedServices.length >= maxServices) {
+      setTierModalFeature('maxServices');
+      setTierModalOpen(true);
+      return;
+    }
+    
     setSelectedServices([
       ...selectedServices,
       {
@@ -83,13 +95,29 @@ export default function ServiceSelector({ contractorEmail, onServicesSelected, o
   }
 
   return (
-    <div className="space-y-4">
-      {error && (
-        <div className="flex gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <p>{error}</p>
-        </div>
-      )}
+    <>
+      <TierUpgradeModal
+        open={tierModalOpen}
+        onClose={() => setTierModalOpen(false)}
+        feature={tierModalFeature}
+        currentTier={profileTier}
+        requiredTier="licensed"
+      />
+
+      <div className="space-y-4">
+        {error && (
+          <div className="flex gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <p>{error}</p>
+          </div>
+        )}
+
+        {tierFeatures?.maxServices && tierFeatures.maxServices !== -1 && (
+          <div className="flex gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <p>You can add up to {tierFeatures.maxServices} services per quote ({selectedServices.length}/{tierFeatures.maxServices})</p>
+          </div>
+        )}
 
       {/* Available Services */}
       {services.length > 0 && (
@@ -200,19 +228,20 @@ export default function ServiceSelector({ contractorEmail, onServicesSelected, o
         </div>
       )}
 
-      {/* Actions */}
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCancel} className="flex-1">
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          disabled={selectedServices.length === 0}
-          className="flex-1"
-        >
-          Generate Quote
-        </Button>
+        {/* Actions */}
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={onCancel} className="flex-1">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={selectedServices.length === 0}
+            className="flex-1"
+          >
+            Generate Quote
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
