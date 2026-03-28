@@ -1,0 +1,76 @@
+{
+  "name": "Equipment",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns the equipment"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the equipment or tool"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "power_tools",
+        "hand_tools",
+        "safety_equipment",
+        "heavy_machinery",
+        "specialty_tools",
+        "other"
+      ],
+      "description": "Category of equipment"
+    },
+    "description": {
+      "type": "string",
+      "description": "Details about the equipment (brand, model, condition)"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "URL of equipment photo"
+    },
+    "available": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this equipment is currently available for use on jobs"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "name",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
