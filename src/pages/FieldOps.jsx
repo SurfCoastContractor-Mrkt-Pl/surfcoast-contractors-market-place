@@ -14,6 +14,7 @@ import JobAlertBanner from '@/components/fieldops/JobAlertBanner';
 import WaveFOJobMapDisplay from '@/components/fieldops/JobMapDisplay';
 import WaveFOSidebar from '@/components/fieldops/FieldOpsSidebar';
 import WaveFOMobileNav from '@/components/fieldops/FieldOpsMobileNav';
+import WaveFOAssistant from '@/components/fieldops/WaveFOAssistant';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
@@ -111,6 +112,8 @@ export default function WaveFo() {
   // Admins bypass all tier/contractor requirements for testing
   const completedJobsCount = contractor?.completed_jobs_count || 0;
   const BREAKER_JOBS_REQUIRED = 55;
+  // Show AI assistant only for Ripple (15-34 jobs) and Swell (35-54 jobs) tiers
+  const showWaveFOAssistant = !isAdmin && completedJobsCount < BREAKER_JOBS_REQUIRED;
   const hasWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
   const hasSurfCoastWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
   const NAV_TABS = hasSurfCoastWaveFOAccess
@@ -242,6 +245,14 @@ export default function WaveFo() {
 
       </div>
       </div>
+
+      {/* Wave FO AI Assistant — Ripple & Swell tiers only */}
+      {showWaveFOAssistant && (
+        <WaveFOAssistant
+          contractor={effectiveContractor}
+          activeTab={activeTab}
+        />
+      )}
 
       {/* Supply Houses Modal */}
       <SupplyHousesFinder
