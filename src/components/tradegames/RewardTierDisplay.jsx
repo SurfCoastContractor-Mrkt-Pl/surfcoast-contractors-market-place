@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Star, Award, Lock } from 'lucide-react';
+import { Trophy, Star, Award } from 'lucide-react';
 
 const TIER_CONFIG = {
   bronze: { color: 'bg-amber-100', textColor: 'text-amber-900', icon: '🥉' },
@@ -28,7 +28,6 @@ export default function RewardTierDisplay({ userEmail }) {
   if (!rewardTier) return null;
 
   const config = TIER_CONFIG[rewardTier.current_tier];
-  const tierIndex = ['bronze', 'silver', 'gold', 'platinum'].indexOf(rewardTier.current_tier);
   const progressPercent = rewardTier.next_tier_points_needed 
     ? Math.min(100, (rewardTier.tier_points / rewardTier.next_tier_points_needed) * 100)
     : 100;

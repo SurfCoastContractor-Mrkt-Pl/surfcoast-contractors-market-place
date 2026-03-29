@@ -56,6 +56,7 @@ import QBSyncDashboard from './pages/QBSyncDashboard';
 import TradeGames from './pages/TradeGames';
 import GameChallenge from './pages/GameChallenge';
 import GameLeaderboard from './pages/GameLeaderboard';
+import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -320,6 +321,11 @@ const AuthenticatedApp = () => {
       <Route path="/leaderboard" element={
         <LayoutWrapper currentPageName="GameLeaderboard">
           <GameLeaderboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/game-analytics" element={
+        <LayoutWrapper currentPageName="GameAnalyticsDashboard">
+          <GameAnalyticsDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

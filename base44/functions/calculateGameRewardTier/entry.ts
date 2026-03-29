@@ -12,6 +12,11 @@ Deno.serve(async (req) => {
     const { contractorEmail } = await req.json();
     const email = contractorEmail || user.email;
 
+    // Only allow users to calculate their own tier, or admins for any
+    if (email !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     // Get all completed sessions for this contractor
     const sessions = await base44.entities.UserGameSession.filter({
       user_email: email,
