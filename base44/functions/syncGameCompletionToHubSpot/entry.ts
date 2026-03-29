@@ -12,13 +12,18 @@ Deno.serve(async (req) => {
     }
 
     // Get HubSpot access token
-    const hubspotToken = await base44.asServiceRole.connectors.getConnection('hubspot');
-    if (!hubspotToken) {
-      console.warn('[syncGameCompletionToHubSpot] HubSpot not connected');
-      return Response.json({ message: 'HubSpot not connected - skipping sync' });
+    let accessToken;
+    try {
+      const hubspotConnection = await base44.asServiceRole.connectors.getConnection('hubspot');
+      if (!hubspotConnection?.accessToken) {
+        console.warn('[syncGameCompletionToHubSpot] HubSpot not connected');
+        return Response.json({ message: 'HubSpot not connected - skipping sync' });
+      }
+      accessToken = hubspotConnection.accessToken;
+    } catch (err) {
+      console.warn('[syncGameCompletionToHubSpot] Could not get HubSpot token:', err.message);
+      return Response.json({ message: 'HubSpot integration unavailable - skipping sync' });
     }
-
-    const accessToken = hubspotToken.accessToken;
 
     // Prepare contact data for HubSpot
     const contactData = {
