@@ -17,6 +17,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   const [selectedPart, setSelectedPart] = useState(null);
   const [availableParts, setAvailableParts] = useState([]);
   const [isInitializing, setIsInitializing] = useState(true);
+  const startTimeRef = useRef(null);
 
   // Initialize Three.js scene and game engine
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     gameEngine.loadInitialState();
     setAvailableParts(gameEngine.getAvailableParts());
     setIsInitializing(false);
+    startTimeRef.current = Date.now();
 
     // Animation loop
     const animate = () => {
@@ -112,10 +114,11 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     // Check if puzzle is solved
     if (gameEngineRef.current.isSolved()) {
       setIsGameSolved(true);
+      const duration = startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current) / 1000) : 0;
       onGameComplete?.({
         score: newScore,
         moves: moveCount + 1,
-        duration: Math.floor(Date.now() / 1000)
+        duration: duration
       });
     }
   };

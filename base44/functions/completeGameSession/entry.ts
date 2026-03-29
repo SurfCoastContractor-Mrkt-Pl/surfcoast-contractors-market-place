@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch game details
-    const game = await base44.entities.TradeGame.read(gameId);
+    const game = await base44.entities.TradeGame.get(gameId);
     if (!game) {
       return Response.json({ error: 'Game not found' }, { status: 404 });
     }
@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
 
     // If a scope is provided, apply the discount
     if (scopeId) {
-      const scope = await base44.entities.ScopeOfWork.read(scopeId);
+      const scope = await base44.entities.ScopeOfWork.get(scopeId);
       if (scope) {
         // Store original cost if not already stored
         const originalCost = scope.original_cost_amount || scope.cost_amount;
