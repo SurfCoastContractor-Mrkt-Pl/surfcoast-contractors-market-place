@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   const handleLogin = () => {
-    base44.auth.redirectToLogin('/Dashboard');
+    base44.auth.redirectToLogin();
     setDropdownOpen(false);
   };
 
