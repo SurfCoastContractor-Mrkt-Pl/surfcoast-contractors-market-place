@@ -6,10 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, DollarSign, TrendingUp, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
-export default function PayoutManagementDashboard({ contractor }) {
+export default function PayoutManagementDashboard({ contractor, metrics }) {
   const [showPayoutSetup, setShowPayoutSetup] = useState(false);
 
   if (!contractor) return null;
+
+  const payoutMetrics = metrics || { totalPaidOut: 0, avgPayout: 0, payoutHistory: [] };
 
   const payoutStatus = {
     connected: { color: 'bg-green-50', badge: 'bg-green-100 text-green-700', icon: CheckCircle2, label: 'Connected' },
@@ -27,11 +29,7 @@ export default function PayoutManagementDashboard({ contractor }) {
   const status = payoutStatus[state];
   const Icon = status.icon;
 
-  const payoutHistory = [
-    { id: 1, date: '2026-03-15', amount: null, status: 'completed', reference: 'po_1234567890' },
-    { id: 2, date: '2026-03-01', amount: null, status: 'completed', reference: 'po_0987654321' },
-    { id: 3, date: '2026-02-15', amount: null, status: 'completed', reference: 'po_abcdefghij' },
-  ];
+
 
   return (
     <div className="space-y-6">
@@ -85,7 +83,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Total Paid Out</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
+              <p className="text-2xl font-bold text-slate-900">${payoutMetrics.totalPaidOut.toFixed(2)}</p>
             </div>
             <DollarSign className="w-5 h-5 text-green-600" />
           </div>
@@ -95,7 +93,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Pending Payout</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
+              <p className="text-2xl font-bold text-slate-900">$0.00</p>
             </div>
             <Clock className="w-5 h-5 text-amber-600" />
           </div>
@@ -105,7 +103,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Avg Payout</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
+              <p className="text-2xl font-bold text-slate-900">${payoutMetrics.avgPayout.toFixed(2)}</p>
             </div>
             <TrendingUp className="w-5 h-5 text-blue-600" />
           </div>
@@ -121,30 +119,30 @@ export default function PayoutManagementDashboard({ contractor }) {
         </TabsList>
 
         <TabsContent value="history">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Payouts</h3>
-            {payoutHistory.length > 0 ? (
-              <div className="space-y-3">
-                {payoutHistory.map(payout => (
-                  <div key={payout.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                    <div>
-                      <p className="font-semibold text-slate-900">{payout.amount ? `$${payout.amount.toFixed(2)}` : '••••••'}</p>
-                      <p className="text-xs text-slate-600">
-                        {new Date(payout.date).toLocaleDateString()} • {payout.reference}
-                      </p>
-                    </div>
-                    <Badge className="bg-green-100 text-green-700">
-                      <CheckCircle2 className="w-3 h-3 mr-1" />
-                      Completed
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-slate-500 py-8">No payout history</p>
-            )}
-          </Card>
-        </TabsContent>
+           <Card className="p-6">
+             <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Payouts</h3>
+             {payoutMetrics.payoutHistory.length > 0 ? (
+               <div className="space-y-3">
+                 {payoutMetrics.payoutHistory.map(payout => (
+                   <div key={payout.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                     <div>
+                       <p className="font-semibold text-slate-900">${payout.amount.toFixed(2)}</p>
+                       <p className="text-xs text-slate-600">
+                         {new Date(payout.date).toLocaleDateString()} • {payout.reference}
+                       </p>
+                     </div>
+                     <Badge className="bg-green-100 text-green-700">
+                       <CheckCircle2 className="w-3 h-3 mr-1" />
+                       Completed
+                     </Badge>
+                   </div>
+                 ))}
+               </div>
+             ) : (
+               <p className="text-center text-slate-500 py-8">No payout history</p>
+             )}
+           </Card>
+         </TabsContent>
 
         <TabsContent value="settings">
           <Card className="p-6 space-y-4">

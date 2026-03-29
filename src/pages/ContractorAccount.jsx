@@ -226,6 +226,25 @@ export default function ContractorAccount() {
     updateBioMutation.mutate({ bio: bioText });
   };
 
+  // Calculate payout metrics from actual payment data
+  const calculatePayoutMetrics = () => {
+    const confirmedPayments = payments?.filter(p => p.status === 'confirmed') || [];
+    const totalPaidOut = confirmedPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
+    const avgPayout = confirmedPayments.length > 0 ? totalPaidOut / confirmedPayments.length : 0;
+    
+    return {
+      totalPaidOut,
+      avgPayout,
+      payoutHistory: confirmedPayments.map(p => ({
+        id: p.id,
+        date: p.confirmed_at || p.created_date,
+        amount: p.amount,
+        status: 'completed',
+        reference: p.id
+      }))
+    };
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -438,7 +457,7 @@ export default function ContractorAccount() {
                </TabsContent>
 
                <TabsContent value="payouts">
-                 <PayoutManagementDashboard contractor={contractor} />
+                 <PayoutManagementDashboard contractor={contractor} metrics={calculatePayoutMetrics()} />
                </TabsContent>
 
                <TabsContent value="availability">
