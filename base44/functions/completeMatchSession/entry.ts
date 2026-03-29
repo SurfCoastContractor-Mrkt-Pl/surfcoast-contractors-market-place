@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     const winner = initiatorScore > opponentScore ? match.challenge_initiator_email : match.opponent_email;
 
     // Complete match
-    const completed = await base44.entities.GameCompetitiveMatch.update(matchId, {
+    await base44.entities.GameCompetitiveMatch.update(matchId, {
       status: 'completed',
       completed_at: new Date().toISOString(),
       match_duration_seconds: duration || 0,

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Zap, Clock, TrendingUp } from 'lucide-react';
+import { Trophy, Clock, TrendingUp } from 'lucide-react';
 
 export default function LiveScoringDashboard({ matchId }) {
   const [liveScores, setLiveScores] = useState(null);

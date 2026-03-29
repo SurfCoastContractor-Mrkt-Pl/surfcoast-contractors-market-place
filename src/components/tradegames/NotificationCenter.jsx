@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Bell, X, CheckCircle } from 'lucide-react';
+import { Bell, CheckCircle } from 'lucide-react';
 
 export default function NotificationCenter() {
   const [showAll, setShowAll] = useState(false);

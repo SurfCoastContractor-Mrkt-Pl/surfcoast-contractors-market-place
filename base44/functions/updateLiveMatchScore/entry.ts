@@ -40,9 +40,6 @@ Deno.serve(async (req) => {
 
     // Create notification for opponent
     const opponentEmail = isInitiator ? match.opponent_email : match.challenge_initiator_email;
-    const leaderMessage = score > (isInitiator ? match.opponent_score : match.initiator_score)
-      ? 'you_lead'
-      : 'opponent_lead';
 
     await base44.entities.MatchNotification.create({
       recipient_email: opponentEmail,
