@@ -149,7 +149,7 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
             {actionType === 'estimate' ? 'Send Proposal' : 'Send Message'}
           </DialogTitle>
           <DialogDescription>
-            {quote.job_title} • {quote.customer_name}
+            {quote.job_title} • {quote.customer_name} (Client)
           </DialogDescription>
         </DialogHeader>
 

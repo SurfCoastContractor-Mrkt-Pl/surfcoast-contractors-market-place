@@ -647,7 +647,7 @@ export default function ContractorAccount() {
                             <FileText className="w-5 h-5 text-amber-500 shrink-0" />
                             <div className="min-w-0">
                               <div className="text-sm font-medium text-slate-800 truncate">{s.job_title}</div>
-                              <div className="text-xs text-slate-500">Customer: {s.customer_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : `$${s.cost_amount}/hr`}</div>
+                              <div className="text-xs text-slate-500">Client: {s.customer_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : `$${s.cost_amount}/hr`}</div>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
@@ -846,7 +846,7 @@ export default function ContractorAccount() {
                             <CalendarCheck className="w-5 h-5 text-green-600 shrink-0" />
                             <div>
                               <div className="text-sm font-medium text-slate-800">{p.purpose || 'Job engagement'}</div>
-                              <div className="text-xs text-slate-500">Customer: {p.payer_name} · {p.payer_email}</div>
+                              <div className="text-xs text-slate-500">Client: {p.payer_name} · {p.payer_email}</div>
                               <div className="text-xs text-slate-400">{new Date(p.updated_date || p.created_date).toLocaleDateString()}</div>
                             </div>
                           </div>

@@ -223,7 +223,7 @@ export default function CustomerQuotesTab({ customerEmail }) {
       <Card className="p-10 text-center text-slate-500">
         <InboxIcon className="w-10 h-10 mx-auto mb-3 text-slate-300" />
         <p className="text-sm font-medium">No proposals yet.</p>
-        <p className="text-xs text-slate-400 mt-1">When a contractor submits a proposal for your job, it will appear here.</p>
+        <p className="text-xs text-slate-400 mt-1">When a contractor submits a proposal for your project, it will appear here.</p>
       </Card>
     );
   }

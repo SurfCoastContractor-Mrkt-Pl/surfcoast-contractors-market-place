@@ -158,7 +158,7 @@ export default function ContractorQuotesManagement() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Proposal Requests</h1>
-          <p className="text-slate-600">Manage incoming client proposal requests and send proposals</p>
+          <p className="text-slate-600">Manage incoming client proposal requests and send proposals to clients</p>
         </div>
 
         {/* Example Entry */}
@@ -262,7 +262,7 @@ export default function ContractorQuotesManagement() {
                         </div>
                         {quote.budget && (
                           <div>
-                            <p className="font-medium text-slate-900">Budget</p>
+                            <p className="font-medium text-slate-900">Client Budget</p>
                             <p className="text-slate-600">{quote.budget}</p>
                           </div>
                         )}

@@ -115,13 +115,13 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
         <DialogHeader>
           <DialogTitle>
             {step === 'review' && `Proposal Request from ${request.customer_name}`}
-            {step === 'quote' && `Send Proposal to ${request.customer_name}`}
+            {step === 'quote' && `Send Proposal to Client: ${request.customer_name}`}
             {step === 'deny' && `Decline Proposal Request`}
           </DialogTitle>
           <DialogDescription>
-            {step === 'review' && 'Review the customer\'s proposal request. If you accept, you\'ll send your Proposal with pricing.'}
+            {step === 'review' && 'Review the client\'s proposal request. If you accept, you\'ll send your Proposal with pricing.'}
             {step === 'quote' && 'Enter your Proposal amount — the total cost/price for the work described.'}
-            {step === 'deny' && 'Let the customer know you\'re unable to submit a proposal for this job.'}
+            {step === 'deny' && 'Let the client know you\'re unable to submit a proposal for this job.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -141,7 +141,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
               </p>
             </div>
             <div>
-              <Label className="text-slate-600 text-xs uppercase font-semibold">Customer</Label>
+              <Label className="text-slate-600 text-xs uppercase font-semibold">Client</Label>
               <p className="text-sm text-slate-700 mt-0.5">{request.customer_name} — {request.customer_email}</p>
             </div>
 
@@ -205,7 +205,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
             </div>
 
             <div>
-              <Label htmlFor="quote-message" className="text-slate-700">Note to Customer (Optional)</Label>
+              <Label htmlFor="quote-message" className="text-slate-700">Note to Client (Optional)</Label>
               <Textarea
                 id="quote-message"
                 value={quoteMessage}
@@ -252,7 +252,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 className="mt-1 resize-none"
                 rows={3}
               />
-              <p className="text-xs text-slate-500 mt-1">The customer will see this reason.</p>
+              <p className="text-xs text-slate-500 mt-1">The client will see this reason.</p>
             </div>
 
             <div className="flex gap-2 justify-end">

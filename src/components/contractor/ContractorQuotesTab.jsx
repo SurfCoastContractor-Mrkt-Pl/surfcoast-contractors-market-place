@@ -142,9 +142,9 @@ function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
         </div>
       </div>
       <div>
-        <Label className="text-xs">Message to Customer (optional)</Label>
+        <Label className="text-xs">Message to Client (optional)</Label>
         <Textarea
-          placeholder="Any notes or details for the customer..."
+          placeholder="Any notes or details for the client..."
           value={form.quote_message}
           onChange={e => setForm(f => ({ ...f, quote_message: e.target.value }))}
           rows={3}
@@ -218,7 +218,7 @@ export default function ContractorQuotesTab({ contractorId }) {
       <Card className="p-10 text-center text-slate-500">
         <InboxIcon className="w-10 h-10 mx-auto mb-3 text-slate-300" />
         <p className="text-sm font-medium">No proposal requests yet.</p>
-        <p className="text-xs text-slate-400 mt-1">When customers request a proposal, they'll appear here.</p>
+        <p className="text-xs text-slate-400 mt-1">When clients request a proposal, they'll appear here.</p>
       </Card>
     );
   }
@@ -233,7 +233,7 @@ export default function ContractorQuotesTab({ contractorId }) {
             <div className="flex-1">
               <p className="font-semibold text-amber-900 text-sm">Pending Rating Required</p>
               <p className="text-sm text-amber-800 mt-1">
-                You have a pending rating from your last job. Please rate your customer before accepting new work. Your account will be unblocked the moment you submit your rating.
+                You have a pending rating from your last job. Please rate your client before accepting new work. Your account will be unblocked the moment you submit your rating.
               </p>
               <Link to="/ContractorAccount">
                 <Button size="sm" className="mt-3 bg-amber-600 hover:bg-amber-700 text-white text-xs h-8 gap-1.5">
