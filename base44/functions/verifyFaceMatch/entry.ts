@@ -16,9 +16,9 @@ async function fetchAndReupload(base44, imageUrl) {
   }
   const allowedDomains = allowedDomainsEnv.split(',').map(d => d.trim()).filter(Boolean);
   
-  const isDomainAllowed = allowedDomains.some(domain => url.hostname.endsWith(domain)) || url.hostname === 'localhost';
+  const isDomainAllowed = allowedDomains.some(domain => url.hostname.endsWith(domain));
   
-  if (!['https:', 'http:'].includes(url.protocol) || !isDomainAllowed) {
+  if (url.protocol !== 'https:' || !isDomainAllowed) {
     throw new Error('URL domain not whitelisted for security reasons');
   }
 

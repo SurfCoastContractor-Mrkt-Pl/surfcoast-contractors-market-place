@@ -4,6 +4,15 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Validate INTERNAL_SERVICE_KEY for scheduled automation
+    const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const authHeader = req.headers.get('authorization') || '';
+    
+    if (!internalKey || authHeader !== `Bearer ${internalKey}`) {
+      console.warn('Unauthorized sendScheduledReviewEmails call');
+      return Response.json({ error: 'Forbidden: Invalid internal service key' }, { status: 403 });
+    }
+
     // Fetch all pending review requests that are due to be sent
     const now = new Date().toISOString();
     const pendingRequests = await base44.asServiceRole.entities.ReviewEmailRequest.filter({

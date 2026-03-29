@@ -6,10 +6,20 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { user_email, shop_name, success_url, cancel_url } = await req.json();
 
     if (!user_email || !success_url || !cancel_url) {
       return Response.json({ error: 'Missing required fields: user_email, success_url, cancel_url' }, { status: 400 });
+    }
+
+    if (user.email !== user_email) {
+      return Response.json({ error: 'Forbidden: Cannot create subscription for another user' }, { status: 403 });
     }
 
     // Check if user already has an active Wave Shop subscription

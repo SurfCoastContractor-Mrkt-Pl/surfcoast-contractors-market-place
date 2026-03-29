@@ -5,6 +5,15 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const payload = await req.json();
 
+    // Validate INTERNAL_SERVICE_KEY for entity automations
+    const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const authHeader = req.headers.get('authorization') || '';
+    
+    if (!internalKey || authHeader !== `Bearer ${internalKey}`) {
+      console.warn('Unauthorized deductInventoryOnExpense call');
+      return Response.json({ error: 'Forbidden: Invalid internal service key' }, { status: 403 });
+    }
+
     const { event, data } = payload;
 
     // Only process JobExpense create events

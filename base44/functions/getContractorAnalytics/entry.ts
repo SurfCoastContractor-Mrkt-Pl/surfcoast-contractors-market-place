@@ -3,6 +3,12 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { contractorEmail } = await req.json();
 
     if (!contractorEmail) {
@@ -10,6 +16,10 @@ Deno.serve(async (req) => {
         { error: 'Missing contractorEmail' },
         { status: 400 }
       );
+    }
+
+    if (user.role !== 'admin' && user.email !== contractorEmail) {
+      return Response.json({ error: 'Forbidden: Cannot view analytics for another contractor' }, { status: 403 });
     }
 
     // Fetch all scopes for this contractor

@@ -119,6 +119,14 @@ Thank you for being part of our community.
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const internalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const authHeader = req.headers.get('authorization') || '';
+    
+    if (!internalKey || authHeader !== `Bearer ${internalKey}`) {
+      console.warn('Unauthorized moderateReview call');
+      return Response.json({ error: 'Forbidden: Invalid internal service key' }, { status: 403 });
+    }
+
     const payload = await req.json();
 
     const { entity_name, entity_id, review_text, reviewer_email, reviewer_name, current_rating, entity_type } = payload;
