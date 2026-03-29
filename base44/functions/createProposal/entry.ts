@@ -22,12 +22,13 @@ Deno.serve(async (req) => {
 
     // Check if contractor has access to multi-option proposals (Wave FO, tier 2+)
     // Assuming we need to check the contractor's tier
-    const tier = contractor.data.profile_tier;
-    const allowedTiers = ['tier_2', 'tier_3', 'tier_4', 'tier_5']; // Adjust based on your tier naming
+    // Wave FO contractors must have completed 2+ jobs and be at licensed tier
+    const completedJobs = contractor.data.completed_jobs_count || 0;
+    const isLicensedTier = contractor.data.profile_tier === 'licensed';
 
-    if (!allowedTiers.includes(tier)) {
+    if (completedJobs < 2 || !isLicensedTier) {
       return Response.json(
-        { error: 'Feature only available for Wave FO contractors at tier 2 and above' },
+        { error: 'Feature requires licensed tier and 2+ completed jobs' },
         { status: 403 }
       );
     }

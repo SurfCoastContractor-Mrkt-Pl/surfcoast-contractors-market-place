@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,12 +13,12 @@ export default function MultiOptionProposals() {
   const [showForm, setShowForm] = useState(false);
 
   // Get current user
-  React.useEffect(() => {
+  useEffect(() => {
     base44.auth.me().then(u => setUser(u)).catch(() => setUser(null));
   }, []);
 
   // Get contractor profile
-  React.useEffect(() => {
+  useEffect(() => {
     if (user?.email) {
       base44.entities.Contractor.filter({ email: user.email }).then(contractors => {
         if (contractors.length) setContractor(contractors[0]);
@@ -47,7 +47,7 @@ export default function MultiOptionProposals() {
     return <div className="p-8 text-center text-muted-foreground">Contractor profile not found</div>;
   }
 
-  const hasAccess = ['tier_2', 'tier_3', 'tier_4', 'tier_5'].includes(contractor.data.profile_tier);
+  const hasAccess = contractor.data.profile_tier === 'licensed' && (contractor.data.completed_jobs_count || 0) >= 2;
 
   if (!hasAccess) {
     return (
@@ -60,7 +60,7 @@ export default function MultiOptionProposals() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-amber-800">
-            Multi-option proposals are only available for Wave FO contractors at tier 2 and above.
+            Multi-option proposals require licensed tier and 2+ completed jobs.
           </CardContent>
         </Card>
       </div>

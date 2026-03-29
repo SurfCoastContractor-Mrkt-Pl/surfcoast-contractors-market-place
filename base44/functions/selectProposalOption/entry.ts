@@ -46,6 +46,8 @@ Deno.serve(async (req) => {
 
     // Create a ScopeOfWork from the selected option
     const scopeOfWork = await base44.entities.ScopeOfWork.create({
+      contractor_id: proposal.data.contractor_id,
+      job_id: proposal.data.job_id || '',
       contractor_name: proposal.data.contractor_name,
       customer_name: proposal.data.customer_name,
       customer_email: proposal.data.customer_email,
