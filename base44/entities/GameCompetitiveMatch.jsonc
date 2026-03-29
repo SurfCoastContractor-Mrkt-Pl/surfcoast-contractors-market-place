@@ -1,0 +1,167 @@
+{
+  "name": "GameCompetitiveMatch",
+  "type": "object",
+  "properties": {
+    "challenge_initiator_email": {
+      "type": "string",
+      "description": "Email of player who initiated the match"
+    },
+    "challenge_initiator_name": {
+      "type": "string",
+      "description": "Name of challenge initiator"
+    },
+    "opponent_email": {
+      "type": "string",
+      "description": "Email of opponent player"
+    },
+    "opponent_name": {
+      "type": "string",
+      "description": "Name of opponent"
+    },
+    "trade_game_id": {
+      "type": "string",
+      "description": "ID of the game being played"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "description": "Difficulty level for the match"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "in_progress",
+        "completed",
+        "declined"
+      ],
+      "default": "pending",
+      "description": "Current match status"
+    },
+    "initiator_session_id": {
+      "type": "string",
+      "description": "Session ID of the initiator"
+    },
+    "opponent_session_id": {
+      "type": "string",
+      "description": "Session ID of the opponent"
+    },
+    "initiator_score": {
+      "type": "number",
+      "description": "Final score of the initiator"
+    },
+    "opponent_score": {
+      "type": "number",
+      "description": "Final score of the opponent"
+    },
+    "winner_email": {
+      "type": "string",
+      "description": "Email of the winner"
+    },
+    "match_duration_seconds": {
+      "type": "number",
+      "description": "Total time for the match"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when match was created"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO timestamp when match started"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when match was completed"
+    },
+    "prize_pool_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Prize pool for the match (in dollars)"
+    },
+    "initiator_prize_earned": {
+      "type": "number",
+      "default": 0,
+      "description": "Prize earned by initiator"
+    },
+    "opponent_prize_earned": {
+      "type": "number",
+      "default": 0,
+      "description": "Prize earned by opponent"
+    }
+  },
+  "required": [
+    "challenge_initiator_email",
+    "challenge_initiator_name",
+    "opponent_email",
+    "trade_game_id",
+    "game_title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.challenge_initiator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.challenge_initiator_email": "{{user.email}}"
+        },
+        {
+          "data.opponent_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "$or": [
+            {
+              "data.challenge_initiator_email": "{{user.email}}"
+            },
+            {
+              "data.opponent_email": "{{user.email}}"
+            }
+          ]
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

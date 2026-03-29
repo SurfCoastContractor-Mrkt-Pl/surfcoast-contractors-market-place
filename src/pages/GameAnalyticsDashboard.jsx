@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, Zap, Trophy } from 'lucide-react';
 
@@ -27,16 +26,7 @@ export default function GameAnalyticsDashboard() {
     }
   });
 
-  // Fetch leaderboards
-  const { data: leaderboards = [], isLoading: leaderboardsLoading } = useQuery({
-    queryKey: ['leaderboards'],
-    queryFn: async () => {
-      const results = await base44.entities.GameLeaderboard.list('-score', 500);
-      return results;
-    }
-  });
-
-  const isLoading = sessionsLoading || gamesLoading || leaderboardsLoading;
+  const isLoading = sessionsLoading || gamesLoading;
 
   // Calculate metrics
   const filteredSessions = selectedDifficulty === 'all'

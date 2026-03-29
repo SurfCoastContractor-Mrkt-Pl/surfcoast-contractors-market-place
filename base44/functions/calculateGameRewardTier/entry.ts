@@ -27,17 +27,12 @@ Deno.serve(async (req) => {
     let totalPoints = 0;
     let totalDiscounts = 0;
     let highScore = 0;
-    const completedGames = new Map();
 
     sessions.forEach(session => {
       const points = Math.floor(session.score * 1.5) + (session.discount_earned ? 10 : 0);
       totalPoints += points;
       totalDiscounts += session.discount_percentage || 0;
       highScore = Math.max(highScore, session.score);
-
-      // Track game completion counts
-      const gameId = session.trade_game_id;
-      completedGames.set(gameId, (completedGames.get(gameId) || 0) + 1);
     });
 
     // Determine tier based on points
