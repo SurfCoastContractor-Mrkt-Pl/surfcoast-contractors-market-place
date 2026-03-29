@@ -17,6 +17,7 @@ const trackContactInfoView = (contractorId, contractorName, contactType) => {
 import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
+import CredentialDisplayCard from '@/components/contractor/CredentialDisplayCard';
 
 export default function ContractorPublicProfile() {
   const { contractorId } = useParams();
@@ -198,8 +199,13 @@ export default function ContractorPublicProfile() {
           </div>
         </div>
 
-        {/* Services Section */}
-        {services.length > 0 && (
+        {/* Credentials Section */}
+         <div className="mb-8">
+           <CredentialDisplayCard contractor={contractor} />
+         </div>
+
+         {/* Services Section */}
+         {services.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-4">Services Offered</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -52,6 +52,7 @@ import AvailabilityManager from './pages/AvailabilityManager';
 import QuickBooksExport from './pages/QuickBooksExport';
 import AISchedulingAssistant from './pages/AISchedulingAssistant';
 import QBSyncDashboard from './pages/QBSyncDashboard';
+import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
