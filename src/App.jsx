@@ -11,6 +11,7 @@ import ErrorBoundary from '@/lib/ErrorBoundary';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
+import ContractorAccount from './pages/ContractorAccount';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -126,6 +127,14 @@ const AuthenticatedApp = () => {
         <LayoutWrapper currentPageName="ContractorFinancialDashboard">
           <ContractorFinancialDashboard />
         </LayoutWrapper>
+      } />
+      <Route path="/ContractorAccount" element={
+        <LayoutWrapper currentPageName="ContractorAccount">
+          <ContractorAccount />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractorAccount" element={
+        <Navigate to="/ContractorAccount" replace />
       } />
       <Route path="/ConsumerHub" element={
         <LayoutWrapper currentPageName="ConsumerHub">
