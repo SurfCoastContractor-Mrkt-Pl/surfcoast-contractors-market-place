@@ -1,0 +1,444 @@
+{
+  "name": "MarketShop",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Owner email (links to User entity)"
+    },
+    "owner_name": {
+      "type": "string",
+      "description": "Shop owner full name"
+    },
+    "owner_phone": {
+      "type": "string",
+      "description": "Shop owner contact phone number"
+    },
+    "shop_name": {
+      "type": "string",
+      "description": "Name of the shop"
+    },
+    "shop_type": {
+      "type": "string",
+      "enum": [
+        "farmers_market",
+        "flea_market",
+        "swap_meet",
+        "multiple"
+      ],
+      "description": "Primary type of market venue the vendor operates in"
+    },
+    "market_types_active": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "farmers_market",
+          "flea_market",
+          "swap_meet"
+        ]
+      },
+      "description": "All market types this vendor actively participates in"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "state": {
+      "type": "string",
+      "description": "State"
+    },
+    "zip": {
+      "type": "string",
+      "description": "ZIP code"
+    },
+    "description": {
+      "type": "string",
+      "description": "Shop description"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "fresh_produce",
+          "baked_goods",
+          "dairy_eggs",
+          "meat_poultry_seafood",
+          "plants_flowers",
+          "honey_preserves",
+          "prepared_foods",
+          "beverages",
+          "electronics",
+          "tools",
+          "sports_equipment",
+          "books_media",
+          "home_decor",
+          "clothing_accessories",
+          "collectibles",
+          "handmade_crafts",
+          "vintage_antiques",
+          "jewelry",
+          "art",
+          "toys_games",
+          "health_wellness",
+          "misc",
+          "other"
+        ]
+      },
+      "description": "Product/service categories \u2014 expanded to cover farmers market, flea market, and swap meet goods"
+    },
+    "products_summary": {
+      "type": "string",
+      "description": "Summary of products or services offered"
+    },
+    "payment_methods": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "cash",
+          "card",
+          "venmo",
+          "zelle",
+          "cashapp",
+          "paypal",
+          "apple_pay",
+          "google_pay",
+          "check",
+          "other"
+        ]
+      },
+      "description": "Accepted payment methods"
+    },
+    "wave_shop_subscription_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "past_due",
+        "cancelled"
+      ],
+      "default": "inactive",
+      "description": "Status of the $20/month Wave Shop Vendor Subscription"
+    },
+    "wave_shop_subscription_id": {
+      "type": "string",
+      "description": "Stripe Subscription ID for the Wave Shop $20/month plan"
+    },
+    "wave_shop_subscription_start": {
+      "type": "string",
+      "description": "ISO timestamp when Wave Shop subscription started"
+    },
+    "wave_shop_subscription_period_end": {
+      "type": "string",
+      "description": "ISO timestamp when current Wave Shop billing period ends"
+    },
+    "wave_shop_stripe_customer_id": {
+      "type": "string",
+      "description": "Stripe Customer ID associated with this vendor's Wave Shop subscription"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the shop is active"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "suspended"
+      ],
+      "default": "pending",
+      "description": "Shop status"
+    },
+    "subscription_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "paused"
+      ],
+      "default": "inactive",
+      "description": "Legacy subscription status field (use wave_shop_subscription_status for Wave Shop plan)"
+    },
+    "payment_model": {
+      "type": "string",
+      "enum": [
+        "subscription",
+        "facilitation"
+      ],
+      "description": "Active payment model"
+    },
+    "market_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "market_name": {
+            "type": "string",
+            "description": "Name of the market event"
+          },
+          "market_type": {
+            "type": "string",
+            "enum": [
+              "farmers_market",
+              "flea_market",
+              "swap_meet"
+            ],
+            "description": "Type of market"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date(s) of the event"
+          },
+          "location": {
+            "type": "string",
+            "description": "Address or location"
+          },
+          "hours": {
+            "type": "string",
+            "description": "Operating hours"
+          },
+          "booth_table_number": {
+            "type": "string",
+            "description": "Assigned booth, table, or space number"
+          },
+          "setup_time": {
+            "type": "string",
+            "description": "Vendor setup start time"
+          },
+          "teardown_time": {
+            "type": "string",
+            "description": "Vendor teardown end time"
+          },
+          "permit_required": {
+            "type": "boolean",
+            "description": "Whether a permit is required for this event"
+          },
+          "permit_number": {
+            "type": "string",
+            "description": "Vendor permit number for this event"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Any additional notes for this event"
+          }
+        }
+      },
+      "description": "Scheduled market event participations"
+    },
+    "swap_meet_space_numbers": {
+      "type": "string",
+      "description": "Swap meet space number(s) assigned to this vendor (e.g. '42', '101-103', 'A12 & A13')"
+    },
+    "swap_meet_next_weekend": {
+      "type": "object",
+      "description": "Info about the upcoming weekend swap meet appearance",
+      "properties": {
+        "market_name": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "vendor_permit_number": {
+      "type": "string",
+      "description": "General vendor permit or business license number"
+    },
+    "vendor_permit_state": {
+      "type": "string",
+      "description": "State where vendor permit was issued"
+    },
+    "vendor_permit_expiry": {
+      "type": "string",
+      "format": "date",
+      "description": "Expiry date of vendor permit"
+    },
+    "sellers_permit_number": {
+      "type": "string",
+      "description": "State sellers permit / resale certificate number (required for flea market & swap meet resellers)"
+    },
+    "sellers_permit_state": {
+      "type": "string",
+      "description": "State where seller's permit was issued"
+    },
+    "food_handler_certified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether vendor holds a food handler certificate (required for farmers market food vendors)"
+    },
+    "food_handler_cert_url": {
+      "type": "string",
+      "description": "URL of uploaded food handler certificate"
+    },
+    "cottage_food_operator": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether vendor operates under cottage food laws (home-based food production)"
+    },
+    "typical_setup": {
+      "type": "object",
+      "description": "Typical physical setup details for this vendor",
+      "properties": {
+        "table_count": {
+          "type": "number",
+          "description": "Number of tables typically used"
+        },
+        "tent_size": {
+          "type": "string",
+          "description": "Tent or canopy size (e.g. '10x10', '10x20')"
+        },
+        "requires_electricity": {
+          "type": "boolean",
+          "description": "Whether vendor needs electrical hookup"
+        },
+        "requires_water": {
+          "type": "boolean",
+          "description": "Whether vendor needs water access"
+        },
+        "vehicle_type": {
+          "type": "string",
+          "description": "Type of vehicle used to transport goods (e.g. 'van', 'truck', 'trailer')"
+        }
+      }
+    },
+    "custom_slug": {
+      "type": "string",
+      "description": "Custom URL slug for shop"
+    },
+    "banner_url": {
+      "type": "string",
+      "description": "Banner image URL"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "Logo image URL"
+    },
+    "gallery_images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Gallery image URLs (up to 6)"
+    },
+    "verified_vendor": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether vendor is verified by platform admin"
+    },
+    "average_rating": {
+      "type": "number",
+      "description": "Average vendor rating"
+    },
+    "total_ratings": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of ratings"
+    },
+    "social_links": {
+      "type": "object",
+      "properties": {
+        "instagram": {
+          "type": "string"
+        },
+        "facebook": {
+          "type": "string"
+        },
+        "tiktok": {
+          "type": "string"
+        },
+        "twitter": {
+          "type": "string"
+        }
+      },
+      "description": "Social media links"
+    },
+    "share_link": {
+      "type": "string",
+      "description": "Public share link for vendor profile"
+    },
+    "stripe_connect_account_id": {
+      "type": "string",
+      "description": "Stripe Connect account ID for receiving split payments"
+    },
+    "stripe_connect_onboarded": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether vendor has completed Stripe Connect onboarding"
+    },
+    "stripe_connect_charges_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether Stripe Connect account can accept charges"
+    },
+    "waiver_accepted_at": {
+      "type": "string",
+      "description": "ISO timestamp when waiver was accepted"
+    }
+  },
+  "required": [
+    "email",
+    "shop_name",
+    "shop_type",
+    "city",
+    "state",
+    "zip"
+  ],
+  "rls": {
+    "create": {
+      "data.email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.is_active": true
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
