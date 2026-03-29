@@ -119,7 +119,7 @@ export default function TradeGames() {
             <Button
               variant="outline"
               size="sm"
-              gap="2"
+              className="gap-2"
               onClick={() => setShowChallengeCreator(true)}
             >
               <Zap className="w-4 h-4" />

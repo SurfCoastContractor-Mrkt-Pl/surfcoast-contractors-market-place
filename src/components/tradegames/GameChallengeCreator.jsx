@@ -92,6 +92,12 @@ export default function GameChallengeCreator({ game, onClose }) {
               <p className="font-semibold">30 days</p>
             </div>
           </div>
+
+          {scopeId && (
+            <div className="bg-green-50 border border-green-200 rounded p-3 text-sm text-green-800">
+              Discount will auto-apply to scope <span className="font-mono font-semibold">{scopeId}</span> upon completion.
+            </div>
+          )}
         </CardContent>
       </Card>
     );
