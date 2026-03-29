@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
       type: 'account_onboarding',
     });
 
-    return Response.json({ onboardingUrl: accountLink.url });
+    return Response.json({ success: true, onboardingUrl: accountLink.url });
 
   } catch (error) {
     console.error('createVendorConnectAccount error:', error.message);

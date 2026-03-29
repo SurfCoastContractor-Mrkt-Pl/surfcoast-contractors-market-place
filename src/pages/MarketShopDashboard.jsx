@@ -218,7 +218,7 @@ export default function MarketShopDashboard() {
           {activeTab === 'messages' && <VendorMessagingInbox shopId={shop.id} vendorEmail={shop.email} />}
           {activeTab === 'markets' && <MarketShopMarkets shop={shop} onUpdate={handleUpdate} />}
           {activeTab === 'reviews' && (
-            shop.subscription_status === 'active' ? (
+            shop.wave_shop_subscription_status === 'active' ? (
               <MarketShopReviews shop={shop} />
             ) : (
               <div className="text-center py-12">

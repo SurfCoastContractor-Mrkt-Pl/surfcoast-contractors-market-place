@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, ExternalLink, Ban, AlertTriangle, Loader2, Check, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import PaymentMethodManager from './PaymentMethodManager';
 
 export default function MarketShopSubscription({ shop }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [showModelSelector, setShowModelSelector] = useState(shop.subscription_status !== 'active');
+  const [showModelSelector, setShowModelSelector] = useState(shop.wave_shop_subscription_status !== 'active');
   const [selectedModel, setSelectedModel] = useState(null);
   const [showSwitchConfirm, setShowSwitchConfirm] = useState(false);
   const [switchSuccess, setSwitchSuccess] = useState(false);
+  const [showPaymentManager, setShowPaymentManager] = useState(false);
 
   const handleCheckout = async (model) => {
     if (window.self !== window.top) {
@@ -50,6 +52,15 @@ export default function MarketShopSubscription({ shop }) {
 
   const handleManageBilling = () => {
     navigate('/MarketShopBillingManagement');
+  };
+
+  const handlePaymentMethodClose = () => {
+    setShowPaymentManager(false);
+  };
+
+  const handlePaymentMethodUpdate = () => {
+    setShowPaymentManager(false);
+    window.location.reload();
   };
 
   const handleSwitchModel = async (newModel) => {
@@ -105,8 +116,8 @@ export default function MarketShopSubscription({ shop }) {
     inactive: 'No Active Plan',
   };
 
-  const nextBillingDate = shop.subscription_ends_at
-    ? new Date(shop.subscription_ends_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  const nextBillingDate = shop.wave_shop_subscription_period_end
+    ? new Date(shop.wave_shop_subscription_period_end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     : 'N/A';
 
   const startDate = shop.created_date
@@ -121,7 +132,7 @@ export default function MarketShopSubscription({ shop }) {
       </div>
 
       {/* Inactive Subscription Alert */}
-      {shop.subscription_status !== 'active' && shop.subscription_status !== 'past_due' && (
+      {shop.wave_shop_subscription_status !== 'active' && shop.wave_shop_subscription_status !== 'past_due' && (
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 mb-4 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
@@ -131,7 +142,7 @@ export default function MarketShopSubscription({ shop }) {
         </div>
       )}
 
-      {shop.subscription_status === 'past_due' && (
+      {shop.wave_shop_subscription_status === 'past_due' && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-4 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
@@ -148,7 +159,7 @@ export default function MarketShopSubscription({ shop }) {
       )}
 
       {/* Show Payment Model Selector if Inactive */}
-      {showModelSelector && shop.subscription_status !== 'active' && (
+      {showModelSelector && shop.wave_shop_subscription_status !== 'active' && (
         <div className="bg-white/40 border border-white/30 rounded-lg p-4 sm:p-6 mb-6">
           <p className="text-sm font-semibold text-slate-900 mb-4">Choose Your Payment Model</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
@@ -240,8 +251,8 @@ export default function MarketShopSubscription({ shop }) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs sm:text-sm text-slate-500 font-semibold">Status</p>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full mt-1 inline-block ${statusColors[shop.subscription_status] || 'bg-slate-100 text-slate-600'}`}>
-              {statusLabels[shop.subscription_status] || 'No Active Plan'}
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full mt-1 inline-block ${statusColors[shop.wave_shop_subscription_status] || 'bg-slate-100 text-slate-600'}`}>
+              {statusLabels[shop.wave_shop_subscription_status] || 'No Active Plan'}
             </span>
           </div>
         </div>
@@ -258,15 +269,22 @@ export default function MarketShopSubscription({ shop }) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
-          {shop.subscription_status === 'active' && (
-            <>
-              <button
-                onClick={handleManageBilling}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 min-h-[44px]"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Manage Billing
-              </button>
+           {shop.wave_shop_subscription_status === 'active' && (
+             <>
+               <button
+                 onClick={() => setShowPaymentManager(true)}
+                 className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-purple-700 min-h-[44px]"
+               >
+                 <CreditCard className="w-4 h-4" />
+                 Update Payment Method
+               </button>
+               <button
+                 onClick={handleManageBilling}
+                 className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 min-h-[44px]"
+               >
+                 <ExternalLink className="w-4 h-4" />
+                 Manage Billing
+               </button>
               <button
                 onClick={() => setShowModelSelector(true)}
                 className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-blue-600 text-blue-600 text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-50 min-h-[44px]"
@@ -282,7 +300,7 @@ export default function MarketShopSubscription({ shop }) {
               </button>
             </>
           )}
-          {shop.subscription_status === 'cancelled' && (
+          {shop.wave_shop_subscription_status === 'cancelled' && (
             <button
               onClick={() => setShowModelSelector(true)}
               disabled={loading}
@@ -294,6 +312,19 @@ export default function MarketShopSubscription({ shop }) {
           )}
         </div>
       </div>
+
+      {/* Payment Method Manager Modal */}
+      {showPaymentManager && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-sm w-full max-h-[90vh] overflow-y-auto">
+            <PaymentMethodManager
+              shopId={shop.id}
+              onClose={handlePaymentMethodClose}
+              onUpdate={handlePaymentMethodUpdate}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Switch Confirmed Success Banner */}
       {switchSuccess && (
