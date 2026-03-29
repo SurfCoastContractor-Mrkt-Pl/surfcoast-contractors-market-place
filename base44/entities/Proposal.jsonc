@@ -1,0 +1,126 @@
+{
+  "name": "Proposal",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor creating the proposal"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the contractor"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Associated Job ID"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "sent",
+        "option_selected",
+        "approved",
+        "rejected",
+        "expired"
+      ],
+      "default": "draft",
+      "description": "Current status of the proposal"
+    },
+    "selected_option_id": {
+      "type": "string",
+      "description": "ID of the ProposalOption selected by the client (null until selection)"
+    },
+    "selected_scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork created from the selected option"
+    },
+    "sent_date": {
+      "type": "string",
+      "description": "ISO timestamp when proposal was sent to client"
+    },
+    "selected_date": {
+      "type": "string",
+      "description": "ISO timestamp when client selected an option"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when the proposal expires (optional expiration date)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes from the contractor about the proposal"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "contractor_name",
+    "customer_email",
+    "customer_name",
+    "job_title"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

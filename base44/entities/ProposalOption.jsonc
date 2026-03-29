@@ -1,0 +1,133 @@
+{
+  "name": "ProposalOption",
+  "type": "object",
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "description": "ID of the parent Proposal"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor (for quick access)"
+    },
+    "option_number": {
+      "type": "number",
+      "description": "Display order of the option (1, 2, 3, etc.)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short title for this option (e.g., 'Basic', 'Standard', 'Premium')"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the work to be performed"
+    },
+    "scope_summary": {
+      "type": "string",
+      "description": "Summary of scope of work"
+    },
+    "cost_type": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "fixed"
+      ],
+      "description": "Whether the cost is hourly or fixed"
+    },
+    "cost_amount": {
+      "type": "number",
+      "description": "The hourly rate or fixed total cost"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "description": "Estimated hours if hourly pricing"
+    },
+    "estimated_duration": {
+      "type": "string",
+      "description": "Estimated duration in human-readable format (e.g., '2-4 hours')"
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of what's included in this option"
+    },
+    "excludes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of what's NOT included"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes or considerations for this option"
+    },
+    "created_from_template_id": {
+      "type": "string",
+      "description": "ID of the ServiceOffering template this was created from (if applicable)"
+    }
+  },
+  "required": [
+    "proposal_id",
+    "contractor_email",
+    "option_number",
+    "title",
+    "description",
+    "cost_type",
+    "cost_amount"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "proposal_id": {
+            "$in": {
+              "entity": "Proposal",
+              "query": {
+                "data.customer_email": "{{user.email}}"
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
