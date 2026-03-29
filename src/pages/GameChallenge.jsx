@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -67,19 +67,17 @@ export default function GameChallenge() {
         scopeId: challenge.scope_of_work_id
       });
 
-      // Update challenge status
-      await base44.entities.GameChallenge.update(challenge.id, {
-        status: 'completed',
-        completed_by_email: user.email,
-        completed_at: new Date().toISOString(),
-        final_score: results.score
+      // Complete challenge and apply discount
+      await base44.functions.invoke('completeChallenge', {
+        challenge_token: challenge.challenge_token,
+        score: results.score
       });
 
       // Update game statistics
       try {
-        await base44.functions.invoke('updateGameStatistics', {
-          gameId: game.id,
-          sessionId: response.data.sessionId
+        await base44.functions.invoke('updateGameStats', {
+          game_id: game.id,
+          session_id: response.data.sessionId
         });
       } catch (err) {
         console.error('Error updating stats:', err);

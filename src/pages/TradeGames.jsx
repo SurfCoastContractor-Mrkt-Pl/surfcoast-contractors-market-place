@@ -5,7 +5,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
-import GameStatistics from '@/components/tradegames/GameStatistics';
 import GameChallengeCreator from '@/components/tradegames/GameChallengeCreator';
 import { Play, Zap } from 'lucide-react';
 
@@ -63,9 +62,9 @@ export default function TradeGames() {
 
       // Update game statistics
       try {
-        await base44.functions.invoke('updateGameStatistics', {
-          gameId: selectedGame.id,
-          sessionId: response.data.sessionId
+        await base44.functions.invoke('updateGameStats', {
+          game_id: selectedGame.id,
+          session_id: response.data.sessionId
         });
       } catch (err) {
         console.error('Error updating stats:', err);
@@ -93,8 +92,9 @@ export default function TradeGames() {
             Back to Games
           </Button>
           <GameChallengeCreator
-            game={selectedGame}
-            onClose={() => {
+            gameId={selectedGame.id}
+            gameTitle={selectedGame.title}
+            onChallengeCreated={() => {
               setShowChallengeCreator(false);
               setSelectedGame(null);
             }}

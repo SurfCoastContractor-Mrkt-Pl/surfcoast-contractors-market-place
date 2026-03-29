@@ -1,166 +1,130 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { AlertCircle, Copy, Check, Loader2 } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
-export default function GameChallengeCreator({ game, onClose }) {
-  const [discountPercentage, setDiscountPercentage] = useState('10');
+export default function GameChallengeCreator({ gameId, gameTitle, onChallengeCreated }) {
+  const [discountPercentage, setDiscountPercentage] = useState(10);
   const [scopeId, setScopeId] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [challengeLink, setChallengeLink] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [createdChallenge, setCreatedChallenge] = useState(null);
   const [copied, setCopied] = useState(false);
 
   const handleCreateChallenge = async () => {
-    if (!discountPercentage || discountPercentage < 1 || discountPercentage > 50) {
-      alert('Discount must be between 1% and 50%');
-      return;
-    }
-
-    setIsLoading(true);
+    setLoading(true);
     try {
       const response = await base44.functions.invoke('createGameChallenge', {
-        gameId: game.id,
-        gameTitle: game.title,
-        scopeId: scopeId || null,
-        discountPercentage: parseInt(discountPercentage)
+        trade_game_id: gameId,
+        game_title: gameTitle,
+        scope_of_work_id: scopeId || null,
+        discount_percentage: discountPercentage
       });
 
-      setChallengeLink(response.data.challengeLink);
-    } catch (err) {
-      console.error('Error creating challenge:', err);
-      alert('Failed to create challenge. Try again.');
+      setCreatedChallenge(response.data);
+      onChallengeCreated?.(response.data);
+    } catch (error) {
+      console.error('Failed to create challenge:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(challengeLink);
+    navigator.clipboard.writeText(createdChallenge.challenge_link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (challengeLink) {
+  if (createdChallenge) {
     return (
-      <Card className="w-full">
+      <Card className="bg-green-50 border-green-200">
         <CardHeader>
-          <CardTitle>Challenge Created!</CardTitle>
+          <CardTitle className="text-green-700">Challenge Created!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="bg-green-50 border border-green-200 rounded p-3">
-            <p className="text-sm text-green-800 font-medium">
-              Share this link with your client to challenge them to complete {game.title}
-            </p>
-          </div>
-
-          <div className="bg-gray-50 rounded p-3 border font-mono text-sm break-all">
-            {challengeLink}
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              className="flex-1 gap-2"
-              onClick={handleCopyLink}
-              variant="outline"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" />
-                  Copy Link
-                </>
-              )}
-            </Button>
-            <Button className="flex-1" onClick={onClose}>
-              Done
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 pt-2 text-sm">
-            <div>
-              <p className="text-gray-600">Discount Offered</p>
-              <p className="font-semibold">{discountPercentage}%</p>
-            </div>
-            <div>
-              <p className="text-gray-600">Expires In</p>
-              <p className="font-semibold">30 days</p>
+          <div className="bg-white p-4 rounded border border-green-200">
+            <p className="text-sm text-gray-600 mb-2">Challenge Link:</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={createdChallenge.challenge_link}
+                readOnly
+                className="flex-1 px-3 py-2 border rounded bg-gray-50 text-sm"
+              />
+              <Button
+                size="sm"
+                onClick={handleCopyLink}
+                variant="outline"
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              </Button>
             </div>
           </div>
-
-          {scopeId && (
-            <div className="bg-green-50 border border-green-200 rounded p-3 text-sm text-green-800">
-              Discount will auto-apply to scope <span className="font-mono font-semibold">{scopeId}</span> upon completion.
-            </div>
-          )}
+          <p className="text-sm text-gray-600">
+            Share this link with your client. They'll earn a {discountPercentage}% discount when they complete the game!
+          </p>
+          <Button
+            onClick={() => {
+              setCreatedChallenge(null);
+              setDiscountPercentage(10);
+              setScopeId('');
+            }}
+            variant="outline"
+            className="w-full"
+          >
+            Create Another Challenge
+          </Button>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
-        <CardTitle>Create Challenge: {game.title}</CardTitle>
+        <CardTitle className="text-base">Create Challenge</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="bg-blue-50 border border-blue-200 rounded p-3 flex gap-2">
-          <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-800">
-            Create a challenge link to encourage clients to complete this game and earn a discount
-          </p>
+        <div>
+          <label className="block text-sm font-medium mb-2">Game</label>
+          <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded">{gameTitle}</p>
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Discount Percentage</label>
-          <div className="flex items-center gap-2">
+        <div>
+          <label className="block text-sm font-medium mb-2">Discount Percentage</label>
+          <div className="flex gap-2">
             <Input
               type="number"
               min="1"
-              max="50"
+              max="100"
               value={discountPercentage}
-              onChange={(e) => setDiscountPercentage(e.target.value)}
+              onChange={(e) => setDiscountPercentage(Number(e.target.value))}
               className="flex-1"
             />
-            <span className="text-sm font-medium">%</span>
+            <span className="flex items-center px-3 bg-gray-50 rounded text-sm font-medium">%</span>
           </div>
-          <p className="text-xs text-gray-500">Offer between 1% and 50% discount</p>
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Link to Scope (Optional)</label>
+        <div>
+          <label className="block text-sm font-medium mb-2">Link to ScopeOfWork (Optional)</label>
           <Input
-            placeholder="Leave blank to not link to a specific job"
+            type="text"
+            placeholder="ScopeOfWork ID"
             value={scopeId}
             onChange={(e) => setScopeId(e.target.value)}
           />
-          <p className="text-xs text-gray-500">Discount will auto-apply to this scope upon completion</p>
+          <p className="text-xs text-gray-500 mt-1">Leave blank to create a standalone challenge</p>
         </div>
 
-        <div className="flex gap-2 pt-2">
-          <Button
-            className="flex-1 gap-2"
-            onClick={handleCreateChallenge}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Creating...
-              </>
-            ) : (
-              'Create Challenge'
-            )}
-          </Button>
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-        </div>
+        <Button
+          onClick={handleCreateChallenge}
+          disabled={loading}
+          className="w-full"
+        >
+          {loading ? 'Creating...' : 'Create Challenge Link'}
+        </Button>
       </CardContent>
     </Card>
   );
