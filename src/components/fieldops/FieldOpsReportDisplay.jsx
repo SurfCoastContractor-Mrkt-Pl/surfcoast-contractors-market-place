@@ -90,7 +90,7 @@ export default function FieldOpsReportDisplay({ report, onExport, exporting }) {
                 <tr className="border-b border-slate-200">
                   <th className="text-left py-3 px-4 font-semibold text-slate-900">Date</th>
                   <th className="text-left py-3 px-4 font-semibold text-slate-900">Job Title</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Customer</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Client</th>
                   <th className="text-right py-3 px-4 font-semibold text-slate-900">Earnings</th>
                   <th className="text-right py-3 px-4 font-semibold text-slate-900">Hours</th>
                 </tr>

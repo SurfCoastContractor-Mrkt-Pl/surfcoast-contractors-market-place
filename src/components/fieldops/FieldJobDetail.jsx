@@ -296,7 +296,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
 
         {activeAction === 'message' && (
           <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-white font-semibold mb-3">Message {scope.customer_name}</p>
+            <p className="text-white font-semibold mb-3">Message Client: {scope.customer_name}</p>
             <textarea
               value={message}
               onChange={e => setMessage(e.target.value)}
@@ -338,7 +338,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         {activeAction === 'complete' && (
           <div className="bg-slate-900 rounded-2xl p-4 border border-green-500/30">
             <p className="text-white font-semibold mb-1">Mark Job as Complete</p>
-            <p className="text-slate-400 text-sm mb-3">This will notify the client to approve completion and release payment.</p>
+            <p className="text-slate-400 text-sm mb-3">This will notify the client to review and approve completion, then release payment.</p>
             <textarea
               value={completionNotes}
               onChange={e => setCompletionNotes(e.target.value)}

@@ -66,6 +66,7 @@ export default function WaveFOInvoices({ contractor, user }) {
   };
 
   const handleGenerateAndDownloadPDF = async (scopeId) => {
+    if (!scopeId) { alert('No scope linked to this invoice.'); return; }
     setGenerating(scopeId);
     try {
       const response = await base44.functions.invoke('generateInvoicePDF', { scope_id: scopeId });
@@ -169,8 +170,8 @@ export default function WaveFOInvoices({ contractor, user }) {
                 {/* Action Buttons */}
                 <div className="flex gap-2 mt-3 pt-3 border-t border-slate-800/50">
                   <button
-                    onClick={() => handleGenerateAndDownloadPDF(escrow.id)}
-                    disabled={generating === escrow.id}
+                    onClick={() => handleGenerateAndDownloadPDF(escrow.scope_id)}
+                    disabled={generating === escrow.scope_id}
                     className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
                   >
                     {generating === escrow.id ? (
@@ -182,7 +183,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                   </button>
 
                   <button
-                    onClick={() => handleSendInvoiceEmail(escrow, escrow.id)}
+                    onClick={() => handleSendInvoiceEmail(escrow, escrow.scope_id)}
                     disabled={sending === escrow.id + '_email'}
                     className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
                   >
