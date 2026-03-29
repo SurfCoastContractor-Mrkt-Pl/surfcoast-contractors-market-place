@@ -56,11 +56,22 @@ Deno.serve(async (req) => {
 
     console.log(`Game session created: ${session.id}, discount: ${discountPercentage}%`);
 
-    // Update leaderboards
+    // Update leaderboards and sync to HubSpot
     try {
       await base44.asServiceRole.functions.invoke('updateLeaderboards', {
         gameId: gameId
       });
+      
+      // Sync game completion to HubSpot CRM
+      try {
+        await base44.asServiceRole.functions.invoke('syncGameCompletionToHubSpot', {
+          sessionData: { score, discount_earned: discountPercentage > 0, discount_percentage: discountPercentage },
+          gameData: { title: game.title, difficulty: game.difficulty },
+          userData: { email: user.email, full_name: user.full_name }
+        });
+      } catch (hubspotErr) {
+        console.warn('[completeGameSession] HubSpot sync warning:', hubspotErr.message);
+      }
     } catch (err) {
       console.error('[completeGameSession] Error updating leaderboards:', err.message);
     }

@@ -18,17 +18,27 @@ async function isRateLimited(base44, ip) {
       if (record.request_count >= RATE_LIMIT_THRESHOLD) {
         return true;
       }
-      await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
-        request_count: record.request_count + 1
-      });
+      try {
+        await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
+          request_count: record.request_count + 1
+        });
+      } catch (updateErr) {
+        // Silently fail on update — rate limit still applies
+        if (record.request_count >= RATE_LIMIT_THRESHOLD) return true;
+      }
     } else {
-      await base44.asServiceRole.entities.RateLimitTracker.create({
-        key: `early_adopter_count:${ip}`,
-        limit_type: 'early_adopter_count',
-        request_count: 1,
-        window_start: now,
-        window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
-      });
+      try {
+        await base44.asServiceRole.entities.RateLimitTracker.create({
+          key: `early_adopter_count:${ip}`,
+          limit_type: 'early_adopter_count',
+          request_count: 1,
+          window_start: now,
+          window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
+        });
+      } catch (createErr) {
+        // Silently fail on create — rate limit check still works
+        console.debug('[RATE_LIMIT_CREATE] RateLimitTracker create skipped:', createErr.message);
+      }
     }
     return false;
   } catch (error) {

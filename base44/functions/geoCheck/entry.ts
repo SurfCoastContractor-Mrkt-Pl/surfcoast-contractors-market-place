@@ -75,8 +75,8 @@ Deno.serve(async (req) => {
   const path = new URL(req.url).pathname;
   
   try {
-    // Only allow GET requests
-    if (req.method !== 'GET') {
+    // Allow GET and POST requests (some clients may use POST)
+    if (req.method !== 'GET' && req.method !== 'POST') {
       console.warn(`[GEO] Invalid method: ${req.method} from IP: ${clientIp}`);
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }

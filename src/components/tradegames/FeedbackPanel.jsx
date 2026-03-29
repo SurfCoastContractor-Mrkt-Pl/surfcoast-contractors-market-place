@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { AlertCircle, CheckCircle, Info, Lightbulb } from 'lucide-react';
 
-export default function FeedbackPanel({ feedback, score, moveCount }) {
+export default function FeedbackPanel({ feedback, score, moveCount, combo = 0 }) {
   const getFeedbackIcon = () => {
     if (!feedback) return null;
     switch (feedback.type) {
@@ -34,7 +34,7 @@ export default function FeedbackPanel({ feedback, score, moveCount }) {
   return (
     <Card className="p-4 space-y-3">
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <div className="bg-gray-100 rounded p-2">
           <p className="text-xs text-gray-600">Score</p>
           <p className="text-lg font-bold text-gray-900">{score}</p>
@@ -43,6 +43,12 @@ export default function FeedbackPanel({ feedback, score, moveCount }) {
           <p className="text-xs text-gray-600">Moves</p>
           <p className="text-lg font-bold text-gray-900">{moveCount}</p>
         </div>
+        {combo > 0 && (
+          <div className="bg-orange-100 rounded p-2 border border-orange-300">
+            <p className="text-xs text-orange-600 font-semibold">Combo</p>
+            <p className="text-lg font-bold text-orange-700">x{combo}</p>
+          </div>
+        )}
       </div>
 
       {/* Feedback Message */}

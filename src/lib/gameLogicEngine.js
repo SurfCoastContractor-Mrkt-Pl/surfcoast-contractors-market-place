@@ -26,11 +26,16 @@ export default class GameLogicEngine {
     
     this.movesCount = 0;
     this.hintsUsed = 0;
+    this.startTime = null;
+    this.sessionStartTime = null;
+    this.consecutiveCorrectPlacements = 0;
+    this.errors = [];
   }
 
   // Load initial game state and render 3D models
   loadInitialState() {
     this.currentState = JSON.parse(JSON.stringify(this.initialState));
+    this.sessionStartTime = Date.now();
     this.renderScene();
   }
 
@@ -121,9 +126,18 @@ export default class GameLogicEngine {
 
     // Validate placement
     const validation = this.validatePlacement(newPart);
+    
+    if (validation.isValid) {
+      this.consecutiveCorrectPlacements++;
+    } else {
+      this.errors.push({ move: this.movesCount, error: validation.message });
+      this.consecutiveCorrectPlacements = 0;
+    }
+    
     return {
       success: validation.isValid,
-      feedback: validation.message
+      feedback: validation.message,
+      combo: this.consecutiveCorrectPlacements
     };
   }
 
@@ -213,28 +227,44 @@ export default class GameLogicEngine {
     return JSON.stringify(Array.from(currentPartsSet)) === JSON.stringify(Array.from(solutionPartsSet));
   }
 
-  // Calculate score
+  // Calculate score with time bonus and combo multipliers
   calculateScore() {
     if (!this.isSolved()) return 0;
 
-    const baseScore = 100;
+    let score = 100;
     const movePenalty = Math.max(0, (this.movesCount - 5) * 2);
     const hintPenalty = this.hintsUsed * 5;
+    const errorPenalty = this.errors.length * 3;
+    
+    // Time bonus: full bonus if completed in under 2 minutes, scales down after
+    let timeBonus = 0;
+    if (this.sessionStartTime) {
+      const elapsedSeconds = (Date.now() - this.sessionStartTime) / 1000;
+      if (elapsedSeconds < 120) {
+        timeBonus = Math.max(0, 50 - (elapsedSeconds / 2.4)); // 50 points max
+      }
+    }
+    
+    // Combo multiplier: consecutive correct placements boost score
+    const comboMultiplier = 1 + (Math.min(this.consecutiveCorrectPlacements, 10) * 0.05);
 
-    return Math.max(0, baseScore - movePenalty - hintPenalty);
+    score = Math.max(0, (score - movePenalty - hintPenalty - errorPenalty + timeBonus) * comboMultiplier);
+    return Math.round(score);
   }
 
-  // Get a hint
+  // Get progressive hints (each hint gets more specific)
   getHint() {
-    this.hintsUsed++;
     const hints = [
-      'Check if all parts are properly connected.',
-      'Ensure pipe flow is in the correct direction.',
-      'Look for missing fittings or junctions.',
-      'Verify all connections are leak-proof.',
-      'Check the schematic provided in the educational content.'
+      'Look at the solution image to see the target layout.',
+      'Check if all required parts from the library are placed.',
+      'Ensure pipes/wires are properly connected end-to-end.',
+      'Verify the direction and orientation of each part.',
+      'Look for specific positioning requirements in the educational content.'
     ];
-    return hints[Math.floor(Math.random() * hints.length)];
+    
+    const hintIndex = Math.min(this.hintsUsed, hints.length - 1);
+    this.hintsUsed++;
+    return hints[hintIndex];
   }
 
   // Reset the game
@@ -243,6 +273,9 @@ export default class GameLogicEngine {
     this.placedParts.clear();
     this.movesCount = 0;
     this.hintsUsed = 0;
+    this.consecutiveCorrectPlacements = 0;
+    this.errors = [];
+    this.sessionStartTime = Date.now();
     this.renderScene();
   }
 

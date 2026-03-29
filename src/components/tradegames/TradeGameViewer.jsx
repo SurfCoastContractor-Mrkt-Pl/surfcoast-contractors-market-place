@@ -17,6 +17,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   const [selectedPart, setSelectedPart] = useState(null);
   const [availableParts, setAvailableParts] = useState([]);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [combo, setCombo] = useState(0);
   const startTimeRef = useRef(null);
 
   // Initialize Three.js scene and game engine
@@ -106,6 +107,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     const result = gameEngineRef.current.addPart(part);
     setMoveCount(prev => prev + 1);
     setFeedback(result.feedback);
+    setCombo(result.combo || 0);
 
     const newScore = gameEngineRef.current.calculateScore();
     setScore(newScore);
@@ -140,6 +142,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       setIsGameSolved(false);
       setFeedback(null);
       setSelectedPart(null);
+      setCombo(0);
     }
   };
 
@@ -172,7 +175,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       {/* Right Sidebar */}
       <div className="w-72 flex flex-col gap-4">
         {/* Feedback Panel */}
-        <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} />
+        <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} combo={combo} />
 
         {/* Game Controls */}
         <GameControls
