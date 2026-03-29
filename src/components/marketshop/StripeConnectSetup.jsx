@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 
 export default function StripeConnectSetup({ shop }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const isConnected = shop?.stripe_connect_charges_enabled;
   const isOnboarded = shop?.stripe_connect_onboarded;
@@ -11,20 +12,43 @@ export default function StripeConnectSetup({ shop }) {
 
   const handleSetupConnect = async () => {
     if (window.self !== window.top) {
-      alert('Please open from the published app to set up payouts.');
+      setError('Please open from the published app to set up payouts.');
       return;
     }
+
+    // Idempotency check: prevent duplicate account creation
+    if (shop?.stripe_connect_account_id && !isConnected) {
+      // Account exists but setup incomplete — resume onboarding
+      setLoading(true);
+      try {
+        const res = await base44.functions.invoke('resumeVendorConnectOnboarding', { shopId: shop.id });
+        if (res.status === 200 && res.data?.onboardingUrl) {
+          window.location.href = res.data.onboardingUrl;
+        } else {
+          throw new Error(res.data?.error || 'Failed to resume setup');
+        }
+      } catch (err) {
+        console.error('Stripe Connect resume error:', err);
+        setError(err.message || 'Failed to resume setup. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    // Create new account
     setLoading(true);
+    setError(null);
     try {
       const res = await base44.functions.invoke('createVendorConnectAccount', { shopId: shop.id });
-      if (res.data?.onboardingUrl) {
+      if (res.status === 200 && res.data?.onboardingUrl) {
         window.location.href = res.data.onboardingUrl;
       } else {
-        alert(res.data?.error || 'Failed to start payout setup. Please try again.');
+        throw new Error(res.data?.error || 'Failed to start payout setup');
       }
     } catch (err) {
-      console.error(err);
-      alert('Failed to start payout setup. Please try again.');
+      console.error('Stripe Connect creation error:', err);
+      setError(err.message || 'Failed to start payout setup. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -36,6 +60,16 @@ export default function StripeConnectSetup({ shop }) {
         <CreditCard className="w-5 h-5 text-blue-600" />
         <h2 className="text-lg font-bold text-slate-900">Payouts & Split Payments</h2>
       </div>
+
+      {error && (
+        <div className="mb-4 flex items-start gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-red-900 text-sm">Setup Error</p>
+            <p className="text-xs text-red-700 mt-0.5">{error}</p>
+          </div>
+        </div>
+      )}
 
       {isConnected ? (
         <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-lg">

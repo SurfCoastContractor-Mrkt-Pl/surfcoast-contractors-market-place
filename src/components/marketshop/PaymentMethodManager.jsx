@@ -1,20 +1,14 @@
 import { useState } from 'react';
+import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 
-export default function PaymentMethodManager({ subscription, onClose, onUpdate }) {
+export default function PaymentMethodManager({ shopId, onClose, onUpdate }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [cardData, setCardData] = useState({
-    cardNumber: '',
-    expiryMonth: '',
-    expiryYear: '',
-    cvc: ''
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,17 +16,13 @@ export default function PaymentMethodManager({ subscription, onClose, onUpdate }
     setError(null);
 
     try {
-      // Call backend function to update payment method via Stripe
-      const response = await fetch('/api/update-payment-method', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subscriptionId: subscription.stripe_subscription_id,
-          cardData
-        })
+      const response = await base44.functions.invoke('updateVendorPaymentMethod', {
+        shopId: shopId
       });
 
-      if (!response.ok) throw new Error('Failed to update payment method');
+      if (response.status !== 200 || !response.data?.success) {
+        throw new Error(response.data?.error || 'Failed to update payment method');
+      }
 
       setSuccess(true);
       setTimeout(() => {
@@ -40,6 +30,7 @@ export default function PaymentMethodManager({ subscription, onClose, onUpdate }
         onClose();
       }, 1500);
     } catch (err) {
+      console.error('Payment method update failed:', err);
       setError(err.message || 'Failed to update payment method');
     } finally {
       setLoading(false);
@@ -51,7 +42,7 @@ export default function PaymentMethodManager({ subscription, onClose, onUpdate }
       <CardHeader className="flex flex-row items-start justify-between">
         <div>
           <CardTitle>Update Payment Method</CardTitle>
-          <CardDescription>Add or change your payment information</CardDescription>
+          <CardDescription>Your payment method is managed securely through Stripe</CardDescription>
         </div>
         <button
           onClick={onClose}
@@ -75,61 +66,9 @@ export default function PaymentMethodManager({ subscription, onClose, onUpdate }
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Card Number
-            </label>
-            <Input
-              type="text"
-              placeholder="1234 5678 9012 3456"
-              value={cardData.cardNumber}
-              onChange={(e) => setCardData({ ...cardData, cardNumber: e.target.value })}
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Month
-              </label>
-              <Input
-                type="text"
-                placeholder="MM"
-                value={cardData.expiryMonth}
-                onChange={(e) => setCardData({ ...cardData, expiryMonth: e.target.value })}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Year
-              </label>
-              <Input
-                type="text"
-                placeholder="YY"
-                value={cardData.expiryYear}
-                onChange={(e) => setCardData({ ...cardData, expiryYear: e.target.value })}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                CVC
-              </label>
-              <Input
-                type="text"
-                placeholder="123"
-                value={cardData.cvc}
-                onChange={(e) => setCardData({ ...cardData, cvc: e.target.value })}
-                required
-                disabled={loading}
-              />
-            </div>
-          </div>
+          <p className="text-sm text-slate-600 mb-4">
+            Click below to securely update your payment method through Stripe's secure portal.
+          </p>
 
           <div className="flex gap-2 pt-4">
             <Button
@@ -142,7 +81,7 @@ export default function PaymentMethodManager({ subscription, onClose, onUpdate }
               ) : (
                 <CreditCard className="w-4 h-4" />
               )}
-              {loading ? 'Updating...' : 'Update Payment Method'}
+              {loading ? 'Redirecting...' : 'Update Payment Method'}
             </Button>
             <Button
               type="button"

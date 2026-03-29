@@ -53,10 +53,19 @@ const STATUS_LABELS = {
 
 function getShopStatus(shop) {
   if (!shop) return 'pending';
+  
+  // Check admin action first
   if (shop.is_active === false) return 'suspended';
-  if (shop.subscription_status === 'active') return 'active';
-  if (shop.subscription_status && shop.subscription_status !== 'active') return 'inactive';
-  if (shop.waiver_accepted_at) return 'active';
+  
+  // Check subscription status (use wave_shop_subscription_status, not legacy subscription_status)
+  if (shop.wave_shop_subscription_status === 'active') return 'active';
+  if (shop.wave_shop_subscription_status === 'past_due') return 'pending';
+  if (shop.wave_shop_subscription_status === 'cancelled') return 'inactive';
+  
+  // Check Stripe Connect readiness
+  if (shop.stripe_connect_charges_enabled) return 'active';
+  
+  // Default to pending
   return 'pending';
 }
 

@@ -264,6 +264,8 @@ export default function MarketShopSignup() {
         shop_name: formData.shop_name,
         shop_type: type,
         email: formData.email,
+        owner_name: formData.owner_name,
+        owner_phone: formData.phone,
         city: formData.city,
         state: formData.state,
         zip: formData.zip,
@@ -273,6 +275,7 @@ export default function MarketShopSignup() {
         facebook_url: formData.facebook_url || undefined,
         tiktok_url: formData.tiktok_url || undefined,
         gallery_images: formData.gallery_images.length > 0 ? formData.gallery_images : undefined,
+        status: 'pending',
         is_active: false
       };
 
