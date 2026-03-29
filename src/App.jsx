@@ -53,6 +53,7 @@ import AvailabilityManager from './pages/AvailabilityManager';
 import QuickBooksExport from './pages/QuickBooksExport';
 import AISchedulingAssistant from './pages/AISchedulingAssistant';
 import QBSyncDashboard from './pages/QBSyncDashboard';
+import TradeGames from './pages/TradeGames';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -302,6 +303,11 @@ const AuthenticatedApp = () => {
       <Route path="/qb-sync-dashboard" element={
         <LayoutWrapper currentPageName="QBSyncDashboard">
           <QBSyncDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/trade-games" element={
+        <LayoutWrapper currentPageName="TradeGames">
+          <TradeGames />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
