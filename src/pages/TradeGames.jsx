@@ -5,12 +5,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
-import { Play, Lock } from 'lucide-react';
+import GameStatistics from '@/components/tradegames/GameStatistics';
+import GameChallengeCreator from '@/components/tradegames/GameChallengeCreator';
+import { Play, Zap } from 'lucide-react';
 
 export default function TradeGames() {
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameMode, setGameMode] = useState('sandbox');
   const [user, setUser] = useState(null);
+  const [showChallengeCreator, setShowChallengeCreator] = useState(false);
 
   // Fetch current user
   useEffect(() => {
@@ -55,8 +58,18 @@ export default function TradeGames() {
         moves: results.moves,
         duration: results.duration || 0,
         gameMode: gameMode,
-        scopeId: null // Can be passed if linking to a specific scope
+        scopeId: null
       });
+
+      // Update game statistics
+      try {
+        await base44.functions.invoke('updateGameStatistics', {
+          gameId: selectedGame.id,
+          sessionId: response.data.sessionId
+        });
+      } catch (err) {
+        console.error('Error updating stats:', err);
+      }
 
       // Show success message
       alert(`Congratulations! You earned a ${response.data.discount}% discount!`);
@@ -67,15 +80,52 @@ export default function TradeGames() {
     }
   };
 
+  // Challenge creator modal
+  if (showChallengeCreator && selectedGame) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+        <div className="max-w-2xl mx-auto">
+          <Button
+            variant="outline"
+            onClick={() => setShowChallengeCreator(false)}
+            className="mb-6"
+          >
+            Back to Games
+          </Button>
+          <GameChallengeCreator
+            game={selectedGame}
+            onClose={() => {
+              setShowChallengeCreator(false);
+              setSelectedGame(null);
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   // Game viewer
   if (selectedGame) {
     return (
       <div className="min-h-screen bg-gray-100">
-        <div className="flex items-center gap-4 p-4 bg-white border-b">
-          <Button variant="outline" onClick={() => setSelectedGame(null)}>
-            Back to Games
-          </Button>
-          <h1 className="text-xl font-bold">{selectedGame.title}</h1>
+        <div className="flex items-center justify-between gap-4 p-4 bg-white border-b">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" onClick={() => setSelectedGame(null)}>
+              Back to Games
+            </Button>
+            <h1 className="text-xl font-bold">{selectedGame.title}</h1>
+          </div>
+          {user && (
+            <Button
+              variant="outline"
+              size="sm"
+              gap="2"
+              onClick={() => setShowChallengeCreator(true)}
+            >
+              <Zap className="w-4 h-4" />
+              Create Challenge
+            </Button>
+          )}
         </div>
         <TradeGameViewer
           gameData={selectedGame}
@@ -157,14 +207,14 @@ export default function TradeGames() {
                   </div>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-2 gap-2 text-sm text-slate-600">
+                  <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
                       <p className="text-xs text-slate-500">Played</p>
-                      <p className="font-semibold">{game.play_count || 0}</p>
+                      <p className="font-semibold text-slate-700">{game.play_count || 0}</p>
                     </div>
                     <div>
                       <p className="text-xs text-slate-500">Avg Score</p>
-                      <p className="font-semibold">{Math.round(game.average_score || 0)}</p>
+                      <p className="font-semibold text-slate-700">{Math.round(game.average_score || 0)}</p>
                     </div>
                   </div>
 

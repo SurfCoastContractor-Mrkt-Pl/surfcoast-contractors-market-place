@@ -1,0 +1,133 @@
+{
+  "name": "GameChallenge",
+  "type": "object",
+  "properties": {
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor who created the challenge"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the contractor"
+    },
+    "trade_game_id": {
+      "type": "string",
+      "description": "ID of the TradeGame being challenged"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game for easy reference"
+    },
+    "challenge_token": {
+      "type": "string",
+      "description": "Unique token for challenge link"
+    },
+    "scope_of_work_id": {
+      "type": "string",
+      "description": "Optional ScopeOfWork to link discount to"
+    },
+    "discount_percentage": {
+      "type": "number",
+      "description": "Discount offered upon completion"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when challenge was created"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when challenge expires (30 days)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "expired"
+      ],
+      "default": "active",
+      "description": "Current status of the challenge"
+    },
+    "completed_by_email": {
+      "type": "string",
+      "description": "Email of user who completed the challenge"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when challenge was completed"
+    },
+    "final_score": {
+      "type": "number",
+      "description": "Score achieved on completion"
+    }
+  },
+  "required": [
+    "contractor_email",
+    "contractor_name",
+    "trade_game_id",
+    "game_title",
+    "challenge_token",
+    "discount_percentage"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.completed_by_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.status": "active"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

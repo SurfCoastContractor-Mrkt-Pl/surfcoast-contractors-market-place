@@ -54,6 +54,7 @@ import QuickBooksExport from './pages/QuickBooksExport';
 import AISchedulingAssistant from './pages/AISchedulingAssistant';
 import QBSyncDashboard from './pages/QBSyncDashboard';
 import TradeGames from './pages/TradeGames';
+import GameChallenge from './pages/GameChallenge';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -308,6 +309,11 @@ const AuthenticatedApp = () => {
       <Route path="/trade-games" element={
         <LayoutWrapper currentPageName="TradeGames">
           <TradeGames />
+        </LayoutWrapper>
+      } />
+      <Route path="/challenge/:token" element={
+        <LayoutWrapper currentPageName="GameChallenge">
+          <GameChallenge />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
