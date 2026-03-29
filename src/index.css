@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide any canvas or screenshot elements that shouldn't be visible */
+canvas[data-html2canvas-ignore],
+[data-html2canvas-container] {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
