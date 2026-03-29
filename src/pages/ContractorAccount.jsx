@@ -12,7 +12,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell, MessageCircle, InboxIcon } from 'lucide-react';
+import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell, MessageCircle, InboxIcon, BarChart3, Briefcase, User, Wrench } from 'lucide-react';
 import QuoteReplyDialog from '@/components/quote/QuoteReplyDialog';
 import { useNavigate } from 'react-router-dom';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
@@ -92,6 +92,7 @@ export default function ContractorAccount() {
    });
    const [downloadingId, setDownloadingId] = useState(null);
    const [activeSidebarChat, setActiveSidebarChat] = useState(null);
+   const [activeCategory, setActiveCategory] = useState('business');
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -243,25 +244,37 @@ export default function ContractorAccount() {
   return (
     <>
     <div className="min-h-screen bg-slate-50">
-      <div className="relative py-12 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      {/* Business Hub Header — intentionally office/management aesthetic, distinct from Wave FO's dark field UI */}
+      <div className="bg-white border-b border-slate-200">
         <AuthTopBar />
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.60)'}}></div>
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: '#1E5A96'}}>
-              <HardHat className="w-6 h-6 text-white" />
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md" style={{background: 'linear-gradient(135deg, #1E5A96 0%, #2d7dd2 100%)'}}>
+              <Briefcase className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Contractor Account</h1>
-              <p className="text-white/70">Manage your contractor profile</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Contractor Business Hub</h1>
+                <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Business Management</span>
+              </div>
+              <p className="text-slate-500 mt-0.5">Manage your business profile, earnings, clients & growth — separate from your field operations</p>
             </div>
+          </div>
+
+          {/* Wave FO callout banner */}
+          <div className="mt-5 flex items-center gap-3 p-3 bg-slate-900 rounded-xl text-white text-sm">
+            <HardHat className="w-5 h-5 text-amber-400 shrink-0" />
+            <span className="text-slate-300">Looking for job scheduling, invoicing, or field tools?</span>
+            <a href="/WaveFo" className="ml-auto shrink-0 inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors">
+              Open Wave FO →
+            </a>
           </div>
         </div>
       </div>
 
       <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
          {/* Trial Status Banner */}
          {contractor && !isAdminPreview && (
            <TrialStatusBanner contractor={contractor} />
@@ -297,61 +310,95 @@ export default function ContractorAccount() {
             )}
 
             <Tabs defaultValue="dashboard">
-             <TabsList className="w-full flex flex-wrap overflow-x-auto h-auto gap-0.5 p-1">
-                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap font-semibold">Dashboard</TabsTrigger>
-                 <TabsTrigger value="profile" className="text-xs sm:text-sm whitespace-nowrap font-semibold">Profile</TabsTrigger>
-                 <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap">My Jobs</TabsTrigger>
-                 <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
-                 <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
-                 <TabsTrigger value="earnings" className="text-xs sm:text-sm whitespace-nowrap">Earnings</TabsTrigger>
-                 <TabsTrigger value="chats" className="text-xs sm:text-sm whitespace-nowrap">Chats</TabsTrigger>
-                 <TabsTrigger value="analytics" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
-                 <TabsTrigger value="payouts" className="text-xs sm:text-sm whitespace-nowrap">Payouts</TabsTrigger>
-                 <TabsTrigger value="availability" className="text-xs sm:text-sm whitespace-nowrap">Availability</TabsTrigger>
-                 <TabsTrigger value="portfolio" className="text-xs sm:text-sm whitespace-nowrap">Portfolio</TabsTrigger>
-                 <TabsTrigger value="packages" className="text-xs sm:text-sm whitespace-nowrap">Packages</TabsTrigger>
-                 <TabsTrigger value="testimonials" className="text-xs sm:text-sm whitespace-nowrap">Testimonials</TabsTrigger>
-                 <TabsTrigger value="documents" className="text-xs sm:text-sm whitespace-nowrap">Documents</TabsTrigger>
-                 <TabsTrigger value="case-studies" className="text-xs sm:text-sm whitespace-nowrap">Case Studies</TabsTrigger>
-                 <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
-                 <TabsTrigger value="proposals" className="text-xs sm:text-sm whitespace-nowrap">Proposals</TabsTrigger>
-                 <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Performance</TabsTrigger>
-                 <TabsTrigger value="scheduling" className="text-xs sm:text-sm whitespace-nowrap">Scheduling</TabsTrigger>
-                 <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
-                 <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
-                 <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
-                 <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
-                 <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
-                 <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
-                   Live
-                   {liveSessions?.length > 0 && (
-                     <span className="bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{liveSessions.length}</span>
-                   )}
-                 </TabsTrigger>
-                 <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
-                   Quotes
-                   {incomingQuotes?.filter(q => q.status === 'pending' || q.status === 'sent').length > 0 && (
-                     <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
-                   )}
-                 </TabsTrigger>
-                 <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
-                 <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
-                 <TabsTrigger value="referrals" className="text-xs sm:text-sm whitespace-nowrap">Referrals</TabsTrigger>
-                 <TabsTrigger value="fees" className="text-xs sm:text-sm whitespace-nowrap">Fees</TabsTrigger>
-                 <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
-                   <FileText className="w-3 h-3 sm:w-4 sm:h-4" />Scopes
-                   {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
-                     <span className="ml-0.5 bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
-                   )}
-                 </TabsTrigger>
-                 <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap"><Settings className="w-3 h-3 sm:w-4 sm:h-4" />Settings</TabsTrigger>
-                 <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
-                   <CalendarCheck className="w-3 h-3 sm:w-4 sm:h-4" />Work
-                   {pastWorkPayments?.length > 0 && (
-                     <span className="ml-0.5 bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
-                   )}
-                 </TabsTrigger>
-               </TabsList>
+              {/* Category Pills */}
+              {(() => {
+                const categories = [
+                  { id: 'business', label: 'Business Overview', icon: BarChart3 },
+                  { id: 'jobs', label: 'Jobs & Projects', icon: Briefcase },
+                  { id: 'profile', label: 'Profile & Credentials', icon: User },
+                  { id: 'account', label: 'Account Settings', icon: Settings },
+                ];
+                return (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {categories.map(cat => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setActiveCategory(cat.id)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+                          activeCategory === cat.id
+                            ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:text-slate-900'
+                        }`}
+                      >
+                        <cat.icon className="w-3.5 h-3.5" />
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
+
+              {/* Tabs within active category */}
+              <TabsList className="w-full flex flex-wrap overflow-x-auto h-auto gap-0.5 p-1 bg-slate-100 rounded-xl">
+                {activeCategory === 'business' && <>
+                  <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
+                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
+                  <TabsTrigger value="earnings" className="text-xs sm:text-sm whitespace-nowrap">Earnings</TabsTrigger>
+                  <TabsTrigger value="analytics" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
+                  <TabsTrigger value="payouts" className="text-xs sm:text-sm whitespace-nowrap">Payouts</TabsTrigger>
+                  <TabsTrigger value="fees" className="text-xs sm:text-sm whitespace-nowrap">Fees</TabsTrigger>
+                  <TabsTrigger value="referrals" className="text-xs sm:text-sm whitespace-nowrap">Referrals</TabsTrigger>
+                  <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
+                  <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
+                  <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
+                  <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
+                  <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
+                  <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Performance</TabsTrigger>
+                </>}
+                {activeCategory === 'jobs' && <>
+                  <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap">My Jobs</TabsTrigger>
+                  <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                    <FileText className="w-3 h-3" />Scopes
+                    {contractorScopes?.filter(s => s.status !== 'closed').length > 0 && (
+                      <span className="bg-amber-100 text-amber-700 text-xs rounded-full px-1">{contractorScopes.filter(s => s.status !== 'closed').length}</span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
+                    Quotes
+                    {incomingQuotes?.filter(q => q.status === 'pending' || q.status === 'sent').length > 0 && (
+                      <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="past-work" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                    <CalendarCheck className="w-3 h-3" />Past Work
+                    {pastWorkPayments?.length > 0 && (
+                      <span className="bg-green-100 text-green-700 text-xs rounded-full px-1">{pastWorkPayments.length}</span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="live-sessions" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
+                    Live
+                    {liveSessions?.length > 0 && (
+                      <span className="bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{liveSessions.length}</span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="scheduling" className="text-xs sm:text-sm whitespace-nowrap">Scheduling</TabsTrigger>
+                  <TabsTrigger value="chats" className="text-xs sm:text-sm whitespace-nowrap">Chats</TabsTrigger>
+                </>}
+                {activeCategory === 'profile' && <>
+                  <TabsTrigger value="profile" className="text-xs sm:text-sm whitespace-nowrap">Profile</TabsTrigger>
+                  <TabsTrigger value="portfolio" className="text-xs sm:text-sm whitespace-nowrap">Portfolio</TabsTrigger>
+                  <TabsTrigger value="packages" className="text-xs sm:text-sm whitespace-nowrap">Packages</TabsTrigger>
+                  <TabsTrigger value="testimonials" className="text-xs sm:text-sm whitespace-nowrap">Testimonials</TabsTrigger>
+                  <TabsTrigger value="documents" className="text-xs sm:text-sm whitespace-nowrap">Documents</TabsTrigger>
+                  <TabsTrigger value="case-studies" className="text-xs sm:text-sm whitespace-nowrap">Case Studies</TabsTrigger>
+                  <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
+                  <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
+                  <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
+                </>}
+                {activeCategory === 'account' && <>
+                  <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap"><Settings className="w-3 h-3" />Settings</TabsTrigger>
+                </>}
+              </TabsList>
 
               <TabsContent value="my-jobs">
                 <ContractorMyJobs contractorId={contractor?.id} contractorEmail={userEmail} />
