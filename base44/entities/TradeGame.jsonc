@@ -1,0 +1,142 @@
+{
+  "name": "TradeGame",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Name of the game or puzzle"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed overview and objectives of the game"
+    },
+    "trade_type": {
+      "type": "string",
+      "enum": [
+        "plumbing",
+        "electrical",
+        "carpentry",
+        "hvac",
+        "roofing",
+        "masonry",
+        "general"
+      ],
+      "description": "The construction trade category"
+    },
+    "game_mode": {
+      "type": "string",
+      "enum": [
+        "sandbox",
+        "guided_puzzle",
+        "both"
+      ],
+      "description": "Type of gameplay experience"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "default": "medium",
+      "description": "Difficulty level of the puzzle"
+    },
+    "initial_state_json": {
+      "type": "string",
+      "description": "JSON string describing the initial 3D scene state, including component positions and faulty conditions"
+    },
+    "solution_state_json": {
+      "type": "string",
+      "description": "JSON string of the correct/optimal solution state"
+    },
+    "available_parts_json": {
+      "type": "string",
+      "description": "JSON array listing all parts available for the user to use in the game"
+    },
+    "educational_content_md": {
+      "type": "string",
+      "description": "Markdown-formatted tips, explanations, code requirements, and educational material"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Thumbnail image URL for the game"
+    },
+    "is_premium": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this game requires premium access"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the game is published and available to users"
+    },
+    "creator_email": {
+      "type": "string",
+      "description": "Email of the contractor who created this game"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp when the game was created"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "ISO timestamp when the game was last updated"
+    },
+    "play_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of times this game has been played"
+    },
+    "average_completion_time": {
+      "type": "number",
+      "description": "Average time in seconds to complete the puzzle"
+    },
+    "average_score": {
+      "type": "number",
+      "description": "Average score achieved by players"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "trade_type",
+    "game_mode",
+    "initial_state_json",
+    "solution_state_json",
+    "available_parts_json"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "$or": [
+        {
+          "data.creator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.creator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
