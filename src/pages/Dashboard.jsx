@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import ContractorDashboard from '@/components/dashboard/ContractorDashboard';
 import CustomerDashboard from '@/components/dashboard/CustomerDashboard';
+import ProfileSwitcher from '@/components/dashboard/ProfileSwitcher';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
@@ -85,6 +86,14 @@ export default function Dashboard() {
 
    return (
      <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+       {/* Profile Switcher — shows when user has multiple profiles */}
+       {(profiles.contractor || profiles.client) && (
+         <ProfileSwitcher
+           activeProfile={activeProfile}
+           primaryType={profiles.primaryType}
+           hasMarketShop={profiles.hasMarketShop}
+         />
+       )}
        {activeProfile === 'contractor' && <ContractorDashboard user={user} />}
        {activeProfile === 'client' && <CustomerDashboard user={user} />}
 

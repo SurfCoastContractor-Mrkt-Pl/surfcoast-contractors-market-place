@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { Loader2, Package, MapPin, Star, Settings, Store, BarChart3, MessageCircle } from 'lucide-react';
+import ProfileSwitcher from '@/components/dashboard/ProfileSwitcher';
 import MarketBoothMetrics from '@/components/marketshop/MarketBoothMetrics';
 import MarketShopListings from '@/components/marketshop/MarketShopListings';
 import MarketShopMarkets from '@/components/marketshop/MarketShopMarkets';
@@ -65,14 +66,19 @@ export default function MarketShopDashboard() {
   const [loading, setLoading] = useState(true);
   const [shop, setShop] = useState(null);
   const [activeTab, setActiveTab] = useState('listings');
+  const [hasContractor, setHasContractor] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
     if (!user) { setLoading(false); return; }
     const load = async () => {
       try {
-        const shops = await base44.entities.MarketShop.filter({ email: user.email });
+        const [shops, contractors] = await Promise.all([
+          base44.entities.MarketShop.filter({ email: user.email }),
+          base44.entities.Contractor.filter({ email: user.email }).catch(() => []),
+        ]);
         setShop(shops?.[0] || null);
+        setHasContractor(contractors?.length > 0);
       } catch (err) {
         console.error(err);
         navigate('/');
@@ -126,6 +132,13 @@ export default function MarketShopDashboard() {
     }}>
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative">
+
+      {/* Profile Switcher */}
+      <ProfileSwitcher
+        activeProfile="marketshop"
+        primaryType={hasContractor ? 'contractor' : 'client'}
+        hasMarketShop={true}
+      />
 
       {/* Tabs bar — sits flush at the very top, styled to blend with the site nav */}
       <div className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-30 shadow-sm">
