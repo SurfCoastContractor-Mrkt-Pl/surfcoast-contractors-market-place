@@ -28,11 +28,6 @@ export default function LayoutHeader({
     base44.auth.logout();
   };
 
-  const handleHomeClick = (e) => {
-    e.preventDefault();
-    navigate('/');
-  };
-
   return (
     <nav className="z-50 bg-white border-b border-slate-200">
       {/* Main nav bar */}
@@ -43,23 +38,21 @@ export default function LayoutHeader({
             {getNavLinks(isContractor).map(link => {
               const Icon = link.icon;
               return (
-                <button
-                  key={link.page}
-                  onClick={link.page === '/' ? handleHomeClick : (e) => {
-                    e.preventDefault();
-                    navigate(createPageUrl(link.page));
-                  }}
-                  className={`text-sm relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-                  style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
-                >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  {link.name}
-                  {link.badge && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                      {link.badge > 99 ? '99+' : link.badge}
-                    </span>
-                  )}
-                </button>
+                <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
+                  <Button
+                    variant="ghost"
+                    className={`text-sm relative ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
+                    style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
+                  >
+                    {Icon && <Icon className="w-4 h-4 mr-1" />}
+                    {link.name}
+                    {link.badge && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                        {link.badge > 99 ? '99+' : link.badge}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
               );
             })}
           </div>
