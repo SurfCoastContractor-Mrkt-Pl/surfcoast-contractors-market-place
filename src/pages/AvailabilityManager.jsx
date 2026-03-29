@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Plus, Trash2, Clock } from 'lucide-react';
-import { format, addHours } from 'date-fns';
+import { format } from 'date-fns';
 
 export default function AvailabilityManager() {
   const [user, setUser] = useState(null);
@@ -37,13 +37,16 @@ export default function AvailabilityManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.AvailabilitySlot.create({
-      contractor_id: user.id,
-      date: data.date,
-      start_time: data.startTime,
-      end_time: data.endTime,
-      available: true
-    }),
+    mutationFn: (data) => {
+      if (!data.date || !data.startTime || !data.endTime) throw new Error('All fields required');
+      return base44.entities.AvailabilitySlot.create({
+        contractor_id: user.id,
+        date: data.date,
+        start_time: data.startTime,
+        end_time: data.endTime,
+        available: true
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['availabilitySlots'] });
       setFormData({ date: '', startTime: '09:00', endTime: '17:00' });

@@ -3,7 +3,6 @@ import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Download, AlertCircle, CheckCircle } from 'lucide-react';
 
 export default function QuickBooksExport() {
@@ -78,10 +77,10 @@ export default function QuickBooksExport() {
                 {loading ? 'Exporting...' : 'Export as CSV'}
               </Button>
               {exportStatus === 'success' && (
-                <Alert className="bg-green-50 border-green-200">
+                <div className="bg-green-50 border border-green-200 rounded-md p-3 flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600" />
-                  <AlertDescription className="text-green-800">CSV downloaded successfully</AlertDescription>
-                </Alert>
+                  <span className="text-green-800 text-sm">CSV downloaded successfully</span>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -106,19 +105,19 @@ export default function QuickBooksExport() {
                 {loading ? 'Syncing...' : 'Preview Sync'}
               </Button>
               {exportStatus === 'synced' && (
-                <Alert className="bg-blue-50 border-blue-200">
+                <div className="bg-blue-50 border border-blue-200 rounded-md p-3 flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-blue-600" />
-                  <AlertDescription className="text-blue-800">Ready for QB sync. Use QB API with preview data</AlertDescription>
-                </Alert>
+                  <span className="text-blue-800 text-sm">Ready for QB sync. Use QB API with preview data</span>
+                </div>
               )}
             </CardContent>
           </Card>
 
           {exportStatus === 'error' && (
-            <Alert className="bg-red-50 border-red-200">
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-600" />
-              <AlertDescription className="text-red-800">Export failed. Please try again.</AlertDescription>
-            </Alert>
+              <span className="text-red-800 text-sm">Export failed. Please try again.</span>
+            </div>
           )}
         </div>
       </div>
