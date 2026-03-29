@@ -63,9 +63,9 @@ export default function CompetitiveMatchmaker({ gameId, gameDifficulty = 'medium
             <p className="text-sm text-gray-600">
               Your average score: <span className="font-bold">{matches.userAvgScore}</span>
             </p>
-            {opponents.map((opponent, idx) => (
+            {opponents.map((opponent) => (
               <div
-                key={idx}
+                key={opponent.email}
                 className={`p-4 rounded-lg border-2 transition cursor-pointer ${
                   selectedOpponent === opponent.email
                     ? 'border-blue-500 bg-blue-50'

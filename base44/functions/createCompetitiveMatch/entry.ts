@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
       challenge_initiator_email: user.email,
       challenge_initiator_name: user.full_name || user.email,
       opponent_email: opponentEmail,
-      opponent_name: opponentEmail, // Could enrich with full name if available
+      opponent_name: opponents[0]?.contractor_email || opponentEmail,
       trade_game_id: gameId,
       game_title: gameTitle,
       difficulty: difficulty || 'medium',
