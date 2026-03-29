@@ -1,0 +1,87 @@
+{
+  "name": "ServiceOffering",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor offering the service"
+    },
+    "service_name": {
+      "type": "string",
+      "description": "Name of the service offered"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the service"
+    },
+    "estimated_duration": {
+      "type": "string",
+      "description": "Estimated duration (e.g., '2-4 hours', '1-3 days')"
+    },
+    "price_type": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "fixed",
+        "quote"
+      ],
+      "description": "How the service is priced"
+    },
+    "price_amount": {
+      "type": "number",
+      "description": "Price or hourly rate"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes including process, potential adaptations, and contingencies"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "service_name",
+    "description",
+    "price_type",
+    "price_amount"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

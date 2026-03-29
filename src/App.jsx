@@ -255,6 +255,11 @@ const AuthenticatedApp = () => {
           <ContractorInventoryDashboard />
         </LayoutWrapper>
       } />
+      <Route path="/contractor-services" element={
+        <LayoutWrapper currentPageName="ContractorServices">
+          <ContractorServices />
+        </LayoutWrapper>
+      } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
