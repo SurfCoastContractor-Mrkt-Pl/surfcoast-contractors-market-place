@@ -10,6 +10,10 @@
       "type": "string",
       "description": "Name of the shop at time of review"
     },
+    "shop_email": {
+      "type": "string",
+      "description": "Email of the shop owner"
+    },
     "reviewer_email": {
       "type": "string",
       "description": "Email of the reviewer (customer)"
@@ -61,6 +65,37 @@
       "type": "integer",
       "default": 0,
       "description": "Number of users who marked this review as helpful"
+    },
+    "shop_response": {
+      "type": "string",
+      "description": "MarketShop owner's public response to this review"
+    },
+    "shop_response_at": {
+      "type": "string",
+      "description": "ISO timestamp when shop owner responded"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "flagged_inappropriate",
+        "pending"
+      ],
+      "default": "pending",
+      "description": "Content moderation status"
+    },
+    "moderation_reason": {
+      "type": "string",
+      "description": "Reason the review was flagged by AI moderation"
+    },
+    "original_rating": {
+      "type": "number",
+      "description": "The original rating before moderation penalty was applied"
+    },
+    "moderation_penalty_applied": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a 2-star penalty rating was applied due to inappropriate content"
     }
   },
   "required": [
@@ -90,13 +125,28 @@
         },
         {
           "data.reviewer_email": "{{user.email}}"
+        },
+        {
+          "data.shop_email": "{{user.email}}"
         }
       ]
     },
     "update": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
     },
     "delete": {
       "user_condition": {

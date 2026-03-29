@@ -1,0 +1,215 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the reviewed contractor (for contractor reviews)"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the reviewed contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the reviewed contractor"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "ID of the reviewed customer (for customer reviews)"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the reviewed customer"
+    },
+    "scope_id": {
+      "type": "string",
+      "description": "Associated ScopeOfWork ID"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "description": "Name of the reviewer"
+    },
+    "reviewer_email": {
+      "type": "string",
+      "description": "Email of the reviewer"
+    },
+    "reviewer_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether reviewer is contractor or customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job reviewed"
+    },
+    "overall_rating": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Overall star rating from 1-5"
+    },
+    "quality_rating": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Quality of work rating"
+    },
+    "punctuality_rating": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Punctuality/timeliness rating"
+    },
+    "communication_rating": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Communication rating"
+    },
+    "professionalism_rating": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Professionalism rating"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Review text"
+    },
+    "is_testimony": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a public testimony submitted by a customer (not tied to a completed scope)"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether contractor has pinned this review to their top reviews"
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the review is verified (job was completed)"
+    },
+    "work_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the work was completed"
+    },
+    "contractor_response": {
+      "type": "string",
+      "description": "Contractor's public response to this review"
+    },
+    "contractor_response_at": {
+      "type": "string",
+      "description": "ISO timestamp when contractor responded"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "flagged_inappropriate",
+        "pending"
+      ],
+      "default": "pending",
+      "description": "Content moderation status"
+    },
+    "moderation_reason": {
+      "type": "string",
+      "description": "Reason the review was flagged by AI moderation"
+    },
+    "original_rating": {
+      "type": "number",
+      "description": "The original rating before moderation penalty was applied"
+    },
+    "moderation_penalty_applied": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a 2-star penalty rating was applied due to inappropriate content"
+    }
+  },
+  "required": [
+    "reviewer_name",
+    "reviewer_email",
+    "reviewer_type",
+    "overall_rating",
+    "comment"
+  ],
+  "rls": {
+    "create": {
+      "data.reviewer_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.verified": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.reviewer_email": "{{user.email}}"
+        },
+        {
+          "data.contractor_email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.reviewer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
