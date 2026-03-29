@@ -361,7 +361,7 @@ export default function ContractorAccount() {
                     )}
                   </TabsTrigger>
                   <TabsTrigger value="quotes" className="text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
-                    Quotes
+                    Proposals
                     {incomingQuotes?.filter(q => q.status === 'pending' || q.status === 'sent').length > 0 && (
                       <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
                     )}
@@ -470,7 +470,7 @@ export default function ContractorAccount() {
                </TabsContent>
 
                <TabsContent value="proposals">
-                 <ProposalTemplateManager contractorId={contractor?.id} />
+                 <ProposalTemplateManager contractorId={contractor?.id} contractorEmail={userEmail} />
                </TabsContent>
 
                <TabsContent value="performance">

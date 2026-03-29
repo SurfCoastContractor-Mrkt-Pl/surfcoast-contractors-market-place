@@ -17,7 +17,7 @@ const PROPOSAL_SECTIONS = [
   { id: 'terms', label: 'Terms & Conditions' },
 ];
 
-export default function ProposalTemplateManager({ contractorId }) {
+export default function ProposalTemplateManager({ contractorId, contractorEmail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [viewingId, setViewingId] = useState(null);
   const [formData, setFormData] = useState({
@@ -51,7 +51,7 @@ export default function ProposalTemplateManager({ contractorId }) {
       });
       return base44.entities.DocumentTemplate.create({
         contractor_id: contractorId,
-        contractor_email: '', // will be filled by RLS from user session
+        contractor_email: contractorEmail || '',
         template_type: 'proposal',
         template_name: data.name,
         content,

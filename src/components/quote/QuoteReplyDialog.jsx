@@ -233,7 +233,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 {quoteMutation.isPending ? (
                   <><Loader2 className="w-4 h-4 mr-1 animate-spin" />Sending...</>
                 ) : (
-                  <><DollarSign className="w-4 h-4 mr-1" />Send Estimate</>
+                  <><DollarSign className="w-4 h-4 mr-1" />Send Proposal</>
                 )}
               </Button>
             </div>

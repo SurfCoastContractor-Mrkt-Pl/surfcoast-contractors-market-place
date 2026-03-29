@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { InboxIcon, Loader2, CheckCircle2 } from 'lucide-react';
 
 
-const COST_TYPE_LABEL = { fixed: 'Fixed Price', hourly: 'Per Hour', estimate: 'Estimate' };
+const COST_TYPE_LABEL = { fixed: 'Fixed Price', hourly: 'Per Hour', estimate: 'Proposal' };
 
 function StatusBadge({ status }) {
   if (status === 'pending_customer_review') {
