@@ -4,7 +4,7 @@ import {
   ArrowLeft, Phone, MessageSquare, MapPin, Camera,
   CheckCircle, Clock, DollarSign, FileText, Upload,
   User, AlertCircle, Send, X, Image, ChevronRight,
-  Navigation, Star, Download, Loader
+  Navigation, Star, Download, Loader, Share2
 } from 'lucide-react';
 import { useUploadQueue } from '@/hooks/useUploadQueue';
 import { useNetworkRetry } from '@/hooks/useNetworkRetry';
@@ -12,11 +12,12 @@ import { useOfflineSync } from '@/hooks/useOfflineSync';
 import UploadQueueManager from './UploadQueueManager';
 import GpsTracker from './GpsTracker';
 import SignatureCapture from './SignatureCapture';
+import MarketingToolkit from './MarketingToolkit';
 
 const ACTION_BUTTONS = [
   { id: 'photos', label: 'Add Photos', icon: Camera, color: 'bg-purple-600' },
   { id: 'location', label: 'Capture Location', icon: Navigation, color: 'bg-cyan-600' },
-  { id: 'message', label: 'Message Client', icon: MessageSquare, color: 'bg-blue-600' },
+  { id: 'marketing', label: 'Share/Message', icon: Share2, color: 'bg-pink-600' },
   { id: 'notes', label: 'Job Notes', icon: FileText, color: 'bg-amber-600' },
   { id: 'signature', label: 'Get Signature', icon: Send, color: 'bg-indigo-600' },
   { id: 'complete', label: 'Mark Complete', icon: CheckCircle, color: 'bg-green-600' },
@@ -336,6 +337,10 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               )}
             </button>
           </div>
+        )}
+
+        {activeAction === 'marketing' && (
+          <MarketingToolkit scope={scope} />
         )}
 
         {activeAction === 'message' && (
