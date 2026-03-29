@@ -4,10 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide any canvas or screenshot elements that shouldn't be visible */
+/* Hide any canvas, screenshot, or floating overlay elements */
 canvas[data-html2canvas-ignore],
-[data-html2canvas-container] {
+[data-html2canvas-container],
+div[style*="position: fixed"][style*="top: 0"][style*="left: 0"],
+div[style*="screenshot"],
+img[alt*="screenshot"] {
   display: none !important;
+}
+
+/* Ensure nav bar stays at top */
+nav {
+  position: relative !important;
+  z-index: 50;
 }
 
 @layer base {
