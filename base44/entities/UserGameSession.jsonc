@@ -1,0 +1,162 @@
+{
+  "name": "UserGameSession",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user playing (contractor or client)"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "client"
+      ],
+      "description": "Whether the player is a contractor or client"
+    },
+    "trade_game_id": {
+      "type": "string",
+      "description": "Reference to the TradeGame being played"
+    },
+    "scope_of_work_id": {
+      "type": "string",
+      "description": "Optional reference to a ScopeOfWork if linked to a client job"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor who initiated the challenge (if applicable)"
+    },
+    "current_state_json": {
+      "type": "string",
+      "description": "JSON string of the user's current progress in the game"
+    },
+    "start_time": {
+      "type": "string",
+      "description": "ISO timestamp when the session started"
+    },
+    "end_time": {
+      "type": "string",
+      "description": "ISO timestamp when the session ended"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "description": "Total session duration in seconds"
+    },
+    "score": {
+      "type": "number",
+      "description": "Performance metric (accuracy, fewest moves, speed, etc.)"
+    },
+    "is_solved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the puzzle was successfully solved"
+    },
+    "moves_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of moves/actions made in the game"
+    },
+    "hints_used": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of hints requested during gameplay"
+    },
+    "discount_earned": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the player earned a discount by solving the puzzle"
+    },
+    "discount_percentage": {
+      "type": "number",
+      "description": "The percentage discount earned (if applicable)"
+    },
+    "discount_applied": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the discount has been applied to the ScopeOfWork"
+    },
+    "game_mode_played": {
+      "type": "string",
+      "enum": [
+        "sandbox",
+        "guided_puzzle"
+      ],
+      "description": "Which game mode was played in this session"
+    },
+    "difficulty_level": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "description": "Difficulty level selected for this session"
+    },
+    "is_timed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this was a timed challenge session"
+    },
+    "challenge_token": {
+      "type": "string",
+      "description": "Unique token if this was a contractor-issued challenge link"
+    }
+  },
+  "required": [
+    "user_email",
+    "user_type",
+    "trade_game_id",
+    "start_time"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

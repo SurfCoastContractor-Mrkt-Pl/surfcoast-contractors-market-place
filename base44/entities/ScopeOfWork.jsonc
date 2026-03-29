@@ -189,6 +189,24 @@
     "notion_page_id": {
       "type": "string",
       "description": "ID of the linked Notion project page"
+    },
+    "game_session_id": {
+      "type": "string",
+      "description": "ID of the UserGameSession if a game discount was applied"
+    },
+    "game_discount_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentage discount earned from completing a game challenge"
+    },
+    "game_discount_applied": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a game discount has been applied to this scope"
+    },
+    "original_cost_amount": {
+      "type": "number",
+      "description": "Original cost before game discount was applied"
     }
   },
   "required": [
