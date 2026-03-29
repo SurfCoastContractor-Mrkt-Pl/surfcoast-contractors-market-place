@@ -296,10 +296,11 @@ export default function ContractorAccount() {
               <AccountLockedBanner contractor={contractor} lockedScope={lockedScope} />
             )}
 
-            <Tabs defaultValue="my-jobs">
+            <Tabs defaultValue="dashboard">
              <TabsList className="w-full flex flex-wrap overflow-x-auto h-auto gap-0.5 p-1">
-                 <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap font-semibold">My Jobs</TabsTrigger>
-                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap">Dashboard</TabsTrigger>
+                 <TabsTrigger value="dashboard" className="text-xs sm:text-sm whitespace-nowrap font-semibold">Dashboard</TabsTrigger>
+                 <TabsTrigger value="profile" className="text-xs sm:text-sm whitespace-nowrap font-semibold">Profile</TabsTrigger>
+                 <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap">My Jobs</TabsTrigger>
                  <TabsTrigger value="leads" className="text-xs sm:text-sm whitespace-nowrap">Leads</TabsTrigger>
                  <TabsTrigger value="reviews" className="text-xs sm:text-sm whitespace-nowrap">Reviews</TabsTrigger>
                  <TabsTrigger value="earnings" className="text-xs sm:text-sm whitespace-nowrap">Earnings</TabsTrigger>
@@ -333,7 +334,6 @@ export default function ContractorAccount() {
                      <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 leading-none">{incomingQuotes.filter(q => q.status === 'pending' || q.status === 'sent').length}</span>
                    )}
                  </TabsTrigger>
-                 <TabsTrigger value="profile" className="text-xs sm:text-sm whitespace-nowrap">Profile</TabsTrigger>
                  <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
                  <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
                  <TabsTrigger value="referrals" className="text-xs sm:text-sm whitespace-nowrap">Referrals</TabsTrigger>
