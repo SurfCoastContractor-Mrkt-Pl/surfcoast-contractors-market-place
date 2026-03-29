@@ -6,6 +6,9 @@ import {
   User, AlertCircle, Send, X, Image, ChevronRight,
   Navigation, Star, Download, Loader
 } from 'lucide-react';
+import { useUploadQueue } from '@/hooks/useUploadQueue';
+import { useNetworkRetry } from '@/hooks/useNetworkRetry';
+import UploadQueueManager from './UploadQueueManager';
 
 const ACTION_BUTTONS = [
   { id: 'photos', label: 'Add Photos', icon: Camera, color: 'bg-purple-600' },
@@ -16,35 +19,59 @@ const ACTION_BUTTONS = [
 
 export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const [activeAction, setActiveAction] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [sendingMsg, setSendingMsg] = useState(false);
   const [completionNotes, setCompletionNotes] = useState('');
   const [downloadingInvoice, setDownloadingInvoice] = useState(false);
+  const [uploadQueue, setUploadQueue] = useState([]);
   const fileInputRef = useRef();
+  const { queue, activeCount, addToQueue } = useUploadQueue(3);
+  const { executeWithRetry } = useNetworkRetry(2, 800);
 
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-    setUploading(true);
-    try {
-      const uploaded = [];
-      for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        uploaded.push(file_url);
-      }
-      const existing = scope.after_photo_urls || [];
-      const updated = await base44.entities.ScopeOfWork.update(scope.id, {
-        after_photo_urls: [...existing, ...uploaded]
-      });
-      onUpdate(updated);
-      setActiveAction(null);
-    } catch (err) {
-      alert('Upload failed. Please try again.');
-    }
-    setUploading(false);
+    
+    let completedCount = 0;
+    const totalFiles = files.length;
+
+    files.forEach((file, idx) => {
+      addToQueue(
+        async () => {
+          const { file_url } = await executeWithRetry(() =>
+            base44.integrations.Core.UploadFile({ file })
+          );
+          
+          completedCount++;
+          setUploadQueue(prev => prev.map((item, i) => 
+            i === idx ? { ...item, completed: true } : item
+          ));
+
+          // Update scope when last file completes
+          if (completedCount === totalFiles) {
+            const existing = scope.after_photo_urls || [];
+            const newUrls = files.map((_, i) => uploadQueue[i]?.fileUrl).filter(Boolean);
+            if (newUrls.length > 0) {
+              const updated = await base44.entities.ScopeOfWork.update(scope.id, {
+                after_photo_urls: [...existing, ...newUrls]
+              });
+              onUpdate(updated);
+              setActiveAction(null);
+            }
+          }
+        },
+        null,
+        (error) => {
+          setUploadQueue(prev => prev.map((item, i) => 
+            i === idx ? { ...item, error: true } : item
+          ));
+        }
+      );
+    });
+
+    setUploadQueue(files.map(f => ({ fileName: f.name, completed: false, error: false })));
   };
 
   const handleSaveNote = async () => {
@@ -128,6 +155,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
 
   return (
     <div className="bg-slate-950 min-h-full">
+      <UploadQueueManager queue={queue} activeCount={activeCount} />
+      
       {/* Header */}
       <div className="sticky top-0 bg-slate-900 border-b border-slate-800 z-10">
         <div className="flex items-center gap-3 px-4 py-3">
@@ -282,11 +311,11 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
             />
             <button
               onClick={() => fileInputRef.current.click()}
-              disabled={uploading}
+              disabled={activeCount > 0}
               className="w-full bg-purple-600 text-white rounded-xl py-4 font-semibold flex items-center justify-center gap-2"
             >
-              {uploading ? (
-                <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Uploading...</>
+              {activeCount > 0 ? (
+                <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Uploading ({activeCount})...</>
               ) : (
                 <><Camera className="w-5 h-5" /> Take Photo / Choose from Gallery</>
               )}
