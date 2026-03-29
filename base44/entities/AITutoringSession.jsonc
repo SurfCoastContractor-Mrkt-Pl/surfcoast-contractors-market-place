@@ -1,0 +1,193 @@
+{
+  "name": "AITutoringSession",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user receiving tutoring"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "client"
+      ],
+      "description": "Type of user"
+    },
+    "trade_game_id": {
+      "type": "string",
+      "description": "ID of the game being tutored on"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "description": "Difficulty level"
+    },
+    "session_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "abandoned"
+      ],
+      "default": "active",
+      "description": "Status of tutoring session"
+    },
+    "performance_metrics": {
+      "type": "object",
+      "description": "User's game performance data",
+      "properties": {
+        "average_score": {
+          "type": "number"
+        },
+        "best_score": {
+          "type": "number"
+        },
+        "completion_rate": {
+          "type": "number"
+        },
+        "weak_areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ai_analysis": {
+      "type": "string",
+      "description": "AI-generated analysis of performance gaps"
+    },
+    "recommended_games": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "game_id": {
+            "type": "string"
+          },
+          "game_title": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "AI-recommended games based on performance"
+    },
+    "focus_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Specific skills or topics to focus on"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO timestamp when session started"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when session completed"
+    },
+    "feedback_given": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether tutoring feedback was provided"
+    },
+    "improvement_target": {
+      "type": "number",
+      "description": "Target score improvement (percentage)"
+    },
+    "progress_tracking": {
+      "type": "object",
+      "description": "Track user progress through recommendations",
+      "properties": {
+        "games_attempted": {
+          "type": "number"
+        },
+        "games_completed": {
+          "type": "number"
+        },
+        "score_improvement": {
+          "type": "number"
+        }
+      }
+    }
+  },
+  "required": [
+    "user_email",
+    "user_type",
+    "trade_game_id",
+    "game_title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

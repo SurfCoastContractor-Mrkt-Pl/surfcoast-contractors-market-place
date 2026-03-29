@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Medal, Zap } from 'lucide-react';
+import { Trophy, Medal } from 'lucide-react';
 
 export default function TournamentLeaderboard({ tournamentId }) {
   const [selectedTier, setSelectedTier] = useState('all');

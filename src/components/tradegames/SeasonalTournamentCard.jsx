@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Trophy, Users, Zap, Calendar } from 'lucide-react';
+import { Trophy, Zap, Calendar } from 'lucide-react';
 
 export default function SeasonalTournamentCard({ tournament, onViewDetails }) {
   const isActive = tournament.status === 'active';
