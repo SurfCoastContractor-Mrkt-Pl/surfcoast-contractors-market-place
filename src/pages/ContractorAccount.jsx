@@ -458,12 +458,12 @@ export default function ContractorAccount() {
                </TabsContent>
 
                <TabsContent value="documents">
-                 <DocumentManagementHub contractorId={contractor?.id} />
-               </TabsContent>
+                  <DocumentManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+                </TabsContent>
 
                <TabsContent value="case-studies">
-                 <CaseStudiesBuilder contractorId={contractor?.id} />
-               </TabsContent>
+                  <CaseStudiesBuilder contractorId={contractor?.id} contractorEmail={userEmail} />
+                </TabsContent>
 
                <TabsContent value="crm">
                  <ClientRelationshipManager contractorId={contractor?.id} contractorEmail={userEmail} />

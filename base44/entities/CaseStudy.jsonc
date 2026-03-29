@@ -1,0 +1,132 @@
+{
+  "name": "CaseStudy",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this case study"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the case study / project"
+    },
+    "trade_category": {
+      "type": "string",
+      "enum": [
+        "general",
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "painter",
+        "roofer",
+        "landscaper",
+        "mason",
+        "welder",
+        "other"
+      ],
+      "description": "Trade/service category"
+    },
+    "client_background": {
+      "type": "string",
+      "description": "Brief background about the client or project context"
+    },
+    "challenge": {
+      "type": "string",
+      "description": "The problem or challenge the client faced"
+    },
+    "solution": {
+      "type": "string",
+      "description": "How the contractor approached and solved the problem"
+    },
+    "results": {
+      "type": "string",
+      "description": "Measurable outcomes and customer satisfaction"
+    },
+    "client_testimonial": {
+      "type": "string",
+      "description": "Optional direct quote from the client"
+    },
+    "project_duration": {
+      "type": "string",
+      "description": "How long the project took (e.g., '3 days', '2 weeks')"
+    },
+    "project_value": {
+      "type": "string",
+      "description": "Optional project value or budget range"
+    },
+    "image_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Before/after photos of the project"
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the case study is visible on the public profile"
+    },
+    "completion_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the project was completed"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "title",
+    "challenge",
+    "solution",
+    "results"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.is_public": true
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
