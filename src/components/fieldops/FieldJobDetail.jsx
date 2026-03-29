@@ -25,7 +25,6 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const [sendingMsg, setSendingMsg] = useState(false);
   const [completionNotes, setCompletionNotes] = useState('');
   const [downloadingInvoice, setDownloadingInvoice] = useState(false);
-  const [uploadQueue, setUploadQueue] = useState([]);
   const fileInputRef = useRef();
   const { queue, activeCount, addToQueue } = useUploadQueue(3);
   const { executeWithRetry } = useNetworkRetry(2, 800);
@@ -33,45 +32,33 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-    
-    let completedCount = 0;
-    const totalFiles = files.length;
 
-    files.forEach((file, idx) => {
+    const uploadedUrls = [];
+    let completedCount = 0;
+
+    files.forEach((file) => {
       addToQueue(
         async () => {
           const { file_url } = await executeWithRetry(() =>
             base44.integrations.Core.UploadFile({ file })
           );
-          
+          uploadedUrls.push(file_url);
           completedCount++;
-          setUploadQueue(prev => prev.map((item, i) => 
-            i === idx ? { ...item, completed: true } : item
-          ));
 
-          // Update scope when last file completes
-          if (completedCount === totalFiles) {
+          // Update scope when all files complete
+          if (completedCount === files.length) {
             const existing = scope.after_photo_urls || [];
-            const newUrls = files.map((_, i) => uploadQueue[i]?.fileUrl).filter(Boolean);
-            if (newUrls.length > 0) {
-              const updated = await base44.entities.ScopeOfWork.update(scope.id, {
-                after_photo_urls: [...existing, ...newUrls]
-              });
-              onUpdate(updated);
-              setActiveAction(null);
-            }
+            const updated = await base44.entities.ScopeOfWork.update(scope.id, {
+              after_photo_urls: [...existing, ...uploadedUrls]
+            });
+            onUpdate(updated);
+            setActiveAction(null);
           }
         },
         null,
-        (error) => {
-          setUploadQueue(prev => prev.map((item, i) => 
-            i === idx ? { ...item, error: true } : item
-          ));
-        }
+        (error) => console.error('Photo upload failed:', error)
       );
     });
-
-    setUploadQueue(files.map(f => ({ fileName: f.name, completed: false, error: false })));
   };
 
   const handleSaveNote = async () => {
@@ -373,7 +360,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               onChange={e => setCompletionNotes(e.target.value)}
               placeholder="Describe the completed work (optional)..."
               rows={4}
-              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500 min-h-[100px]"
+              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500 min-h-[120px]"
             />
             <button
               onClick={handleMarkComplete}
