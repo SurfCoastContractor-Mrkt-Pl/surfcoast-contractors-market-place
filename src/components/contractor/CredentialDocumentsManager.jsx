@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
-import { Upload, Loader2, X, FileCheck, AlertTriangle, GraduationCap, Award, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
+import { Upload, Loader2, X, FileCheck, AlertTriangle, GraduationCap, Award, Briefcase, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 const CREDENTIAL_TYPES = [
   { value: 'certificate', label: 'Professional Certificate', icon: Award },
@@ -20,6 +21,7 @@ const DEGREE_TYPES = ['degree', 'diploma'];
 const LICENSE_TYPES = ['contractor_license'];
 
 export default function CredentialDocumentsManager({ credentials, onChange, legalName }) {
+  const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [addingNew, setAddingNew] = useState(false);
   const [expandedSchool, setExpandedSchool] = useState(null);
@@ -65,6 +67,7 @@ export default function CredentialDocumentsManager({ credentials, onChange, lega
     onChange([...(credentials || []), entry]);
     resetForm();
     setUploading(false);
+    toast({ title: '✓ Credential Added', description: `"${entry.label}" has been saved to your profile.` });
   };
 
   const resetForm = () => {
@@ -75,6 +78,7 @@ export default function CredentialDocumentsManager({ credentials, onChange, lega
 
   const handleRemove = (idx) => {
     onChange((credentials || []).filter((_, i) => i !== idx));
+    toast({ title: 'Credential Removed', description: 'The credential has been removed from your profile.' });
   };
 
   const canAdd = newCred.type && newCred.label && fileSelected &&

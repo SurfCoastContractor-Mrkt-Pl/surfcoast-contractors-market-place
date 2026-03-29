@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronDown, ChevronUp, Upload, CheckCircle2, Loader2, AlertTriangle, X } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
@@ -67,6 +68,7 @@ function CollapsibleSection({ title, children, hasData, defaultOpen = false }) {
 
 export default function LicensedProfessionalDocuments({ contractor }) {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [fields, setFields] = useState({
     license_state: contractor?.license_state || '',
     license_number: contractor?.license_number || '',
@@ -106,6 +108,7 @@ export default function LicensedProfessionalDocuments({ contractor }) {
     await base44.entities.Contractor.update(contractor.id, { ...fields, ...extra });
     queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
     setSaving(false);
+    toast({ title: '✓ Saved', description: 'Your information has been saved successfully.' });
   };
 
   const handleFileUpload = async (e, fieldKey) => {
@@ -258,9 +261,9 @@ export default function LicensedProfessionalDocuments({ contractor }) {
             <FileUploadField label="State Business License" currentUrl={fields.business_license_url} fieldKey="business_license_url" onUpload={handleFileUpload} uploading={uploading} />
           </div>
 
-          <div className="flex justify-end pt-1">
-            <Button size="sm" onClick={() => save()} disabled={saving} className="text-white text-xs" style={{ backgroundColor: '#1E5A96' }}>
-              {saving ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" />Saving…</> : 'Save License Info'}
+          <div className="pt-3 border-t border-amber-100">
+            <Button onClick={() => save()} disabled={saving} className="w-full text-white font-semibold h-10" style={{ backgroundColor: '#1E5A96' }}>
+              {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving…</> : <><CheckCircle2 className="w-4 h-4 mr-2" />Save License Info</>}
             </Button>
           </div>
         </div>
@@ -295,9 +298,9 @@ export default function LicensedProfessionalDocuments({ contractor }) {
             </div>
             <FileUploadField label="HIS License Document" currentUrl={fields.his_license_url} fieldKey="his_license_url" onUpload={handleFileUpload} uploading={uploading} />
           </div>
-          <div className="flex justify-end">
-            <Button size="sm" onClick={() => save()} disabled={saving} className="text-white text-xs" style={{ backgroundColor: '#1E5A96' }}>
-              {saving ? 'Saving…' : 'Save'}
+          <div className="pt-2 border-t border-slate-100">
+            <Button onClick={() => save()} disabled={saving} className="w-full text-white font-semibold h-10" style={{ backgroundColor: '#1E5A96' }}>
+              {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving…</> : <><CheckCircle2 className="w-4 h-4 mr-2" />Save HIS License</>}
             </Button>
           </div>
         </CollapsibleSection>
@@ -310,8 +313,10 @@ export default function LicensedProfessionalDocuments({ contractor }) {
             <div><Label className="text-xs font-medium text-slate-700 mb-1 block">Bond Expiry</Label><Input {...f('bond_expiry')} type="date" className="h-9 text-sm" /></div>
             <FileUploadField label="Bond Document" currentUrl={fields.bond_document_url} fieldKey="bond_document_url" onUpload={handleFileUpload} uploading={uploading} />
           </div>
-          <div className="flex justify-end">
-            <Button size="sm" onClick={() => save()} disabled={saving} className="text-white text-xs" style={{ backgroundColor: '#1E5A96' }}>{saving ? 'Saving…' : 'Save'}</Button>
+          <div className="pt-2 border-t border-slate-100">
+            <Button onClick={() => save()} disabled={saving} className="w-full text-white font-semibold h-10" style={{ backgroundColor: '#1E5A96' }}>
+              {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving…</> : <><CheckCircle2 className="w-4 h-4 mr-2" />Save Bond Info</>}
+            </Button>
           </div>
         </CollapsibleSection>
 
@@ -324,8 +329,10 @@ export default function LicensedProfessionalDocuments({ contractor }) {
             <div><Label className="text-xs font-medium text-slate-700 mb-1 block">Expiry Date</Label><Input {...f('insurance_expiry')} type="date" className="h-9 text-sm" /></div>
             <FileUploadField label="Insurance Document" currentUrl={fields.insurance_document_url} fieldKey="insurance_document_url" onUpload={handleFileUpload} uploading={uploading} />
           </div>
-          <div className="flex justify-end">
-            <Button size="sm" onClick={() => save()} disabled={saving} className="text-white text-xs" style={{ backgroundColor: '#1E5A96' }}>{saving ? 'Saving…' : 'Save'}</Button>
+          <div className="pt-2 border-t border-slate-100">
+            <Button onClick={() => save()} disabled={saving} className="w-full text-white font-semibold h-10" style={{ backgroundColor: '#1E5A96' }}>
+              {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving…</> : <><CheckCircle2 className="w-4 h-4 mr-2" />Save Insurance Info</>}
+            </Button>
           </div>
         </CollapsibleSection>
 
