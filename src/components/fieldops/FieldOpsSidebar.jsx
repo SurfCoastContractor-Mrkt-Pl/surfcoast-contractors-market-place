@@ -2,15 +2,15 @@ import React from 'react';
 import { LogOut } from 'lucide-react';
 
 const BASE_NAV_TABS = [
-  { id: 'jobs', label: 'Jobs', icon: null },
-  { id: 'map', label: 'Map', icon: null },
-  { id: 'schedule', label: 'Schedule', icon: null },
-  { id: 'invoices', label: 'Invoices', icon: null },
-  { id: 'reports', label: 'Reports', icon: null },
-  { id: 'profile', label: 'Profile', icon: null },
+  { id: 'jobs', label: 'Jobs' },
+  { id: 'map', label: 'Map' },
+  { id: 'schedule', label: 'Schedule' },
+  { id: 'invoices', label: 'Invoices' },
+  { id: 'reports', label: 'Reports' },
+  { id: 'profile', label: 'Profile' },
 ];
 
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave', icon: null };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
 
 export default function FieldOpsSidebar({
   contractor,
@@ -18,7 +18,6 @@ export default function FieldOpsSidebar({
   onTabChange,
   hasBreakerAccess,
   isOnline,
-  onLogout,
 }) {
   const NAV_TABS = hasBreakerAccess ? [...BASE_NAV_TABS, BREAKER_TAB] : BASE_NAV_TABS;
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Briefcase, Bell, MapPin } from 'lucide-react';
+import { Briefcase, Bell, MapPin } from 'lucide-react'; // Remove unused later
 import SupplyHousesFinder from '@/components/contractor/SupplyHousesFinder';
 import WaveFOJobsList from '@/components/fieldops/FieldJobsList';
 import WaveFOSchedule from '@/components/fieldops/FieldSchedule';
@@ -37,10 +37,8 @@ export default function WaveFo() {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSupplyHouses, setShowSupplyHouses] = useState(false);
   const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
-  const { isInitialized: cacheReady, saveData, getData } = useOfflineCache();
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -78,33 +76,26 @@ export default function WaveFo() {
 
       // Batch fetch unread messages count with optional batching in init
       useEffect(() => {
-      if (!user?.email) return;
+        if (!user?.email) return;
 
-      const fetchUnreadCount = async () => {
-      try {
+        const fetchUnreadCount = async () => {
+          try {
         const [messages, projectMessages] = await Promise.all([
-          base44.entities.Message.filter({ recipient_email: user.email, read: false }).catch(err => {
-            console.warn('Message filter failed:', err.message);
-            return [];
-          }),
-          base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false }).catch(err => {
-            console.warn('ProjectMessage filter failed:', err.message);
-            return [];
-          })
+          base44.entities.Message.filter({ recipient_email: user.email, read: false }).catch(() => []),
+          base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false }).catch(() => [])
         ]);
         const messageCount = Array.isArray(messages) ? messages.length : 0;
         const projectMessageCount = Array.isArray(projectMessages) ? projectMessages.length : 0;
         setNotifCount(messageCount + projectMessageCount);
-      } catch (error) {
+        } catch (error) {
         console.warn('Failed to fetch message counts:', error.message);
-        // Keep previous count on error, don't reset to 0
-      }
-      };
+        }
+        };
 
-      fetchUnreadCount();
-      const interval = setInterval(fetchUnreadCount, 30000);
-      return () => clearInterval(interval);
-      }, [user?.email]);
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000);
+        return () => clearInterval(interval);
+        }, [user?.email]);
 
   if (loading) {
     return (
@@ -177,8 +168,7 @@ export default function WaveFo() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-
-      {/* Desktop Sidebar Navigation */}
+        {/* Desktop Sidebar Navigation */}
       <WaveFOSidebar
         contractor={effectiveContractor}
         activeTab={activeTab}
@@ -204,12 +194,12 @@ export default function WaveFo() {
           </button>
         </div>
 
-        {/* Job Alert Banner (Mobile) */}
+        {/* Job Alert Banner */}
         {newJobs.length > 0 && (
           <JobAlertBanner 
             jobs={newJobs} 
             onDismiss={dismissJob}
-            onViewJob={(job) => {
+            onViewJob={() => {
               setActiveTab('jobs');
               window.scrollTo(0, 0);
             }}
@@ -227,31 +217,29 @@ export default function WaveFo() {
         />
 
         {/* Content Area */}
-         <div className="flex-1 overflow-y-auto overscroll-contain">
-           {activeTab === 'jobs' && <WaveFOJobsList contractor={effectiveContractor} user={user} />}
-           {activeTab === 'map' && <WaveFOJobMapDisplay contractor={effectiveContractor} />}
-           {activeTab === 'schedule' && <WaveFOSchedule contractor={effectiveContractor} user={user} />}
-           {activeTab === 'invoices' && <WaveFOInvoices contractor={effectiveContractor} user={user} />}
-           {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
-           {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
-           {activeTab === 'supplies' && (
-             <div className="p-6">
-               <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                 <MapPin className="w-6 h-6" />
-                 Find Supply Houses
-               </h2>
-               <button
-                 onClick={() => setShowSupplyHouses(true)}
-                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
-               >
-                 Find Nearby Supply Houses
-               </button>
-             </div>
-           )}
-           {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
-         </div>
-
-
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          {activeTab === 'jobs' && <WaveFOJobsList contractor={effectiveContractor} user={user} />}
+          {activeTab === 'map' && <WaveFOJobMapDisplay contractor={effectiveContractor} />}
+          {activeTab === 'schedule' && <WaveFOSchedule contractor={effectiveContractor} user={user} />}
+          {activeTab === 'invoices' && <WaveFOInvoices contractor={effectiveContractor} user={user} />}
+          {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
+          {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
+          {activeTab === 'supplies' && (
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                <MapPin className="w-6 h-6" />
+                Find Supply Houses
+              </h2>
+              <button
+                onClick={() => setShowSupplyHouses(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
+              >
+                Find Nearby Supply Houses
+              </button>
+            </div>
+          )}
+          {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
+        </div>
       </div>
       </div>
 
