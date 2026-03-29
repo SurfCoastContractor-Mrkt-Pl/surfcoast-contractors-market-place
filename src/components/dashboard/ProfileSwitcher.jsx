@@ -14,7 +14,7 @@ export default function ProfileSwitcher({ activeProfile, primaryType, hasMarketS
   const cards = [primary, marketShop];
 
   return (
-    <div className="bg-white border-b border-slate-200">
+    <div className="bg-white border-b border-slate-200 hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">My Profiles</p>
         <div className="flex gap-3">
