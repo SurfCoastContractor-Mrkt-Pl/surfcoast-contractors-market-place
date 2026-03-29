@@ -60,66 +60,138 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
 
+    // --- Helper: update MarketShop wave_shop fields by subscription ---
+    async function updateMarketShopWaveShop(subscriptionId, fields) {
+      const shops = await base44.asServiceRole.entities.MarketShop.filter({
+        wave_shop_subscription_id: subscriptionId,
+      });
+      if (shops && shops.length > 0) {
+        await base44.asServiceRole.entities.MarketShop.update(shops[0].id, fields);
+        console.log(`MarketShop updated for subscription ${subscriptionId}:`, fields);
+      }
+    }
+
+    // --- Helper: find MarketShop by Stripe customer id ---
+    async function findMarketShopByCustomer(customerId) {
+      const shops = await base44.asServiceRole.entities.MarketShop.filter({
+        wave_shop_stripe_customer_id: customerId,
+      });
+      return shops?.[0] || null;
+    }
+
     if (event.type === 'customer.subscription.created') {
       const subscription = event.data.object;
-      
-      console.log('Subscription created:', subscription.id);
-      
-      // Create subscription record
-      await base44.asServiceRole.entities.Subscription.create({
-        user_email: subscription.customer_email || subscription.metadata?.user_email,
-        user_type: subscription.metadata?.user_type,
-        stripe_subscription_id: subscription.id,
-        status: 'active',
-        start_date: new Date(subscription.created * 1000).toISOString(),
-        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-        amount_paid: subscription.items.data[0].price.unit_amount,
-      });
+      const userEmail = subscription.metadata?.user_email;
+      const subscriptionType = subscription.metadata?.subscription_type;
+
+      console.log('Subscription created:', subscription.id, '| type:', subscriptionType);
+
+      // Handle Wave Shop subscription
+      if (subscriptionType === 'wave_shop' && userEmail) {
+        const shop = await findMarketShopByCustomer(subscription.customer) ||
+          (await base44.asServiceRole.entities.MarketShop.filter({ email: userEmail }))?.[0];
+
+        if (shop) {
+          await base44.asServiceRole.entities.MarketShop.update(shop.id, {
+            wave_shop_subscription_status: 'active',
+            wave_shop_subscription_id: subscription.id,
+            wave_shop_stripe_customer_id: subscription.customer,
+            wave_shop_subscription_start: new Date(subscription.created * 1000).toISOString(),
+            wave_shop_subscription_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            subscription_status: 'active',
+            status: 'active'
+          });
+          console.log(`Wave Shop activated for ${userEmail}`);
+        } else {
+          console.warn(`No MarketShop found for Wave Shop subscription: ${userEmail}`);
+        }
+      } else {
+        // Legacy: create generic Subscription record
+        await base44.asServiceRole.entities.Subscription.create({
+          user_email: userEmail || subscription.metadata?.user_email,
+          user_type: subscription.metadata?.user_type,
+          stripe_subscription_id: subscription.id,
+          status: 'active',
+          start_date: new Date(subscription.created * 1000).toISOString(),
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          amount_paid: subscription.items.data[0].price.unit_amount,
+        });
+      }
     }
 
     if (event.type === 'customer.subscription.updated') {
       const subscription = event.data.object;
-      
-      const status = subscription.status === 'active' ? 'active' : 
-                     subscription.status === 'past_due' ? 'past_due' : 'cancelled';
+      const subscriptionType = subscription.metadata?.subscription_type;
+      const stripeStatus = subscription.status;
+      const mappedStatus = stripeStatus === 'active' ? 'active' :
+                           stripeStatus === 'past_due' ? 'past_due' : 'cancelled';
 
-      const subs = await base44.asServiceRole.entities.Subscription.filter({
-        stripe_subscription_id: subscription.id,
-      });
-
-      if (subs && subs.length > 0) {
-        await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
-          status,
-          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      if (subscriptionType === 'wave_shop') {
+        await updateMarketShopWaveShop(subscription.id, {
+          wave_shop_subscription_status: mappedStatus,
+          wave_shop_subscription_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          subscription_status: mappedStatus === 'active' ? 'active' : 'paused'
         });
+      } else {
+        const subs = await base44.asServiceRole.entities.Subscription.filter({
+          stripe_subscription_id: subscription.id,
+        });
+        if (subs && subs.length > 0) {
+          await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
+            status: mappedStatus,
+            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          });
+        }
       }
     }
 
     if (event.type === 'customer.subscription.deleted') {
       const subscription = event.data.object;
-      
-      const subs = await base44.asServiceRole.entities.Subscription.filter({
-        stripe_subscription_id: subscription.id,
-      });
+      const subscriptionType = subscription.metadata?.subscription_type;
 
-      if (subs && subs.length > 0) {
-        await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
-          status: 'cancelled',
+      if (subscriptionType === 'wave_shop') {
+        await updateMarketShopWaveShop(subscription.id, {
+          wave_shop_subscription_status: 'cancelled',
+          subscription_status: 'inactive',
+          status: 'pending'
         });
+      } else {
+        const subs = await base44.asServiceRole.entities.Subscription.filter({
+          stripe_subscription_id: subscription.id,
+        });
+        if (subs && subs.length > 0) {
+          await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
+            status: 'cancelled',
+          });
+        }
       }
     }
 
     if (event.type === 'invoice.payment_failed') {
       const invoice = event.data.object;
-      const subs = await base44.asServiceRole.entities.Subscription.filter({
-        stripe_subscription_id: invoice.subscription,
-      });
+      const subscriptionType = invoice.subscription_details?.metadata?.subscription_type ||
+        (await (async () => {
+          try {
+            const sub = await stripe.subscriptions.retrieve(invoice.subscription);
+            return sub.metadata?.subscription_type;
+          } catch { return null; }
+        })());
 
-      if (subs && subs.length > 0) {
-        await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
-          status: 'past_due',
+      if (subscriptionType === 'wave_shop') {
+        await updateMarketShopWaveShop(invoice.subscription, {
+          wave_shop_subscription_status: 'past_due',
+          subscription_status: 'paused'
         });
-        console.log(`Subscription marked past_due: ${invoice.subscription}`);
+      } else {
+        const subs = await base44.asServiceRole.entities.Subscription.filter({
+          stripe_subscription_id: invoice.subscription,
+        });
+        if (subs && subs.length > 0) {
+          await base44.asServiceRole.entities.Subscription.update(subs[0].id, {
+            status: 'past_due',
+          });
+          console.log(`Subscription marked past_due: ${invoice.subscription}`);
+        }
       }
     }
 
