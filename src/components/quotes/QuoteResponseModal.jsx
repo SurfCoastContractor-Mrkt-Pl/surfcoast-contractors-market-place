@@ -43,8 +43,8 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
       // Send notification email to customer
       await base44.integrations.Core.SendEmail({
         to: quote.customer_email,
-        subject: `Estimate for ${quote.job_title} from ${quote.contractor_name}`,
-        body: `Hello ${quote.customer_name},\n\n${quote.contractor_name} has sent you an estimate for your project.\n\nEstimate Amount: $${parseFloat(formData.estimate).toFixed(2)}\n\n${formData.message ? `Message:\n${formData.message}\n\n` : ''}Please log in to your SurfCoast account to review and accept or decline this estimate.\n\nBest regards,\nSurfCoast Marketplace`
+        subject: `Proposal for ${quote.job_title} from ${quote.contractor_name}`,
+        body: `Hello ${quote.customer_name},\n\n${quote.contractor_name} has sent you a proposal for your project.\n\nProposal Amount: $${parseFloat(formData.estimate).toFixed(2)}\n\n${formData.message ? `Message:\n${formData.message}\n\n` : ''}Please log in to your SurfCoast account to review and accept or decline this proposal.\n\nBest regards,\nSurfCoast Marketplace`
       });
 
       onSuccess();
@@ -85,11 +85,11 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
       });
 
       // Send email with PDF attachment
-      const emailBody = `Hello ${quote.customer_name},\n\n${quote.contractor_name} has sent you a professional quote for your project:\n\n${quote.job_title}\n\nQuote Total: $${serviceData.total.toFixed(2)}\n\n${serviceData.notes ? `Notes:\n${serviceData.notes}\n\n` : ''}Please review the attached PDF and let us know if you'd like to proceed or if you have any questions.\n\nBest regards,\nSurfCoast Marketplace`;
+      const emailBody = `Hello ${quote.customer_name},\n\n${quote.contractor_name} has sent you a professional proposal for your project:\n\n${quote.job_title}\n\nProposal Total: $${serviceData.total.toFixed(2)}\n\n${serviceData.notes ? `Notes:\n${serviceData.notes}\n\n` : ''}Please review the attached PDF and let us know if you'd like to proceed or if you have any questions.\n\nBest regards,\nSurfCoast Marketplace`;
 
       await base44.integrations.Core.SendEmail({
         to: quote.customer_email,
-        subject: `Professional Quote for ${quote.job_title} from ${quote.contractor_name}`,
+        subject: `Professional Proposal for ${quote.job_title} from ${quote.contractor_name}`,
         body: emailBody
       });
 
@@ -146,7 +146,7 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {actionType === 'estimate' ? 'Send Estimate' : 'Send Message'}
+            {actionType === 'estimate' ? 'Send Proposal' : 'Send Message'}
           </DialogTitle>
           <DialogDescription>
             {quote.job_title} • {quote.customer_name}
@@ -172,7 +172,7 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
                <>
                  <div>
                    <label className="block text-sm font-medium text-slate-900 mb-2">
-                     How would you like to send your estimate?
+                     How would you like to send your proposal?
                    </label>
                    <div className="space-y-2">
                      <Button
@@ -180,23 +180,23 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
                        variant="outline"
                        className="w-full justify-start text-left"
                      >
-                       <span className="font-semibold">Simple Estimate</span>
-                       <span className="text-xs text-slate-600 ml-2">Quick text-based estimate</span>
+                       <span className="font-semibold">Simple Proposal</span>
+                       <span className="text-xs text-slate-600 ml-2">Quick text-based proposal</span>
                      </Button>
                      <Button
                        onClick={() => setUseServices(true)}
                        variant="outline"
                        className="w-full justify-start text-left"
                      >
-                       <span className="font-semibold">Service-Based Quote</span>
-                       <span className="text-xs text-slate-600 ml-2">Professional PDF quote with services</span>
+                       <span className="font-semibold">Service-Based Proposal</span>
+                       <span className="text-xs text-slate-600 ml-2">Professional PDF proposal with services</span>
                      </Button>
                    </div>
-                 </div>
+                   </div>
 
-                 <div>
+                   <div>
                    <label className="block text-sm font-medium text-slate-900 mb-1">
-                     Estimate Amount ($)
+                     Proposal Amount ($)
                    </label>
                    <Input
                      type="number"
@@ -250,7 +250,7 @@ export default function QuoteResponseModal({ open, onOpenChange, quote, actionTy
                 {loading ? (
                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</>
                 ) : (
-                  actionType === 'estimate' ? 'Send Estimate' : 'Send Message'
+                  actionType === 'estimate' ? 'Send Proposal' : 'Send Message'
                 )}
               </Button>
             </div>

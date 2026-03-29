@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileText, MessageSquare, X } from 'lucide-react';
 
-export default function QuoteDetailModal({ open, onOpenChange, quote, onSendEstimate, onSendMessage }) {
+export default function QuoteDetailModal({ open, onOpenChange, quote, onSendProposal, onSendMessage }) {
   if (!quote) return null;
 
   const getStatusColor = (status) => {
@@ -93,7 +93,7 @@ export default function QuoteDetailModal({ open, onOpenChange, quote, onSendEsti
             )}
             {quote.contractor_estimate && (
               <div>
-                <p className="text-xs text-slate-600 mb-1">Your Estimate</p>
+                <p className="text-xs text-slate-600 mb-1">Your Proposal</p>
                 <p className="font-semibold text-slate-900">${quote.contractor_estimate.toFixed(2)}</p>
               </div>
             )}
@@ -129,13 +129,13 @@ export default function QuoteDetailModal({ open, onOpenChange, quote, onSendEsti
             <Button
               onClick={() => {
                 onOpenChange(false);
-                onSendEstimate();
+                onSendProposal();
               }}
               className="gap-2 flex-1"
               disabled={quote.status === 'completed' || quote.status === 'rejected'}
             >
               <FileText className="w-4 h-4" />
-              Send Estimate
+              Send Proposal
             </Button>
             <Button
               variant="outline"

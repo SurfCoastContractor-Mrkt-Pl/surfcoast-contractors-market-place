@@ -34,7 +34,7 @@ export default function ProposalTemplateManager({ contractorId }) {
   const { data: templates } = useQuery({
     queryKey: ['proposal-templates', contractorId],
     queryFn: async () => {
-      const results = await base44.entities.QuoteRequest.filter({ contractor_id: contractorId });
+      const results = await base44.entities.DocumentTemplate.filter({ contractor_id: contractorId, template_type: 'proposal' });
       return results;
     },
     enabled: !!contractorId,
@@ -42,19 +42,19 @@ export default function ProposalTemplateManager({ contractorId }) {
 
   const createMutation = useMutation({
     mutationFn: async (data) => {
-      return base44.entities.QuoteRequest.create({
+      const content = JSON.stringify({
+        overview: data.overview,
+        scope: data.scope,
+        timeline: data.timeline,
+        pricing: data.pricing,
+        terms: data.terms,
+      });
+      return base44.entities.DocumentTemplate.create({
         contractor_id: contractorId,
-        proposal_template: {
-          name: data.name,
-          sections: {
-            overview: data.overview,
-            scope: data.scope,
-            timeline: data.timeline,
-            pricing: data.pricing,
-            terms: data.terms,
-          },
-          created_at: new Date().toISOString(),
-        },
+        contractor_email: '', // will be filled by RLS from user session
+        template_type: 'proposal',
+        template_name: data.name,
+        content,
       });
     },
     onSuccess: () => {
@@ -66,7 +66,7 @@ export default function ProposalTemplateManager({ contractorId }) {
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      return base44.entities.QuoteRequest.delete(id);
+      return base44.entities.DocumentTemplate.delete(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['proposal-templates', contractorId] });
@@ -90,24 +90,29 @@ export default function ProposalTemplateManager({ contractorId }) {
     });
   };
 
+  const parseContent = (template) => {
+    try { return JSON.parse(template.content || '{}'); } catch { return {}; }
+  };
+
   const handleCopyTemplate = (template) => {
+    const sections = parseContent(template);
     const text = `
-${template.name || 'Proposal'}
+${template.template_name || 'Proposal'}
 
 Overview:
-${template.overview || '[Project Overview]'}
+${sections.overview || '[Project Overview]'}
 
 Scope of Work:
-${template.scope || '[Detailed scope description]'}
+${sections.scope || '[Detailed scope description]'}
 
 Timeline:
-${template.timeline || '[Project timeline and milestones]'}
+${sections.timeline || '[Project timeline and milestones]'}
 
 Pricing:
-${template.pricing || '[Pricing breakdown]'}
+${sections.pricing || '[Pricing breakdown]'}
 
 Terms:
-${template.terms || '[Terms and conditions]'}
+${sections.terms || '[Terms and conditions]'}
     `.trim();
     
     navigator.clipboard.writeText(text);
@@ -182,7 +187,7 @@ ${template.terms || '[Terms and conditions]'}
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-slate-600" />
-                    <h3 className="font-semibold text-slate-900">{template.name || 'Untitled Template'}</h3>
+                    <h3 className="font-semibold text-slate-900">{template.template_name || 'Untitled Template'}</h3>
                   </div>
                   <p className="text-xs text-slate-500 mt-2">
                     Created {new Date(template.created_date).toLocaleDateString()}
@@ -216,12 +221,15 @@ ${template.terms || '[Terms and conditions]'}
 
               {viewingId === template.id && (
                 <div className="mt-4 p-3 bg-slate-50 rounded border border-slate-200 text-sm text-slate-700 space-y-3 max-h-48 overflow-y-auto">
-                  {PROPOSAL_SECTIONS.map(section => (
-                    <div key={section.id}>
-                      <h4 className="font-semibold text-slate-900 mb-1">{section.label}</h4>
-                      <p className="text-xs whitespace-pre-wrap">{template[section.id] || '—'}</p>
-                    </div>
-                  ))}
+                  {PROPOSAL_SECTIONS.map(section => {
+                    const sections = parseContent(template);
+                    return (
+                      <div key={section.id}>
+                        <h4 className="font-semibold text-slate-900 mb-1">{section.label}</h4>
+                        <p className="text-xs whitespace-pre-wrap">{sections[section.id] || '—'}</p>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

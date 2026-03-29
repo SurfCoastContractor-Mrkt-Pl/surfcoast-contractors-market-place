@@ -113,7 +113,7 @@ function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
             <SelectContent>
               <SelectItem value="fixed">Fixed</SelectItem>
               <SelectItem value="hourly">Hourly</SelectItem>
-              <SelectItem value="estimate">Estimate</SelectItem>
+              <SelectItem value="estimate">Proposal</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -155,7 +155,7 @@ function QuoteForm({ quote, contractorId, onSuccess, onCancel }) {
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={submitting} className="bg-green-600 hover:bg-green-700 text-white text-sm h-8 px-4 gap-1.5">
           {submitting && <Loader2 className="w-3 h-3 animate-spin" />}
-          Send Quote →
+          Send Proposal →
         </Button>
         <button type="button" onClick={onCancel} className="text-xs text-slate-400 hover:text-slate-600 underline">Cancel</button>
       </div>
@@ -217,8 +217,8 @@ export default function ContractorQuotesTab({ contractorId }) {
     return (
       <Card className="p-10 text-center text-slate-500">
         <InboxIcon className="w-10 h-10 mx-auto mb-3 text-slate-300" />
-        <p className="text-sm font-medium">No quote requests yet.</p>
-        <p className="text-xs text-slate-400 mt-1">When customers request a quote, they'll appear here.</p>
+        <p className="text-sm font-medium">No proposal requests yet.</p>
+        <p className="text-xs text-slate-400 mt-1">When customers request a proposal, they'll appear here.</p>
       </Card>
     );
   }
@@ -254,7 +254,7 @@ export default function ContractorQuotesTab({ contractorId }) {
             {/* Header */}
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-slate-900 text-base leading-tight truncate">{q.job_title || 'Quote Request'}</p>
+                <p className="font-bold text-slate-900 text-base leading-tight truncate">{q.job_title || 'Proposal Request'}</p>
                 <p className="text-xs text-slate-400 mt-0.5">
                   {q.customer_name} · {new Date(q.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
@@ -271,7 +271,7 @@ export default function ContractorQuotesTab({ contractorId }) {
 
             {/* Quote amount */}
             {q.quote_amount != null && (
-              <p className="text-sm font-semibold text-green-700 mt-2">Your quote: ${parseFloat(q.quote_amount).toFixed(2)}</p>
+              <p className="text-sm font-semibold text-green-700 mt-2">Your proposal: ${parseFloat(q.quote_amount).toFixed(2)}</p>
             )}
 
             {/* Actions for pending */}
@@ -286,7 +286,7 @@ export default function ContractorQuotesTab({ contractorId }) {
                   title={ratingBlocked ? 'Submit your pending rating before accepting new work.' : undefined}
                   onClick={() => !ratingBlocked && setExpandedForm(expandedForm === q.id ? null : q.id)}
                 >
-                  Submit Quote
+                  Submit Proposal
                 </Button>
                 <Button
                   size="sm"

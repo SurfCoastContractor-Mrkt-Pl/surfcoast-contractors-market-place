@@ -96,8 +96,8 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
         await base44.integrations.Core.SendEmail({
           to: request.customer_email,
           from_name: 'SurfCoast Marketplace',
-          subject: `Your Quote is Ready — ${request.job_title || 'Project Quote'}`,
-          body: `Hi ${request.customer_name},\n\nYour quote request has been answered!\n\nContractor: ${request.contractor_name}\nProject: ${request.job_title || 'Your project'}\nEstimate: $${parseFloat(quoteAmount).toFixed(2)}\n${scopeRedact.message ? `\nNote from contractor:\n${scopeRedact.message}\n` : ''}\nLog in to SurfCoast Marketplace to review and respond.\n\n— SurfCoast Team`,
+          subject: `Your Proposal is Ready — ${request.job_title || 'Project Proposal'}`,
+          body: `Hi ${request.customer_name},\n\nYour proposal request has been answered!\n\nContractor: ${request.contractor_name}\nProject: ${request.job_title || 'Your project'}\nProposal Amount: $${parseFloat(quoteAmount).toFixed(2)}\n${scopeRedact.message ? `\nNote from contractor:\n${scopeRedact.message}\n` : ''}\nLog in to SurfCoast Marketplace to review and respond.\n\n— SurfCoast Team`,
         });
       } catch {}
     },
@@ -114,14 +114,14 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {step === 'review' && `Quote Request from ${request.customer_name}`}
-            {step === 'quote' && `Provide Estimate to ${request.customer_name}`}
-            {step === 'deny' && `Decline Quote Request`}
+            {step === 'review' && `Proposal Request from ${request.customer_name}`}
+            {step === 'quote' && `Send Proposal to ${request.customer_name}`}
+            {step === 'deny' && `Decline Proposal Request`}
           </DialogTitle>
           <DialogDescription>
-            {step === 'review' && 'Review the customer\'s quote request. If you accept, you\'ll provide your Estimate (total cost).'}
-            {step === 'quote' && 'Enter your Estimate — the total cost/price for the work described. This is what the customer requested a quote for.'}
-            {step === 'deny' && 'Let the customer know you\'re unable to provide a quote for this job.'}
+            {step === 'review' && 'Review the customer\'s proposal request. If you accept, you\'ll send your Proposal with pricing.'}
+            {step === 'quote' && 'Enter your Proposal amount — the total cost/price for the work described.'}
+            {step === 'deny' && 'Let the customer know you\'re unable to submit a proposal for this job.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -166,7 +166,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                  ) : (
                    <CheckCircle className="w-4 h-4 mr-1" />
                  )}
-                 Accept &amp; Provide Estimate
+                 Accept &amp; Send Proposal
                </Button>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
             </div>
 
             <div>
-              <Label htmlFor="quote-amount" className="text-slate-700">Your Estimate — Total Cost ($) *</Label>
+              <Label htmlFor="quote-amount" className="text-slate-700">Proposal Amount — Total Cost ($) *</Label>
               <p className="text-xs text-slate-500 mb-1">The total price/cost for all the work you'll perform.</p>
               <Input
                 id="quote-amount"
@@ -210,7 +210,7 @@ export default function QuoteReplyDialog({ request, open, onClose }) {
                 id="quote-message"
                 value={quoteMessage}
                 onChange={(e) => setQuoteMessage(e.target.value)}
-                placeholder="Add details about your Estimate — timeline, materials, what's included, etc."
+                placeholder="Add details about your Proposal — timeline, materials, what's included, etc."
                 className="mt-1 resize-none"
                 rows={3}
               />

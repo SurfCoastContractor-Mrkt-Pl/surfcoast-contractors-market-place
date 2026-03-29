@@ -157,8 +157,8 @@ export default function ContractorQuotesManagement() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Quote Requests</h1>
-          <p className="text-slate-600">Manage incoming client quote requests and send estimates</p>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Proposal Requests</h1>
+          <p className="text-slate-600">Manage incoming client proposal requests and send proposals</p>
         </div>
 
         {/* Example Entry */}
@@ -237,7 +237,7 @@ export default function ContractorQuotesManagement() {
               </div>
             ) : filteredQuotes.length === 0 ? (
               <Card className="p-8 text-center">
-                <p className="text-slate-600">No pending quote requests</p>
+                <p className="text-slate-600">No pending proposal requests</p>
               </Card>
             ) : (
               filteredQuotes.map(quote => (
@@ -279,7 +279,7 @@ export default function ContractorQuotesManagement() {
                         className="gap-2 whitespace-nowrap"
                       >
                         <FileText className="w-4 h-4" />
-                        Send Estimate
+                        Send Proposal
                       </Button>
                       <Button
                         variant="outline"
@@ -304,7 +304,7 @@ export default function ContractorQuotesManagement() {
               </div>
             ) : filteredQuotes.length === 0 ? (
               <Card className="p-8 text-center">
-                <p className="text-slate-600">No quotes in progress</p>
+                <p className="text-slate-600">No proposals in progress</p>
               </Card>
             ) : (
               filteredQuotes.map(quote => (
@@ -330,7 +330,7 @@ export default function ContractorQuotesManagement() {
                         </div>
                         {quote.contractor_estimate && (
                           <div>
-                            <p className="font-medium text-slate-900">Your Estimate</p>
+                            <p className="font-medium text-slate-900">Your Proposal</p>
                             <p className="text-slate-600">${quote.contractor_estimate.toFixed(2)}</p>
                           </div>
                         )}
@@ -361,7 +361,7 @@ export default function ContractorQuotesManagement() {
               </div>
             ) : filteredQuotes.length === 0 ? (
               <Card className="p-8 text-center">
-                <p className="text-slate-600">No completed quotes</p>
+                <p className="text-slate-600">No completed proposals</p>
               </Card>
             ) : (
               filteredQuotes.map(quote => (
@@ -387,7 +387,7 @@ export default function ContractorQuotesManagement() {
                         </div>
                         {quote.contractor_estimate && (
                           <div>
-                            <p className="font-medium text-slate-900">Your Estimate</p>
+                            <p className="font-medium text-slate-900">Your Proposal</p>
                             <p className="text-slate-600">${quote.contractor_estimate.toFixed(2)}</p>
                           </div>
                         )}
@@ -407,9 +407,9 @@ export default function ContractorQuotesManagement() {
           open={detailModalOpen}
           onOpenChange={setDetailModalOpen}
           quote={selectedQuote}
-          onSendEstimate={() => {
+          onSendProposal={() => {
             setDetailModalOpen(false);
-            openAction(selectedQuote, 'estimate');
+            openAction(selectedQuote, 'proposal');
           }}
           onSendMessage={() => {
             setDetailModalOpen(false);
