@@ -48,6 +48,8 @@ import ContractorInventoryDashboard from './pages/ContractorInventoryDashboard';
 import MultiOptionProposals from './pages/MultiOptionProposals';
 import CustomerPortal from './pages/CustomerPortal';
 import ContractorInventory from './pages/ContractorInventory';
+import AvailabilityManager from './pages/AvailabilityManager';
+import QuickBooksExport from './pages/QuickBooksExport';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -276,6 +278,16 @@ const AuthenticatedApp = () => {
       <Route path="/contractor-inventory-management" element={
         <LayoutWrapper currentPageName="ContractorInventory">
           <ContractorInventory />
+        </LayoutWrapper>
+      } />
+      <Route path="/availability-manager" element={
+        <LayoutWrapper currentPageName="AvailabilityManager">
+          <AvailabilityManager />
+        </LayoutWrapper>
+      } />
+      <Route path="/quickbooks-export" element={
+        <LayoutWrapper currentPageName="QuickBooksExport">
+          <QuickBooksExport />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
