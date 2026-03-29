@@ -1,0 +1,124 @@
+{
+  "name": "GameAchievement",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who earned the achievement"
+    },
+    "achievement_type": {
+      "type": "string",
+      "enum": [
+        "perfect_score",
+        "speed_demon",
+        "comeback_kid",
+        "mastercraft",
+        "streak_3",
+        "streak_10",
+        "tournament_winner",
+        "competitive_champion",
+        "learning_path_complete",
+        "versatile_player",
+        "consistent_performer"
+      ],
+      "description": "Type of achievement"
+    },
+    "achievement_name": {
+      "type": "string",
+      "description": "Display name of the achievement"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what was achieved"
+    },
+    "icon_emoji": {
+      "type": "string",
+      "description": "Emoji icon for the achievement"
+    },
+    "rarity": {
+      "type": "string",
+      "enum": [
+        "common",
+        "rare",
+        "epic",
+        "legendary"
+      ],
+      "description": "Rarity level of the achievement"
+    },
+    "points_awarded": {
+      "type": "number",
+      "default": 0,
+      "description": "Achievement points awarded"
+    },
+    "game_id": {
+      "type": "string",
+      "description": "ID of game where achievement was earned (if applicable)"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game"
+    },
+    "earned_at": {
+      "type": "string",
+      "description": "ISO timestamp when achievement was earned"
+    },
+    "progress_value": {
+      "type": "number",
+      "description": "Value that triggered the achievement (score, wins, etc.)"
+    },
+    "shared": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the achievement was shared publicly"
+    }
+  },
+  "required": [
+    "user_email",
+    "achievement_type",
+    "achievement_name",
+    "earned_at"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

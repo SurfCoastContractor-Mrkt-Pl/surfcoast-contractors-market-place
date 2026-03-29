@@ -1,0 +1,153 @@
+{
+  "name": "GamePerformanceAnalytics",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "trade_game_id": {
+      "type": "string",
+      "description": "ID of the game"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "description": "Game difficulty level"
+    },
+    "total_sessions": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of sessions played"
+    },
+    "completed_sessions": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of completed/solved sessions"
+    },
+    "completion_rate": {
+      "type": "number",
+      "default": 0,
+      "description": "Completion rate as percentage"
+    },
+    "avg_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Average score across all attempts"
+    },
+    "best_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Highest score achieved"
+    },
+    "worst_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Lowest score achieved"
+    },
+    "avg_completion_time": {
+      "type": "number",
+      "default": 0,
+      "description": "Average time to complete in seconds"
+    },
+    "best_completion_time": {
+      "type": "number",
+      "default": 0,
+      "description": "Fastest completion time in seconds"
+    },
+    "score_trend": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "avg_score": {
+            "type": "number"
+          },
+          "sessions": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "Weekly performance trend"
+    },
+    "consistency_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Consistency of performance (0-100)"
+    },
+    "improvement_rate": {
+      "type": "number",
+      "default": 0,
+      "description": "Score improvement percentage over time"
+    },
+    "last_played": {
+      "type": "string",
+      "description": "ISO timestamp of last session"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "Last time analytics were updated"
+    }
+  },
+  "required": [
+    "user_email",
+    "trade_game_id",
+    "game_title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
