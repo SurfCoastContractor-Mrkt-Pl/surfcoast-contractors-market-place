@@ -85,60 +85,7 @@ export default function LayoutMobileMenu({
                 </div>
               </Link>
             ))}
-            {isLoggedIn && (
-              <div className="border-t border-slate-100 pt-2">
-                <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-                <Link to={createPageUrl('Dashboard')} onClick={handleNavClick}>
-                  <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                    🏠 Client Dashboard
-                  </div>
-                </Link>
-                {isContractor ? (
-                  <Link to={createPageUrl('ContractorFinancialDashboard')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      🔧 Contractor Dashboard
-                    </div>
-                  </Link>
-                ) : (
-                  <Link to={createPageUrl('BecomeContractor')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
-                      + Become a Contractor
-                    </div>
-                  </Link>
-                )}
-                {hasCustomerProfile ? (
-                  <Link to={createPageUrl('ConsumerHub')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      🛒 Consumer Dashboard
-                    </div>
-                  </Link>
-                ) : (
-                  <Link to={createPageUrl('ConsumerSignup')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
-                      + Become a Consumer
-                    </div>
-                  </Link>
-                )}
-                {hasMarketShop ? (
-                  <Link to={createPageUrl('MarketShopDashboard')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                      🛍️ MarketShop
-                    </div>
-                  </Link>
-                ) : (
-                  <Link to={createPageUrl('MarketShopSignup')} onClick={handleNavClick}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg text-blue-600">
-                      + Add MarketShop
-                    </div>
-                  </Link>
-                )}
-                <Link to="/" onClick={handleNavClick}>
-                  <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                    Go to Homepage
-                  </div>
-                </Link>
-              </div>
-            )}
+
             <Link to={createPageUrl('MarketDirectory')} onClick={handleNavClick}>
               <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600 border-t border-slate-100">
                 Browse Markets & Vendors
