@@ -11,8 +11,18 @@ Deno.serve(async (req) => {
 
     const { job_id } = await req.json();
 
-    // Fetch job details
-    const job = await base44.entities.Job.filter({ id: job_id });
+    if (!job_id) {
+      return Response.json({ error: 'job_id required' }, { status: 400 });
+    }
+
+    // Fetch job details - handle invalid IDs gracefully
+    let job;
+    try {
+      job = await base44.entities.Job.filter({ id: job_id });
+    } catch (e) {
+      return Response.json({ error: 'Invalid job ID' }, { status: 400 });
+    }
+
     if (!job?.length) {
       return Response.json({ error: 'Job not found' }, { status: 404 });
     }
