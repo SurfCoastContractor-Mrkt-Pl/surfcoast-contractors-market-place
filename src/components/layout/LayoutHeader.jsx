@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle, Briefcase } from 'lucide-react';
+import { Menu, X, UserCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 
@@ -32,31 +32,33 @@ export default function LayoutHeader({
     <nav className="z-50 bg-white border-b border-slate-200">
       {/* Main nav bar */}
       <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4 relative">
+        {/* Logo */}
+        <Link to="/" className="flex-shrink-0 font-semibold text-slate-900 hover:text-slate-700 transition-colors">
+          <img src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/2570592e3_homebutton.png" alt="SurfCoast" className="h-8 w-auto" />
+        </Link>
+
         {/* Desktop Nav - Left */}
-        {currentPageName !== 'Home' && (
-          <div className="hidden lg:flex items-center gap-1 flex-shrink">
-            {getNavLinks(isContractor).map(link => {
-              const Icon = link.icon;
-              return (
-                <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
-                  <Button
-                    variant="ghost"
-                    className={`text-sm relative ${currentPageName === link.page ? 'bg-blue-50' : 'text-slate-600 hover:text-slate-900'}`}
-                    style={currentPageName === link.page ? { color: '#1E5A96' } : {}}
-                  >
-                    {Icon && <Icon className="w-4 h-4 mr-1" />}
-                    {link.name}
-                    {link.badge && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                        {link.badge > 99 ? '99+' : link.badge}
-                      </span>
-                    )}
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        <div className="hidden lg:flex items-center gap-1 flex-shrink">
+          {getNavLinks(isContractor).map(link => {
+            const Icon = link.icon;
+            return (
+              <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
+                <Button
+                  variant="ghost"
+                  className={`text-sm relative ${currentPageName === link.page ? 'bg-primary/10 text-primary' : 'text-slate-600 hover:text-slate-900'}`}
+                >
+                  {Icon && <Icon className="w-4 h-4 mr-1" />}
+                  {link.name}
+                  {link.badge && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {link.badge > 99 ? '99+' : link.badge}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+            );
+          })}
+        </div>
 
         {/* Desktop Nav - Right */}
         <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
@@ -178,40 +180,29 @@ function AccountDropdown({
 
   return (
     <div className={cn("bg-white border border-slate-200 rounded-xl shadow-lg z-50 w-full", !isMobile && "absolute right-0 top-full mt-1 w-52")}>
-      <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
-        ACCOUNT
-      </div>
-      <Item path={createPageUrl('Dashboard')}>My Dashboard</Item>
+    <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
+      MY PROFILES
+    </div>
+    <Item path={createPageUrl('Dashboard')}>Client Account</Item>
+    {isContractor ? (
+      <Item path={createPageUrl('ContractorFinancialDashboard')}>Contractor Account</Item>
+    ) : (
+      <Item path={createPageUrl('BecomeContractor')} className="text-primary hover:bg-primary/5">+ Become a Contractor</Item>
+    )}
+    {hasCustomerProfile ? (
+      <Item path={createPageUrl('ConsumerHub')}>Consumer Account</Item>
+    ) : (
+      <Item path={createPageUrl('ConsumerSignup')} className="text-primary hover:bg-primary/5">+ Become a Consumer</Item>
+    )}
+    {hasMarketShop ? (
+      <Item path={createPageUrl('MarketShopDashboard')}>MarketShop Account</Item>
+    ) : (
+      <Item path={createPageUrl('MarketShopSignup')} className="text-primary hover:bg-primary/5">+ Add MarketShop</Item>
+    )}
+    <div className="border-t border-slate-200">
       <Item path="/About">About Us</Item>
-      {(isContractor ? contractorLinks : customerLinks).map(link => (
-        <Item key={link.page} path={createPageUrl(link.page)}>{link.name}</Item>
-      ))}
-      <div className="border-t border-slate-200">
-        <div className="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Switch Profile</div>
-        <Item path={createPageUrl('Dashboard')}>🏠 Client Dashboard</Item>
-        {isContractor ? (
-          <Item path={createPageUrl('ContractorFinancialDashboard')}>🔧 Contractor Dashboard</Item>
-        ) : (
-          <Item path={createPageUrl('BecomeContractor')} className="text-blue-600 hover:bg-blue-50">+ Become a Contractor</Item>
-        )}
-        {hasCustomerProfile ? (
-          <Item path={createPageUrl('ConsumerHub')}>🛒 Consumer Dashboard</Item>
-        ) : (
-          <Item path={createPageUrl('ConsumerSignup')} className="text-blue-600 hover:bg-blue-50">+ Become a Consumer</Item>
-        )}
-        {hasMarketShop ? (
-          <Item path={createPageUrl('MarketShopDashboard')}>🛍️ MarketShop</Item>
-        ) : (
-          <Item path={createPageUrl('MarketShopSignup')} className="text-blue-600 hover:bg-blue-50">+ Add MarketShop</Item>
-        )}
-        <Item path="/">Go to Homepage</Item>
-      </div>
-      <button
-        onMouseDown={(e) => { e.preventDefault(); go(createPageUrl('MarketDirectory')); }}
-        className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 border-t border-slate-200"
-      >
-        Browse Markets & Vendors
-      </button>
+      <Item path={createPageUrl('MarketDirectory')}>Browse Markets & Vendors</Item>
+    </div>
       <button
         onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
         className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
