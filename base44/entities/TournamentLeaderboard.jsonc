@@ -1,0 +1,118 @@
+{
+  "name": "TournamentLeaderboard",
+  "type": "object",
+  "properties": {
+    "tournament_id": {
+      "type": "string",
+      "description": "ID of the SeasonalTournament"
+    },
+    "season_number": {
+      "type": "number",
+      "description": "Season number for quick filtering"
+    },
+    "rank": {
+      "type": "number",
+      "description": "Player rank in tournament (1, 2, 3...)"
+    },
+    "player_email": {
+      "type": "string",
+      "description": "Email of the player"
+    },
+    "player_name": {
+      "type": "string",
+      "description": "Name of the player"
+    },
+    "player_tier": {
+      "type": "string",
+      "enum": [
+        "bronze",
+        "silver",
+        "gold",
+        "platinum"
+      ],
+      "description": "Player's game reward tier"
+    },
+    "games_completed": {
+      "type": "number",
+      "description": "Number of games completed in tournament"
+    },
+    "total_score": {
+      "type": "number",
+      "description": "Total points earned across all games"
+    },
+    "average_score": {
+      "type": "number",
+      "description": "Average score per game"
+    },
+    "wins": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of competitive match wins"
+    },
+    "best_score": {
+      "type": "number",
+      "description": "Highest single-game score"
+    },
+    "qualification_status": {
+      "type": "string",
+      "enum": [
+        "qualified",
+        "not_qualified",
+        "pending"
+      ],
+      "default": "pending",
+      "description": "Tournament qualification status"
+    },
+    "prize_earned": {
+      "type": "number",
+      "default": 0,
+      "description": "Prize amount earned based on final rank"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO timestamp of last update"
+    }
+  },
+  "required": [
+    "tournament_id",
+    "season_number",
+    "player_email",
+    "player_name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": true,
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

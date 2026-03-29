@@ -1,0 +1,94 @@
+{
+  "name": "SeasonalTournament",
+  "type": "object",
+  "properties": {
+    "season_number": {
+      "type": "number",
+      "description": "Season identifier (1, 2, 3, etc.)"
+    },
+    "year": {
+      "type": "number",
+      "description": "Year the tournament takes place"
+    },
+    "name": {
+      "type": "string",
+      "description": "Tournament season name (e.g., 'Spring 2026')"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "upcoming",
+        "active",
+        "finished"
+      ],
+      "default": "upcoming",
+      "description": "Current status of the tournament"
+    },
+    "start_date": {
+      "type": "string",
+      "description": "ISO timestamp when the season starts"
+    },
+    "end_date": {
+      "type": "string",
+      "description": "ISO timestamp when the season ends"
+    },
+    "trade_game_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of eligible trade game IDs"
+    },
+    "total_prize_pool": {
+      "type": "number",
+      "default": 0,
+      "description": "Total prize pool in dollars"
+    },
+    "prize_distribution": {
+      "type": "object",
+      "description": "Prize amounts by rank (1st, 2nd, 3rd, etc.)",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "min_games_required": {
+      "type": "number",
+      "default": 5,
+      "description": "Minimum games to complete for qualification"
+    },
+    "description": {
+      "type": "string",
+      "description": "Tournament description and rules"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to feature on homepage"
+    }
+  },
+  "required": [
+    "season_number",
+    "year",
+    "name",
+    "start_date",
+    "end_date"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
