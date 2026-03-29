@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle, Briefcase, Home } from 'lucide-react';
+import { Menu, X, UserCircle, Briefcase } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 
@@ -32,13 +32,6 @@ export default function LayoutHeader({
     <nav className="z-50 bg-white border-b border-slate-200">
       {/* Main nav bar */}
       <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4 relative">
-        {/* Home Logo Button */}
-        <Link to="/" className="flex-shrink-0">
-          <Button variant="ghost" className="text-slate-600 hover:text-slate-900 p-1.5" aria-label="Go to home page">
-            <Home className="w-5 h-5" />
-          </Button>
-        </Link>
-
         {/* Desktop Nav - Left */}
         {currentPageName !== 'Home' && (
           <div className="hidden lg:flex items-center gap-1 flex-shrink">
