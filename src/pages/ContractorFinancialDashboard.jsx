@@ -9,6 +9,16 @@ import CRMSyncPanel from '@/components/crm/CRMSyncPanel';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, Calendar } from 'lucide-react';
+import ExampleBanner from '@/components/examples/ExampleBanner';
+import useExampleVisibility from '@/hooks/useExampleVisibility';
+
+const EXAMPLE_PAYMENT = {
+  id: 'example-payment',
+  purpose: 'Bathroom Plumbing Repair — John Smith',
+  amount: 492.00,
+  status: 'confirmed',
+  confirmed_at: '2026-03-15T10:00:00Z',
+};
 
 export default function ContractorFinancialDashboard() {
   // Fetch contractor data
@@ -127,6 +137,9 @@ export default function ContractorFinancialDashboard() {
     };
   }, [scopes, payments]);
 
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('financial_dashboard', completedJobs);
+
   if (!contractor) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -203,6 +216,23 @@ export default function ContractorFinancialDashboard() {
           <h3 className="text-lg font-bold text-slate-900 mb-4">CRM Integration</h3>
           <CRMSyncPanel connectorName="-build as needed" userType="contractor" />
         </Card>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div className="p-4 bg-white rounded-lg border border-amber-200">
+            <p className="text-xs text-slate-500 uppercase font-semibold mb-3 tracking-wide">Example Payout Record</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-slate-900">{EXAMPLE_PAYMENT.purpose}</p>
+                <p className="text-sm text-slate-500">Completed: Mar 15, 2026</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xl font-bold text-green-600">${EXAMPLE_PAYMENT.amount.toFixed(2)}</p>
+                <span className="text-xs bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full">Paid Out</span>
+              </div>
+            </div>
+          </div>
+        </ExampleBanner>
 
         {/* Recent Payouts */}
         <RecentPaymentsTable payments={payments} />

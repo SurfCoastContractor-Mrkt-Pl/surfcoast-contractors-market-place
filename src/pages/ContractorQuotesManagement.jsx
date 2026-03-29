@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import ExampleBanner from '@/components/examples/ExampleBanner';
+import useExampleVisibility from '@/hooks/useExampleVisibility';
+
+const EXAMPLE_QUOTE = {
+  id: 'example-quote',
+  job_title: 'Kitchen Cabinet Installation',
+  work_description: 'Install 10 new kitchen cabinets including upper and lower units. Customer has cabinets ready, needs professional installation and alignment.',
+  customer_name: 'Maria Torres',
+  customer_email: 'maria.torres@example.com',
+  status: 'pending',
+  budget: '$800 - $1,200',
+  response_deadline: '2026-04-05T00:00:00Z',
+  created_at: '2026-03-28T08:00:00Z',
+};
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -42,6 +56,18 @@ export default function ContractorQuotesManagement() {
     };
     checkAuth();
   }, []);
+
+  const { data: contractor } = useQuery({
+    queryKey: ['contractor-for-examples', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return null;
+      const contractors = await base44.entities.Contractor.filter({ email: user.email });
+      return contractors?.[0];
+    },
+    enabled: !!user?.email,
+  });
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('quotes', completedJobs);
 
   const { data: quotes, isLoading } = useQuery({
     queryKey: ['quoteRequests', user?.email],
@@ -134,6 +160,35 @@ export default function ContractorQuotesManagement() {
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Quote Requests</h1>
           <p className="text-slate-600">Manage incoming client quote requests and send estimates</p>
         </div>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div className="p-5 bg-white rounded-lg border border-amber-200">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <p className="font-semibold text-slate-900">{EXAMPLE_QUOTE.job_title}</p>
+                  <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded-full">Pending</span>
+                </div>
+                <p className="text-sm text-slate-600 mb-3">{EXAMPLE_QUOTE.work_description}</p>
+                <div className="flex gap-6 text-sm flex-wrap">
+                  <div>
+                    <p className="font-medium text-slate-900">{EXAMPLE_QUOTE.customer_name}</p>
+                    <p className="text-slate-500">{EXAMPLE_QUOTE.customer_email}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900">Budget</p>
+                    <p className="text-slate-500">{EXAMPLE_QUOTE.budget}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-orange-600 mt-2">Respond by: Apr 5, 2026</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-slate-400 italic">Example — not a real request</p>
+              </div>
+            </div>
+          </div>
+        </ExampleBanner>
 
         {/* Search and Filters */}
         <div className="mb-6 space-y-4">

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import ExampleBanner from '@/components/examples/ExampleBanner';
+import useExampleVisibility from '@/hooks/useExampleVisibility';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +25,8 @@ export default function MarketShopInventory() {
     low_stock_threshold: 5,
     category: '',
   });
+
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('market_inventory', listings.length, 10);
 
   // Load user and listings
   useEffect(() => {
@@ -187,6 +191,28 @@ export default function MarketShopInventory() {
             Add Product
           </Button>
         </div>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div className="p-5 bg-white rounded-lg border border-amber-200 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <p className="font-semibold text-slate-900">Fresh Strawberries</p>
+              <p className="text-sm text-slate-500">Category: Fruit · Unit: lb</p>
+              <p className="text-sm text-slate-500 mt-1">Low stock alert at: 5 lbs</p>
+            </div>
+            <div className="flex gap-8 text-center">
+              <div>
+                <p className="text-2xl font-bold text-green-700">32</p>
+                <p className="text-xs text-slate-500">Units in Stock</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-slate-700">$4.99</p>
+                <p className="text-xs text-slate-500">Price per lb</p>
+              </div>
+            </div>
+            <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full self-center">In Stock</span>
+          </div>
+        </ExampleBanner>
 
         {/* Error Alert */}
         {error && (

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import ExampleBanner from '@/components/examples/ExampleBanner';
+import useExampleVisibility from '@/hooks/useExampleVisibility';
 import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -54,6 +56,9 @@ export default function ContractorInventoryDashboard() {
       </div>
     );
   }
+
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inventory', completedJobs);
 
   const lowStockItems = inventory.filter((item) => item.current_quantity <= item.low_stock_threshold);
   const totalValue = inventory.reduce((sum, item) => sum + (item.current_quantity * (item.unit_cost || 0)), 0);
@@ -131,6 +136,31 @@ export default function ContractorInventoryDashboard() {
             </div>
           </Card>
         </div>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div className="p-5 bg-white rounded-lg border border-amber-200 flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <p className="font-semibold text-slate-900">PVC Pipe 1-inch</p>
+              <p className="text-sm text-slate-500">Category: Plumbing · Supplier: Home Depot</p>
+            </div>
+            <div className="flex gap-8 text-center">
+              <div>
+                <p className="text-2xl font-bold text-blue-700">24</p>
+                <p className="text-xs text-slate-500">Units in Stock</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-slate-700">$2.50</p>
+                <p className="text-xs text-slate-500">Unit Cost</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-green-700">$60.00</p>
+                <p className="text-xs text-slate-500">Total Value</p>
+              </div>
+            </div>
+            <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">In Stock</span>
+          </div>
+        </ExampleBanner>
 
         {/* Low Stock Alerts */}
         {lowStockItems.length > 0 && (

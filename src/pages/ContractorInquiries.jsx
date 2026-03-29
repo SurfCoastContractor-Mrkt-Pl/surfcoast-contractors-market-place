@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { MessageSquare, Zap } from "lucide-react";
 import InquiryPipelineView from "@/components/contractor/InquiryPipelineView";
+import ExampleBanner from "@/components/examples/ExampleBanner";
+import useExampleVisibility from "@/hooks/useExampleVisibility";
 
 export default function ContractorInquiries() {
   const [contractor, setContractor] = useState(null);
@@ -46,6 +48,9 @@ export default function ContractorInquiries() {
     );
   }
 
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inquiries', completedJobs);
+
   return (
     <div style={{ background: "#0a1628", minHeight: "100vh", padding: "20px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -61,6 +66,21 @@ export default function ContractorInquiries() {
             Track and manage incoming job requests from customers
           </p>
         </div>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "16px" }}>
+            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Example Inquiry</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+              <div>
+                <p style={{ color: "#fff", fontWeight: "700", fontSize: "16px", margin: "0 0 4px" }}>Outdoor Deck Repair</p>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "13px", margin: "0 0 4px" }}>Customer: David Nguyen</p>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", margin: "0" }}>Budget: $400–$700 · Requested: Mar 28, 2026</p>
+              </div>
+              <span style={{ background: "#f59e0b", color: "#78350f", fontSize: "12px", fontWeight: "700", padding: "4px 12px", borderRadius: "999px" }}>Pending Response</span>
+            </div>
+          </div>
+        </ExampleBanner>
 
         {/* Info Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "32px" }}>

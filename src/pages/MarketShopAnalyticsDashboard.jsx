@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import ExampleBanner from '@/components/examples/ExampleBanner';
+import useExampleVisibility from '@/hooks/useExampleVisibility';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertCircle, Loader2, DollarSign, ShoppingCart, Star, TrendingUp } from 'lucide-react';
@@ -65,6 +67,8 @@ export default function MarketShopAnalyticsDashboard() {
 
   const { shop, summary, chartData } = data;
 
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('market_analytics', summary?.totalOrders || 0);
+
   return (
     <div className="min-h-screen bg-slate-50 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -75,6 +79,30 @@ export default function MarketShopAnalyticsDashboard() {
             {shop.type === 'farmers_market' ? 'Farmers Market' : shop.type === 'swap_meet' ? 'Swap Meet' : 'Market'} Vendor
           </p>
         </div>
+
+        {/* Example Entry */}
+        <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
+          <div className="p-5 bg-white rounded-lg border border-amber-200">
+            <p className="text-xs text-slate-500 uppercase font-semibold mb-3 tracking-wide">Example Order Record</p>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <p className="font-semibold text-slate-900">ORD-20260315-0042</p>
+                <p className="text-sm text-slate-500">Mar 15, 2026 · 3 items</p>
+              </div>
+              <div className="flex gap-8 text-center">
+                <div>
+                  <p className="text-xl font-bold text-slate-900">$47.50</p>
+                  <p className="text-xs text-slate-500">Order Total</p>
+                </div>
+                <div>
+                  <p className="text-xl font-bold text-green-600">$45.13</p>
+                  <p className="text-xs text-slate-500">Your Payout (95%)</p>
+                </div>
+              </div>
+              <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Completed</span>
+            </div>
+          </div>
+        </ExampleBanner>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
