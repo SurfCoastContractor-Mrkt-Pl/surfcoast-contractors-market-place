@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
   const filteredContractors = useMemo(() => {
     return contractors.filter(c => {
-      if (contractorSubFilter !== 'all' && c.subscription_status !== contractorSubFilter) return false;
+      if (contractorSubFilter !== 'all' && c.wave_shop_subscription_status !== contractorSubFilter) return false;
       if (contractorAcctFilter !== 'all' && c.account_locked !== (contractorAcctFilter === 'locked')) return false;
       return true;
     });
@@ -66,8 +66,8 @@ export default function AdminDashboard() {
 
   const filteredReviews = useMemo(() => {
     return reviews.filter(r => {
-      if (reviewStatusFilter !== 'all' && r.status !== reviewStatusFilter) return false;
-      if (reviewRatingFilter !== 'all' && r.rating !== parseInt(reviewRatingFilter)) return false;
+      if (reviewStatusFilter !== 'all' && r.moderation_status !== reviewStatusFilter) return false;
+      if (reviewRatingFilter !== 'all' && r.overall_rating !== parseInt(reviewRatingFilter)) return false;
       return true;
     });
   }, [reviews, reviewStatusFilter, reviewRatingFilter]);
@@ -108,8 +108,8 @@ export default function AdminDashboard() {
   const monthlyRevenue = activeVendors * 35;
 
   const handleVendorApprove = async (id, shop) => {
-    await base44.entities.MarketShop.update(id, { status: 'active', subscription_status: 'active' });
-    setVendors(vendors.map(v => v.id === id ? { ...v, status: 'active', subscription_status: 'active' } : v));
+    await base44.entities.MarketShop.update(id, { status: 'active', wave_shop_subscription_status: 'active' });
+    setVendors(vendors.map(v => v.id === id ? { ...v, status: 'active', wave_shop_subscription_status: 'active' } : v));
   };
 
   const handleVendorSuspend = async (id) => {
@@ -118,13 +118,13 @@ export default function AdminDashboard() {
   };
 
   const handleReviewHide = async (id) => {
-    await base44.entities.VendorReview.update(id, { status: 'hidden' });
-    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'hidden' } : r));
+    await base44.entities.Review.update(id, { moderation_status: 'flagged_inappropriate' });
+    setReviews(reviews.map(r => r.id === id ? { ...r, moderation_status: 'flagged_inappropriate' } : r));
   };
 
   const handleReviewShow = async (id) => {
-    await base44.entities.VendorReview.update(id, { status: 'visible' });
-    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'visible' } : r));
+    await base44.entities.Review.update(id, { moderation_status: 'approved' });
+    setReviews(reviews.map(r => r.id === id ? { ...r, moderation_status: 'approved' } : r));
   };
 
   const handleReviewFlag = async (id, flagged) => {
@@ -319,7 +319,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-slate-400 text-xs">{v.email}</td>
                       <td className="px-6 py-4 text-slate-400">{v.city}, {v.state}</td>
                       <td className="px-6 py-4"><StatusBadge status={v.status} /></td>
-                      <td className="px-6 py-4"><StatusBadge status={v.subscription_status || 'inactive'} /></td>
+                      <td className="px-6 py-4"><StatusBadge status={v.wave_shop_subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(v.created_date).toLocaleDateString()}</td>
                       <td className="px-6 py-4">
                        <div className="flex gap-2">
@@ -407,7 +407,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-slate-400 text-xs">{c.email}</td>
                       <td className="px-6 py-4 text-slate-300 capitalize">{c.trade_specialty?.replace('_', ' ')}</td>
                       <td className="px-6 py-4 text-slate-400">{c.location}</td>
-                      <td className="px-6 py-4"><StatusBadge status={c.subscription_status || 'inactive'} /></td>
+                      <td className="px-6 py-4"><StatusBadge status={c.wave_shop_subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4">{c.account_locked ? <StatusBadge status="locked" /> : <StatusBadge status="active" />}</td>
                       <td className="px-6 py-4">{c.stripe_account_setup_complete ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Ban className="w-4 h-4 text-red-400" />}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(c.created_date).toLocaleDateString()}</td>
@@ -474,8 +474,8 @@ export default function AdminDashboard() {
                   className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
                 >
                   <option value="all">All Status</option>
-                  <option value="visible">Visible</option>
-                  <option value="hidden">Hidden</option>
+                   <option value="approved">Approved</option>
+                   <option value="flagged_inappropriate">Flagged</option>
                 </select>
                 <select
                   value={reviewRatingFilter}
@@ -514,24 +514,24 @@ export default function AdminDashboard() {
                         <Star key={i} className={`w-4 h-4 ${i < r.rating ? 'fill-amber-400' : ''}`} />
                       ))}</td>
                       <td className="px-6 py-4 text-slate-300">{r.title}</td>
-                      <td className="px-6 py-4"><StatusBadge status={r.status} /></td>
+                      <td className="px-6 py-4"><StatusBadge status={r.moderation_status} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
-                          {r.status === 'visible' && (
+                          {r.moderation_status === 'approved' && (
                             <button
                               onClick={() => handleReviewHide(r.id)}
                               className="p-1.5 bg-red-700 hover:bg-red-600 rounded transition-colors"
-                              title="Hide Review"
+                              title="Flag Review"
                             >
                               <EyeOff className="w-4 h-4 text-white" />
                             </button>
                           )}
-                          {r.status === 'hidden' && (
+                          {r.moderation_status === 'flagged_inappropriate' && (
                             <button
                               onClick={() => handleReviewShow(r.id)}
                               className="p-1.5 bg-green-700 hover:bg-green-600 rounded transition-colors"
-                              title="Show Review"
+                              title="Unflag Review"
                             >
                               <Eye className="w-4 h-4 text-white" />
                             </button>
