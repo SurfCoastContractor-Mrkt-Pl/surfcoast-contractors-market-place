@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import {
-  MapPin, Clock, DollarSign, ChevronRight, Plus,
-  CheckCircle, AlertCircle, Camera, FileText, Phone,
-  MessageSquare, Navigation, Wrench, Filter, Sparkles
+  Wrench, Filter, Sparkles
 } from 'lucide-react';
 import FieldJobDetail from './FieldJobDetail';
 import RecommendedJobs from './RecommendedJobs';
+import FieldJobCard from './FieldJobCard';
 import { useLocalCache } from '@/hooks/useMobileOptimization';
-
-const STATUS_CONFIG = {
-  pending_approval: { label: 'Pending', color: 'text-yellow-400', bg: 'bg-yellow-900/40', dot: 'bg-yellow-400' },
-  approved: { label: 'Approved', color: 'text-blue-400', bg: 'bg-blue-900/40', dot: 'bg-blue-400' },
-  active: { label: 'In Progress', color: 'text-green-400', bg: 'bg-green-900/40', dot: 'bg-green-400' },
-  pending_ratings: { label: 'Pending Rating', color: 'text-purple-400', bg: 'bg-purple-900/40', dot: 'bg-purple-400' },
-  closed: { label: 'Closed', color: 'text-slate-400', bg: 'bg-slate-700/40', dot: 'bg-slate-400' },
-};
 
 const FILTER_TABS = ['All', 'Active', 'Upcoming', 'Completed'];
 const VIEW_TABS = ['My Jobs', 'Recommended'];
@@ -29,36 +20,48 @@ export default function WaveFOJobsList({ contractor, user }) {
   const { data: cachedJobs, set: setCachedJobs } = useLocalCache('wave_fo_jobs', 60);
 
   useEffect(() => {
+    let isMounted = true;
     const load = async () => {
       try {
-        const data = await base44.entities.ScopeOfWork.filter({ contractor_email: user.email });
-        if (data) {
-          setScopes(data);
-          setCachedJobs(data);
-        } else if (cachedJobs) {
-          setScopes(cachedJobs);
+        const data = await base44.entities.ScopeOfWork.filter({ contractor_email: user.email }).catch(() => null);
+        if (isMounted) {
+          if (data) {
+            setScopes(data);
+            setCachedJobs(data);
+          } else if (cachedJobs) {
+            setScopes(cachedJobs);
+          }
+          setLoading(false);
         }
-      } catch {
-        if (cachedJobs) setScopes(cachedJobs);
+      } catch (e) {
+        if (isMounted) {
+          console.warn('Failed to load jobs:', e.message);
+          if (cachedJobs) setScopes(cachedJobs);
+          setLoading(false);
+        }
       }
-      setLoading(false);
     };
     load();
-  }, [user.email, cachedJobs, setCachedJobs]);
+    return () => { isMounted = false; };
+  }, [user.email]);
 
-  const filtered = scopes.filter(s => {
+  const filtered = useMemo(() => scopes.filter(s => {
     if (filter === 'All') return true;
     if (filter === 'Active') return ['approved', 'active'].includes(s.status);
     if (filter === 'Upcoming') return s.status === 'pending_approval';
     if (filter === 'Completed') return ['closed', 'pending_ratings'].includes(s.status);
     return true;
-  });
+  }), [scopes, filter]);
 
-  const todayJobs = scopes.filter(s => {
+  const todayJobs = useMemo(() => scopes.filter(s => {
     if (!s.agreed_work_date) return false;
     const today = new Date().toISOString().split('T')[0];
     return s.agreed_work_date === today;
-  });
+  }), [scopes]);
+
+  const handleSelectScope = useCallback((scope) => {
+    setSelectedScope(scope);
+  }, []);
 
   if (selectedScope) {
     return <FieldJobDetail scope={selectedScope} user={user} onBack={() => setSelectedScope(null)} onUpdate={(updated) => {
@@ -66,6 +69,8 @@ export default function WaveFOJobsList({ contractor, user }) {
       setSelectedScope(updated);
     }} />;
   }
+
+  const activeCount = scopes.filter(s => ['approved','active'].includes(s.status)).length;
 
   return (
     <div className="bg-slate-950 min-h-full">
@@ -108,7 +113,7 @@ export default function WaveFOJobsList({ contractor, user }) {
           {/* Stats Row */}
           <div className="grid grid-cols-3 gap-3 mx-4 mt-4">
             <div className="bg-slate-900 rounded-2xl p-3 text-center">
-              <p className="text-2xl font-bold text-white">{scopes.filter(s => ['approved','active'].includes(s.status)).length}</p>
+              <p className="text-2xl font-bold text-white">{activeCount}</p>
               <p className="text-slate-500 text-xs mt-0.5">Active</p>
             </div>
             <div className="bg-slate-900 rounded-2xl p-3 text-center">
@@ -140,52 +145,25 @@ export default function WaveFOJobsList({ contractor, user }) {
 
           {/* Jobs List */}
           <div className="px-4 mt-4 pb-6 space-y-3">
-        {loading ? (
+          {loading ? (
           <div className="text-center py-12 text-slate-500">
             <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             Loading jobs...
           </div>
-        ) : filtered.length === 0 ? (
+          ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Wrench className="w-12 h-12 text-slate-700 mx-auto mb-3" />
             <p className="text-slate-500 font-medium">No jobs found</p>
             <p className="text-slate-600 text-sm mt-1">New jobs will appear here</p>
           </div>
-        ) : (
-          filtered.map(scope => {
-            const status = STATUS_CONFIG[scope.status] || STATUS_CONFIG.pending_approval;
-            return (
-              <button
-                key={scope.id}
-                onClick={() => setSelectedScope(scope)}
-                className="w-full bg-slate-900 rounded-2xl p-4 text-left border border-slate-800 active:scale-[0.98] transition-transform"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className={`w-2 h-2 rounded-full ${status.dot}`} />
-                      <span className={`text-xs font-semibold ${status.color}`}>{status.label}</span>
-                    </div>
-                    <p className="text-white font-semibold text-base leading-tight truncate">{scope.job_title}</p>
-                    <p className="text-slate-400 text-sm mt-1 truncate">{scope.customer_name}</p>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-slate-600 flex-shrink-0 mt-1" />
-                </div>
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-800">
-                  {scope.agreed_work_date && (
-                    <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-                      <Clock className="w-3.5 h-3.5" />
-                      {new Date(scope.agreed_work_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-                    <DollarSign className="w-3.5 h-3.5" />
-                    {scope.cost_type === 'hourly' ? `$${scope.cost_amount}/hr` : `$${scope.cost_amount?.toLocaleString()}`}
-                  </div>
-                </div>
-              </button>
-            );
-          })
+          ) : (
+          filtered.map(scope => (
+            <FieldJobCard 
+              key={scope.id}
+              scope={scope}
+              onSelect={() => handleSelectScope(scope)}
+            />
+          ))
           )}
           </div>
         </>

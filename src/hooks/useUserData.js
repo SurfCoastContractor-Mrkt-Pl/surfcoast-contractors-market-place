@@ -23,7 +23,7 @@ export function useUserData() {
 }
 
 /**
- * Hook for fetching user profiles (contractor, market shop, customer)
+ * Hook for fetching user profiles (contractor, market shop, customer) with automatic cleanup
  */
 export function useUserProfiles(email) {
   const { data: profiles = {}, isLoading, error } = useQuery({
@@ -32,9 +32,9 @@ export function useUserProfiles(email) {
       if (!email) return {};
       
       const [contractors, marketShops, customers] = await Promise.all([
-        base44.entities.Contractor.filter({ email }),
-        base44.entities.MarketShop.filter({ email }),
-        base44.entities.CustomerProfile.filter({ email }),
+        base44.entities.Contractor.filter({ email }).catch(() => []),
+        base44.entities.MarketShop.filter({ email }).catch(() => []),
+        base44.entities.CustomerProfile.filter({ email }).catch(() => []),
       ]);
 
       return {
@@ -44,7 +44,8 @@ export function useUserProfiles(email) {
       };
     },
     enabled: !!email,
-    staleTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    gcTime: 20 * 60 * 1000, // 20 minutes (cleanup after unmount)
   });
 
   return {
@@ -57,7 +58,7 @@ export function useUserProfiles(email) {
 }
 
 /**
- * Hook for fetching unread message count
+ * Hook for fetching unread message count with auto-cleanup on unmount
  */
 export function useUnreadCount(email) {
   const { data: unreadCount = 0, isLoading, error } = useQuery({
@@ -67,18 +68,19 @@ export function useUnreadCount(email) {
 
       try {
         const [unreadMessages, unreadProjectMessages] = await Promise.all([
-          base44.entities.Message.filter({ recipient_email: email, read: false }),
-          base44.entities.ProjectMessage.filter({ recipient_email: email, sender_email: { $ne: email }, read: false })
+          base44.entities.Message.filter({ recipient_email: email, read: false }).catch(() => []),
+          base44.entities.ProjectMessage.filter({ recipient_email: email, sender_email: { $ne: email }, read: false }).catch(() => [])
         ]);
 
         return (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
       } catch (e) {
-        console.error('Failed to fetch unread count:', e);
+        console.warn('Failed to fetch unread count:', e.message);
         return 0;
       }
     },
     enabled: !!email,
-    staleTime: 2 * 60 * 1000, // 2 minutes (refresh more frequently for messages)
+    staleTime: 3 * 60 * 1000, // 3 minutes (slightly relaxed for better performance)
+    gcTime: 5 * 60 * 1000, // 5 minutes (cleanup after unmount)
   });
 
   return { unreadCount, isLoading, error };
