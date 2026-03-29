@@ -353,8 +353,7 @@ export default function ContractorAccount() {
                   <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
                   <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
                   <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
-                  <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Performance</TabsTrigger>
-                </>}
+                  </>}
                 {activeCategory === 'jobs' && <>
                   <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap">My Jobs</TabsTrigger>
                   <TabsTrigger value="scopes" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap">
@@ -394,7 +393,8 @@ export default function ContractorAccount() {
                   <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
                   <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
                   <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
-                </>}
+                  <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
+                  </>}
                 {activeCategory === 'account' && <>
                   <TabsTrigger value="settings" className="text-xs sm:text-sm flex items-center gap-1.5 whitespace-nowrap"><Settings className="w-3 h-3" />Settings</TabsTrigger>
                 </>}
