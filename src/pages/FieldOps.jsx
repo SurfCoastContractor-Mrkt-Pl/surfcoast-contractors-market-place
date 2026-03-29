@@ -83,12 +83,21 @@ export default function WaveFo() {
       const fetchUnreadCount = async () => {
       try {
         const [messages, projectMessages] = await Promise.all([
-          base44.entities.Message.filter({ recipient_email: user.email, read: false }),
-          base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false })
+          base44.entities.Message.filter({ recipient_email: user.email, read: false }).catch(err => {
+            console.warn('Message filter failed:', err.message);
+            return [];
+          }),
+          base44.entities.ProjectMessage.filter({ sender_email: { $ne: user.email }, read: false }).catch(err => {
+            console.warn('ProjectMessage filter failed:', err.message);
+            return [];
+          })
         ]);
-        setNotifCount((messages?.length || 0) + (projectMessages?.length || 0));
+        const messageCount = Array.isArray(messages) ? messages.length : 0;
+        const projectMessageCount = Array.isArray(projectMessages) ? projectMessages.length : 0;
+        setNotifCount(messageCount + projectMessageCount);
       } catch (error) {
         console.warn('Failed to fetch message counts:', error.message);
+        // Keep previous count on error, don't reset to 0
       }
       };
 

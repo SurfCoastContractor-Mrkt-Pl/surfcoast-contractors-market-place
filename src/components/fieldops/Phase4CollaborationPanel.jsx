@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageSquare, FileText, CheckSquare } from 'lucide-react';
+import { MessageSquare, FileText, CheckSquare, AlertCircle } from 'lucide-react';
 import ProjectMessagePanel from '@/components/projects/ProjectMessagePanel';
 import ProjectFileManager from '@/components/projects/ProjectFileManager';
 import ProjectMilestoneTracker from '@/components/projects/ProjectMilestoneTracker';
 import { useSubscriptionGate } from '@/hooks/useSubscriptionGate';
+import Phase4ErrorBoundary from './Phase4ErrorBoundary';
 
 /**
  * Phase 4 Collaboration Panel
@@ -12,13 +13,27 @@ import { useSubscriptionGate } from '@/hooks/useSubscriptionGate';
  * Tier-gated behind $50/month Communication subscription
  */
 export default function Phase4CollaborationPanel({ scopeId, currentUserType }) {
-  const { hasSubscription, loading } = useSubscriptionGate();
+  const { hasSubscription, loading, error } = useSubscriptionGate();
   const [activeTab, setActiveTab] = useState('messages');
 
   if (loading) {
     return (
       <div className="p-4 text-center text-slate-500">
+        <div className="inline-block w-5 h-5 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin mb-2" />
         <p className="text-sm">Loading collaboration features...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="flex gap-3 items-start">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm text-amber-800">{error}</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -42,27 +57,33 @@ export default function Phase4CollaborationPanel({ scopeId, currentUserType }) {
         </TabsList>
 
         <TabsContent value="messages">
-          <ProjectMessagePanel
-            scopeId={scopeId}
-            hasSubscription={hasSubscription}
-            currentUserType={currentUserType}
-          />
+          <Phase4ErrorBoundary>
+            <ProjectMessagePanel
+              scopeId={scopeId}
+              hasSubscription={hasSubscription}
+              currentUserType={currentUserType}
+            />
+          </Phase4ErrorBoundary>
         </TabsContent>
 
         <TabsContent value="files">
-          <ProjectFileManager
-            scopeId={scopeId}
-            hasSubscription={hasSubscription}
-            isContractor={currentUserType === 'contractor'}
-          />
+          <Phase4ErrorBoundary>
+            <ProjectFileManager
+              scopeId={scopeId}
+              hasSubscription={hasSubscription}
+              isContractor={currentUserType === 'contractor'}
+            />
+          </Phase4ErrorBoundary>
         </TabsContent>
 
         <TabsContent value="milestones">
-          <ProjectMilestoneTracker
-            scopeId={scopeId}
-            hasSubscription={hasSubscription}
-            isContractor={currentUserType === 'contractor'}
-          />
+          <Phase4ErrorBoundary>
+            <ProjectMilestoneTracker
+              scopeId={scopeId}
+              hasSubscription={hasSubscription}
+              isContractor={currentUserType === 'contractor'}
+            />
+          </Phase4ErrorBoundary>
         </TabsContent>
       </Tabs>
     </div>

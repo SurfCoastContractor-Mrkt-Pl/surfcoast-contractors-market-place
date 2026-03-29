@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 
 /**
  * Hook to check if user has active $50/month Communication subscription
- * Returns true only if user has an active subscription to the Communication plan
+ * Includes retry logic and error state tracking
  */
 export function useSubscriptionGate() {
   const [hasSubscription, setHasSubscription] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const retryCountRef = useRef(0);
+  const MAX_RETRIES = 3;
 
   useEffect(() => {
     const checkSubscription = async () => {
@@ -16,22 +19,32 @@ export function useSubscriptionGate() {
         if (!user) {
           setHasSubscription(false);
           setLoading(false);
+          setError(null);
           return;
         }
 
-        // Check for active subscription records (this represents the $50 Subscription Comm plan)
-        // The subscription entity is created when user has an active Subscription Comm subscription
+        // Check for active subscription records
         const subscriptions = await base44.entities.Subscription.filter({
           user_email: user.email,
           status: 'active'
         });
 
-        // For now, having ANY active subscription indicates they have the Communication subscription
-        // In production, you may want to track the specific product_id in the Subscription entity
         setHasSubscription(subscriptions && subscriptions.length > 0);
+        setError(null);
       } catch (error) {
         console.error('Error checking subscription:', error);
+        
+        // Retry logic with exponential backoff
+        if (retryCountRef.current < MAX_RETRIES) {
+          retryCountRef.current += 1;
+          const delayMs = Math.min(1000 * Math.pow(2, retryCountRef.current - 1), 5000);
+          setTimeout(() => checkSubscription(), delayMs);
+          return;
+        }
+        
+        // After max retries, default to false (deny access) and show error
         setHasSubscription(false);
+        setError('Failed to verify subscription. Features may be unavailable.');
       } finally {
         setLoading(false);
       }
@@ -40,5 +53,5 @@ export function useSubscriptionGate() {
     checkSubscription();
   }, []);
 
-  return { hasSubscription, loading };
+  return { hasSubscription, loading, error };
 }
