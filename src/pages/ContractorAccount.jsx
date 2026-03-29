@@ -35,10 +35,8 @@ import MinorComplianceChecklist from '@/components/contractor/MinorComplianceChe
 import CredentialDocumentsManager from '@/components/contractor/CredentialDocumentsManager';
 import ContractorAnalyticsDashboard from '@/components/contractor/ContractorAnalyticsDashboard';
 import AvailabilityStatusManager from '@/components/contractor/AvailabilityStatusManager';
-import FeaturedBadgeToggle from '@/components/contractor/FeaturedBadgeToggle';
 import ContractorJobDashboard from '@/components/contractor/ContractorJobDashboard';
 import RealTimeAvailabilityManager from '@/components/contractor/RealTimeAvailabilityManager';
-import FeaturedListingManager from '@/components/featured/FeaturedListingManager';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import ServicePackageManager from '@/components/contractor/ServicePackageManager';
 import LiveSessions from '@/components/contractor/LiveSessions';
@@ -392,7 +390,6 @@ export default function ContractorAccount() {
                   <TabsTrigger value="case-studies" className="text-xs sm:text-sm whitespace-nowrap">Case Studies</TabsTrigger>
                   <TabsTrigger value="license" className="text-xs sm:text-sm whitespace-nowrap">License</TabsTrigger>
                   <TabsTrigger value="badges" className="text-xs sm:text-sm whitespace-nowrap">Badges</TabsTrigger>
-                  <TabsTrigger value="featured" className="text-xs sm:text-sm whitespace-nowrap">Featured</TabsTrigger>
                   <TabsTrigger value="performance" className="text-xs sm:text-sm whitespace-nowrap">Analytics</TabsTrigger>
                   </>}
                 {activeCategory === 'account' && <>
@@ -409,7 +406,6 @@ export default function ContractorAccount() {
                    <RealTimeAvailabilityManager contractor={contractor} />
                    <ContractorJobDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
                    <ContractorAnalyticsDashboard contractor={contractor} />
-                   <FeaturedBadgeToggle contractor={contractor} />
                  </div>
                </TabsContent>
 
@@ -715,9 +711,6 @@ export default function ContractorAccount() {
                 <ContractorBadges completedJobsCount={contractor?.completed_jobs_count || 0} uniqueCustomersCount={contractor?.unique_customers_count || 0} />
               </TabsContent>
 
-              <TabsContent value="featured">
-                <FeaturedListingManager contractorEmail={userEmail} contractorId={contractor?.id} />
-              </TabsContent>
 
               <TabsContent value="referrals">
                 <ReferralDashboard userEmail={userEmail} />
