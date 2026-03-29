@@ -28,9 +28,9 @@ export default function PayoutManagementDashboard({ contractor }) {
   const Icon = status.icon;
 
   const payoutHistory = [
-    { id: 1, date: '2026-03-15', amount: 1250.00, status: 'completed', reference: 'po_1234567890' },
-    { id: 2, date: '2026-03-01', amount: 2100.00, status: 'completed', reference: 'po_0987654321' },
-    { id: 3, date: '2026-02-15', amount: 1875.50, status: 'completed', reference: 'po_abcdefghij' },
+    { id: 1, date: '2026-03-15', amount: null, status: 'completed', reference: 'po_1234567890' },
+    { id: 2, date: '2026-03-01', amount: null, status: 'completed', reference: 'po_0987654321' },
+    { id: 3, date: '2026-02-15', amount: null, status: 'completed', reference: 'po_abcdefghij' },
   ];
 
   return (
@@ -85,7 +85,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Total Paid Out</p>
-              <p className="text-2xl font-bold text-slate-900">$5,225.50</p>
+              <p className="text-2xl font-bold text-slate-900">••••••</p>
             </div>
             <DollarSign className="w-5 h-5 text-green-600" />
           </div>
@@ -95,7 +95,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Pending Payout</p>
-              <p className="text-2xl font-bold text-slate-900">$450.75</p>
+              <p className="text-2xl font-bold text-slate-900">••••••</p>
             </div>
             <Clock className="w-5 h-5 text-amber-600" />
           </div>
@@ -105,7 +105,7 @@ export default function PayoutManagementDashboard({ contractor }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs text-slate-600 mb-1">Avg Payout</p>
-              <p className="text-2xl font-bold text-slate-900">$1,741.83</p>
+              <p className="text-2xl font-bold text-slate-900">••••••</p>
             </div>
             <TrendingUp className="w-5 h-5 text-blue-600" />
           </div>
@@ -128,7 +128,7 @@ export default function PayoutManagementDashboard({ contractor }) {
                 {payoutHistory.map(payout => (
                   <div key={payout.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
-                      <p className="font-semibold text-slate-900">${payout.amount.toFixed(2)}</p>
+                      <p className="font-semibold text-slate-900">{payout.amount ? `$${payout.amount.toFixed(2)}` : '••••••'}</p>
                       <p className="text-xs text-slate-600">
                         {new Date(payout.date).toLocaleDateString()} • {payout.reference}
                       </p>
