@@ -56,6 +56,15 @@ Deno.serve(async (req) => {
 
     console.log(`Game session created: ${session.id}, discount: ${discountPercentage}%`);
 
+    // Update leaderboards
+    try {
+      await base44.asServiceRole.functions.invoke('updateLeaderboards', {
+        gameId: gameId
+      });
+    } catch (err) {
+      console.error('[completeGameSession] Error updating leaderboards:', err.message);
+    }
+
     // If a scope is provided, apply the discount
     if (scopeId) {
       const scope = await base44.entities.ScopeOfWork.get(scopeId);

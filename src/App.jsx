@@ -55,6 +55,7 @@ import AISchedulingAssistant from './pages/AISchedulingAssistant';
 import QBSyncDashboard from './pages/QBSyncDashboard';
 import TradeGames from './pages/TradeGames';
 import GameChallenge from './pages/GameChallenge';
+import GameLeaderboard from './pages/GameLeaderboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -314,6 +315,11 @@ const AuthenticatedApp = () => {
       <Route path="/challenge/:token" element={
         <LayoutWrapper currentPageName="GameChallenge">
           <GameChallenge />
+        </LayoutWrapper>
+      } />
+      <Route path="/leaderboard" element={
+        <LayoutWrapper currentPageName="GameLeaderboard">
+          <GameLeaderboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

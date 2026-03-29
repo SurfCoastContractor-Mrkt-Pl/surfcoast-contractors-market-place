@@ -1,0 +1,92 @@
+{
+  "name": "GameLeaderboard",
+  "type": "object",
+  "properties": {
+    "trade_game_id": {
+      "type": "string",
+      "description": "ID of the TradeGame"
+    },
+    "game_title": {
+      "type": "string",
+      "description": "Title of the game for easy reference"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "description": "Difficulty level for this leaderboard"
+    },
+    "rank": {
+      "type": "number",
+      "description": "Rank on the leaderboard (1, 2, 3...)"
+    },
+    "player_email": {
+      "type": "string",
+      "description": "Email of the player"
+    },
+    "player_name": {
+      "type": "string",
+      "description": "Name of the player"
+    },
+    "player_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "client"
+      ],
+      "description": "Whether player is contractor or client"
+    },
+    "score": {
+      "type": "number",
+      "description": "Highest score achieved on this difficulty"
+    },
+    "completion_time": {
+      "type": "number",
+      "description": "Time in seconds for the best completion"
+    },
+    "completions": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of times this game was completed by this player"
+    },
+    "last_completed_at": {
+      "type": "string",
+      "description": "ISO timestamp of the most recent completion"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "ISO timestamp when leaderboard entry was last updated"
+    }
+  },
+  "required": [
+    "trade_game_id",
+    "game_title",
+    "difficulty",
+    "rank",
+    "player_email",
+    "player_name",
+    "player_type",
+    "score"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
