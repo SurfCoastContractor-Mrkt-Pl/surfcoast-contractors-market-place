@@ -16,6 +16,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   const [feedback, setFeedback] = useState(null);
   const [selectedPart, setSelectedPart] = useState(null);
   const [availableParts, setAvailableParts] = useState([]);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   // Initialize Three.js scene and game engine
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     // Load initial state
     gameEngine.loadInitialState();
     setAvailableParts(gameEngine.getAvailableParts());
+    setIsInitializing(false);
 
     // Animation loop
     const animate = () => {
@@ -149,10 +151,20 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   return (
     <div className="flex h-screen gap-4 bg-gray-100 p-4">
       {/* 3D Canvas */}
-      <div
-        ref={mountRef}
-        className="flex-1 rounded-lg shadow-lg overflow-hidden bg-gray-50"
-      />
+      <div className="flex-1 flex items-center justify-center rounded-lg shadow-lg overflow-hidden bg-gray-50 relative">
+        {isInitializing && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-white font-medium">Loading game...</p>
+            </div>
+          </div>
+        )}
+        <div
+          ref={mountRef}
+          className="w-full h-full"
+        />
+      </div>
 
       {/* Right Sidebar */}
       <div className="w-72 flex flex-col gap-4">

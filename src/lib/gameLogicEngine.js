@@ -6,9 +6,24 @@ export default class GameLogicEngine {
     this.scene = scene;
     this.currentState = {};
     this.placedParts = new Map();
-    this.initialState = JSON.parse(gameData.initial_state_json);
-    this.solutionState = JSON.parse(gameData.solution_state_json);
-    this.availableParts = JSON.parse(gameData.available_parts_json);
+    
+    try {
+      this.initialState = typeof gameData.initial_state_json === 'string' 
+        ? JSON.parse(gameData.initial_state_json) 
+        : gameData.initial_state_json;
+      this.solutionState = typeof gameData.solution_state_json === 'string'
+        ? JSON.parse(gameData.solution_state_json)
+        : gameData.solution_state_json;
+      this.availableParts = typeof gameData.available_parts_json === 'string'
+        ? JSON.parse(gameData.available_parts_json)
+        : gameData.available_parts_json;
+    } catch (err) {
+      console.error('Error parsing game data JSON:', err);
+      this.initialState = {};
+      this.solutionState = {};
+      this.availableParts = [];
+    }
+    
     this.movesCount = 0;
     this.hintsUsed = 0;
   }

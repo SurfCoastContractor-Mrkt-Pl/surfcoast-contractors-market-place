@@ -48,27 +48,21 @@ export default function TradeGames() {
     if (!user || !selectedGame) return;
 
     try {
-      // Create game session record
-      const session = await base44.entities.UserGameSession.create({
-        user_email: user.email,
-        user_type: 'contractor', // or 'client' based on context
-        trade_game_id: selectedGame.id,
-        start_time: new Date().toISOString(),
-        end_time: new Date().toISOString(),
-        duration_seconds: results.duration || 0,
+      // Call backend function to complete game session and apply discount
+      const response = await base44.functions.invoke('completeGameSession', {
+        gameId: selectedGame.id,
         score: results.score,
-        moves_count: results.moves,
-        is_solved: true,
-        game_mode_played: gameMode,
-        discount_earned: true,
-        discount_percentage: selectedGame.difficulty === 'hard' ? 15 : selectedGame.difficulty === 'medium' ? 10 : 5
+        moves: results.moves,
+        duration: results.duration || 0,
+        gameMode: gameMode,
+        scopeId: null // Can be passed if linking to a specific scope
       });
 
       // Show success message
-      alert(`Congratulations! You earned a ${session.discount_percentage}% discount on future quotes!`);
+      alert(`Congratulations! You earned a ${response.data.discount}% discount!`);
       setSelectedGame(null);
     } catch (err) {
-      console.error('Error saving game session:', err);
+      console.error('Error completing game session:', err);
       alert('Error saving your progress. Please try again.');
     }
   };

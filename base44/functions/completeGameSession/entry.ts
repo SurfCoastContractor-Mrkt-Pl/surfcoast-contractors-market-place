@@ -38,10 +38,10 @@ Deno.serve(async (req) => {
     // Create game session record
     const session = await base44.entities.UserGameSession.create({
       user_email: user.email,
-      user_type: user.contractor ? 'contractor' : 'client',
+      user_type: 'contractor', // Default to contractor; can be overridden in payload
       trade_game_id: gameId,
       scope_of_work_id: scopeId || null,
-      contractor_email: user.contractor_email || null,
+      contractor_email: user.email,
       current_state_json: JSON.stringify({}),
       start_time: new Date(Date.now() - (duration || 0) * 1000).toISOString(),
       end_time: new Date().toISOString(),
