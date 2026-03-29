@@ -4,6 +4,12 @@ import { v4 as uuidv4 } from 'npm:uuid@9.0.1';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { scope_id } = await req.json();
 
     if (!scope_id) {
