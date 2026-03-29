@@ -34,7 +34,10 @@ export default function LayoutHeader({
       <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4 relative">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 font-semibold text-slate-900 hover:text-slate-700 transition-colors">
-          <img src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/2570592e3_homebutton.png" alt="SurfCoast" className="h-8 w-auto" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ fontSize: '14px', fontWeight: '800', color: '#1f2937', letterSpacing: '-0.5px', lineHeight: 1 }}>SurfCoast</span>
+            <span style={{ fontSize: '8px', fontWeight: '700', letterSpacing: '1.5px', color: 'rgba(31,41,55,0.5)', textTransform: 'uppercase', lineHeight: 1 }}>MARKETPLACE</span>
+          </div>
         </Link>
 
         {/* Desktop Nav - Left */}
