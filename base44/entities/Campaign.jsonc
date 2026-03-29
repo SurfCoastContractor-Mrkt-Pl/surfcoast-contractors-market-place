@@ -1,0 +1,113 @@
+{
+  "name": "Campaign",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Campaign name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Campaign description"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "referral",
+        "promotion",
+        "seasonal"
+      ],
+      "description": "Campaign type"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "ended"
+      ],
+      "default": "active",
+      "description": "Campaign status"
+    },
+    "start_date": {
+      "type": "string",
+      "description": "ISO timestamp when campaign started"
+    },
+    "end_date": {
+      "type": "string",
+      "description": "ISO timestamp when campaign ended or will end"
+    },
+    "duration_days": {
+      "type": "number",
+      "description": "Duration in days (e.g., 90 for 3 months)"
+    },
+    "target_signups": {
+      "type": "number",
+      "description": "Target number of completed profile signups to trigger campaign end"
+    },
+    "current_signups": {
+      "type": "number",
+      "default": 0,
+      "description": "Current count of verified signups with 100% profile completion"
+    },
+    "ended_reason": {
+      "type": "string",
+      "enum": [
+        "duration_reached",
+        "signup_target_reached",
+        "manual_stop"
+      ],
+      "description": "Reason campaign ended"
+    },
+    "config": {
+      "type": "object",
+      "description": "Campaign configuration",
+      "properties": {
+        "trial_extension_days": {
+          "type": "number",
+          "description": "Days to extend trial per referral completion"
+        },
+        "required_profile_completion_percent": {
+          "type": "number",
+          "description": "Profile completion percentage required (0-100)"
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "type",
+    "start_date",
+    "duration_days",
+    "target_signups"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.status": "active"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
