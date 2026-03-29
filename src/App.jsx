@@ -50,6 +50,8 @@ import CustomerPortal from './pages/CustomerPortal';
 import ContractorInventory from './pages/ContractorInventory';
 import AvailabilityManager from './pages/AvailabilityManager';
 import QuickBooksExport from './pages/QuickBooksExport';
+import AISchedulingAssistant from './pages/AISchedulingAssistant';
+import QBSyncDashboard from './pages/QBSyncDashboard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -288,6 +290,16 @@ const AuthenticatedApp = () => {
       <Route path="/quickbooks-export" element={
         <LayoutWrapper currentPageName="QuickBooksExport">
           <QuickBooksExport />
+        </LayoutWrapper>
+      } />
+      <Route path="/ai-scheduling-assistant" element={
+        <LayoutWrapper currentPageName="AISchedulingAssistant">
+          <AISchedulingAssistant />
+        </LayoutWrapper>
+      } />
+      <Route path="/qb-sync-dashboard" element={
+        <LayoutWrapper currentPageName="QBSyncDashboard">
+          <QBSyncDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
