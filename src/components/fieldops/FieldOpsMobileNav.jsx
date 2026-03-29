@@ -34,14 +34,14 @@ export default function FieldOpsMobileNav({
           <span className="text-xs font-bold text-white">SURFCOAST WAVES FO</span>
           <span className="text-xs text-blue-400 font-semibold ml-1">PRO</span>
         </div>
-        <button className="relative p-1">
-          <Bell className="w-5 h-5 text-slate-400" />
-          {notifCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
-              {notifCount}
-            </span>
-          )}
-        </button>
+        <button className="relative p-2 rounded-lg hover:bg-slate-800">
+           <Bell className="w-5 h-5 text-slate-400" />
+           {notifCount > 0 && (
+             <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
+               {notifCount}
+             </span>
+           )}
+         </button>
       </div>
 
       {/* Mobile Contractor Info */}

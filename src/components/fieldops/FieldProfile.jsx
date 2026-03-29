@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import {
   Star, Briefcase, MapPin, Clock, CheckCircle,
@@ -98,7 +99,7 @@ export default function WaveFOProfile({ contractor, user, onUpdate }) {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-2 px-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 px-4">
         {stats.map(stat => (
           <div key={stat.label} className="bg-slate-900 rounded-2xl p-3 text-center">
             <p className="text-white font-bold text-lg">{stat.value}</p>
@@ -158,8 +159,8 @@ export default function WaveFOProfile({ contractor, user, onUpdate }) {
 
       {/* Quick Links */}
       <div className="mx-4 mt-4 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
-        <a
-          href="/ContractorAccount"
+        <Link
+          to="/ContractorAccount"
           className="flex items-center justify-between px-4 py-4 border-b border-slate-800 active:bg-slate-800"
         >
           <div className="flex items-center gap-3">
@@ -167,9 +168,9 @@ export default function WaveFOProfile({ contractor, user, onUpdate }) {
             <span className="text-slate-300 font-medium">Full Account Settings</span>
           </div>
           <ChevronRight className="w-5 h-5 text-slate-600" />
-        </a>
-        <a
-          href="/Dashboard"
+        </Link>
+        <Link
+          to="/Dashboard"
           className="flex items-center justify-between px-4 py-4 border-b border-slate-800 active:bg-slate-800"
         >
           <div className="flex items-center gap-3">
@@ -177,7 +178,7 @@ export default function WaveFOProfile({ contractor, user, onUpdate }) {
             <span className="text-slate-300 font-medium">Main Dashboard</span>
           </div>
           <ChevronRight className="w-5 h-5 text-slate-600" />
-        </a>
+        </Link>
         <button
           onClick={() => base44.auth.logout()}
           className="w-full flex items-center gap-3 px-4 py-4 active:bg-slate-800"

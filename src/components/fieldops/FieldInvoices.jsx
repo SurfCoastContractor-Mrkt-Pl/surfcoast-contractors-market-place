@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import {
   DollarSign, CheckCircle, Clock, AlertCircle,
-  ChevronRight, Send, FileText, TrendingUp, Plus, Download
+  ChevronRight, Send, FileText, TrendingUp, Plus, Download, AlertTriangle
 } from 'lucide-react';
+import { useLocalCache, useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 const STATUS_CONFIG = {
   pending_payment: { label: 'Awaiting Payment', color: 'text-yellow-400', bg: 'bg-yellow-900/20' },
@@ -21,6 +22,8 @@ export default function WaveFOInvoices({ contractor, user }) {
   const [filter, setFilter] = useState('All');
   const [sending, setSending] = useState(null);
   const [generating, setGenerating] = useState(null);
+  const { isSlowNetwork } = useMobileOptimization();
+  const { data: cachedEscrows, set: setCachedEscrows } = useLocalCache('wave_fo_invoices', 30);
 
   useEffect(() => {
     const load = async () => {
@@ -29,13 +32,20 @@ export default function WaveFOInvoices({ contractor, user }) {
           base44.entities.EscrowPayment.filter({ contractor_email: user.email }),
           base44.entities.ScopeOfWork.filter({ contractor_email: user.email }),
         ]);
-        setEscrows(escrowData || []);
+        if (escrowData) {
+          setEscrows(escrowData);
+          setCachedEscrows(escrowData);
+        } else if (cachedEscrows) {
+          setEscrows(cachedEscrows);
+        }
         setScopes(scopeData || []);
-      } catch {}
+      } catch {
+        if (cachedEscrows) setEscrows(cachedEscrows);
+      }
       setLoading(false);
     };
     load();
-  }, [user.email]);
+  }, [user.email, cachedEscrows, setCachedEscrows]);
 
   const totalEarned = escrows
     .filter(e => e.status === 'released')
@@ -106,8 +116,16 @@ export default function WaveFOInvoices({ contractor, user }) {
 
   return (
     <div className="bg-slate-950 min-h-full">
+      {/* Slow Network Warning */}
+      {isSlowNetwork && (
+        <div className="mx-4 mt-4 bg-yellow-900/30 border border-yellow-700/50 rounded-2xl p-3 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+          <p className="text-yellow-300 text-sm">Slow network detected. PDF generation may take longer.</p>
+        </div>
+      )}
+
       {/* Earnings Summary */}
-      <div className="mx-4 mt-4 grid grid-cols-2 gap-3">
+       <div className="mx-4 mt-4 grid grid-cols-2 gap-3">
         <div className="bg-green-900/20 border border-green-800/30 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="w-4 h-4 text-green-400" />
@@ -168,11 +186,11 @@ export default function WaveFOInvoices({ contractor, user }) {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2 mt-3 pt-3 border-t border-slate-800/50">
+                <div className="flex flex-col lg:flex-row gap-2 mt-3 pt-3 border-t border-slate-800/50">
                   <button
                     onClick={() => handleGenerateAndDownloadPDF(escrow.scope_id)}
                     disabled={generating === escrow.scope_id}
-                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
+                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
                   >
                     {generating === escrow.id ? (
                       <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
@@ -185,7 +203,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                   <button
                     onClick={() => handleSendInvoiceEmail(escrow, escrow.scope_id)}
                     disabled={sending === escrow.id + '_email'}
-                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
+                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
                   >
                     {sending === escrow.id + '_email' ? (
                       <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
@@ -199,7 +217,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                     <button
                       onClick={() => handleRequestRelease(escrow)}
                       disabled={sending === escrow.id}
-                      className="flex-1 bg-green-700 text-white rounded-xl py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
+                      className="flex-1 bg-green-700 text-white rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
                     >
                       {sending === escrow.id ? (
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

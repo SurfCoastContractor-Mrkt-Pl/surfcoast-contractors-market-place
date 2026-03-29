@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import FieldJobDetail from './FieldJobDetail';
 import RecommendedJobs from './RecommendedJobs';
+import { useLocalCache } from '@/hooks/useMobileOptimization';
 
 const STATUS_CONFIG = {
   pending_approval: { label: 'Pending', color: 'text-yellow-400', bg: 'bg-yellow-900/40', dot: 'bg-yellow-400' },
@@ -25,17 +26,25 @@ export default function WaveFOJobsList({ contractor, user }) {
   const [filter, setFilter] = useState('All');
   const [selectedScope, setSelectedScope] = useState(null);
   const [viewTab, setViewTab] = useState('My Jobs');
+  const { data: cachedJobs, set: setCachedJobs } = useLocalCache('wave_fo_jobs', 60);
 
   useEffect(() => {
     const load = async () => {
       try {
         const data = await base44.entities.ScopeOfWork.filter({ contractor_email: user.email });
-        setScopes(data || []);
-      } catch {}
+        if (data) {
+          setScopes(data);
+          setCachedJobs(data);
+        } else if (cachedJobs) {
+          setScopes(cachedJobs);
+        }
+      } catch {
+        if (cachedJobs) setScopes(cachedJobs);
+      }
       setLoading(false);
     };
     load();
-  }, [user.email]);
+  }, [user.email, cachedJobs, setCachedJobs]);
 
   const filtered = scopes.filter(s => {
     if (filter === 'All') return true;
@@ -113,20 +122,20 @@ export default function WaveFOJobsList({ contractor, user }) {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex gap-2 px-4 mt-4 overflow-x-auto scrollbar-none pb-1">
-            {FILTER_TABS.map(f => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  filter === f
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-800 text-slate-400'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
+          <div className="flex gap-2 px-4 mt-4 overflow-x-auto scrollbar-none pb-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+           {FILTER_TABS.map(f => (
+             <button
+               key={f}
+               onClick={() => setFilter(f)}
+               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors min-h-[44px] ${
+                 filter === f
+                   ? 'bg-blue-600 text-white'
+                   : 'bg-slate-800 text-slate-400'
+               }`}
+             >
+               {f}
+             </button>
+           ))}
           </div>
 
           {/* Jobs List */}

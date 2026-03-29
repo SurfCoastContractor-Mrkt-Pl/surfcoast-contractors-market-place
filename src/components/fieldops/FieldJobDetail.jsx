@@ -247,7 +247,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
 
         {/* Quick Action Buttons */}
         {scope.status !== 'closed' && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {ACTION_BUTTONS.filter(a => {
               if (a.id === 'complete' && scope.status === 'pending_ratings') return false;
               return true;
@@ -255,10 +255,10 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               const Icon = action.icon;
               return (
                 <button
-                  key={action.id}
-                  onClick={() => setActiveAction(activeAction === action.id ? null : action.id)}
-                  className={`${action.color} text-white rounded-2xl p-4 flex flex-col items-center gap-2 active:scale-95 transition-transform`}
-                >
+                   key={action.id}
+                   onClick={() => setActiveAction(activeAction === action.id ? null : action.id)}
+                   className={`${action.color} text-white rounded-2xl p-4 flex flex-col items-center gap-2 active:scale-95 transition-transform min-h-[56px]`}
+                 >
                   <Icon className="w-6 h-6" />
                   <span className="text-sm font-semibold">{action.label}</span>
                 </button>
@@ -301,8 +301,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               value={message}
               onChange={e => setMessage(e.target.value)}
               placeholder="Type your message..."
-              rows={4}
-              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-blue-500 placeholder-slate-500"
+              rows={5}
+              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-blue-500 placeholder-slate-500 min-h-[120px]"
             />
             <button
               onClick={handleSendMessage}
@@ -322,8 +322,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               value={note}
               onChange={e => setNote(e.target.value)}
               placeholder="Enter field notes, observations, or updates..."
-              rows={4}
-              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-amber-500 placeholder-slate-500"
+              rows={5}
+              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-amber-500 placeholder-slate-500 min-h-[120px]"
             />
             <button
               onClick={handleSaveNote}
@@ -343,8 +343,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               value={completionNotes}
               onChange={e => setCompletionNotes(e.target.value)}
               placeholder="Describe the completed work (optional)..."
-              rows={3}
-              className="w-full bg-slate-800 text-white rounded-xl p-3 text-sm resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500"
+              rows={4}
+              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500 min-h-[100px]"
             />
             <button
               onClick={handleMarkComplete}

@@ -4,6 +4,7 @@ import { Clock, MapPin, ChevronRight, Calendar, CheckCircle, AlertCircle } from 
 import WaveFOMonthlyCalendar from './WaveFOMonthlyCalendar';
 import WaveFOJobDensityChart from './WaveFOJobDensityChart';
 import WaveFOStatusSummary from './WaveFOStatusSummary';
+import { useLocalCache } from '@/hooks/useMobileOptimization';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -26,6 +27,7 @@ export default function WaveFOSchedule({ contractor, user }) {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const weekDays = getWeekDays(selectedDate);
+  const { data: cachedScopes, set: setCachedScopes } = useLocalCache('wave_fo_schedule', 10);
 
   useEffect(() => {
     const load = async () => {
@@ -34,13 +36,20 @@ export default function WaveFOSchedule({ contractor, user }) {
           base44.entities.ScopeOfWork.filter({ contractor_email: user.email }),
           base44.entities.AvailabilitySlot.filter({ contractor_id: contractor.id }),
         ]);
-        setScopes(scopeData || []);
+        if (scopeData) {
+          setScopes(scopeData);
+          setCachedScopes(scopeData);
+        } else if (cachedScopes) {
+          setScopes(cachedScopes);
+        }
         setSlots(slotData || []);
-      } catch {}
+      } catch {
+        if (cachedScopes) setScopes(cachedScopes);
+      }
       setLoading(false);
     };
     load();
-  }, [user.email, contractor.id]);
+  }, [user.email, contractor.id, cachedScopes, setCachedScopes]);
 
   const selectedDateStr = selectedDate.toISOString().split('T')[0];
   const dayJobs = scopes.filter(s => s.agreed_work_date === selectedDateStr);
@@ -69,7 +78,7 @@ export default function WaveFOSchedule({ contractor, user }) {
       </div>
 
       {/* Week Strip */}
-      <div className="flex gap-2 px-4 py-2 overflow-x-auto scrollbar-none">
+      <div className="flex gap-2 px-4 py-2 overflow-x-auto scrollbar-none" style={{ WebkitOverflowScrolling: 'touch' }}>
         {weekDays.map((date, i) => {
           const isSelected = date.toDateString() === selectedDate.toDateString();
           const isToday = date.toDateString() === new Date().toDateString();
@@ -150,7 +159,11 @@ export default function WaveFOSchedule({ contractor, user }) {
                     <p className={`font-semibold text-sm ${slot.available ? 'text-green-400' : 'text-slate-400'}`}>
                       {slot.available ? 'Available Window' : 'Blocked Time'}
                     </p>
-                    <p className="text-slate-500 text-xs">{slot.start_time} — {slot.end_time}</p>
+                    <p className="text-slate-500 text-xs">
+                      {new Date(`2000-01-01T${slot.start_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                      {' – '}
+                      {new Date(`2000-01-01T${slot.end_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                    </p>
                   </div>
                 </div>
               </div>
