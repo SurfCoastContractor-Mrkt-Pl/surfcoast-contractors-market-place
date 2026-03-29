@@ -133,16 +133,16 @@ export default function PortfolioManager({ contractorId, open, onClose }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
+    <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) return; }}>
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Add Portfolio Project</DialogTitle>
           <DialogDescription>
             Showcase your completed work with images and detailed descriptions
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 overflow-y-auto flex-1 pr-1">
           {/* Project Title */}
           <div>
             <Label htmlFor="title">Project Title *</Label>
@@ -275,7 +275,7 @@ export default function PortfolioManager({ contractorId, open, onClose }) {
             )}
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex-shrink-0 pt-2">
             <Button variant="outline" onClick={handleClose} disabled={createMutation.isPending}>
               Cancel
             </Button>
