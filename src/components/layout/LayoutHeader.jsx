@@ -185,10 +185,7 @@ function AccountDropdown({
     <div className={cn("bg-white border border-slate-200 rounded-xl shadow-lg z-50 w-full", !isMobile && "absolute right-0 top-full mt-1 w-52")}>
     <Item path={createPageUrl('Dashboard')}>Client Account</Item>
     {isContractor ? (
-      <>
-        <Item path={createPageUrl('ContractorAccount')}>Contractor Business Hub</Item>
-        <Item path={createPageUrl('ContractorFinancialDashboard')}>Financial Dashboard</Item>
-      </>
+      <Item path={createPageUrl('ContractorFinancialDashboard')}>Contractor Account</Item>
     ) : (
       <Item path={createPageUrl('BecomeContractor')} className="text-primary hover:bg-primary/5">+ Become a Contractor</Item>
     )}
