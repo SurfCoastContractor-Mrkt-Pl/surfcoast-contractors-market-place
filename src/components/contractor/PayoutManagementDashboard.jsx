@@ -79,38 +79,7 @@ export default function PayoutManagementDashboard({ contractor }) {
         )}
       </Card>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs text-slate-600 mb-1">Total Paid Out</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
-            </div>
-            <DollarSign className="w-5 h-5 text-green-600" />
-          </div>
-        </Card>
 
-        <Card className="p-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs text-slate-600 mb-1">Pending Payout</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
-            </div>
-            <Clock className="w-5 h-5 text-amber-600" />
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs text-slate-600 mb-1">Avg Payout</p>
-              <p className="text-2xl font-bold text-slate-900">••••••</p>
-            </div>
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-          </div>
-        </Card>
-      </div>
 
       {/* Payout Details */}
       <Tabs defaultValue="history" className="space-y-4">
