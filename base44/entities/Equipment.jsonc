@@ -6,6 +6,10 @@
       "type": "string",
       "description": "ID of the contractor who owns the equipment"
     },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor for RLS queries"
+    },
     "name": {
       "type": "string",
       "description": "Name of the equipment or tool"
@@ -26,6 +30,27 @@
       "type": "string",
       "description": "Details about the equipment (brand, model, condition)"
     },
+    "purchase_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date equipment was purchased"
+    },
+    "purchase_price": {
+      "type": "number",
+      "description": "Original purchase price"
+    },
+    "current_condition": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "needs_repair",
+        "retired"
+      ],
+      "default": "good",
+      "description": "Current condition of the equipment"
+    },
     "photo_url": {
       "type": "string",
       "description": "URL of equipment photo"
@@ -34,24 +59,51 @@
       "type": "boolean",
       "default": true,
       "description": "Whether this equipment is currently available for use on jobs"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of units of this equipment (for inventory tracking)"
+    },
+    "reorder_level": {
+      "type": "number",
+      "description": "Low-stock threshold for alerts (Wave Pro+ feature)"
+    },
+    "supplier": {
+      "type": "string",
+      "description": "Supplier or vendor name"
+    },
+    "supplier_contact": {
+      "type": "string",
+      "description": "Supplier contact info (email or phone)"
     }
   },
   "required": [
     "contractor_id",
+    "contractor_email",
     "name",
     "category"
   ],
   "rls": {
     "create": {
-      "created_by": "{{user.email}}"
+      "data.contractor_email": "{{user.email}}"
     },
     "read": {
-      "created_by": "{{user.email}}"
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
     },
     "update": {
       "$or": [
         {
-          "created_by": "{{user.email}}"
+          "data.contractor_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -63,7 +115,7 @@
     "delete": {
       "$or": [
         {
-          "created_by": "{{user.email}}"
+          "data.contractor_email": "{{user.email}}"
         },
         {
           "user_condition": {

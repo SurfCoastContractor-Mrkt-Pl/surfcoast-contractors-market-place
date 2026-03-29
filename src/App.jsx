@@ -46,6 +46,8 @@ import ContractorServices from './pages/ContractorServices';
 import JobExpenseTracker from './pages/JobExpenseTracker';
 import ContractorInventoryDashboard from './pages/ContractorInventoryDashboard';
 import MultiOptionProposals from './pages/MultiOptionProposals';
+import CustomerPortal from './pages/CustomerPortal';
+import ContractorInventory from './pages/ContractorInventory';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -264,6 +266,16 @@ const AuthenticatedApp = () => {
       <Route path="/multi-option-proposals" element={
         <LayoutWrapper currentPageName="MultiOptionProposals">
           <MultiOptionProposals />
+        </LayoutWrapper>
+      } />
+      <Route path="/customer-portal" element={
+        <LayoutWrapper currentPageName="CustomerPortal">
+          <CustomerPortal />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-inventory-management" element={
+        <LayoutWrapper currentPageName="ContractorInventory">
+          <ContractorInventory />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
