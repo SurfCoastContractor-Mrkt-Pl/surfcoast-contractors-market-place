@@ -183,7 +183,6 @@ function AccountDropdown({
     <div className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-slate-500 bg-slate-50/80">
       MY PROFILES
     </div>
-    <Item path={createPageUrl('Dashboard')}>Client Account</Item>
     {isContractor ? (
       <Item path={createPageUrl('ContractorFinancialDashboard')}>Contractor Account</Item>
     ) : (
