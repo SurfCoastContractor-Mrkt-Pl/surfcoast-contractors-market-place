@@ -159,7 +159,7 @@ export default function TradeGames() {
                     >
                       {game.difficulty}
                     </Badge>
-                    {game.is_premium && <Badge className="bg-gold text-gold-foreground">Premium</Badge>}
+                    {game.is_premium && <Badge className="bg-yellow-500 text-white">Premium</Badge>}
                   </div>
 
                   {/* Stats */}

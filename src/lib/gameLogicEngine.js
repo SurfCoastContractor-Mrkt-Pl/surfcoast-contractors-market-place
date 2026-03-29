@@ -28,7 +28,11 @@ export default class GameLogicEngine {
         meshesToRemove.push(child);
       }
     });
-    meshesToRemove.forEach(mesh => this.scene.remove(mesh));
+    meshesToRemove.forEach(mesh => {
+      if (mesh.geometry) mesh.geometry.dispose();
+      if (mesh.material) mesh.material.dispose();
+      this.scene.remove(mesh);
+    });
 
     // Render parts from current state
     this.currentState.parts?.forEach(part => {
@@ -198,11 +202,11 @@ export default class GameLogicEngine {
   calculateScore() {
     if (!this.isSolved()) return 0;
 
-    const baseSscore = 100;
+    const baseScore = 100;
     const movePenalty = Math.max(0, (this.movesCount - 5) * 2);
     const hintPenalty = this.hintsUsed * 5;
 
-    return Math.max(0, baseSscore - movePenalty - hintPenalty);
+    return Math.max(0, baseScore - movePenalty - hintPenalty);
   }
 
   // Get a hint

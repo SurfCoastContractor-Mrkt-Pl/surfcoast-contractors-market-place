@@ -91,8 +91,9 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
         mountRef.current.removeChild(renderer.domElement);
       }
+      renderer.dispose();
     };
-  }, [gameData]);
+  }, [gameData, gameMode]);
 
   // Handle part placement
   const handlePlacePart = (part) => {
