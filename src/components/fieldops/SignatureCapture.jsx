@@ -5,23 +5,34 @@ export default function SignatureCapture({ onCapture, disabled = false }) {
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
 
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  };
+
   const startDrawing = (e) => {
     if (disabled) return;
     isDrawingRef.current = true;
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const ctx = canvas.getContext('2d');
+    const { x, y } = getCoordinates(e);
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.beginPath();
-    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.moveTo(x, y);
+    e.preventDefault();
   };
 
   const draw = (e) => {
     if (!isDrawingRef.current || disabled) return;
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const ctx = canvas.getContext('2d');
-    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    const { x, y } = getCoordinates(e);
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.lineTo(x, y);
     ctx.stroke();
+    e.preventDefault();
   };
 
   const stopDrawing = () => {
@@ -57,6 +68,9 @@ export default function SignatureCapture({ onCapture, disabled = false }) {
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
         className="w-full border-2 border-slate-700 rounded-xl bg-slate-800 cursor-crosshair touch-none"
       />
       <div className="flex gap-2 mt-3">
