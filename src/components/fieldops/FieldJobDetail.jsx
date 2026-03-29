@@ -8,12 +8,17 @@ import {
 } from 'lucide-react';
 import { useUploadQueue } from '@/hooks/useUploadQueue';
 import { useNetworkRetry } from '@/hooks/useNetworkRetry';
+import { useOfflineSync } from '@/hooks/useOfflineSync';
 import UploadQueueManager from './UploadQueueManager';
+import GpsTracker from './GpsTracker';
+import SignatureCapture from './SignatureCapture';
 
 const ACTION_BUTTONS = [
   { id: 'photos', label: 'Add Photos', icon: Camera, color: 'bg-purple-600' },
+  { id: 'location', label: 'Capture Location', icon: Navigation, color: 'bg-cyan-600' },
   { id: 'message', label: 'Message Client', icon: MessageSquare, color: 'bg-blue-600' },
   { id: 'notes', label: 'Job Notes', icon: FileText, color: 'bg-amber-600' },
+  { id: 'signature', label: 'Get Signature', icon: Send, color: 'bg-indigo-600' },
   { id: 'complete', label: 'Mark Complete', icon: CheckCircle, color: 'bg-green-600' },
 ];
 
@@ -28,6 +33,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const fileInputRef = useRef();
   const { queue, activeCount, addToQueue } = useUploadQueue(3);
   const { executeWithRetry } = useNetworkRetry(2, 800);
+  const { addToQueue: queueAction, syncQueue } = useOfflineSync();
 
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files);
@@ -284,6 +290,28 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         )}
 
         {/* Action Panels */}
+        {activeAction === 'location' && (
+          <GpsTracker
+            onLocationCapture={async (loc) => {
+              queueAction('updateLocation', { ...loc, scope_id: scope.id });
+              setActiveAction(null);
+            }}
+          />
+        )}
+
+        {activeAction === 'signature' && (
+          <SignatureCapture
+            onCapture={async (signatureUrl) => {
+              await base44.entities.ScopeOfWork.update(scope.id, {
+                customer_signature_url: signatureUrl,
+                customer_signed_scope_at: new Date().toISOString()
+              });
+              onUpdate({ ...scope, customer_signature_url: signatureUrl });
+              setActiveAction(null);
+            }}
+          />
+        )}
+
         {activeAction === 'photos' && (
           <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
             <p className="text-white font-semibold mb-3">Upload After Photos</p>
