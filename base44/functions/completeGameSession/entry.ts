@@ -56,11 +56,20 @@ Deno.serve(async (req) => {
 
     console.log(`Game session created: ${session.id}, discount: ${discountPercentage}%`);
 
-    // Update leaderboards and sync to HubSpot
+    // Update leaderboards, calculate reward tier, and sync to HubSpot
     try {
       await base44.asServiceRole.functions.invoke('updateLeaderboards', {
         gameId: gameId
       });
+      
+      // Calculate and update reward tier
+      try {
+        await base44.asServiceRole.functions.invoke('calculateGameRewardTier', {
+          contractorEmail: user.email
+        });
+      } catch (tierErr) {
+        console.warn('[completeGameSession] Reward tier calculation warning:', tierErr.message);
+      }
       
       // Sync game completion to HubSpot CRM
       try {

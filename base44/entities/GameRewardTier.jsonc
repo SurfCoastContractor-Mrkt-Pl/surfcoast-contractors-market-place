@@ -1,0 +1,128 @@
+{
+  "name": "GameRewardTier",
+  "type": "object",
+  "properties": {
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor earning rewards"
+    },
+    "current_tier": {
+      "type": "string",
+      "enum": [
+        "bronze",
+        "silver",
+        "gold",
+        "platinum"
+      ],
+      "default": "bronze",
+      "description": "Current reward tier based on cumulative points"
+    },
+    "tier_points": {
+      "type": "number",
+      "default": 0,
+      "description": "Cumulative points earned across all games"
+    },
+    "total_games_completed": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of games completed"
+    },
+    "total_discounts_earned": {
+      "type": "number",
+      "default": 0,
+      "description": "Total dollar value of discounts earned"
+    },
+    "lifetime_high_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Highest single-game score ever achieved"
+    },
+    "achievement_badges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "badge_name": {
+            "type": "string",
+            "enum": [
+              "perfect_score",
+              "speed_demon",
+              "comebackkid",
+              "mastercraft",
+              "streak_3",
+              "streak_10"
+            ]
+          },
+          "earned_at": {
+            "type": "string",
+            "description": "ISO timestamp when badge was earned"
+          }
+        }
+      },
+      "description": "Achievement badges earned by the contractor"
+    },
+    "next_tier_points_needed": {
+      "type": "number",
+      "description": "Points needed to reach next tier"
+    },
+    "tier_benefits_unlocked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of unlocked benefits for current tier"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO timestamp of last tier update"
+    }
+  },
+  "required": [
+    "contractor_email"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
