@@ -2,14 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { MessageCircle, FileText, CheckSquare, AlertCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Activity } from 'lucide-react';
+import ProjectActivityFeed from '@/components/phase4/ProjectActivityFeed';
+import ProjectNotificationCenter from '@/components/phase4/ProjectNotificationCenter';
 import ProjectChatPanel from '@/components/phase4/ProjectChatPanel';
 import ProjectMilestonesTracker from '@/components/phase4/ProjectMilestonesTracker';
 import ProjectFileManager from '@/components/phase4/ProjectFileManager';
+import ProjectOverviewDashboard from '@/components/phase4/ProjectOverviewDashboard';
+import RealtimeStatusSync from '@/components/phase4/RealtimeStatusSync';
+import { ScopeStatusBadge } from '@/components/phase4/ScopeStatusIndicator';
 
 const TABS = [
+  { id: 'overview', label: 'Overview', icon: AlertCircle },
   { id: 'chat', label: 'Chat', icon: MessageCircle },
   { id: 'milestones', label: 'Milestones', icon: CheckSquare },
   { id: 'files', label: 'Files', icon: FileText },
+  { id: 'activity', label: 'Activity', icon: Activity },
 ];
 
 export default function Phase4CollaborationHub() {
@@ -19,6 +27,7 @@ export default function Phase4CollaborationHub() {
   const [scopeId, setScopeId] = useState(null);
   const [scope, setScope] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [statusUpdate, setStatusUpdate] = useState(null);
 
   // Get scope ID from URL params
   useEffect(() => {
@@ -73,6 +82,11 @@ export default function Phase4CollaborationHub() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <RealtimeStatusSync 
+        scopeId={scope.id} 
+        onStatusChange={(newStatus) => setStatusUpdate(newStatus)}
+      />
+
       {/* Header */}
       <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
@@ -83,10 +97,15 @@ export default function Phase4CollaborationHub() {
                 {isContractor ? `Client: ${scope.client_name}` : `Contractor: ${scope.contractor_name}`}
               </p>
             </div>
-            <div className="text-right">
-              <div className="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-900">
-                {scope.status.replace('_', ' ').toUpperCase()}
-              </div>
+            <div className="flex items-center gap-4">
+              <ScopeStatusBadge status={statusUpdate || scope.status} />
+              {user && (
+                <ProjectNotificationCenter 
+                  scopeId={scope.id} 
+                  userEmail={user.email}
+                  userType={isContractor ? 'contractor' : 'client'}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -94,8 +113,8 @@ export default function Phase4CollaborationHub() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <Tabs defaultValue="chat" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-3 mb-6">
+        <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full max-w-4xl grid-cols-5 mb-6">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -106,6 +125,10 @@ export default function Phase4CollaborationHub() {
               );
             })}
           </TabsList>
+
+          <TabsContent value="overview" className="mt-0">
+            <ProjectOverviewDashboard scope={scope} />
+          </TabsContent>
 
           <TabsContent value="chat" className="mt-0">
             <div className="bg-white rounded-lg border border-slate-200 overflow-hidden" style={{ height: '600px' }}>
@@ -127,6 +150,10 @@ export default function Phase4CollaborationHub() {
 
           <TabsContent value="files" className="mt-0">
             <ProjectFileManager scopeId={scope.id} userEmail={user.email} />
+          </TabsContent>
+
+          <TabsContent value="activity" className="mt-0">
+            <ProjectActivityFeed scopeId={scope.id} />
           </TabsContent>
         </Tabs>
       </div>
