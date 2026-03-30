@@ -7,6 +7,8 @@ export default function LocationSelector({ locationType, onLocationSelect, onClo
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showCustomEntry, setShowCustomEntry] = useState(false);
+  const [customLocation, setCustomLocation] = useState({ name: '', city: '', state: '' });
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -47,10 +49,31 @@ export default function LocationSelector({ locationType, onLocationSelect, onClo
     loc.city.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleCustomSubmit = () => {
+    if (!customLocation.name || !customLocation.city || !customLocation.state) {
+      alert('Please fill in all fields');
+      return;
+    }
+    const newLocation = {
+      location_name: customLocation.name,
+      city: customLocation.city,
+      state: customLocation.state,
+      location_type: locationType,
+    };
+    trackEvent(EVENTS.LOCATION_SELECTED, {
+      location: newLocation.location_name,
+      type: locationType,
+      custom: true,
+    });
+    onLocationSelect(newLocation);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-md w-full p-6">
-        <h2 className="text-xl font-bold text-slate-900 mb-4">Select a Location to Rate</h2>
+        {!showCustomEntry ? (
+          <>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Select a Location to Rate</h2>
 
         <div className="relative mb-4">
           <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
@@ -97,14 +120,79 @@ export default function LocationSelector({ locationType, onLocationSelect, onClo
         )}
 
         {onClose && (
-          <button
-            onClick={onClose}
-            className="w-full mt-4 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50"
-          >
-            Cancel
-          </button>
+           <button
+             onClick={onClose}
+             className="w-full mt-4 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50"
+           >
+             Cancel
+           </button>
+         )}
+
+        <button
+          onClick={() => setShowCustomEntry(true)}
+          className="w-full mt-3 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors"
+        >
+          Can't find your location? Add it
+        </button>
+        </>
+        ) : (
+          <>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Add a New Location</h2>
+
+            <div className="space-y-3 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Location Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g., Downtown Market, Riverside Swap Meet"
+                  value={customLocation.name}
+                  onChange={(e) => setCustomLocation({ ...customLocation, name: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    value={customLocation.city}
+                    onChange={(e) => setCustomLocation({ ...customLocation, city: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">State</label>
+                  <input
+                    type="text"
+                    placeholder="CA"
+                    value={customLocation.state}
+                    onChange={(e) => setCustomLocation({ ...customLocation, state: e.target.value.toUpperCase() })}
+                    maxLength="2"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowCustomEntry(false)}
+                className="flex-1 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleCustomSubmit}
+                className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+              >
+                Add Location
+              </button>
+            </div>
+          </>
         )}
-      </div>
-    </div>
-  );
-}
+        </div>
+        </div>
+        );
+        }
