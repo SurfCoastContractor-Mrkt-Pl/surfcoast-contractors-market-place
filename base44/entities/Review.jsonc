@@ -171,9 +171,6 @@
     "read": {
       "$or": [
         {
-          "data.verified": true
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
@@ -198,11 +195,6 @@
         },
         {
           "data.contractor_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "service_role"
-          }
         }
       ]
     },
