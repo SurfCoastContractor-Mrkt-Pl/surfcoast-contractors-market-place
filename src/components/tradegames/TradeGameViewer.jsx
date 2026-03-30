@@ -96,43 +96,43 @@ function buildBathroomScene(scene) {
   const pipeMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.5, metalness: 0.1 });
 
   // Vertical drain pipe from sink
-  const drainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.35, 16), pipeMat);
-  drainPipe.position.set(-1.5, 0.575, -3.5);
+  const drainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 16), pipeMat);
+  drainPipe.position.set(-1.5, 0.6, -3.5);
   drainPipe.userData.isEnvironment = true;
   drainPipe.userData.isConnectionPoint = true;
   scene.add(drainPipe);
 
   // P-trap: First bend (down - vertical to horizontal)
-  const pTrapDownBend = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.025, 16, 32, Math.PI / 2), pipeMat);
+  const pTrapDownBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.025, 16, 32, Math.PI / 2), pipeMat);
   pTrapDownBend.rotation.z = Math.PI / 2;
-  pTrapDownBend.position.set(-1.5, 0.325, -3.5);
+  pTrapDownBend.position.set(-1.5, 0.3, -3.5);
   pTrapDownBend.userData.isEnvironment = true;
   scene.add(pTrapDownBend);
 
-  // P-trap: Horizontal bottom (straight section of U)
-  const pTrapBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.2, 16), pipeMat);
+  // P-trap: Horizontal bottom (straight section of U - holds water seal)
+  const pTrapBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.25, 16), pipeMat);
   pTrapBottom.rotation.z = Math.PI / 2;
-  pTrapBottom.position.set(-1.6, 0.25, -3.5);
+  pTrapBottom.position.set(-1.625, 0.2, -3.5);
   pTrapBottom.userData.isEnvironment = true;
   scene.add(pTrapBottom);
 
   // P-trap: Second bend (up - horizontal to vertical)
-  const pTrapUpBend = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.025, 16, 32, Math.PI / 2), pipeMat);
+  const pTrapUpBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.025, 16, 32, Math.PI / 2), pipeMat);
   pTrapUpBend.rotation.z = Math.PI / 2;
-  pTrapUpBend.position.set(-1.7, 0.325, -3.5);
+  pTrapUpBend.position.set(-1.75, 0.3, -3.5);
   pTrapUpBend.userData.isEnvironment = true;
   scene.add(pTrapUpBend);
 
-  // P-trap: Vertical tailpiece
-  const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.3, 16), pipeMat);
-  pTrapVertical.position.set(-1.7, 0.5, -3.5);
+  // P-trap: Vertical tailpiece (goes up to wall)
+  const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 16), pipeMat);
+  pTrapVertical.position.set(-1.75, 0.6, -3.5);
   pTrapVertical.userData.isEnvironment = true;
   scene.add(pTrapVertical);
 
   // Wall drain stub
-  const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.12, 16), pipeMat);
+  const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.1, 16), pipeMat);
   wallDrainStub.rotation.z = Math.PI / 2;
-  wallDrainStub.position.set(-1.78, 0.65, -3.5);
+  wallDrainStub.position.set(-1.81, 0.8, -3.5);
   wallDrainStub.userData.isEnvironment = true;
   wallDrainStub.userData.isConnectionPoint = true;
   scene.add(wallDrainStub);
@@ -387,7 +387,8 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       setFeedback(null); setSelectedPart(null); setCombo(0);
       setCurrentParts([]);
       setFormattedTime('0:00');
-      startTimeRef.current = Date.now();
+      startTimeRef.current = null; // Clear old time reference
+      setTimeout(() => { startTimeRef.current = Date.now(); }, 10); // Set new time after state settles
     }
   };
 
