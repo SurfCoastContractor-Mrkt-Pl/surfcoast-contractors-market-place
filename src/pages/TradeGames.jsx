@@ -27,29 +27,6 @@ export default function TradeGames() {
     fetchUser();
   }, []);
 
-  const DEMO_GAMES = [
-    {
-      id: 'demo-plumbing-1',
-      title: 'Bathroom Plumbing Repair',
-      description: 'Fix a leaking sink drain and replace the P-trap assembly.',
-      trade_type: 'plumbing',
-      difficulty: 'medium',
-      play_count: 42,
-      average_score: 87,
-      is_published: true,
-      initial_state_json: '{"parts":[]}',
-      solution_state_json: '{"parts":[{"type":"pipe"},{"type":"fitting"},{"type":"valve"}]}',
-      available_parts_json: JSON.stringify([
-        { id: 'p1', name: 'PVC Pipe (2")', type: 'pipe', category: 'drain', description: 'Standard drain pipe', color: 0xffffff },
-        { id: 'p2', name: 'P-Trap', type: 'fitting', category: 'drain', description: 'U-shaped trap fitting', color: 0xaaaaaa },
-        { id: 'p3', name: 'Shut-off Valve', type: 'valve', category: 'valves', description: 'Angle stop valve', color: 0x888888 },
-        { id: 'p4', name: 'Supply Line', type: 'pipe', category: 'supply', description: 'Braided supply line', color: 0xcccccc },
-        { id: 'p5', name: 'Drain Flange', type: 'fitting', category: 'drain', description: 'Sink drain flange', color: 0x999999 },
-        { id: 'p6', name: 'Teflon Tape', type: 'fitting', category: 'seals', description: 'Thread seal tape', color: 0xffffff },
-      ]),
-    }
-  ];
-
   // Fetch available games
   const { data: games = [], isLoading } = useQuery({
     queryKey: ['trade-games'],
@@ -60,10 +37,10 @@ export default function TradeGames() {
           '-created_at',
           50
         );
-        return allGames.length > 0 ? allGames : DEMO_GAMES;
+        return allGames;
       } catch (err) {
         console.error('Error fetching games:', err);
-        return DEMO_GAMES;
+        return [];
       }
     }
   });
