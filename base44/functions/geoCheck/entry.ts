@@ -4,43 +4,32 @@ const US_COUNTRY_CODES = ['US'];
 const RATE_LIMIT_THRESHOLD = 10; // max 10 checks per minute per IP
 const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
 
-async function isRateLimited(base44, ip) {
-  try {
-    const now = new Date().toISOString();
-    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW).toISOString();
+// Simple in-memory rate limiter (no database dependency)
+const rateLimitCache = new Map();
 
-    // Check for existing rate limit record
-    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
-      key: `geo_check:${ip}`,
-      window_start: { $gte: windowStart }
-    });
+function isRateLimited(ip) {
+  const now = Date.now();
+  const key = `geo:${ip}`;
+  const limit = rateLimitCache.get(key);
 
-    if (records && records.length > 0) {
-      const record = records[0];
-      if (record.request_count >= RATE_LIMIT_THRESHOLD) {
-        console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${record.request_count} requests)`);
-        return true;
-      }
-      // Increment counter
-      await base44.asServiceRole.entities.RateLimitTracker.update(record.id, {
-        request_count: record.request_count + 1
-      });
-    } else {
-      // Create new rate limit record
-      await base44.asServiceRole.entities.RateLimitTracker.create({
-        key: `geo_check:${ip}`,
-        limit_type: 'geo_check',
-        request_count: 1,
-        window_start: now,
-        window_duration_seconds: Math.floor(RATE_LIMIT_WINDOW / 1000)
-      });
+  if (limit && now < limit.resetTime) {
+    if (limit.count >= RATE_LIMIT_THRESHOLD) {
+      console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${limit.count} requests)`);
+      return true;
     }
-    return false;
-  } catch (error) {
-    console.error('[GEO-RATELIMIT-ERROR]', error.message);
-    // Fail open on rate limit check errors
-    return false;
+    limit.count++;
+  } else {
+    rateLimitCache.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
   }
+
+  // Cleanup old entries every 100 requests
+  if (Math.random() < 0.01) {
+    for (const [k, v] of rateLimitCache.entries()) {
+      if (now > v.resetTime) rateLimitCache.delete(k);
+    }
+  }
+
+  return false;
 }
 
 async function logSecurityAlert(eventType, clientIp, details) {
@@ -81,11 +70,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
-    // Initialize Base44 client for rate limiting checks
-    const base44 = createClientFromRequest(req);
-
-    // SECURITY: Rate limit to prevent brute-force/probing (database-backed)
-    if (await isRateLimited(base44, clientIp)) {
+    // SECURITY: Rate limit to prevent brute-force/probing (in-memory)
+    if (isRateLimited(clientIp)) {
       logSecurityAlert('rate_limited', clientIp, {
         severity: 'high',
         method: req.method,
