@@ -387,6 +387,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       setFeedback(null); setSelectedPart(null); setCombo(0);
       setCurrentParts([]);
       setFormattedTime('0:00');
+      startTimeRef.current = Date.now();
     }
   };
 
