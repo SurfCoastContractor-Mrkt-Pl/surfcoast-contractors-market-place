@@ -4,7 +4,7 @@ import { BarChart3 } from 'lucide-react';
 import WaveFOReportFilters from '@/components/fieldops/WaveFOReportFilters';
 import WaveFOReportDisplay from '@/components/fieldops/WaveFOReportDisplay';
 
-export default function WaveFOReporting() {
+export default function WaveFOReporting({ contractor, user }) {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);

@@ -49,7 +49,7 @@ export default function WaveFOSchedule({ contractor, user }) {
       setLoading(false);
     };
     load();
-  }, [user.email, contractor.id, cachedScopes, setCachedScopes]);
+  }, [user.email, contractor.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectedDateStr = selectedDate.toISOString().split('T')[0];
   const dayJobs = scopes.filter(s => s.agreed_work_date === selectedDateStr);

@@ -113,7 +113,7 @@ export default function WaveFo() {
   const completedJobsCount = contractor?.completed_jobs_count || 0;
   const BREAKER_JOBS_REQUIRED = 55;
   // Show AI assistant only for Ripple (15-34 jobs) and Swell (35-54 jobs) tiers
-  const showWaveFOAssistant = !isAdmin && completedJobsCount < BREAKER_JOBS_REQUIRED;
+  const showWaveFOAssistant = !isAdmin && completedJobsCount >= 15 && completedJobsCount < BREAKER_JOBS_REQUIRED;
   const hasWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
   const hasSurfCoastWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
   const NAV_TABS = hasSurfCoastWaveFOAccess

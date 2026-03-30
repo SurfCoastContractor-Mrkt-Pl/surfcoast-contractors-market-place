@@ -192,7 +192,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                     disabled={generating === escrow.scope_id}
                     className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
                   >
-                    {generating === escrow.id ? (
+                    {generating === escrow.scope_id ? (
                       <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <Download className="w-4 h-4" />

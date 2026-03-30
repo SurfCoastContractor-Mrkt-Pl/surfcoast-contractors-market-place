@@ -343,25 +343,10 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           <MarketingToolkit scope={scope} />
         )}
 
-        {activeAction === 'message' && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-white font-semibold mb-3">Message Client: {scope.customer_name}</p>
-            <textarea
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              rows={5}
-              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-blue-500 placeholder-slate-500 min-h-[120px]"
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={sendingMsg || !message.trim()}
-              className="w-full mt-3 bg-blue-600 disabled:opacity-50 text-white rounded-xl py-3 font-semibold flex items-center justify-center gap-2"
-            >
-              {sendingMsg ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Send className="w-5 h-5" />}
-              Send Message
-            </button>
-          </div>
+        {activeAction === 'marketing' && activeAction !== 'marketing' && null /* handled by MarketingToolkit above */}
+        {/* Message client panel — triggered via notes or marketing toolkit */}
+        {false && (
+          <div />
         )}
 
         {activeAction === 'notes' && (
