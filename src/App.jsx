@@ -66,6 +66,7 @@ import PerformanceAnalyticsDashboard from './pages/PerformanceAnalyticsDashboard
 import SystemHealthDashboard from './pages/SystemHealthDashboard';
 import AdminControlHub from './pages/AdminControlHub';
 import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
+import AdvancedAnalyticsDashboard from './pages/AdvancedAnalyticsDashboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -383,6 +384,11 @@ const AuthenticatedApp = () => {
       <Route path="/api-usage-analytics" element={
         <LayoutWrapper currentPageName="APIUsageAnalyticsDashboard">
           <APIUsageAnalyticsDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/advanced-analytics" element={
+        <LayoutWrapper currentPageName="AdvancedAnalyticsDashboard">
+          <AdvancedAnalyticsDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
