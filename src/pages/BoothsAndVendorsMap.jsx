@@ -252,22 +252,24 @@ export default function BoothsAndVendorsMap() {
                         View
                       </Button>
                       <Button
-                        onClick={() => {
-                          setReviewVendor(vendor);
-                          setReviewOpen(true);
-                        }}
-                        variant="outline"
-                        size="sm"
+                       onClick={(e) => {
+                         e.preventDefault();
+                         setReviewVendor(vendor);
+                         setReviewOpen(true);
+                       }}
+                       variant="outline"
+                       size="sm"
                       >
-                        <MessageCircle className="w-4 h-4 mr-1" />
-                        Review
+                       <MessageCircle className="w-4 h-4 mr-1" />
+                       Review
                       </Button>
                       <Button
-                        onClick={() => {
-                          setBookingVendor(vendor);
-                          setBookingOpen(true);
-                        }}
-                        size="sm"
+                       onClick={(e) => {
+                         e.preventDefault();
+                         setBookingVendor(vendor);
+                         setBookingOpen(true);
+                       }}
+                       size="sm"
                       >
                         <Calendar className="w-4 h-4 mr-1" />
                         Book

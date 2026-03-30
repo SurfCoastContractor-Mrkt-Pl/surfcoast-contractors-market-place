@@ -42,7 +42,7 @@ async function isRateLimited(base44, ip) {
     }
     return false;
   } catch (error) {
-    console.error('[RATE_LIMIT_ERROR]', error.message);
+    console.debug('[RATE_LIMIT_ERROR]', error.message);
     return false;
   }
 }
