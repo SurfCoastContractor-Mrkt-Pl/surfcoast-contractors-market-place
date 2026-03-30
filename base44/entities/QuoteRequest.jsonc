@@ -14,13 +14,13 @@
       "type": "string",
       "description": "Email of the contractor"
     },
-    "customer_email": {
+    "client_email": {
       "type": "string",
-      "description": "Email of the customer who sent the quote request"
+      "description": "Email of the client who sent the quote request"
     },
-    "customer_name": {
+    "client_name": {
       "type": "string",
-      "description": "Name of the customer"
+      "description": "Name of the client"
     },
     "job_title": {
       "type": "string",
@@ -71,11 +71,11 @@
       "items": {
         "type": "string"
       },
-      "description": "URLs of photos provided by customer"
+      "description": "URLs of photos provided by client"
     },
     "budget": {
       "type": "string",
-      "description": "Customer's budget"
+      "description": "Client's budget"
     },
     "timeline": {
       "type": "string",
@@ -98,15 +98,17 @@
     "contractor_id",
     "contractor_name",
     "contractor_email",
-    "customer_email",
-    "customer_name",
+    "client_email",
+    "client_name",
     "job_title",
     "work_description",
     "payment_id"
   ],
   "rls": {
     "create": {
-      "data.customer_email": "{{user.email}}"
+      "user_condition": {
+        "role": "service_role"
+      }
     },
     "read": {
       "$or": [
@@ -114,7 +116,7 @@
           "data.contractor_email": "{{user.email}}"
         },
         {
-          "data.customer_email": "{{user.email}}"
+          "data.client_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -136,16 +138,9 @@
       ]
     },
     "delete": {
-      "$or": [
-        {
-          "data.contractor_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     }
   }
 }

@@ -22,16 +22,16 @@ Deno.serve(async (req) => {
         scope_id: currentScope.id,
         status: currentScope.status,
         recipient_email: currentScope.contractor_email,
-        message: currentScope.customer_notes || '',
+        message: currentScope.client_notes || '',
       });
     }
 
-    // Notify customer on scope completion ready for approval
+    // Notify client on scope completion ready for approval
     if (currentScope.status === 'pending_approval') {
       await base44.functions.invoke('sendJobStatusNotification', {
         scope_id: currentScope.id,
         status: 'pending_approval',
-        recipient_email: currentScope.customer_email,
+        recipient_email: currentScope.client_email,
         message: 'Your contractor has submitted a scope of work for approval.',
       });
     }
@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
       await base44.functions.invoke('sendJobStatusNotification', {
         scope_id: currentScope.id,
         status: 'pending_ratings',
-        recipient_email: currentScope.customer_email,
+        recipient_email: currentScope.client_email,
         message: 'Please submit your rating to complete this project.',
       });
     }

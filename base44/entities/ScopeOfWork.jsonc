@@ -14,28 +14,28 @@
       "type": "string",
       "description": "Name of the contractor"
     },
-    "customer_name": {
+    "client_name": {
       "type": "string",
-      "description": "Name of the customer"
+      "description": "Name of the client"
     },
-    "customer_email": {
+    "client_email": {
       "type": "string",
-      "description": "Email of the customer"
+      "description": "Email of the client"
     },
     "job_title": {
       "type": "string",
       "description": "Brief title of the work"
     },
-    "customer_scope_details": {
+    "client_scope_details": {
       "type": "string",
-      "description": "Customer's description of what needs to be done"
+      "description": "Client's description of what needs to be done"
     },
-    "customer_scope_photo_urls": {
+    "client_scope_photo_urls": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "URLs of photos uploaded by customer describing scope"
+      "description": "URLs of photos uploaded by client describing scope"
     },
     "scope_summary": {
       "type": "string",
@@ -60,7 +60,7 @@
     "agreed_work_date": {
       "type": "string",
       "format": "date",
-      "description": "The date agreed between customer and contractor for work to take place"
+      "description": "The date agreed between client and contractor for work to take place"
     },
     "after_photo_urls": {
       "type": "array",
@@ -71,7 +71,7 @@
     },
     "job_together_photo_url": {
       "type": "string",
-      "description": "Photo of contractor and customer together at the completed job site \u2014 used as the job thumbnail on both profiles"
+      "description": "Photo of contractor and client together at the completed job site \u2014 used as the job thumbnail on both profiles"
     },
     "status": {
       "type": "string",
@@ -84,29 +84,29 @@
         "closed"
       ],
       "default": "pending_approval",
-      "description": "Customer approval status"
+      "description": "Client approval status"
     },
-    "customer_notes": {
+    "client_notes": {
       "type": "string",
-      "description": "Notes from the customer on approval or rejection"
+      "description": "Notes from the client on approval or rejection"
     },
-    "customer_signature_url": {
+    "client_signature_url": {
       "type": "string",
-      "description": "URL of customer's digital signature on the approved scope"
+      "description": "URL of client's digital signature on the approved scope"
     },
-    "customer_signed_scope_at": {
+    "client_signed_scope_at": {
       "type": "string",
-      "description": "ISO timestamp when customer signed/approved the scope"
+      "description": "ISO timestamp when client signed/approved the scope"
     },
     "contractor_closeout_confirmed": {
       "type": "boolean",
       "default": false,
       "description": "Contractor has confirmed job closeout"
     },
-    "customer_closeout_confirmed": {
+    "client_closeout_confirmed": {
       "type": "boolean",
       "default": false,
-      "description": "Customer has confirmed job closeout (payment made, satisfied with work)"
+      "description": "Client has confirmed job closeout (payment made, satisfied with work)"
     },
     "contractor_satisfaction_rating": {
       "type": "string",
@@ -116,9 +116,9 @@
         "good",
         "excellent"
       ],
-      "description": "Contractor's satisfaction rating of the customer/engagement at closeout"
+      "description": "Contractor's satisfaction rating of the client/engagement at closeout"
     },
-    "customer_satisfaction_rating": {
+    "client_satisfaction_rating": {
       "type": "string",
       "enum": [
         "unsatisfactory",
@@ -126,7 +126,7 @@
         "good",
         "excellent"
       ],
-      "description": "Customer's satisfaction rating of the contractor's work at closeout"
+      "description": "Client's satisfaction rating of the contractor's work at closeout"
     },
     "closed_date": {
       "type": "string",
@@ -159,7 +159,7 @@
         "not_sent",
         "pending",
         "contractor_signed",
-        "customer_signed",
+        "client_signed",
         "fully_signed",
         "declined"
       ],
@@ -170,9 +170,9 @@
       "type": "string",
       "description": "ISO timestamp when contractor signed"
     },
-    "customer_signed_at": {
+    "client_signed_at": {
       "type": "string",
-      "description": "ISO timestamp when customer signed"
+      "description": "ISO timestamp when client signed"
     },
     "signed_contract_url": {
       "type": "string",
@@ -180,7 +180,7 @@
     },
     "contract_declined_reason": {
       "type": "string",
-      "description": "Reason customer declined to sign (if applicable)"
+      "description": "Reason client declined to sign (if applicable)"
     },
     "notion_page_url": {
       "type": "string",
@@ -211,8 +211,8 @@
   },
   "required": [
     "contractor_name",
-    "customer_name",
-    "customer_email",
+    "client_name",
+    "client_email",
     "job_title",
     "cost_type",
     "cost_amount"
@@ -227,7 +227,7 @@
           "data.contractor_email": "{{user.email}}"
         },
         {
-          "data.customer_email": "{{user.email}}"
+          "data.client_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -242,7 +242,7 @@
           "data.contractor_email": "{{user.email}}"
         },
         {
-          "data.customer_email": "{{user.email}}"
+          "data.client_email": "{{user.email}}"
         },
         {
           "user_condition": {
@@ -257,7 +257,7 @@
           "data.contractor_email": "{{user.email}}"
         },
         {
-          "data.customer_email": "{{user.email}}"
+          "data.client_email": "{{user.email}}"
         },
         {
           "user_condition": {

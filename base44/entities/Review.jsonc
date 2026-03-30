@@ -14,13 +14,13 @@
       "type": "string",
       "description": "Email of the reviewed contractor"
     },
-    "customer_id": {
+    "client_id": {
       "type": "string",
-      "description": "ID of the reviewed customer (for customer reviews)"
+      "description": "ID of the reviewed client (for client reviews)"
     },
-    "customer_name": {
+    "client_name": {
       "type": "string",
-      "description": "Name of the reviewed customer"
+      "description": "Name of the reviewed client"
     },
     "scope_id": {
       "type": "string",
@@ -38,9 +38,9 @@
       "type": "string",
       "enum": [
         "contractor",
-        "customer"
+        "client"
       ],
-      "description": "Whether reviewer is contractor or customer"
+      "description": "Whether reviewer is contractor or client"
     },
     "job_title": {
       "type": "string",
@@ -108,7 +108,7 @@
     "is_testimony": {
       "type": "boolean",
       "default": false,
-      "description": "Whether this is a public testimony submitted by a customer (not tied to a completed scope)"
+      "description": "Whether this is a public testimony submitted by a client (not tied to a completed scope)"
     },
     "is_pinned": {
       "type": "boolean",
@@ -171,6 +171,9 @@
     "read": {
       "$or": [
         {
+          "data.verified": true
+        },
+        {
           "user_condition": {
             "role": "admin"
           }
@@ -195,6 +198,11 @@
         },
         {
           "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
         }
       ]
     },

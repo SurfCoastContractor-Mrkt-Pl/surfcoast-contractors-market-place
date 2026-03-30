@@ -34,7 +34,7 @@ This is an automated notification about your project: ${currentScope.job_title}
 ${message ? `**Message:** ${message}` : ''}
 
 **Project Details:**
-- Customer: ${currentScope.customer_name}
+- Client: ${currentScope.client_name}
 - Contractor: ${currentScope.contractor_name}
 - Amount: $${currentScope.cost_amount?.toFixed(2) || 'TBD'}
 - Work Date: ${currentScope.agreed_work_date || 'TBD'}

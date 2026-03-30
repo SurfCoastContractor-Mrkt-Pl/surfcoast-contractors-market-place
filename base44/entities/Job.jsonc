@@ -111,7 +111,7 @@
       "items": {
         "type": "string"
       },
-      "description": "URLs of before photos uploaded by customer (minimum 5 required)"
+      "description": "URLs of before photos uploaded by client (minimum 5 required)"
     }
   },
   "required": [
@@ -134,6 +134,9 @@
           "user_condition": {
             "role": "admin"
           }
+        },
+        {
+          "data.status": "open"
         }
       ]
     },

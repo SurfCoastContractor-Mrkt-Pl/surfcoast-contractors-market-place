@@ -1,0 +1,199 @@
+{
+  "name": "ClientProfile",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Client email (links to User entity)"
+    },
+    "full_name": {
+      "type": "string",
+      "description": "Client full name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date",
+      "description": "Client date of birth (must be 18+)"
+    },
+    "location": {
+      "type": "string",
+      "description": "City/Region"
+    },
+    "property_type": {
+      "type": "string",
+      "enum": [
+        "residential_house",
+        "residential_apartment",
+        "residential_condo",
+        "commercial",
+        "industrial",
+        "land_vacant"
+      ],
+      "description": "Type of property where work is typically needed"
+    },
+    "property_address": {
+      "type": "string",
+      "description": "Primary property/site address for work"
+    },
+    "preferred_contractor_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "general",
+          "trade_specific"
+        ]
+      },
+      "description": "Preferred contractor types"
+    },
+    "preferred_trades": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Preferred trade specialties"
+    },
+    "bio": {
+      "type": "string",
+      "description": "About the client"
+    },
+    "notify_job_updates": {
+      "type": "boolean",
+      "default": true,
+      "description": "Email notifications for job/scope status updates"
+    },
+    "notify_messages": {
+      "type": "boolean",
+      "default": true,
+      "description": "Email notifications for new messages"
+    },
+    "notify_payment_receipts": {
+      "type": "boolean",
+      "default": true,
+      "description": "Email notifications for payment receipts"
+    },
+    "notify_platform_news": {
+      "type": "boolean",
+      "default": false,
+      "description": "Occasional platform news and tips"
+    },
+    "total_jobs_posted": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of jobs posted"
+    },
+    "total_spent": {
+      "type": "number",
+      "default": 0,
+      "description": "Total amount spent on contractors"
+    },
+    "completed_jobs_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total verified closed-out jobs used for client badge tiers"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a demo profile"
+    },
+    "demo_expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when demo profile expires and will be deleted"
+    },
+    "trial_started_at": {
+      "type": "string",
+      "description": "ISO timestamp when the client's trial started"
+    },
+    "trial_ends_at": {
+      "type": "string",
+      "description": "ISO timestamp when the client's trial ends"
+    },
+    "trial_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the client is currently in an active trial"
+    },
+    "trial_expired": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the client's trial has expired"
+    },
+    "pending_rating_scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork pending a rating submission"
+    },
+    "rating_block_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the client is blocked from new jobs until a rating is submitted"
+    },
+    "rating_block_since": {
+      "type": "string",
+      "description": "ISO timestamp when the rating block was activated"
+    }
+  },
+  "required": [
+    "email",
+    "full_name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

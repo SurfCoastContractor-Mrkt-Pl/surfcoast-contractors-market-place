@@ -76,6 +76,7 @@ import Admin from './pages/Admin';
 import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
 import ContractorJobPipeline from './pages/ContractorJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
+import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -428,6 +429,11 @@ const AuthenticatedApp = () => {
       <Route path="/job-pipeline" element={
         <LayoutWrapper currentPageName="ContractorJobPipeline">
           <ContractorJobPipeline />
+        </LayoutWrapper>
+      } />
+      <Route path="/collaboration" element={
+        <LayoutWrapper currentPageName="Phase4CollaborationHub">
+          <Phase4CollaborationHub />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

@@ -14,13 +14,13 @@
       "type": "string",
       "enum": [
         "contractor",
-        "customer"
+        "client"
       ],
-      "description": "Whether the payer is a contractor or customer"
+      "description": "Whether the payer is a contractor or client"
     },
     "contractor_id": {
       "type": "string",
-      "description": "Contractor ID involved in this payment (for customer payments)"
+      "description": "Contractor ID involved in this payment (for client payments)"
     },
     "contractor_email": {
       "type": "string",

@@ -1,0 +1,136 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "sender_name": {
+      "type": "string",
+      "description": "Name of the message sender"
+    },
+    "sender_email": {
+      "type": "string",
+      "description": "Email of the sender (for lookup, not shown to recipient until fee paid)"
+    },
+    "sender_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "client"
+      ],
+      "description": "Whether sender is a contractor or client"
+    },
+    "recipient_id": {
+      "type": "string",
+      "description": "ID of the contractor or job being messaged"
+    },
+    "recipient_name": {
+      "type": "string",
+      "description": "Name of the recipient"
+    },
+    "recipient_email": {
+      "type": "string",
+      "description": "Email of the recipient"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Message subject"
+    },
+    "body": {
+      "type": "string",
+      "description": "Message body"
+    },
+    "payment_id": {
+      "type": "string",
+      "description": "Associated payment record ID confirming fee was paid"
+    },
+    "file_urls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the uploaded file"
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename"
+          },
+          "type": {
+            "type": "string",
+            "description": "File type (document, image, other)"
+          }
+        }
+      },
+      "description": "Array of attached files with URLs and metadata"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the message has been read"
+    },
+    "read_at": {
+      "type": "string",
+      "description": "ISO timestamp when the message was read"
+    },
+    "parent_message_id": {
+      "type": "string",
+      "description": "ID of parent message for threading (null for top-level messages)"
+    }
+  },
+  "required": [
+    "sender_name",
+    "sender_email",
+    "sender_type",
+    "recipient_name",
+    "recipient_email",
+    "body",
+    "payment_id"
+  ],
+  "rls": {
+    "create": {
+      "data.sender_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.sender_email": "{{user.email}}"
+        },
+        {
+          "data.recipient_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.recipient_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.sender_email": "{{user.email}}"
+        },
+        {
+          "data.recipient_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

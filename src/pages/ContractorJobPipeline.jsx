@@ -28,15 +28,15 @@ export default function ContractorJobPipeline() {
   }, []);
 
   const { data: jobs = [], isLoading, error } = useQuery({
-    queryKey: ['contractorJobPipeline', user?.email],
-    queryFn: async () => {
-      if (!user?.email) return [];
-      
-      const allScopes = await base44.entities.ScopeOfWork.filter(
-        { contractor_email: user.email },
-        '-agreed_work_date',
-        500
-      );
+      queryKey: ['contractorJobPipeline', user?.email],
+      queryFn: async () => {
+        if (!user?.email) return [];
+
+        const allScopes = await base44.entities.ScopeOfWork.filter(
+          { contractor_email: user.email },
+          '-agreed_work_date',
+          500
+        );
 
       // Filter to active statuses
       return allScopes.filter(s => 
@@ -125,7 +125,7 @@ export default function ContractorJobPipeline() {
                         </span>
                       </div>
                       <h3 className="text-xl font-semibold text-slate-900 mb-1">{job.job_title}</h3>
-                      <p className="text-slate-600">Customer: <span className="font-medium">{job.customer_name}</span></p>
+                      <p className="text-slate-600">Client: <span className="font-medium">{job.client_name}</span></p>
                     </div>
                   </div>
 
