@@ -16,6 +16,15 @@ const CATEGORY_LABELS = {
   other: 'Other',
 };
 
+const CATEGORY_COLORS = {
+  power_tools: 'bg-blue-100 text-blue-700 border-blue-200',
+  hand_tools: 'bg-green-100 text-green-700 border-green-200',
+  safety_equipment: 'bg-orange-100 text-orange-700 border-orange-200',
+  heavy_machinery: 'bg-red-100 text-red-700 border-red-200',
+  specialty_tools: 'bg-purple-100 text-purple-700 border-purple-200',
+  other: 'bg-slate-100 text-slate-600 border-slate-200',
+};
+
 export default function EquipmentDisplay({ contractorId, isOwner = false }) {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -105,7 +114,7 @@ export default function EquipmentDisplay({ contractorId, isOwner = false }) {
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="secondary">
+                    <Badge className={CATEGORY_COLORS[item.category] || CATEGORY_COLORS.other}>
                       {CATEGORY_LABELS[item.category] || item.category}
                     </Badge>
                     {!item.available && (
