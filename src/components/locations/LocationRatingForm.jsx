@@ -108,7 +108,6 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-bold text-slate-900">Rate This Location</h3>
-          <p className="text-sm text-slate-600 mt-1">{location.location_name} • {location.city}, {location.state?.toUpperCase()}</p>
         </div>
         {onClose && (
           <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded">
