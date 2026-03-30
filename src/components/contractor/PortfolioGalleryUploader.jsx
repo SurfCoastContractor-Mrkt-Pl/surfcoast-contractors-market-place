@@ -21,16 +21,36 @@ export default function PortfolioGalleryUploader({ contractor, onUpdate }) {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    e.target.value = '';
     setUploading(true);
+
     const currentImages = contractor.portfolio_images || [];
     const newImages = [...currentImages];
+    const failed = [];
 
     for (const file of files) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      newImages.push(file_url);
+      try {
+        const result = await base44.integrations.Core.UploadFile({ file });
+        const url = result?.file_url || result?.url;
+        if (url) {
+          newImages.push(url);
+        } else {
+          failed.push(file.name);
+        }
+      } catch (err) {
+        console.error('Upload failed for', file.name, err);
+        failed.push(file.name);
+      }
     }
 
-    await updateMutation.mutateAsync({ portfolio_images: newImages });
+    if (newImages.length > currentImages.length) {
+      await updateMutation.mutateAsync({ portfolio_images: newImages });
+    }
+
+    if (failed.length > 0) {
+      alert(`Failed to upload: ${failed.join(', ')}. Please try again with a smaller file or different format.`);
+    }
+
     setUploading(false);
   };
 
