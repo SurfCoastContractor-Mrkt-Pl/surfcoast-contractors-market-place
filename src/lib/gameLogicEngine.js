@@ -30,13 +30,43 @@ export default class GameLogicEngine {
     this.sessionStartTime = null;
     this.consecutiveCorrectPlacements = 0;
     this.errors = [];
+    this.elapsedSeconds = 0;
+    this.timerInterval = null;
   }
 
   // Load initial game state and render 3D models
   loadInitialState() {
     this.currentState = JSON.parse(JSON.stringify(this.initialState));
     this.sessionStartTime = Date.now();
+    this.startTimer();
     this.renderScene();
+  }
+
+  // Start the game timer
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      this.elapsedSeconds = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+    }, 100);
+  }
+
+  // Stop the game timer
+  stopTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  }
+
+  // Get elapsed time in MM:SS format
+  getFormattedTime() {
+    const minutes = Math.floor(this.elapsedSeconds / 60);
+    const seconds = this.elapsedSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  // Get elapsed time in seconds
+  getElapsedSeconds() {
+    return this.elapsedSeconds;
   }
 
   // Render 3D scene based on current state
@@ -316,13 +346,10 @@ export default class GameLogicEngine {
     const hintPenalty = this.hintsUsed * 5;
     const errorPenalty = this.errors.length * 3;
     
-    // Time bonus: full bonus if completed in under 2 minutes, scales down after
+    // Time bonus: decreases as time increases (120 sec = 0 bonus, 30 sec = 50 bonus)
     let timeBonus = 0;
-    if (this.sessionStartTime) {
-      const elapsedSeconds = (Date.now() - this.sessionStartTime) / 1000;
-      if (elapsedSeconds < 120) {
-        timeBonus = Math.max(0, 50 - (elapsedSeconds / 2.4)); // 50 points max
-      }
+    if (this.elapsedSeconds < 120) {
+      timeBonus = Math.max(0, 50 - (this.elapsedSeconds / 2.4));
     }
     
     // Combo multiplier: consecutive correct placements boost score
@@ -330,6 +357,22 @@ export default class GameLogicEngine {
 
     score = Math.max(0, (score - movePenalty - hintPenalty - errorPenalty + timeBonus) * comboMultiplier);
     return Math.round(score);
+  }
+
+  // Get detailed score breakdown
+  getScoreBreakdown() {
+    return {
+      baseScore: 100,
+      movePenalty: Math.max(0, (this.movesCount - 5) * 2),
+      hintPenalty: this.hintsUsed * 5,
+      errorPenalty: this.errors.length * 3,
+      timeBonus: this.elapsedSeconds < 120 ? Math.max(0, 50 - (this.elapsedSeconds / 2.4)) : 0,
+      comboMultiplier: 1 + (Math.min(this.consecutiveCorrectPlacements, 10) * 0.05),
+      finalScore: this.calculateScore(),
+      elapsedSeconds: this.elapsedSeconds,
+      movesCount: this.movesCount,
+      errorCount: this.errors.length
+    };
   }
 
   // Get progressive hints (each hint gets more specific)
@@ -349,14 +392,22 @@ export default class GameLogicEngine {
 
   // Reset the game
   reset() {
+    this.stopTimer();
     this.currentState = JSON.parse(JSON.stringify(this.initialState));
     this.placedParts.clear();
     this.movesCount = 0;
     this.hintsUsed = 0;
     this.consecutiveCorrectPlacements = 0;
     this.errors = [];
+    this.elapsedSeconds = 0;
     this.sessionStartTime = Date.now();
+    this.startTimer();
     this.renderScene();
+  }
+
+  // Cleanup on game end
+  cleanup() {
+    this.stopTimer();
   }
 
   // Get available parts

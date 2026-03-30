@@ -6,8 +6,9 @@ import GameControls from './GameControls';
 import FeedbackPanel from './FeedbackPanel';
 import SaveMockupModal from './SaveMockupModal';
 import MockupLibrary from './MockupLibrary';
+import GameLeaderboardUI from './GameLeaderboardUI';
 import { Button } from '@/components/ui/button';
-import { Save, FolderOpen } from 'lucide-react';
+import { Save, FolderOpen, Clock } from 'lucide-react';
 
 // ─── Bathroom Environment Builder ───────────────────────────────────────────
 function buildBathroomScene(scene) {
@@ -200,6 +201,8 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   const [showSaveMockup, setShowSaveMockup] = useState(false);
   const [showMockupLibrary, setShowMockupLibrary] = useState(false);
   const [currentParts, setCurrentParts] = useState([]);
+  const [formattedTime, setFormattedTime] = useState('0:00');
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const startTimeRef = useRef(null);
 
   // Initialize Three.js scene
@@ -270,6 +273,13 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     setIsInitializing(false);
     startTimeRef.current = Date.now();
 
+    // Update timer display every 100ms
+    const timerInterval = setInterval(() => {
+      if (gameEngine) {
+        setFormattedTime(gameEngine.getFormattedTime());
+      }
+    }, 100);
+
     // Orbit state (attached after camera is set)
     const orbitState = { isDragging: false, lastX: 0, lastY: 0, theta: 0.55, phi: 0.75, radius: 5.5, target: new THREE.Vector3(-0.5, 1.2, -2) };
 
@@ -328,6 +338,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       window.removeEventListener('mousemove', onMouseMove);
       el.removeEventListener('wheel', onWheel);
       window.removeEventListener('resize', handleResize);
+      clearInterval(timerInterval);
       try {
         if (renderer.domElement.parentNode) {
           renderer.domElement.parentNode.removeChild(renderer.domElement);
@@ -368,6 +379,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       setScore(0); setMoveCount(0); setIsGameSolved(false);
       setFeedback(null); setSelectedPart(null); setCombo(0);
       setCurrentParts([]);
+      setFormattedTime('0:00');
     }
   };
 
@@ -408,6 +420,12 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
           🖱 Drag to rotate · Scroll to zoom
         </div>
 
+        {/* Timer display */}
+        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm shadow rounded-lg px-4 py-2 flex items-center gap-2">
+          <Clock className="w-4 h-4 text-blue-600" />
+          <span className="font-bold text-slate-900">{formattedTime}</span>
+        </div>
+
         {/* Save/Load toolbar */}
         <div className="absolute top-3 right-3 flex gap-2">
           <Button
@@ -432,19 +450,48 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
 
       {/* Right Sidebar */}
       <div className="w-72 flex flex-col gap-3 p-3 bg-slate-50 border-l border-slate-200 overflow-y-auto">
-        <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} combo={combo} />
-        <GameControls
-          gameMode={gameMode}
-          isGameSolved={isGameSolved}
-          onReset={handleReset}
-          onGetHint={handleGetHint}
-        />
-        <PartLibrary
-          parts={availableParts}
-          selectedPart={selectedPart}
-          onSelectPart={setSelectedPart}
-          onPlacePart={handlePlacePart}
-        />
+        {!showLeaderboard ? (
+          <>
+            <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} combo={combo} />
+            <GameControls
+              gameMode={gameMode}
+              isGameSolved={isGameSolved}
+              onReset={handleReset}
+              onGetHint={handleGetHint}
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowLeaderboard(true)}
+              className="w-full"
+            >
+              View Leaderboard
+            </Button>
+            <PartLibrary
+              parts={availableParts}
+              selectedPart={selectedPart}
+              onSelectPart={setSelectedPart}
+              onPlacePart={handlePlacePart}
+            />
+          </>
+        ) : (
+          <>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLeaderboard(false)}
+              className="w-full text-left"
+            >
+              ← Back to Game
+            </Button>
+            <GameLeaderboardUI
+              gameId={gameData?.id}
+              currentScore={isGameSolved ? score : undefined}
+              currentTime={formattedTime}
+              onViewFull={() => console.log('View full leaderboard')}
+            />
+          </>
+        )}
       </div>
 
       {/* Modals */}
@@ -461,6 +508,13 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
           onLoad={handleLoadMockup}
           onClose={() => setShowMockupLibrary(false)}
         />
+      )}
+      
+      {/* Cleanup on unmount */}
+      {typeof window !== 'undefined' && (
+        <div className="hidden">
+          {isGameSolved && gameEngineRef.current?.cleanup()}
+        </div>
       )}
     </div>
   );
