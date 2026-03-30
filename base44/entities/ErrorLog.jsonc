@@ -1,0 +1,96 @@
+{
+  "name": "ErrorLog",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "Error message"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ],
+      "default": "error",
+      "description": "Error severity level"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "auth",
+        "validation",
+        "network",
+        "database",
+        "payment",
+        "file_upload",
+        "permission",
+        "unknown"
+      ],
+      "default": "unknown",
+      "description": "Error category"
+    },
+    "stack": {
+      "type": "string",
+      "description": "Stack trace"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID if applicable"
+    },
+    "url": {
+      "type": "string",
+      "description": "URL where error occurred"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "User agent string"
+    },
+    "resolved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the error has been resolved"
+    },
+    "resolution_notes": {
+      "type": "string",
+      "description": "Notes about how the error was resolved"
+    },
+    "resolved_at": {
+      "type": "string",
+      "description": "ISO timestamp when error was marked resolved"
+    }
+  },
+  "required": [
+    "message",
+    "level",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
