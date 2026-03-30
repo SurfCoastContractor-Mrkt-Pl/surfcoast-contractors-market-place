@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Star, Save, X, Loader2 } from 'lucide-react';
+import { Star, Save, X, Loader2, AlertCircle } from 'lucide-react';
 import { trackEvent, EVENTS } from '@/lib/analytics';
 import { logError } from '@/lib/errorLogger';
 
@@ -14,10 +14,14 @@ const RATING_QUESTIONS = [
   { key: 'overall_experience', label: 'Overall experience rating' },
 ];
 
+const MAX_COMMENT_LENGTH = 1000;
+const MIN_RATING = 1;
+const MAX_RATING = 5;
+
 // Sanitize HTML/XSS in user input
 const sanitizeInput = (text) => {
   if (!text) return '';
-  return text.replace(/[<>]/g, '');
+  return text.replace(/[<>]/g, '').trim();
 };
 
 export default function LocationRatingForm({ location, onClose, onSave, existingRating = null }) {
@@ -33,39 +37,38 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
   const [comments, setComments] = useState(existingRating?.comments || '');
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const currentUser = await base44.auth.me();
-        setUser(currentUser);
-      } catch (err) {
-        console.error('Error fetching user:', err);
-      }
-    };
-    getUser();
+    base44.auth.me().catch(() => setUser(null));
   }, []);
 
-  const handleRatingChange = (key, value) => {
+  const isAllRated = useMemo(() => Object.values(ratings).every(r => r > 0), [ratings]);
+  const isCommentsValid = useMemo(() => comments.length <= MAX_COMMENT_LENGTH, [comments]);
+
+  const handleRatingChange = useCallback((key, value) => {
     setRatings(prev => ({
       ...prev,
       [key]: prev[key] === value ? 0 : value
     }));
-  };
+    setError('');
+  }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
+    setError('');
+
     if (!user) {
-      alert('Please log in to rate locations');
+      setError('Please log in to rate locations');
       return;
     }
 
-    if (Object.values(ratings).some(r => r === 0)) {
-      alert('Please rate all questions');
+    if (!isAllRated) {
+      setError('Please rate all questions');
       return;
     }
 
-    if (comments.length > 1000) {
-      alert('Comments must be under 1000 characters');
+    if (!isCommentsValid) {
+      setError('Comments must be under 1000 characters');
       return;
     }
 
@@ -95,46 +98,60 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
 
       onSave?.();
       onClose?.();
-    } catch (error) {
-      await logError('Failed to save location rating', 'rating', { error: error.message });
-      alert('Failed to save rating');
+    } catch (err) {
+      await logError('Failed to save location rating', 'rating', { error: err.message });
+      setError('Failed to save rating. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, isAllRated, isCommentsValid, ratings, comments, location, existingRating, onSave, onClose]);
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-6">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-bold text-slate-900">Rate This Location</h3>
-        </div>
+        <h3 className="text-lg font-bold text-slate-900">Rate This Location</h3>
         {onClose && (
-          <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded">
+          <button
+            onClick={onClose}
+            disabled={loading}
+            className="p-1 hover:bg-slate-100 rounded transition-colors disabled:opacity-50"
+            aria-label="Close"
+          >
             <X className="w-5 h-5 text-slate-400" />
           </button>
         )}
       </div>
 
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2">
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
+
       <div className="space-y-6">
         {RATING_QUESTIONS.map(({ key, label }) => (
           <div key={key}>
             <label className="block text-sm font-medium text-slate-700 mb-3">{label}</label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map(star => (
-                <button
-                  key={star}
-                  onClick={() => handleRatingChange(key, star)}
-                  className="p-2 rounded-lg transition-colors"
-                  style={{
-                    background: ratings[key] >= star ? '#f97316' : '#f3f4f6',
-                    color: ratings[key] >= star ? 'white' : '#9ca3af',
-                  }}
-                >
-                  <Star className="w-5 h-5 fill-current" />
-                </button>
-              ))}
-              <span className="ml-3 text-sm font-medium text-slate-600">
+            <div className="flex gap-2 items-center">
+              {[...Array(MAX_RATING)].map((_, i) => {
+                const star = i + 1;
+                return (
+                  <button
+                    key={star}
+                    onClick={() => handleRatingChange(key, star)}
+                    className="p-2 rounded-lg transition-colors hover:scale-110"
+                    style={{
+                      background: ratings[key] >= star ? '#f97316' : '#f3f4f6',
+                      color: ratings[key] >= star ? 'white' : '#9ca3af',
+                    }}
+                    aria-label={`Rate ${star} out of 5`}
+                  >
+                    <Star className="w-5 h-5 fill-current" />
+                  </button>
+                );
+              })}
+              <span className="ml-auto text-sm font-medium text-slate-600 whitespace-nowrap">
                 {ratings[key] > 0 ? `${ratings[key]}/5` : 'Not rated'}
               </span>
             </div>
@@ -142,32 +159,33 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
         ))}
 
         <div>
-           <label className="block text-sm font-medium text-slate-700 mb-2">Additional Comments</label>
-           <textarea
-             value={comments}
-             onChange={(e) => setComments(e.target.value)}
-             placeholder="Share any additional feedback about this location..."
-             maxLength={1000}
-             className="w-full p-3 border border-slate-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
-             rows={4}
-           />
-           <div className="text-xs text-slate-500 mt-1">{comments.length}/1000 characters</div>
-         </div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Additional Comments
+            <span className="text-slate-500 font-normal ml-1">({comments.length}/{MAX_COMMENT_LENGTH})</span>
+          </label>
+          <textarea
+            value={comments}
+            onChange={(e) => setComments(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
+            placeholder="Share any additional feedback..."
+            className="w-full p-3 border border-slate-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            rows={4}
+          />
+        </div>
 
         <div className="flex gap-3">
           {onClose && (
             <button
               onClick={onClose}
               disabled={loading}
-              className="flex-1 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 disabled:opacity-50"
+              className="flex-1 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 disabled:opacity-50 transition-colors"
             >
               Cancel
             </button>
           )}
           <button
             onClick={handleSubmit}
-            disabled={loading || Object.values(ratings).some(r => r === 0)}
-            className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 disabled:opacity-50 flex items-center justify-center gap-2"
+            disabled={loading || !isAllRated}
+            className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors"
           >
             {loading ? (
               <>
