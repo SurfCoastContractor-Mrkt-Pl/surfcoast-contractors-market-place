@@ -248,8 +248,6 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
   const [currentParts, setCurrentParts] = useState([]);
   const startTimeRef = useRef(null);
 
-  useOrbitControls(cameraRef.current, mountRef.current);
-
   // Initialize Three.js scene
   useEffect(() => {
     if (!mountRef.current || !gameData) return;
@@ -376,9 +374,11 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       window.removeEventListener('mousemove', onMouseMove);
       el.removeEventListener('wheel', onWheel);
       window.removeEventListener('resize', handleResize);
-      if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
+      try {
+        if (renderer.domElement.parentNode) {
+          renderer.domElement.parentNode.removeChild(renderer.domElement);
+        }
+      } catch {}
       renderer.dispose();
     };
   }, [gameData, gameMode]);
@@ -396,7 +396,7 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     if (gameEngineRef.current.isSolved()) {
       setIsGameSolved(true);
       const duration = startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current) / 1000) : 0;
-      onGameComplete?.({ score: newScore, moves: moveCount + 1, duration });
+      onGameComplete?.({ score: newScore, moves: gameEngineRef.current.movesCount, duration });
     }
   };
 

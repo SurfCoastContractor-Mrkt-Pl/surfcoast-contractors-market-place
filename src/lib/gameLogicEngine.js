@@ -221,10 +221,10 @@ export default class GameLogicEngine {
       return false;
     }
 
-    const currentPartsSet = new Set(this.currentState.parts.map(p => p.type).sort());
-    const solutionPartsSet = new Set(this.solutionState.parts.map(p => p.type).sort());
+    const currentTypes = this.currentState.parts.map(p => p.type).sort();
+    const solutionTypes = this.solutionState.parts.map(p => p.type).sort();
 
-    return JSON.stringify(Array.from(currentPartsSet)) === JSON.stringify(Array.from(solutionPartsSet));
+    return JSON.stringify(currentTypes) === JSON.stringify(solutionTypes);
   }
 
   // Calculate score with time bonus and combo multipliers

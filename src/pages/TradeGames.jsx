@@ -9,12 +9,15 @@ import GameChallengeCreator from '@/components/tradegames/GameChallengeCreator';
 import { Play, Zap } from 'lucide-react';
 import ScenarioIntroModal from '@/components/tradegames/ScenarioIntroModal';
 
+const TRADE_FILTERS = ['all', 'plumbing', 'electrical', 'carpentry', 'hvac'];
+
 export default function TradeGames() {
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameMode, setGameMode] = useState('sandbox');
   const [user, setUser] = useState(null);
   const [showChallengeCreator, setShowChallengeCreator] = useState(false);
   const [showScenario, setShowScenario] = useState(false);
+  const [tradeFilter, setTradeFilter] = useState('all');
 
   // Fetch current user
   useEffect(() => {
@@ -163,8 +166,14 @@ export default function TradeGames() {
 
         {/* Game Filters */}
         <div className="mb-6 flex gap-2 flex-wrap">
-          {['all', 'plumbing', 'electrical', 'carpentry', 'hvac'].map(trade => (
-            <Button key={trade} variant="outline" size="sm" className="capitalize">
+          {TRADE_FILTERS.map(trade => (
+            <Button
+              key={trade}
+              variant={tradeFilter === trade ? 'default' : 'outline'}
+              size="sm"
+              className="capitalize"
+              onClick={() => setTradeFilter(trade)}
+            >
               {trade}
             </Button>
           ))}
@@ -181,7 +190,7 @@ export default function TradeGames() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {games.map(game => (
+            {games.filter(g => tradeFilter === 'all' || g.trade_type === tradeFilter).map(game => (
               <Card key={game.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 {/* Game Image */}
                 {game.image_url && (
