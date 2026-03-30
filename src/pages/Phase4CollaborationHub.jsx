@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { MessageCircle, FileText, CheckSquare, AlertCircle } from 'lucide-react';
+import { MessageCircle, FileText, CheckSquare, AlertCircle, BarChart3, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Activity } from 'lucide-react';
 import ProjectActivityFeed from '@/components/phase4/ProjectActivityFeed';
 import ProjectNotificationCenter from '@/components/phase4/ProjectNotificationCenter';
 import NotificationCenter from '@/components/phase5/NotificationCenter';
+import ProjectAnalyticsDashboard from '@/components/phase5/ProjectAnalyticsDashboard';
+import TeamMemberManager from '@/components/phase5/TeamMemberManager';
 import Phase4ErrorBoundary from '@/components/phase4/Phase4ErrorBoundary';
 import ProjectChatPanel from '@/components/phase4/ProjectChatPanel';
 import ProjectMilestonesTracker from '@/components/phase4/ProjectMilestonesTracker';
@@ -19,6 +21,8 @@ const TABS = [
   { id: 'chat', label: 'Chat', icon: MessageCircle },
   { id: 'milestones', label: 'Milestones', icon: CheckSquare },
   { id: 'files', label: 'Files', icon: FileText },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { id: 'team', label: 'Team', icon: Users },
   { id: 'activity', label: 'Activity', icon: Activity },
 ];
 
@@ -122,7 +126,7 @@ export default function Phase4CollaborationHub() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 mb-6 gap-0.5 sm:gap-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7 mb-6 gap-0.5 sm:gap-1">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -165,6 +169,26 @@ export default function Phase4CollaborationHub() {
           <TabsContent value="files" className="mt-0">
             <Phase4ErrorBoundary>
               <ProjectFileManager scopeId={scope.id} userEmail={user.email} />
+            </Phase4ErrorBoundary>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="mt-0">
+            <Phase4ErrorBoundary>
+              <ProjectAnalyticsDashboard 
+                scope={scope}
+                milestones={[]}
+                expenses={[]}
+              />
+            </Phase4ErrorBoundary>
+          </TabsContent>
+
+          <TabsContent value="team" className="mt-0">
+            <Phase4ErrorBoundary>
+              <TeamMemberManager
+                scopeId={scope.id}
+                isContractor={isContractor}
+                userEmail={user.email}
+              />
             </Phase4ErrorBoundary>
           </TabsContent>
 
