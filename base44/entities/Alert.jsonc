@@ -1,0 +1,124 @@
+{
+  "name": "Alert",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Alert title"
+    },
+    "message": {
+      "type": "string",
+      "description": "Alert message"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical",
+        "emergency"
+      ],
+      "default": "warning",
+      "description": "Alert severity level"
+    },
+    "source": {
+      "type": "string",
+      "description": "System component that triggered the alert"
+    },
+    "metric": {
+      "type": "string",
+      "description": "Metric that triggered the alert"
+    },
+    "value": {
+      "type": "number",
+      "description": "Metric value that triggered the alert"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "triggered",
+        "escalated",
+        "acknowledged",
+        "resolved"
+      ],
+      "default": "triggered",
+      "description": "Current alert status"
+    },
+    "recipient": {
+      "type": "string",
+      "description": "Email or user ID to notify"
+    },
+    "triggered_at": {
+      "type": "string",
+      "description": "ISO timestamp when alert was triggered"
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "description": "ISO timestamp when alert was acknowledged"
+    },
+    "escalated_at": {
+      "type": "string",
+      "description": "ISO timestamp when alert was escalated"
+    },
+    "resolved_at": {
+      "type": "string",
+      "description": "ISO timestamp when alert was resolved"
+    },
+    "resolution_notes": {
+      "type": "string",
+      "description": "Notes about how the alert was resolved"
+    },
+    "rule": {
+      "type": "string",
+      "description": "Alert rule that triggered this alert"
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Notification channels used"
+    }
+  },
+  "required": [
+    "title",
+    "severity",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.recipient": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.recipient": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
