@@ -68,6 +68,7 @@ import AdminControlHub from './pages/AdminControlHub';
 import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
 import AdvancedAnalyticsDashboard from './pages/AdvancedAnalyticsDashboard';
 import AlertManagementDashboard from './pages/AlertManagementDashboard';
+import RemediationDashboard from './pages/RemediationDashboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -395,6 +396,11 @@ const AuthenticatedApp = () => {
       <Route path="/alert-management" element={
         <LayoutWrapper currentPageName="AlertManagementDashboard">
           <AlertManagementDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/remediation" element={
+        <LayoutWrapper currentPageName="RemediationDashboard">
+          <RemediationDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

@@ -1,0 +1,136 @@
+{
+  "name": "RemediationAction",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Action title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Action description"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "restart_service",
+        "scale_resources",
+        "disable_feature",
+        "enable_fallback",
+        "purge_cache",
+        "retry_failed",
+        "notify_team",
+        "create_ticket",
+        "execute_script",
+        "throttle_requests"
+      ],
+      "description": "Type of remediation action"
+    },
+    "alert_id": {
+      "type": "string",
+      "description": "Associated alert ID"
+    },
+    "alert_title": {
+      "type": "string",
+      "description": "Associated alert title"
+    },
+    "alert_severity": {
+      "type": "string",
+      "description": "Alert severity level"
+    },
+    "rule_name": {
+      "type": "string",
+      "description": "Response rule that triggered this action"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "executing",
+        "success",
+        "failed",
+        "rolled_back"
+      ],
+      "default": "pending",
+      "description": "Action execution status"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Action-specific parameters"
+    },
+    "result": {
+      "type": "object",
+      "description": "Action execution result"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if action failed"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO timestamp when action started"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when action completed"
+    },
+    "duration_ms": {
+      "type": "number",
+      "description": "Duration in milliseconds"
+    },
+    "rolled_back": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether action was rolled back"
+    },
+    "rollback_reason": {
+      "type": "string",
+      "description": "Reason for rollback if applicable"
+    }
+  },
+  "required": [
+    "title",
+    "type",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
