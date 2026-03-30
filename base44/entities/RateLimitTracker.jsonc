@@ -1,0 +1,109 @@
+{
+  "name": "RateLimitTracker",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "API endpoint or action being rate limited"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID if applicable (anonymous if null)"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "User email for easier identification"
+    },
+    "ip_address": {
+      "type": "string",
+      "description": "IP address of the request"
+    },
+    "request_count": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of requests in the current window"
+    },
+    "limit": {
+      "type": "number",
+      "description": "Configured rate limit for this endpoint"
+    },
+    "window_type": {
+      "type": "string",
+      "enum": [
+        "minute",
+        "hour",
+        "day"
+      ],
+      "default": "minute",
+      "description": "Time window for the rate limit"
+    },
+    "first_request_at": {
+      "type": "string",
+      "description": "ISO timestamp of first request in window"
+    },
+    "window_start": {
+      "type": "string",
+      "description": "ISO timestamp when the current window started"
+    },
+    "window_end": {
+      "type": "string",
+      "description": "ISO timestamp when the current window ends"
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether requests are currently blocked"
+    },
+    "blocked_until": {
+      "type": "string",
+      "description": "ISO timestamp until when requests are blocked"
+    },
+    "violation_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of times rate limit was exceeded"
+    },
+    "last_violation_at": {
+      "type": "string",
+      "description": "ISO timestamp of last rate limit violation"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Admin notes about violations or special handling"
+    }
+  },
+  "required": [
+    "endpoint"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

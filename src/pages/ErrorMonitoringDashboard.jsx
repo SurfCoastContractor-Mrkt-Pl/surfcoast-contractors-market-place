@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, CheckCircle, Filter, Download } from 'lucide-react';
+import { AlertCircle, CheckCircle, Filter, Download, TrendingUp } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -33,6 +33,7 @@ const CATEGORIES = {
 
 export default function ErrorMonitoringDashboard() {
   const [filters, setFilters] = useState({ level: 'all', category: 'all', resolved: 'unresolved' });
+  const [showRateLimits, setShowRateLimits] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: errors = [], isLoading } = useQuery({
@@ -46,6 +47,18 @@ export default function ErrorMonitoringDashboard() {
 
       return base44.asServiceRole.entities.ErrorLog.filter(query, '-created_date', 100);
     }
+  });
+
+  const { data: rateLimits = [] } = useQuery({
+    queryKey: ['rateLimits'],
+    queryFn: async () => {
+      return base44.asServiceRole.entities.RateLimitTracker.filter(
+        { blocked: true },
+        '-last_violation_at',
+        50
+      );
+    },
+    enabled: showRateLimits
   });
 
   const resolveMutation = useMutation({
@@ -89,145 +102,215 @@ export default function ErrorMonitoringDashboard() {
           <p className="text-slate-600">Track and manage platform errors</p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-3xl font-bold text-slate-900">{stats.total}</div>
-              <p className="text-sm text-slate-600">Total Errors</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-3xl font-bold text-red-600">{stats.critical}</div>
-              <p className="text-sm text-slate-600">Critical Errors</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-3xl font-bold text-yellow-600">{stats.unresolved}</div>
-              <p className="text-sm text-slate-600">Unresolved</p>
-            </CardContent>
-          </Card>
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 border-b border-slate-200">
+          <button
+            onClick={() => setShowRateLimits(false)}
+            className={`px-4 py-2 font-medium text-sm ${!showRateLimits ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-600'}`}
+          >
+            Errors
+          </button>
+          <button
+            onClick={() => setShowRateLimits(true)}
+            className={`px-4 py-2 font-medium text-sm ${showRateLimits ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-600'}`}
+          >
+            Rate Limits
+          </button>
         </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6 flex gap-4 flex-wrap items-end">
-          <div>
-            <label className="text-xs text-slate-600 block mb-2">Level</label>
-            <Select value={filters.level} onValueChange={(value) => setFilters({ ...filters, level: value })}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Levels</SelectItem>
-                <SelectItem value="info">Info</SelectItem>
-                <SelectItem value="warning">Warning</SelectItem>
-                <SelectItem value="error">Error</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="text-xs text-slate-600 block mb-2">Category</label>
-            <Select value={filters.category} onValueChange={(value) => setFilters({ ...filters, category: value })}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {Object.entries(CATEGORIES).map(([k, v]) => (
-                  <SelectItem key={k} value={k}>{v}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="text-xs text-slate-600 block mb-2">Status</label>
-            <Select value={filters.resolved} onValueChange={(value) => setFilters({ ...filters, resolved: value })}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="unresolved">Unresolved</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+        {!showRateLimits ? (
+          <>
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-3xl font-bold text-slate-900">{stats.total}</div>
+                  <p className="text-sm text-slate-600">Total Errors</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-3xl font-bold text-red-600">{stats.critical}</div>
+                  <p className="text-sm text-slate-600">Critical Errors</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-3xl font-bold text-yellow-600">{stats.unresolved}</div>
+                  <p className="text-sm text-slate-600">Unresolved</p>
+                </CardContent>
+              </Card>
+            </div>
 
-        {/* Errors List */}
-        <div className="space-y-4">
-          {isLoading ? (
-            <div className="text-center py-12 text-slate-600">Loading errors...</div>
-          ) : errors.length === 0 ? (
-            <div className="text-center py-12 text-slate-600">No errors found</div>
-          ) : (
-            errors.map(error => (
-              <Card key={error.id} className={`border-l-4 ${error.resolved ? 'opacity-75' : ''}`}>
-                <CardContent className="pt-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-start gap-3 mb-2">
-                        <AlertCircle className={`w-5 h-5 mt-0.5 ${error.level === 'critical' ? 'text-red-600' : 'text-slate-400'}`} />
+            {/* Filters */}
+            <div className="bg-white rounded-lg shadow p-4 mb-6 flex gap-4 flex-wrap items-end">
+              <div>
+                <label className="text-xs text-slate-600 block mb-2">Level</label>
+                <Select value={filters.level} onValueChange={(value) => setFilters({ ...filters, level: value })}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Levels</SelectItem>
+                    <SelectItem value="info">Info</SelectItem>
+                    <SelectItem value="warning">Warning</SelectItem>
+                    <SelectItem value="error">Error</SelectItem>
+                    <SelectItem value="critical">Critical</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs text-slate-600 block mb-2">Category</label>
+                <Select value={filters.category} onValueChange={(value) => setFilters({ ...filters, category: value })}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {Object.entries(CATEGORIES).map(([k, v]) => (
+                      <SelectItem key={k} value={k}>{v}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs text-slate-600 block mb-2">Status</label>
+                <Select value={filters.resolved} onValueChange={(value) => setFilters({ ...filters, resolved: value })}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="unresolved">Unresolved</SelectItem>
+                    <SelectItem value="resolved">Resolved</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Errors List */}
+            <div className="space-y-4">
+              {isLoading ? (
+                <div className="text-center py-12 text-slate-600">Loading errors...</div>
+              ) : errors.length === 0 ? (
+                <div className="text-center py-12 text-slate-600">No errors found</div>
+              ) : (
+                errors.map(error => (
+                  <Card key={error.id} className={`border-l-4 ${error.resolved ? 'opacity-75' : ''}`}>
+                    <CardContent className="pt-4">
+                      <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-slate-900">{error.message}</h3>
-                          <div className="flex gap-2 mt-2">
-                            <Badge variant="outline" className={LEVELS[error.level]}>
-                              {error.level}
-                            </Badge>
-                            <Badge variant="outline">{CATEGORIES[error.category] || error.category}</Badge>
-                            {error.resolved && (
-                              <Badge variant="outline" className="bg-green-100 text-green-900 border-green-300">
-                                <CheckCircle className="w-3 h-3 mr-1" /> Resolved
-                              </Badge>
-                            )}
+                          <div className="flex items-start gap-3 mb-2">
+                            <AlertCircle className={`w-5 h-5 mt-0.5 ${error.level === 'critical' ? 'text-red-600' : 'text-slate-400'}`} />
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-slate-900">{error.message}</h3>
+                              <div className="flex gap-2 mt-2">
+                                <Badge variant="outline" className={LEVELS[error.level]}>
+                                  {error.level}
+                                </Badge>
+                                <Badge variant="outline">{CATEGORIES[error.category] || error.category}</Badge>
+                                {error.resolved && (
+                                  <Badge variant="outline" className="bg-green-100 text-green-900 border-green-300">
+                                    <CheckCircle className="w-3 h-3 mr-1" /> Resolved
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-500 mt-3">
+                                <strong>URL:</strong> {error.url}
+                              </p>
+                              {error.resolution_notes && (
+                                <p className="text-xs text-slate-600 mt-2">
+                                  <strong>Resolution:</strong> {error.resolution_notes}
+                                </p>
+                              )}
+                              <p className="text-xs text-slate-400 mt-2">
+                                {new Date(error.created_date).toLocaleString()}
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-xs text-slate-500 mt-3">
-                            <strong>URL:</strong> {error.url}
-                          </p>
-                          {error.resolution_notes && (
-                            <p className="text-xs text-slate-600 mt-2">
-                              <strong>Resolution:</strong> {error.resolution_notes}
-                            </p>
+                        </div>
+                        <div className="flex gap-2">
+                          {error.resolved ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => unresolveError.mutate(error.id)}
+                            >
+                              Unresolve
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                const notes = prompt('Resolution notes:');
+                                if (notes) {
+                                  resolveMutation.mutate({ id: error.id, notes });
+                                }
+                              }}
+                            >
+                              Mark Resolved
+                            </Button>
                           )}
-                          <p className="text-xs text-slate-400 mt-2">
-                            {new Date(error.created_date).toLocaleString()}
-                          </p>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      {error.resolved ? (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => unresolveError.mutate(error.id)}
-                        >
-                          Unresolve
-                        </Button>
-                      ) : (
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Rate Limits Tab */}
+            <div className="space-y-4">
+              <h2 className="font-semibold text-slate-900">Blocked Endpoints</h2>
+              {rateLimits.length === 0 ? (
+                <div className="text-center py-12 text-slate-600">No active rate limit blocks</div>
+              ) : (
+                rateLimits.map(limit => (
+                  <Card key={limit.id}>
+                    <CardContent className="pt-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <TrendingUp className="w-5 h-5 text-yellow-600" />
+                            <h3 className="font-semibold text-slate-900">{limit.endpoint}</h3>
+                            <Badge variant="outline" className="bg-yellow-100 text-yellow-900 border-yellow-300">
+                              {limit.request_count}/{limit.limit} requests
+                            </Badge>
+                          </div>
+                          <div className="text-xs text-slate-600 space-y-1">
+                            {limit.user_id && <p><strong>User:</strong> {limit.user_email}</p>}
+                            {limit.ip_address && <p><strong>IP:</strong> {limit.ip_address}</p>}
+                            <p><strong>Window:</strong> {limit.window_type}</p>
+                            <p><strong>Violations:</strong> {limit.violation_count}</p>
+                            <p><strong>Blocked Until:</strong> {new Date(limit.blocked_until).toLocaleString()}</p>
+                          </div>
+                        </div>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => {
-                            const notes = prompt('Resolution notes:');
-                            if (notes) {
-                              resolveMutation.mutate({ id: error.id, notes });
+                            const notes = prompt('Admin notes:');
+                            if (notes !== null) {
+                              base44.asServiceRole.entities.RateLimitTracker.update(limit.id, {
+                                blocked: false,
+                                notes
+                              }).then(() => queryClient.invalidateQueries({ queryKey: ['rateLimits'] }));
                             }
                           }}
                         >
-                          Mark Resolved
+                          Unblock
                         </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
