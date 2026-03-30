@@ -7,15 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, Wrench, Pencil } from 'lucide-react';
 import EquipmentManager from './EquipmentManager';
 
-const CATEGORIES = {
-  power_tools: { label: 'Power Tools', color: 'bg-blue-100 text-blue-700' },
-  hand_tools: { label: 'Hand Tools', color: 'bg-green-100 text-green-700' },
-  safety_equipment: { label: 'Safety Equipment', color: 'bg-red-100 text-red-700' },
-  heavy_machinery: { label: 'Heavy Machinery', color: 'bg-orange-100 text-orange-700' },
-  specialty_tools: { label: 'Specialty Tools', color: 'bg-purple-100 text-purple-700' },
-  other: { label: 'Other', color: 'bg-slate-100 text-slate-700' },
-};
-
 export default function EquipmentDisplay({ contractorId, isOwner = false }) {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
