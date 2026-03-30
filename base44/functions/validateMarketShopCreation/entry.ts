@@ -7,11 +7,20 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
-    const { email, shop_type } = await req.json();
+    const user = await base44.auth.me();
 
-    if (!email || !shop_type) {
-      return Response.json({ error: 'Missing email or shop_type' }, { status: 400 });
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const { shop_type } = await req.json();
+
+    if (!shop_type) {
+      return Response.json({ error: 'Missing shop_type' }, { status: 400 });
+    }
+
+    // Only validate for authenticated user's email (prevent enumeration)
+    const email = user.email;
 
     // Check existing shops for this email
     const existingShops = await base44.asServiceRole.entities.MarketShop.filter({

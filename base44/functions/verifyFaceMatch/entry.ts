@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 async function fetchAndReupload(base44, imageUrl) {
   // SECURITY: Validate URL to prevent SSRF attacks
