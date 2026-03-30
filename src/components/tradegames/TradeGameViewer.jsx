@@ -456,30 +456,36 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
       </div>
 
       {/* Right Sidebar */}
-      <div className="w-72 flex flex-col gap-3 p-3 bg-slate-50 border-l border-slate-200 overflow-y-auto">
+      <div className="w-72 flex flex-col bg-slate-50 border-l border-slate-200">
         {!showLeaderboard ? (
           <>
-            <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} combo={combo} />
-            <GameControls
-              gameMode={gameMode}
-              isGameSolved={isGameSolved}
-              onReset={handleReset}
-              onGetHint={handleGetHint}
-            />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowLeaderboard(true)}
-              className="w-full"
-            >
-              View Leaderboard
-            </Button>
-            <PartLibrary
-              parts={availableParts}
-              selectedPart={selectedPart}
-              onSelectPart={setSelectedPart}
-              onPlacePart={handlePlacePart}
-            />
+            {/* Top section - fixed controls */}
+            <div className="flex-shrink-0 p-3 space-y-3 border-b border-slate-200">
+              <FeedbackPanel feedback={feedback} score={score} moveCount={moveCount} combo={combo} />
+              <GameControls
+                gameMode={gameMode}
+                isGameSolved={isGameSolved}
+                onReset={handleReset}
+                onGetHint={handleGetHint}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowLeaderboard(true)}
+                className="w-full"
+              >
+                View Leaderboard
+              </Button>
+            </div>
+            {/* Bottom section - scrollable parts library */}
+            <div className="flex-1 overflow-y-auto p-3">
+              <PartLibrary
+                parts={availableParts}
+                selectedPart={selectedPart}
+                onSelectPart={setSelectedPart}
+                onPlacePart={handlePlacePart}
+              />
+            </div>
           </>
         ) : (
           <>
@@ -487,16 +493,18 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
               variant="ghost"
               size="sm"
               onClick={() => setShowLeaderboard(false)}
-              className="w-full text-left"
+              className="w-full text-left flex-shrink-0 m-3"
             >
               ← Back to Game
             </Button>
-            <GameLeaderboardUI
-              gameId={gameData?.id}
-              currentScore={isGameSolved ? score : undefined}
-              currentTime={formattedTime}
-              onViewFull={() => console.log('View full leaderboard')}
-            />
+            <div className="flex-1 overflow-y-auto p-3">
+              <GameLeaderboardUI
+                gameId={gameData?.id}
+                currentScore={isGameSolved ? score : undefined}
+                currentTime={formattedTime}
+                onViewFull={() => console.log('View full leaderboard')}
+              />
+            </div>
           </>
         )}
       </div>
