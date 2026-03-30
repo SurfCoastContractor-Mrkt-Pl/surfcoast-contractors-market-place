@@ -102,6 +102,8 @@ export default function ReviewForm({ vendor, isOpen, onClose, onSuccess }) {
     </div>
   );
 
+  if (!vendor) return null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
@@ -111,7 +113,7 @@ export default function ReviewForm({ vendor, isOpen, onClose, onSuccess }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="bg-slate-50 p-3 rounded-lg">
-            <p className="text-sm font-medium text-slate-900">{vendor.shop_name}</p>
+            <p className="text-sm font-medium text-slate-900">{vendor?.shop_name}</p>
           </div>
 
           <div>
