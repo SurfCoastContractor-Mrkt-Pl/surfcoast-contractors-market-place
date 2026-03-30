@@ -6,7 +6,7 @@ export default function RealtimeStatusSync({ scopeId, onStatusChange }) {
   const [currentStatus, setCurrentStatus] = useState(null);
   const queryClient = useQueryClient();
 
-  // Poll for status changes every 5 seconds
+  // Poll for status changes every 15 seconds (optimized)
   useEffect(() => {
     const pollStatus = async () => {
       try {
@@ -16,7 +16,6 @@ export default function RealtimeStatusSync({ scopeId, onStatusChange }) {
           if (newStatus !== currentStatus) {
             setCurrentStatus(newStatus);
             onStatusChange?.(newStatus);
-            // Invalidate related queries
             queryClient.invalidateQueries({ queryKey: ['scope', scopeId] });
           }
         }
@@ -25,7 +24,9 @@ export default function RealtimeStatusSync({ scopeId, onStatusChange }) {
       }
     };
 
-    const interval = setInterval(pollStatus, 5000);
+    // Initial poll immediately, then every 15 seconds
+    pollStatus();
+    const interval = setInterval(pollStatus, 15000);
     return () => clearInterval(interval);
   }, [scopeId, currentStatus, onStatusChange, queryClient]);
 

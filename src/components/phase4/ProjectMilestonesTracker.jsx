@@ -22,18 +22,24 @@ export default function ProjectMilestonesTracker({ scopeId, contractorEmail, isC
   });
 
   const createMutation = useMutation({
-    mutationFn: (name) => base44.entities.ProjectMilestone.create({
-      scope_id: scopeId,
-      contractor_email: contractorEmail,
-      milestone_name: name,
-      description: '',
-      status: 'pending',
-      order_index: milestones.length,
-    }),
+    mutationFn: (name) => {
+      if (!isContractor) throw new Error('Only contractors can create milestones');
+      return base44.entities.ProjectMilestone.create({
+        scope_id: scopeId,
+        contractor_email: contractorEmail,
+        milestone_name: name,
+        description: '',
+        status: 'pending',
+        order_index: milestones.length,
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projectMilestones', scopeId] });
       setNewMilestone('');
       setIsAdding(false);
+    },
+    onError: (error) => {
+      console.error('Failed to create milestone:', error);
     },
   });
 
@@ -51,9 +57,15 @@ export default function ProjectMilestonesTracker({ scopeId, contractorEmail, isC
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.ProjectMilestone.delete(id),
+    mutationFn: (id) => {
+      if (!isContractor) throw new Error('Only contractors can delete milestones');
+      return base44.entities.ProjectMilestone.delete(id);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projectMilestones', scopeId] });
+    },
+    onError: (error) => {
+      console.error('Failed to delete milestone:', error);
     },
   });
 

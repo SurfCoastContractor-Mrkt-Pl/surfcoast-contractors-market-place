@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Activity } from 'lucide-react';
 import ProjectActivityFeed from '@/components/phase4/ProjectActivityFeed';
 import ProjectNotificationCenter from '@/components/phase4/ProjectNotificationCenter';
+import Phase4ErrorBoundary from '@/components/phase4/Phase4ErrorBoundary';
 import ProjectChatPanel from '@/components/phase4/ProjectChatPanel';
 import ProjectMilestonesTracker from '@/components/phase4/ProjectMilestonesTracker';
 import ProjectFileManager from '@/components/phase4/ProjectFileManager';
@@ -89,15 +90,15 @@ export default function Phase4CollaborationHub() {
 
       {/* Header */}
       <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">{scope.job_title}</h1>
-              <p className="text-sm text-slate-600 mt-1">
+        <div className="max-w-7xl mx-auto px-3 py-3 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 truncate">{scope.job_title}</h1>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 truncate">
                 {isContractor ? `Client: ${scope.client_name}` : `Contractor: ${scope.contractor_name}`}
               </p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               <ScopeStatusBadge status={statusUpdate || scope.status} />
               {user && (
                 <ProjectNotificationCenter 
@@ -114,7 +115,7 @@ export default function Phase4CollaborationHub() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-4xl grid-cols-5 mb-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 mb-6 gap-0.5 sm:gap-1">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -127,33 +128,43 @@ export default function Phase4CollaborationHub() {
           </TabsList>
 
           <TabsContent value="overview" className="mt-0">
-            <ProjectOverviewDashboard scope={scope} />
+            <Phase4ErrorBoundary>
+              <ProjectOverviewDashboard scope={scope} />
+            </Phase4ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="chat" className="mt-0">
-            <div className="bg-white rounded-lg border border-slate-200 overflow-hidden" style={{ height: '600px' }}>
-              <ProjectChatPanel
-                scopeId={scope.id}
-                userEmail={user.email}
-                userType={isContractor ? 'contractor' : 'client'}
-              />
-            </div>
+            <Phase4ErrorBoundary>
+              <div className="bg-white rounded-lg border border-slate-200 overflow-hidden" style={{ height: '600px' }}>
+                <ProjectChatPanel
+                  scopeId={scope.id}
+                  userEmail={user.email}
+                  userType={isContractor ? 'contractor' : 'client'}
+                />
+              </div>
+            </Phase4ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="milestones" className="mt-0">
-            <ProjectMilestonesTracker
-              scopeId={scope.id}
-              contractorEmail={scope.contractor_email}
-              isContractor={isContractor}
-            />
+            <Phase4ErrorBoundary>
+              <ProjectMilestonesTracker
+                scopeId={scope.id}
+                contractorEmail={scope.contractor_email}
+                isContractor={isContractor}
+              />
+            </Phase4ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="files" className="mt-0">
-            <ProjectFileManager scopeId={scope.id} userEmail={user.email} />
+            <Phase4ErrorBoundary>
+              <ProjectFileManager scopeId={scope.id} userEmail={user.email} />
+            </Phase4ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="activity" className="mt-0">
-            <ProjectActivityFeed scopeId={scope.id} />
+            <Phase4ErrorBoundary>
+              <ProjectActivityFeed scopeId={scope.id} />
+            </Phase4ErrorBoundary>
           </TabsContent>
         </Tabs>
       </div>
