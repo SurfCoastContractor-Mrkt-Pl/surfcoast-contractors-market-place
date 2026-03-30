@@ -28,17 +28,23 @@ export async function sendEmail(base44, to, subject, body, fromName = null) {
  * Can be called from backend functions
  */
 Deno.serve(async (req) => {
-  const { to, subject, body, from_name } = await req.json();
-
-  if (!to || !subject || !body) {
-    return Response.json(
-      { error: 'Missing required fields: to, subject, body' },
-      { status: 400 }
-    );
-  }
-
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Unauthorized - admin only' }, { status: 403 });
+    }
+
+    const { to, subject, body, from_name } = await req.json();
+
+    if (!to || !subject || !body) {
+      return Response.json(
+        { error: 'Missing required fields: to, subject, body' },
+        { status: 400 }
+      );
+    }
+
     await sendEmail(base44, to, subject, body, from_name);
     return Response.json({ success: true, message: 'Email sent' });
   } catch (error) {

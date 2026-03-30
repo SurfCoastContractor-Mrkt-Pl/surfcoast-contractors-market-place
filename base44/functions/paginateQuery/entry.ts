@@ -36,9 +36,14 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { entityName, query, page = 1, pageSize = 20 } = await req.json();
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
 
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Unauthorized - admin only' }, { status: 403 });
+    }
+
+    const { entityName, query, page = 1, pageSize = 20 } = await req.json();
     const result = await paginateQuery(base44, entityName, query, page, pageSize);
     return Response.json(result);
   } catch (error) {
