@@ -47,7 +47,10 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
   }, []);
 
   const handleRatingChange = (key, value) => {
-    setRatings(prev => ({ ...prev, [key]: value }));
+    setRatings(prev => ({
+      ...prev,
+      [key]: prev[key] === value ? 0 : value
+    }));
   };
 
   const handleSubmit = async () => {
@@ -103,7 +106,10 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-slate-900">Rate This Location</h3>
+        <div>
+          <h3 className="text-lg font-bold text-slate-900">Rate This Location</h3>
+          <p className="text-sm text-slate-600 mt-1">{location.location_name} • {location.city}, {location.state?.toUpperCase()}</p>
+        </div>
         {onClose && (
           <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded">
             <X className="w-5 h-5 text-slate-400" />
