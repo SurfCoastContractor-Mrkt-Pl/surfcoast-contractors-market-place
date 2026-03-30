@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Upload, Loader2, X } from 'lucide-react';
+import { useEffect } from 'react';
 
 const CATEGORIES = [
   { id: 'power_tools', name: 'Power Tools' },
@@ -18,25 +19,36 @@ const CATEGORIES = [
   { id: 'other', name: 'Other' }
 ];
 
-export default function EquipmentManager({ contractorId, open, onClose }) {
+const EMPTY_FORM = { name: '', category: '', description: '', photo_url: '', available: true };
+
+export default function EquipmentManager({ contractorId, open, onClose, equipment = null }) {
   const queryClient = useQueryClient();
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    description: '',
-    photo_url: '',
-    available: true
-  });
+  const isEditing = !!equipment;
+  const [formData, setFormData] = useState(EMPTY_FORM);
   const [uploading, setUploading] = useState(false);
 
-  const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Equipment.create({
-      ...data,
-      contractor_id: contractorId,
-    }),
+  useEffect(() => {
+    if (open) {
+      if (equipment) {
+        setFormData({
+          name: equipment.name || '',
+          category: equipment.category || '',
+          description: equipment.description || '',
+          photo_url: equipment.photo_url || '',
+          available: equipment.available ?? true,
+        });
+      } else {
+        setFormData(EMPTY_FORM);
+      }
+    }
+  }, [open, equipment]);
+
+  const saveMutation = useMutation({
+    mutationFn: (data) => isEditing
+      ? base44.entities.Equipment.update(equipment.id, data)
+      : base44.entities.Equipment.create({ ...data, contractor_id: contractorId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['equipment', contractorId] });
-      setFormData({ name: '', category: '', description: '', photo_url: '', available: true });
       onClose();
     }
   });
@@ -60,14 +72,14 @@ export default function EquipmentManager({ contractorId, open, onClose }) {
       alert('Please fill in required fields');
       return;
     }
-    await createMutation.mutateAsync(formData);
+    await saveMutation.mutateAsync(formData);
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add Equipment or Tool</DialogTitle>
+          <DialogTitle>{isEditing ? 'Edit Equipment or Tool' : 'Add Equipment or Tool'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -151,11 +163,11 @@ export default function EquipmentManager({ contractorId, open, onClose }) {
             <Button type="button" variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button type="submit" disabled={createMutation.isPending} className="flex-1 bg-amber-500 hover:bg-amber-600">
-              {createMutation.isPending ? (
+            <Button type="submit" disabled={saveMutation.isPending} className="flex-1 bg-amber-500 hover:bg-amber-600">
+              {saveMutation.isPending ? (
                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</>
               ) : (
-                <>Add Equipment</>
+                isEditing ? 'Save Changes' : 'Add Equipment'
               )}
             </Button>
           </div>

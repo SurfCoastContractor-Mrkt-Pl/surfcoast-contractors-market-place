@@ -4,21 +4,13 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, Wrench } from 'lucide-react';
+import { Plus, Trash2, Wrench, Pencil } from 'lucide-react';
 import EquipmentManager from './EquipmentManager';
-
-const CATEGORIES = {
-  'power_tools': { label: 'Power Tools', color: 'bg-blue-100 text-blue-700' },
-  'hand_tools': { label: 'Hand Tools', color: 'bg-orange-100 text-orange-700' },
-  'safety_equipment': { label: 'Safety Equipment', color: 'bg-red-100 text-red-700' },
-  'heavy_machinery': { label: 'Heavy Machinery', color: 'bg-yellow-100 text-yellow-700' },
-  'specialty_tools': { label: 'Specialty Tools', color: 'bg-purple-100 text-purple-700' },
-  'other': { label: 'Other', color: 'bg-slate-100 text-slate-700' }
-};
 
 export default function EquipmentDisplay({ contractorId, isOwner = false }) {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingEquipment, setEditingEquipment] = useState(null);
 
   const { data: equipment, isLoading } = useQuery({
     queryKey: ['equipment', contractorId],
@@ -59,7 +51,7 @@ export default function EquipmentDisplay({ contractorId, isOwner = false }) {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => setDialogOpen(true)}
+            onClick={() => { setEditingEquipment(null); setDialogOpen(true); }}
             className="gap-1.5 text-amber-600 border-amber-200 hover:bg-amber-50"
           >
             <Plus className="w-4 h-4" />
@@ -84,13 +76,23 @@ export default function EquipmentDisplay({ contractorId, isOwner = false }) {
                   <div className="flex items-start justify-between mb-2">
                     <h4 className="font-semibold text-slate-900">{item.name}</h4>
                     {isOwner && (
-                      <button
-                        onClick={() => deleteMutation.mutate(item.id)}
-                        className="p-1.5 hover:bg-red-100 rounded text-red-600"
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          onClick={() => { setEditingEquipment(item); setDialogOpen(true); }}
+                          className="p-1.5 hover:bg-blue-100 rounded text-blue-600"
+                          title="Edit equipment"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => deleteMutation.mutate(item.id)}
+                          className="p-1.5 hover:bg-red-100 rounded text-red-600"
+                          disabled={deleteMutation.isPending}
+                          title="Delete equipment"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-2">
@@ -121,7 +123,8 @@ export default function EquipmentDisplay({ contractorId, isOwner = false }) {
       <EquipmentManager
         contractorId={contractorId}
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        equipment={editingEquipment}
+        onClose={() => { setDialogOpen(false); setEditingEquipment(null); }}
       />
     </Card>
   );
