@@ -7,12 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
 import GameChallengeCreator from '@/components/tradegames/GameChallengeCreator';
 import { Play, Zap } from 'lucide-react';
+import ScenarioIntroModal from '@/components/tradegames/ScenarioIntroModal';
 
 export default function TradeGames() {
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameMode, setGameMode] = useState('sandbox');
   const [user, setUser] = useState(null);
   const [showChallengeCreator, setShowChallengeCreator] = useState(false);
+  const [showScenario, setShowScenario] = useState(false);
 
   // Fetch current user
   useEffect(() => {
@@ -101,6 +103,17 @@ export default function TradeGames() {
           />
         </div>
       </div>
+    );
+  }
+
+  // Scenario intro modal (shown before game starts)
+  if (showScenario && selectedGame) {
+    return (
+      <ScenarioIntroModal
+        gameData={selectedGame}
+        onStart={() => setShowScenario(false)}
+        onClose={() => { setShowScenario(false); setSelectedGame(null); }}
+      />
     );
   }
 
@@ -224,6 +237,7 @@ export default function TradeGames() {
                     onClick={() => {
                       setSelectedGame(game);
                       setGameMode('guided_puzzle');
+                      setShowScenario(true);
                     }}
                   >
                     <Play className="w-4 h-4" />

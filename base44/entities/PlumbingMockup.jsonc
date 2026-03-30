@@ -1,0 +1,102 @@
+{
+  "name": "PlumbingMockup",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Name of the saved mockup"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description or notes about this mockup"
+    },
+    "trade_type": {
+      "type": "string",
+      "enum": [
+        "plumbing",
+        "electrical",
+        "carpentry",
+        "hvac"
+      ],
+      "default": "plumbing",
+      "description": "Trade category"
+    },
+    "parts_json": {
+      "type": "string",
+      "description": "JSON string of placed parts and their positions/rotations"
+    },
+    "thumbnail_url": {
+      "type": "string",
+      "description": "URL of the screenshot thumbnail"
+    },
+    "created_by_email": {
+      "type": "string",
+      "description": "Email of the user who created this mockup"
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this mockup is publicly visible to other users"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorizing the mockup"
+    },
+    "game_id": {
+      "type": "string",
+      "description": "Associated trade game ID (optional)"
+    }
+  },
+  "required": [
+    "title",
+    "parts_json",
+    "created_by_email"
+  ],
+  "rls": {
+    "create": {
+      "data.created_by_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.created_by_email": "{{user.email}}"
+        },
+        {
+          "data.is_public": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.created_by_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.created_by_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
+import ScenarioIntroModal from '@/components/tradegames/ScenarioIntroModal';
 
 export default function GameChallenge() {
   const { token } = useParams();
@@ -16,6 +17,7 @@ export default function GameChallenge() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [gameActive, setGameActive] = useState(false);
+  const [showScenario, setShowScenario] = useState(false);
 
   useEffect(() => {
     const loadChallenge = async () => {
@@ -138,6 +140,16 @@ export default function GameChallenge() {
     );
   }
 
+  if (showScenario && game) {
+    return (
+      <ScenarioIntroModal
+        gameData={game}
+        onStart={() => { setShowScenario(false); setGameActive(true); }}
+        onClose={() => setShowScenario(false)}
+      />
+    );
+  }
+
   if (gameActive) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -242,7 +254,7 @@ export default function GameChallenge() {
                 if (!user) {
                   base44.auth.redirectToLogin();
                 } else {
-                  setGameActive(true);
+                  setShowScenario(true);
                 }
               }}
             >
