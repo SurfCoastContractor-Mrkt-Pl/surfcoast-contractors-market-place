@@ -1,9 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { TrendingUp, DollarSign, Clock, AlertCircle } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import BudgetTracker from './BudgetTracker';
+import ExpenseLogger from './ExpenseLogger';
 
-export default function ProjectAnalyticsDashboard({ scope, milestones = [], expenses = [] }) {
+export default function ProjectAnalyticsDashboard({ scope, milestones = [], expenses: initialExpenses = [] }) {
+  const [expenses, setExpenses] = useState(initialExpenses);
   // Calculate financial metrics
   const financials = useMemo(() => {
     const costAmount = scope?.cost_amount || 0;
@@ -57,7 +61,14 @@ export default function ProjectAnalyticsDashboard({ scope, milestones = [], expe
   const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
 
   return (
-    <div className="space-y-6">
+    <Tabs defaultValue="overview" className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="budget">Budget</TabsTrigger>
+        <TabsTrigger value="expenses">Expenses</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="overview" className="space-y-6 mt-6">
       {/* Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
@@ -203,6 +214,22 @@ export default function ProjectAnalyticsDashboard({ scope, milestones = [], expe
           </div>
         </CardContent>
       </Card>
-    </div>
+      </TabsContent>
+
+      <TabsContent value="budget" className="space-y-6 mt-6">
+        <BudgetTracker 
+          budgetAmount={scope?.cost_amount || 0}
+          expenses={expenses}
+        />
+      </TabsContent>
+
+      <TabsContent value="expenses" className="space-y-6 mt-6">
+        <ExpenseLogger
+          scopeId={scope?.id}
+          expenses={expenses}
+          onExpenseAdded={(newExpense) => setExpenses([...expenses, newExpense])}
+        />
+      </TabsContent>
+    </Tabs>
   );
 }
