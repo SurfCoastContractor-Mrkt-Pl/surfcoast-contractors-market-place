@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Activity } from 'lucide-react';
 import ProjectActivityFeed from '@/components/phase4/ProjectActivityFeed';
 import ProjectNotificationCenter from '@/components/phase4/ProjectNotificationCenter';
+import NotificationCenter from '@/components/phase5/NotificationCenter';
 import Phase4ErrorBoundary from '@/components/phase4/Phase4ErrorBoundary';
 import ProjectChatPanel from '@/components/phase4/ProjectChatPanel';
 import ProjectMilestonesTracker from '@/components/phase4/ProjectMilestonesTracker';
@@ -101,11 +102,17 @@ export default function Phase4CollaborationHub() {
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               <ScopeStatusBadge status={statusUpdate || scope.status} />
               {user && (
-                <ProjectNotificationCenter 
-                  scopeId={scope.id} 
-                  userEmail={user.email}
-                  userType={isContractor ? 'contractor' : 'client'}
-                />
+                <>
+                  <NotificationCenter 
+                    scopeId={scope.id} 
+                    userEmail={user.email}
+                  />
+                  <ProjectNotificationCenter 
+                    scopeId={scope.id} 
+                    userEmail={user.email}
+                    userType={isContractor ? 'contractor' : 'client'}
+                  />
+                </>
               )}
             </div>
           </div>
