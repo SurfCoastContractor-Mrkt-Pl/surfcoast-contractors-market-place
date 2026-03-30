@@ -197,6 +197,80 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* What We Offer Section */}
+      <section style={{ background: '#0a1628', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="flex items-center gap-4 mb-14">
+            <div style={{ width: '40px', height: '2px', background: '#F97316' }} />
+            <p className="font-black uppercase tracking-widest text-xs" style={{ color: '#F97316', letterSpacing: '0.2em' }}>
+              Our Offerings
+            </p>
+          </div>
+
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: '#ffffff', marginBottom: '24px', letterSpacing: '-0.02em' }}>
+            What We Offer
+          </h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+            {/* Wave FO Pricing Card */}
+            <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(217,119,6,0.08)', border: '2px solid rgba(217,119,6,0.3)', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px', color: '#ffffff' }}>Wave FO Plans</h3>
+              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For contractors and solo professionals</p>
+              <div style={{ marginBottom: '16px' }}>
+                <span style={{ fontSize: '32px', fontWeight: 800, color: '#d97706' }}>From $19</span>
+                <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
+              </div>
+              <button
+                onClick={() => window.location.href = '/pricing'}
+                style={{
+                  width: '100%',
+                  padding: '11px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  background: '#d97706',
+                  color: '#fff',
+                  minHeight: '40px',
+                  transition: 'all 0.2s'
+                }}
+              >
+                View All Plans
+              </button>
+            </div>
+
+            {/* WAVEShop Pricing Card */}
+            <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(157,122,84,0.08)', border: '2px solid rgba(157,122,84,0.3)', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px', color: '#ffffff' }}>WAVEShop Vendor</h3>
+              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For farmers market & swap meet booths</p>
+              <div style={{ marginBottom: '16px' }}>
+                <span style={{ fontSize: '32px', fontWeight: 800, color: '#9d7a54' }}>$35</span>
+                <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
+              </div>
+              <button
+                onClick={() => window.location.href = '/pricing'}
+                style={{
+                  width: '100%',
+                  padding: '11px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  background: '#9d7a54',
+                  color: '#fff',
+                  minHeight: '40px',
+                  transition: 'all 0.2s'
+                }}
+              >
+                View All Plans
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

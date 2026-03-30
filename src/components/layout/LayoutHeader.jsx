@@ -67,6 +67,12 @@ export default function LayoutHeader({
         <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
           {!isLoggedIn && (
             <>
+              <Link to="/pricing">
+                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Pricing</Button>
+              </Link>
+              <Link to="/why-surfcoast">
+                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Why SurfCoast</Button>
+              </Link>
               <Link to="/About">
                 <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">About Us</Button>
               </Link>

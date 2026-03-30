@@ -170,6 +170,112 @@ export default function Home() {
         {/* Why SurfCoast Section */}
         <WhySurfCoastSection />
 
+        {/* Why SurfCoast - Three Column Benefits */}
+        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
+          {[
+            {
+              title: 'For Contractors',
+              points: [
+                'Wave Starter at $19/month',
+                'Job scheduling & invoicing',
+                'Customer portal & messaging',
+                'Mobile app with full features'
+              ]
+            },
+            {
+              title: 'For WAVEShop Vendors',
+              points: [
+                'Market booth management',
+                'Inventory tracking & payments',
+                'Customer reviews & ratings',
+                'Marketing tools at $35/month'
+              ]
+            },
+            {
+              title: 'For Everyone Else',
+              points: [
+                'Freelancers, creatives, services',
+                'Flexible month-to-month plans',
+                'No contracts or setup fees',
+                'Cancel anytime, no penalties'
+              ]
+            }
+          ].map((section, idx) => (
+            <article key={idx} style={{ display: 'flex', flexDirection: 'column', borderRadius: '14px', padding: isMobile ? '20px 16px' : '24px 20px', backdropFilter: 'blur(18px)', background: 'rgba(10,22,40,0.5)', border: '1px solid rgba(255,255,255,0.08)', textAlign: 'left' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '700', margin: '0 0 14px', color: '#d97706' }}>
+                {section.title}
+              </h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {section.points.map((point, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>
+                    <span style={{ color: '#d97706', marginTop: '2px' }}>✓</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
+
+        {/* Pricing Tracks */}
+        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', alignItems: 'stretch', width: '100%', maxWidth: '900px', gap: 'clamp(16px, 4vw, 24px)', marginBottom: '32px' }} aria-label="Pricing options">
+          {/* Wave FO Pricing Card */}
+          <article style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(217,119,6,0.08)', border: '2px solid rgba(217,119,6,0.3)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>Wave FO Plans</h3>
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For contractors and solo professionals</p>
+            <div style={{ marginBottom: '16px' }}>
+              <span style={{ fontSize: '32px', fontWeight: '800', color: '#d97706' }}>From $19</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
+            </div>
+            <button
+              onClick={() => window.location.href = '/pricing'}
+              style={{
+                width: '100%',
+                padding: '11px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '13px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                background: '#d97706',
+                color: '#fff',
+                minHeight: '40px',
+                transition: 'all 0.2s'
+              }}
+            >
+              See all plans →
+            </button>
+          </article>
+
+          {/* WAVEShop Pricing Card */}
+          <article style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(157,122,84,0.08)', border: '2px solid rgba(157,122,84,0.3)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>WAVEShop Vendor</h3>
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For farmers market & swap meet booths</p>
+            <div style={{ marginBottom: '16px' }}>
+              <span style={{ fontSize: '32px', fontWeight: '800', color: '#9d7a54' }}>$35</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
+            </div>
+            <button
+              onClick={() => window.location.href = '/pricing'}
+              style={{
+                width: '100%',
+                padding: '11px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '13px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                background: '#9d7a54',
+                color: '#fff',
+                minHeight: '40px',
+                transition: 'all 0.2s'
+              }}
+            >
+              See all plans →
+            </button>
+          </article>
+        </section>
+
         {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
         <section style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }} aria-label="Primary action cards">
           {/* Left Card - Find a Pro */}
