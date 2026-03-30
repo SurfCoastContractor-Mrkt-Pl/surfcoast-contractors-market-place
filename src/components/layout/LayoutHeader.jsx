@@ -186,7 +186,10 @@ function AccountDropdown({
     <Item path={createPageUrl('Dashboard')}>Client Account</Item>
     {isContractor ? (
       <>
+        <div className="px-4 pt-2 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Contractor</div>
+        <Item path={createPageUrl('ContractorAccount') + '?tab=dashboard'}>My Dashboard</Item>
         <Item path={createPageUrl('ContractorAccount')}>Contractor Business Hub</Item>
+        <Item path={createPageUrl('ContractorAccount') + '?tab=profile'}>My Profile</Item>
         <Item path={createPageUrl('ContractorFinancialDashboard')}>Financial Dashboard</Item>
       </>
     ) : (

@@ -76,6 +76,8 @@ export default function ContractorAccount() {
    const urlParams = new URLSearchParams(window.location.search);
    const adminPreviewId = urlParams.get('id');
    const isAdminPreview = urlParams.get('admin') === 'true';
+   const initialTab = urlParams.get('tab') || 'dashboard';
+   const initialCategory = initialTab === 'profile' ? 'profile' : 'business';
 
    const navigate = useNavigate();
    const [closeoutScope, setCloseoutScope] = useState(null);
@@ -90,7 +92,7 @@ export default function ContractorAccount() {
    });
    const [downloadingId, setDownloadingId] = useState(null);
    const [activeSidebarChat, setActiveSidebarChat] = useState(null);
-   const [activeCategory, setActiveCategory] = useState('business');
+   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -326,7 +328,7 @@ export default function ContractorAccount() {
               <AccountLockedBanner contractor={contractor} lockedScope={lockedScope} />
             )}
 
-            <Tabs defaultValue="dashboard">
+            <Tabs defaultValue={initialTab}>
               {/* Category Pills */}
               {(() => {
                 const categories = [
