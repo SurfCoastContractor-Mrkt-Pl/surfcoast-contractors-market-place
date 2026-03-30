@@ -16,15 +16,6 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
   const [authError, setAuthError] = useState(null);
   const queryClient = useQueryClient();
 
-  // Verify user owns this contractor profile
-  if (currentUser && contractor?.email !== currentUser.email) {
-    return (
-      <Card className="p-6 border border-red-200 bg-red-50">
-        <div className="text-red-700 text-sm font-semibold">Unauthorized: You can only edit your own profile.</div>
-      </Card>
-    );
-  }
-
   useEffect(() => {
     if (contractor) {
       setEditData({
@@ -97,6 +88,15 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
   const handleSave = () => {
     updateMutation.mutate(editData);
   };
+
+  // Verify user owns this contractor profile
+  if (currentUser && contractor?.email !== currentUser.email) {
+    return (
+      <Card className="p-6 border border-red-200 bg-red-50">
+        <div className="text-red-700 text-sm font-semibold">Unauthorized: You can only edit your own profile.</div>
+      </Card>
+    );
+  }
 
   if (!contractor) return null;
 
