@@ -1,0 +1,81 @@
+{
+  "name": "APIUsage",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "API endpoint called"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ],
+      "description": "HTTP method"
+    },
+    "status_code": {
+      "type": "number",
+      "description": "HTTP status code"
+    },
+    "response_time_ms": {
+      "type": "number",
+      "description": "Response time in milliseconds"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID if authenticated"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "User email"
+    },
+    "ip_address": {
+      "type": "string",
+      "description": "Client IP address"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error message if call failed"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional JSON metadata"
+    },
+    "date": {
+      "type": "string",
+      "description": "Date of the call (YYYY-MM-DD)"
+    }
+  },
+  "required": [
+    "endpoint",
+    "method",
+    "status_code",
+    "response_time_ms"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

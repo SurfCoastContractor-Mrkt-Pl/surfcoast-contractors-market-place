@@ -64,6 +64,8 @@ import DatabaseManagementDashboard from './pages/DatabaseManagementDashboard';
 import ActivityAuditDashboard from './pages/ActivityAuditDashboard';
 import PerformanceAnalyticsDashboard from './pages/PerformanceAnalyticsDashboard';
 import SystemHealthDashboard from './pages/SystemHealthDashboard';
+import AdminControlHub from './pages/AdminControlHub';
+import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -371,6 +373,16 @@ const AuthenticatedApp = () => {
       <Route path="/system-health" element={
         <LayoutWrapper currentPageName="SystemHealthDashboard">
           <SystemHealthDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/admin-control-hub" element={
+        <LayoutWrapper currentPageName="AdminControlHub">
+          <AdminControlHub />
+        </LayoutWrapper>
+      } />
+      <Route path="/api-usage-analytics" element={
+        <LayoutWrapper currentPageName="APIUsageAnalyticsDashboard">
+          <APIUsageAnalyticsDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
