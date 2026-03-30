@@ -8,6 +8,7 @@ import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import FeaturedVendors from "@/components/home/FeaturedVendors";
 import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
 import MissionStatement from "@/components/home/MissionStatement";
+import WhySurfCoastSection from "@/components/home/WhySurfCoastSection";
 import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 // QRCode imports temporarily disabled due to package resolution issue
@@ -105,31 +106,49 @@ export default function Home() {
             Enter <ChevronDown size={14} aria-hidden="true" style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.2s" }} />
           </button>
           {dropdownOpen && (
-            <div 
-              ref={dropdownRef}
-              id="user-menu"
-              role="menu"
-              style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}
-            >
-              <button 
-                role="menuitem"
-                onClick={handleLogin} 
-                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
-              >
-                Login / Sign Up
-              </button>
-              <button 
-                role="menuitem"
-                onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} 
-                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}
-              >
-                About Us
-              </button>
-            </div>
+           <div 
+             ref={dropdownRef}
+             id="user-menu"
+             role="menu"
+             style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}
+           >
+             <button 
+               role="menuitem"
+               onClick={() => { window.location.href = '/pricing'; setDropdownOpen(false); }} 
+               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
+               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
+               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
+             >
+               Pricing
+             </button>
+             <button 
+               role="menuitem"
+               onClick={() => { window.location.href = '/why-surfcoast'; setDropdownOpen(false); }} 
+               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
+               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
+               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
+             >
+               Why SurfCoast
+             </button>
+             <button 
+               role="menuitem"
+               onClick={handleLogin} 
+               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
+               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
+               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
+             >
+               Login / Sign Up
+             </button>
+             <button 
+               role="menuitem"
+               onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} 
+               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
+               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
+               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}
+             >
+               About Us
+             </button>
+           </div>
           )}
         </nav>
       </header>
@@ -147,6 +166,9 @@ export default function Home() {
 
         {/* Mission Statement */}
         <MissionStatement />
+
+        {/* Why SurfCoast Section */}
+        <WhySurfCoastSection />
 
         {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
         <section style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }} aria-label="Primary action cards">

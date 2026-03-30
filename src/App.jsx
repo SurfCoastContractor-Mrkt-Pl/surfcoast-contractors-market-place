@@ -77,6 +77,8 @@ import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
 import ContractorJobPipeline from './pages/ContractorJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
+import Pricing from './pages/Pricing';
+import WhySurfCoast from './pages/WhySurfCoast';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -436,6 +438,8 @@ const AuthenticatedApp = () => {
           <Phase4CollaborationHub />
         </LayoutWrapper>
       } />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/why-surfcoast" element={<WhySurfCoast />} />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
