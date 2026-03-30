@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Briefcase, Bell, MapPin } from 'lucide-react'; // Remove unused later
+import { Briefcase, Bell, MapPin, ArrowLeft } from 'lucide-react';
 import SupplyHousesFinder from '@/components/contractor/SupplyHousesFinder';
 import WaveFOJobsList from '@/components/fieldops/FieldJobsList';
 import WaveFOSchedule from '@/components/fieldops/FieldSchedule';
@@ -184,6 +184,10 @@ export default function WaveFo() {
           <h1 className="text-white font-semibold text-lg">
             {NAV_TABS.find(t => t.id === activeTab)?.label || 'Wave FO'}
           </h1>
+          <Link to="/ContractorAccount" className="relative p-2 mr-1 group flex items-center gap-1 text-slate-400 hover:text-white transition-colors text-sm">
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden xl:inline">Portal</span>
+          </Link>
           <button className="relative p-2">
             <Bell className="w-5 h-5 text-slate-400" />
             {notifCount > 0 && (
@@ -215,6 +219,14 @@ export default function WaveFo() {
           isOnline={isOnline}
           notifCount={notifCount}
         />
+
+        {/* Mobile Back Button */}
+        <div className="lg:hidden flex items-center bg-slate-900 border-b border-slate-800 px-4 py-2">
+          <Link to="/ContractorAccount" className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors text-sm">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Portal
+          </Link>
+        </div>
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
