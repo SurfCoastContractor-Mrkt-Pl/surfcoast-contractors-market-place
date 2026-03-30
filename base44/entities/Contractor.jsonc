@@ -1,0 +1,708 @@
+{
+  "name": "Contractor",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name of the contractor"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact email"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date",
+      "description": "Contractor date of birth (minimum age 13)"
+    },
+    "is_minor": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor is under 18 years old"
+    },
+    "minor_weekly_hours_used": {
+      "type": "number",
+      "default": 0,
+      "description": "Hours worked this week (minors only, resets weekly)"
+    },
+    "minor_weekly_hours_reset_date": {
+      "type": "string",
+      "description": "ISO date of the start of the current tracking week for minor hours"
+    },
+    "minor_hours_locked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Account locked because minor reached 20hr weekly limit"
+    },
+    "minor_hours_lock_until": {
+      "type": "string",
+      "description": "ISO date when the minor's account will be automatically unlocked (1 week after last job completed)"
+    },
+    "parental_consent_docs": {
+      "type": "object",
+      "description": "Required documents for minors (age 13-17)",
+      "properties": {
+        "child_selfie_url": {
+          "type": "string"
+        },
+        "child_id_url": {
+          "type": "string"
+        },
+        "parental_consent_form_url": {
+          "type": "string"
+        },
+        "parent_id_url": {
+          "type": "string"
+        },
+        "proof_of_relationship_url": {
+          "type": "string"
+        },
+        "child_proof_of_residence_url": {
+          "type": "string"
+        },
+        "parent_proof_of_residence_url": {
+          "type": "string"
+        },
+        "parent_name": {
+          "type": "string"
+        },
+        "parent_email": {
+          "type": "string"
+        },
+        "parent_phone": {
+          "type": "string"
+        }
+      }
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Profile photo URL"
+    },
+    "id_document_url": {
+      "type": "string",
+      "description": "URL of uploaded government-issued ID or Driver's License"
+    },
+    "face_photo_url": {
+      "type": "string",
+      "description": "URL of clear unobstructed face photo for identity verification"
+    },
+    "identity_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether identity documents have been reviewed and verified"
+    },
+    "contractor_type": {
+      "type": "string",
+      "enum": [
+        "trade_specific",
+        "general"
+      ],
+      "description": "Type of contractor"
+    },
+    "trade_specialty": {
+      "type": "string",
+      "enum": [
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "mason",
+        "roofer",
+        "painter",
+        "welder",
+        "tiler",
+        "landscaper",
+        "other"
+      ],
+      "description": "Specific trade if trade-specific contractor"
+    },
+    "line_of_work": {
+      "type": "string",
+      "enum": [
+        "freelance_writer",
+        "freelance_designer",
+        "freelance_developer",
+        "freelance_photographer",
+        "freelance_videographer",
+        "artist_painter",
+        "artist_sculptor",
+        "musician",
+        "consultant",
+        "tutor_educator",
+        "translator",
+        "virtual_assistant",
+        "social_media_manager",
+        "content_creator",
+        "accountant",
+        "bookkeeper",
+        "marketing_specialist",
+        "seo_specialist",
+        "copywriter",
+        "illustrator",
+        "animator",
+        "graphic_designer",
+        "web_designer",
+        "ux_designer",
+        "product_manager",
+        "project_manager",
+        "business_consultant",
+        "financial_advisor",
+        "life_coach",
+        "fitness_coach",
+        "yoga_instructor",
+        "personal_trainer",
+        "nutritionist",
+        "wellness_coach",
+        "therapist",
+        "counselor",
+        "childcare_provider",
+        "pet_sitter",
+        "pet_groomer",
+        "dog_walker",
+        "house_cleaner",
+        "organizer",
+        "handyman",
+        "locksmith",
+        "appliance_repair",
+        "phone_repair",
+        "computer_repair",
+        "it_support",
+        "cybersecurity_specialist",
+        "data_analyst",
+        "electrician",
+        "plumber",
+        "hvac_technician",
+        "carpenter",
+        "mason",
+        "roofer",
+        "painter",
+        "landscaper",
+        "gardener",
+        "tree_service",
+        "moving_service",
+        "courier",
+        "other"
+      ],
+      "description": "Primary line of work or profession"
+    },
+    "line_of_work_other": {
+      "type": "string",
+      "description": "Custom line of work if 'other' is selected"
+    },
+    "years_experience": {
+      "type": "number",
+      "description": "Years of experience"
+    },
+    "rate_type": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "fixed"
+      ],
+      "default": "hourly",
+      "description": "Whether the contractor charges hourly or a fixed rate"
+    },
+    "hourly_rate": {
+      "type": "number",
+      "description": "Hourly rate in dollars"
+    },
+    "fixed_rate": {
+      "type": "number",
+      "description": "Fixed rate amount in dollars"
+    },
+    "fixed_rate_details": {
+      "type": "string",
+      "description": "Description of what the fixed rate covers"
+    },
+    "location": {
+      "type": "string",
+      "description": "City/Region"
+    },
+    "bio": {
+      "type": "string",
+      "description": "About the contractor"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of skills and types of work the contractor can do"
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of certifications (text labels)"
+    },
+    "portfolio_images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of portfolio images"
+    },
+    "availability_status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "booked",
+        "on_vacation"
+      ],
+      "default": "available",
+      "description": "Current availability status"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether contractor is featured (appears at top of searches)"
+    },
+    "available": {
+      "type": "boolean",
+      "default": true,
+      "description": "Currently available for work"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Average rating out of 5"
+    },
+    "reviews_count": {
+      "type": "number",
+      "description": "Number of reviews"
+    },
+    "completed_jobs_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of verified completed jobs"
+    },
+    "unique_customers_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of unique individual customers the contractor has worked with (used for badge tiers)"
+    },
+    "account_locked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Account locked due to missing after photos past 72hr deadline"
+    },
+    "locked_scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork record that triggered the lock"
+    },
+    "credential_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "certificate",
+              "degree",
+              "diploma",
+              "contractor_license",
+              "trade_license",
+              "other"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "legal_name_on_document": {
+            "type": "string"
+          },
+          "sole_proprietor_confirmed": {
+            "type": "boolean"
+          },
+          "file_url": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Uploaded credential documents"
+    },
+    "stripe_connected_account_id": {
+      "type": "string",
+      "description": "Stripe Connect account ID for receiving payouts"
+    },
+    "stripe_account_setup_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether contractor has completed Stripe Connect onboarding"
+    },
+    "stripe_account_charges_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether Stripe Connect account is ready to receive payouts"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a demo profile"
+    },
+    "demo_expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when demo profile expires and will be deleted"
+    },
+    "trial_started_at": {
+      "type": "string",
+      "description": "ISO timestamp when the contractor's trial started"
+    },
+    "trial_ends_at": {
+      "type": "string",
+      "description": "ISO timestamp when the contractor's trial ends"
+    },
+    "trial_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor is currently in an active trial"
+    },
+    "trial_expired": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor's trial has expired"
+    },
+    "profile_tier": {
+      "type": "string",
+      "enum": [
+        "standard",
+        "licensed"
+      ],
+      "description": "Tier of the contractor's profile"
+    },
+    "profile_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor's profile is fully complete"
+    },
+    "profile_completion_percent": {
+      "type": "number",
+      "description": "Percentage of profile completion (0-100)"
+    },
+    "compliance_acknowledged": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor has acknowledged compliance terms"
+    },
+    "compliance_acknowledged_at": {
+      "type": "string",
+      "description": "ISO timestamp when compliance was acknowledged"
+    },
+    "compliance_version": {
+      "type": "string",
+      "description": "Version of the compliance terms acknowledged"
+    },
+    "admin_review_requested": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether an admin review has been requested for this contractor"
+    },
+    "admin_review_reason": {
+      "type": "string",
+      "description": "Reason provided for requesting admin review"
+    },
+    "admin_review_submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp when the admin review was submitted"
+    },
+    "pending_rating_scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork pending a rating submission"
+    },
+    "rating_block_active": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor is blocked from new jobs until a rating is submitted"
+    },
+    "rating_block_since": {
+      "type": "string",
+      "description": "ISO timestamp when the rating block was activated"
+    },
+    "is_licensed_sole_proprietor": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor is a licensed sole proprietor"
+    },
+    "license_number": {
+      "type": "string",
+      "description": "Contractor license number"
+    },
+    "license_company_name": {
+      "type": "string",
+      "description": "Company name on the license"
+    },
+    "license_state": {
+      "type": "string",
+      "description": "State where the license was issued"
+    },
+    "license_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "expired",
+        "pending_review",
+        "unverified"
+      ],
+      "description": "Current status of the contractor license"
+    },
+    "license_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the license has been verified"
+    },
+    "license_verified_at": {
+      "type": "string",
+      "description": "ISO timestamp when the license was verified"
+    },
+    "license_verification_method": {
+      "type": "string",
+      "enum": [
+        "api",
+        "manual_review",
+        "pending",
+        "failed"
+      ],
+      "description": "Method used to verify the license"
+    },
+    "license_verification_notes": {
+      "type": "string",
+      "description": "Notes on the license verification process"
+    },
+    "license_card_url": {
+      "type": "string",
+      "description": "URL of uploaded license card image"
+    },
+    "license_certificate_url": {
+      "type": "string",
+      "description": "URL of uploaded license certificate"
+    },
+    "business_license_url": {
+      "type": "string",
+      "description": "URL of uploaded business license document"
+    },
+    "his_license_number": {
+      "type": "string",
+      "description": "Home Improvement Salesperson (HIS) license number"
+    },
+    "his_license_url": {
+      "type": "string",
+      "description": "URL of uploaded HIS license document"
+    },
+    "his_license_state": {
+      "type": "string",
+      "description": "State where the HIS license was issued"
+    },
+    "his_license_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "expired",
+        "none"
+      ],
+      "description": "Current status of the HIS license"
+    },
+    "bond_company": {
+      "type": "string",
+      "description": "Name of the bonding company"
+    },
+    "bond_amount": {
+      "type": "string",
+      "description": "Bond coverage amount"
+    },
+    "bond_expiry": {
+      "type": "string",
+      "description": "Bond expiration date"
+    },
+    "bond_document_url": {
+      "type": "string",
+      "description": "URL of uploaded bond document"
+    },
+    "insurance_company": {
+      "type": "string",
+      "description": "Name of the insurance company"
+    },
+    "insurance_policy_number": {
+      "type": "string",
+      "description": "Insurance policy number"
+    },
+    "insurance_coverage_amount": {
+      "type": "string",
+      "description": "Insurance coverage amount"
+    },
+    "insurance_expiry": {
+      "type": "string",
+      "description": "Insurance policy expiration date"
+    },
+    "insurance_document_url": {
+      "type": "string",
+      "description": "URL of uploaded insurance document"
+    },
+    "home_improvement_contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "trade": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "contract_name": {
+            "type": "string"
+          },
+          "document_url": {
+            "type": "string"
+          },
+          "uploaded_at": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Home improvement contracts by trade and state"
+    },
+    "additional_certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "document_url": {
+            "type": "string"
+          },
+          "expiry": {
+            "type": "string"
+          },
+          "uploaded_at": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Additional certifications with documents"
+    },
+    "document_visibility": {
+      "type": "object",
+      "description": "Visibility settings for each document category (public or private)",
+      "properties": {
+        "his_license": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "bond": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "insurance": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "contracts": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "certifications": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        }
+      }
+    },
+    "payment_compliant": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the contractor is compliant with platform payment policies (no off-platform payments)"
+    },
+    "last_external_payment_detected": {
+      "type": "string",
+      "description": "ISO timestamp when an off-platform payment keyword was last detected in messages"
+    },
+    "payment_lock_grace_until": {
+      "type": "string",
+      "description": "ISO timestamp of the 14-day grace period deadline to process payment through SurfCoast before account is restricted"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "contractor_type",
+    "location",
+    "id_document_url",
+    "face_photo_url"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
