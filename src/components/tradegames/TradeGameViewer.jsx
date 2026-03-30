@@ -7,7 +7,7 @@ import FeedbackPanel from './FeedbackPanel';
 import SaveMockupModal from './SaveMockupModal';
 import MockupLibrary from './MockupLibrary';
 import { Button } from '@/components/ui/button';
-import { Save, FolderOpen, RotateCcw } from 'lucide-react';
+import { Save, FolderOpen } from 'lucide-react';
 
 // ─── Bathroom Environment Builder ───────────────────────────────────────────
 function buildBathroomScene(scene) {
@@ -162,69 +162,6 @@ function buildBathroomScene(scene) {
   ring.position.set(-1.5, 0.6, -3.5);
   ring.userData.isEnvironment = true;
   scene.add(ring);
-}
-
-// ─── Orbit Controls (minimal, no import needed) ───────────────────────────
-function useOrbitControls(camera, domElement) {
-  const state = useRef({ isDragging: false, lastX: 0, lastY: 0, theta: 0.4, phi: 0.8, radius: 5, target: new THREE.Vector3(-0.5, 1, -2) });
-
-  useEffect(() => {
-    if (!domElement) return;
-    const s = state.current;
-
-    const onMouseDown = (e) => { s.isDragging = true; s.lastX = e.clientX; s.lastY = e.clientY; };
-    const onMouseUp = () => { s.isDragging = false; };
-    const onMouseMove = (e) => {
-      if (!s.isDragging) return;
-      const dx = (e.clientX - s.lastX) * 0.005;
-      const dy = (e.clientY - s.lastY) * 0.005;
-      s.theta -= dx;
-      s.phi = Math.max(0.1, Math.min(Math.PI / 2.2, s.phi + dy));
-      s.lastX = e.clientX; s.lastY = e.clientY;
-      updateCamera();
-    };
-    const onWheel = (e) => {
-      s.radius = Math.max(2, Math.min(10, s.radius + e.deltaY * 0.01));
-      updateCamera();
-    };
-    const onTouchStart = (e) => { if (e.touches.length === 1) { s.isDragging = true; s.lastX = e.touches[0].clientX; s.lastY = e.touches[0].clientY; } };
-    const onTouchMove = (e) => {
-      if (!s.isDragging || e.touches.length !== 1) return;
-      const dx = (e.touches[0].clientX - s.lastX) * 0.005;
-      const dy = (e.touches[0].clientY - s.lastY) * 0.005;
-      s.theta -= dx; s.phi = Math.max(0.1, Math.min(Math.PI / 2.2, s.phi + dy));
-      s.lastX = e.touches[0].clientX; s.lastY = e.touches[0].clientY;
-      updateCamera();
-    };
-
-    function updateCamera() {
-      camera.position.set(
-        s.target.x + s.radius * Math.sin(s.phi) * Math.sin(s.theta),
-        s.target.y + s.radius * Math.cos(s.phi),
-        s.target.z + s.radius * Math.sin(s.phi) * Math.cos(s.theta)
-      );
-      camera.lookAt(s.target);
-    }
-
-    updateCamera();
-    domElement.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mouseup', onMouseUp);
-    window.addEventListener('mousemove', onMouseMove);
-    domElement.addEventListener('wheel', onWheel, { passive: true });
-    domElement.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchend', onMouseUp);
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-
-    return () => {
-      domElement.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mouseup', onMouseUp);
-      window.removeEventListener('mousemove', onMouseMove);
-      domElement.removeEventListener('wheel', onWheel);
-      domElement.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchend', onMouseUp);
-      window.removeEventListener('touchmove', onTouchMove);
-    };
-  }, [camera, domElement]);
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────
