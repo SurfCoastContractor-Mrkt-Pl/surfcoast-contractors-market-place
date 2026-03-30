@@ -1,88 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
 import { Star, Loader2, MapPin, BarChart3, Leaf } from 'lucide-react';
+import { useTopLocations } from '@/hooks/useLocationStats';
 import LocationSelector from '@/components/locations/LocationSelector';
 import LocationRatingForm from '@/components/locations/LocationRatingForm';
 
 export default function FarmersMarketRatings() {
-  const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: locationsList, isLoading: loading } = useTopLocations('farmers_market', 100);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showSelector, setShowSelector] = useState(false);
-
-  useEffect(() => {
-    const fetchRatings = async () => {
-      try {
-        // Use pagination instead of loading all records
-        const allRatings = await base44.entities.SwapMeetLocationRating.filter(
-          { location_type: 'farmers_market' },
-          '-created_date',
-          500
-        );
-        
-        // Already filtered by location_type in query
-        const farmersMarketRatings = allRatings;
-        
-        // Group by location and calculate averages
-        const locationMap = {};
-        farmersMarketRatings.forEach(rating => {
-          const key = rating.location_name;
-          if (!locationMap[key]) {
-            locationMap[key] = {
-              location_name: rating.location_name,
-              city: rating.city,
-              state: rating.state,
-              location_type: rating.location_type,
-              ratings: [],
-            };
-          }
-          locationMap[key].ratings.push(rating);
-        });
-
-        // Calculate aggregates
-        const locationsList = Object.values(locationMap)
-          .map(loc => {
-            const ratings = loc.ratings;
-            const overallAvg = (
-              ratings.reduce((sum, r) => sum + r.overall_experience, 0) / ratings.length
-            ).toFixed(1);
-
-            return {
-              ...loc,
-              overall_avg: overallAvg,
-              rating_count: ratings.length,
-              cleanliness_avg: (
-                ratings.reduce((sum, r) => sum + r.cleanliness, 0) / ratings.length
-              ).toFixed(1),
-              comfort_avg: (
-                ratings.reduce((sum, r) => sum + r.environment_comfort, 0) / ratings.length
-              ).toFixed(1),
-              purchase_avg: (
-                ratings.reduce((sum, r) => sum + r.customer_purchase_rate, 0) / ratings.length
-              ).toFixed(1),
-              safety_avg: (
-                ratings.reduce((sum, r) => sum + r.safety_security, 0) / ratings.length
-              ).toFixed(1),
-              traffic_avg: (
-                ratings.reduce((sum, r) => sum + r.foot_traffic, 0) / ratings.length
-              ).toFixed(1),
-              layout_avg: (
-                ratings.reduce((sum, r) => sum + r.space_layout, 0) / ratings.length
-              ).toFixed(1),
-            };
-          })
-          .sort((a, b) => parseFloat(b.overall_avg) - parseFloat(a.overall_avg));
-
-        setLocations(locationsList);
-      } catch (err) {
-        console.error('Error fetching ratings:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRatings();
-  }, []);
 
   const StarRating = ({ value }) => (
     <div className="flex items-center gap-1">
@@ -127,14 +52,14 @@ export default function FarmersMarketRatings() {
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
           </div>
-        ) : locations.length === 0 ? (
-          <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-            <Leaf className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-600 font-medium">No ratings yet for farmers markets</p>
-          </div>
-        ) : (
-          <div className="grid gap-4">
-            {locations.map((location, idx) => (
+        ) : (locationsList?.length || 0) === 0 ? (
+           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
+             <Leaf className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+             <p className="text-slate-600 font-medium">No ratings yet for farmers markets</p>
+           </div>
+         ) : (
+           <div className="grid gap-4">
+             {(locationsList || []).map((location, idx) => (
               <div
                 key={idx}
                 className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow"

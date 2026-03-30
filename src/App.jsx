@@ -58,6 +58,8 @@ import QBSyncDashboard from './pages/QBSyncDashboard';
 import TradeGames from './pages/TradeGames';
 import GameChallenge from './pages/GameChallenge';
 import GameLeaderboard from './pages/GameLeaderboard';
+import SwapMeetRatings from './pages/SwapMeetRatings';
+import FarmersMarketRatings from './pages/FarmersMarketRatings';
 import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
 import ErrorMonitoringDashboard from './pages/ErrorMonitoringDashboard';
 import DatabaseManagementDashboard from './pages/DatabaseManagementDashboard';
@@ -397,6 +399,16 @@ const AuthenticatedApp = () => {
       <Route path="/remediation" element={
         <LayoutWrapper currentPageName="RemediationDashboard">
           <RemediationDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/swap-meet-ratings" element={
+        <LayoutWrapper currentPageName="SwapMeetRatings">
+          <SwapMeetRatings />
+        </LayoutWrapper>
+      } />
+      <Route path="/farmers-market-ratings" element={
+        <LayoutWrapper currentPageName="FarmersMarketRatings">
+          <FarmersMarketRatings />
         </LayoutWrapper>
       } />
       <Route path="/admin" element={<Admin />} />
