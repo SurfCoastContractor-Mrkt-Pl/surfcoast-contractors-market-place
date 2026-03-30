@@ -1,0 +1,146 @@
+{
+  "name": "ActivityLog",
+  "type": "object",
+  "properties": {
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "create",
+        "read",
+        "update",
+        "delete",
+        "login",
+        "logout",
+        "export",
+        "import",
+        "payment",
+        "approve",
+        "reject",
+        "download",
+        "upload",
+        "share",
+        "access"
+      ],
+      "description": "Type of action performed"
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "user",
+        "contractor",
+        "customer",
+        "job",
+        "scope",
+        "payment",
+        "message",
+        "review",
+        "document",
+        "proposal",
+        "quote",
+        "dispute",
+        "system"
+      ],
+      "description": "Type of entity affected"
+    },
+    "entity_id": {
+      "type": "string",
+      "description": "ID of the entity affected (if applicable)"
+    },
+    "entity_name": {
+      "type": "string",
+      "description": "Human-readable name of the entity"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID who performed the action"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who performed the action"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the action"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "low",
+      "description": "Severity level of the action"
+    },
+    "changes": {
+      "type": "string",
+      "description": "JSON string of what changed (for update actions)"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional JSON metadata about the action"
+    },
+    "ip_address": {
+      "type": "string",
+      "description": "IP address of the request"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "Browser user agent string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failure",
+        "partial"
+      ],
+      "default": "success",
+      "description": "Status of the action"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error message if action failed"
+    },
+    "duration_ms": {
+      "type": "number",
+      "description": "How long the action took in milliseconds"
+    },
+    "reviewed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether an admin has reviewed this entry"
+    },
+    "review_notes": {
+      "type": "string",
+      "description": "Admin notes about this entry"
+    }
+  },
+  "required": [
+    "action_type",
+    "entity_type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
