@@ -7,6 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, Wrench, Pencil } from 'lucide-react';
 import EquipmentManager from './EquipmentManager';
 
+const CATEGORY_LABELS = {
+  power_tools: 'Power Tools',
+  hand_tools: 'Hand Tools',
+  safety_equipment: 'Safety Equipment',
+  heavy_machinery: 'Heavy Machinery',
+  specialty_tools: 'Specialty Tools',
+  other: 'Other',
+};
+
 export default function EquipmentDisplay({ contractorId, isOwner = false }) {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -96,8 +105,8 @@ export default function EquipmentDisplay({ contractorId, isOwner = false }) {
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={CATEGORIES[item.category].color}>
-                      {CATEGORIES[item.category].label}
+                    <Badge variant="secondary">
+                      {CATEGORY_LABELS[item.category] || item.category}
                     </Badge>
                     {!item.available && (
                       <Badge variant="outline" className="text-slate-600">Not Available</Badge>
