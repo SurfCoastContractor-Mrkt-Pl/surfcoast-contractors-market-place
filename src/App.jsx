@@ -12,6 +12,7 @@ import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
 import ContractorAccount from './pages/ContractorAccount';
+import ContractorBusinessHub from './pages/ContractorBusinessHub';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -135,6 +136,11 @@ const AuthenticatedApp = () => {
       } />
       <Route path="/contractorAccount" element={
         <Navigate to="/ContractorAccount" replace />
+      } />
+      <Route path="/ContractorBusinessHub" element={
+        <LayoutWrapper currentPageName="ContractorBusinessHub">
+          <ContractorBusinessHub />
+        </LayoutWrapper>
       } />
       <Route path="/ConsumerHub" element={
         <LayoutWrapper currentPageName="ConsumerHub">
