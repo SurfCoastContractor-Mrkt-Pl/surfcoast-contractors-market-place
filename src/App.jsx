@@ -74,6 +74,7 @@ import AlertManagementDashboard from './pages/AlertManagementDashboard';
 import RemediationDashboard from './pages/RemediationDashboard';
 import Admin from './pages/Admin';
 import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
+import ContractorJobPipeline from './pages/ContractorJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -422,6 +423,11 @@ const AuthenticatedApp = () => {
       <Route path="/platform-activity" element={
         <LayoutWrapper currentPageName="PlatformActivityDashboard">
           <PlatformActivityDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/job-pipeline" element={
+        <LayoutWrapper currentPageName="ContractorJobPipeline">
+          <ContractorJobPipeline />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
