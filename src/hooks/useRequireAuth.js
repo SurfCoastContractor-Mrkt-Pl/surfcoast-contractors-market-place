@@ -12,19 +12,27 @@ export function useRequireAuth(nextUrl) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.auth.me()
-      .then((u) => {
+    let mounted = true;
+
+    const checkAuth = async () => {
+      try {
+        const u = await base44.auth.me();
         if (!u) {
           base44.auth.redirectToLogin(nextUrl || window.location.pathname);
           return;
         }
-        setUser(u);
-      })
-      .catch(() => {
+        if (mounted) {
+          setUser(u);
+          setLoading(false);
+        }
+      } catch (err) {
         base44.auth.redirectToLogin(nextUrl || window.location.pathname);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+      }
+    };
+
+    checkAuth();
+    return () => { mounted = false; };
+  }, [nextUrl]);
 
   return { user, loading };
 }
