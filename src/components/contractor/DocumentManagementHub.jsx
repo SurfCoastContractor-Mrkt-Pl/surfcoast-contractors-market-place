@@ -5,7 +5,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { AlertCircle, FileText, Eye, EyeOff, Upload, CheckCircle2, Clock, AlertTriangle, ExternalLink, Shield, Lock } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { AlertCircle, FileText, Eye, EyeOff, Upload, CheckCircle2, Clock, AlertTriangle, ExternalLink, Shield, Lock, Pencil, Check, X } from 'lucide-react';
 
 // Documents sourced directly from Contractor entity fields
 const DOCUMENT_SECTIONS = [
@@ -146,6 +147,71 @@ function DocumentUploadField({ label, fieldKey, currentUrl, expiryKey, expiryVal
   );
 }
 
+function MetaFieldsEditor({ metaFields, contractor, onUpdate, saving }) {
+  const [editing, setEditing] = useState(false);
+  const [values, setValues] = useState({});
+
+  const handleEdit = () => {
+    const initial = {};
+    metaFields.forEach(mf => { initial[mf.key] = contractor?.[mf.key] || ''; });
+    setValues(initial);
+    setEditing(true);
+  };
+
+  const handleSave = () => {
+    onUpdate(values);
+    setEditing(false);
+  };
+
+  const handleCancel = () => setEditing(false);
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Document Details</span>
+        {!editing ? (
+          <Button variant="ghost" size="sm" onClick={handleEdit} className="gap-1.5 h-7 text-xs text-slate-600">
+            <Pencil className="w-3 h-3" /> Edit
+          </Button>
+        ) : (
+          <div className="flex gap-1.5">
+            <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1 h-7 text-xs bg-green-600 hover:bg-green-700 text-white">
+              <Check className="w-3 h-3" /> {saving ? 'Saving...' : 'Save'}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleCancel} className="gap-1 h-7 text-xs text-slate-500">
+              <X className="w-3 h-3" /> Cancel
+            </Button>
+          </div>
+        )}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {metaFields.map(mf => (
+          <div key={mf.key} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+            <div className="text-xs text-slate-500 mb-1">{mf.label}</div>
+            {editing ? (
+              <Input
+                type={mf.isDate ? 'date' : 'text'}
+                value={values[mf.key] || ''}
+                onChange={(e) => setValues(v => ({ ...v, [mf.key]: e.target.value }))}
+                className="h-7 text-sm px-2"
+                placeholder={`Enter ${mf.label.toLowerCase()}`}
+              />
+            ) : (
+              <div className="text-sm font-medium text-slate-800">
+                {contractor?.[mf.key] ? (
+                  mf.isDate ? <ExpiryBadge dateStr={contractor[mf.key]} /> : contractor[mf.key]
+                ) : (
+                  <span className="text-slate-400 text-xs italic">Not set — click Edit</span>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function DocumentManagementHub({ contractorId, contractorEmail }) {
   const [activeSection, setActiveSection] = useState('license');
   const queryClient = useQueryClient();
@@ -269,20 +335,12 @@ export default function DocumentManagementHub({ contractorId, contractorEmail })
 
             {/* Meta info fields */}
             {section.metaFields && section.metaFields.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {section.metaFields.map(mf => (
-                  <div key={mf.key} className="p-2 bg-slate-50 rounded-lg">
-                    <div className="text-xs text-slate-500 mb-0.5">{mf.label}</div>
-                    <div className="text-sm font-medium text-slate-800">
-                      {contractor?.[mf.key] ? (
-                        mf.isDate ? <ExpiryBadge dateStr={contractor[mf.key]} /> : contractor[mf.key]
-                      ) : (
-                        <span className="text-slate-400 text-xs">Not set</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <MetaFieldsEditor
+                metaFields={section.metaFields}
+                contractor={contractor}
+                onUpdate={(data) => updateMutation.mutate(data)}
+                saving={updateMutation.isPending}
+              />
             )}
 
             {/* Document upload fields */}
