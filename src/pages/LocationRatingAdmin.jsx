@@ -1,14 +1,43 @@
 import React, { useState, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash2, Edit2, Shield, Loader2, AlertCircle, CheckCircle, Filter } from 'lucide-react';
+import { Trash2, Edit2, Shield, Loader2, AlertCircle, CheckCircle, Filter, Zap } from 'lucide-react';
+
+const SAMPLE_RATINGS = [
+  { location_name: "Downtown Swap Meet", city: "Los Angeles", state: "CA", location_type: "swap_meet", rater_name: "John Vendor", rater_email: "john@example.com", cleanliness: 4, environment_comfort: 4, customer_purchase_rate: 5, safety_security: 4, foot_traffic: 5, space_layout: 3, overall_experience: 4, comments: "Great foot traffic and sales. Could be cleaner though." },
+  { location_name: "Downtown Swap Meet", city: "Los Angeles", state: "CA", location_type: "swap_meet", rater_name: "Sarah Vendor", rater_email: "sarah@example.com", cleanliness: 3, environment_comfort: 3, customer_purchase_rate: 4, safety_security: 3, foot_traffic: 4, space_layout: 4, overall_experience: 4, comments: "Decent location, good visibility, slightly cramped spaces." },
+  { location_name: "Venice Beach Flea Market", city: "Venice", state: "CA", location_type: "swap_meet", rater_name: "Mike Vendor", rater_email: "mike@example.com", cleanliness: 5, environment_comfort: 5, customer_purchase_rate: 4, safety_security: 5, foot_traffic: 4, space_layout: 5, overall_experience: 5, comments: "Excellent facilities and organization. Very professional setup." },
+  { location_name: "Santa Monica Farmers Market", city: "Santa Monica", state: "CA", location_type: "farmers_market", rater_name: "Elena Vendor", rater_email: "elena@example.com", cleanliness: 5, environment_comfort: 4, customer_purchase_rate: 5, safety_security: 5, foot_traffic: 5, space_layout: 4, overall_experience: 5, comments: "Premium location with excellent customer base. Highly recommend!" },
+  { location_name: "Santa Monica Farmers Market", city: "Santa Monica", state: "CA", location_type: "farmers_market", rater_name: "David Vendor", rater_email: "david@example.com", cleanliness: 4, environment_comfort: 4, customer_purchase_rate: 4, safety_security: 4, foot_traffic: 4, space_layout: 4, overall_experience: 4, comments: "Consistent, reliable location with steady traffic." },
+  { location_name: "Hollywood Farmers Market", city: "Hollywood", state: "CA", location_type: "farmers_market", rater_name: "Lisa Vendor", rater_email: "lisa@example.com", cleanliness: 3, environment_comfort: 3, customer_purchase_rate: 3, safety_security: 3, foot_traffic: 3, space_layout: 2, overall_experience: 3, comments: "Average market, traffic could be better. Layout is confusing." },
+  { location_name: "Long Beach Swap Meet", city: "Long Beach", state: "CA", location_type: "swap_meet", rater_name: "Tom Vendor", rater_email: "tom@example.com", cleanliness: 4, environment_comfort: 4, customer_purchase_rate: 4, safety_security: 4, foot_traffic: 4, space_layout: 4, overall_experience: 4, comments: "Solid all-around market. Good mix of customers." }
+];
 
 export default function LocationRatingAdmin() {
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('-created_date');
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState(null);
+  const [seedMessage, setSeedMessage] = useState('');
   const queryClient = useQueryClient();
+
+  // Seed mutation
+  const seedMutation = useMutation({
+    mutationFn: async () => {
+      const results = await Promise.all(
+        SAMPLE_RATINGS.map(r => base44.entities.SwapMeetLocationRating.create(r))
+      );
+      return results;
+    },
+    onSuccess: (data) => {
+      setSeedMessage(`Added ${data.length} sample ratings!`);
+      setTimeout(() => setSeedMessage(''), 3000);
+      queryClient.invalidateQueries({ queryKey: ['locationRatings'] });
+    },
+    onError: (error) => {
+      setSeedMessage(`Error: ${error.message}`);
+    }
+  });
 
   // Fetch ratings
   const { data: ratings = [], isLoading } = useQuery({
@@ -89,6 +118,17 @@ export default function LocationRatingAdmin() {
             <span className="text-sm text-slate-600 ml-auto">
               {ratings.length} total ratings
             </span>
+            <button
+              onClick={() => seedMutation.mutate()}
+              disabled={seedMutation.isPending}
+              className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 disabled:opacity-50 flex items-center gap-2"
+            >
+              <Zap className="w-4 h-4" />
+              {seedMutation.isPending ? 'Seeding...' : 'Seed Sample Data'}
+            </button>
+            {seedMessage && (
+              <span className="text-sm text-green-600">{seedMessage}</span>
+            )}
           </div>
         </div>
 
