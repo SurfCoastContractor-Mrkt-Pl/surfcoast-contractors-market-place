@@ -8,6 +8,11 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    const internalKey = req.headers.get('x-internal-service-key');
+    if (!internalKey || internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Get all listings with stock at or below threshold
     const listings = await base44.asServiceRole.entities.MarketListing.filter({});
 

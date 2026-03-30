@@ -3,8 +3,19 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { contractor_email, qb_customer_id, qb_account_token } = body;
+
+    // Only allow the authenticated user to sync their own data
+    if (user.email !== contractor_email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
     if (!contractor_email || !qb_customer_id) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
