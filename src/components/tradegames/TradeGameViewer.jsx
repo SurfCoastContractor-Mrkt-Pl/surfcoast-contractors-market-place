@@ -96,43 +96,43 @@ function buildBathroomScene(scene) {
   const pipeMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.5, metalness: 0.1 });
 
   // Vertical drain pipe from sink (center vertical line)
-  const drainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.35, 16), pipeMat);
-  drainPipe.position.set(-1.5, 0.575, -3.5);
+  const drainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 16), pipeMat);
+  drainPipe.position.set(-1.5, 0.6, -3.5);
   drainPipe.userData.isEnvironment = true;
   drainPipe.userData.isConnectionPoint = true;
   scene.add(drainPipe);
 
-  // P-trap: First downward bend (vertical to 45° angle down)
+  // P-trap: First downward bend (vertical to horizontal - torus oriented correctly)
   const pTrapDownBend = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.025, 16, 32, Math.PI / 2), pipeMat);
   pTrapDownBend.rotation.z = Math.PI / 2;
-  pTrapDownBend.position.set(-1.5, 0.35, -3.5);
+  pTrapDownBend.position.set(-1.5, 0.3, -3.5);
   pTrapDownBend.userData.isEnvironment = true;
   scene.add(pTrapDownBend);
 
-  // P-trap: Lower horizontal section (bottom of U-shape, stores water for seal)
-  const pTrapBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.16, 16), pipeMat);
+  // P-trap: Lower horizontal section (bottom of U-shape at lowest point)
+  const pTrapBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.14, 16), pipeMat);
   pTrapBottom.rotation.z = Math.PI / 2;
-  pTrapBottom.position.set(-1.58, 0.28, -3.5);
+  pTrapBottom.position.set(-1.57, 0.25, -3.5);
   pTrapBottom.userData.isEnvironment = true;
   scene.add(pTrapBottom);
 
-  // P-trap: Upward bend (horizontal back to vertical)
+  // P-trap: Upward bend (horizontal back to vertical - torus oriented correctly)
   const pTrapUpBend = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.025, 16, 32, Math.PI / 2), pipeMat);
-  pTrapUpBend.rotation.x = Math.PI / 2;
-  pTrapUpBend.position.set(-1.66, 0.35, -3.5);
+  pTrapUpBend.rotation.z = Math.PI / 2;
+  pTrapUpBend.position.set(-1.64, 0.3, -3.5);
   pTrapUpBend.userData.isEnvironment = true;
   scene.add(pTrapUpBend);
 
   // P-trap: Vertical tailpiece (goes up to wall connection)
-  const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.2, 16), pipeMat);
-  pTrapVertical.position.set(-1.66, 0.45, -3.5);
+  const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.25, 16), pipeMat);
+  pTrapVertical.position.set(-1.64, 0.475, -3.5);
   pTrapVertical.userData.isEnvironment = true;
   scene.add(pTrapVertical);
 
   // Wall drain stub (connection point to main drain line in wall)
-  const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.08, 16), pipeMat);
+  const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.1, 16), pipeMat);
   wallDrainStub.rotation.z = Math.PI / 2;
-  wallDrainStub.position.set(-1.72, 0.54, -3.5);
+  wallDrainStub.position.set(-1.71, 0.6, -3.5);
   wallDrainStub.userData.isEnvironment = true;
   wallDrainStub.userData.isConnectionPoint = true;
   scene.add(wallDrainStub);
