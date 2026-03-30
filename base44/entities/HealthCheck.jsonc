@@ -1,0 +1,108 @@
+{
+  "name": "HealthCheck",
+  "type": "object",
+  "properties": {
+    "check_id": {
+      "type": "string",
+      "description": "Unique identifier for the health check"
+    },
+    "check_name": {
+      "type": "string",
+      "description": "Human-readable name of the check"
+    },
+    "check_type": {
+      "type": "string",
+      "enum": [
+        "database",
+        "api",
+        "function",
+        "external_service",
+        "storage",
+        "authentication",
+        "payment_gateway"
+      ],
+      "description": "Type of health check"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "unhealthy",
+        "unknown"
+      ],
+      "default": "unknown",
+      "description": "Current health status"
+    },
+    "response_time_ms": {
+      "type": "number",
+      "description": "How long the check took in milliseconds"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error message if check failed"
+    },
+    "critical": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a critical service"
+    },
+    "success_rate": {
+      "type": "number",
+      "description": "Success rate percentage over last checks"
+    },
+    "last_check_at": {
+      "type": "string",
+      "description": "ISO timestamp of last check"
+    },
+    "last_failure_at": {
+      "type": "string",
+      "description": "ISO timestamp of last failure"
+    },
+    "consecutive_failures": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of consecutive failures"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional JSON metadata about the check"
+    }
+  },
+  "required": [
+    "check_id",
+    "check_name",
+    "check_type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
