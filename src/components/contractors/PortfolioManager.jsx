@@ -67,28 +67,40 @@ export default function PortfolioManager({ contractorId, open, onClose }) {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    try {
-      setUploading(true);
-      const uploadedImages = [];
+    // Reset input so the same file can be re-selected if needed
+    e.target.value = '';
 
-      for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        uploadedImages.push({
-          url: file_url,
-          caption: '',
-        });
+    setUploading(true);
+    const uploadedImages = [];
+    const failed = [];
+
+    for (const file of files) {
+      try {
+        const result = await base44.integrations.Core.UploadFile({ file });
+        const url = result?.file_url || result?.url;
+        if (url) {
+          uploadedImages.push({ url, caption: '' });
+        } else {
+          failed.push(file.name);
+        }
+      } catch (err) {
+        console.error('Upload failed for', file.name, err);
+        failed.push(file.name);
       }
+    }
 
+    if (uploadedImages.length > 0) {
       setFormData(prev => ({
         ...prev,
         images: [...prev.images, ...uploadedImages],
       }));
-    } catch (error) {
-      alert('Failed to upload images. Please try again.');
-      console.error('Image upload error:', error);
-    } finally {
-      setUploading(false);
     }
+
+    if (failed.length > 0) {
+      alert(`Failed to upload: ${failed.join(', ')}. Please try again with a smaller file or different format.`);
+    }
+
+    setUploading(false);
   };
 
   const removeImage = (index) => {
