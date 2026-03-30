@@ -38,7 +38,7 @@ const ACTION_LABELS = {
   access: 'Accessed'
 };
 
-export default function ActivityAuditDashboard() {
+function ActivityAuditDashboardContent() {
   const [filters, setFilters] = useState({ severity: 'all', actionType: 'all', entityType: 'all', reviewed: 'all' });
   const queryClient = useQueryClient();
 
@@ -248,5 +248,13 @@ export default function ActivityAuditDashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ActivityAuditDashboard() {
+  return (
+    <AdminGuard>
+      <ActivityAuditDashboardContent />
+    </AdminGuard>
   );
 }

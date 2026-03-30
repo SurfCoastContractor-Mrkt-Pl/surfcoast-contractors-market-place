@@ -12,6 +12,12 @@ const RATING_QUESTIONS = [
   { key: 'overall_experience', label: 'Overall experience rating' },
 ];
 
+// Sanitize HTML/XSS in user input
+const sanitizeInput = (text) => {
+  if (!text) return '';
+  return text.replace(/[<>]/g, '');
+};
+
 export default function LocationRatingForm({ location, onClose, onSave, existingRating = null }) {
   const [ratings, setRatings] = useState({
     cleanliness: existingRating?.cleanliness || 0,
@@ -53,17 +59,22 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
       return;
     }
 
+    if (comments.length > 1000) {
+      alert('Comments must be under 1000 characters');
+      return;
+    }
+
     setLoading(true);
     try {
       const data = {
-        location_name: location.location_name || `${location.city}, ${location.state}`,
-        city: location.city,
-        state: location.state,
+        location_name: sanitizeInput(location.location_name) || `${location.city}, ${location.state}`,
+        city: sanitizeInput(location.city),
+        state: sanitizeInput(location.state),
         location_type: location.location_type || 'swap_meet',
         rater_email: user.email,
         rater_name: user.full_name,
         ...ratings,
-        comments,
+        comments: sanitizeInput(comments),
       };
 
       if (existingRating?.id) {
@@ -119,15 +130,17 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
         ))}
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Additional Comments</label>
-          <textarea
-            value={comments}
-            onChange={(e) => setComments(e.target.value)}
-            placeholder="Share any additional feedback about this location..."
-            className="w-full p-3 border border-slate-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
-            rows={4}
-          />
-        </div>
+           <label className="block text-sm font-medium text-slate-700 mb-2">Additional Comments</label>
+           <textarea
+             value={comments}
+             onChange={(e) => setComments(e.target.value)}
+             placeholder="Share any additional feedback about this location..."
+             maxLength={1000}
+             className="w-full p-3 border border-slate-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+             rows={4}
+           />
+           <div className="text-xs text-slate-500 mt-1">{comments.length}/1000 characters</div>
+         </div>
 
         <div className="flex gap-3">
           {onClose && (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import AdminGuard from '@/components/auth/AdminGuard';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,7 +32,7 @@ const CATEGORIES = {
   unknown: 'Unknown'
 };
 
-export default function ErrorMonitoringDashboard() {
+function ErrorMonitoringDashboardContent() {
   const [filters, setFilters] = useState({ level: 'all', category: 'all', resolved: 'unresolved' });
   const [showRateLimits, setShowRateLimits] = useState(false);
   const queryClient = useQueryClient();
@@ -313,5 +314,13 @@ export default function ErrorMonitoringDashboard() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ErrorMonitoringDashboard() {
+  return (
+    <AdminGuard>
+      <ErrorMonitoringDashboardContent />
+    </AdminGuard>
   );
 }

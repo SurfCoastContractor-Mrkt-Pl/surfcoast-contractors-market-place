@@ -19,7 +19,7 @@ const STATUS_ICONS = {
   unknown: <Clock className="w-5 h-5 text-slate-400" />
 };
 
-export default function SystemHealthDashboard() {
+function SystemHealthDashboardContent() {
   const { data: healthChecks = [], isLoading } = useQuery({
     queryKey: ['healthChecks'],
     queryFn: async () => {
@@ -172,5 +172,13 @@ export default function SystemHealthDashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SystemHealthDashboard() {
+  return (
+    <AdminGuard>
+      <SystemHealthDashboardContent />
+    </AdminGuard>
   );
 }

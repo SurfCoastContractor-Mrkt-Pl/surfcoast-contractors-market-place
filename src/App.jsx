@@ -293,11 +293,6 @@ const AuthenticatedApp = () => {
           <ContractorInventoryDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-services" element={
-        <LayoutWrapper currentPageName="ContractorServices">
-          <ContractorServices />
-        </LayoutWrapper>
-      } />
       <Route path="/multi-option-proposals" element={
         <LayoutWrapper currentPageName="MultiOptionProposals">
           <MultiOptionProposals />

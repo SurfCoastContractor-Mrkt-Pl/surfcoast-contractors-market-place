@@ -36,7 +36,7 @@ const DASHBOARD_SECTIONS = [
   }
 ];
 
-export default function AdminControlHub() {
+function AdminControlHubContent() {
   const [expandedSection, setExpandedSection] = useState(null);
 
   // Fetch summary stats
@@ -239,5 +239,13 @@ export default function AdminControlHub() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminControlHub() {
+  return (
+    <AdminGuard>
+      <AdminControlHubContent />
+    </AdminGuard>
   );
 }
