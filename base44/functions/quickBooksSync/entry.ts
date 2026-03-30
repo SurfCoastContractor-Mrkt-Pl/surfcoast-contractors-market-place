@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-    const { contractor_email, qb_customer_id, qb_account_token } = body;
+    const { contractor_email, qb_customer_id } = body;
 
     // Only allow the authenticated user to sync their own data
     if (user.email !== contractor_email && user.role !== 'admin') {
@@ -19,6 +19,12 @@ Deno.serve(async (req) => {
 
     if (!contractor_email || !qb_customer_id) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Retrieve secure token from environment (never from request payload)
+    const qb_access_token = Deno.env.get('QUICKBOOKS_ACCESS_TOKEN');
+    if (!qb_access_token) {
+      return Response.json({ error: 'QB auth not configured' }, { status: 500 });
     }
 
     // Fetch all closed scopes (invoices) for contractor

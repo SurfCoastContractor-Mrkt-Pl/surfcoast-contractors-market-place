@@ -9,10 +9,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { qb_customer_id, qb_realm_id, qb_access_token } = await req.json();
+    const { qb_customer_id, qb_realm_id } = await req.json();
 
+    // Retrieve secure token from environment (never from request payload)
+    const qb_access_token = Deno.env.get('QUICKBOOKS_ACCESS_TOKEN');
     if (!qb_access_token) {
-      return Response.json({ error: 'QB auth required' }, { status: 400 });
+      return Response.json({ error: 'QB auth not configured' }, { status: 500 });
     }
 
     // Fetch closed scopes for this contractor
