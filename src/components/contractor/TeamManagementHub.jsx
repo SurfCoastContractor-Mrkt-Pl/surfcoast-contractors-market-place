@@ -13,7 +13,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    role: 'sub-contractor',
+    role: 'collaborator',
     splitPercentage: 10,
   });
 
@@ -41,7 +41,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
       await base44.integrations.Core.SendEmail({
         to: data.email,
         subject: `You've been invited to join ${contractor?.[0]?.name || 'a contractor'}'s team`,
-        body: `You've been invited to join as a ${data.role}. ${data.splitPercentage}% of earnings will go to you for jobs you help complete. Accept the invitation in your dashboard.`,
+        body: `You've been invited to join as a ${data.role} on the team. ${data.splitPercentage}% of earnings will go to you for jobs you help complete. Accept the invitation in your dashboard.`,
       });
       return { success: true };
     },
@@ -62,7 +62,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
     setFormData({
       name: '',
       email: '',
-      role: 'sub-contractor',
+      role: 'collaborator',
       splitPercentage: 10,
     });
   };
@@ -105,7 +105,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Team Members</h2>
-            <p className="text-xs text-slate-500 mt-1">Invite sub-contractors and delegate work</p>
+            <p className="text-xs text-slate-500 mt-1">Invite team members and delegate work</p>
           </div>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -117,7 +117,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Invite Team Member</DialogTitle>
-                <DialogDescription>Add a sub-contractor or team member to your business.</DialogDescription>
+                <DialogDescription>Add a collaborator or team member to your business.</DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
@@ -146,7 +146,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                   >
-                    <option value="sub-contractor">Sub-Contractor</option>
+                    <option value="collaborator">Collaborator</option>
                     <option value="apprentice">Apprentice</option>
                     <option value="helper">Helper</option>
                   </select>
@@ -208,7 +208,7 @@ export default function TeamManagementHub({ contractorId, contractorEmail }) {
           <div className="text-center py-8">
             <Users className="w-12 h-12 text-slate-200 mx-auto mb-3" />
             <p className="text-slate-500 text-sm">No team members yet</p>
-            <p className="text-slate-400 text-xs mt-1">Invite sub-contractors to delegate work and grow your business</p>
+            <p className="text-slate-400 text-xs mt-1">Invite team members to delegate work and grow your business</p>
           </div>
         )}
       </Card>
