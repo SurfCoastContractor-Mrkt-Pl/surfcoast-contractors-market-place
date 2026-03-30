@@ -59,7 +59,7 @@ import MarketingToolkit from '@/components/contractor/MarketingToolkit';
 import PayoutManagementDashboard from '@/components/contractor/PayoutManagementDashboard';
 import AdvancedAnalyticsDashboard from '@/components/contractor/AdvancedAnalyticsDashboard';
 import AvailabilityScheduleManager from '@/components/contractor/AvailabilityScheduleManager';
-import PortfolioGalleryManager from '@/components/contractor/PortfolioGalleryManager';
+
 import ServicePackagesManager from '@/components/contractor/ServicePackagesManager';
 import CustomerTestimonialsManager from '@/components/contractor/CustomerTestimonialsManager';
 import DocumentManagementHub from '@/components/contractor/DocumentManagementHub';
@@ -463,7 +463,7 @@ export default function ContractorBusinessHub() {
               </TabsContent>
 
               <TabsContent value="portfolio">
-                <PortfolioGalleryManager contractorId={contractor?.id} />
+                <PortfolioDisplay contractorId={contractor?.id} isOwnProfile={true} />
               </TabsContent>
 
               <TabsContent value="packages">
