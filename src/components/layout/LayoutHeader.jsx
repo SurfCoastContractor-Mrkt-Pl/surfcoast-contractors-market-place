@@ -70,7 +70,7 @@ export default function LayoutHeader({
               <Link to="/pricing">
                 <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Pricing</Button>
               </Link>
-              <Link to="/why-surfcoast">
+              <Link to="/WhySurfCoast">
                 <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Why SurfCoast</Button>
               </Link>
               <Link to="/About">

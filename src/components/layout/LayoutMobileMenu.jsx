@@ -52,6 +52,25 @@ export default function LayoutMobileMenu({
               </Link>
             );
           })}
+          {!isLoggedIn && (
+            <div className="pt-4 border-t border-slate-100 space-y-2">
+              <Link to="/pricing" onClick={handleNavClick}>
+                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                  Pricing
+                </div>
+              </Link>
+              <Link to="/WhySurfCoast" onClick={handleNavClick}>
+                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                  Why SurfCoast
+                </div>
+              </Link>
+              <Link to="/About" onClick={handleNavClick}>
+                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                  About Us
+                </div>
+              </Link>
+            </div>
+          )}
           {isLoggedIn && (
             <div className="pt-4 border-t border-slate-100 space-y-2">
               <Link to="/About" onClick={handleNavClick}>
