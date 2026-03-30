@@ -68,7 +68,6 @@ import ClientRelationshipManager from '@/components/contractor/ClientRelationshi
 import ProposalTemplateManager from '@/components/contractor/ProposalTemplateManager';
 import PerformanceAnalyticsDashboard from '@/components/contractor/PerformanceAnalyticsDashboard';
 import AdvancedSchedulingManager from '@/components/contractor/AdvancedSchedulingManager';
-import BonusesAndTierUnlocks from '@/components/contractor/BonusesAndTierUnlocks';
 import AutomationAndSmartTools from '@/components/contractor/AutomationAndSmartTools';
 import TeamManagementHub from '@/components/contractor/TeamManagementHub';
 
@@ -365,7 +364,6 @@ export default function ContractorBusinessHub() {
                   <TabsTrigger value="referrals" className="text-xs sm:text-sm whitespace-nowrap">Referrals</TabsTrigger>
                   <TabsTrigger value="marketing" className="text-xs sm:text-sm whitespace-nowrap">Marketing</TabsTrigger>
                   <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
-                  <TabsTrigger value="bonuses" className="text-xs sm:text-sm whitespace-nowrap">Bonuses</TabsTrigger>
                   <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
                   <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
                   </>}
@@ -496,10 +494,6 @@ export default function ContractorBusinessHub() {
 
               <TabsContent value="scheduling">
                 <AdvancedSchedulingManager contractorId={contractor?.id} />
-              </TabsContent>
-
-              <TabsContent value="bonuses">
-                <BonusesAndTierUnlocks contractorId={contractor?.id} contractorEmail={userEmail} />
               </TabsContent>
 
               <TabsContent value="automation">
