@@ -67,12 +67,11 @@ export function useUnreadCount(email) {
       if (!email) return 0;
 
       try {
-        const [unreadMessages, unreadProjectMessages] = await Promise.all([
+        const [unreadMessages] = await Promise.all([
           base44.entities.Message.filter({ recipient_email: email, read: false }).catch(() => []),
-          base44.entities.ProjectMessage.filter({ recipient_email: email, sender_email: { $ne: email }, read: false }).catch(() => [])
         ]);
 
-        return (unreadMessages?.length || 0) + (unreadProjectMessages?.length || 0);
+        return (unreadMessages?.length || 0);
       } catch (e) {
         console.warn('Failed to fetch unread count:', e.message);
         return 0;

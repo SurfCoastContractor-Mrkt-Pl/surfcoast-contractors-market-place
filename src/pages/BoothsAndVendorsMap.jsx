@@ -247,12 +247,10 @@ export default function BoothsAndVendorsMap() {
 
 
                     <div className="grid grid-cols-3 gap-2">
-                      <Link to={`/vendor/${vendor.id}`}>
-                        <Button variant="outline" size="sm" className="w-full">
-                          <ChevronRight className="w-4 h-4 mr-1" />
-                          View
-                        </Button>
-                      </Link>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <ChevronRight className="w-4 h-4 mr-1" />
+                        View
+                      </Button>
                       <Button
                         onClick={() => {
                           setReviewVendor(vendor);
