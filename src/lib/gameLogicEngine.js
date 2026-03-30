@@ -281,6 +281,161 @@ export default class GameLogicEngine {
 
   // Get available parts
   getAvailableParts() {
-    return this.availableParts;
+    return this.availableParts || [];
   }
+
+  // Get current scene state for mockup saving
+  getCurrentState() {
+    return JSON.parse(JSON.stringify(this.currentState));
+  }
+
+  // Load a saved mockup state
+  loadState(state) {
+    this.currentState = state || {};
+    this.renderScene();
+  }
+}
+
+// ── Exported standalone function for building the bathroom environment ──────
+export function buildBathroomScene(scene) {
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0xd4c9b8, roughness: 0.8, metalness: 0 });
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0xf0ece4, roughness: 0.9 });
+  const tileMat = new THREE.MeshStandardMaterial({ color: 0xe8e2d8, roughness: 0.6 });
+  const woodMat = new THREE.MeshStandardMaterial({ color: 0x8b6f47, roughness: 0.7 });
+  const chromeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.1 });
+  const porcelainMat = new THREE.MeshStandardMaterial({ color: 0xfafaf8, roughness: 0.3, metalness: 0 });
+
+  // Floor
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  // Back wall
+  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), wallMat);
+  backWall.position.set(0, 2, -3);
+  backWall.receiveShadow = true;
+  scene.add(backWall);
+
+  // Left wall
+  const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(6, 4), wallMat);
+  leftWall.position.set(-3, 2, 0);
+  leftWall.rotation.y = Math.PI / 2;
+  leftWall.receiveShadow = true;
+  scene.add(leftWall);
+
+  // Ceiling
+  const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }));
+  ceiling.rotation.x = Math.PI / 2;
+  ceiling.position.y = 4;
+  scene.add(ceiling);
+
+  // ── Vanity cabinet ────────────────────────────────────────────────────────
+  const cabinet = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.8, 0.5), woodMat);
+  cabinet.position.set(-1.5, 0.4, -2.7);
+  cabinet.castShadow = true;
+  scene.add(cabinet);
+
+  // Sink basin
+  const sink = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.25, 0.15, 24), porcelainMat);
+  sink.position.set(-1.5, 0.85, -2.7);
+  sink.castShadow = true;
+  scene.add(sink);
+
+  // Countertop
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.05, 0.55), tileMat);
+  counter.position.set(-1.5, 0.82, -2.7);
+  scene.add(counter);
+
+  // Faucet body
+  const faucetBody = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.25, 12), chromeMat);
+  faucetBody.position.set(-1.5, 1.0, -2.82);
+  scene.add(faucetBody);
+
+  // Faucet spout
+  const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.18, 12), chromeMat);
+  spout.rotation.x = Math.PI / 2.5;
+  spout.position.set(-1.5, 1.1, -2.72);
+  scene.add(spout);
+
+  // P-trap pipes (under sink)
+  const ptrapMat = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.6, roughness: 0.3 });
+  const ptrap1 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.3, 12), ptrapMat);
+  ptrap1.position.set(-1.5, 0.55, -2.7);
+  ptrap1.userData.isPipe = true;
+  scene.add(ptrap1);
+
+  const ptrap2 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.25, 12), ptrapMat);
+  ptrap2.rotation.z = Math.PI / 2;
+  ptrap2.position.set(-1.62, 0.42, -2.7);
+  ptrap2.userData.isPipe = true;
+  scene.add(ptrap2);
+
+  // Mirror above sink
+  const mirror = new THREE.Mesh(
+    new THREE.BoxGeometry(1.0, 0.7, 0.04),
+    new THREE.MeshStandardMaterial({ color: 0xaaccdd, metalness: 0.8, roughness: 0.05 })
+  );
+  mirror.position.set(-1.5, 1.6, -2.96);
+  scene.add(mirror);
+
+  // Mirror frame
+  const mirrorFrame = new THREE.Mesh(
+    new THREE.BoxGeometry(1.08, 0.78, 0.03),
+    new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.5 })
+  );
+  mirrorFrame.position.set(-1.5, 1.6, -2.94);
+  scene.add(mirrorFrame);
+
+  // ── Toilet ────────────────────────────────────────────────────────────────
+  const toiletBase = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.22, 0.38, 20), porcelainMat);
+  toiletBase.position.set(1.2, 0.19, -2.5);
+  toiletBase.castShadow = true;
+  scene.add(toiletBase);
+
+  const toiletBowl = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.24, 0.2, 0.15, 20),
+    porcelainMat
+  );
+  toiletBowl.position.set(1.2, 0.42, -2.5);
+  scene.add(toiletBowl);
+
+  const toiletTank = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.45, 0.2), porcelainMat);
+  toiletTank.position.set(1.2, 0.68, -2.82);
+  toiletTank.castShadow = true;
+  scene.add(toiletTank);
+
+  // Toilet supply line
+  const supplyLine = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.4, 8), chromeMat);
+  supplyLine.position.set(1.06, 0.35, -2.82);
+  scene.add(supplyLine);
+
+  // ── Bathtub ───────────────────────────────────────────────────────────────
+  const tubMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.2, metalness: 0 });
+  const tub = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.5, 0.8), tubMat);
+  tub.position.set(0.5, 0.25, -2.6);
+  tub.castShadow = true;
+  scene.add(tub);
+
+  // Tub interior
+  const tubInner = new THREE.Mesh(
+    new THREE.BoxGeometry(1.4, 0.35, 0.65),
+    new THREE.MeshStandardMaterial({ color: 0xeeeeff, roughness: 0.15 })
+  );
+  tubInner.position.set(0.5, 0.35, -2.6);
+  scene.add(tubInner);
+
+  // Towel bar on left wall
+  const barMount1 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.12), chromeMat);
+  barMount1.position.set(-2.96, 1.4, -1.0);
+  scene.add(barMount1);
+
+  const barMount2 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.12), chromeMat);
+  barMount2.position.set(-2.96, 1.4, -0.2);
+  scene.add(barMount2);
+
+  const towelBar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.82, 12), chromeMat);
+  towelBar.rotation.z = Math.PI / 2;
+  towelBar.position.set(-2.96, 1.4, -0.6);
+  scene.add(towelBar);
 }
