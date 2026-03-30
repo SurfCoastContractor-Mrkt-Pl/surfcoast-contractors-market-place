@@ -62,6 +62,7 @@ import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
 import ErrorMonitoringDashboard from './pages/ErrorMonitoringDashboard';
 import DatabaseManagementDashboard from './pages/DatabaseManagementDashboard';
 import ActivityAuditDashboard from './pages/ActivityAuditDashboard';
+import PerformanceAnalyticsDashboard from './pages/PerformanceAnalyticsDashboard';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -359,6 +360,11 @@ const AuthenticatedApp = () => {
       <Route path="/activity-audit" element={
         <LayoutWrapper currentPageName="ActivityAuditDashboard">
           <ActivityAuditDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/performance-analytics" element={
+        <LayoutWrapper currentPageName="PerformanceAnalyticsDashboard">
+          <PerformanceAnalyticsDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

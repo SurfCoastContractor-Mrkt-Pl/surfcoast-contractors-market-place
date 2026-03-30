@@ -1,0 +1,88 @@
+{
+  "name": "PerformanceMetric",
+  "type": "object",
+  "properties": {
+    "metric_type": {
+      "type": "string",
+      "enum": [
+        "api_latency",
+        "function_execution",
+        "page_load",
+        "user_action",
+        "database_query",
+        "error_rate",
+        "memory_usage",
+        "cpu_usage"
+      ],
+      "description": "Type of performance metric"
+    },
+    "value": {
+      "type": "number",
+      "description": "Metric value (usually in milliseconds)"
+    },
+    "unit": {
+      "type": "string",
+      "default": "ms",
+      "description": "Unit of measurement"
+    },
+    "url": {
+      "type": "string",
+      "description": "Page URL where metric was recorded"
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "API endpoint if applicable"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional JSON metadata"
+    },
+    "browser": {
+      "type": "string",
+      "description": "Browser type/version"
+    },
+    "device": {
+      "type": "string",
+      "description": "Device type (mobile/desktop/tablet)"
+    },
+    "network": {
+      "type": "string",
+      "description": "Network type (4g/wifi/3g)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "error"
+      ],
+      "default": "success",
+      "description": "Whether operation succeeded"
+    }
+  },
+  "required": [
+    "metric_type",
+    "value"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
