@@ -181,7 +181,87 @@ export default class GameLogicEngine {
       }
     }
 
+    // P-trap assembly validation
+    if (part.type === 'p-trap' || part.type === 'p_trap') {
+      const pTrapValidation = this.validatePTrapAssembly();
+      if (!pTrapValidation.isValid) {
+        return pTrapValidation;
+      }
+    }
+
     return { isValid: true, message: 'Placement valid.' };
+  }
+
+  // Validate P-trap assembly order and alignment
+  validatePTrapAssembly() {
+    const parts = this.currentState.parts || [];
+    
+    // Find drain pipe, p-trap, and wall connection
+    const drainPipe = parts.find(p => p.type === 'drain_pipe');
+    const pTrap = parts.find(p => p.type === 'p-trap' || p.type === 'p_trap');
+    const wallConnection = parts.find(p => p.type === 'wall_drain');
+
+    // Check all required components exist
+    if (!drainPipe || !pTrap || !wallConnection) {
+      return { isValid: false, message: 'P-trap assembly requires: drain pipe, p-trap, and wall connection.' };
+    }
+
+    // Validate connection order: drain -> p-trap -> wall
+    if (!this.isConnected(drainPipe, pTrap)) {
+      return { isValid: false, message: 'Drain pipe must connect to P-trap.' };
+    }
+    if (!this.isConnected(pTrap, wallConnection)) {
+      return { isValid: false, message: 'P-trap must connect to wall drain.' };
+    }
+
+    // Validate vertical alignment of drain pipe
+    const drainVerticalAlignment = this.validateDrainPipeVerticalAlignment(drainPipe, pTrap);
+    if (!drainVerticalAlignment.isValid) {
+      return drainVerticalAlignment;
+    }
+
+    // Validate p-trap orientation (should be horizontal or curved downward)
+    const pTrapOrientation = this.validatePTrapOrientation(pTrap);
+    if (!pTrapOrientation.isValid) {
+      return pTrapOrientation;
+    }
+
+    return { isValid: true, message: 'P-trap assembly is correctly configured.' };
+  }
+
+  // Validate that drain pipe is vertical (aligned on Y-axis)
+  validateDrainPipeVerticalAlignment(drainPipe, pTrap) {
+    // Drain pipe should be mostly vertical (same X and Z, different Y)
+    const xDiff = Math.abs(drainPipe.position.x - pTrap.position.x);
+    const zDiff = Math.abs(drainPipe.position.z - pTrap.position.z);
+    const verticalThreshold = 0.2; // Allow slight horizontal offset
+
+    if (xDiff > verticalThreshold || zDiff > verticalThreshold) {
+      return { isValid: false, message: 'Drain pipe must be vertically aligned with the P-trap.' };
+    }
+
+    // Drain should be above the P-trap
+    if (drainPipe.position.y <= pTrap.position.y) {
+      return { isValid: false, message: 'Drain pipe must be positioned above the P-trap.' };
+    }
+
+    return { isValid: true, message: 'Drain pipe vertical alignment is correct.' };
+  }
+
+  // Validate that p-trap is oriented horizontally or curved downward
+  validatePTrapOrientation(pTrap) {
+    // P-trap rotation should be mostly horizontal (small rotation on X/Z, ~π/2 on Z for the curve)
+    const rotX = Math.abs(pTrap.rotation.x);
+    const rotY = Math.abs(pTrap.rotation.y);
+    
+    // Allow small rotations on X and Y (within π/4 radians = 45°)
+    const angleThreshold = Math.PI / 4;
+
+    if (rotX > angleThreshold || rotY > angleThreshold) {
+      return { isValid: false, message: 'P-trap must be oriented horizontally (not tilted).' };
+    }
+
+    return { isValid: true, message: 'P-trap orientation is correct.' };
   }
 
   // Electrical-specific validation
