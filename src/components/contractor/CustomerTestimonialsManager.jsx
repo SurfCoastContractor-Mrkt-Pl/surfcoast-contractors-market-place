@@ -6,38 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, Star, Plus, Trash2, Eye, Pin, Zap } from 'lucide-react';
 
 export default function CustomerTestimonialsManager({ contractorId }) {
-  const [testimonials, setTestimonials] = useState([
-    {
-      id: 1,
-      customerName: 'John Smith',
-      projectTitle: 'Kitchen Renovation',
-      rating: 5,
-      content: 'Exceptional work from start to finish. Highly professional and attention to detail was amazing. Would hire again!',
-      date: '2026-03-10',
-      pinned: true,
-      verified: true
-    },
-    {
-      id: 2,
-      customerName: 'Sarah Johnson',
-      projectTitle: 'Bathroom Remodel',
-      rating: 5,
-      content: 'Outstanding contractor. Great communication, stayed on timeline, and the quality exceeded expectations.',
-      date: '2026-02-28',
-      pinned: false,
-      verified: true
-    },
-    {
-      id: 3,
-      customerName: 'Mike Davis',
-      projectTitle: 'Deck Installation',
-      rating: 4,
-      content: 'Good work and reasonable pricing. Completed on time. Minor touch-ups needed but resolved quickly.',
-      date: '2026-02-15',
-      pinned: false,
-      verified: true
-    }
-  ]);
+  const [testimonials, setTestimonials] = useState([]);
 
   const [showForm, setShowForm] = useState(false);
 
