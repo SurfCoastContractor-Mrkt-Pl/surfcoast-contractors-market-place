@@ -69,6 +69,7 @@ import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
 import AdvancedAnalyticsDashboard from './pages/AdvancedAnalyticsDashboard';
 import AlertManagementDashboard from './pages/AlertManagementDashboard';
 import RemediationDashboard from './pages/RemediationDashboard';
+import Admin from './pages/Admin';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -398,6 +399,7 @@ const AuthenticatedApp = () => {
           <RemediationDashboard />
         </LayoutWrapper>
       } />
+      <Route path="/admin" element={<Admin />} />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
