@@ -65,7 +65,7 @@ export default function NotificationCenter({ scopeId, userEmail }) {
       {/* Bell Icon Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-lg hover:bg-slate-100 transition-colors"
+        className="relative p-2 rounded-lg hover:bg-slate-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
       >
         <Bell className="w-5 h-5 text-slate-600" />
         {unreadCount > 0 && (
@@ -77,7 +77,7 @@ export default function NotificationCenter({ scopeId, userEmail }) {
 
       {/* Notification Panel */}
       {isOpen && (
-        <div className="absolute right-0 top-12 w-96 bg-white rounded-lg border border-slate-200 shadow-lg z-50">
+        <div className="absolute right-0 top-12 w-full sm:w-96 max-w-sm bg-white rounded-lg border border-slate-200 shadow-lg z-50">
           {/* Header */}
           <div className="p-4 border-b border-slate-200 flex justify-between items-center">
             <h3 className="font-semibold text-slate-900">Notifications</h3>

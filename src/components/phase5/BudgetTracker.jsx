@@ -57,7 +57,7 @@ export default function BudgetTracker({ budgetAmount = 0, expenses = [] }) {
         </div>
 
         {/* Budget Stats */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <div className="text-center p-3 rounded-lg bg-slate-50">
             <p className="text-xs sm:text-sm text-slate-600 mb-1">Budget</p>
             <p className="text-base sm:text-lg font-bold text-slate-900">

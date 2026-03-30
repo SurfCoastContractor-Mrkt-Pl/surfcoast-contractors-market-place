@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import BudgetTracker from './BudgetTracker';
 import ExpenseLogger from './ExpenseLogger';
+import FinancialForecasting from './FinancialForecasting';
 
 export default function ProjectAnalyticsDashboard({ scope, milestones = [], expenses: initialExpenses = [] }) {
   const [expenses, setExpenses] = useState(initialExpenses);
@@ -62,8 +63,9 @@ export default function ProjectAnalyticsDashboard({ scope, milestones = [], expe
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-4 sm:grid-cols-4">
         <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="forecast">Forecast</TabsTrigger>
         <TabsTrigger value="budget">Budget</TabsTrigger>
         <TabsTrigger value="expenses">Expenses</TabsTrigger>
       </TabsList>
@@ -214,6 +216,14 @@ export default function ProjectAnalyticsDashboard({ scope, milestones = [], expe
           </div>
         </CardContent>
       </Card>
+      </TabsContent>
+
+      <TabsContent value="forecast" className="space-y-6 mt-6">
+        <FinancialForecasting
+          scope={scope}
+          expenses={expenses}
+          milestones={milestones}
+        />
       </TabsContent>
 
       <TabsContent value="budget" className="space-y-6 mt-6">

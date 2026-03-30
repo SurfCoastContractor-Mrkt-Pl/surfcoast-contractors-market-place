@@ -62,9 +62,10 @@ export default function ExpenseLogger({ scopeId, expenses = [], onExpenseAdded }
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={createMutation.isPending}
+            className="w-full"
           />
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Input
               type="number"
               step="0.01"
