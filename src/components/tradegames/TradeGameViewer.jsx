@@ -64,19 +64,41 @@ function buildBathroomScene(scene) {
   const ceramicMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.15, metalness: 0.05 });
   const chromeMat = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, roughness: 0.1, metalness: 0.9 });
 
-  // Vanity cabinet
-  const vanityMat = new THREE.MeshStandardMaterial({ color: 0x8b7355, roughness: 0.7 });
-  const vanity = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.85, 0.55), vanityMat);
-  vanity.position.set(-1.5, 0.425, -3.5);
-  vanity.castShadow = true;
-  vanity.receiveShadow = true;
-  vanity.userData.isEnvironment = true;
-  scene.add(vanity);
+  // Vanity cabinet - open frame (no front doors)
+  const vanityFrameMat = new THREE.MeshStandardMaterial({ color: 0x8b7355, roughness: 0.7 });
+  // Left side panel
+  const vanitySideLeft = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.8, 0.55), vanityFrameMat);
+  vanitySideLeft.position.set(-2.25, 0.4, -3.5);
+  vanitySideLeft.castShadow = true;
+  vanitySideLeft.receiveShadow = true;
+  vanitySideLeft.userData.isEnvironment = true;
+  scene.add(vanitySideLeft);
+  // Right side panel
+  const vanitySideRight = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.8, 0.55), vanityFrameMat);
+  vanitySideRight.position.set(-0.75, 0.4, -3.5);
+  vanitySideRight.castShadow = true;
+  vanitySideRight.receiveShadow = true;
+  vanitySideRight.userData.isEnvironment = true;
+  scene.add(vanitySideRight);
+  // Back panel
+  const vanityBack = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 0.05), vanityFrameMat);
+  vanityBack.position.set(-1.5, 0.4, -3.75);
+  vanityBack.castShadow = true;
+  vanityBack.receiveShadow = true;
+  vanityBack.userData.isEnvironment = true;
+  scene.add(vanityBack);
+  // Bottom panel
+  const vanityBottom = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.05, 0.55), vanityFrameMat);
+  vanityBottom.position.set(-1.5, 0.025, -3.5);
+  vanityBottom.castShadow = true;
+  vanityBottom.receiveShadow = true;
+  vanityBottom.userData.isEnvironment = true;
+  scene.add(vanityBottom);
 
   // Vanity countertop
   const counterMat = new THREE.MeshStandardMaterial({ color: 0xf0ede8, roughness: 0.3, metalness: 0.0 });
   const counter = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.06, 0.6), counterMat);
-  counter.position.set(-1.5, 0.88, -3.5);
+  counter.position.set(-1.5, 0.83, -3.5);
   counter.castShadow = true;
   counter.userData.isEnvironment = true;
   scene.add(counter);
@@ -155,13 +177,7 @@ function buildBathroomScene(scene) {
   towel.userData.isEnvironment = true;
   scene.add(towel);
 
-  // Connection point indicator (glowing ring where pipes should go)
-  const ringGeo = new THREE.TorusGeometry(0.1, 0.015, 8, 24);
-  const ringMat = new THREE.MeshStandardMaterial({ color: 0x00aaff, emissive: 0x0044aa, emissiveIntensity: 0.4 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.position.set(-1.5, 0.6, -3.5);
-  ring.userData.isEnvironment = true;
-  scene.add(ring);
+
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────
@@ -270,15 +286,15 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     const onMouseDown = (e) => { orbitState.isDragging = true; orbitState.lastX = e.clientX; orbitState.lastY = e.clientY; };
     const onMouseUp = () => { orbitState.isDragging = false; };
     const onMouseMove = (e) => {
-      if (!orbitState.isDragging) return;
-      orbitState.theta -= (e.clientX - orbitState.lastX) * 0.005;
-      orbitState.phi = Math.max(0.15, Math.min(Math.PI / 2.1, orbitState.phi + (e.clientY - orbitState.lastY) * 0.005));
-      orbitState.lastX = e.clientX; orbitState.lastY = e.clientY;
-      updateCamera();
-    };
-    const onWheel = (e) => {
-      orbitState.radius = Math.max(2, Math.min(10, orbitState.radius + e.deltaY * 0.008));
-      updateCamera();
+       if (!orbitState.isDragging) return;
+       orbitState.theta -= (e.clientX - orbitState.lastX) * 0.005;
+       orbitState.phi = Math.max(0.05, Math.min(Math.PI - 0.05, orbitState.phi + (e.clientY - orbitState.lastY) * 0.005));
+       orbitState.lastX = e.clientX; orbitState.lastY = e.clientY;
+       updateCamera();
+     };
+     const onWheel = (e) => {
+       orbitState.radius = Math.max(1, Math.min(10, orbitState.radius + e.deltaY * 0.008));
+       updateCamera();
     };
     el.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mouseup', onMouseUp);
