@@ -84,15 +84,15 @@ export default function MarketShopSignup() {
         const user = await base44.auth.me();
         if (!user) { setAutoLinkChecked(true); return; }
 
-        const [contractors, customers] = await Promise.all([
+        const [contractors, consumers] = await Promise.all([
           base44.entities.Contractor.filter({ email: user.email }).catch(() => []),
           base44.entities.CustomerProfile.filter({ email: user.email }).catch(() => []),
         ]);
 
         if (contractors && contractors.length > 0) {
           applyProfile('contractor', contractors[0]);
-        } else if (customers && customers.length > 0) {
-          applyProfile('customer', customers[0]);
+        } else if (consumers && consumers.length > 0) {
+          applyProfile('consumer', consumers[0]);
         }
       } catch {
         // Not logged in or error — no auto-fill
@@ -194,7 +194,7 @@ export default function MarketShopSignup() {
     setLinkSearching(true);
     setLinkError('');
     try {
-      const [contractors, customers] = await Promise.all([
+      const [contractors, consumers] = await Promise.all([
         base44.entities.Contractor.filter({ email: linkEmail.trim() }),
         base44.entities.CustomerProfile.filter({ email: linkEmail.trim() })
       ]);
@@ -202,8 +202,8 @@ export default function MarketShopSignup() {
       if (contractors && contractors.length > 0) {
         applyProfile('contractor', contractors[0]);
         setShowAccountLink(false);
-      } else if (customers && customers.length > 0) {
-        applyProfile('customer', customers[0]);
+      } else if (consumers && consumers.length > 0) {
+        applyProfile('consumer', consumers[0]);
         setShowAccountLink(false);
       } else {
         setLinkError('No account found with this email');
@@ -283,7 +283,7 @@ export default function MarketShopSignup() {
         if (linkedProfile.type === 'contractor') {
           shopPayload.linked_contractor_id = linkedProfile.data.id;
         } else {
-          shopPayload.linked_customer_profile_id = linkedProfile.data.id;
+          shopPayload.linked_consumer_profile_id = linkedProfile.data.id;
         }
       }
 

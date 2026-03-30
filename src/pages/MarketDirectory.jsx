@@ -136,7 +136,7 @@ export default function MarketDirectory() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex items-start gap-2 sm:gap-3">
           <AlertTriangle className="w-3 sm:w-4 h-3 sm:h-4 text-amber-600 flex-shrink-0 mt-0.5" />
           <p className="text-xs text-amber-800 leading-relaxed text-xs sm:text-sm">
-            <span className="font-semibold">Platform Disclaimer:</span> SurfCoast Marketplace is a connection platform only. We do not employ, endorse, or guarantee any vendor, product, or service. All users — vendors and customers alike — use this platform at their own risk. SurfCoast Marketplace, its administrators, partners, and affiliates are not responsible for any damages, injuries, illness, or death arising from any transaction or interaction. Customers are solely responsible for vetting vendors and making their own informed decisions.
+            <span className="font-semibold">Platform Disclaimer:</span> SurfCoast Marketplace is a connection platform only. We do not employ, endorse, or guarantee any vendor, product, or service. All users — vendors and consumers alike — use this platform at their own risk. SurfCoast Marketplace, its administrators, partners, and affiliates are not responsible for any damages, injuries, illness, or death arising from any transaction or interaction. Consumers are solely responsible for vetting vendors and making their own informed decisions.
           </p>
         </div>
       </div>

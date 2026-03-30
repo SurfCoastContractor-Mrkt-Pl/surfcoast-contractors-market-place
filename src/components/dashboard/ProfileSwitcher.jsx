@@ -7,7 +7,7 @@ export default function ProfileSwitcher({ activeProfile, primaryType, hasMarketS
 
   const primary = primaryType === 'contractor'
     ? { key: 'contractor', label: 'Contractor', description: 'Trades & services', emoji: '🔧', route: '/Dashboard' }
-    : { key: 'customer', label: 'Customer', description: 'Browse & hire', emoji: '🏠', route: '/Dashboard' };
+    : { key: 'consumer', label: 'Consumer', description: 'Browse & hire', emoji: '🏠', route: '/Dashboard' };
 
   const marketShop = { key: 'marketshop', label: 'MarketShop', description: 'Market & vendor', emoji: '🛍️', route: '/MarketShopDashboard', addRoute: '/MarketShopSignup' };
 
