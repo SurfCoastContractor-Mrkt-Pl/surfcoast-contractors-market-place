@@ -60,6 +60,7 @@ import GameChallenge from './pages/GameChallenge';
 import GameLeaderboard from './pages/GameLeaderboard';
 import SwapMeetRatings from './pages/SwapMeetRatings';
 import FarmersMarketRatings from './pages/FarmersMarketRatings';
+import LocationRatingAdmin from './pages/LocationRatingAdmin';
 import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
 import ErrorMonitoringDashboard from './pages/ErrorMonitoringDashboard';
 import DatabaseManagementDashboard from './pages/DatabaseManagementDashboard';
@@ -409,6 +410,11 @@ const AuthenticatedApp = () => {
       <Route path="/farmers-market-ratings" element={
         <LayoutWrapper currentPageName="FarmersMarketRatings">
           <FarmersMarketRatings />
+        </LayoutWrapper>
+      } />
+      <Route path="/location-rating-admin" element={
+        <LayoutWrapper currentPageName="LocationRatingAdmin">
+          <LocationRatingAdmin />
         </LayoutWrapper>
       } />
       <Route path="/admin" element={<Admin />} />
