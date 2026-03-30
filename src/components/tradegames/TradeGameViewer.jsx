@@ -516,7 +516,10 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
         <SaveMockupModal
           parts={currentParts}
           gameId={gameData?.id}
-          onSaved={() => setFeedback({ type: 'success', message: 'Mockup saved successfully!' })}
+          score={score}
+          moves={moveCount}
+          time={formattedTime}
+          onSaved={() => setFeedback({ type: 'success', message: 'Progress saved successfully!' })}
           onClose={() => setShowSaveMockup(false)}
         />
       )}

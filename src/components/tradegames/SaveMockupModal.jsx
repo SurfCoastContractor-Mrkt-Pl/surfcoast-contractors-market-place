@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
 import { Save, X, Tag } from 'lucide-react';
 
-export default function SaveMockupModal({ parts, gameId, onSaved, onClose }) {
+export default function SaveMockupModal({ parts, gameId, onSaved, onClose, score, moves, time }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
@@ -28,16 +28,34 @@ export default function SaveMockupModal({ parts, gameId, onSaved, onClose }) {
         return;
       }
       const tagsArr = tags.split(',').map(t => t.trim()).filter(Boolean);
-      await base44.entities.PlumbingMockup.create({
-        title: title.trim(),
-        description: description.trim(),
-        trade_type: 'plumbing',
-        parts_json: JSON.stringify(parts),
-        created_by_email: user.email,
-        is_public: isPublic,
-        tags: tagsArr,
-        game_id: gameId || null
-      });
+
+       // Save mockup
+       await base44.entities.PlumbingMockup.create({
+         title: title.trim(),
+         description: description.trim(),
+         trade_type: 'plumbing',
+         parts_json: JSON.stringify(parts),
+         created_by_email: user.email,
+         is_public: isPublic,
+         tags: tagsArr,
+         game_id: gameId || null
+       });
+
+       // Save game session progress
+       if (gameId) {
+         await base44.entities.UserGameSession.create({
+           user_email: user.email,
+           user_type: user.role === 'admin' ? 'contractor' : 'client',
+           trade_game_id: gameId,
+           start_time: new Date().toISOString(),
+           end_time: new Date().toISOString(),
+           score: score || 0,
+           moves_count: moves || 0,
+           is_solved: score > 0,
+           game_mode_played: 'sandbox',
+           duration_seconds: time ? parseInt(time.split(':')[0]) * 60 + parseInt(time.split(':')[1]) : 0
+         });
+       }
       onSaved?.();
       onClose();
     } catch (err) {
@@ -105,9 +123,10 @@ export default function SaveMockupModal({ parts, gameId, onSaved, onClose }) {
             </label>
           </div>
 
-          <div className="bg-slate-50 rounded-lg p-3 text-xs text-slate-500">
-            <strong>{parts?.length || 0} parts</strong> will be saved in this mockup
-          </div>
+          <div className="bg-slate-50 rounded-lg p-3 text-xs text-slate-500 space-y-1">
+             <div><strong>{parts?.length || 0} parts</strong> will be saved in this mockup</div>
+             {score !== undefined && <div>Score: <strong>{score}</strong> | Moves: <strong>{moves}</strong> | Time: <strong>{time}</strong></div>}
+           </div>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
