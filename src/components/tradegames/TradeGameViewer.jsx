@@ -121,9 +121,11 @@ function buildBathroomScene(scene) {
   faucetNeck.userData.isEnvironment = true;
   scene.add(faucetNeck);
 
-  // Drain pipe stub (this is where the puzzle pipes will connect)
-  const drainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.25, 12), chromeMat);
-  drainStub.position.set(-1.5, 0.75, -3.5);
+  // Drain pipe stub (this is where the puzzle pipes will connect) - extended into open vanity
+  const drainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.4, 12), chromeMat);
+  drainStub.rotation.z = Math.PI / 2;
+  drainStub.position.set(-0.8, 0.5, -3.5);
+  drainStub.castShadow = true;
   drainStub.userData.isEnvironment = true;
   drainStub.userData.isConnectionPoint = true;
   scene.add(drainStub);
