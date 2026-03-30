@@ -1,0 +1,66 @@
+{
+  "name": "Migration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique migration name (e.g., 001_create_users_table)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "applied",
+        "failed",
+        "rolled_back"
+      ],
+      "default": "pending",
+      "description": "Current status of the migration"
+    },
+    "applied_at": {
+      "type": "string",
+      "description": "ISO timestamp when migration was applied"
+    },
+    "rolled_back_at": {
+      "type": "string",
+      "description": "ISO timestamp when migration was rolled back"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error message if migration failed"
+    },
+    "duration_ms": {
+      "type": "number",
+      "description": "Time taken to apply migration in milliseconds"
+    },
+    "changes_summary": {
+      "type": "string",
+      "description": "Summary of changes made by this migration"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
