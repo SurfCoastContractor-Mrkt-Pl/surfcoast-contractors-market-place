@@ -13,10 +13,15 @@ export default function FarmersMarketRatings() {
   useEffect(() => {
     const fetchRatings = async () => {
       try {
-        const allRatings = await base44.entities.SwapMeetLocationRating.list('', 1000);
+        // Use pagination instead of loading all records
+        const allRatings = await base44.entities.SwapMeetLocationRating.filter(
+          { location_type: 'farmers_market' },
+          '-created_date',
+          500
+        );
         
-        // Filter for farmers markets only
-        const farmersMarketRatings = allRatings.filter(r => r.location_type === 'farmers_market');
+        // Already filtered by location_type in query
+        const farmersMarketRatings = allRatings;
         
         // Group by location and calculate averages
         const locationMap = {};

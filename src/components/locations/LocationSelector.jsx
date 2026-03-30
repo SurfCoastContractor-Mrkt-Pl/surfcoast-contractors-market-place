@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { MapPin, Loader2, Search } from 'lucide-react';
+import { trackEvent, EVENTS } from '@/lib/analytics';
 
 export default function LocationSelector({ locationType, onLocationSelect, onClose }) {
   const [locations, setLocations] = useState([]);
@@ -10,8 +11,11 @@ export default function LocationSelector({ locationType, onLocationSelect, onClo
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const allRatings = await base44.entities.SwapMeetLocationRating.list('', 1000);
-        const filtered = allRatings.filter(r => r.location_type === locationType);
+        const filtered = await base44.entities.SwapMeetLocationRating.filter(
+          { location_type: locationType },
+          '-created_date',
+          500
+        );
 
         // Get unique locations
         const locationMap = {};
@@ -73,7 +77,13 @@ export default function LocationSelector({ locationType, onLocationSelect, onClo
             {filtered.map((location) => (
               <button
                 key={location.location_name}
-                onClick={() => onLocationSelect(location)}
+                onClick={() => {
+                  trackEvent(EVENTS.LOCATION_SELECTED, {
+                    location: location.location_name,
+                    type: locationType,
+                  });
+                  onLocationSelect(location);
+                }}
                 className="w-full text-left p-3 rounded-lg border border-slate-200 hover:bg-orange-50 hover:border-orange-300 transition-colors"
               >
                 <div className="font-medium text-slate-900">{location.location_name}</div>

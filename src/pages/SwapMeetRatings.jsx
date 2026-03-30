@@ -14,10 +14,12 @@ export default function SwapMeetRatings() {
   useEffect(() => {
     const fetchRatings = async () => {
       try {
-        const allRatings = await base44.entities.SwapMeetLocationRating.list('', 1000);
-        
-        // Filter for swap meets only
-        const swapMeetRatings = allRatings.filter(r => r.location_type === 'swap_meet');
+        // Use pagination instead of loading all records
+        const swapMeetRatings = await base44.entities.SwapMeetLocationRating.filter(
+          { location_type: 'swap_meet' },
+          '-created_date',
+          500
+        );
         
         // Group by location and calculate averages
         const locationMap = {};

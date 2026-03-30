@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Star, Save, X, Loader2 } from 'lucide-react';
+import { trackEvent, EVENTS } from '@/lib/analytics';
+import { logError } from '@/lib/errorLogger';
 
 const RATING_QUESTIONS = [
   { key: 'cleanliness', label: 'How clean was the location?' },
@@ -81,12 +83,17 @@ export default function LocationRatingForm({ location, onClose, onSave, existing
         await base44.entities.SwapMeetLocationRating.update(existingRating.id, data);
       } else {
         await base44.entities.SwapMeetLocationRating.create(data);
+        trackEvent(EVENTS.LOCATION_RATED, {
+          location: location.location_name,
+          type: location.location_type,
+          rating: ratings.overall_experience,
+        });
       }
 
       onSave?.();
       onClose?.();
     } catch (error) {
-      console.error('Error saving rating:', error);
+      await logError('Failed to save location rating', 'rating', { error: error.message });
       alert('Failed to save rating');
     } finally {
       setLoading(false);
