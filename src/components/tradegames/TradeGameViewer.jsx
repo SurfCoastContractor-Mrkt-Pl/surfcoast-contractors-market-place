@@ -64,42 +64,12 @@ function buildBathroomScene(scene) {
   const ceramicMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.15, metalness: 0.05 });
   const chromeMat = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, roughness: 0.1, metalness: 0.9 });
 
-  // Vanity cabinet - open frame (no front doors)
-  const vanityFrameMat = new THREE.MeshStandardMaterial({ color: 0x8b7355, roughness: 0.7 });
-  // Left side panel
-  const vanitySideLeft = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.8, 0.55), vanityFrameMat);
-  vanitySideLeft.position.set(-2.25, 0.4, -3.5);
-  vanitySideLeft.castShadow = true;
-  vanitySideLeft.receiveShadow = true;
-  vanitySideLeft.userData.isEnvironment = true;
-  scene.add(vanitySideLeft);
-  // Right side panel
-  const vanitySideRight = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.8, 0.55), vanityFrameMat);
-  vanitySideRight.position.set(-0.75, 0.4, -3.5);
-  vanitySideRight.castShadow = true;
-  vanitySideRight.receiveShadow = true;
-  vanitySideRight.userData.isEnvironment = true;
-  scene.add(vanitySideRight);
-  // Back panel
-  const vanityBack = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 0.05), vanityFrameMat);
-  vanityBack.position.set(-1.5, 0.4, -3.75);
-  vanityBack.castShadow = true;
-  vanityBack.receiveShadow = true;
-  vanityBack.userData.isEnvironment = true;
-  scene.add(vanityBack);
-  // Bottom panel
-  const vanityBottom = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.05, 0.55), vanityFrameMat);
-  vanityBottom.position.set(-1.5, 0.025, -3.5);
-  vanityBottom.castShadow = true;
-  vanityBottom.receiveShadow = true;
-  vanityBottom.userData.isEnvironment = true;
-  scene.add(vanityBottom);
-
-  // Vanity countertop
+  // Vanity countertop (simplified)
   const counterMat = new THREE.MeshStandardMaterial({ color: 0xf0ede8, roughness: 0.3, metalness: 0.0 });
-  const counter = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.06, 0.6), counterMat);
-  counter.position.set(-1.5, 0.83, -3.5);
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.05, 0.55), counterMat);
+  counter.position.set(-1.5, 0.8, -3.5);
   counter.castShadow = true;
+  counter.receiveShadow = true;
   counter.userData.isEnvironment = true;
   scene.add(counter);
 
@@ -121,14 +91,43 @@ function buildBathroomScene(scene) {
   faucetNeck.userData.isEnvironment = true;
   scene.add(faucetNeck);
 
-  // Drain pipe stub (this is where the puzzle pipes will connect) - extended into open vanity
-  const drainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.4, 12), chromeMat);
-  drainStub.rotation.z = Math.PI / 2;
-  drainStub.position.set(-0.8, 0.5, -3.5);
-  drainStub.castShadow = true;
-  drainStub.userData.isEnvironment = true;
-  drainStub.userData.isConnectionPoint = true;
-  scene.add(drainStub);
+  // --- PLUMBING ---
+  const pipeMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.5, metalness: 0.1 });
+
+  // Vertical drain pipe from sink
+  const drainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.3, 16), pipeMat);
+  drainPipe.position.set(-1.5, 0.6, -3.5);
+  drainPipe.userData.isEnvironment = true;
+  drainPipe.userData.isConnectionPoint = true;
+  scene.add(drainPipe);
+
+  // P-trap vertical section (connecting down)
+  const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.15, 16), pipeMat);
+  pTrapVertical.position.set(-1.5, 0.425, -3.5);
+  pTrapVertical.userData.isEnvironment = true;
+  scene.add(pTrapVertical);
+
+  // P-trap bend (elbow)
+  const pTrapBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.03, 16, 32, Math.PI), pipeMat);
+  pTrapBend.rotation.x = Math.PI / 2;
+  pTrapBend.position.set(-1.5, 0.35, -3.5);
+  pTrapBend.userData.isEnvironment = true;
+  scene.add(pTrapBend);
+
+  // P-trap horizontal section (going to wall)
+  const pTrapHorizontal = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.25, 16), pipeMat);
+  pTrapHorizontal.rotation.z = Math.PI / 2;
+  pTrapHorizontal.position.set(-1.625, 0.35, -3.5);
+  pTrapHorizontal.userData.isEnvironment = true;
+  scene.add(pTrapHorizontal);
+
+  // Wall drain stub (connection point)
+  const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.1, 16), pipeMat);
+  wallDrainStub.rotation.z = Math.PI / 2;
+  wallDrainStub.position.set(-1.75, 0.35, -3.5);
+  wallDrainStub.userData.isEnvironment = true;
+  wallDrainStub.userData.isConnectionPoint = true;
+  scene.add(wallDrainStub);
 
   // ── TOILET ────────────────────────────────────────────────────────────────
   const toiletBase = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.38, 0.65), ceramicMat);
@@ -290,12 +289,12 @@ export default function TradeGameViewer({ gameData, gameMode, onGameComplete, on
     const onMouseMove = (e) => {
        if (!orbitState.isDragging) return;
        orbitState.theta -= (e.clientX - orbitState.lastX) * 0.005;
-       orbitState.phi = Math.max(0.05, Math.min(Math.PI - 0.05, orbitState.phi + (e.clientY - orbitState.lastY) * 0.005));
+       orbitState.phi = Math.max(0, Math.min(Math.PI, orbitState.phi + (e.clientY - orbitState.lastY) * 0.005));
        orbitState.lastX = e.clientX; orbitState.lastY = e.clientY;
        updateCamera();
      };
      const onWheel = (e) => {
-       orbitState.radius = Math.max(1, Math.min(10, orbitState.radius + e.deltaY * 0.008));
+       orbitState.radius = Math.max(0.5, Math.min(10, orbitState.radius + e.deltaY * 0.008));
        updateCamera();
     };
     el.addEventListener('mousedown', onMouseDown);
