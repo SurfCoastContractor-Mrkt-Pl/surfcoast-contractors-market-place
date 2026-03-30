@@ -41,6 +41,47 @@ export default function ServicePackagesManager({ contractorId }) {
 
   const [showForm, setShowForm] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
+  const [formValues, setFormValues] = useState({
+    name: '', type: 'hourly', price: '', duration: '', description: '', features: ''
+  });
+
+  const openCreate = () => {
+    setEditingPackage(null);
+    setFormValues({ name: '', type: 'hourly', price: '', duration: '', description: '', features: '' });
+    setShowForm(true);
+  };
+
+  const openEdit = (pkg) => {
+    setEditingPackage(pkg);
+    setFormValues({
+      name: pkg.name,
+      type: pkg.type,
+      price: pkg.price,
+      duration: pkg.duration,
+      description: pkg.description,
+      features: pkg.features.join('\n'),
+    });
+    setShowForm(true);
+  };
+
+  const savePackage = () => {
+    const updatedPkg = {
+      name: formValues.name,
+      type: formValues.type,
+      price: parseFloat(formValues.price) || 0,
+      duration: formValues.duration,
+      description: formValues.description,
+      features: formValues.features.split('\n').map(f => f.trim()).filter(Boolean),
+      active: editingPackage ? editingPackage.active : true,
+    };
+    if (editingPackage) {
+      setPackages(packages.map(p => p.id === editingPackage.id ? { ...p, ...updatedPkg } : p));
+    } else {
+      setPackages([...packages, { ...updatedPkg, id: Date.now() }]);
+    }
+    setShowForm(false);
+    setEditingPackage(null);
+  };
 
   const toggleActive = (id) => {
     setPackages(packages.map(p =>
@@ -60,7 +101,7 @@ export default function ServicePackagesManager({ contractorId }) {
           <h2 className="text-2xl font-bold text-slate-900">Service Packages</h2>
           <p className="text-sm text-slate-600 mt-1">Create standardized offerings to simplify customer bookings</p>
         </div>
-        <Button onClick={() => setShowForm(true)} gap="2">
+        <Button onClick={openCreate} gap="2">
           <Plus className="w-4 h-4" />
           New Package
         </Button>
@@ -75,70 +116,79 @@ export default function ServicePackagesManager({ contractorId }) {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Package Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g., Basic Consultation"
-                  defaultValue={editingPackage?.name || ''}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Package Name</label>
+              <input
+                type="text"
+                placeholder="e.g., Basic Consultation"
+                value={formValues.name}
+                onChange={e => setFormValues({ ...formValues, name: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              />
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Pricing Type</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
-                  <option value="hourly">Hourly</option>
-                  <option value="fixed">Fixed Price</option>
-                </select>
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Pricing Type</label>
+              <select
+                value={formValues.type}
+                onChange={e => setFormValues({ ...formValues, type: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              >
+                <option value="hourly">Hourly</option>
+                <option value="fixed">Fixed Price</option>
+              </select>
+            </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Price ($)</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  defaultValue={editingPackage?.price || ''}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Duration/Scope</label>
-                <input
-                  type="text"
-                  placeholder="e.g., 2 hours, Fixed price"
-                  defaultValue={editingPackage?.duration || ''}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
-                />
-              </div>
-            </div>
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
-              <textarea
-                placeholder="Brief description of what's included..."
-                defaultValue={editingPackage?.description || ''}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm h-20 resize-none"
+              <label className="block text-sm font-medium text-slate-700 mb-2">Price ($)</label>
+              <input
+                type="number"
+                placeholder="0.00"
+                value={formValues.price}
+                onChange={e => setFormValues({ ...formValues, price: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Features (one per line)</label>
-              <textarea
-                placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
-                defaultValue={editingPackage?.features?.join('\n') || ''}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm h-20 resize-none font-mono text-xs"
+              <label className="block text-sm font-medium text-slate-700 mb-2">Duration/Scope</label>
+              <input
+                type="text"
+                placeholder="e.g., 2 hours, Fixed price"
+                value={formValues.duration}
+                onChange={e => setFormValues({ ...formValues, duration: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
               />
+            </div>
+            </div>
+
+            <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
+            <textarea
+              placeholder="Brief description of what's included..."
+              value={formValues.description}
+              onChange={e => setFormValues({ ...formValues, description: e.target.value })}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm h-20 resize-none"
+            />
+            </div>
+
+            <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Features (one per line)</label>
+            <textarea
+              placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+              value={formValues.features}
+              onChange={e => setFormValues({ ...formValues, features: e.target.value })}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm h-20 resize-none font-mono text-xs"
+            />
             </div>
 
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => { setShowForm(false); setEditingPackage(null); }}>
-                Cancel
-              </Button>
-              <Button className="bg-blue-600">Save Package</Button>
+            <Button variant="outline" onClick={() => { setShowForm(false); setEditingPackage(null); }}>
+              Cancel
+            </Button>
+            <Button className="bg-blue-600" onClick={savePackage}>Save Package</Button>
             </div>
           </div>
         </Card>
@@ -194,7 +244,7 @@ export default function ServicePackagesManager({ contractorId }) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setEditingPackage(pkg)}
+                  onClick={() => openEdit(pkg)}
                 >
                   <Edit2 className="w-3 h-3" />
                 </Button>
@@ -214,7 +264,7 @@ export default function ServicePackagesManager({ contractorId }) {
         <Card className="p-12 text-center">
           <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-600 mb-4">No service packages created yet</p>
-          <Button onClick={() => setShowForm(true)}>Create Your First Package</Button>
+          <Button onClick={openCreate}>Create Your First Package</Button>
         </Card>
       )}
 
