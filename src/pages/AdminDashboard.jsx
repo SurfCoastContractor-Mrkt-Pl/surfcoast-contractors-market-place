@@ -508,13 +508,13 @@ export default function AdminDashboard() {
                 <tbody className="divide-y divide-slate-700">
                   {filteredReviews.map(r => (
                     <tr key={r.id} className="hover:bg-slate-700 transition-colors">
-                      <td className="px-6 py-4 text-white">{r.shop_name}</td>
+                      <td className="px-6 py-4 text-white">{r.contractor_name || 'N/A'}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs flex items-center gap-1"><User className="w-4 h-4" />{r.reviewer_name}</td>
                       <td className="px-6 py-4 text-yellow-400 flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`w-4 h-4 ${i < r.rating ? 'fill-amber-400' : ''}`} />
+                        <Star key={i} className={`w-4 h-4 ${i < (r.overall_rating || 0) ? 'fill-amber-400' : ''}`} />
                       ))}</td>
-                      <td className="px-6 py-4 text-slate-300">{r.title}</td>
-                      <td className="px-6 py-4"><StatusBadge status={r.moderation_status} /></td>
+                      <td className="px-6 py-4 text-slate-300">{r.job_title || 'N/A'}</td>
+                      <td className="px-6 py-4"><StatusBadge status={r.moderation_status || 'pending'} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
@@ -536,13 +536,6 @@ export default function AdminDashboard() {
                               <Eye className="w-4 h-4 text-white" />
                             </button>
                           )}
-                          <button
-                            onClick={() => handleReviewFlag(r.id, r.flagged)}
-                            className={`p-1.5 rounded transition-colors ${r.flagged ? 'bg-orange-700' : 'bg-slate-600'}`}
-                            title={r.flagged ? 'Flagged' : 'Flag Review'}
-                          >
-                            <Flag className="w-4 h-4 text-white" />
-                          </button>
                         </div>
                       </td>
                     </tr>
