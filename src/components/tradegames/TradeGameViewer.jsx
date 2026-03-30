@@ -107,10 +107,10 @@ function buildBathroomScene(scene) {
   pTrapVertical.userData.isEnvironment = true;
   scene.add(pTrapVertical);
 
-  // P-trap bend (elbow)
+  // P-trap bend (elbow) - curves from vertical to horizontal
   const pTrapBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.03, 16, 32, Math.PI), pipeMat);
-  pTrapBend.rotation.x = Math.PI / 2;
-  pTrapBend.position.set(-1.5, 0.35, -3.5);
+  pTrapBend.rotation.z = Math.PI / 2;
+  pTrapBend.position.set(-1.56, 0.35, -3.5);
   pTrapBend.userData.isEnvironment = true;
   scene.add(pTrapBend);
 
