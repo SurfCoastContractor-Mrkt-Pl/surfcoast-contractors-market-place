@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight, Pencil } from 'lucide-react';
 import { format } from 'date-fns';
 import PortfolioManager from './PortfolioManager';
 
 export default function PortfolioDisplay({ contractorId, isOwnProfile = false }) {
   const [managerOpen, setManagerOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -17,6 +18,10 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
     enabled: !!contractorId
   });
 
+  const openAdd = () => { setEditingProject(null); setManagerOpen(true); };
+  const openEdit = (e, project) => { e.stopPropagation(); setEditingProject(project); setManagerOpen(true); };
+  const closeManager = () => { setManagerOpen(false); setEditingProject(null); };
+
   if (!portfolio || portfolio.length === 0) {
     return (
       <div className="text-center py-8 bg-slate-50 rounded-lg border border-slate-200">
@@ -24,12 +29,12 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
           {isOwnProfile ? 'No portfolio projects yet. Showcase your best work!' : 'No portfolio items available.'}
         </p>
         {isOwnProfile && (
-          <Button onClick={() => setManagerOpen(true)} className="bg-amber-500 hover:bg-amber-600">
+          <Button onClick={openAdd} className="bg-amber-500 hover:bg-amber-600">
             <Plus className="w-4 h-4 mr-2" />
             Add Portfolio Project
           </Button>
         )}
-        <PortfolioManager contractorId={contractorId} open={managerOpen} onClose={() => setManagerOpen(false)} />
+        <PortfolioManager contractorId={contractorId} open={managerOpen} onClose={closeManager} project={editingProject} />
       </div>
     );
   }
@@ -38,39 +43,36 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
     const images = selectedProject.images || [];
     const currentImage = images[currentImageIndex];
 
-    if (!currentImage && images.length === 0) {
-      return (
-        <div className="space-y-4">
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
           <button
-            onClick={() => setSelectedProject(null)}
+            onClick={() => { setSelectedProject(null); setCurrentImageIndex(0); }}
             className="text-amber-600 hover:text-amber-700 font-semibold text-sm"
           >
             ← Back to Portfolio
           </button>
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-2xl font-bold mb-2">{selectedProject.project_title}</h2>
-            <p className="text-slate-700 whitespace-pre-wrap">{selectedProject.description}</p>
-          </div>
+          {isOwnProfile && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) => { setSelectedProject(null); openEdit(e, selectedProject); }}
+            >
+              <Pencil className="w-3 h-3 mr-1" />
+              Edit Project
+            </Button>
+          )}
         </div>
-      );
-    }
-
-    return (
-      <div className="space-y-4">
-        <button
-          onClick={() => setSelectedProject(null)}
-          className="text-amber-600 hover:text-amber-700 font-semibold text-sm"
-        >
-          ← Back to Portfolio
-        </button>
 
         <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <h2 className="text-2xl font-bold mb-2">{selectedProject.project_title}</h2>
-          <p className="text-sm text-slate-600 mb-4">
-            Completed {format(new Date(selectedProject.completion_date), 'MMMM d, yyyy')}
-          </p>
+          <h2 className="text-2xl font-bold mb-1">{selectedProject.project_title}</h2>
+          {selectedProject.completion_date && (
+            <p className="text-sm text-slate-600 mb-4">
+              Completed {format(new Date(selectedProject.completion_date), 'MMMM d, yyyy')}
+            </p>
+          )}
 
-          {images.length > 0 && (
+          {images.length > 0 && currentImage && (
             <div className="mb-6">
               <div className="relative bg-slate-100 rounded-lg overflow-hidden aspect-video flex items-center justify-center mb-4">
                 <img
@@ -91,9 +93,7 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
-                  <span className="text-sm text-slate-600">
-                    {currentImageIndex + 1} of {images.length}
-                  </span>
+                  <span className="text-sm text-slate-600">{currentImageIndex + 1} of {images.length}</span>
                   <button
                     onClick={() => setCurrentImageIndex(Math.min(images.length - 1, currentImageIndex + 1))}
                     disabled={currentImageIndex === images.length - 1}
@@ -120,7 +120,7 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Portfolio</h2>
         {isOwnProfile && (
-          <Button onClick={() => setManagerOpen(true)} className="bg-amber-500 hover:bg-amber-600">
+          <Button onClick={openAdd} className="bg-amber-500 hover:bg-amber-600">
             <Plus className="w-4 h-4 mr-2" />
             Add Project
           </Button>
@@ -131,8 +131,8 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
         {portfolio.map(project => (
           <div
             key={project.id}
-            onClick={() => setSelectedProject(project)}
-            className="cursor-pointer bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow"
+            onClick={() => { setSelectedProject(project); setCurrentImageIndex(0); }}
+            className="cursor-pointer bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow relative group"
           >
             {project.images && project.images.length > 0 && (
               <div className="relative bg-slate-100 aspect-square overflow-hidden">
@@ -153,14 +153,26 @@ export default function PortfolioDisplay({ contractorId, isOwnProfile = false })
               <p className="text-xs text-slate-600 mb-2 line-clamp-2">{project.description}</p>
               <div className="flex items-center justify-between text-xs text-slate-500">
                 <span className="capitalize">{project.trade_category}</span>
-                <span>{format(new Date(project.completion_date), 'MMM yyyy')}</span>
+                {project.completion_date && (
+                  <span>{format(new Date(project.completion_date), 'MMM yyyy')}</span>
+                )}
               </div>
             </div>
+
+            {isOwnProfile && (
+              <button
+                onClick={(e) => openEdit(e, project)}
+                className="absolute top-2 left-2 p-1.5 bg-white/90 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                title="Edit project"
+              >
+                <Pencil className="w-3 h-3 text-slate-700" />
+              </button>
+            )}
           </div>
         ))}
       </div>
 
-      <PortfolioManager contractorId={contractorId} open={managerOpen} onClose={() => setManagerOpen(false)} />
+      <PortfolioManager contractorId={contractorId} open={managerOpen} onClose={closeManager} project={editingProject} />
     </div>
   );
 }
