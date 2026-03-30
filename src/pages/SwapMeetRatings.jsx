@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Star, Loader2, MapPin, BarChart3 } from 'lucide-react';
+import LocationSelector from '@/components/locations/LocationSelector';
+import LocationRatingForm from '@/components/locations/LocationRatingForm';
 
 export default function SwapMeetRatings() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showSelector, setShowSelector] = useState(false);
 
   useEffect(() => {
     const fetchRatings = async () => {
@@ -99,15 +103,23 @@ export default function SwapMeetRatings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <BarChart3 className="w-8 h-8 text-orange-500" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Swap Meet Ratings</h1>
+        {/* Header with Rate Button */}
+        <div className="mb-8 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <BarChart3 className="w-8 h-8 text-orange-500" />
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Swap Meet Ratings</h1>
+            </div>
+            <p className="text-slate-600 max-w-2xl">
+              Real ratings from vendors like you. Find the best swap meets based on cleanliness, customer traffic, and overall experience.
+            </p>
           </div>
-          <p className="text-slate-600 max-w-2xl">
-            Real ratings from vendors like you. Find the best swap meets based on cleanliness, customer traffic, and overall experience.
-          </p>
+          <button
+            onClick={() => setShowSelector(true)}
+            className="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors whitespace-nowrap"
+          >
+            Rate a Location
+          </button>
         </div>
 
 
@@ -166,6 +178,34 @@ export default function SwapMeetRatings() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Location Selector Modal */}
+        {showSelector && (
+          <LocationSelector
+            locationType="swap_meet"
+            onLocationSelect={(location) => {
+              setSelectedLocation(location);
+              setShowSelector(false);
+            }}
+            onClose={() => setShowSelector(false)}
+          />
+        )}
+
+        {/* Rating Form Modal */}
+        {selectedLocation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+              <LocationRatingForm
+                location={selectedLocation}
+                onClose={() => setSelectedLocation(null)}
+                onSave={() => {
+                  setSelectedLocation(null);
+                  window.location.reload();
+                }}
+              />
+            </div>
           </div>
         )}
       </div>

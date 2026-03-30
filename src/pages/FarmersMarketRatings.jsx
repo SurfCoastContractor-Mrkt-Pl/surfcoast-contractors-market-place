@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Star, Loader2, MapPin, BarChart3, Leaf } from 'lucide-react';
+import LocationSelector from '@/components/locations/LocationSelector';
+import LocationRatingForm from '@/components/locations/LocationRatingForm';
 
 export default function FarmersMarketRatings() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showSelector, setShowSelector] = useState(false);
 
   useEffect(() => {
     const fetchRatings = async () => {
@@ -94,15 +98,23 @@ export default function FarmersMarketRatings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-slate-100 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Leaf className="w-8 h-8 text-green-600" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Farmers Market Ratings</h1>
+        {/* Header with Rate Button */}
+        <div className="mb-8 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <Leaf className="w-8 h-8 text-green-600" />
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Farmers Market Ratings</h1>
+            </div>
+            <p className="text-slate-600 max-w-2xl">
+              Real ratings from vendors. Discover the best farmers markets based on cleanliness, customer traffic, and overall experience.
+            </p>
           </div>
-          <p className="text-slate-600 max-w-2xl">
-            Real ratings from vendors. Discover the best farmers markets based on cleanliness, customer traffic, and overall experience.
-          </p>
+          <button
+            onClick={() => setShowSelector(true)}
+            className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+          >
+            Rate a Location
+          </button>
         </div>
 
         {/* Loading State */}
@@ -159,6 +171,34 @@ export default function FarmersMarketRatings() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Location Selector Modal */}
+        {showSelector && (
+          <LocationSelector
+            locationType="farmers_market"
+            onLocationSelect={(location) => {
+              setSelectedLocation(location);
+              setShowSelector(false);
+            }}
+            onClose={() => setShowSelector(false)}
+          />
+        )}
+
+        {/* Rating Form Modal */}
+        {selectedLocation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+              <LocationRatingForm
+                location={selectedLocation}
+                onClose={() => setSelectedLocation(null)}
+                onSave={() => {
+                  setSelectedLocation(null);
+                  window.location.reload();
+                }}
+              />
+            </div>
           </div>
         )}
       </div>
