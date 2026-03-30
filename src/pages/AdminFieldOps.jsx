@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Shield, Search, ChevronRight, Briefcase, Calendar, DollarSign, User } from 'lucide-react';
+import { Shield, Search, ChevronRight, Briefcase, Calendar, DollarSign, User, Users } from 'lucide-react';
 import FieldJobsList from '@/components/fieldops/FieldJobsList';
 import FieldSchedule from '@/components/fieldops/FieldSchedule';
 import FieldInvoices from '@/components/fieldops/FieldInvoices';
 import FieldProfile from '@/components/fieldops/FieldProfile';
+import ClientDatabasePanel from '@/components/admin/ClientDatabasePanel';
 
 const NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
   { id: 'schedule', label: 'Schedule', icon: Calendar },
   { id: 'invoices', label: 'Invoices', icon: DollarSign },
   { id: 'profile', label: 'Profile', icon: User },
+  { id: 'clients', label: 'Clients', icon: Users },
 ];
 
 export default function AdminFieldOps() {
@@ -169,6 +171,7 @@ export default function AdminFieldOps() {
         {activeTab === 'schedule' && <FieldSchedule contractor={selectedContractor} user={user} />}
         {activeTab === 'invoices' && <FieldInvoices contractor={selectedContractor} user={user} />}
         {activeTab === 'profile' && <FieldProfile contractor={selectedContractor} user={user} onUpdate={() => {}} />}
+        {activeTab === 'clients' && <div className="p-6"><ClientDatabasePanel /></div>}
       </div>
 
         {/* Bottom Navigation */}
