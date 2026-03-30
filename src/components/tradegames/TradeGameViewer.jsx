@@ -102,30 +102,37 @@ function buildBathroomScene(scene) {
   drainPipe.userData.isConnectionPoint = true;
   scene.add(drainPipe);
 
-  // P-trap vertical section (connecting down)
+  // P-trap: First downward bend (vertical to horizontal)
+  const pTrapDownBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.03, 16, 32, Math.PI / 2), pipeMat);
+  pTrapDownBend.rotation.z = Math.PI / 2;
+  pTrapDownBend.position.set(-1.5, 0.36, -3.5);
+  pTrapDownBend.userData.isEnvironment = true;
+  scene.add(pTrapDownBend);
+
+  // P-trap: Horizontal bottom section (forms water trap)
+  const pTrapBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.18, 16), pipeMat);
+  pTrapBottom.rotation.z = Math.PI / 2;
+  pTrapBottom.position.set(-1.59, 0.3, -3.5);
+  pTrapBottom.userData.isEnvironment = true;
+  scene.add(pTrapBottom);
+
+  // P-trap: Upward bend (horizontal to vertical)
+  const pTrapUpBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.03, 16, 32, Math.PI / 2), pipeMat);
+  pTrapUpBend.rotation.x = Math.PI / 2;
+  pTrapUpBend.position.set(-1.68, 0.36, -3.5);
+  pTrapUpBend.userData.isEnvironment = true;
+  scene.add(pTrapUpBend);
+
+  // P-trap: Vertical section (connection to wall)
   const pTrapVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.15, 16), pipeMat);
-  pTrapVertical.position.set(-1.5, 0.425, -3.5);
+  pTrapVertical.position.set(-1.68, 0.465, -3.5);
   pTrapVertical.userData.isEnvironment = true;
   scene.add(pTrapVertical);
-
-  // P-trap bend (elbow) - curves from vertical to horizontal
-  const pTrapBend = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.03, 16, 32, Math.PI), pipeMat);
-  pTrapBend.rotation.z = Math.PI / 2;
-  pTrapBend.position.set(-1.56, 0.35, -3.5);
-  pTrapBend.userData.isEnvironment = true;
-  scene.add(pTrapBend);
-
-  // P-trap horizontal section (going to wall)
-  const pTrapHorizontal = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.25, 16), pipeMat);
-  pTrapHorizontal.rotation.z = Math.PI / 2;
-  pTrapHorizontal.position.set(-1.625, 0.35, -3.5);
-  pTrapHorizontal.userData.isEnvironment = true;
-  scene.add(pTrapHorizontal);
 
   // Wall drain stub (connection point)
   const wallDrainStub = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.1, 16), pipeMat);
   wallDrainStub.rotation.z = Math.PI / 2;
-  wallDrainStub.position.set(-1.75, 0.35, -3.5);
+  wallDrainStub.position.set(-1.75, 0.465, -3.5);
   wallDrainStub.userData.isEnvironment = true;
   wallDrainStub.userData.isConnectionPoint = true;
   scene.add(wallDrainStub);
