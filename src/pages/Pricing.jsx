@@ -532,8 +532,10 @@ export default function Pricing() {
             </div>
             <div style={{ background: "rgba(34,197,94,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Messaging & Quotes</p>
-              <p style={{ fontSize: "24px", fontWeight: "900", color: "#4ade80", margin: 0 }}>$1.50</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Per session / quote</p>
+              <p style={{ fontSize: "16px", fontWeight: "900", color: "#4ade80", margin: "0 0 4px" }}>$1.50</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "0 0 8px" }}>per 10-minute messaging session</p>
+              <p style={{ fontSize: "16px", fontWeight: "900", color: "#4ade80", margin: "0 0 4px" }}>$1.75</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: 0 }}>per proposal request</p>
             </div>
             <div style={{ background: "rgba(34,197,94,0.1)", borderRadius: "8px", padding: "12px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Profile</p>
