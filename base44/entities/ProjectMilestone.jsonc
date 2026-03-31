@@ -57,6 +57,9 @@
           "data.contractor_email": "{{user.email}}"
         },
         {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
           "user_condition": {
             "role": "admin"
           }
