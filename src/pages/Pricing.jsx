@@ -116,7 +116,7 @@ const WAVE_TIERS = [
   },
 ];
 
-const WAVESHOP_FO_FEATURES = [
+const MARKET_BOOTHS_AND_SPACES_FEATURES = [
   "Public booth/shop profile page",
   "Product listings with photos & prices",
   "Inventory tracking",
@@ -125,11 +125,21 @@ const WAVESHOP_FO_FEATURES = [
   "Booth schedule management",
   "Analytics dashboard",
   "Inquiry inbox",
-  "Marketing toolkit",
-  "Social media link integration",
-  "Photo gallery (up to 20 images)",
-  "5% facilitation fee on sales (waived with subscription)",
   "Mobile-optimized dashboard",
+  "Dashboard/profile settings for booth or space",
+];
+
+const WAVESHOP_FO_FEATURES = [
+  "Everything in Market Booths & Spaces",
+  "Advanced product management tools",
+  "Enhanced analytics & reporting",
+  "Priority support",
+  "Specialized marketing toolkit",
+  "Social media integration suite",
+  "Custom booth branding options",
+  "Streamlined, user-friendly dashboard",
+  "Advanced inventory tracking",
+  "Photo gallery (up to 50 images)",
   "Early adopter pricing locked in",
 ];
 
@@ -304,32 +314,99 @@ export default function Pricing() {
         </p>
       </section>
 
-      {/* WAVESHOP FO */}
+      {/* MARKET BOOTHS & SPACES */}
       <section style={{ maxWidth: "900px", margin: "0 auto 80px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#c084fc", marginBottom: "10px" }}>Market Booth Operator Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO</h2>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "520px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Flat rate, zero commissions, no listing fees.</p>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#ec4899", marginBottom: "10px" }}>Booth & Space Operator Track</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Market Booths & Spaces</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Choose your payment model.</p>
         </div>
-        <div style={{ background: "rgba(192,132,252,0.06)", border: "1px solid rgba(192,132,252,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "48px", alignItems: "start" }}>
-          <div style={{ minWidth: "220px" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "16px" }}>
-              <span style={{ fontSize: "56px", fontWeight: "900", color: "#c084fc" }}>$20</span>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+          {/* 5% Facilitation Fee Option */}
+          <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.35)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 4px", color: "#ec4899" }}>Pay Per Sale</h3>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 8px", lineHeight: 1.4 }}>Perfect for casual sellers</p>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                <span style={{ fontSize: "36px", fontWeight: "900", color: "#f1f5f9" }}>5%</span>
+                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)" }}>facilitation fee</span>
+              </div>
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
+              {MARKET_BOOTHS_AND_SPACES_FEATURES.map((f, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "12px", color: "rgba(255,255,255,0.65)" }}>
+                  <CheckCircle size={12} style={{ color: "#ec4899", marginTop: "2px", flexShrink: 0 }} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "rgba(236,72,153,0.12)", color: "#ec4899", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(236,72,153,0.3)" }}>
+              Get Started with 5%
+            </a>
+          </div>
+
+          {/* $20/month Subscription Option */}
+          <div style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.35)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}>
+            <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "#ec4899", color: "#0f172a", fontSize: "10px", fontWeight: "800", padding: "3px 12px", borderRadius: "20px", letterSpacing: "1px", whiteSpace: "nowrap" }}>
+              SAVE WITH SUBSCRIPTION
+            </div>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 4px", color: "#ec4899" }}>Flat Monthly Fee</h3>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 8px", lineHeight: 1.4 }}>Keep 100% of sales</p>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                <span style={{ fontSize: "36px", fontWeight: "900", color: "#f1f5f9" }}>$20</span>
+                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)" }}>/month</span>
+              </div>
+            </div>
+            <div style={{ background: "rgba(236,72,153,0.15)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: "10px", padding: "12px 14px" }}>
+              <p style={{ fontSize: "12px", fontWeight: "700", color: "#ec4899", margin: "0 0 2px" }}>No Facilitation Fee</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.5 }}>5% fee is completely waived when you subscribe</p>
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
+              {MARKET_BOOTHS_AND_SPACES_FEATURES.map((f, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "12px", color: "rgba(255,255,255,0.65)" }}>
+                  <CheckCircle size={12} style={{ color: "#ec4899", marginTop: "2px", flexShrink: 0 }} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#ec4899", color: "#0f172a", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none" }}>
+              Get Started for $20/month
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* WAVESHOP FO - WAVE FO TIER */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>Contractor Track — Advanced Program</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Advanced market booth management system with enhanced tools, streamlined workflows, and premium user experience.</p>
+        </div>
+
+        <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "48px", alignItems: "start" }}>
+          <div style={{ minWidth: "240px" }}>
+            <div style={{ display: "inline-block", background: "#a855f7", color: "#0f172a", fontSize: "10px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", letterSpacing: "1px", marginBottom: "16px", textTransform: "uppercase" }}>
+              Premium Program
+            </div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "20px" }}>
+              <span style={{ fontSize: "56px", fontWeight: "900", color: "#a855f7" }}>$35</span>
               <span style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)" }}>/month</span>
             </div>
-            <div style={{ background: "rgba(192,132,252,0.12)", border: "1px solid rgba(192,132,252,0.3)", borderRadius: "10px", padding: "14px 16px", marginBottom: "24px" }}>
-              <p style={{ fontSize: "13px", fontWeight: "800", color: "#c084fc", margin: "0 0 4px" }}>5% Facilitation Fee</p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Normally 5% on sales. Subscribe to WAVEShop ($20/mo) and the fee is waived — keep 100% of every sale.</p>
+            <div style={{ background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "10px", padding: "14px 16px", marginBottom: "24px" }}>
+              <p style={{ fontSize: "13px", fontWeight: "800", color: "#a855f7", margin: "0 0 4px" }}>Premium Experience</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Advanced tools, superior efficiency, and enhanced user-friendly interface for serious booth operators.</p>
             </div>
-            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#c084fc", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none" }}>
-              Set Up Your Booth →
+            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#a855f7", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none", marginBottom: "12px" }}>
+              Upgrade to WAVEShop FO →
             </a>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", marginTop: "12px", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
           </div>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 20px" }}>
             {WAVESHOP_FO_FEATURES.map((f, i) => (
               <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
-                <CheckCircle size={13} style={{ color: "#c084fc", marginTop: "2px", flexShrink: 0 }} />
+                <CheckCircle size={13} style={{ color: "#a855f7", marginTop: "2px", flexShrink: 0 }} />
                 {f}
               </li>
             ))}
@@ -344,6 +421,88 @@ export default function Pricing() {
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)" }}>Straight answers, no runaround.</p>
         </div>
         {FAQ_ITEMS.map((item, i) => <FAQItem key={i} item={item} />)}
+      </section>
+
+      {/* FEE & SUBSCRIPTION OVERVIEW */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Facilitation Fees & Subscriptions</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>A transparent breakdown of how different users interact with our platform payment models.</p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "24px" }}>
+          {/* Contractors */}
+          <div style={{ background: "rgba(30,90,150,0.06)", border: "1px solid rgba(30,90,150,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#38bdf8" }}>Contractors</h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Service providers & field professionals</p>
+            </div>
+            <div style={{ background: "rgba(30,90,150,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Facilitation Fee</p>
+              <p style={{ fontSize: "24px", fontWeight: "900", color: "#38bdf8", margin: 0 }}>18%</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>On job payments</p>
+            </div>
+            <div style={{ background: "rgba(30,90,150,0.1)", borderRadius: "8px", padding: "12px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Monthly Plans</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>$19 – $125/mo</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Subscription-based tiers</p>
+            </div>
+          </div>
+
+          {/* Clients/Consumers */}
+          <div style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#4ade80" }}>Clients & Consumers</h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Job posters & service buyers</p>
+            </div>
+            <div style={{ background: "rgba(34,197,94,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Messaging & Quotes</p>
+              <p style={{ fontSize: "24px", fontWeight: "900", color: "#4ade80", margin: 0 }}>$1.50</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Per session / quote</p>
+            </div>
+            <div style={{ background: "rgba(34,197,94,0.1)", borderRadius: "8px", padding: "12px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Profile</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>Free</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>No cost to post jobs</p>
+            </div>
+          </div>
+
+          {/* Market Booth Operators */}
+          <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#ec4899" }}>Market Booth Operators</h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Booth & space holders</p>
+            </div>
+            <div style={{ background: "rgba(236,72,153,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Facilitation Fee</p>
+              <p style={{ fontSize: "24px", fontWeight: "900", color: "#ec4899", margin: 0 }}>5%</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>OR subscribe to waive</p>
+            </div>
+            <div style={{ background: "rgba(236,72,153,0.1)", borderRadius: "8px", padding: "12px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Subscription</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>$20 – $35/mo</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Waives facilitation fee</p>
+            </div>
+          </div>
+
+          {/* Vendors (WAVEShop) */}
+          <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#a855f7" }}>WAVEShop Vendors</h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Premium booth management</p>
+            </div>
+            <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Monthly Fee</p>
+              <p style={{ fontSize: "24px", fontWeight: "900", color: "#a855f7", margin: 0 }}>$35</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Advanced features</p>
+            </div>
+            <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "8px", padding: "12px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Facilitation</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>None</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Keep 100% of sales</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* BOTTOM CTA */}
