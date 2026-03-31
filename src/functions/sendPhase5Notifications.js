@@ -9,19 +9,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized - authentication required' }, { status: 401 });
     }
 
+    if (user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const body = await req.json();
     const { recipientEmail, notificationType, projectId, message, metadata } = body;
 
     if (!recipientEmail || !notificationType || !projectId) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    // Verify sender has authority to send notifications for this project
-    // Only allow if user is admin or is the creator of the project
-    if (user.role !== 'admin') {
-      // Non-admin users can only send notifications for their own projects
-      // This would need to be verified against the actual project ownership
-      return Response.json({ error: 'Unauthorized - cannot send notifications for this project' }, { status: 403 });
     }
 
     // Validate notification type
