@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Loader2, HardHat } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import EarlyAdopterBanner from '@/components/signup/EarlyAdopterBanner';
 
 const trades = [
   'electrician', 'plumber', 'carpenter', 'hvac', 'mason', 'roofer', 'painter', 'welder', 'tiler', 'landscaper', 'other'

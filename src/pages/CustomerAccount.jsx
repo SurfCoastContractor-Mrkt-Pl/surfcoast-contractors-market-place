@@ -94,7 +94,7 @@ export default function CustomerAccount() {
 
   const { data: scopes, isLoading: loadingScopes } = useQuery({
     queryKey: ['customer-scopes', userEmail],
-    queryFn: () => base44.entities.ScopeOfWork.filter({ customer_email: userEmail }),
+    queryFn: () => base44.entities.ScopeOfWork.filter({ client_email: userEmail }),
     enabled: !!userEmail,
   });
 
@@ -510,7 +510,7 @@ export default function CustomerAccount() {
                                     await base44.integrations.Core.SendEmail({
                                       to: s.contractor_email,
                                       subject: `✅ Scope Approved: "${s.job_title}"`,
-                                      body: `Dear ${s.contractor_name},\n\nThe client ${s.customer_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
+                                      body: `Dear ${s.contractor_name},\n\nThe client ${s.client_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
                                     });
                                     queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] });
                                   }}

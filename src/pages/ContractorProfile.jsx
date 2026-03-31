@@ -123,14 +123,14 @@ export default function ContractorProfile() {
   });
 
   const { data: completedJobs } = useQuery({
-    queryKey: ['contractor-jobs', contractorId],
+    queryKey: ['contractor-jobs', contractor?.email],
     queryFn: () =>
       base44.entities.ScopeOfWork.filter(
-        { contractor_id: contractorId, status: 'closed' },
+        { contractor_email: contractor?.email, status: 'closed' },
         '-closed_date',
         6
       ),
-    enabled: !!contractorId,
+    enabled: !!contractor?.email,
   });
 
   if (loading) {

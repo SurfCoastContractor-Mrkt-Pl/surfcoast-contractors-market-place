@@ -61,7 +61,7 @@ export default function Jobs() {
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs'],
-    queryFn: () => base44.entities.Job.filter({ $or: [{ status: 'open' }, { status: 'active' }] }, '-created_date'),
+    queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date'),
   });
 
   // Fetch all work_scheduled payments to know which job IDs are closed

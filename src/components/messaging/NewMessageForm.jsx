@@ -24,8 +24,8 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
         
         // Search market shops/vendors
         const marketShops = await base44.entities.MarketShop.filter(
-          { business_name: { $regex: searchTerm, $options: 'i' } },
-          'business_name',
+          { shop_name: { $regex: searchTerm, $options: 'i' } },
+          'shop_name',
           10
         );
 
@@ -37,7 +37,7 @@ export default function NewMessageForm({ user, onMessageSent, onCancel }) {
               .filter(shop => shop.email !== user.email)
               .map(shop => ({
                 id: shop.id,
-                name: shop.business_name,
+                name: shop.shop_name,
                 email: shop.email,
                 type: 'vendor',
               }))
