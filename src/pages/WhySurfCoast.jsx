@@ -47,7 +47,7 @@ const STAND_APART = [
   },
   {
     title: "Pricing built for solo operators",
-    body: "No enterprise minimums, no per-seat fees. Starting at $19/month, every tier is priced for the independent worker — not a 10-person office."
+    body: "No enterprise minimums, no per-seat fees. WAVE FO Starter is just $19/month — every tier is priced for the independent worker, not a 10-person office."
   },
   {
     title: "Works for every worker type",
