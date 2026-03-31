@@ -308,7 +308,7 @@ export default function Home() {
       </main>
 
       <section style={{ position:"relative", zIndex:2, width:"100%", padding:"6px 16px", background:"rgba(10,22,40,0.5)", flexShrink:0 }} aria-label="Trust and security features">
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:"16px", justifyContent:"center", alignItems:"center", maxWidth:"900px", margin:"0 auto", px:"16px" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:"16px", justifyContent:"center", alignItems:"center", maxWidth:"900px", margin:"0 auto", padding:"0 16px" }}>
           {[
             { icon: Shield, label: "Secure payments" },
             { icon: CheckCircle, label: "Identity verified pros" },
