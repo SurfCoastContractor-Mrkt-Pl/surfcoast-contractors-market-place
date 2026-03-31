@@ -8,7 +8,6 @@ import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
 import FeaturedVendors from "@/components/home/FeaturedVendors";
 import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
 import MissionStatement from "@/components/home/MissionStatement";
-import WhySurfCoastSection from "@/components/home/WhySurfCoastSection";
 import { base44 } from "@/api/base44Client";
 // QRCode imports temporarily disabled due to package resolution issue
 // import InstagramQRCode from "@/components/social/InstagramQRCode";
@@ -169,57 +168,6 @@ export default function Home() {
         <MissionStatement />
 
 
-
-        {/* Why SurfCoast - Benefits */}
-        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
-          {[
-            {
-              title: 'For Contractors of all kinds',
-              points: [
-                'WAVE Starter at $19/month',
-                'Job scheduling & invoicing',
-                'Client portal',
-                'Mobile app with full features',
-                'Freelancers, creatives, services',
-                'Flexible month-to-month plans',
-                'No contracts or setup fees',
-                'Cancel anytime, no penalties'
-              ]
-            },
-            {
-              title: 'For MarketShop Vendors',
-              points: [
-                'Market booth management',
-                'Inventory tracking & payments',
-                'Client reviews & ratings',
-                'Marketing tools at $35/month'
-              ]
-            },
-            {
-              title: 'For Consumers',
-              points: [
-                'Shop local farmers markets & swap meets',
-                'Browse vendor booths near you',
-                'Save your favorite vendors',
-                'Free to join, no subscription needed'
-              ]
-            }
-          ].map((section, idx) => (
-            <article key={idx} style={{ display: 'flex', flexDirection: 'column', borderRadius: '14px', padding: isMobile ? '20px 16px' : '24px 20px', backdropFilter: 'blur(18px)', background: 'rgba(10,22,40,0.5)', border: '1px solid rgba(255,255,255,0.08)', textAlign: 'left' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '700', margin: '0 0 14px', color: '#d97706' }}>
-                {section.title}
-              </h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {section.points.map((point, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>
-                    <span style={{ color: '#d97706', marginTop: '2px' }}>✓</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </section>
 
 
 
