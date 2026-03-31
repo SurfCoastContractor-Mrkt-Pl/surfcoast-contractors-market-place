@@ -9,7 +9,6 @@ import FeaturedVendors from "@/components/home/FeaturedVendors";
 import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
 import MissionStatement from "@/components/home/MissionStatement";
 import WhySurfCoastSection from "@/components/home/WhySurfCoastSection";
-import { getAppBaseUrl } from "@/lib/env";
 import { base44 } from "@/api/base44Client";
 // QRCode imports temporarily disabled due to package resolution issue
 // import InstagramQRCode from "@/components/social/InstagramQRCode";
@@ -459,11 +458,11 @@ export default function Home() {
         <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.5)" }}>
           <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
           <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href={`${getAppBaseUrl()}/Terms`} style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Terms</a>
+          <a href="/Terms" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Terms</a>
           <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href={`${getAppBaseUrl()}/PrivacyPolicy`} style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Privacy</a>
+          <a href="/PrivacyPolicy" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Privacy</a>
           <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href={`${getAppBaseUrl()}/MarketDirectory`} style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Markets</a>
+          <a href="/MarketDirectory" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Markets</a>
         </div>
       </footer>
 

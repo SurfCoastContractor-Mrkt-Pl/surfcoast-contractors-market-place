@@ -7,6 +7,7 @@ export default function LayoutMobileMenu({
   setMobileMenuOpen,
   isLoggedIn,
   isContractor,
+  currentPageName,
   getNavLinks,
   createPageUrl,
 }) {
@@ -40,7 +41,7 @@ export default function LayoutMobileMenu({
                 to={link.page === '/' ? '/' : createPageUrl(link.page)}
                 onClick={handleNavClick}
               >
-                <div className={`flex items-center gap-3 p-3 rounded-lg relative ${isContractor === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
+                <div className={`flex items-center gap-3 p-3 rounded-lg relative ${currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
                   <Icon className="w-5 h-5" />
                   {link.name}
                   {link.badge && (
@@ -59,7 +60,7 @@ export default function LayoutMobileMenu({
                   Pricing
                 </div>
               </Link>
-              <Link to="/WhySurfCoast" onClick={handleNavClick}>
+              <Link to="/why-surfcoast" onClick={handleNavClick}>
                 <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
                   Why SurfCoast
                 </div>

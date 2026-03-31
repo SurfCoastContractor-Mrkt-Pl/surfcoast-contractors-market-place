@@ -116,6 +116,7 @@ export default function Layout({ children, currentPageName }) {
         setMobileMenuOpen={setMobileMenuOpen}
         isLoggedIn={isLoggedIn}
         isContractor={isContractor}
+        currentPageName={currentPageName}
         getNavLinks={getNavLinks}
         contractorLinks={contractorLinks}
         customerLinks={customerLinks}
