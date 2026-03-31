@@ -128,7 +128,7 @@ const WAVESHOP_FO_FEATURES = [
   "Marketing toolkit",
   "Social media link integration",
   "Photo gallery (up to 20 images)",
-  "Zero commission on all sales",
+  "5% facilitation fee on sales (waived with subscription)",
   "Mobile-optimized dashboard",
   "Early adopter pricing locked in",
 ];
@@ -151,8 +151,8 @@ const FAQ_ITEMS = [
     a: "WAVE FO is the field operations program for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools. WAVEShop FO is the same field operations ecosystem adapted for market booth operators — farmers market sellers, flea market vendors, and swap meet space holders. They are separate tracks of the same platform."
   },
   {
-    q: "Does SurfCoast take a commission on booth sales?",
-    a: "No. WAVEShop FO booth operators keep 100% of what they sell. The $20/mo subscription is the only cost."
+    q: "What's the facilitation fee structure for WAVEShop FO?",
+    a: "SurfCoast charges a 5% facilitation fee on all sales. However, if you subscribe to the $20/month WAVEShop plan, the facilitation fee is waived entirely — you keep 100% of your sales."
   },
   {
     q: "Do I need a license to join?",
@@ -318,8 +318,8 @@ export default function Pricing() {
               <span style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)" }}>/month</span>
             </div>
             <div style={{ background: "rgba(192,132,252,0.12)", border: "1px solid rgba(192,132,252,0.3)", borderRadius: "10px", padding: "14px 16px", marginBottom: "24px" }}>
-              <p style={{ fontSize: "13px", fontWeight: "800", color: "#c084fc", margin: "0 0 4px" }}>Zero Commission Guarantee</p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Sell $500 or $50,000 — you keep every dollar. No hidden fees on sales, ever.</p>
+              <p style={{ fontSize: "13px", fontWeight: "800", color: "#c084fc", margin: "0 0 4px" }}>5% Facilitation Fee</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Normally 5% on sales. Subscribe to WAVEShop ($20/mo) and the fee is waived — keep 100% of every sale.</p>
             </div>
             <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#c084fc", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none" }}>
               Set Up Your Booth →
