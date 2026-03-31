@@ -41,14 +41,18 @@ const WAVE_TIERS = [
     name: "WAVE Starter",
     price: "$19",
     tag: "",
+    subtitle: "Best for new contractors getting started",
     pitch: "The perfect entry point for independent professionals just getting started. WAVE Starter gives you everything you need to build your profile, land your first clients, and start operating professionally — without the overhead of a bloated platform.",
     features: [
-      "Job scheduling (up to 5 concurrent)",
-      "Basic invoicing (up to 10/mo)",
-      "Text-only messaging",
-      "Mobile app (basic)",
-      "Availability calendar",
-      "Basic field notes & photo upload",
+      "Public contractor profile with photo & bio",
+      "Up to 5 active job postings",
+      "Basic client messaging",
+      "Quote request management",
+      "Job scheduling calendar",
+      "Mobile app access",
+      "Standard customer reviews",
+      "Email notifications",
+      "Basic analytics dashboard",
       "2-week free trial included"
     ]
   },
@@ -56,64 +60,82 @@ const WAVE_TIERS = [
     name: "WAVE Pro",
     price: "$39",
     tag: "",
+    subtitle: "Best for growing contractors ready to scale",
     pitch: "For contractors who are ready to scale. WAVE Pro unlocks CRM tools, expanded job capacity, and enhanced visibility features that help you turn one-time clients into long-term relationships.",
     features: [
       "Everything in WAVE Starter",
-      "Unlimited job scheduling & invoicing",
-      "Lead tracking & pipeline",
-      "Document storage (1GB)",
-      "File attachments in messaging",
-      "Inventory tracking (up to 50 items)",
-      "Automated email workflows",
-      "CSV export for QuickBooks/Sage"
+      "Unlimited job postings",
+      "Client Relationship Manager (CRM)",
+      "Invoice generation & PDF export",
+      "Scope of Work builder",
+      "After-photo documentation",
+      "Project milestone tracking",
+      "Priority search placement",
+      "Custom service packages",
+      "Performance analytics",
+      "Referral tracking",
+      "Team collaboration tools"
     ]
   },
   {
     name: "WAVE Max",
     price: "$59",
     tag: "Most Popular",
-    pitch: "WAVE Max is the sweet spot for serious operators. It includes every tool a professional contractor needs to run a tight, efficient business — from advanced analytics to AI-assisted scheduling.",
+    subtitle: "Best for established contractors who need everything",
+    pitch: "WAVE Max is the sweet spot for serious operators. It includes every tool a professional contractor needs to run a tight, efficient business — from document management to real-time GPS tracking and multi-device sync.",
     features: [
       "Everything in WAVE Pro",
-      "Project tracking & completion reporting",
-      "Advanced analytics dashboards",
-      "AI-assisted scheduling",
-      "Document storage (5GB + version control)",
-      "Unlimited inventory",
-      "Advanced workflow automations",
-      "One-way QuickBooks integration"
+      "GPS-based job tracking",
+      "Field operations mobile suite",
+      "Document management hub",
+      "Multi-option client proposals",
+      "Escrow payment support",
+      "Project file sharing with clients",
+      "Progress payment phases",
+      "Contractor compliance tools",
+      "Real-time availability manager",
+      "Advanced scheduling assistant",
+      "QuickBooks CSV export",
+      "Custom invoice branding"
     ]
   },
   {
     name: "WAVE FO Premium",
     price: "$100",
     tag: "",
-    pitch: "Built for licensed sole proprietors (HIS verified) who need the full compliance and integration suite — CSLB contract management, full team tools, and two-way accounting sync.",
+    subtitle: "Best for licensed sole proprietors (HIS verified)",
+    pitch: "Built for licensed professionals and growing businesses that demand the full suite. WAVE FO Premium includes everything in Max, plus AI-powered tools, advanced analytics, and integrations with external platforms like Notion and HubSpot.",
     features: [
       "Everything in WAVE Max",
-      "CSLB contract management",
-      "HIS license document management",
-      "Full team management",
-      "Priority support",
-      "White-label customer portal",
-      "Two-way QuickBooks & Sage integration",
-      "Unlimited workflow automations"
+      "AI scheduling assistant",
+      "AI bio & proposal generator",
+      "HubSpot CRM sync",
+      "Notion project page integration",
+      "Campaign management tools",
+      "Case study builder",
+      "Contractor leaderboard & trade games",
+      "Full audit trail & activity log",
+      "Advanced job pipeline views",
+      "Residential Wave invoicing suite",
+      "Priority support"
     ]
   },
   {
     name: "WAVE Residential Bundle",
     price: "$125",
-    tag: "All Included",
-    pitch: "The ultimate contractor package. Combines WAVE FO Premium with the full Residential Wave invoicing suite — everything from lead capture to scope signing to final invoice delivery, all under one subscription.",
+    tag: "All-In",
+    subtitle: "Best for licensed operators who want everything",
+    pitch: "The ultimate contractor package. WAVE Residential Bundle combines WAVE FO Premium with the full Residential Wave invoicing suite — everything from lead capture to scope signing to final invoice delivery, all under one subscription.",
     features: [
       "Everything in WAVE FO Premium",
-      "Unlimited communication across all channels",
       "Residential Wave lead management",
       "Residential Wave job tracking",
       "Residential Wave invoice management",
       "Bundle-exclusive document templates",
       "Revenue tracking & bundle reports",
-      "Early access to new features"
+      "White-label invoice option",
+      "Early access to new features",
+      "Full platform access — no add-ons needed"
     ]
   }
 ];
@@ -255,32 +277,33 @@ export default function WhySurfCoast() {
 
       {/* WAVE FO TIER CARDS */}
       <section style={{ background: "#f8f9fa", padding: "80px 24px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "12px", letterSpacing: "-1px", textAlign: "center" }}>WAVE FO Plans</h2>
           <p style={{ textAlign: "center", color: "#6b7280", fontSize: "17px", marginBottom: "48px" }}>For contractors and independent professionals. All plans include a 2-week free trial.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
             {WAVE_TIERS.map((tier, i) => (
-              <div key={i} style={{ background: "#fff", border: tier.tag === "Most Popular" ? "2px solid #d97706" : "1px solid #e5e7eb", borderRadius: "16px", padding: "32px 28px", display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}>
+              <div key={i} style={{ background: "#fff", border: tier.tag === "Most Popular" ? "2px solid #d97706" : tier.tag === "All-In" ? "2px solid #0a1628" : "1px solid #e5e7eb", borderRadius: "16px", padding: "28px 22px", display: "flex", flexDirection: "column", gap: "14px", position: "relative" }}>
                 {tier.tag && (
-                  <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: "#d97706", color: "#fff", fontSize: "11px", fontWeight: "800", padding: "4px 14px", borderRadius: "20px", letterSpacing: "1px", whiteSpace: "nowrap" }}>{tier.tag}</div>
+                  <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: tier.tag === "Most Popular" ? "#d97706" : "#0a1628", color: "#fff", fontSize: "10px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", letterSpacing: "1px", whiteSpace: "nowrap" }}>{tier.tag}</div>
                 )}
                 <div>
-                  <h3 style={{ fontSize: "18px", fontWeight: "800", margin: "0 0 4px" }}>{tier.name}</h3>
+                  <h3 style={{ fontSize: "16px", fontWeight: "800", margin: "0 0 2px" }}>{tier.name}</h3>
+                  <p style={{ fontSize: "11px", color: "#6b7280", margin: "0 0 8px", fontWeight: "500" }}>{tier.subtitle}</p>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-                    <span style={{ fontSize: "40px", fontWeight: "900", color: "#d97706" }}>{tier.price}</span>
-                    <span style={{ fontSize: "14px", color: "#6b7280" }}>/month</span>
+                    <span style={{ fontSize: "36px", fontWeight: "900", color: "#d97706" }}>{tier.price}</span>
+                    <span style={{ fontSize: "13px", color: "#6b7280" }}>/month</span>
                   </div>
                 </div>
-                <p style={{ fontSize: "14px", lineHeight: 1.7, color: "#374151", margin: 0 }}>{tier.pitch}</p>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
+                <p style={{ fontSize: "13px", lineHeight: 1.65, color: "#374151", margin: 0 }}>{tier.pitch}</p>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "7px", flex: 1 }}>
                   {tier.features.map((f, j) => (
-                    <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "#374151" }}>
-                      <CheckCircle size={14} style={{ color: "#d97706", marginTop: "2px", flexShrink: 0 }} />
+                    <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "12.5px", color: "#374151" }}>
+                      <CheckCircle size={13} style={{ color: "#d97706", marginTop: "2px", flexShrink: 0 }} />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <a href="/BecomeContractor" style={{ display: "block", textAlign: "center", background: tier.tag === "Most Popular" ? "#d97706" : "#0a1628", color: "#fff", padding: "12px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none", marginTop: "8px" }}>
+                <a href="/BecomeContractor" style={{ display: "block", textAlign: "center", background: tier.tag === "Most Popular" ? "#d97706" : tier.tag === "All-In" ? "#0a1628" : "#0a1628", color: "#fff", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", marginTop: "8px" }}>
                   Get Started
                 </a>
               </div>
