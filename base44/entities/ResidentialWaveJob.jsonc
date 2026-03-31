@@ -1,0 +1,142 @@
+{
+  "name": "ResidentialWaveJob",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor managing this job"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed job description"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Customer name"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Customer email"
+    },
+    "customer_phone": {
+      "type": "string",
+      "description": "Customer phone"
+    },
+    "service_address": {
+      "type": "string",
+      "description": "Job location address"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "in_progress",
+        "completed",
+        "cancelled"
+      ],
+      "default": "scheduled",
+      "description": "Job status"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Scheduled date for the job"
+    },
+    "scheduled_start_time": {
+      "type": "string",
+      "description": "Start time (HH:MM format)"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "description": "Estimated duration in hours"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "mason",
+        "roofer",
+        "painter",
+        "welder",
+        "tiler",
+        "landscaper",
+        "other"
+      ],
+      "description": "Type of service"
+    },
+    "quote_amount": {
+      "type": "number",
+      "description": "Quoted amount in dollars"
+    },
+    "actual_amount": {
+      "type": "number",
+      "description": "Actual charged amount"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Internal job notes"
+    },
+    "completion_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Actual completion date"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "title",
+    "customer_name",
+    "customer_email",
+    "service_address",
+    "service_type"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
