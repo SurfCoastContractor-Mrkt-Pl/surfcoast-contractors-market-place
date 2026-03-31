@@ -301,17 +301,92 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Messaging & Proposals note */}
-        <div style={{ marginTop: "28px", background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.2)", borderRadius: "12px", padding: "16px 24px", display: "flex", alignItems: "flex-start", gap: "12px" }}>
-          <Zap size={16} style={{ color: "#38bdf8", flexShrink: 0, marginTop: "2px" }} />
-          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.65 }}>
-            <strong style={{ color: "#38bdf8" }}>Client Messaging:</strong> Paid add-on. Sessions are <strong style={{ color: "#f1f5f9" }}>$1.50/session</strong> or <strong style={{ color: "#f1f5f9" }}>$50/month</strong> for unlimited. The <strong style={{ color: "#f472b6" }}>WAVE Residential Bundle</strong> includes unlimited messaging at no extra cost. <strong style={{ color: "#38bdf8" }}>Proposals:</strong> <strong style={{ color: "#f1f5f9" }}>$1.75</strong> per submission.
-          </p>
-        </div>
+
 
         <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.35)", marginTop: "20px" }}>
           All plans are month-to-month · No setup fees · No contracts · Cancel anytime
         </p>
+      </section>
+
+      {/* COMMUNICATION & PROPOSAL PRICING */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#38bdf8", marginBottom: "10px" }}>Communication & Proposals</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>How Clients & Contractors Connect</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>Clear pricing for messaging and proposal requests on the platform.</p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          {/* Client Communication Card */}
+          <div style={{ background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.35)", borderRadius: "20px", padding: "40px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div>
+              <h3 style={{ fontSize: "18px", fontWeight: "900", margin: "0 0 8px", color: "#38bdf8" }}>Client Communication & Proposals</h3>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.6 }}>For clients seeking contractor services</p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {/* Direct Messaging */}
+              <div style={{ background: "rgba(56,189,248,0.1)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(56,189,248,0.2)" }}>
+                <p style={{ fontSize: "13px", fontWeight: "800", color: "#38bdf8", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Direct Messaging</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "900", color: "#f1f5f9", margin: "0 0 4px" }}>$1.50</p>
+                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>Per 10-minute session with a contractor</p>
+                  </div>
+                  <div style={{ height: "1px", background: "rgba(56,189,248,0.2)" }}></div>
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "900", color: "#f1f5f9", margin: "0 0 4px" }}>$50<span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>/month</span></p>
+                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>Unlimited messaging with multiple contractors</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Proposal Requests */}
+              <div style={{ background: "rgba(56,189,248,0.1)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(56,189,248,0.2)" }}>
+                <p style={{ fontSize: "13px", fontWeight: "800", color: "#38bdf8", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Proposal Requests</p>
+                <div>
+                  <p style={{ fontSize: "16px", fontWeight: "900", color: "#f1f5f9", margin: "0 0 4px" }}>$1.75</p>
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>Per proposal request. Send detailed requirements to a contractor — they'll respond with a tailored proposal at no cost to you.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contractor Communication Card */}
+          <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: "20px", padding: "40px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div>
+              <h3 style={{ fontSize: "18px", fontWeight: "900", margin: "0 0 8px", color: "#a855f7" }}>Contractor Communication</h3>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.6 }}>For contractors connecting with clients</p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {/* Direct Messaging */}
+              <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(168,85,247,0.2)" }}>
+                <p style={{ fontSize: "13px", fontWeight: "800", color: "#a855f7", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Direct Messaging</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "900", color: "#f1f5f9", margin: "0 0 4px" }}>$1.50</p>
+                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>Per 10-minute session to initiate a conversation with a client</p>
+                  </div>
+                  <div style={{ height: "1px", background: "rgba(168,85,247,0.2)" }}></div>
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "900", color: "#f1f5f9", margin: "0 0 4px" }}>$50<span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>/month</span></p>
+                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>Unlimited messaging with multiple clients. Included in WAVE Residential Bundle.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Proposal Responses */}
+              <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(168,85,247,0.2)" }}>
+                <p style={{ fontSize: "13px", fontWeight: "800", color: "#a855f7", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Responding to Proposal Requests</p>
+                <div>
+                  <p style={{ fontSize: "16px", fontWeight: "900", color: "#4ade80", margin: "0 0 4px" }}>Free</p>
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: 0 }}>No charge to respond to client-initiated proposal requests. The client pays the $1.75 request fee.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* MARKET BOOTHS & SPACES */}
