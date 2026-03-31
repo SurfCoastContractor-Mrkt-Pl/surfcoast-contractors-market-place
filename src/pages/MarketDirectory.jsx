@@ -314,7 +314,7 @@ export default function MarketDirectory() {
                    <VendorCard
                      key={shop.id}
                      shop={shop}
-                     onClick={() => navigate(`/MarketShopProfile/${shop.id}`)}
+                     onClick={() => navigate(`/vendor/${shop.id}`)}
                    />
                  ))}
                </div>
