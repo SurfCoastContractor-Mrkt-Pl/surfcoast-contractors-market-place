@@ -2,9 +2,10 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase, BookOpen } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase, BookOpen, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
+import SendVendorEmailModal from '@/components/admin/SendVendorEmailModal';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function AdminDashboard() {
   const [vendors, setVendors] = useState([]);
   const [contractors, setContractors] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [emailModalVendor, setEmailModalVendor] = useState(null);
   
   // Filter states
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
@@ -111,9 +113,18 @@ export default function AdminDashboard() {
             Go Home
           </button>
         </div>
-      </div>
-    );
-  }
+
+        {/* Email Modal */}
+        {emailModalVendor && (
+          <SendVendorEmailModal
+            vendor={emailModalVendor}
+            onClose={() => setEmailModalVendor(null)}
+            onSuccess={() => setEmailModalVendor(null)}
+          />
+        )}
+        </div>
+        );
+        }
 
   // Stats calculations
   const activeVendors = vendors.filter(v => v.status === 'active').length;
@@ -342,6 +353,13 @@ export default function AdminDashboard() {
                              <Ban className="w-4 h-4 text-white" />
                            </button>
                          )}
+                         <button
+                           onClick={() => setEmailModalVendor(v)}
+                           className="p-1.5 bg-purple-700 hover:bg-purple-600 rounded transition-colors"
+                           title="Send Email"
+                         >
+                           <Mail className="w-4 h-4 text-white" />
+                         </button>
                          <a
                            href={`/shop/${v.custom_slug}`}
                            target="_blank"
