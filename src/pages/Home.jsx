@@ -93,6 +93,8 @@ export default function Home() {
           <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }} aria-label="Main navigation">
+          <a href="/pricing" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Pricing</a>
+          <a href="/why-surfcoast" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Why SurfCoast</a>
           <button 
             ref={dropdownButtonRef}
             onClick={() => setDropdownOpen(!dropdownOpen)} 
