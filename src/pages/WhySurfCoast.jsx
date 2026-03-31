@@ -249,7 +249,7 @@ export default function WhySurfCoast() {
         <div style={{ maxWidth: "960px", margin: "0 auto" }}>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "12px", letterSpacing: "-1px", textAlign: "center" }}>Who Is This For?</h2>
           <p style={{ textAlign: "center", color: "#6b7280", fontSize: "17px", marginBottom: "40px" }}>SurfCoast supports over 60 categories of independent workers across three main groups.</p>
-          <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginBottom: "36px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "36px", flexWrap: "wrap", gap: "8px" }}>
             {WHO_TABS.map((t, i) => (
               <button key={i} onClick={() => setActiveTab(i)}
                 style={{ padding: "10px 22px", borderRadius: "24px", border: "2px solid", fontSize: "14px", fontWeight: "700", cursor: "pointer", transition: "all 0.2s",

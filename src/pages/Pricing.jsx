@@ -225,7 +225,7 @@ export default function Pricing() {
           </div>
 
           {/* Tier progression bar */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0", marginBottom: "48px", flexWrap: "wrap", gap: "4px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "48px", flexWrap: "wrap", gap: "4px" }}>
             {WAVE_TIERS.map((t, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <div style={{ background: t.color, color: "#fff", padding: "6px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", whiteSpace: "nowrap" }}>
