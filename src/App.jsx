@@ -439,7 +439,9 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/pricing" element={<Pricing />} />
+      <Route path="/Pricing" element={<Pricing />} />
       <Route path="/why-surfcoast" element={<WhySurfCoast />} />
+      <Route path="/WhySurfCoast" element={<WhySurfCoast />} />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
