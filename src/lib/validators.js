@@ -1,81 +1,128 @@
-// Centralized input validation & sanitization utility
+// Centralized validation utilities for input sanitization and data validation
+
 export const validators = {
+  // Email validation
   email: (value) => {
-    if (!value || typeof value !== 'string') return null;
-    const trimmed = value.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(trimmed) ? trimmed : null;
+    return emailRegex.test(value) ? null : 'Invalid email format';
   },
 
+  // Required field
+  required: (value, fieldName = 'This field') => {
+    return value && String(value).trim() !== '' ? null : `${fieldName} is required`;
+  },
+
+  // Phone number (basic US format)
   phone: (value) => {
-    if (!value || typeof value !== 'string') return null;
-    const cleaned = value.replace(/\D/g, '');
-    return cleaned.length >= 10 && cleaned.length <= 15 ? cleaned : null;
+    const phoneRegex = /^[\d\s\-\(\)]{10,}$/;
+    return phoneRegex.test(value?.replace(/\s+/g, '')) ? null : 'Invalid phone format';
   },
 
-  string: (value, maxLength = 500) => {
-    if (!value || typeof value !== 'string') return null;
-    const trimmed = value.trim().substring(0, maxLength);
-    return trimmed.replace(/[\x00-\x1F\x7F]/g, '').trim() || null;
+  // Number range
+  numberRange: (value, min, max) => {
+    const num = Number(value);
+    if (isNaN(num)) return 'Must be a number';
+    if (num < min || num > max) return `Must be between ${min} and ${max}`;
+    return null;
   },
 
+  // String length
+  stringLength: (value, min, max) => {
+    const len = String(value).length;
+    if (len < min) return `Must be at least ${min} characters`;
+    if (len > max) return `Must be no more than ${max} characters`;
+    return null;
+  },
+
+  // URL validation
   url: (value) => {
-    if (!value || typeof value !== 'string') return null;
     try {
-      const url = new URL(value);
-      return url.href;
-    } catch {
+      new URL(value);
       return null;
+    } catch {
+      return 'Invalid URL format';
     }
   },
 
-  number: (value, min = -Infinity, max = Infinity) => {
-    const num = Number(value);
-    return !isNaN(num) && num >= min && num <= max ? num : null;
-  },
-
+  // Date validation
   date: (value) => {
-    if (!value) return null;
     const date = new Date(value);
-    return !isNaN(date.getTime()) ? date.toISOString().split('T')[0] : null;
+    return date instanceof Date && !isNaN(date) ? null : 'Invalid date format';
   },
 
-  currency: (value) => {
-    const num = Number(value);
-    return !isNaN(num) && num >= 0 && num <= 999999.99 ? Math.round(num * 100) / 100 : null;
+  // Future date
+  futureDate: (value) => {
+    const date = new Date(value);
+    return date > new Date() ? null : 'Date must be in the future';
   },
 
-  enum: (value, allowedValues) => {
-    return allowedValues.includes(value) ? value : null;
-  }
+  // Credit card (Luhn check)
+  creditCard: (value) => {
+    const cc = String(value).replace(/\s+/g, '');
+    if (!/^\d{13,19}$/.test(cc)) return 'Invalid card number';
+    
+    let sum = 0;
+    let isEven = false;
+    for (let i = cc.length - 1; i >= 0; i--) {
+      let digit = parseInt(cc[i], 10);
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      isEven = !isEven;
+    }
+    return sum % 10 === 0 ? null : 'Invalid card number';
+  },
 };
 
-export function validatePayload(data, schema) {
-  if (typeof data !== 'object' || data === null) {
-    return { valid: false, data: null, errors: ['Invalid payload'] };
-  }
+// Sanitization utilities
+export const sanitize = {
+  // Remove HTML tags
+  stripHtml: (value) => {
+    return String(value).replace(/<[^>]*>/g, '');
+  },
 
-  const validated = {};
-  const errors = [];
+  // Trim whitespace
+  trim: (value) => {
+    return String(value).trim();
+  },
 
-  for (const [field, validator] of Object.entries(schema)) {
-    if (!(field in data)) {
-      errors.push(`Missing required field: ${field}`);
-      continue;
+  // Remove special characters except allowed ones
+  alphanumeric: (value, allowedChars = '') => {
+    const regex = new RegExp(`[^a-zA-Z0-9${allowedChars}]`, 'g');
+    return String(value).replace(regex, '');
+  },
+
+  // Normalize email (lowercase, trim)
+  email: (value) => {
+    return String(value).toLowerCase().trim();
+  },
+
+  // Normalize phone (remove non-digits except formatting)
+  phone: (value) => {
+    return String(value).replace(/\D+/g, '');
+  },
+
+  // Convert to number safely
+  toNumber: (value) => {
+    const num = Number(value);
+    return isNaN(num) ? 0 : num;
+  },
+};
+
+// Batch validation helper
+export const validateFields = (data, schema) => {
+  const errors = {};
+  Object.entries(schema).forEach(([field, rules]) => {
+    const value = data[field];
+    for (const rule of rules) {
+      const error = rule(value);
+      if (error) {
+        errors[field] = error;
+        break;
+      }
     }
-
-    const result = validator(data[field]);
-    if (result === null) {
-      errors.push(`Invalid value for field: ${field}`);
-      continue;
-    }
-
-    validated[field] = result;
-  }
-
-  return {
-    valid: errors.length === 0,
-    data: errors.length === 0 ? validated : null,
-    errors
-  };
-}
+  });
+  return errors;
+};
