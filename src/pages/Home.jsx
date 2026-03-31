@@ -178,7 +178,7 @@ export default function Home() {
             {
               title: 'For Contractors',
               points: [
-                'Wave Starter at $19/month',
+                'WAVE Starter at $19/month',
                 'Job scheduling & invoicing',
                 'Customer portal & messaging',
                 'Mobile app with full features'
@@ -223,7 +223,7 @@ export default function Home() {
         <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', alignItems: 'stretch', width: '100%', maxWidth: '900px', gap: 'clamp(16px, 4vw, 24px)', marginBottom: '32px' }} aria-label="Pricing options">
           {/* Wave FO Pricing Card */}
           <article style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(217,119,6,0.08)', border: '2px solid rgba(217,119,6,0.3)', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>Wave FO Plans</h3>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>WAVE FO Plans</h3>
             <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For contractors and solo professionals</p>
             <div style={{ marginBottom: '16px' }}>
               <span style={{ fontSize: '32px', fontWeight: '800', color: '#d97706' }}>From $19</span>

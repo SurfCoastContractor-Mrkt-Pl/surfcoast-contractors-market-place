@@ -157,125 +157,138 @@ export default function Terms() {
             SurfCoast Marketplace offers various premium services and tools to enhance your experience on the platform. Below is a detailed breakdown of all available services, their costs, and how they work.
           </p>
 
-          {/* Wave FO Plans */}
+          {/* WAVE FO Plans */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Wave FO Plans - Contractor Field Operations</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">WAVE FO Plans — Contractor Field Operations</h3>
             <p className="text-slate-700 mb-4">
-              SurfCoast Wave FO is a tiered field operations platform for non-licensed contractors and licensed sole proprietors. Choose a plan based on your operational needs.
+              WAVE FO is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. All plans include a 2-week free trial. Month-to-month, cancel anytime.
             </p>
 
-            {/* Wave Starter */}
+            {/* WAVE Starter */}
             <div className="mb-6 pl-4 border-l-4 border-slate-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave Starter - $19.00/month</h4>
-              <p className="text-sm text-slate-700 mb-2">Perfect for new contractors getting started with basic organization tools.</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
-                <li>Basic job scheduling (up to 5 concurrent jobs)</li>
-                <li>Simple invoicing (up to 10 invoices/month)</li>
-                <li>Text-only messaging for active jobs</li>
+              <h4 className="font-semibold text-slate-900 mb-2">WAVE Starter — $19.00/month</h4>
+              <p className="text-sm text-slate-700 mb-2">The perfect entry point for independent professionals just getting started.</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Public contractor profile with photo & bio</li>
+                <li>Up to 5 active job postings</li>
+                <li>Basic client messaging</li>
+                <li>Quote request management</li>
+                <li>Job scheduling calendar</li>
                 <li>Mobile app access</li>
+                <li>Standard customer reviews</li>
+                <li>Email notifications</li>
+                <li>Basic analytics dashboard</li>
               </ul>
             </div>
 
-            {/* Wave Pro */}
+            {/* WAVE Pro */}
             <div className="mb-6 pl-4 border-l-4 border-blue-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave Pro - $39.00/month (Recommended)</h4>
-              <p className="text-sm text-slate-700 mb-2">For growing contractors managing multiple projects and clients.</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
-                <li>Unlimited job scheduling and management</li>
-                <li>Unlimited invoicing</li>
-                <li>Basic lead tracking and pipeline management</li>
-                <li>Document storage and organization (1GB)</li>
-                <li>File attachments in messaging</li>
-                <li>Full mobile app access</li>
+              <h4 className="font-semibold text-slate-900 mb-2">WAVE Pro — $39.00/month</h4>
+              <p className="text-sm text-slate-700 mb-2">For contractors who are ready to scale with CRM tools and expanded job capacity.</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Everything in WAVE Starter</li>
+                <li>Unlimited job postings</li>
+                <li>Client Relationship Manager (CRM)</li>
+                <li>Invoice generation & PDF export</li>
+                <li>Scope of Work builder</li>
+                <li>After-photo documentation</li>
+                <li>Project milestone tracking</li>
+                <li>Priority search placement</li>
+                <li>Custom service packages</li>
+                <li>Performance analytics</li>
+                <li>Referral tracking</li>
+                <li>Team collaboration tools</li>
               </ul>
             </div>
 
-            {/* Wave Max */}
-            <div className="mb-6 pl-4 border-l-4 border-slate-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave Max - $59.00/month</h4>
-              <p className="text-sm text-slate-700 mb-2">For established contractors optimizing operations and client relationships.</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
-                <li>All Wave Pro features</li>
-                <li>Project tracking and completion reporting</li>
-                <li>Advanced analytics dashboards</li>
-                <li>Standard document templates</li>
-                <li>Enhanced document storage (5GB)</li>
-                <li>Full analytics access on mobile</li>
-              </ul>
-            </div>
-
-            {/* Wave FO Premium */}
+            {/* WAVE Max */}
             <div className="mb-6 pl-4 border-l-4 border-amber-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave FO Premium - $99.00/month (Licensed Sole Proprietors)</h4>
-              <p className="text-sm text-slate-700 mb-2">Exclusive tier for verified licensed sole proprietors (HIS license). Includes all features plus specialized tools.</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
-                <li>All Wave Max features</li>
-                <li>CSLB-compliant contract management</li>
-                <li>Full team management (employees, subcontractors, task delegation)</li>
-                <li>Priority support with dedicated channels</li>
-                <li>HIS license-specific document management and compliance tools</li>
+              <h4 className="font-semibold text-slate-900 mb-2">WAVE Max — $59.00/month (Most Popular)</h4>
+              <p className="text-sm text-slate-700 mb-2">For serious operators who need field operations, GPS tracking, and compliance tools.</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Everything in WAVE Pro</li>
+                <li>GPS-based job tracking</li>
+                <li>Field operations mobile suite</li>
+                <li>Document management hub</li>
+                <li>Multi-option client proposals</li>
+                <li>Escrow payment support</li>
+                <li>Project file sharing with clients</li>
+                <li>Progress payment phases</li>
+                <li>Contractor compliance tools</li>
+                <li>Real-time availability manager</li>
+                <li>Advanced scheduling assistant</li>
+                <li>QuickBooks CSV export</li>
+                <li>Custom invoice branding</li>
               </ul>
             </div>
 
-            {/* Wave FO Bundle */}
-            <div className="pl-4 border-l-4 border-amber-300">
-              <h4 className="font-semibold text-slate-900 mb-2">Wave FO Bundle - $125.00/month (Licensed Sole Proprietors)</h4>
-              <p className="text-sm text-slate-700 mb-2">Wave FO Premium tier with added unlimited communication capabilities.</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 mb-2">
-                <li>All Wave FO Premium features</li>
-                <li>Unlimited messaging and client communication (monthly subscription)</li>
-                <li>Full project collaboration tools</li>
-                <li>Professional client engagement suite</li>
+            {/* WAVE FO Premium */}
+            <div className="mb-6 pl-4 border-l-4 border-green-300">
+              <h4 className="font-semibold text-slate-900 mb-2">WAVE FO Premium — $100.00/month (Licensed Sole Proprietors / HIS Verified)</h4>
+              <p className="text-sm text-slate-700 mb-2">The full suite for licensed professionals — AI tools, integrations, and advanced compliance.</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Everything in WAVE Max</li>
+                <li>AI scheduling assistant</li>
+                <li>AI bio & proposal generator</li>
+                <li>HubSpot CRM sync</li>
+                <li>Notion project page integration</li>
+                <li>Campaign management tools</li>
+                <li>Case study builder</li>
+                <li>Contractor leaderboard & trade games</li>
+                <li>Full audit trail & activity log</li>
+                <li>Advanced job pipeline views</li>
+                <li>Residential Wave invoicing suite</li>
+                <li>Priority support</li>
+              </ul>
+            </div>
+
+            {/* WAVE Residential Bundle */}
+            <div className="pl-4 border-l-4 border-pink-300">
+              <h4 className="font-semibold text-slate-900 mb-2">WAVE Residential Bundle — $125.00/month (All-In)</h4>
+              <p className="text-sm text-slate-700 mb-2">Combines WAVE FO Premium with the full Residential Wave invoicing suite — everything from lead capture to final invoice, under one subscription.</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                <li>Everything in WAVE FO Premium</li>
+                <li>Residential Wave lead management</li>
+                <li>Residential Wave job tracking</li>
+                <li>Residential Wave invoice management</li>
+                <li>Bundle-exclusive document templates</li>
+                <li>Revenue tracking & bundle reports</li>
+                <li>White-label invoice option</li>
+                <li>Early access to new features</li>
+                <li>Full platform access — no add-ons needed</li>
               </ul>
             </div>
           </div>
 
-          {/* Residential Wave */}
+          {/* WAVEShop */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Residential Wave Dashboard - $100.00/month (Legacy)</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">WAVEShop — Market Booths & Vendor Spaces — $35.00/month</h3>
             <p className="text-slate-700 mb-3">
-              A premium business management suite designed for trade-specific contractors. This subscription provides advanced tools for professional project and client management.
+              For farmers market and swap meet vendors who want a professional booth presence. Flat-rate subscription with zero commissions on any sales — ever.
             </p>
             <div className="bg-slate-50 p-4 rounded-lg mb-3">
               <p className="text-sm font-semibold text-slate-900 mb-2">Included Features:</p>
               <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
-                <li>Job scheduling and management dashboard</li>
-                <li>Lead tracking and pipeline management</li>
-                <li>Professional invoice generation and management</li>
-                <li>Document storage and organization (licenses, insurance, certifications)</li>
-                <li>Client communication tools</li>
-                <li>Project tracking and completion reporting</li>
+                <li>Public booth/shop profile page</li>
+                <li>Product listings with photos & prices</li>
+                <li>Inventory tracking</li>
+                <li>Customer reviews & ratings</li>
+                <li>Farmers market & swap meet directory listing</li>
+                <li>Booth schedule management</li>
+                <li>Analytics dashboard</li>
+                <li>Vendor inquiry inbox</li>
+                <li>Marketing toolkit</li>
+                <li>Social media link integration</li>
+                <li>Photo gallery (up to 20 images)</li>
+                <li>Zero commission on all sales</li>
+                <li>Mobile-optimized dashboard</li>
               </ul>
             </div>
-            <p className="text-sm text-slate-600 mb-3">
-              <strong>Target Audience:</strong> Trade-specific contractors in all construction and skilled trade specialties, including but not limited to: plumbing, HVAC, electrical, carpentry, masonry, roofing, painting, welding, tiling, landscaping, and other licensed trade professionals.
-            </p>
-            <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Subscribe to access the full Residential Wave dashboard. Your subscription renews automatically each month at $100. Cancel anytime from your account settings.
-            </p>
-          </div>
-
-          {/* MarketShop - Market Booths & Spaces */}
-          <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">MarketShop - Market Booths & Spaces - $35.00/month OR 5% Facilitation Fee</h3>
-            <p className="text-slate-700 mb-3">
-              Rent booth or vendor space at farmers markets, swap meets, and community markets. Choose between a flat monthly fee or pay per transaction.
-            </p>
-            <div className="bg-slate-50 p-4 rounded-lg mb-3">
-              <p className="text-sm font-semibold text-slate-900 mb-2">Two Pricing Options:</p>
-              <ul className="list-disc list-inside space-y-2 text-sm text-slate-700">
-                <li><strong>Subscription Model ($35/month):</strong> Unlimited booth listings, space listings, and product uploads. One flat fee per month covers all market booth participation.</li>
-                <li><strong>Facilitation Fee Model (5% per transaction):</strong> No monthly subscription. Pay only 5% on each transaction. Example: a $100 sale results in a $95 payout to the vendor.</li>
-              </ul>
-            </div>
-            <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Select your preferred pricing model. Upload booth photos, booth descriptions, and product listings. Customers browse available booths and spaces, and you receive notifications of inquiries. Pay based on your chosen model: either a flat $35/month or 5% per transaction processed through the platform.
-            </p>
           </div>
 
           {/* Limited Communication */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Limited Communication - $1.50 (one-time)</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Limited Communication — $1.50 (one-time)</h3>
             <p className="text-slate-700 mb-3">
               Send a single message to another platform user (contractor, vendor, or customer) to initiate contact.
             </p>
@@ -287,14 +300,11 @@ export default function Terms() {
                 <li>No ongoing conversation thread</li>
               </ul>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Pay $1.50 to send your first message to a contractor, vendor, or customer. This opens a limited communication window to introduce yourself or inquire about services. Further conversation may require a subscription communication plan.
-            </p>
           </div>
 
           {/* Quote Request */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Quote Request (No Additional Communication) - $1.75 (one-time)</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Quote Request (No Additional Communication) — $1.75 (one-time)</h3>
             <p className="text-slate-700 mb-3">
               <strong>For Clients Only:</strong> Request a quote from a contractor for a specific project or job.
             </p>
@@ -307,14 +317,11 @@ export default function Terms() {
                 <li>You receive the contractor's pricing and availability estimate</li>
               </ul>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> As a client, pay $1.75 to submit your project details to a contractor for a quote. The contractor reviews your request and responds with their pricing and availability. This is a one-time fee that covers the quote request only; it does not enable ongoing messaging. To continue discussions beyond the quote response, you'll need a Subscription Communication plan.
-            </p>
           </div>
 
           {/* Subscription Communication */}
           <div className="mb-8 pb-8 border-b border-slate-200">
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Subscription Communication - $50.00/month</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">Subscription Communication — $50.00/month</h3>
             <p className="text-slate-700 mb-3">
               Unlimited messaging and ongoing conversations with platform users for an entire month.
             </p>
@@ -329,9 +336,6 @@ export default function Terms() {
                 <li>Active for 30 days from purchase</li>
               </ul>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong>How It Works:</strong> Subscribe for $50/month to unlock unlimited messaging with all platform users. Send and receive unlimited messages, build ongoing conversations with multiple contractors or customers, and collaborate on projects. Your subscription renews automatically each month.
-            </p>
           </div>
 
           {/* Summary Table */}
@@ -348,44 +352,34 @@ export default function Terms() {
                 </thead>
                 <tbody>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Wave Starter</td>
+                    <td className="p-3 text-slate-700">WAVE Starter</td>
                     <td className="p-3 text-slate-700">$19/month</td>
-                    <td className="p-3 text-slate-700">New contractors starting out</td>
+                    <td className="p-3 text-slate-700">New contractors getting started</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Wave Pro</td>
+                    <td className="p-3 text-slate-700">WAVE Pro</td>
                     <td className="p-3 text-slate-700">$39/month</td>
-                    <td className="p-3 text-slate-700">Growing contractors with multiple projects</td>
+                    <td className="p-3 text-slate-700">Growing contractors ready to scale</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Wave Max</td>
+                    <td className="p-3 text-slate-700">WAVE Max</td>
                     <td className="p-3 text-slate-700">$59/month</td>
-                    <td className="p-3 text-slate-700">Established contractors optimizing operations</td>
+                    <td className="p-3 text-slate-700">Established contractors with field operations needs</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Wave FO Premium</td>
-                    <td className="p-3 text-slate-700">$99/month</td>
-                    <td className="p-3 text-slate-700">Licensed sole proprietors with all features</td>
-                  </tr>
-                  <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Wave FO Bundle</td>
-                    <td className="p-3 text-slate-700">$125/month</td>
-                    <td className="p-3 text-slate-700">Licensed sole proprietors with unlimited communication</td>
-                  </tr>
-                  <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">Residential Wave</td>
+                    <td className="p-3 text-slate-700">WAVE FO Premium</td>
                     <td className="p-3 text-slate-700">$100/month</td>
-                    <td className="p-3 text-slate-700">Trade contractors managing jobs & clients (legacy)</td>
+                    <td className="p-3 text-slate-700">Licensed sole proprietors (HIS verified)</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">MarketShop (Subscription)</td>
+                    <td className="p-3 text-slate-700">WAVE Residential Bundle</td>
+                    <td className="p-3 text-slate-700">$125/month</td>
+                    <td className="p-3 text-slate-700">Licensed operators who want the full platform</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="p-3 text-slate-700">WAVEShop Vendor</td>
                     <td className="p-3 text-slate-700">$35/month</td>
-                    <td className="p-3 text-slate-700">Market booth vendors (flat fee)</td>
-                  </tr>
-                  <tr className="border-b border-slate-200">
-                    <td className="p-3 text-slate-700">MarketShop (Facilitation)</td>
-                    <td className="p-3 text-slate-700">5% per sale</td>
-                    <td className="p-3 text-slate-700">Market booth vendors (pay per transaction)</td>
+                    <td className="p-3 text-slate-700">Farmers market & swap meet vendors</td>
                   </tr>
                   <tr className="border-b border-slate-200">
                     <td className="p-3 text-slate-700">Limited Communication</td>
@@ -395,7 +389,7 @@ export default function Terms() {
                   <tr className="border-b border-slate-200">
                     <td className="p-3 text-slate-700">Quote Request</td>
                     <td className="p-3 text-slate-700">$1.75</td>
-                    <td className="p-3 text-slate-700">Request contractor quote</td>
+                    <td className="p-3 text-slate-700">Request contractor quote (clients only)</td>
                   </tr>
                   <tr>
                     <td className="p-3 text-slate-700">Subscription Communication</td>
@@ -425,9 +419,9 @@ export default function Terms() {
             Tier is automatically determined based on cumulative annual earnings and updates automatically. Tiers reset annually, with lifetime earnings tracked separately. Tier changes apply to future payouts.
           </p>
 
-          <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors (MarketShop)</h3>
+          <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors (WAVEShop)</h3>
           <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
-            <li><strong>Subscription Model:</strong> $35/month flat fee for unlimited booth listings, space listings, and transactions with MarketShop.</li>
+            <li><strong>Subscription Model:</strong> $35/month flat fee — zero commission on all sales processed.</li>
             <li><strong>Facilitation Fee Model:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
           </ul>
 
