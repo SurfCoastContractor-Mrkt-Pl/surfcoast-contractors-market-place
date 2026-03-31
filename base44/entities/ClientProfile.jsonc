@@ -14,6 +14,10 @@
       "type": "string",
       "description": "Contact phone number"
     },
+    "photo_url": {
+      "type": "string",
+      "description": "Profile photo URL of the client"
+    },
     "date_of_birth": {
       "type": "string",
       "format": "date",

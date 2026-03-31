@@ -86,7 +86,7 @@
           "other"
         ]
       },
-      "description": "Product/service categories \u2014 expanded to cover farmers market, flea market, and swap meet goods"
+      "description": "Product/service categories"
     },
     "products_summary": {
       "type": "string",
@@ -231,7 +231,7 @@
     },
     "swap_meet_space_numbers": {
       "type": "string",
-      "description": "Swap meet space number(s) assigned to this vendor (e.g. '42', '101-103', 'A12 & A13')"
+      "description": "Swap meet space number(s) assigned to this vendor"
     },
     "swap_meet_next_weekend": {
       "type": "object",
@@ -269,7 +269,7 @@
     },
     "sellers_permit_number": {
       "type": "string",
-      "description": "State sellers permit / resale certificate number (required for flea market & swap meet resellers)"
+      "description": "State sellers permit / resale certificate number"
     },
     "sellers_permit_state": {
       "type": "string",
@@ -278,7 +278,7 @@
     "food_handler_certified": {
       "type": "boolean",
       "default": false,
-      "description": "Whether vendor holds a food handler certificate (required for farmers market food vendors)"
+      "description": "Whether vendor holds a food handler certificate"
     },
     "food_handler_cert_url": {
       "type": "string",
@@ -287,7 +287,7 @@
     "cottage_food_operator": {
       "type": "boolean",
       "default": false,
-      "description": "Whether vendor operates under cottage food laws (home-based food production)"
+      "description": "Whether vendor operates under cottage food laws"
     },
     "typical_setup": {
       "type": "object",
@@ -311,7 +311,7 @@
         },
         "vehicle_type": {
           "type": "string",
-          "description": "Type of vehicle used to transport goods (e.g. 'van', 'truck', 'trailer')"
+          "description": "Type of vehicle used to transport goods"
         }
       }
     },
@@ -321,11 +321,15 @@
     },
     "banner_url": {
       "type": "string",
-      "description": "Banner image URL"
+      "description": "Banner image URL \u2014 wide header image for the shop profile"
     },
     "logo_url": {
       "type": "string",
-      "description": "Logo image URL"
+      "description": "Logo image URL \u2014 the shop's brand/logo"
+    },
+    "profile_photo_url": {
+      "type": "string",
+      "description": "Personal photo URL of the vendor/owner themselves"
     },
     "gallery_images": {
       "type": "array",
