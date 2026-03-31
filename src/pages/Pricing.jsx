@@ -238,7 +238,7 @@ export default function Pricing() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "20px" }}>
           {WAVE_TIERS.map((tier, i) => (
-            <div key={i} style={{ background: tier.tag ? `rgba(${tier.tag === "Most Popular" ? "245,158,11" : "244,114,182"},0.06)` : "rgba(255,255,255,0.03)", border: `1px solid ${tier.tag ? tier.accent + "55" : "rgba(255,255,255,0.08)"}`, borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}>
+            <div key={i} style={{ background: tier.tag === "Most Popular ⭐" ? "rgba(245,158,11,0.06)" : tier.tag === "All-In" ? "rgba(244,114,182,0.06)" : "rgba(255,255,255,0.03)", border: `1px solid ${tier.tag ? tier.accent + "55" : "rgba(255,255,255,0.08)"}`, borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}>
               {tier.tag && (
                 <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: tier.accent, color: "#0f172a", fontSize: "10px", fontWeight: "800", padding: "3px 12px", borderRadius: "20px", letterSpacing: "1px", whiteSpace: "nowrap" }}>
                   {tier.tag}
@@ -323,7 +323,7 @@ export default function Pricing() {
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
           <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Create Free Profile</a>
-          <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>View All Plans →</a>
+          <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>Why SurfCoast →</a>
         </div>
       </section>
 

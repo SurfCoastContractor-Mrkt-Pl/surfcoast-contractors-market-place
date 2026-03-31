@@ -93,8 +93,8 @@ export default function Home() {
           <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }} aria-label="Main navigation">
-          <a href="https://surfcoastcmp.base44.app/WhySurfCoast" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Why SurfCoast</a>
-          <a href="https://surfcoastcmp.base44.app/Pricing" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Pricing</a>
+          <a href="/why-surfcoast" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Why SurfCoast</a>
+          <a href="/pricing" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Pricing</a>
           <button 
             ref={dropdownButtonRef}
             onClick={() => setDropdownOpen(!dropdownOpen)} 
@@ -116,7 +116,7 @@ export default function Home() {
            >
              <button 
                role="menuitem"
-               onClick={() => { window.location.href = 'https://surfcoastcmp.base44.app/Pricing'; setDropdownOpen(false); }} 
+               onClick={() => { window.location.href = '/pricing'; setDropdownOpen(false); }} 
                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
@@ -125,7 +125,7 @@ export default function Home() {
              </button>
              <button 
                role="menuitem"
-               onClick={() => { window.location.href = 'https://surfcoastcmp.base44.app/WhySurfCoast'; setDropdownOpen(false); }} 
+               onClick={() => { window.location.href = '/why-surfcoast'; setDropdownOpen(false); }} 
                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}

@@ -38,100 +38,82 @@ const WHO_TABS = [
 
 const WAVE_TIERS = [
   {
-    name: "Wave Starter",
+    name: "WAVE Starter",
     price: "$19",
     tag: "",
-    pitch: "The perfect entry point for independent professionals just getting started. Wave Starter gives you everything you need to build your profile, land your first clients, and start operating professionally — without the overhead of a bloated platform.",
+    pitch: "The perfect entry point for independent professionals just getting started. WAVE Starter gives you everything you need to build your profile, land your first clients, and start operating professionally — without the overhead of a bloated platform.",
     features: [
-      "Public contractor profile with photo & bio",
-      "Up to 5 active job postings",
-      "Basic client messaging",
-      "Quote request management",
-      "Job scheduling calendar",
-      "Mobile app access",
-      "Standard customer reviews",
-      "Email notifications",
-      "Basic analytics dashboard",
+      "Job scheduling (up to 5 concurrent)",
+      "Basic invoicing (up to 10/mo)",
+      "Text-only messaging",
+      "Mobile app (basic)",
+      "Availability calendar",
+      "Basic field notes & photo upload",
       "2-week free trial included"
     ]
   },
   {
-    name: "Wave Pro",
+    name: "WAVE Pro",
     price: "$39",
     tag: "",
-    pitch: "For contractors who are ready to scale. Wave Pro unlocks CRM tools, expanded job capacity, and enhanced visibility features that help you turn one-time clients into long-term relationships.",
+    pitch: "For contractors who are ready to scale. WAVE Pro unlocks CRM tools, expanded job capacity, and enhanced visibility features that help you turn one-time clients into long-term relationships.",
     features: [
-      "Everything in Wave Starter",
-      "Unlimited job postings",
-      "Client relationship manager (CRM)",
-      "Invoice generation & PDF export",
-      "Scope of Work builder",
-      "After-photo documentation",
-      "Project milestone tracking",
-      "Priority search placement",
-      "Custom service packages",
-      "Performance analytics",
-      "Referral tracking",
-      "Team collaboration tools"
+      "Everything in WAVE Starter",
+      "Unlimited job scheduling & invoicing",
+      "Lead tracking & pipeline",
+      "Document storage (1GB)",
+      "File attachments in messaging",
+      "Inventory tracking (up to 50 items)",
+      "Automated email workflows",
+      "CSV export for QuickBooks/Sage"
     ]
   },
   {
-    name: "Wave Max",
+    name: "WAVE Max",
     price: "$59",
     tag: "Most Popular",
-    pitch: "Wave Max is the sweet spot for serious operators. It includes every tool a professional contractor needs to run a tight, efficient business — from document management to real-time GPS tracking and multi-device sync.",
+    pitch: "WAVE Max is the sweet spot for serious operators. It includes every tool a professional contractor needs to run a tight, efficient business — from advanced analytics to AI-assisted scheduling.",
     features: [
-      "Everything in Wave Pro",
-      "GPS-based job tracking",
-      "Field operations mobile suite",
-      "Document management hub",
-      "Multi-option client proposals",
-      "Escrow payment support",
-      "Project file sharing with clients",
-      "Progress payment phases",
-      "Contractor compliance tools",
-      "Real-time availability manager",
-      "Advanced scheduling assistant",
-      "QuickBooks CSV export",
-      "Custom invoice branding"
+      "Everything in WAVE Pro",
+      "Project tracking & completion reporting",
+      "Advanced analytics dashboards",
+      "AI-assisted scheduling",
+      "Document storage (5GB + version control)",
+      "Unlimited inventory",
+      "Advanced workflow automations",
+      "One-way QuickBooks integration"
     ]
   },
   {
-    name: "Wave Premium",
+    name: "WAVE FO Premium",
     price: "$100",
     tag: "",
-    pitch: "Built for licensed professionals and growing businesses that demand the full suite. Wave Premium includes everything in Max, plus AI-powered tools, advanced analytics, and integrations with external platforms like Notion and HubSpot.",
+    pitch: "Built for licensed sole proprietors (HIS verified) who need the full compliance and integration suite — CSLB contract management, full team tools, and two-way accounting sync.",
     features: [
-      "Everything in Wave Max",
-      "AI scheduling assistant",
-      "AI bio & proposal generator",
-      "HubSpot CRM sync",
-      "Notion project page integration",
-      "Campaign management tools",
-      "Case study builder",
-      "Contractor leaderboard",
-      "Trade game discount system",
-      "Full audit trail & activity log",
-      "Advanced job pipeline views",
-      "Residential wave invoicing suite",
-      "Dedicated support priority"
+      "Everything in WAVE Max",
+      "CSLB contract management",
+      "HIS license document management",
+      "Full team management",
+      "Priority support",
+      "White-label customer portal",
+      "Two-way QuickBooks & Sage integration",
+      "Unlimited workflow automations"
     ]
   },
   {
-    name: "Wave Bundle",
+    name: "WAVE Residential Bundle",
     price: "$125",
     tag: "All Included",
-    pitch: "The ultimate contractor package. Wave Bundle combines Wave Premium with the full Residential Wave invoicing suite — everything from lead capture to scope signing to final invoice delivery, all under one subscription.",
+    pitch: "The ultimate contractor package. Combines WAVE FO Premium with the full Residential Wave invoicing suite — everything from lead capture to scope signing to final invoice delivery, all under one subscription.",
     features: [
-      "Everything in Wave Premium",
+      "Everything in WAVE FO Premium",
+      "Unlimited communication across all channels",
       "Residential Wave lead management",
       "Residential Wave job tracking",
       "Residential Wave invoice management",
       "Bundle-exclusive document templates",
-      "Bundle reporting & revenue tracking",
-      "Early access to new features",
-      "White-label invoice option",
-      "Full platform access — no add-ons needed"
+      "Revenue tracking & bundle reports",
+      "Early access to new features"
     ]
   }
 ];
@@ -178,7 +160,6 @@ const COMPARISON_ROWS = [
 
 export default function WhySurfCoast() {
   const [activeTab, setActiveTab] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: "#fff", color: "#111" }}>
