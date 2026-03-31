@@ -1,16 +1,17 @@
 import React from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap } from 'lucide-react';
 
 const BASE_NAV_TABS = [
-  { id: 'jobs', label: 'Jobs' },
-  { id: 'map', label: 'Map' },
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'invoices', label: 'Invoices' },
-  { id: 'reports', label: 'Reports' },
-  { id: 'profile', label: 'Profile' },
+  { id: 'jobs', label: 'Jobs', icon: Briefcase },
+  { id: 'map', label: 'Map', icon: Map },
+  { id: 'schedule', label: 'Schedule', icon: Calendar },
+  { id: 'invoices', label: 'Invoices', icon: DollarSign },
+  { id: 'reports', label: 'Reports', icon: BarChart2 },
+  { id: 'supplies', label: 'Supplies', icon: ShoppingBag },
+  { id: 'profile', label: 'Profile', icon: User },
 ];
 
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
+const BREAKER_TAB = { id: 'breaker', label: 'Wave', icon: Zap };
 
 export default function FieldOpsMobileNav({
   contractor,
@@ -76,25 +77,30 @@ export default function FieldOpsMobileNav({
 
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden bg-slate-900 border-t border-slate-800 flex-shrink-0 pb-safe-bottom">
-        <div className="flex">
-          {NAV_TABS.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => onTabChange(tab.id)}
-              className={`flex-1 flex flex-col items-center py-3 gap-1 transition-colors ${
-                activeTab === tab.id
-                  ? tab.id === 'breaker'
-                    ? 'text-blue-300'
-                    : 'text-blue-400'
-                  : 'text-slate-500'
-              }`}
-            >
-              <span className="text-[10px] font-medium">{tab.label}</span>
-              {activeTab === tab.id && (
-                <div className={`w-1 h-1 rounded-full ${tab.id === 'breaker' ? 'bg-blue-300' : 'bg-blue-400'}`} />
-              )}
-            </button>
-          ))}
+        <div className="flex overflow-x-auto scrollbar-none">
+          {NAV_TABS.map(tab => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            const isBreaker = tab.id === 'breaker';
+            return (
+              <button
+                key={tab.id}
+                onClick={() => onTabChange(tab.id)}
+                className={`flex-shrink-0 flex flex-col items-center justify-center px-3 py-2.5 gap-1 min-w-[56px] transition-colors ${
+                  isActive
+                    ? isBreaker ? 'text-blue-300' : 'text-blue-400'
+                    : 'text-slate-500'
+                }`}
+                style={{ minHeight: '56px' }}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium leading-none">{tab.label}</span>
+                {isActive && (
+                  <div className={`w-1 h-1 rounded-full ${isBreaker ? 'bg-blue-300' : 'bg-blue-400'}`} />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
     </>

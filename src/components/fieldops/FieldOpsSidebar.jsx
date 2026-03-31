@@ -1,16 +1,17 @@
 import React from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap } from 'lucide-react';
 
 const BASE_NAV_TABS = [
-  { id: 'jobs', label: 'Jobs' },
-  { id: 'map', label: 'Map' },
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'invoices', label: 'Invoices' },
-  { id: 'reports', label: 'Reports' },
-  { id: 'profile', label: 'Profile' },
+  { id: 'jobs', label: 'Jobs', icon: Briefcase },
+  { id: 'map', label: 'Map', icon: Map },
+  { id: 'schedule', label: 'Schedule', icon: Calendar },
+  { id: 'invoices', label: 'Invoices', icon: DollarSign },
+  { id: 'reports', label: 'Reports', icon: BarChart2 },
+  { id: 'supplies', label: 'Supply Houses', icon: ShoppingBag },
+  { id: 'profile', label: 'Profile', icon: User },
 ];
 
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave' };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave', icon: Zap };
 
 export default function FieldOpsSidebar({
   contractor,
@@ -61,21 +62,25 @@ export default function FieldOpsSidebar({
 
       {/* Navigation */}
       <nav className="flex-1 px-2 py-4 space-y-2 overflow-y-auto">
-        {NAV_TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === tab.id
-                ? tab.id === 'breaker'
-                  ? 'bg-blue-900 text-blue-300'
-                  : 'bg-blue-900 text-blue-400'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <span>{tab.label}</span>
-          </button>
-        ))}
+        {NAV_TABS.map(tab => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange(tab.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === tab.id
+                  ? tab.id === 'breaker'
+                    ? 'bg-blue-900 text-blue-300'
+                    : 'bg-blue-900 text-blue-400'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
       </nav>
 
       {/* Footer */}

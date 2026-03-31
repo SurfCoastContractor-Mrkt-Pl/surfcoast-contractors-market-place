@@ -45,7 +45,7 @@ export default function WaveFOInvoices({ contractor, user }) {
       setLoading(false);
     };
     load();
-  }, [user.email, cachedEscrows, setCachedEscrows]);
+  }, [user.email]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const totalEarned = escrows
     .filter(e => e.status === 'released')

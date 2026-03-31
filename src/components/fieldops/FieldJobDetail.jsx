@@ -90,14 +90,14 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
       await base44.entities.ProjectMessage.create({
         scope_id: scope.id,
         sender_email: user.email,
-        sender_name: user.full_name || scope.contractor_name,
+        sender_name: scope.contractor_name,
         sender_type: 'contractor',
         message: message.trim(),
       });
       await base44.integrations.Core.SendEmail({
-        to: scope.customer_email,
+        to: scope.client_email,
         subject: `Message from ${scope.contractor_name} — ${scope.job_title}`,
-        body: `Hi ${scope.customer_name},\n\n${message.trim()}\n\n— ${scope.contractor_name}`,
+        body: `Hi ${scope.client_name},\n\n${message.trim()}\n\n— ${scope.contractor_name}`,
       });
       setMessage('');
       setActiveAction(null);
@@ -106,6 +106,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   };
 
   const handleMarkComplete = async () => {
+    // Security: only allow completion from valid in-progress states
+    if (!['approved', 'active'].includes(scope.status)) return;
     setSaving(true);
     try {
       const updated = await base44.entities.ScopeOfWork.update(scope.id, {
@@ -300,14 +302,15 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           />
         )}
 
-        {activeAction === 'signature' && (
+        {activeAction === 'signature' && ['approved', 'active'].includes(scope.status) && (
           <SignatureCapture
             onCapture={async (signatureUrl) => {
+              // Security: only write signature on scopes that are in progress
               await base44.entities.ScopeOfWork.update(scope.id, {
-                customer_signature_url: signatureUrl,
-                customer_signed_scope_at: new Date().toISOString()
+                client_signature_url: signatureUrl,
+                client_signed_scope_at: new Date().toISOString()
               });
-              onUpdate({ ...scope, customer_signature_url: signatureUrl });
+              onUpdate({ ...scope, client_signature_url: signatureUrl });
               setActiveAction(null);
             }}
           />
@@ -343,11 +346,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           <MarketingToolkit scope={scope} />
         )}
 
-        {activeAction === 'marketing' && activeAction !== 'marketing' && null /* handled by MarketingToolkit above */}
-        {/* Message client panel — triggered via notes or marketing toolkit */}
-        {false && (
-          <div />
-        )}
+
 
         {activeAction === 'notes' && (
           <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
