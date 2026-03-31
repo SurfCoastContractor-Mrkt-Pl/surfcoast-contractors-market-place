@@ -65,19 +65,10 @@ export default function Dashboard() {
     load();
   }, []);
 
-  if (loading) {
+  if (loading || !activeProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
         <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
-      </div>
-    );
-  }
-
-  if (!activeProfile) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6" style={{ background: '#0a1628' }}>
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
-        <p className="text-slate-400 text-sm">Setting up your dashboard...</p>
       </div>
     );
   }
