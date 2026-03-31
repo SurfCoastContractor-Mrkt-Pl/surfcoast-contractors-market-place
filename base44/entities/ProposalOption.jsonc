@@ -93,7 +93,7 @@
           }
         },
         {
-          "proposal_id": {
+          "data.proposal_id": {
             "$in": {
               "entity": "Proposal",
               "query": {
