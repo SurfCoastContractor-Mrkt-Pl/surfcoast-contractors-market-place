@@ -464,16 +464,16 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <ConsumerModeProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <ConsumerModeProvider>
+          <AuthProvider>
             <Router>
               <AuthenticatedApp />
             </Router>
             <Toaster />
-          </ConsumerModeProvider>
-        </QueryClientProvider>
-      </AuthProvider>
+          </AuthProvider>
+        </ConsumerModeProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   )
 }
