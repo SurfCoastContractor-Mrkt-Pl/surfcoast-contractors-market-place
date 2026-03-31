@@ -171,8 +171,8 @@ export default function Home() {
         {/* Why SurfCoast Section */}
         <WhySurfCoastSection />
 
-        {/* Why SurfCoast - Three Column Benefits */}
-        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
+        {/* Why SurfCoast - Benefits */}
+        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
           {[
             {
               title: 'For Contractors',
@@ -184,21 +184,12 @@ export default function Home() {
               ]
             },
             {
-              title: 'For WAVEShop Vendors',
+              title: 'For MarketShop Vendors',
               points: [
-                'Market booth management',
+                'Sign up for a booth or space',
                 'Inventory tracking & payments',
                 'Customer reviews & ratings',
                 'Marketing tools at $35/month'
-              ]
-            },
-            {
-              title: 'For Everyone Else',
-              points: [
-                'Freelancers, creatives, services',
-                'Flexible month-to-month plans',
-                'No contracts or setup fees',
-                'Cancel anytime, no penalties'
               ]
             }
           ].map((section, idx) => (
@@ -218,64 +209,7 @@ export default function Home() {
           ))}
         </section>
 
-        {/* Pricing Tracks */}
-        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', alignItems: 'stretch', width: '100%', maxWidth: '900px', gap: 'clamp(16px, 4vw, 24px)', marginBottom: '32px' }} aria-label="Pricing options">
-          {/* Wave FO Pricing Card */}
-          <article style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(217,119,6,0.08)', border: '2px solid rgba(217,119,6,0.3)', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>WAVE FO Plans</h3>
-            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For contractors and solo professionals</p>
-            <div style={{ marginBottom: '16px' }}>
-              <span style={{ fontSize: '32px', fontWeight: '800', color: '#d97706' }}>From $19</span>
-              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
-            </div>
-            <button
-              onClick={() => window.location.href = '/pricing'}
-              style={{
-                width: '100%',
-                padding: '11px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                fontSize: '13px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                background: '#d97706',
-                color: '#fff',
-                minHeight: '40px',
-                transition: 'all 0.2s'
-              }}
-            >
-              See all plans →
-            </button>
-          </article>
 
-          {/* WAVEShop Pricing Card */}
-          <article style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(157,122,84,0.08)', border: '2px solid rgba(157,122,84,0.3)', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '700', margin: '0 0 8px', color: '#ffffff' }}>WAVEShop Vendor</h3>
-            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For farmers market & swap meet booths</p>
-            <div style={{ marginBottom: '16px' }}>
-              <span style={{ fontSize: '32px', fontWeight: '800', color: '#9d7a54' }}>$35</span>
-              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>/month</span>
-            </div>
-            <button
-              onClick={() => window.location.href = '/pricing'}
-              style={{
-                width: '100%',
-                padding: '11px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                fontSize: '13px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                background: '#9d7a54',
-                color: '#fff',
-                minHeight: '40px',
-                transition: 'all 0.2s'
-              }}
-            >
-              See all plans →
-            </button>
-          </article>
-        </section>
 
         {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
         <section style={{ display:"flex", flexDirection:isMobile ? "column" : "row", alignItems:"stretch", width:"100%", maxWidth:"900px", gap:isMobile ? "clamp(12px, 3vw, 16px)" : "clamp(16px, 4vw, 32px)", justifyContent:"center", marginBottom:"24px" }} aria-label="Primary action cards">
