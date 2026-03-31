@@ -266,10 +266,10 @@ export default function WhySurfCoast() {
 
       {/* WAVE FO EXPLANATION */}
       <section style={{ maxWidth: "860px", margin: "0 auto", padding: "80px 24px" }}>
-        <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "24px", letterSpacing: "-1px" }}>What Is WAVE FO?</h2>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "24px", letterSpacing: "-1px" }}>What Is WAVE FO (Field Operations)?</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
-            "WAVE FO is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract.",
+            "WAVE FO (Field Operations) is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract.",
             "You start with a free Basic Profile. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "#374151", margin: 0 }}>{p}</p>
@@ -280,7 +280,7 @@ export default function WhySurfCoast() {
       {/* WAVE FO TIER CARDS */}
       <section style={{ background: "#f8f9fa", padding: "80px 24px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "12px", letterSpacing: "-1px", textAlign: "center" }}>WAVE FO Plans</h2>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "12px", letterSpacing: "-1px", textAlign: "center" }}>WAVE FO (Field Operations) Plans</h2>
           <p style={{ textAlign: "center", color: "#6b7280", fontSize: "17px", marginBottom: "48px" }}>For contractors and independent professionals. All plans include a 2-week free trial.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
             {WAVE_TIERS.map((tier, i) => (
