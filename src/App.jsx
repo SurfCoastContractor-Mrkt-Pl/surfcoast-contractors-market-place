@@ -132,101 +132,70 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Home" element={<Navigate to="/" replace />} />
-      <Route path="/BoothsAndVendorsMap" element={
-        <LayoutWrapper currentPageName="BoothsAndVendorsMap">
-          <BoothsAndVendorsMap />
-        </LayoutWrapper>
-      } />
-      <Route path="/vendor/:vendorId" element={
-        <LayoutWrapper currentPageName="VendorDetail">
-          <VendorDetail />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorFinancialDashboard" element={
-        <LayoutWrapper currentPageName="ContractorFinancialDashboard">
-          <ContractorFinancialDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorAccount" element={
-        <LayoutWrapper currentPageName="ContractorAccount">
-          <ContractorAccount />
-        </LayoutWrapper>
-      } />
-      <Route path="/contractorAccount" element={
-        <Navigate to="/ContractorAccount" replace />
-      } />
-      <Route path="/ContractorBusinessHub" element={
-        <LayoutWrapper currentPageName="ContractorBusinessHub">
-          <ContractorBusinessHub />
-        </LayoutWrapper>
-      } />
-      <Route path="/ConsumerHub" element={
-        <LayoutWrapper currentPageName="ConsumerHub">
-          <ConsumerHub />
-        </LayoutWrapper>
-      } />
       <Route path="/About" element={
         <LayoutWrapper currentPageName="About">
           <About />
         </LayoutWrapper>
       } />
-      <Route path="/contractor/:contractorId" element={
-        <LayoutWrapper currentPageName="ContractorPublicProfile">
-          <ContractorPublicProfile />
+      <Route path="/ActivityConsolidationDashboard" element={
+        <LayoutWrapper currentPageName="ActivityConsolidationDashboard">
+          <ActivityConsolidationDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/ConsumerSignup" element={
-        <LayoutWrapper currentPageName="ConsumerSignup">
-          <ConsumerSignup />
+      <Route path="/activity-audit" element={
+        <LayoutWrapper currentPageName="ActivityAuditDashboard">
+          <ActivityAuditDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/ReferralSignup" element={
-        <LayoutWrapper currentPageName="ReferralSignup">
-          <ReferralSignup />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin-control-hub" element={
+        <LayoutWrapper currentPageName="AdminControlHub">
+          <AdminControlHub />
         </LayoutWrapper>
       } />
-      <Route path="/SearchAnalytics" element={
-        <LayoutWrapper currentPageName="SearchAnalytics">
-          <SearchAnalytics />
+      <Route path="/AdminWaveFo" element={<AdminWaveFo />} />
+      <Route path="/adminfieldops" element={<AdminWaveFo />} /> {/* Legacy redirect */}
+      <Route path="/advanced-analytics" element={
+        <LayoutWrapper currentPageName="AdvancedAnalyticsDashboard">
+          <AdvancedAnalyticsDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/ContractorInquiries" element={
-        <LayoutWrapper currentPageName="ContractorInquiries">
-          <ContractorInquiries />
+      <Route path="/ai-scheduling-assistant" element={
+        <LayoutWrapper currentPageName="AISchedulingAssistant">
+          <AISchedulingAssistant />
+        </LayoutWrapper>
+      } />
+      <Route path="/alert-management" element={
+        <LayoutWrapper currentPageName="AlertManagementDashboard">
+          <AlertManagementDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/api-usage-analytics" element={
+        <LayoutWrapper currentPageName="APIUsageAnalyticsDashboard">
+          <APIUsageAnalyticsDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/availability-manager" element={
+        <LayoutWrapper currentPageName="AvailabilityManager">
+          <AvailabilityManager />
         </LayoutWrapper>
       } />
       <Route path="/BecomeContractor" element={<BecomeContractor />} />
-      <Route path="/MarketShopSignup" element={<MarketShopSignup />} />
-      <Route path="/CustomerSignup" element={<CustomerSignup />} />
-      <Route path="/ProjectManagement" element={
-        <LayoutWrapper currentPageName="ProjectManagement">
-          <ProjectManagement />
+      <Route path="/BoothsAndVendorsMap" element={
+        <LayoutWrapper currentPageName="BoothsAndVendorsMap">
+          <BoothsAndVendorsMap />
         </LayoutWrapper>
       } />
-      <Route path="/QuoteRequestWizard" element={
-        <LayoutWrapper currentPageName="QuoteRequestWizard">
-          <QuoteRequestWizard />
+      <Route path="/challenge/:token" element={
+        <LayoutWrapper currentPageName="GameChallenge">
+          <GameChallenge />
         </LayoutWrapper>
       } />
-      <Route path="/ResidentialWaveDashboard" element={
-        <LayoutWrapper currentPageName="ResidentialWaveDashboard">
-          <ResidentialWaveDashboard />
+      <Route path="/collaboration" element={
+        <LayoutWrapper currentPageName="Phase4CollaborationHub">
+          <Phase4CollaborationHub />
         </LayoutWrapper>
       } />
-      <Route path="/ContractorQuotesManagement" element={
-        <LayoutWrapper currentPageName="ContractorQuotesManagement">
-          <ContractorQuotesManagement />
-        </LayoutWrapper>
-      } />
-      <Route path="/WaveFo" element={<WaveFo />} />
-      <Route path="/FieldOps" element={<WaveFo />} /> {/* Legacy redirect */}
-      <Route path="/AdminWaveFo" element={<AdminWaveFo />} />
-      <Route path="/adminfieldops" element={<AdminWaveFo />} /> {/* Legacy redirect */}
-      <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
-      <Route path="/WaveFoReporting" element={<WaveFoReporting />} />
-      <Route path="/FieldOpsReporting" element={<WaveFoReporting />} /> {/* Legacy redirect */}
-      <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
       <Route path="/ComplianceDashboard" element={
         <LayoutWrapper currentPageName="ComplianceDashboard">
           <ComplianceDashboard />
@@ -237,44 +206,113 @@ const AuthenticatedApp = () => {
           <ComplianceGuide />
         </LayoutWrapper>
       } />
-      <Route path="/PaymentDemo" element={
-        <LayoutWrapper currentPageName="PaymentDemo">
-          <PaymentDemo />
+      <Route path="/ConsumerHub" element={
+        <LayoutWrapper currentPageName="ConsumerHub">
+          <ConsumerHub />
         </LayoutWrapper>
       } />
-      <Route path="/TimedChatSession" element={
-        <LayoutWrapper currentPageName="TimedChatSession">
-          <TimedChatSession />
+      <Route path="/ConsumerSignup" element={
+        <LayoutWrapper currentPageName="ConsumerSignup">
+          <ConsumerSignup />
         </LayoutWrapper>
       } />
-      <Route path="/QuoteRequestSuccess" element={
-        <LayoutWrapper currentPageName="QuoteRequestSuccess">
-          <QuoteRequestSuccess />
+      <Route path="/ContractorAccount" element={
+        <LayoutWrapper currentPageName="ContractorAccount">
+          <ContractorAccount />
         </LayoutWrapper>
       } />
-      <Route path="/NotionHub" element={
-        <LayoutWrapper currentPageName="NotionHub">
-          <NotionHub />
+      <Route path="/contractorAccount" element={
+        <Navigate to="/ContractorAccount" replace />
+      } />
+      <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
+      <Route path="/ContractorBusinessHub" element={
+        <LayoutWrapper currentPageName="ContractorBusinessHub">
+          <ContractorBusinessHub />
         </LayoutWrapper>
       } />
-      <Route path="/SurfCoastPerformanceDashboard" element={
-        <LayoutWrapper currentPageName="SurfCoastPerformanceDashboard">
-          <SurfCoastPerformanceDashboard />
+      <Route path="/ContractorFinancialDashboard" element={
+        <LayoutWrapper currentPageName="ContractorFinancialDashboard">
+          <ContractorFinancialDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/SurfCoastReviewRequestsManager" element={
-        <LayoutWrapper currentPageName="SurfCoastReviewRequestsManager">
-          <SurfCoastReviewRequestsManager />
+      <Route path="/ContractorInquiries" element={
+        <LayoutWrapper currentPageName="ContractorInquiries">
+          <ContractorInquiries />
         </LayoutWrapper>
       } />
-      <Route path="/ActivityConsolidationDashboard" element={
-        <LayoutWrapper currentPageName="ActivityConsolidationDashboard">
-          <ActivityConsolidationDashboard />
+      <Route path="/ContractorQuotesManagement" element={
+        <LayoutWrapper currentPageName="ContractorQuotesManagement">
+          <ContractorQuotesManagement />
         </LayoutWrapper>
       } />
-      <Route path="/review-consumer-order" element={
-        <LayoutWrapper currentPageName="SubmitConsumerOrderReview">
-          <SubmitConsumerOrderReview />
+      <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
+      <Route path="/contractor/:contractorId" element={
+        <LayoutWrapper currentPageName="ContractorPublicProfile">
+          <ContractorPublicProfile />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-inventory" element={
+        <LayoutWrapper currentPageName="ContractorInventoryDashboard">
+          <ContractorInventoryDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-inventory-management" element={
+        <LayoutWrapper currentPageName="ContractorInventory">
+          <ContractorInventory />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-services" element={
+        <LayoutWrapper currentPageName="ContractorServices">
+          <ContractorServices />
+        </LayoutWrapper>
+      } />
+      <Route path="/CustomerSignup" element={<CustomerSignup />} />
+      <Route path="/customer-portal" element={
+        <LayoutWrapper currentPageName="CustomerPortal">
+          <CustomerPortal />
+        </LayoutWrapper>
+      } />
+      <Route path="/database-management" element={
+        <LayoutWrapper currentPageName="DatabaseManagementDashboard">
+          <DatabaseManagementDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/error-monitoring" element={
+        <LayoutWrapper currentPageName="ErrorMonitoringDashboard">
+          <ErrorMonitoringDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/farmers-market-ratings" element={
+        <LayoutWrapper currentPageName="FarmersMarketRatings">
+          <FarmersMarketRatings />
+        </LayoutWrapper>
+      } />
+      <Route path="/FieldOps" element={<WaveFo />} /> {/* Legacy redirect */}
+      <Route path="/FieldOpsReporting" element={<WaveFoReporting />} /> {/* Legacy redirect */}
+      <Route path="/game-analytics" element={
+        <LayoutWrapper currentPageName="GameAnalyticsDashboard">
+          <GameAnalyticsDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/Home" element={<Navigate to="/" replace />} />
+      <Route path="/job-expense-tracker" element={
+        <LayoutWrapper currentPageName="JobExpenseTracker">
+          <JobExpenseTracker />
+        </LayoutWrapper>
+      } />
+      <Route path="/job-pipeline" element={
+        <LayoutWrapper currentPageName="ContractorJobPipeline">
+          <ContractorJobPipeline />
+        </LayoutWrapper>
+      } />
+      <Route path="/leaderboard" element={
+        <LayoutWrapper currentPageName="GameLeaderboard">
+          <GameLeaderboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/location-rating-admin" element={
+        <LayoutWrapper currentPageName="LocationRatingAdmin">
+          <LocationRatingAdmin />
         </LayoutWrapper>
       } />
       <Route path="/market-shop-analytics" element={
@@ -287,89 +325,20 @@ const AuthenticatedApp = () => {
           <MarketShopInventory />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-services" element={
-        <LayoutWrapper currentPageName="ContractorServices">
-          <ContractorServices />
-        </LayoutWrapper>
-      } />
-      <Route path="/job-expense-tracker" element={
-        <LayoutWrapper currentPageName="JobExpenseTracker">
-          <JobExpenseTracker />
-        </LayoutWrapper>
-      } />
-      <Route path="/contractor-inventory" element={
-        <LayoutWrapper currentPageName="ContractorInventoryDashboard">
-          <ContractorInventoryDashboard />
-        </LayoutWrapper>
-      } />
+      <Route path="/MarketShopSignup" element={<MarketShopSignup />} />
       <Route path="/multi-option-proposals" element={
         <LayoutWrapper currentPageName="MultiOptionProposals">
           <MultiOptionProposals />
         </LayoutWrapper>
       } />
-      <Route path="/customer-portal" element={
-        <LayoutWrapper currentPageName="CustomerPortal">
-          <CustomerPortal />
+      <Route path="/NotionHub" element={
+        <LayoutWrapper currentPageName="NotionHub">
+          <NotionHub />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-inventory-management" element={
-        <LayoutWrapper currentPageName="ContractorInventory">
-          <ContractorInventory />
-        </LayoutWrapper>
-      } />
-      <Route path="/availability-manager" element={
-        <LayoutWrapper currentPageName="AvailabilityManager">
-          <AvailabilityManager />
-        </LayoutWrapper>
-      } />
-      <Route path="/quickbooks-export" element={
-        <LayoutWrapper currentPageName="QuickBooksExport">
-          <QuickBooksExport />
-        </LayoutWrapper>
-      } />
-      <Route path="/ai-scheduling-assistant" element={
-        <LayoutWrapper currentPageName="AISchedulingAssistant">
-          <AISchedulingAssistant />
-        </LayoutWrapper>
-      } />
-      <Route path="/qb-sync-dashboard" element={
-        <LayoutWrapper currentPageName="QBSyncDashboard">
-          <QBSyncDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/trade-games" element={
-        <LayoutWrapper currentPageName="TradeGames">
-          <TradeGames />
-        </LayoutWrapper>
-      } />
-      <Route path="/challenge/:token" element={
-        <LayoutWrapper currentPageName="GameChallenge">
-          <GameChallenge />
-        </LayoutWrapper>
-      } />
-      <Route path="/leaderboard" element={
-        <LayoutWrapper currentPageName="GameLeaderboard">
-          <GameLeaderboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/game-analytics" element={
-        <LayoutWrapper currentPageName="GameAnalyticsDashboard">
-          <GameAnalyticsDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/error-monitoring" element={
-        <LayoutWrapper currentPageName="ErrorMonitoringDashboard">
-          <ErrorMonitoringDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/database-management" element={
-        <LayoutWrapper currentPageName="DatabaseManagementDashboard">
-          <DatabaseManagementDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/activity-audit" element={
-        <LayoutWrapper currentPageName="ActivityAuditDashboard">
-          <ActivityAuditDashboard />
+      <Route path="/PaymentDemo" element={
+        <LayoutWrapper currentPageName="PaymentDemo">
+          <PaymentDemo />
         </LayoutWrapper>
       } />
       <Route path="/performance-analytics" element={
@@ -377,29 +346,41 @@ const AuthenticatedApp = () => {
           <PerformanceAnalyticsDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/system-health" element={
-        <LayoutWrapper currentPageName="SystemHealthDashboard">
-          <SystemHealthDashboard />
+      <Route path="/platform-activity" element={
+        <LayoutWrapper currentPageName="PlatformActivityDashboard">
+          <PlatformActivityDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/admin-control-hub" element={
-        <LayoutWrapper currentPageName="AdminControlHub">
-          <AdminControlHub />
+      <Route path="/Pricing" element={<Pricing />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/ProjectManagement" element={
+        <LayoutWrapper currentPageName="ProjectManagement">
+          <ProjectManagement />
         </LayoutWrapper>
       } />
-      <Route path="/api-usage-analytics" element={
-        <LayoutWrapper currentPageName="APIUsageAnalyticsDashboard">
-          <APIUsageAnalyticsDashboard />
+      <Route path="/qb-sync-dashboard" element={
+        <LayoutWrapper currentPageName="QBSyncDashboard">
+          <QBSyncDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/advanced-analytics" element={
-        <LayoutWrapper currentPageName="AdvancedAnalyticsDashboard">
-          <AdvancedAnalyticsDashboard />
+      <Route path="/quickbooks-export" element={
+        <LayoutWrapper currentPageName="QuickBooksExport">
+          <QuickBooksExport />
         </LayoutWrapper>
       } />
-      <Route path="/alert-management" element={
-        <LayoutWrapper currentPageName="AlertManagementDashboard">
-          <AlertManagementDashboard />
+      <Route path="/QuoteRequestSuccess" element={
+        <LayoutWrapper currentPageName="QuoteRequestSuccess">
+          <QuoteRequestSuccess />
+        </LayoutWrapper>
+      } />
+      <Route path="/QuoteRequestWizard" element={
+        <LayoutWrapper currentPageName="QuoteRequestWizard">
+          <QuoteRequestWizard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ReferralSignup" element={
+        <LayoutWrapper currentPageName="ReferralSignup">
+          <ReferralSignup />
         </LayoutWrapper>
       } />
       <Route path="/remediation" element={
@@ -407,41 +388,60 @@ const AuthenticatedApp = () => {
           <RemediationDashboard />
         </LayoutWrapper>
       } />
+      <Route path="/ResidentialWaveDashboard" element={
+        <LayoutWrapper currentPageName="ResidentialWaveDashboard">
+          <ResidentialWaveDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/review-consumer-order" element={
+        <LayoutWrapper currentPageName="SubmitConsumerOrderReview">
+          <SubmitConsumerOrderReview />
+        </LayoutWrapper>
+      } />
+      <Route path="/SearchAnalytics" element={
+        <LayoutWrapper currentPageName="SearchAnalytics">
+          <SearchAnalytics />
+        </LayoutWrapper>
+      } />
       <Route path="/swap-meet-ratings" element={
         <LayoutWrapper currentPageName="SwapMeetRatings">
           <SwapMeetRatings />
         </LayoutWrapper>
       } />
-      <Route path="/farmers-market-ratings" element={
-        <LayoutWrapper currentPageName="FarmersMarketRatings">
-          <FarmersMarketRatings />
+      <Route path="/SurfCoastPerformanceDashboard" element={
+        <LayoutWrapper currentPageName="SurfCoastPerformanceDashboard">
+          <SurfCoastPerformanceDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/location-rating-admin" element={
-        <LayoutWrapper currentPageName="LocationRatingAdmin">
-          <LocationRatingAdmin />
+      <Route path="/SurfCoastReviewRequestsManager" element={
+        <LayoutWrapper currentPageName="SurfCoastReviewRequestsManager">
+          <SurfCoastReviewRequestsManager />
         </LayoutWrapper>
       } />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/platform-activity" element={
-        <LayoutWrapper currentPageName="PlatformActivityDashboard">
-          <PlatformActivityDashboard />
+      <Route path="/system-health" element={
+        <LayoutWrapper currentPageName="SystemHealthDashboard">
+          <SystemHealthDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/job-pipeline" element={
-        <LayoutWrapper currentPageName="ContractorJobPipeline">
-          <ContractorJobPipeline />
+      <Route path="/TimedChatSession" element={
+        <LayoutWrapper currentPageName="TimedChatSession">
+          <TimedChatSession />
         </LayoutWrapper>
       } />
-      <Route path="/collaboration" element={
-        <LayoutWrapper currentPageName="Phase4CollaborationHub">
-          <Phase4CollaborationHub />
+      <Route path="/trade-games" element={
+        <LayoutWrapper currentPageName="TradeGames">
+          <TradeGames />
         </LayoutWrapper>
       } />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/Pricing" element={<Pricing />} />
-      <Route path="/why-surfcoast" element={<WhySurfCoast />} />
+      <Route path="/vendor/:vendorId" element={
+        <LayoutWrapper currentPageName="VendorDetail">
+          <VendorDetail />
+        </LayoutWrapper>
+      } />
+      <Route path="/WaveFo" element={<WaveFo />} />
+      <Route path="/WaveFoReporting" element={<WaveFoReporting />} />
       <Route path="/WhySurfCoast" element={<WhySurfCoast />} />
+      <Route path="/why-surfcoast" element={<WhySurfCoast />} />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
