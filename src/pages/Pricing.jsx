@@ -301,11 +301,11 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Messaging note */}
+        {/* Messaging & Proposals note */}
         <div style={{ marginTop: "28px", background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.2)", borderRadius: "12px", padding: "16px 24px", display: "flex", alignItems: "flex-start", gap: "12px" }}>
           <Zap size={16} style={{ color: "#38bdf8", flexShrink: 0, marginTop: "2px" }} />
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.65 }}>
-            <strong style={{ color: "#38bdf8" }}>Client Messaging:</strong> Paid add-on. Sessions are <strong style={{ color: "#f1f5f9" }}>$1.50/session</strong> or <strong style={{ color: "#f1f5f9" }}>$50/month</strong> for unlimited. The <strong style={{ color: "#f472b6" }}>WAVE Residential Bundle</strong> includes unlimited messaging at no extra cost.
+            <strong style={{ color: "#38bdf8" }}>Client Messaging:</strong> Paid add-on. Sessions are <strong style={{ color: "#f1f5f9" }}>$1.50/session</strong> or <strong style={{ color: "#f1f5f9" }}>$50/month</strong> for unlimited. The <strong style={{ color: "#f472b6" }}>WAVE Residential Bundle</strong> includes unlimited messaging at no extra cost. <strong style={{ color: "#38bdf8" }}>Proposals:</strong> <strong style={{ color: "#f1f5f9" }}>$1.75</strong> per submission.
           </p>
         </div>
 
