@@ -172,24 +172,37 @@ export default function Home() {
         <WhySurfCoastSection />
 
         {/* Why SurfCoast - Benefits */}
-        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
+        <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
           {[
             {
-              title: 'For Contractors',
+              title: 'For Contractors of all kinds',
               points: [
                 'WAVE Starter at $19/month',
                 'Job scheduling & invoicing',
-                'Customer portal & messaging',
-                'Mobile app with full features'
+                'Client portal',
+                'Mobile app with full features',
+                'Freelancers, creatives, services',
+                'Flexible month-to-month plans',
+                'No contracts or setup fees',
+                'Cancel anytime, no penalties'
               ]
             },
             {
               title: 'For MarketShop Vendors',
               points: [
-                'Sign up for a booth or space',
+                'Market booth management',
                 'Inventory tracking & payments',
-                'Customer reviews & ratings',
+                'Client reviews & ratings',
                 'Marketing tools at $35/month'
+              ]
+            },
+            {
+              title: 'For Consumers',
+              points: [
+                'Shop local farmers markets & swap meets',
+                'Browse vendor booths near you',
+                'Save your favorite vendors',
+                'Free to join, no subscription needed'
               ]
             }
           ].map((section, idx) => (
