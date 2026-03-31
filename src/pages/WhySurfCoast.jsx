@@ -17,7 +17,7 @@ const WHO_TABS = [
     ]
   },
   {
-    label: "Market Vendors",
+    label: "Market Booth Operators",
     types: [
       "Food Vendors", "Bakers", "Jewelry Makers", "Clothing Boutiques", "Plant Nurseries",
       "Candle Makers", "Vintage Collectors", "Farmers & Produce", "Artisan Crafts", "Pet Supplies",
@@ -36,116 +36,10 @@ const WHO_TABS = [
   }
 ];
 
-const WAVE_TIERS = [
-  {
-    name: "WAVE Starter",
-    price: "$19",
-    tag: "",
-    subtitle: "Best for new contractors getting started",
-    pitch: "The perfect entry point for independent professionals just getting started. WAVE Starter gives you everything you need to build your profile, land your first clients, and start operating professionally — without the overhead of a bloated platform.",
-    features: [
-      "Public contractor profile with photo & bio",
-      "Up to 5 active job postings",
-      "Basic client messaging",
-      "Quote request management",
-      "Job scheduling calendar",
-      "Mobile app access",
-      "Standard customer reviews",
-      "Email notifications",
-      "Basic analytics dashboard",
-      "2-week free trial included"
-    ]
-  },
-  {
-    name: "WAVE Pro",
-    price: "$39",
-    tag: "",
-    subtitle: "Best for growing contractors ready to scale",
-    pitch: "For contractors who are ready to scale. WAVE Pro unlocks CRM tools, expanded job capacity, and enhanced visibility features that help you turn one-time clients into long-term relationships.",
-    features: [
-      "Everything in WAVE Starter",
-      "Unlimited job postings",
-      "Client Relationship Manager (CRM)",
-      "Invoice generation & PDF export",
-      "Scope of Work builder",
-      "After-photo documentation",
-      "Project milestone tracking",
-      "Priority search placement",
-      "Custom service packages",
-      "Performance analytics",
-      "Referral tracking",
-      "Team collaboration tools"
-    ]
-  },
-  {
-    name: "WAVE Max",
-    price: "$59",
-    tag: "Most Popular",
-    subtitle: "Best for established contractors who need everything",
-    pitch: "WAVE Max is the sweet spot for serious operators. It includes every tool a professional contractor needs to run a tight, efficient business — from document management to real-time GPS tracking and multi-device sync.",
-    features: [
-      "Everything in WAVE Pro",
-      "GPS-based job tracking",
-      "Field operations mobile suite",
-      "Document management hub",
-      "Multi-option client proposals",
-      "Escrow payment support",
-      "Project file sharing with clients",
-      "Progress payment phases",
-      "Contractor compliance tools",
-      "Real-time availability manager",
-      "Advanced scheduling assistant",
-      "QuickBooks CSV export",
-      "Custom invoice branding"
-    ]
-  },
-  {
-    name: "WAVE FO Premium",
-    price: "$100",
-    tag: "",
-    subtitle: "Best for licensed sole proprietors (HIS verified)",
-    pitch: "Built for licensed professionals and growing businesses that demand the full suite. WAVE FO Premium includes everything in Max, plus AI-powered tools, advanced analytics, and integrations with external platforms like Notion and HubSpot.",
-    features: [
-      "Everything in WAVE Max",
-      "AI scheduling assistant",
-      "AI bio & proposal generator",
-      "HubSpot CRM sync",
-      "Notion project page integration",
-      "Campaign management tools",
-      "Case study builder",
-      "Contractor leaderboard & trade games",
-      "Full audit trail & activity log",
-      "Advanced job pipeline views",
-      "Residential Wave invoicing suite",
-      "Priority support"
-    ]
-  },
-  {
-    name: "WAVE Residential Bundle",
-    price: "$125",
-    tag: "All-In",
-    subtitle: "Best for licensed operators who want everything",
-    pitch: "The ultimate contractor package. WAVE Residential Bundle combines the WAVE FO Premium plan ($100/month) and the $50/month Unlimited Communication subscription — giving you unlimited client messaging, lead capture, scope signing, and full Residential Wave invoicing, all under one bundled price.",
-    features: [
-      "Everything in WAVE FO Premium ($100/month value)",
-      "Unlimited client communication — $50/month subscription included",
-      "Unlimited messaging with clients — no per-session fees",
-      "Residential Wave lead management",
-      "Residential Wave job tracking",
-      "Residential Wave invoice management",
-      "Bundle-exclusive document templates",
-      "Revenue tracking & bundle reports",
-      "White-label invoice option",
-      "Early access to new features",
-      "Full platform access — no add-ons needed"
-    ]
-  }
-];
-
 const STAND_APART = [
   {
     title: "Discovery is built in",
-    body: "Your profile is searchable from day one — no ad spend required. Customers in your area find you based on trade, location, availability, and ratings."
+    body: "Your profile is searchable from day one — no ad spend required. Clients in your area find you based on trade, location, availability, and ratings."
   },
   {
     title: "Free forever profile",
@@ -157,11 +51,11 @@ const STAND_APART = [
   },
   {
     title: "Works for every worker type",
-    body: "Trades, vendors, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche."
+    body: "Trades, booth operators, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche."
   },
   {
-    title: "WAVEShop has zero commissions",
-    body: "You keep every dollar you earn. The $35/month subscription is the only cost — no percentages taken on sales, ever."
+    title: "WAVEShop FO has zero commissions",
+    body: "Booth operators keep every dollar they earn. The $20/month subscription is the only cost — no percentages taken on sales, ever."
   },
   {
     title: "California compliance built in",
@@ -174,8 +68,8 @@ const COMPARISON_ROWS = [
   ["No setup fees", true, false],
   ["Month-to-month plans", true, false],
   ["Built for solo operators", true, false],
-  ["Market vendor support", true, false],
-  ["No commission on vendor sales", true, false],
+  ["Market booth operator support", true, false],
+  ["No commission on booth sales", true, false],
   ["Compliance tools built in", true, false],
   ["Mobile-first design", true, false],
   ["Integrated job + market platform", true, false],
@@ -227,8 +121,8 @@ export default function WhySurfCoast() {
         <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "40px", letterSpacing: "-1px" }}>What Is SurfCoast Marketplace?</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
-            "SurfCoast Marketplace is a two-sided platform connecting people who need work done with the people who do it. Whether you're a homeowner looking for a licensed plumber or a vendor setting up a booth at the local farmers market — SurfCoast is where that connection happens.",
-            "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEShop for market vendors. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
+            "SurfCoast Marketplace is a two-sided platform connecting people who need work done with the people who do it. Whether you're a homeowner looking for a licensed plumber or a booth operator setting up at the local farmers market — SurfCoast is where that connection happens.",
+            "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEShop FO for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
             "Every profile on SurfCoast is free. You never pay to be found. You only upgrade when you need more."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: i === 2 ? "#0a1628" : "#374151", fontWeight: i === 2 ? "700" : "400", margin: 0, borderLeft: i === 2 ? "4px solid #d97706" : "none", paddingLeft: i === 2 ? "20px" : "0" }}>{p}</p>
@@ -270,88 +164,14 @@ export default function WhySurfCoast() {
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
             "WAVE FO (Field Operations) is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract.",
+            "WAVEShop FO is the same ecosystem applied to market booth operators — farmers market sellers, flea market booth holders, and swap meet space operators. It gives in-person sellers the same professional tools: inventory, scheduling, client management, and analytics, all under one flat monthly rate.",
             "You start with a free Basic Profile. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "#374151", margin: 0 }}>{p}</p>
           ))}
         </div>
-      </section>
-
-      {/* WAVE FO TIER CARDS */}
-      <section style={{ background: "#f8f9fa", padding: "80px 24px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "12px", letterSpacing: "-1px", textAlign: "center" }}>WAVE FO (Field Operations) Plans</h2>
-          <p style={{ textAlign: "center", color: "#6b7280", fontSize: "17px", marginBottom: "48px" }}>For contractors and independent professionals. All plans include a 2-week free trial.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
-            {WAVE_TIERS.map((tier, i) => (
-              <div key={i} style={{ background: "#fff", border: tier.tag === "Most Popular" ? "2px solid #d97706" : tier.tag === "All-In" ? "2px solid #0a1628" : "1px solid #e5e7eb", borderRadius: "16px", padding: "28px 22px", display: "flex", flexDirection: "column", gap: "14px", position: "relative" }}>
-                {tier.tag && (
-                  <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: tier.tag === "Most Popular" ? "#d97706" : "#0a1628", color: "#fff", fontSize: "10px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", letterSpacing: "1px", whiteSpace: "nowrap" }}>{tier.tag}</div>
-                )}
-                <div>
-                  <h3 style={{ fontSize: "16px", fontWeight: "800", margin: "0 0 2px" }}>{tier.name}</h3>
-                  <p style={{ fontSize: "11px", color: "#6b7280", margin: "0 0 8px", fontWeight: "500" }}>{tier.subtitle}</p>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-                    <span style={{ fontSize: "36px", fontWeight: "900", color: "#d97706" }}>{tier.price}</span>
-                    <span style={{ fontSize: "13px", color: "#6b7280" }}>/month</span>
-                  </div>
-                </div>
-                <p style={{ fontSize: "13px", lineHeight: 1.65, color: "#374151", margin: 0 }}>{tier.pitch}</p>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "7px", flex: 1 }}>
-                  {tier.features.map((f, j) => (
-                    <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "12.5px", color: "#374151" }}>
-                      <CheckCircle size={13} style={{ color: "#d97706", marginTop: "2px", flexShrink: 0 }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a href="/BecomeContractor" style={{ display: "block", textAlign: "center", background: tier.tag === "Most Popular" ? "#d97706" : tier.tag === "All-In" ? "#0a1628" : "#0a1628", color: "#fff", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", marginTop: "8px" }}>
-                  Get Started
-                </a>
-              </div>
-            ))}
-          </div>
-
-          {/* WAVEShop Card */}
-          <div style={{ marginTop: "48px", background: "#fff", border: "2px solid #9d7a54", borderRadius: "16px", padding: "40px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "start" }}>
-            <div>
-              <p style={{ fontSize: "12px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#9d7a54", marginBottom: "8px" }}>Market Vendors</p>
-              <h3 style={{ fontSize: "28px", fontWeight: "900", margin: "0 0 8px" }}>WAVEShop Vendor</h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "16px" }}>
-                <span style={{ fontSize: "48px", fontWeight: "900", color: "#9d7a54" }}>$35</span>
-                <span style={{ fontSize: "14px", color: "#6b7280" }}>/month</span>
-              </div>
-              <p style={{ fontSize: "15px", lineHeight: 1.8, color: "#374151", marginBottom: "20px" }}>
-                For farmers market and swap meet vendors who want a professional booth presence without giving away a cut of every sale. WAVEShop is a flat-rate subscription that covers everything you need — listings, reviews, inventory, and discovery — with zero commission taken on your sales ever.
-              </p>
-              <a href="/MarketShopSignup" style={{ display: "inline-block", background: "#9d7a54", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>
-                Set Up Your Booth
-              </a>
-            </div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
-              {[
-                "Public booth/shop profile page",
-                "Product listings with photos & prices",
-                "Inventory tracking",
-                "Customer reviews & ratings",
-                "Farmers market & swap meet directory listing",
-                "Booth schedule management",
-                "Analytics dashboard",
-                "Vendor inquiry inbox",
-                "Marketing toolkit",
-                "Social media link integration",
-                "Photo gallery (up to 20 images)",
-                "Zero commission on all sales",
-                "Mobile-optimized dashboard",
-                "Early adopter pricing locked in"
-              ].map((f, i) => (
-                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "14px", color: "#374151" }}>
-                  <CheckCircle size={14} style={{ color: "#9d7a54", marginTop: "2px", flexShrink: 0 }} />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div style={{ marginTop: "40px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <a href="/pricing" style={{ background: "#0a1628", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>See All Plans & Pricing →</a>
         </div>
       </section>
 

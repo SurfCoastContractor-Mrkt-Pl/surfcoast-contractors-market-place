@@ -4,7 +4,7 @@ import { useState } from "react";
 const FREE_FEATURES = [
   "Public listing & discovery",
   "Receive job requests",
-  "Customer messaging",
+  "Basic inquiry responses",
   "Reviews & ratings",
   "Mobile access",
   "No credit card required",
@@ -20,11 +20,11 @@ const WAVE_TIERS = [
     features: [
       "Public contractor profile with photo & bio",
       "Up to 5 active job postings",
-      "Basic client messaging",
+      "Paid client messaging (per session)",
       "Quote request management",
       "Job scheduling calendar",
       "Mobile app access",
-      "Standard customer reviews",
+      "Standard client reviews",
       "Email notifications",
       "Basic analytics dashboard",
       "2-week free trial included",
@@ -101,7 +101,9 @@ const WAVE_TIERS = [
     subtitle: "Best for licensed operators who want everything",
     accent: "#f472b6",
     features: [
-      "Everything in WAVE FO Premium",
+      "Everything in WAVE FO Premium ($100/month value)",
+      "Unlimited client messaging — $50/month add-on included",
+      "No per-session messaging fees",
       "Residential Wave lead management",
       "Residential Wave job tracking",
       "Residential Wave invoice management",
@@ -114,15 +116,15 @@ const WAVE_TIERS = [
   },
 ];
 
-const WAVESHOP_FEATURES = [
+const WAVESHOP_FO_FEATURES = [
   "Public booth/shop profile page",
   "Product listings with photos & prices",
   "Inventory tracking",
-  "Customer reviews & ratings",
+  "Client reviews & ratings",
   "Farmers market & swap meet directory listing",
   "Booth schedule management",
   "Analytics dashboard",
-  "Vendor inquiry inbox",
+  "Inquiry inbox",
   "Marketing toolkit",
   "Social media link integration",
   "Photo gallery (up to 20 images)",
@@ -145,12 +147,12 @@ const FAQ_ITEMS = [
     a: "No. Never. You pay the monthly rate and nothing else."
   },
   {
-    q: "What's the difference between WAVE FO and WAVEShop?",
-    a: "WAVE FO is for contractors and independent service workers. WAVEShop is for market vendors — farmers market sellers, swap meet vendors, and boutique shops. They are separate tracks."
+    q: "What's the difference between WAVE FO and WAVEShop FO?",
+    a: "WAVE FO is the field operations program for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools. WAVEShop FO is the same field operations ecosystem adapted for market booth operators — farmers market sellers, flea market vendors, and swap meet space holders. They are separate tracks of the same platform."
   },
   {
-    q: "Does SurfCoast take a commission on vendor sales?",
-    a: "No. WAVEShop vendors keep 100% of what they sell. The $35/mo subscription is the only cost."
+    q: "Does SurfCoast take a commission on booth sales?",
+    a: "No. WAVEShop FO booth operators keep 100% of what they sell. The $20/mo subscription is the only cost."
   },
   {
     q: "Do I need a license to join?",
@@ -158,7 +160,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is the 18% facilitation fee?",
-    a: "When a customer pays for a job through the platform, SurfCoast collects an 18% facilitation fee automatically via Stripe. This covers payment processing, platform infrastructure, and dispute protection. Contractors receive 82% directly to their connected bank account."
+    a: "When a client pays for a job through the platform, SurfCoast collects an 18% facilitation fee automatically via Stripe. This covers payment processing, platform infrastructure, and dispute protection. Contractors receive 82% directly to their connected bank account."
+  },
+  {
+    q: "Is messaging free?",
+    a: "No. Client messaging is a paid feature. Sessions are available for $1.50 each, or you can add the $50/month Unlimited Communication plan. The WAVE Residential Bundle includes unlimited messaging at no extra charge."
   },
   {
     q: "Can I upgrade or downgrade my plan?",
@@ -211,7 +217,7 @@ export default function Pricing() {
           Month-to-month. No setup fees. No annual contracts. Cancel anytime.
         </p>
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
-          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop</strong> for market vendors
+          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
         </p>
         <a href="/BecomeContractor" style={{ display: "inline-block", background: "#f59e0b", color: "#0f172a", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>
           Get Started Free →
@@ -250,7 +256,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVE FO Plans</h2>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVE FO (Field Operations) Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>For contractors, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
         </div>
 
@@ -285,28 +291,35 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Fine print */}
-        <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.35)", marginTop: "28px" }}>
+        {/* Messaging note */}
+        <div style={{ marginTop: "28px", background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.2)", borderRadius: "12px", padding: "16px 24px", display: "flex", alignItems: "flex-start", gap: "12px" }}>
+          <Zap size={16} style={{ color: "#38bdf8", flexShrink: 0, marginTop: "2px" }} />
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.65 }}>
+            <strong style={{ color: "#38bdf8" }}>Client Messaging:</strong> Paid add-on. Sessions are <strong style={{ color: "#f1f5f9" }}>$1.50/session</strong> or <strong style={{ color: "#f1f5f9" }}>$50/month</strong> for unlimited. The <strong style={{ color: "#f472b6" }}>WAVE Residential Bundle</strong> includes unlimited messaging at no extra cost.
+          </p>
+        </div>
+
+        <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.35)", marginTop: "20px" }}>
           All plans are month-to-month · No setup fees · No contracts · Cancel anytime
         </p>
       </section>
 
-      {/* WAVESHOP */}
+      {/* WAVESHOP FO */}
       <section style={{ maxWidth: "900px", margin: "0 auto 80px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#c084fc", marginBottom: "10px" }}>Vendor Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop</h2>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "480px", margin: "0 auto" }}>For farmers market &amp; swap meet vendors. Flat rate, zero commissions, no listing fees.</p>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#c084fc", marginBottom: "10px" }}>Market Booth Operator Track</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "520px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Flat rate, zero commissions, no listing fees.</p>
         </div>
         <div style={{ background: "rgba(192,132,252,0.06)", border: "1px solid rgba(192,132,252,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "48px", alignItems: "start" }}>
           <div style={{ minWidth: "220px" }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "16px" }}>
-              <span style={{ fontSize: "56px", fontWeight: "900", color: "#c084fc" }}>$35</span>
+              <span style={{ fontSize: "56px", fontWeight: "900", color: "#c084fc" }}>$20</span>
               <span style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)" }}>/month</span>
             </div>
             <div style={{ background: "rgba(192,132,252,0.12)", border: "1px solid rgba(192,132,252,0.3)", borderRadius: "10px", padding: "14px 16px", marginBottom: "24px" }}>
               <p style={{ fontSize: "13px", fontWeight: "800", color: "#c084fc", margin: "0 0 4px" }}>Zero Commission Guarantee</p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Sell $500 or $50,000 — you keep every dollar. No hidden fees, ever.</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Sell $500 or $50,000 — you keep every dollar. No hidden fees on sales, ever.</p>
             </div>
             <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#c084fc", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none" }}>
               Set Up Your Booth →
@@ -314,7 +327,7 @@ export default function Pricing() {
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", marginTop: "12px", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
           </div>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 20px" }}>
-            {WAVESHOP_FEATURES.map((f, i) => (
+            {WAVESHOP_FO_FEATURES.map((f, i) => (
               <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
                 <CheckCircle size={13} style={{ color: "#c084fc", marginTop: "2px", flexShrink: 0 }} />
                 {f}
