@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-slate-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Back to Home Button - Top */}
-        <Link to="/Landing" className="inline-block mb-8">
+        <Link to="/" className="inline-block mb-8">
           <Button variant="outline" className="gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -178,7 +178,7 @@ export default function PrivacyPolicy() {
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Children's Privacy</h2>
           <p className="text-slate-700 leading-relaxed">
-            SurfCoast Marketplace is not intended for use by anyone under the age of 18. We do not knowingly collect personal information from minors. If we become aware that a minor has created an account, we will delete the account and associated data immediately.
+            SurfCoast Marketplace allows contractors aged 13 and older to register with verified parental consent. All users under 18 must complete the minor onboarding process including parental consent documentation before their account is activated. We do not knowingly collect personal information from minors without parental consent. If a minor has registered without required parental consent, their account will be suspended and data removed.
           </p>
         </div>
 
@@ -222,7 +222,7 @@ export default function PrivacyPolicy() {
         </div>
 
         {/* Back to Home Button - Bottom */}
-        <Link to="/Landing" className="block text-center">
+        <Link to="/" className="block text-center">
           <Button variant="outline" className="gap-2 mx-auto">
             <ArrowLeft className="w-4 h-4" />
             Back to Home

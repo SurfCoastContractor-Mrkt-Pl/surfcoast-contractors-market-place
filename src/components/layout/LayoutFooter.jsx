@@ -79,7 +79,7 @@ export default function LayoutFooter({
         </div>
 
         <div className="border-t border-slate-800 mt-4 sm:mt-6 pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
-          <span className="text-xs">© {new Date().getFullYear()} SurfCoast Contractor Market Place. All rights reserved.</span>
+          <span className="text-xs">© {new Date().getFullYear()} SurfCoast Marketplace. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-3 sm:gap-3">
             <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors text-xs">Terms</Link>
             <span className="text-slate-500">•</span>
