@@ -125,9 +125,11 @@ const WAVE_TIERS = [
     price: "$125",
     tag: "All-In",
     subtitle: "Best for licensed operators who want everything",
-    pitch: "The ultimate contractor package. WAVE Residential Bundle combines WAVE FO Premium with the full Residential Wave invoicing suite — everything from lead capture to scope signing to final invoice delivery, all under one subscription.",
+    pitch: "The ultimate contractor package. WAVE Residential Bundle combines the WAVE FO Premium plan ($100/month) and the $50/month Unlimited Communication subscription — giving you unlimited client messaging, lead capture, scope signing, and full Residential Wave invoicing, all under one bundled price.",
     features: [
-      "Everything in WAVE FO Premium",
+      "Everything in WAVE FO Premium ($100/month value)",
+      "Unlimited client communication — $50/month subscription included",
+      "Unlimited messaging with clients — no per-session fees",
       "Residential Wave lead management",
       "Residential Wave job tracking",
       "Residential Wave invoice management",
