@@ -517,10 +517,15 @@ export default function Pricing() {
               <p style={{ fontSize: "24px", fontWeight: "900", color: "#38bdf8", margin: 0 }}>18%</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>On job payments</p>
             </div>
-            <div style={{ background: "rgba(30,90,150,0.1)", borderRadius: "8px", padding: "12px" }}>
+            <div style={{ background: "rgba(30,90,150,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Monthly Plans</p>
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>$19 – $125/mo</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Subscription-based tiers</p>
+            </div>
+            <div style={{ background: "rgba(30,90,150,0.1)", borderRadius: "8px", padding: "12px" }}>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Unlimited Messaging</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>$50/month</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Optional add-on (in Bundle)</p>
             </div>
           </div>
 
@@ -589,7 +594,7 @@ export default function Pricing() {
           Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Create Free Profile</a>
+          <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Get Started Free</a>
           <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>Why SurfCoast →</a>
         </div>
       </section>
@@ -597,7 +602,7 @@ export default function Pricing() {
       {/* FOOTER */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "28px 24px", textAlign: "center" }}>
         <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "12px", margin: 0 }}>
-          © 2026 SurfCoast Marketplace · <a href="/Terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Terms</a> · <a href="/PrivacyPolicy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Privacy</a>
+          © 2026 SurfCoast Marketplace · <a href="/terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Terms</a> · <a href="/privacy-policy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Privacy</a>
         </p>
       </footer>
     </div>

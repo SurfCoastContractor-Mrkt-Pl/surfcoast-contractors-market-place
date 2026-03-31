@@ -54,8 +54,8 @@ const STAND_APART = [
     body: "Trades, booth operators, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche."
   },
   {
-    title: "WAVEShop FO has zero commissions",
-    body: "Booth operators keep every dollar they earn. The $20/month subscription is the only cost — no percentages taken on sales, ever."
+    title: "WAVEShop FO has no commissions when subscribed",
+    body: "Choose your model: pay 5% per sale OR subscribe to $20/month to keep 100% of earnings. No commissions with subscription."
   },
   {
     title: "California compliance built in",
@@ -94,9 +94,8 @@ export default function WhySurfCoast() {
               onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.8)"}
             >{l.label}</a>
           ))}
-          <a href="/" onClick={e => { e.preventDefault(); window.base44?.auth?.redirectToLogin?.() || (window.location.href = "/"); }}
-            style={{ background: "#1d6fa4", color: "#fff", padding: "7px 18px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", textDecoration: "none", border: "1px solid #2589c7" }}>
-            Enter
+          <a href="/BecomeContractor" style={{ background: "#1d6fa4", color: "#fff", padding: "7px 18px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", textDecoration: "none", border: "1px solid #2589c7" }}>
+            Get Started Free
           </a>
         </nav>
       </header>
@@ -111,7 +110,7 @@ export default function WhySurfCoast() {
           SurfCoast Marketplace exists for independent workers, solo operators, and small trades businesses who need real tools — not corporate software built for someone else.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none" }}>Create Free Profile</a>
+          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</a>
           <a href="/pricing" style={{ background: "transparent", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.3)" }}>View All Plans</a>
         </div>
       </section>
@@ -221,7 +220,7 @@ export default function WhySurfCoast() {
           Create your free profile today — no credit card, no commitment. Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none" }}>Create Free Profile</a>
+          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</a>
           <a href="/pricing" style={{ background: "transparent", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.35)" }}>View All Plans</a>
         </div>
       </section>
