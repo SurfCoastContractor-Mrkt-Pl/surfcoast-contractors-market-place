@@ -138,52 +138,42 @@ const WAVE_TIERS = [
 
 const STAND_APART = [
   {
-    title: "Discovery Is Built In",
-    body: "Most platforms make you pay extra to be found. On SurfCoast, your public profile is searchable the moment it goes live. Customers in your area can find you based on trade type, location, availability, and ratings — all without you running ads or boosting posts. Your work speaks for itself."
+    title: "Discovery is built in",
+    body: "Your profile is searchable from day one — no ad spend required. Customers in your area find you based on trade, location, availability, and ratings."
   },
   {
-    title: "Free Forever Profile",
-    body: "We believe every professional deserves a digital presence. That's why every contractor gets a free public profile — verified reviews, portfolio images, contact info, and credentials — regardless of what plan they're on. No subscription required just to exist on the platform."
+    title: "Free forever profile",
+    body: "You never pay just to exist on the platform. Every professional gets a free public profile with reviews, portfolio images, and contact info."
   },
   {
-    title: "Pricing Built for Solo Operators",
-    body: "We didn't design our pricing around enterprise software budgets. Starting at $19/month with a free trial, SurfCoast was built so that a sole proprietor running a truck and a toolbox can afford the same professional tools as a ten-person operation. Every tier earns its price."
+    title: "Pricing built for solo operators",
+    body: "No enterprise minimums, no per-seat fees. Starting at $19/month, every tier is priced for the independent worker — not a 10-person office."
   },
   {
-    title: "Works for Every Worker Type",
-    body: "Trades, creatives, freelancers, market vendors — SurfCoast is intentionally built for the full spectrum of independent workers. Whether you're wiring houses or selling handmade jam, the platform adapts to your workflow rather than forcing you into a rigid mold designed for someone else."
+    title: "Works for every worker type",
+    body: "Trades, vendors, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche."
   },
   {
-    title: "WAVEShop: No Commission, Ever",
-    body: "Most marketplace platforms take 10–30% of every transaction your vendor makes. WAVEShop charges a flat $35/month — period. Sell $500 worth of produce or $5,000 worth of furniture: you keep everything. No hidden percentages, no surprise deductions at payout."
+    title: "WAVEShop has zero commissions",
+    body: "You keep every dollar you earn. The $35/month subscription is the only cost — no percentages taken on sales, ever."
   },
   {
-    title: "Compliance Built Into the Platform",
-    body: "SurfCoast includes compliance safeguards you won't find anywhere else — minor labor law enforcement, identity verification with document review, scope-of-work signature workflows, off-platform payment detection, and a full audit trail. Protecting workers and clients is a feature, not a legal footnote."
+    title: "California compliance built in",
+    body: "Licensing, waivers, and acknowledgments are handled inside the platform — not bolted on as an afterthought."
   }
 ];
 
 const COMPARISON_ROWS = [
-  ["Free public contractor profile", true, false],
-  ["No commission on vendor sales", true, false],
-  ["Mobile app with full field ops", true, false],
-  ["Starts at $19/month", true, false],
-  ["Free 2-week trial, no credit card", true, false],
-  ["Built-in compliance tools", true, false],
-  ["Identity verification included", true, false],
-  ["Scope of work with digital signature", true, false],
-  ["Supports market vendors (farmers/swap)", true, false],
-  ["Supports solo creatives & freelancers", true, false],
-  ["GPS job tracking", true, false],
-  ["Escrow payment system", true, true],
-  ["Client messaging included", true, false],
-  ["Invoice generation & PDF export", true, false],
+  ["Free profile & discovery", true, false],
   ["No setup fees", true, false],
-  ["No long-term contracts", true, false],
-  ["Minor labor law compliance tools", true, false],
-  ["Dispute resolution center", true, false],
-  ["HubSpot & Notion integration", true, false],
-  ["Trade-specific game discount system", true, false],
+  ["Month-to-month plans", true, false],
+  ["Built for solo operators", true, false],
+  ["Market vendor support", true, false],
+  ["No commission on vendor sales", true, false],
+  ["Compliance tools built in", true, false],
+  ["Mobile-first design", true, false],
+  ["Integrated job + market platform", true, false],
+  ["Cancel anytime", true, false],
 ];
 
 export default function WhySurfCoast() {
@@ -272,12 +262,10 @@ export default function WhySurfCoast() {
       {/* WAVE FO EXPLANATION */}
       <section style={{ maxWidth: "860px", margin: "0 auto", padding: "80px 24px" }}>
         <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "24px", letterSpacing: "-1px" }}>What Is WAVE FO?</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "16px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
-            "WAVE FO (Field Operations) is SurfCoast's tiered subscription system for contractors and independent professionals. It's the engine behind every tool on the contractor side of the platform — from job scheduling and client messaging to invoice generation, compliance tracking, GPS monitoring, and third-party integrations.",
-            "The system is designed as a progressive upgrade path. You start where you are, pay only for what you use, and unlock more capability as your business grows — without ever being locked into a contract or pressured into a tier that doesn't fit your current stage.",
-            "WAVE FO is fully mobile-optimized. Field technicians can manage their day entirely from a phone — clock into jobs, capture before and after photos, send invoices, communicate with clients, and track their location. The desktop version extends the same tools into a full administrative suite for billing, analytics, and project management.",
-            "Every plan includes a 2-week free trial. No credit card required to start. Cancel or upgrade at any time. The philosophy is simple: if the platform stops being worth it, you should be able to leave. We'd rather earn your subscription every month than trap you with a contract."
+            "WAVE FO is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract.",
+            "You start with a free Basic Profile. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "#374151", margin: 0 }}>{p}</p>
           ))}
@@ -404,7 +392,7 @@ export default function WhySurfCoast() {
       <section style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a3050 100%)", color: "#fff", textAlign: "center", padding: "100px 24px" }}>
         <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: "900", margin: "0 0 20px", letterSpacing: "-1.5px" }}>Ready to Get Started?</h2>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.75)", maxWidth: "540px", margin: "0 auto 40px", lineHeight: 1.65 }}>
-          Your profile is free. Your trial is free. Your work is yours. Join the marketplace built for the people who actually do the work.
+          Create your free profile today — no credit card, no commitment. Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
           <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none" }}>Create Free Profile</a>

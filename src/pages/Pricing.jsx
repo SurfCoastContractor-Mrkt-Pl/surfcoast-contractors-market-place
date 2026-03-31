@@ -1,11 +1,12 @@
-import { CheckCircle, Zap } from "lucide-react";
+import { CheckCircle, Zap, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 const FREE_FEATURES = [
-  "Public profile listing — searchable by customers",
-  "Customer discovery & inbound inquiries",
-  "Direct messaging with potential clients",
-  "Verified customer reviews & ratings",
-  "Portfolio image gallery",
+  "Public listing & discovery",
+  "Receive job requests",
+  "Customer messaging",
+  "Reviews & ratings",
+  "Mobile access",
   "No credit card required",
 ];
 
@@ -14,98 +15,151 @@ const WAVE_TIERS = [
     name: "WAVE Starter",
     price: 19,
     tag: null,
+    subtitle: "Best for new contractors getting started",
     accent: "#38bdf8",
     features: [
-      "Everything in Free Profile",
-      "Up to 5 active job postings",
-      "Quote request management",
-      "Job scheduling calendar",
-      "Mobile app access",
-      "Basic analytics dashboard",
-      "Email notifications",
-      "2-week free trial",
+      "Job scheduling (up to 5 concurrent)",
+      "Basic invoicing (up to 10/mo)",
+      "Text-only messaging",
+      "Mobile app (basic)",
+      "Availability calendar",
+      "Basic field notes & photo upload",
     ],
   },
   {
     name: "WAVE Pro",
     price: 39,
     tag: null,
+    subtitle: "Best for growing contractors",
     accent: "#a78bfa",
     features: [
       "Everything in Starter",
-      "Unlimited job postings",
-      "Client relationship manager (CRM)",
-      "Invoice generation & PDF export",
-      "Scope of Work builder with e-signature",
-      "After-photo documentation",
-      "Project milestone tracking",
-      "Priority search placement",
+      "Unlimited job scheduling",
+      "Unlimited invoicing",
+      "Lead tracking & pipeline",
+      "Document storage (1GB)",
+      "File attachments in messaging",
+      "Enhanced customer portal",
+      "Inventory tracking (up to 50 items)",
+      "Automated email workflows",
+      "CSV export for QuickBooks/Sage",
     ],
   },
   {
     name: "WAVE Max",
     price: 59,
-    tag: "Most Popular",
+    tag: "Most Popular ⭐",
+    subtitle: "Best for established contractors",
     accent: "#f59e0b",
     features: [
       "Everything in Pro",
-      "GPS-based job tracking",
-      "Field operations mobile suite",
-      "Document management hub",
-      "Multi-option client proposals",
-      "Escrow payment support",
-      "Progress payment phases",
-      "QuickBooks CSV export",
+      "Project tracking & completion reporting",
+      "Advanced analytics dashboards",
+      "AI-assisted scheduling",
+      "Document storage (5GB + version control)",
+      "Unlimited inventory",
+      "Advanced workflow automations",
+      "One-way QuickBooks integration",
     ],
   },
   {
     name: "WAVE FO Premium",
     price: 100,
     tag: null,
+    subtitle: "Best for licensed sole proprietors (HIS verified)",
     accent: "#34d399",
     features: [
       "Everything in Max",
-      "AI scheduling assistant",
-      "AI bio & proposal generator",
-      "HubSpot CRM sync",
-      "Notion project page integration",
-      "Campaign management tools",
-      "Advanced job pipeline views",
-      "Dedicated support priority",
+      "CSLB contract management",
+      "HIS license document management",
+      "Full team management",
+      "Priority support",
+      "White-label customer portal",
+      "Two-way QuickBooks & Sage integration",
+      "Unlimited workflow automations",
     ],
   },
   {
     name: "WAVE Residential Bundle",
     price: 125,
     tag: "All-In",
+    subtitle: "Best for licensed operators who want everything",
     accent: "#f472b6",
     features: [
       "Everything in Premium",
+      "Unlimited communication capabilities across all channels",
       "Residential Wave lead management",
       "Residential Wave job tracking",
       "Residential Wave invoice management",
       "Bundle-exclusive document templates",
       "Revenue tracking & bundle reports",
       "Early access to new features",
-      "White-label invoice option",
     ],
   },
 ];
 
 const WAVESHOP_FEATURES = [
-  "Public booth/shop profile page",
-  "Product listings with photos & prices",
-  "Inventory tracking dashboard",
-  "Customer reviews & ratings",
-  "Farmers market & swap meet directory listing",
-  "Booth schedule management",
-  "Analytics & sales dashboard",
-  "Vendor inquiry inbox",
-  "Marketing toolkit",
-  "Zero commission on all sales — ever",
-  "No listing fees",
+  "Booth management",
+  "Inventory tracking",
+  "Payment processing",
+  "Customer reviews",
+  "Marketing tools",
+  "Shop profile & product listings",
+  "Event calendar",
+  "Direct customer inquiries",
+  "Social media links",
+  "Zero commissions — ever",
+  "Zero listing fees",
   "Mobile-optimized dashboard",
 ];
+
+const FAQ_ITEMS = [
+  {
+    q: "Is the Basic Profile really free forever?",
+    a: "Yes. No credit card, no trial, no expiration. Your profile stays live and searchable as long as you want it."
+  },
+  {
+    q: "Can I cancel anytime?",
+    a: "Yes. All plans are month-to-month. Cancel before your next billing date and you won't be charged again."
+  },
+  {
+    q: "Is there a setup fee?",
+    a: "No. Never. You pay the monthly rate and nothing else."
+  },
+  {
+    q: "What's the difference between WAVE FO and WAVEShop?",
+    a: "WAVE FO is for contractors and independent service workers. WAVEShop is for market vendors — farmers market sellers, swap meet vendors, and boutique shops. They are separate tracks."
+  },
+  {
+    q: "Does SurfCoast take a commission on vendor sales?",
+    a: "No. WAVEShop vendors keep 100% of what they sell. The $35/mo subscription is the only cost."
+  },
+  {
+    q: "Do I need a license to join?",
+    a: "No. Unlicensed workers can join on a Basic Profile. Licensed contractors unlock additional compliance and document features in higher tiers."
+  },
+  {
+    q: "What is the 18% facilitation fee?",
+    a: "When a customer pays for a job through the platform, SurfCoast collects an 18% facilitation fee automatically via Stripe. This covers payment processing, platform infrastructure, and dispute protection. Contractors receive 82% directly to their connected bank account."
+  },
+  {
+    q: "Can I upgrade or downgrade my plan?",
+    a: "Yes. You can change plans at any time. Changes take effect on your next billing cycle."
+  },
+];
+
+function FAQItem({ item }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      <button onClick={() => setOpen(!open)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 0", background: "none", border: "none", cursor: "pointer", textAlign: "left", gap: "16px" }}>
+        <span style={{ fontSize: "15px", fontWeight: "600", color: "#f1f5f9" }}>{item.q}</span>
+        <ChevronDown size={18} style={{ color: "rgba(255,255,255,0.4)", flexShrink: 0, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }} />
+      </button>
+      {open && <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.75, margin: "0 0 20px", paddingRight: "32px" }}>{item.a}</p>}
+    </div>
+  );
+}
 
 export default function Pricing() {
   return (
@@ -133,13 +187,13 @@ export default function Pricing() {
           <span style={{ fontSize: "12px", fontWeight: "700", color: "#f59e0b", letterSpacing: "1px", textTransform: "uppercase" }}>Simple, Honest Pricing</span>
         </div>
         <h1 style={{ fontSize: "clamp(36px, 6vw, 60px)", fontWeight: "900", margin: "0 0 20px", lineHeight: 1.05, letterSpacing: "-2px" }}>
-          No Surprises.<br />No Contracts.
+          Simple, Honest Pricing.<br />No Surprises.
         </h1>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.65 }}>
-          Month-to-month on every plan. No setup fees. Cancel anytime.
+          Month-to-month. No setup fees. No annual contracts. Cancel anytime.
         </p>
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
-          Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors &amp; professionals · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop</strong> for market vendors
+          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop</strong> for market vendors
         </p>
         <a href="/BecomeContractor" style={{ display: "inline-block", background: "#f59e0b", color: "#0f172a", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>
           Get Started Free →
@@ -191,7 +245,8 @@ export default function Pricing() {
                 </div>
               )}
               <div>
-                <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: tier.accent }}>{tier.name}</h3>
+                <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 4px", color: tier.accent }}>{tier.name}</h3>
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 8px", lineHeight: 1.4 }}>{tier.subtitle}</p>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "900", color: "#f1f5f9" }}>${tier.price}</span>
                   <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)" }}>/mo</span>
@@ -251,15 +306,24 @@ export default function Pricing() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section style={{ maxWidth: "700px", margin: "0 auto 80px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Frequently Asked Questions</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)" }}>Straight answers, no runaround.</p>
+        </div>
+        {FAQ_ITEMS.map((item, i) => <FAQItem key={i} item={item} />)}
+      </section>
+
       {/* BOTTOM CTA */}
       <section style={{ textAlign: "center", padding: "80px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-1px" }}>Start Free Today</h2>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-1px" }}>Ready to get started?</h2>
         <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.5)", maxWidth: "480px", margin: "0 auto 36px", lineHeight: 1.65 }}>
-          No credit card. No commitment. Your free profile is permanent — upgrade whenever you're ready.
+          Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Get Started Free</a>
-          <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>Why SurfCoast →</a>
+          <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Create Free Profile</a>
+          <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>View All Plans →</a>
         </div>
       </section>
 
