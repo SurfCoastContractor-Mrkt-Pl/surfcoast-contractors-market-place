@@ -10,30 +10,28 @@ const WHO_TABS = [
   {
     label: "Contractors & Trades",
     types: [
-      "Electricians", "Plumbers", "HVAC Technicians", "Carpenters", "Roofers",
-      "Painters", "Masons", "Landscapers", "Welders", "Tilers",
-      "General Contractors", "Handymen", "Appliance Repair", "Locksmiths", "Flooring Specialists",
-      "Pool & Spa Technicians", "Solar Installers", "Fence Contractors", "Drywall Specialists", "Insulation Contractors"
+      "Plumbers", "Electricians", "HVAC Technicians", "Roofers", "Painters",
+      "Carpenters", "Landscapers", "Pool Service", "Pest Control", "Concrete",
+      "Tile & Flooring", "Fencing", "Drywall", "Solar Installers", "Handymen",
+      "Pressure Washing", "Tree Service", "Appliance Repair", "General Contractors", "Home Inspectors"
     ]
   },
   {
     label: "Market Vendors",
     types: [
-      "Farmers Market Sellers", "Swap Meet Vendors", "Artisan Bakers", "Produce Growers",
-      "Craft Makers", "Candle & Soap Makers", "Jewelry Designers", "Vintage Collectors",
-      "Hot Food Vendors", "Plant Nurseries", "Honey & Jam Sellers", "Textile Makers",
-      "Woodworkers", "Pottery Artists", "Mushroom Foragers", "Spice Blenders",
-      "Pet Treat Bakers", "Handmade Clothing", "Fermented Food Makers", "Flower Growers"
+      "Food Vendors", "Bakers", "Jewelry Makers", "Clothing Boutiques", "Plant Nurseries",
+      "Candle Makers", "Vintage Collectors", "Farmers & Produce", "Artisan Crafts", "Pet Supplies",
+      "Health & Wellness", "Soap & Skincare", "Toys & Kids", "Home Décor", "Antiques",
+      "Food Trucks", "Photography", "Art & Prints", "Specialty Foods", "Handmade Goods"
     ]
   },
   {
     label: "Solo & Creative",
     types: [
-      "Freelance Designers", "Photographers", "Videographers", "Copywriters",
-      "Social Media Managers", "Virtual Assistants", "Bookkeepers", "Tutors & Educators",
-      "Life Coaches", "Fitness Trainers", "Yoga Instructors", "Translators",
-      "Pet Sitters", "Dog Walkers", "House Cleaners", "Personal Organizers",
-      "Musicians", "Illustrators", "UX Designers", "Content Creators"
+      "Freelancers", "Independent Cleaners", "Mobile Detailers", "Personal Trainers", "Tutors",
+      "Pet Groomers", "Event Setup", "Photographers", "Notaries", "Delivery Drivers",
+      "Virtual Assistants", "Social Media Managers", "Bookkeepers", "Copywriters", "Videographers",
+      "Life Coaches", "Yoga Instructors", "Musicians", "Illustrators", "Content Creators"
     ]
   }
 ];
@@ -220,8 +218,8 @@ export default function WhySurfCoast() {
         <h1 style={{ fontSize: "clamp(36px, 6vw, 68px)", fontWeight: "900", margin: "0 0 24px", lineHeight: 1.05, letterSpacing: "-2px", maxWidth: "900px", marginLeft: "auto", marginRight: "auto" }}>
           Built for the People Who<br />Actually Do the Work
         </h1>
-        <p style={{ fontSize: "clamp(16px, 2.5vw, 22px)", color: "rgba(255,255,255,0.75)", maxWidth: "640px", margin: "0 auto 40px", lineHeight: 1.6 }}>
-          SurfCoast Marketplace is a professional platform for contractors, tradespeople, market vendors, and solo workers — built on the belief that hard work deserves real tools.
+        <p style={{ fontSize: "clamp(16px, 2.5vw, 22px)", color: "rgba(255,255,255,0.75)", maxWidth: "680px", margin: "0 auto 40px", lineHeight: 1.6 }}>
+          SurfCoast Marketplace exists for independent workers, solo operators, and small trades businesses who need real tools — not corporate software built for someone else.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
           <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none" }}>Create Free Profile</a>
@@ -234,12 +232,11 @@ export default function WhySurfCoast() {
         <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "40px", letterSpacing: "-1px" }}>What Is SurfCoast Marketplace?</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
-            "SurfCoast Marketplace is a two-track professional platform: one built for contractors and independent service providers, the other for market vendors — farmers market sellers, swap meet operators, and everyone who makes their living selling at local events. Both tracks operate under a single platform with shared infrastructure and a shared commitment to fairness.",
-            "The contractor track, powered by the WAVE FO subscription system, gives tradespeople and solo professionals a full suite of business management tools — from job posting and client messaging to scope-of-work signing, invoice generation, GPS tracking, and compliance documentation. It's designed to replace the patchwork of apps most contractors currently cobble together.",
-            "The vendor track, called WAVEShop, gives farmers market and swap meet sellers a simple, affordable way to manage their booth presence, sell products, collect reviews, and be discovered by local shoppers — all for a flat monthly fee with zero commission taken on sales.",
-            "Both tracks are built with the same philosophy: tools should be affordable, transparent, and actually useful in the field. No bloated feature sets you'll never use. No commission cuts on work you earned. No contracts locking you in. Just a platform that earns your subscription every single month."
+            "SurfCoast Marketplace is a two-sided platform connecting people who need work done with the people who do it. Whether you're a homeowner looking for a licensed plumber or a vendor setting up a booth at the local farmers market — SurfCoast is where that connection happens.",
+            "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEShop for market vendors. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
+            "Every profile on SurfCoast is free. You never pay to be found. You only upgrade when you need more."
           ].map((p, i) => (
-            <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "#374151", margin: 0 }}>{p}</p>
+            <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: i === 2 ? "#0a1628" : "#374151", fontWeight: i === 2 ? "700" : "400", margin: 0, borderLeft: i === 2 ? "4px solid #d97706" : "none", paddingLeft: i === 2 ? "20px" : "0" }}>{p}</p>
           ))}
         </div>
       </section>
