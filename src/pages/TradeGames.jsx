@@ -152,10 +152,19 @@ export default function TradeGames() {
     );
   }
 
-  // Games list
+  // Games list with Under Construction overlay
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+      {/* Under Construction Overlay */}
+      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+        <div className="text-center bg-white p-8 rounded-xl shadow-2xl border border-gray-300 max-w-sm">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Under Construction</h2>
+          <p className="text-gray-700 text-lg mb-2">Educational Tools and Visual Aids</p>
+          <p className="text-gray-500 text-sm">Coming soon with exciting interactive learning experiences</p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto opacity-30 pointer-events-none">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Trade Games</h1>
