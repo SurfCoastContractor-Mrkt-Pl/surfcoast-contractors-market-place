@@ -551,12 +551,12 @@ export default function Pricing() {
             <div style={{ background: "rgba(236,72,153,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Facilitation Fee</p>
               <p style={{ fontSize: "24px", fontWeight: "900", color: "#ec4899", margin: 0 }}>5%</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>OR subscribe to waive</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>or subscribe to waive the 5% facilitation fee</p>
             </div>
             <div style={{ background: "rgba(236,72,153,0.1)", borderRadius: "8px", padding: "12px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Subscription</p>
-              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", margin: 0 }}>$20 – $35/mo</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>Waives facilitation fee</p>
+              <p style={{ fontSize: "24px", fontWeight: "900", color: "#ec4899", margin: 0 }}>$20</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>/month — waives facilitation fee</p>
             </div>
           </div>
 
