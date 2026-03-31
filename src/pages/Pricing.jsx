@@ -158,11 +158,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "What's the difference between WAVE FO and WAVEShop FO?",
-    a: "WAVE FO is the field operations program for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools. WAVEShop FO is the same field operations ecosystem adapted for market booth operators — farmers market sellers, flea market vendors, and swap meet space holders. They are separate tracks of the same platform."
+    a: "WAVE FO is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEShop FO is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEShop FO is a premium $35/month add-on for vendors who want advanced booth management features."
   },
   {
-    q: "What's the facilitation fee structure for WAVEShop FO?",
-    a: "SurfCoast charges a 5% facilitation fee on all sales. However, if you subscribe to the $20/month WAVEShop plan, the facilitation fee is waived entirely — you keep 100% of your sales."
+    q: "What's the facilitation fee structure for MarketShop vendors?",
+    a: "MarketShop vendors can choose between two payment models: pay a 5% facilitation fee per sale, or subscribe to the $20/month plan to waive the fee entirely and keep 100% of your sales. WAVEShop FO is an optional premium program at $35/month that includes advanced tools and waives all facilitation fees."
   },
   {
     q: "Do I need a license to join?",
@@ -318,7 +318,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "900px", margin: "0 auto 80px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#ec4899", marginBottom: "10px" }}>Booth & Space Operator Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Market Booths & Spaces</h2>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>MarketShop Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Choose your payment model.</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
@@ -380,9 +380,9 @@ export default function Pricing() {
       {/* WAVESHOP FO - WAVE FO TIER */}
       <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>Contractor Track — Advanced Program</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO</h2>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Advanced market booth management system with enhanced tools, streamlined workflows, and premium user experience.</p>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>MarketShop Track — Optional Premium Program</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO for the MarketShop</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Optional advanced program for MarketShop vendors with professional tools, enhanced analytics, and streamlined booth management.</p>
         </div>
 
         <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "48px", alignItems: "start" }}>
@@ -485,11 +485,11 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Vendors (WAVEShop) */}
+          {/* Vendors (WAVEShop FO for the MarketShop) */}
           <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
-              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#a855f7" }}>WAVEShop Vendors</h3>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Premium booth management</p>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#a855f7" }}>WAVEShop FO for the MarketShop</h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Optional premium program for MarketShop vendors</p>
             </div>
             <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", margin: "0 0 4px", textTransform: "uppercase", fontWeight: "700", letterSpacing: "1px" }}>Monthly Fee</p>
