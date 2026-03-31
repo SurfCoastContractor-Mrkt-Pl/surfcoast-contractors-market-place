@@ -168,8 +168,7 @@ export default function Home() {
         {/* Mission Statement */}
         <MissionStatement />
 
-        {/* Why SurfCoast Section */}
-        <WhySurfCoastSection />
+
 
         {/* Why SurfCoast - Benefits */}
         <section style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', alignItems: 'start', width: '100%', maxWidth: '900px', gap: 'clamp(12px, 3vw, 20px)', marginBottom: '32px' }} aria-label="Platform benefits">
