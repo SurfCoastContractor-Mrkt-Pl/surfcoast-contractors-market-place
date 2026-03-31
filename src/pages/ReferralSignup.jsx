@@ -285,18 +285,18 @@ export default function ReferralSignup() {
                   }}
                 >
                   <Users size={20} style={{ color: '#1d6fa4' }} />
-                  <span>I Need a Pro (Customer)</span>
-                </button>
-              </div>
-            </div>
+                  <span>I Need a Pro (Client)</span>
+                  </button>
+                  </div>
+                  </div>
 
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                onClick={() => {
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                  onClick={() => {
                   setStep('method');
                   setSelectedRole(null);
                   setEmail('');
-                }}
+                  }}
                 style={{
                   flex: 1,
                   padding: '12px',
@@ -443,12 +443,12 @@ export default function ReferralSignup() {
                   }}
                 >
                   <Users size={20} style={{ color: '#1d6fa4' }} />
-                  <span>I Need a Pro (Customer)</span>
-                </button>
-              </div>
-            </div>
+                  <span>I Need a Pro (Client)</span>
+                  </button>
+                  </div>
+                  </div>
 
-            <div style={{ marginBottom: '32px' }}>
+                  <div style={{ marginBottom: '32px' }}>
               <label style={{
                 display: 'block',
                 fontSize: '13px',
