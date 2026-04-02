@@ -94,6 +94,7 @@ export default function FeaturedVendors() {
         {/* Left Arrow */}
         <button
           onClick={() => handleScroll('left')}
+          aria-label="Scroll vendors left"
           style={{
             position: 'absolute',
             left: 0,
@@ -272,6 +273,7 @@ export default function FeaturedVendors() {
         {/* Right Arrow */}
         <button
           onClick={() => handleScroll('right')}
+          aria-label="Scroll vendors right"
           style={{
             position: 'absolute',
             right: 0,

@@ -8,6 +8,13 @@ export default function ContractorLocationSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [searchType, setSearchType] = useState("contractors");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+
+  useState(() => {
+    const check = () => setIsMobile(window.innerWidth < 600);
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  });
 
   const categories = [
     { id: "contractors", label: "Contractors", icon: "🔧" },
@@ -33,7 +40,7 @@ export default function ContractorLocationSearch() {
         });
       } else if (searchType === "market-booths") {
         searchResults = await base44.entities.MarketShop.filter({
-          location: { $regex: location, $options: "i" }
+          city: { $regex: location, $options: "i" }
         });
       } else if (searchType === "farmers-markets") {
         searchResults = await base44.entities.MarketShop.filter({
@@ -110,7 +117,9 @@ export default function ContractorLocationSearch() {
 
         <form onSubmit={handleSearch} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <div style={{ display: "flex", gap: "8px" }}>
+            <label htmlFor="location-search" style={{ position: "absolute", width: "1px", height: "1px", padding: 0, margin: "-1px", overflow: "hidden", clip: "rect(0,0,0,0)", border: 0 }}>Search by city, zip code, or region</label>
             <input
+              id="location-search"
               type="text"
               placeholder="Search by city, zip code, or region..."
               value={location}
@@ -169,7 +178,7 @@ export default function ContractorLocationSearch() {
                 <p style={{ fontSize: "13px", fontWeight: "600", color: "rgba(255, 255, 255, 0.8)", marginBottom: "12px" }}>
                   Found {results.length} {searchType === "contractors" ? "contractor" : searchType === "market-booths" ? "market booth" : searchType === "farmers-markets" ? "farmers market" : searchType === "vendors" ? "vendor" : "swapmeet"}{results.length !== 1 ? "s" : ""}
                 </p>
-                <div style={{ display: "grid", gridTemplateColumns: window.innerWidth < 600 ? "1fr" : "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}>
                    {results.slice(0, 6).map((result) => (
                      <div
                         key={result.id}
@@ -198,7 +207,7 @@ export default function ContractorLocationSearch() {
                         }}
                       >
                         <p style={{ margin: "0 0 4px", fontSize: "14px", fontWeight: "700", color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {result.name}
+                          {result.name || result.shop_name}
                         </p>
                         {searchType === "contractors" && result.line_of_work && (
                           <p style={{ margin: "0 0 4px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -206,7 +215,7 @@ export default function ContractorLocationSearch() {
                           </p>
                         )}
                         <p style={{ margin: "0", fontSize: "12px", color: "#1d6fa4", fontWeight: "600" }}>
-                          {result.location}
+                          {result.location || (result.city && result.state ? `${result.city}, ${result.state}` : result.city || '')}
                         </p>
                         {result.rating && (
                           <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255, 255, 255, 0.5)" }}>

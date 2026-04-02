@@ -36,6 +36,7 @@ export default function EarlyAdopterBanner() {
     }}>
       <button
         onClick={() => setDismissed(true)}
+        aria-label="Dismiss founding member banner"
         style={{
           position: 'absolute',
           top: '12px',
@@ -47,7 +48,7 @@ export default function EarlyAdopterBanner() {
           padding: '4px',
         }}
       >
-        <X size={18} />
+        <X size={18} aria-hidden="true" />
       </button>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
