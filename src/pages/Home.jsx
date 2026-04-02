@@ -26,15 +26,15 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-white">
       <NewsletterSubscribeModal />
       
-      <div className="w-full flex flex-col items-center px-3 py-8 md:py-10 md:px-4">
+      <div className="w-full flex flex-col items-center px-3 py-8 md:py-10 md:px-4 bg-white">
 
         <section className="text-center mb-6 md:mb-4 max-w-2xl px-4">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-3 md:mb-4 leading-tight">The Trades Marketplace</h2>
-          <p className="text-xl md:text-3xl font-bold text-orange-500 mb-4 md:mb-4 leading-snug">No Shortcuts. Just Hard Work.</p>
-          <p className="text-sm md:text-base text-white/82 leading-relaxed">Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
+          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">The Trades Marketplace</h2>
+          <p className="text-xl md:text-3xl font-bold text-orange-700 mb-4 md:mb-4 leading-snug">No Shortcuts. Just Hard Work.</p>
+          <p className="text-sm md:text-base text-gray-700 leading-relaxed">Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
         </section>
 
         <CampaignAdBanner />
@@ -75,15 +75,15 @@ export default function Home() {
           {/* Horizontal/Vertical OR Divider */}
           {isMobile ? (
             <div className="flex items-center justify-center w-full">
-              <div className="bg-white/12 w-full h-px" />
-              <span className="text-white/35 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
-              <div className="bg-white/12 w-full h-px" />
+              <div className="bg-gray-300 w-full h-px" />
+              <span className="text-gray-600 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
+              <div className="bg-gray-300 w-full h-px" />
             </div>
           ) : (
             <div className="flex items-center justify-center">
-              <div className="bg-white/12 w-px h-24 min-h-24" />
-              <span className="text-white/60 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
-              <div className="bg-white/12 w-px h-24 min-h-24" />
+              <div className="bg-gray-300 w-px h-24 min-h-24" />
+              <span className="text-gray-600 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
+              <div className="bg-gray-300 w-px h-24 min-h-24" />
             </div>
           )}
 
