@@ -1,177 +1,455 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShoppingBag, Home as HomeIcon, Wrench, Store, Users } from "lucide-react";
-import VendorSearchBar from "@/components/home/VendorSearchBar";
-import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";
-import CampaignAdBanner from "@/components/home/CampaignAdBanner";
-import EarlyAdopterBanner from "@/components/home/EarlyAdopterBanner";
-import FeaturedVendors from "@/components/home/FeaturedVendors";
-import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
-import MissionStatement from "@/components/home/MissionStatement";
+import { Star, Check, Lock, MapPin, Zap, Briefcase, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [spotsRemaining, setSpotsRemaining] = useState(77);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 600);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    window.scrollTo(0, 0);
   }, []);
 
-  const handleSignup = (destination) => {
-    navigate(destination);
-  };
+  const trades = ["Plumbing", "Electrical", "Carpentry", "Landscaping", "Concreting", "Painting", "Roofing", "Tiling"];
 
   return (
     <div className="w-full bg-white">
-      <NewsletterSubscribeModal />
-      
-      <div className="w-full flex flex-col items-center px-3 py-8 md:py-10 md:px-4 bg-white">
+      {/* ==================== NAVIGATION BAR ==================== */}
+      <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <h1 className="text-2xl font-bold text-gray-900">SurfCoast</h1>
+          </div>
 
-        <section className="text-center mb-6 md:mb-4 max-w-2xl px-4">
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">The Trades Marketplace</h2>
-          <p className="text-xl md:text-3xl font-bold text-orange-700 mb-4 md:mb-4 leading-snug">No Shortcuts. Just Hard Work.</p>
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">Connect with licensed, verified tradespeople across the country — or grow your business and land your next job.</p>
-        </section>
+          {/* Center Nav Links */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">About</a>
+            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">For Pros</a>
+            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">For Customers</a>
+            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">Pricing</a>
+          </div>
 
-        <CampaignAdBanner />
-        <EarlyAdopterBanner />
-
-        {/* Mission Statement */}
-        <MissionStatement />
-
-
-
-
-
-        {/* Primary CTA Cards - Find a Pro / Join as a Pro */}
-        <section className="flex flex-col md:flex-row items-stretch w-full max-w-4xl gap-4 md:gap-8 justify-center mb-6" aria-label="Primary action cards">
-          {/* Left Card - Find a Pro */}
-          <article
-            onMouseEnter={() => setHoveredCard("customer")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "customer" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
+          {/* Right CTA Button */}
+          <button
+            onClick={() => navigate('/BecomeContractor')}
+            className="hidden md:block px-6 py-2 rounded-lg bg-orange-600 text-white text-sm font-bold hover:bg-orange-700 transition-all"
           >
-            <HomeIcon size={28} className="mb-3 md:mb-4 text-blue-600" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-xl font-bold mb-2 text-gray-900">Find a Pro</h3>
-            <p className="text-sm text-gray-700 mb-4 leading-relaxed flex-1">Post your project, get competitive quotes, and hire a vetted tradesperson near you.</p>
-            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-gray-700">
-              <li>✓ Verified & licensed pros only</li>
-              <li>✓ Free 2-week trial</li>
-              <li>✓ Secure payments</li>
-            </ul>
-            <button 
-              onClick={() => navigate('/CustomerSignup')} 
-              aria-label="Find a Pro - navigate to customer signup"
-              className="w-full px-4 py-3 rounded-lg border-none text-sm font-bold cursor-pointer transition-all bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg mt-auto"
-            >
-              Find a Pro →
-            </button>
-          </article>
+            Claim Founding Spot
+          </button>
 
-          {/* Horizontal/Vertical OR Divider */}
-          {isMobile ? (
-            <div className="flex items-center justify-center w-full">
-              <div className="bg-gray-300 w-full h-px" />
-              <span className="text-gray-600 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
-              <div className="bg-gray-300 w-full h-px" />
+          {/* Mobile Menu Button */}
+          <button className="md:hidden p-2 text-gray-700">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {/* ==================== HERO SECTION ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* Left Column */}
+          <div>
+            <div className="inline-block mb-6">
+              <span className="px-3 py-1 rounded-full text-xs font-bold text-orange-600 bg-orange-100">
+                🚀 Limited Founding Member Offer
+              </span>
             </div>
-          ) : (
-            <div className="flex items-center justify-center">
-              <div className="bg-gray-300 w-px h-24 min-h-24" />
-              <span className="text-gray-600 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
-              <div className="bg-gray-300 w-px h-24 min-h-24" />
+
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Being a contractor <span className="text-orange-600">isn't just a job.</span>
+            </h1>
+
+            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+              It's a mindset built on hard work, ownership, and pride. Join a community of verified tradespeople and grow your business your way.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => navigate('/BecomeContractor')}
+                className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+              >
+                Join as a Pro
+              </button>
+              <button
+                onClick={() => navigate('/CustomerSignup')}
+                className="px-8 py-3 rounded-lg border-2 border-gray-300 text-gray-900 font-bold hover:bg-gray-50 transition-all"
+              >
+                Find a Tradesperson
+              </button>
             </div>
-          )}
+          </div>
 
-          {/* Right Card - Join as a Pro */}
-          <article
-            onMouseEnter={() => setHoveredCard("contractor")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "contractor" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
-          >
-            <Wrench size={28} className="mb-3 md:mb-4 text-orange-600" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-xl font-bold mb-2 text-gray-900">Join as a Pro</h3>
-            <p className="text-sm text-gray-700 mb-4 leading-relaxed flex-1">Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
-            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-gray-700">
-              <li>✓ Free 2-week trial</li>
-              <li>✓ Get paid securely via Stripe</li>
-              <li>✓ Build your reputation</li>
+          {/* Right Column - Founding Member Card */}
+          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <Star className="w-8 h-8 text-orange-600 fill-orange-600" />
+              <h3 className="text-xl font-bold text-gray-900">Founding Member</h3>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-6">
+              Join our first 100 members and get <span className="font-bold text-gray-900">1 year free</span>
+            </p>
+
+            {/* Progress Bar */}
+            <div className="mb-6">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-orange-600 h-2 rounded-full transition-all"
+                  style={{ width: `${((100 - spotsRemaining) / 100) * 100}%` }}
+                />
+              </div>
+              <p className="text-sm font-bold text-gray-900 mt-2">
+                {spotsRemaining} spots remaining
+              </p>
+            </div>
+
+            {/* Benefits */}
+            <div className="space-y-3 mb-8">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700">1 year of premium access</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700">Verified badge immediately</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700">Community-first support</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700">Never pay per transaction</span>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={() => navigate('/BecomeContractor')}
+              className="w-full px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+            >
+              Claim My Founding Spot
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== MANIFESTO BLOCK ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <blockquote className="mb-8">
+            <p className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+              Being a contractor <span className="text-orange-600">isn't a job title.</span>
+              <br />
+              <span className="text-orange-600">It's a mindset.</span>
+            </p>
+          </blockquote>
+
+          <p className="text-lg text-gray-700 leading-relaxed">
+            A mindset built on effort, ownership, and pride in doing the job right. At SurfCoast, we believe starting out is tough—and nobody makes it alone. That's why we're here to support you the way you actually need it. No gatekeeping. No one-size-fits-all playbook. Just real support, real people, and real opportunities. Through shared knowledge, accessible work, and a community that respects the grind, we help you take your first step, your next step, and every step toward building something of your own.
+          </p>
+        </div>
+      </section>
+
+      {/* ==================== TWO WEEK TRIAL SECTION ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* Left Column */}
+          <div>
+            <div className="inline-block mb-4">
+              <span className="px-3 py-1 rounded-full text-xs font-bold text-blue-600 bg-blue-100">
+                FOR PROS
+              </span>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Try it free. No pressure. No card.
+            </h2>
+
+            <p className="text-gray-600 text-lg mb-8">
+              Get full access to find jobs, connect with clients, and build your reputation risk-free.
+            </p>
+
+            {/* Numbered Steps */}
+            <div className="space-y-6 mb-8">
+              {[
+                { num: "1", label: "Create your profile", desc: "Tell us about yourself and your trade" },
+                { num: "2", label: "Get discovered", desc: "Clients start seeing your profile" },
+                { num: "3", label: "Decide after 14 days", desc: "Choose to subscribe or walk away" }
+              ].map((step) => (
+                <div key={step.num} className="flex gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold">
+                    {step.num}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">{step.label}</h4>
+                    <p className="text-sm text-gray-600">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => navigate('/BecomeContractor')}
+              className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+            >
+              Start my free trial
+            </button>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="mb-6">
+              <span className="text-9xl font-bold text-orange-600">14</span>
+            </div>
+
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Days completely free
+            </h3>
+
+            <p className="text-gray-600 mb-8 max-w-sm">
+              Full access to all pro features. Find jobs, connect with clients, and build your reputation.
+            </p>
+
+            <button
+              onClick={() => navigate('/BecomeContractor')}
+              className="w-full max-w-sm px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all mb-6"
+            >
+              Start my free trial
+            </button>
+
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Lock className="w-4 h-4" />
+              <span>No credit card required — ever, until you choose to subscribe</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TWO-PATH SPLIT SECTION ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          {/* Left Path - For Pros */}
+          <div className="border-r-0 md:border-r-2 border-gray-300 pr-0 md:pr-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Briefcase className="w-6 h-6 text-blue-600" />
+              <h3 className="text-3xl font-bold text-gray-900">I'm a Pro</h3>
+            </div>
+
+            <p className="text-gray-600 text-lg mb-6">
+              Grow your business with verified clients, secure payments, and real support.
+            </p>
+
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Find quality jobs from verified clients</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Build your reputation with verified reviews</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Get paid securely via Stripe</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Community-first support always</span>
+              </li>
             </ul>
-            <button 
-              onClick={() => handleSignup('/BecomeContractor')} 
-              aria-label="Join as a Pro - navigate to contractor signup"
-              className="w-full px-4 py-3 rounded-lg border-none text-sm font-bold cursor-pointer transition-all bg-orange-600 text-white hover:bg-orange-700 hover:shadow-lg mt-auto"
-            >
-              Join as a Pro →
-            </button>
-          </article>
-        </section>
 
-        {/* Secondary CTA Cards - Market Booth, Vendor, Consumer */}
-        <section className="grid grid-cols-1 md:grid-cols-3 items-stretch w-full max-w-4xl gap-3 md:gap-4 justify-center mb-6" aria-label="Secondary action cards">
-          {/* Market Booth Card */}
-          <article
-            onMouseEnter={() => setHoveredCard("booth")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "booth" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
-          >
-            <Store size={24} className="mb-2 text-amber-700" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-gray-900">Welcome to the Marketplace</h3>
-            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Pick Your Market — Select Farmers Market to set up your booth and sell fresh goods.</p>
-            <button 
-              onClick={() => navigate('/MarketShopSignup?type=farmers_market')} 
-              aria-label="Get started as a farmers market vendor"
-              className="w-full px-3 py-2 rounded-lg border-none text-xs font-bold cursor-pointer transition-all bg-amber-700 text-white hover:bg-amber-800 hover:shadow-lg"
+            <button
+              onClick={() => navigate('/BecomeContractor')}
+              className="w-full px-6 py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition-all"
             >
-              Get Started →
+              Join as a Pro
             </button>
-          </article>
+          </div>
 
-          {/* SwapMeets Card */}
-          <article
-            onMouseEnter={() => setHoveredCard("swapmeets")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "swapmeets" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
-          >
-            <ShoppingBag size={24} className="mb-2 text-orange-500" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-gray-900">Reserve Your Swap Meet Space</h3>
-            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Secure your booth, list your goods, and start selling to local buyers today.</p>
-            <button 
-              onClick={() => navigate('/MarketShopSignup?type=swap_meet')} 
-              aria-label="Get started as a swap meet vendor"
-              className="w-full px-3 py-2 rounded-lg border-none text-xs font-bold cursor-pointer transition-all bg-orange-600 text-white hover:bg-orange-700 hover:shadow-lg"
+          {/* Right Path - For Customers */}
+          <div className="pl-0 md:pl-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Users className="w-6 h-6 text-orange-600" />
+              <h3 className="text-3xl font-bold text-gray-900">I need a Pro</h3>
+            </div>
+
+            <p className="text-gray-600 text-lg mb-6">
+              Find verified tradespeople you can trust, with transparent pricing and secure payments.
+            </p>
+
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Access verified, licensed professionals</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Get competitive quotes instantly</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Secure payments and verified reviews</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Peace of mind with professional support</span>
+              </li>
+            </ul>
+
+            <button
+              onClick={() => navigate('/CustomerSignup')}
+              className="w-full px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
             >
-              Get Started →
+              Find a Pro
             </button>
-          </article>
+          </div>
+        </div>
+      </section>
 
-          {/* Consumer Card */}
-          <article
-            onMouseEnter={() => setHoveredCard("consumer")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "consumer" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
-          >
-            <Users size={24} className="mb-2 text-green-500" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-gray-900">Consumer</h3>
-            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Shop booths and vendors at local farmers markets.</p>
-            <button 
-              onClick={() => navigate('/ConsumerSignup')} 
-              aria-label="Start shopping as a consumer"
-              className="w-full px-3 py-2 rounded-lg border-none text-xs font-bold cursor-pointer transition-all bg-green-600 text-white hover:bg-green-700 hover:shadow-lg"
-            >
-              Start Shopping →
+      {/* ==================== SEARCH / NOTIFY ME SECTION ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            See what's coming to your area
+          </h2>
+
+          {/* Search Bar */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            <input
+              type="text"
+              placeholder="Suburb or postcode..."
+              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
+            />
+            <select className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-100">
+              <option>Select a trade...</option>
+              {trades.map((trade) => (
+                <option key={trade} value={trade}>{trade}</option>
+              ))}
+            </select>
+            <button className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all whitespace-nowrap">
+              Notify me
             </button>
-          </article>
-        </section>
+          </div>
 
-        <FeaturedVendors />
-        <ContractorLocationSearch />
-        <VendorSearchBar />
-      </div>
+          {/* Trade Pills */}
+          <div className="flex flex-wrap gap-3 justify-center">
+            {trades.map((trade) => (
+              <button
+                key={trade}
+                className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all"
+              >
+                {trade}
+              </button>
+            ))}
+            <button className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all">
+              + more
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TOOLS SECTION ==================== */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-16 text-center">
+            More than a directory
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1 - Swap Meet */}
+            <div className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-6">
+                <ShoppingBag className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Swap Meet Space</h3>
+              <p className="text-gray-600 mb-6">
+                Book your booth and sell goods at local markets. Connect with buyers in your community.
+              </p>
+              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+                Learn more <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Card 2 - Pro Marketplace */}
+            <div className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center mb-6">
+                <Briefcase className="w-6 h-6 text-orange-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Pro Marketplace</h3>
+              <p className="text-gray-600 mb-6">
+                Find quality jobs, grow your business, and build your reputation with verified clients.
+              </p>
+              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+                Learn more <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Card 3 - Consumer Hub */}
+            <div className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mb-6">
+                <Users className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Consumer Hub</h3>
+              <p className="text-gray-600 mb-6">
+                Find verified pros, get instant quotes, and pay securely with verified reviews.
+              </p>
+              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+                Learn more <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TRUST BAR ==================== */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="flex items-center gap-3 justify-center md:justify-start">
+            <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700">Verified licences only</span>
+          </div>
+          <div className="flex items-center gap-3 justify-center md:justify-start">
+            <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700">Secure payments via Stripe</span>
+          </div>
+          <div className="flex items-center gap-3 justify-center md:justify-start">
+            <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700">VBA registered platform</span>
+          </div>
+          <div className="flex items-center gap-3 justify-center md:justify-start">
+            <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700">Community-first always</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== FOOTER ==================== */}
+      <footer className="bg-white border-t border-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between">
+          <div className="text-sm text-gray-600 mb-4 sm:mb-0">
+            © 2026 SurfCoast. All rights reserved.
+          </div>
+          <div className="flex gap-8">
+            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">About</a>
+            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Privacy</a>
+            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Terms</a>
+            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+          </div>
+        </div>
+      </footer>
     </div>
+  );
+}
+
+// Helper component for ShoppingBag icon
+function ShoppingBag(props) {
+  return (
+    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
+    </svg>
   );
 }
