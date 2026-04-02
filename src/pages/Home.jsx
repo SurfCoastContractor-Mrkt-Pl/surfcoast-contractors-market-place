@@ -82,7 +82,7 @@ export default function Home() {
           ) : (
             <div className="flex items-center justify-center">
               <div className="bg-white/12 w-px h-24 min-h-24" />
-              <span className="text-white/35 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
+              <span className="text-white/60 text-xs font-semibold whitespace-nowrap mx-2 md:mx-3">OR</span>
               <div className="bg-white/12 w-px h-24 min-h-24" />
             </div>
           )}

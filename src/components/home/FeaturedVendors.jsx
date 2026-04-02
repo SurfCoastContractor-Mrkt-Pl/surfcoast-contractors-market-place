@@ -83,7 +83,7 @@ export default function FeaturedVendors() {
           <Star size={20} style={{ color: '#f97316' }} />
           Featured Partners
         </h2>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', margin: '4px 0 0' }}>
           Premium vendors and markets we recommend
         </p>
       </div>
@@ -215,7 +215,7 @@ export default function FeaturedVendors() {
                       flexShrink: 0,
                     }}
                   >
-                    <Store size={20} style={{ color: 'rgba(255,255,255,0.5)' }} />
+                    <Store size={20} style={{ color: 'rgba(255,255,255,0.75)' }} />
                   </div>
                 )}
                 <div style={{ minWidth: 0 }}>
@@ -233,7 +233,7 @@ export default function FeaturedVendors() {
                   <p style={{
                     margin: '2px 0 0',
                     fontSize: '11px',
-                    color: 'rgba(255,255,255,0.5)',
+                    color: 'rgba(255,255,255,0.75)',
                   }}>
                     {shop.city}, {shop.state}
                   </p>
@@ -258,7 +258,7 @@ export default function FeaturedVendors() {
               {shop.products_summary && (
                 <p style={{
                   fontSize: '11px',
-                  color: 'rgba(255,255,255,0.6)',
+                  color: 'rgba(255,255,255,0.75)',
                   margin: 0,
                   display: '-webkit-box',
                   WebkitLineClamp: 2,

@@ -38,7 +38,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.85)",
+          color: "rgba(255,255,255,0.92)",
           margin: 0,
           lineHeight: 1.7
         }}>
@@ -47,7 +47,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.85)",
+          color: "rgba(255,255,255,0.92)",
           margin: 0,
           lineHeight: 1.7
         }}>
@@ -56,7 +56,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.85)",
+          color: "rgba(255,255,255,0.92)",
           margin: 0,
           lineHeight: 1.7,
           fontStyle: "italic"

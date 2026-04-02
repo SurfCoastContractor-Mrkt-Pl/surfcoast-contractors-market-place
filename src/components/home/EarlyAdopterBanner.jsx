@@ -43,7 +43,7 @@ export default function EarlyAdopterBanner() {
           right: '12px',
           background: 'transparent',
           border: 'none',
-          color: 'rgba(255,255,255,0.5)',
+          color: 'rgba(255,255,255,0.7)',
           cursor: 'pointer',
           padding: '4px',
         }}

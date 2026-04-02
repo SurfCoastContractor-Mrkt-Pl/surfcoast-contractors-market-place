@@ -90,9 +90,9 @@ export default function ContractorLocationSearch() {
               style={{
                 padding: "8px 12px",
                 borderRadius: "6px",
-                border: searchType === cat.id ? "1px solid #1d6fa4" : "1px solid rgba(255, 255, 255, 0.2)",
+                border: searchType === cat.id ? "1px solid #1d6fa4" : "1px solid rgba(255, 255, 255, 0.35)",
                 background: searchType === cat.id ? "rgba(29, 111, 164, 0.2)" : "transparent",
-                color: searchType === cat.id ? "#1d6fa4" : "rgba(255, 255, 255, 0.7)",
+                color: searchType === cat.id ? "#1d6fa4" : "rgba(255, 255, 255, 0.85)",
                 fontSize: "12px",
                 fontWeight: "600",
                 cursor: "pointer",
@@ -104,14 +104,14 @@ export default function ContractorLocationSearch() {
               }}
               onMouseEnter={(e) => {
                 if (searchType !== cat.id) {
-                  e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.4)";
-                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.borderColor = "rgba(29, 111, 164, 0.5)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.95)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (searchType !== cat.id) {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
-                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.35)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.85)";
                 }
               }}
             >
