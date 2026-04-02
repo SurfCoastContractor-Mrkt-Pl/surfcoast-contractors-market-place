@@ -1,51 +1,8 @@
 import React from 'react';
 import { usePalette } from '@/lib/PaletteContext';
 
-// Replicate the palette application function
-const PALETTES = {
-  ocean: { name: 'Ocean' },
-  ash: { name: 'Ash' },
-  mist: { name: 'Mist' },
-};
-
-const PALETTE_COLORS = {
-  ocean: {
-    background: '210 20% 98%',
-    foreground: '210 50% 8%',
-    primary: '210 75% 38%',
-    secondary: '173 58% 35%',
-    muted: '210 15% 94%',
-    mutedForeground: '210 50% 20%',
-    accent: '25 95% 53%',
-    border: '210 20% 82%',
-    input: '210 20% 88%',
-  },
-  ash: {
-    background: '0 0% 97%',
-    foreground: '0 0% 15%',
-    primary: '0 0% 25%',
-    secondary: '0 0% 88%',
-    muted: '0 0% 92%',
-    mutedForeground: '0 0% 40%',
-    accent: '25 95% 53%',
-    border: '0 0% 82%',
-    input: '0 0% 88%',
-  },
-  mist: {
-    background: '220 15% 96%',
-    foreground: '220 25% 12%',
-    primary: '220 60% 45%',
-    secondary: '220 20% 88%',
-    muted: '220 15% 91%',
-    mutedForeground: '220 20% 35%',
-    accent: '25 95% 53%',
-    border: '220 15% 80%',
-    input: '220 15% 86%',
-  },
-};
-
 export default function PaletteSwitcher() {
-  const { palette, setPalette, PALETTES: contextPalettes } = usePalette();
+  const { palette, setPalette, PALETTES } = usePalette();
 
   const handleClick = (paletteName) => {
     console.log('🎨 Switching palette to:', paletteName);
@@ -71,7 +28,7 @@ export default function PaletteSwitcher() {
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.2)',
     }}>
-      {Object.keys(contextPalettes).map((paletteName) => (
+      {Object.keys(PALETTES).map((paletteName) => (
         <button
           key={paletteName}
           onClick={() => handleClick(paletteName)}
@@ -87,7 +44,7 @@ export default function PaletteSwitcher() {
             transition: 'all 0.15s',
           }}
         >
-          {contextPalettes[paletteName].name}
+          {PALETTES[paletteName].name}
         </button>
       ))}
     </div>
