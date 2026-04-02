@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, Check, Lock, MapPin, Zap, Briefcase, Users, ArrowRight, CheckCircle2 } from "lucide-react";
+import { base44 } from '@/api/base44Client';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 lg:mb-6 leading-tight">
-              Being a contractor <span className="text-orange-600">isn't just a job.</span>
+              Being a contractor <span className="logo-gradient-text">isn't just a job.</span>
             </h1>
 
             <p className="text-base text-gray-700 mb-8 leading-relaxed">
@@ -109,9 +110,9 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <blockquote className="mb-8">
             <p className="text-2xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              Being a contractor <span className="text-orange-600">isn't a job title.</span>
+              Being a contractor <span className="logo-gradient-text">isn't a job title.</span>
               <br />
-              <span className="text-orange-600">It's a mindset.</span>
+              <span className="logo-gradient-text">It's a mindset.</span>
             </p>
           </blockquote>
 
@@ -183,7 +184,7 @@ export default function Home() {
 
             <button
               onClick={() => navigate('/BecomeContractor')}
-              className="w-full max-w-sm px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all mb-6"
+              className="w-full max-w-sm px-8 py-3 rounded-lg text-white font-bold hover:shadow-lg transition-all mb-6 logo-gradient-bg"
             >
               Start my free trial
             </button>
@@ -312,7 +313,10 @@ export default function Home() {
                 {trade}
               </button>
             ))}
-            <button className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all">
+            <button 
+              onClick={() => navigate('/FindContractors')}
+              className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all"
+            >
               + more
             </button>
           </div>
@@ -336,9 +340,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Book your booth and sell goods at local markets. Connect with buyers in your community.
               </p>
-              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+              <button 
+                onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Card 2 - Pro Marketplace */}
@@ -350,9 +357,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Find quality jobs, grow your business, and build your reputation with verified clients.
               </p>
-              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+              <button 
+                onClick={() => navigate('/BecomeContractor')}
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Card 3 - Consumer Hub */}
@@ -364,9 +374,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Find verified pros, get instant quotes, and pay securely with verified reviews.
               </p>
-              <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
+              <button 
+                onClick={() => navigate('/CustomerSignup')}
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -401,10 +414,15 @@ export default function Home() {
             © 2026 SurfCoast. All rights reserved.
           </div>
           <div className="flex gap-8">
-            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">About</a>
-            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Privacy</a>
-            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Terms</a>
-            <a href="#" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+            <a href="/About" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">About</a>
+            <a href="/PrivacyPolicy" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Privacy</a>
+            <a href="/Terms" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Terms</a>
+            <button 
+              onClick={() => navigate('/Dashboard')}
+              className="text-sm text-gray-700 hover:text-orange-600 transition-colors bg-none border-none cursor-pointer p-0"
+            >
+              Contact
+            </button>
           </div>
         </div>
       </footer>

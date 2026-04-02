@@ -206,7 +206,7 @@ export default function Pricing() {
           <Zap size={13} style={{ color: "#f59e0b" }} />
           <span style={{ fontSize: "12px", fontWeight: "700", color: "#f59e0b", letterSpacing: "1px", textTransform: "uppercase" }}>Simple, Honest Pricing</span>
         </div>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: "900", margin: "0 0 16px", lineHeight: 1.05, letterSpacing: "-1px" }}>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: "900", margin: "0 0 16px", lineHeight: 1.05, letterSpacing: "-1px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
           Simple, Honest Pricing.<br />No Surprises.
         </h1>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.65 }}>
@@ -215,7 +215,7 @@ export default function Pricing() {
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
           Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
         </p>
-        <a href="/BecomeContractor" style={{ display: "inline-block", background: "#f59e0b", color: "#0f172a", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>
+        <a href="/BecomeContractor" style={{ display: "inline-block", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", color: "#ffffff", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none", transition: "all 0.2s" }}>
           Get Started Free →
         </a>
       </section>
@@ -252,7 +252,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>WAVE FO (Field Operations) Plans</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVE FO (Field Operations) Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>For contractors, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
         </div>
 
@@ -298,7 +298,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#38bdf8", marginBottom: "10px" }}>Communication & Proposals</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>How Clients & Contractors Connect</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>How Clients & Contractors Connect</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>Clear pricing for messaging and proposal requests on the platform.</p>
         </div>
 
@@ -379,7 +379,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "900px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#ec4899", marginBottom: "10px" }}>Booth & Space Operator Track</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>MarketShop Plans</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>MarketShop Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Choose your payment model.</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "20px" }}>
@@ -442,7 +442,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>MarketShop Track — Optional Premium Program</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>WAVEShop FO for the MarketShop</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVEShop FO for the MarketShop</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Optional advanced program for MarketShop vendors with professional tools, enhanced analytics, and streamlined booth management.</p>
         </div>
 
@@ -478,7 +478,7 @@ export default function Pricing() {
       {/* FAQ */}
       <section style={{ maxWidth: "700px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>Frequently Asked Questions</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Frequently Asked Questions</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)" }}>Straight answers, no runaround.</p>
         </div>
         {FAQ_ITEMS.map((item, i) => <FAQItem key={i} item={item} />)}
@@ -487,7 +487,7 @@ export default function Pricing() {
       {/* FEE & SUBSCRIPTION OVERVIEW */}
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>Facilitation Fees & Subscriptions</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Facilitation Fees & Subscriptions</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>A transparent breakdown of how different users interact with our platform payment models.</p>
         </div>
 
@@ -575,7 +575,7 @@ export default function Pricing() {
 
       {/* BOTTOM CTA */}
       <section style={{ textAlign: "center", padding: "60px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <h2 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-0.5px" }}>Ready to get started?</h2>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ready to get started?</h2>
         <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.5)", maxWidth: "480px", margin: "0 auto 36px", lineHeight: 1.65 }}>
           Join the marketplace built for people who actually work.
         </p>

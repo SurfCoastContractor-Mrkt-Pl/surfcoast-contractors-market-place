@@ -181,9 +181,26 @@
   .text-accent { color: #ea580c; }
   .text-primary { color: #2176cc; }
 
+  /* Logo Gradient Accent - Apply to key elements */
+  .logo-gradient-text {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .logo-gradient-bg {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
+  }
+
+  .logo-gradient-border {
+    border-image: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%) 1;
+  }
+
   /* Button Utilities */
   .btn-primary {
-    background-color: #ea580c;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
     color: #ffffff;
     padding: 12px 32px;
     border-radius: 8px;
@@ -193,7 +210,8 @@
     transition: all 0.2s;
   }
   .btn-primary:hover {
-    background-color: #d94600;
+    background: linear-gradient(135deg, #1a4db8 0%, #1c63b8 50%, #d94600 100%);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
   }
 
   .btn-secondary {
