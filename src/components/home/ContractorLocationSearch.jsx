@@ -4,11 +4,11 @@ import { base44 } from "@/api/base44Client";
 
 // Hoisted outside component — never recreated on re-render
 const CATEGORIES = [
-  { id: "contractors", label: "Contractors", icon: "🔧" },
-  { id: "market-booths", label: "Market Booths", icon: "🏪" },
-  { id: "farmers-markets", label: "Farmers Markets", icon: "🌾" },
-  { id: "vendors", label: "Vendors", icon: "🛍️" },
-  { id: "swapmeets", label: "SwapMeets", icon: "🏬" }
+  { id: "contractors", label: "Contractors", icon: "🔧", bold: true },
+  { id: "market-booths", label: "Market Booths", icon: "🏪", bold: true },
+  { id: "farmers-markets", label: "Farmers Markets", icon: "🌾", bold: true },
+  { id: "vendors", label: "Vendors", icon: "🛍️", bold: true },
+  { id: "swapmeets", label: "SwapMeets", icon: "🏬", bold: true }
 ];
 
 export default function ContractorLocationSearch() {
@@ -92,9 +92,9 @@ export default function ContractorLocationSearch() {
                 borderRadius: "6px",
                 border: searchType === cat.id ? "1px solid #ea580c" : "1px solid #d1d5db",
                 background: searchType === cat.id ? "#fed7aa" : "transparent",
-                color: searchType === cat.id ? "#92400e" : "#6b7280",
+                color: searchType === cat.id ? "#92400e" : "#1f2937",
                 fontSize: "12px",
-                fontWeight: "600",
+                fontWeight: "700",
                 cursor: "pointer",
                 transition: "all 0.2s",
                 display: "flex",
@@ -169,7 +169,7 @@ export default function ContractorLocationSearch() {
               {!isLoading && "Search"}
             </button>
           </div>
-          <p style={{ fontSize: "12px", color: "#6b7280", margin: "0" }}>Search by location to find verified professionals in your area</p>
+          <p style={{ fontSize: "12px", color: "#1f2937", margin: "0", fontWeight: "600" }}>Search by location to find verified professionals in your area</p>
         </form>
 
         {/* Results */}
