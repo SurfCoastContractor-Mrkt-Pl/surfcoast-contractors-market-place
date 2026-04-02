@@ -53,12 +53,12 @@ export default function Home() {
           <article
             onMouseEnter={() => setHoveredCard("customer")}
             onMouseLeave={() => setHoveredCard(null)}
-            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 backdrop-blur-xl transition-all duration-200 bg-blue-950/50 border border-blue-500/40 ${hoveredCard === "customer" ? "transform -translate-y-0.5 shadow-xl shadow-blue-600/30" : "shadow-md"} overflow-hidden`}
+            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "customer" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
           >
             <HomeIcon size={28} className="mb-3 md:mb-4 text-blue-600" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-xl font-bold mb-2 text-white">Find a Pro</h3>
-            <p className="text-sm text-white/82 mb-4 leading-relaxed flex-1">Post your project, get competitive quotes, and hire a vetted tradesperson near you.</p>
-            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-white/88">
+            <h3 className="text-xl font-bold mb-2 text-gray-900">Find a Pro</h3>
+            <p className="text-sm text-gray-700 mb-4 leading-relaxed flex-1">Post your project, get competitive quotes, and hire a vetted tradesperson near you.</p>
+            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-gray-700">
               <li>✓ Verified & licensed pros only</li>
               <li>✓ Free 2-week trial</li>
               <li>✓ Secure payments</li>
@@ -91,12 +91,12 @@ export default function Home() {
           <article
             onMouseEnter={() => setHoveredCard("contractor")}
             onMouseLeave={() => setHoveredCard(null)}
-            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 backdrop-blur-xl transition-all duration-200 bg-amber-950/50 border border-orange-500/40 ${hoveredCard === "contractor" ? "transform -translate-y-0.5 shadow-xl shadow-orange-600/30" : "shadow-md"} overflow-hidden`}
+            className={`flex-1 flex flex-col rounded-2xl p-6 md:p-8 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "contractor" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
           >
             <Wrench size={28} className="mb-3 md:mb-4 text-orange-600" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-xl font-bold mb-2 text-white">Join as a Pro</h3>
-            <p className="text-sm text-white/82 mb-4 leading-relaxed flex-1">Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
-            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-white/88">
+            <h3 className="text-xl font-bold mb-2 text-gray-900">Join as a Pro</h3>
+            <p className="text-sm text-gray-700 mb-4 leading-relaxed flex-1">Expand your reach, manage jobs, and get paid — all from one professional platform.</p>
+            <ul className="list-none p-0 mb-4 md:mb-6 flex flex-col gap-1 text-xs text-gray-700">
               <li>✓ Free 2-week trial</li>
               <li>✓ Get paid securely via Stripe</li>
               <li>✓ Build your reputation</li>
@@ -117,11 +117,11 @@ export default function Home() {
           <article
             onMouseEnter={() => setHoveredCard("booth")}
             onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 backdrop-blur-xl transition-all duration-200 bg-stone-900/50 border border-amber-700/40 ${hoveredCard === "booth" ? "transform -translate-y-0.5 shadow-lg shadow-amber-700/25" : "shadow-md"} overflow-hidden`}
+            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "booth" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
           >
             <Store size={24} className="mb-2 text-amber-700" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-white">Welcome to the Marketplace</h3>
-            <p className="text-xs text-white/75 mb-3 leading-snug flex-1">Pick Your Market — Select Farmers Market to set up your booth and sell fresh goods.</p>
+            <h3 className="text-base font-bold mb-1 text-gray-900">Welcome to the Marketplace</h3>
+            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Pick Your Market — Select Farmers Market to set up your booth and sell fresh goods.</p>
             <button 
               onClick={() => navigate('/MarketShopSignup?type=farmers_market')} 
               aria-label="Get started as a farmers market vendor"
@@ -135,11 +135,11 @@ export default function Home() {
           <article
             onMouseEnter={() => setHoveredCard("swapmeets")}
             onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 backdrop-blur-xl transition-all duration-200 bg-orange-950/50 border border-orange-600/40 ${hoveredCard === "swapmeets" ? "transform -translate-y-0.5 shadow-lg shadow-orange-600/25" : "shadow-md"} overflow-hidden`}
+            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "swapmeets" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
           >
             <ShoppingBag size={24} className="mb-2 text-orange-500" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-white">Reserve Your Swap Meet Space</h3>
-            <p className="text-xs text-white/75 mb-3 leading-snug flex-1">Secure your booth, list your goods, and start selling to local buyers today.</p>
+            <h3 className="text-base font-bold mb-1 text-gray-900">Reserve Your Swap Meet Space</h3>
+            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Secure your booth, list your goods, and start selling to local buyers today.</p>
             <button 
               onClick={() => navigate('/MarketShopSignup?type=swap_meet')} 
               aria-label="Get started as a swap meet vendor"
@@ -153,11 +153,11 @@ export default function Home() {
           <article
             onMouseEnter={() => setHoveredCard("consumer")}
             onMouseLeave={() => setHoveredCard(null)}
-            className={`flex flex-col rounded-xl p-5 md:p-6 backdrop-blur-xl transition-all duration-200 bg-green-950/50 border border-green-600/40 ${hoveredCard === "consumer" ? "transform -translate-y-0.5 shadow-lg shadow-green-600/25" : "shadow-md"} overflow-hidden`}
+            className={`flex flex-col rounded-xl p-5 md:p-6 transition-all duration-200 bg-white border border-gray-200 ${hoveredCard === "consumer" ? "transform -translate-y-0.5 shadow-lg" : "shadow-md"} overflow-hidden`}
           >
             <Users size={24} className="mb-2 text-green-500" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="text-base font-bold mb-1 text-white">Consumer</h3>
-            <p className="text-xs text-white/75 mb-3 leading-snug flex-1">Shop booths and vendors at local farmers markets.</p>
+            <h3 className="text-base font-bold mb-1 text-gray-900">Consumer</h3>
+            <p className="text-xs text-gray-700 mb-3 leading-snug flex-1">Shop booths and vendors at local farmers markets.</p>
             <button 
               onClick={() => navigate('/ConsumerSignup')} 
               aria-label="Start shopping as a consumer"

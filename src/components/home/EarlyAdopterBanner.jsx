@@ -26,13 +26,14 @@ export default function EarlyAdopterBanner() {
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(139,92,246,0.15) 100%)',
-      border: '1px solid rgba(59,130,246,0.3)',
+      background: '#ffffff',
+      border: '1px solid #dbeafe',
       borderRadius: '12px',
       padding: '16px',
       marginBottom: '20px',
       position: 'relative',
       overflow: 'hidden',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
     }}>
       <button
         onClick={() => setDismissed(true)}
@@ -43,7 +44,7 @@ export default function EarlyAdopterBanner() {
           right: '12px',
           background: 'transparent',
           border: 'none',
-          color: 'rgba(255,255,255,0.7)',
+          color: '#9ca3af',
           cursor: 'pointer',
           padding: '4px',
         }}
@@ -54,21 +55,21 @@ export default function EarlyAdopterBanner() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
         <Zap size={20} style={{ color: '#3b82f6', flexShrink: 0 }} />
         <div>
-          <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>
+          <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1f2937', margin: 0 }}>
             🎉 Founding Member Spots Available
           </h3>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', margin: '4px 0 0', fontWeight: 500 }}>
+          <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0', fontWeight: 500 }}>
             Be part of our founding community and get 1 year free
           </p>
         </div>
       </div>
 
-      <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '8px', padding: '8px', marginBottom: '10px' }}>
+      <div style={{ background: '#f3f4f6', borderRadius: '8px', padding: '8px', marginBottom: '10px' }}>
         <div style={{ background: '#3b82f6', height: '4px', borderRadius: '4px', width: `${percentFilled}%`, transition: 'width 0.3s ease' }} />
       </div>
 
-      <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
-        <strong style={{ color: '#fff' }}>{spotsLeft}</strong> spots left • First 100 members get 1 year free
+      <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
+        <strong style={{ color: '#1f2937' }}>{spotsLeft}</strong> spots left • First 100 members get 1 year free
       </p>
     </div>
   );

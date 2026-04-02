@@ -5,15 +5,15 @@ export default function MissionStatement() {
       maxWidth: "900px",
       marginBottom: "36px",
       padding: "clamp(24px, 5vw, 40px)",
-      background: "rgba(217,119,6,0.08)",
-      border: "1px solid rgba(217,119,6,0.3)",
-      borderRadius: "16px",
-      backdropFilter: "blur(12px)"
+      background: "#ffffff",
+      border: "1px solid #e5e7eb",
+      borderRadius: "12px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
     }}>
       <h2 style={{
         fontSize: "clamp(20px, 4vw, 28px)",
         fontWeight: "800",
-        color: "#d97706",
+        color: "#1f2937",
         margin: "0 0 20px",
         textAlign: "center",
         lineHeight: 1.2
@@ -28,7 +28,7 @@ export default function MissionStatement() {
       }}>
         <p style={{
           fontSize: "clamp(14px, 2.5vw, 16px)",
-          color: "rgba(255,255,255,0.9)",
+          color: "#374151",
           margin: 0,
           lineHeight: 1.7,
           fontWeight: "600"
@@ -38,7 +38,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.92)",
+          color: "#4b5563",
           margin: 0,
           lineHeight: 1.7
         }}>
@@ -47,7 +47,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.92)",
+          color: "#4b5563",
           margin: 0,
           lineHeight: 1.7
         }}>
@@ -56,7 +56,7 @@ export default function MissionStatement() {
 
         <p style={{
           fontSize: "clamp(13px, 2.2vw, 15px)",
-          color: "rgba(255,255,255,0.92)",
+          color: "#4b5563",
           margin: 0,
           lineHeight: 1.7,
           fontStyle: "italic"
