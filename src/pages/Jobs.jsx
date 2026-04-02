@@ -38,7 +38,6 @@ export default function Jobs() {
   const [userLocation, setUserLocation] = useState(null);
   const [jobDistances, setJobDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
-  const [isSearching, setIsSearching] = useState(false);
   const [activeSearchQuery, setActiveSearchQuery] = useState('');
   const [activeTypeFilter, setActiveTypeFilter] = useState('');
   const [activeTradeFilter, setActiveTradeFilter] = useState('');
@@ -64,23 +63,11 @@ export default function Jobs() {
     queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date'),
   });
 
-  // Fetch all work_scheduled payments to know which job IDs are closed
-  const { data: scheduledPayments } = useQuery({
-    queryKey: ['scheduled-payments'],
-    queryFn: () => base44.entities.Payment.filter({ status: 'work_scheduled' }),
-  });
 
-  const scheduledJobIds = useMemo(() => {
-    if (!scheduledPayments) return new Set();
-    return new Set(scheduledPayments.map(p => p.contractor_id).filter(Boolean));
-  }, [scheduledPayments]);
 
   const filteredJobs = useMemo(() => {
     if (!jobs) return [];
-    // Exclude jobs that have been marked as work scheduled
-    
     return jobs.filter(job => {
-      if (scheduledJobIds.has(job.id)) return false;
 
       // Fuzzy matching - includes query in title, location, or description
       let matchesSearch = !activeSearchQuery;
@@ -108,45 +95,42 @@ export default function Jobs() {
 
       // Show jobs with calculated distance OR those still being calculated
       const distance = jobDistances[job.id];
-      const matchesRadius = !userLocation || (distance === undefined || distance <= searchRadius);
+      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
       
       return matchesSearch && matchesType && matchesTrade && matchesUrgency && matchesRadius;
     });
-  }, [jobs, scheduledJobIds, activeSearchQuery, activeTypeFilter, activeTradeFilter, activeUrgencyFilter, userLocation, jobDistances, searchRadius]);
+  }, [jobs, activeSearchQuery, activeTypeFilter, activeTradeFilter, activeUrgencyFilter, userLocation, jobDistances, searchRadius]);
 
   const handleLocationChange = async (location) => {
     setUserLocation(location);
-    setIsSearching(false); // Clear search flag when location changes
     if (jobs) {
       const distances = {};
-      for (const j of jobs) {
-        if (j.location) {
-          try {
-            const jobCoords = await geocodeLocation(j.location);
-            if (jobCoords) {
-              const dist = calculateDistance(
-                location.lat,
-                location.lon,
-                jobCoords.lat,
-                jobCoords.lon
-              );
-              distances[j.id] = dist;
-            } else {
-              distances[j.id] = 999;
+      await Promise.all(
+        jobs.map(async (j) => {
+          if (j.location) {
+            try {
+              const jobCoords = await geocodeLocation(j.location);
+              if (jobCoords) {
+                const dist = calculateDistance(
+                  location.lat,
+                  location.lon,
+                  jobCoords.lat,
+                  jobCoords.lon
+                );
+                distances[j.id] = dist;
+              }
+            } catch (error) {
+              console.error('Distance calc error for', j.location, error);
             }
-          } catch (error) {
-            console.error('Distance calc error for', j.location, error);
-            distances[j.id] = 999;
           }
-        }
-      }
+        })
+      );
       setJobDistances(distances);
     }
   };
 
   const handleFindClosest = () => {
     setSearchRadius(15);
-    setIsSearching(true);
   };
 
   const applyFilters = () => {

@@ -55,7 +55,7 @@ export default function Home() {
 
 
   const handleSignup = (destination) => {
-    window.location.href = destination;
+    navigate(destination);
   };
 
   const handleLogin = () => {
@@ -96,18 +96,10 @@ export default function Home() {
              role="menu"
              style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}
            >
+
              <button 
                role="menuitem"
-               onClick={() => { window.location.href = '/pricing'; setDropdownOpen(false); }} 
-               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
-             >
-               Pricing
-             </button>
-             <button 
-               role="menuitem"
-               onClick={() => { window.location.href = '/why-surfcoast'; setDropdownOpen(false); }} 
+               onClick={() => { navigate('/why-surfcoast'); setDropdownOpen(false); }} 
                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
@@ -125,7 +117,7 @@ export default function Home() {
              </button>
              <button 
                role="menuitem"
-               onClick={() => { window.location.href = '/About'; setDropdownOpen(false); }} 
+               onClick={() => { navigate('/About'); setDropdownOpen(false); }} 
                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
                onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}
@@ -172,7 +164,7 @@ export default function Home() {
               <li>✓ Secure payments</li>
             </ul>
             <button 
-              onClick={() => window.location.href = '/CustomerSignup'} 
+              onClick={() => navigate('/CustomerSignup')} 
               onMouseEnter={(e) => e.target.style.boxShadow = "0 0 16px rgba(29,111,164,0.6), 0 4px 12px rgba(29,111,164,0.3)"} 
               onMouseLeave={(e) => e.target.style.boxShadow = "none"}
               aria-label="Find a Pro - navigate to customer signup"
@@ -235,7 +227,7 @@ export default function Home() {
             <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Welcome to the Marketplace</h3>
             <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.75)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Pick Your Market — Select Farmers Market to set up your booth and sell fresh goods.</p>
             <button 
-              onClick={() => window.location.href = '/MarketShopSignup?type=farmers_market'} 
+              onClick={() => navigate('/MarketShopSignup?type=farmers_market')} 
               onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(157,122,84,0.6), 0 4px 8px rgba(157,122,84,0.3)"} 
               onMouseLeave={(e) => e.target.style.boxShadow = "none"}
               aria-label="Get started as a farmers market vendor"
@@ -255,7 +247,7 @@ export default function Home() {
             <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 4px", color:"#fff" }}>Reserve Your Swap Meet Space</h3>
             <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.75)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Secure your booth, list your goods, and start selling to local buyers today.</p>
             <button 
-              onClick={() => window.location.href = '/MarketShopSignup?type=swap_meet'} 
+              onClick={() => navigate('/MarketShopSignup?type=swap_meet')} 
               onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(249,115,22,0.6), 0 4px 8px rgba(249,115,22,0.3)"} 
               onMouseLeave={(e) => e.target.style.boxShadow = "none"}
               aria-label="Get started as a swap meet vendor"
@@ -275,7 +267,7 @@ export default function Home() {
             <h3 style={{ fontSize:"17px", fontWeight:"700", margin:"0 0 8px", color:"#fff" }}>Consumer</h3>
             <p style={{ fontSize:"13px", color:"rgba(255,255,255,0.75)", margin:"0 0 12px", lineHeight:"1.5", flex:1 }}>Shop booths and vendors at local farmers markets.</p>
             <button 
-              onClick={() => window.location.href = '/ConsumerSignup'} 
+              onClick={() => navigate('/ConsumerSignup')} 
               onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(34,197,94,0.6), 0 4px 8px rgba(34,197,94,0.3)"} 
               onMouseLeave={(e) => e.target.style.boxShadow = "none"}
               aria-label="Start shopping as a consumer"

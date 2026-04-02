@@ -177,13 +177,13 @@ export default function ContractorPublicProfile() {
 
               <div className="flex flex-col gap-3">
                <a 
-                 href={`/QuoteRequestDemo?contractor_id=${contractorId}`}
-                 onClick={() => trackContactInfoView(contractorId, contractor.name, 'quote')}
-                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
-               >
-                 <MessageSquare className="w-5 h-5" />
-                 Request a Quote
-               </a>
+                  href={`/QuoteRequestWizard`}
+                  onClick={() => trackContactInfoView(contractorId, contractor.name, 'quote')}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  Request a Quote
+                </a>
                <button
                  onClick={() => {
                    trackContactInfoView(contractorId, contractor.name, 'service_request');

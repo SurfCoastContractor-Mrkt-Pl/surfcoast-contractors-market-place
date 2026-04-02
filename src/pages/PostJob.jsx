@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Briefcase, Loader2, CheckCircle, Users, Upload, X, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Briefcase, Loader2, CheckCircle, Users, ArrowRight } from 'lucide-react';
 import BeforePhotosUpload from '@/components/photos/BeforePhotosUpload';
 
 const trades = [
@@ -48,7 +48,6 @@ export default function PostJob() {
     status: 'open'
   });
   const [beforePhotos, setBeforePhotos] = useState([]);
-  const [profilePhoto, setProfilePhoto] = useState('');
 
   useEffect(() => {
     const checkUserType = async () => {
@@ -151,13 +150,7 @@ export default function PostJob() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleProfilePhotoUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const response = await base44.integrations.Core.UploadFile({ file });
-      setProfilePhoto(response.file_url);
-    }
-  };
+
 
   if (success) {
     return (
@@ -219,37 +212,6 @@ export default function PostJob() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit}>
-           <Card className="p-6 md:p-8 mb-6">
-             <h2 className="text-lg font-semibold text-slate-900 mb-6">Profile Photo</h2>
-             <div className="flex items-center gap-4 mb-6">
-               {profilePhoto && (
-                 <div className="relative">
-                   <img src={profilePhoto} alt="Profile" className="w-20 h-20 rounded-lg object-cover" />
-                   <button
-                     type="button"
-                     onClick={() => setProfilePhoto('')}
-                     className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
-                   >
-                     <X className="w-3 h-3" />
-                   </button>
-                 </div>
-               )}
-               <div className="flex-1">
-                 <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors">
-                   <Upload className="w-5 h-5 text-slate-400 mb-2" />
-                   <span className="text-sm font-medium text-slate-700">{profilePhoto ? 'Change' : 'Upload'} Photo</span>
-                   <span className="text-xs text-slate-500">JPG, PNG up to 5MB</span>
-                   <input
-                     type="file"
-                     accept="image/*"
-                     onChange={handleProfilePhotoUpload}
-                     className="hidden"
-                   />
-                 </label>
-               </div>
-             </div>
-           </Card>
-
            <Card className="p-6 md:p-8 mb-6">
              <h2 className="text-lg font-semibold text-slate-900 mb-6">Job Details</h2>
             

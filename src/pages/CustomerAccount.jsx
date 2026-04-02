@@ -11,7 +11,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus, Bell, AlertCircle } from 'lucide-react';
+import { User, CheckCircle2, Clock, FileText, CalendarCheck, LogOut, Settings, Lock, Mail, Plus, Bell, AlertCircle, Loader2 } from 'lucide-react';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -88,7 +88,7 @@ export default function CustomerAccount() {
 
   const { data: disclaimers, isLoading: loadingDisclaimers } = useQuery({
     queryKey: ['customer-disclaimers', userEmail],
-    queryFn: () => base44.entities.DisclaimerAcceptance.filter({ customer_email: userEmail }),
+    queryFn: () => base44.entities.DisclaimerAcceptance.filter({ client_email: userEmail }),
     enabled: !!userEmail,
   });
 
@@ -135,11 +135,6 @@ export default function CustomerAccount() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['customer-disclaimers'] }),
   });
 
-  const deletePaymentMutation = useMutation({
-    mutationFn: (id) => base44.entities.Payment.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['customer-payments'] }),
-  });
-
   const isLoading = loadingPayments || loadingDisclaimers || loadingScopes;
 
   const handleDeleteAll = async () => {
@@ -163,7 +158,7 @@ export default function CustomerAccount() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
-            <User className="w-6 h-6 text-slate-900 animate-spin" />
+            <Loader2 className="w-6 h-6 text-slate-900 animate-spin" />
           </div>
           <p className="text-slate-600">Loading your account...</p>
         </div>

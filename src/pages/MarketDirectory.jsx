@@ -18,8 +18,8 @@ const SHOP_TYPE_COLORS = {
 };
 
 const CATEGORIES = [
-  'Produce', 'Baked Goods', 'Crafts', 'Clothing',
-  'Electronics', 'Collectibles', 'Food & Beverage', 'Health & Wellness', 'Other'
+  'fresh_produce', 'baked_goods', 'handmade_crafts', 'clothing_accessories',
+  'electronics', 'collectibles', 'prepared_foods', 'health_wellness', 'misc'
 ];
 
 function VendorCard({ shop, onClick }) {
@@ -175,7 +175,7 @@ export default function MarketDirectory() {
             onChange={e => setCategoryFilter(e.target.value)}
           >
             <option value="">All Categories</option>
-            {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat.replace(/_/g, ' ')}</option>)}
           </select>
           </div>
         </div>

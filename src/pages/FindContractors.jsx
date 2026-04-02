@@ -37,8 +37,7 @@ export default function FindContractors() {
    const [userLocation, setUserLocation] = useState(null);
    const [contractorDistances, setContractorDistances] = useState({});
    const [searchRadius, setSearchRadius] = useState(35);
-   const [userEmail, setUserEmail] = useState(null);
-   const [isSearching, setIsSearching] = useState(false);
+    const [userEmail, setUserEmail] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -70,38 +69,34 @@ export default function FindContractors() {
 
   const handleLocationChange = async (location) => {
     setUserLocation(location);
-    setIsSearching(false); // Clear search flag when location changes
     if (contractors) {
       const distances = {};
-      for (const c of contractors) {
-        if (c.location) {
-          try {
-            const contractorCoords = await geocodeLocation(c.location);
-            if (contractorCoords) {
-              const dist = calculateDistance(
-                location.lat,
-                location.lon,
-                contractorCoords.lat,
-                contractorCoords.lon
-              );
-              distances[c.id] = dist;
-            } else {
-              // If geocoding fails, set a very high distance so contractor still shows but not near top
-              distances[c.id] = 999;
+      await Promise.all(
+        contractors.map(async (c) => {
+          if (c.location) {
+            try {
+              const contractorCoords = await geocodeLocation(c.location);
+              if (contractorCoords) {
+                const dist = calculateDistance(
+                  location.lat,
+                  location.lon,
+                  contractorCoords.lat,
+                  contractorCoords.lon
+                );
+                distances[c.id] = dist;
+              }
+            } catch (error) {
+              console.error('Distance calc error for', c.location, error);
             }
-          } catch (error) {
-            console.error('Distance calc error for', c.location, error);
-            distances[c.id] = 999;
           }
-        }
-      }
+        })
+      );
       setContractorDistances(distances);
     }
   };
 
   const handleFindClosest = () => {
     setSearchRadius(15);
-    setIsSearching(true);
   };
 
   const filterContractors = (list) => {
@@ -134,7 +129,7 @@ export default function FindContractors() {
 
       // Location radius filter
       const distance = contractorDistances[c.id];
-      const matchesRadius = !userLocation || (distance === undefined || distance <= searchRadius);
+      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
 
       return matchesSearch && matchesType && matchesTrade && matchesLineOfWork && matchesRating && matchesRadius;
     });

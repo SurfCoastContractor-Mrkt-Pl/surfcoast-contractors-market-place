@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import ReviewForm from '@/components/reviews/ReviewForm';
-import ReviewsDisplay from '@/components/reviews/ReviewsDisplay';
 import BookingRequestForm from '@/components/booking/BookingRequestForm';
 import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
 import { MapPin, Calendar, MessageCircle, ArrowLeft, Phone, Mail, ClipboardList } from 'lucide-react';
@@ -26,8 +25,8 @@ export default function VendorDetail() {
 
   const { data: reviews = [] } = useQuery({
     queryKey: ['vendorReviews', vendorId],
-    queryFn: () => 
-      base44.entities.VendorReview.filter({ 
+    queryFn: () =>
+      base44.entities.VendorReview.filter({
         vendor_id: vendorId,
         status: 'approved'
       }),
@@ -50,11 +49,7 @@ export default function VendorDetail() {
       {[...Array(5)].map((_, i) => (
         <div
           key={i}
-          className={`w-5 h-5 rounded-full ${
-            i < rating
-              ? 'bg-amber-400'
-              : 'bg-slate-300'
-          }`}
+          className={`w-5 h-5 rounded-full ${i < rating ? 'bg-amber-400' : 'bg-slate-300'}`}
         />
       ))}
     </div>
@@ -152,7 +147,7 @@ export default function VendorDetail() {
                 <h3 className="font-semibold text-slate-900">Categories</h3>
                 <div className="flex flex-wrap gap-2">
                   {vendor.categories.map(cat => (
-                    <Badge key={cat} variant="outline">{cat}</Badge>
+                    <Badge key={cat} variant="outline">{cat.replace(/_/g, ' ')}</Badge>
                   ))}
                 </div>
               </div>
@@ -216,7 +211,30 @@ export default function VendorDetail() {
         {/* Reviews Section */}
         <Card className="p-8">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">Customer Reviews</h2>
-          <ReviewsDisplay reviews={reviews} />
+          {reviews.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              <p>No reviews yet. Be the first to review this vendor!</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map(review => (
+                <div key={review.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="font-semibold text-slate-900">{review.reviewer_name}</h3>
+                      <p className="text-sm text-slate-600">{new Date(review.created_date).toLocaleDateString()}</p>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i} className={`w-4 h-4 rounded-full ${i < review.overall_rating ? 'bg-amber-400' : 'bg-slate-300'}`} />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-slate-700">{review.comment}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
       </div>
 
@@ -225,9 +243,7 @@ export default function VendorDetail() {
         vendor={vendor}
         isOpen={reviewOpen}
         onClose={() => setReviewOpen(false)}
-        onSuccess={() => {
-          // Reviews will auto-refresh via query
-        }}
+        onSuccess={() => {}}
       />
       <BookingRequestForm
         market={vendor}

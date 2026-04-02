@@ -61,9 +61,12 @@ export default function Messaging() {
       }
     };
 
-    const cleanup = initializeMessaging();
+    let unsubscribeFn = null;
+    initializeMessaging().then(unsub => {
+      if (unsub) unsubscribeFn = unsub;
+    });
     return () => {
-      cleanup?.then(unsub => unsub && unsub());
+      if (unsubscribeFn) unsubscribeFn();
     };
   }, []);
 

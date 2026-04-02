@@ -3,10 +3,9 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { useSearchParams, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { ArrowLeft, Calendar, User, Eye } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Eye, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ReactMarkdown from 'react-markdown';
-import { Loader } from 'lucide-react';
 
 export default function BlogDetail() {
   const [searchParams] = useSearchParams();
@@ -35,7 +34,7 @@ export default function BlogDetail() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader className="w-8 h-8 animate-spin text-amber-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
       </div>
     );
   }

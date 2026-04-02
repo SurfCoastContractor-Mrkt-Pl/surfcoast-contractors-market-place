@@ -75,11 +75,12 @@ export default function Blog() {
     queryKey: ['blog-posts'],
     queryFn: async () => {
       try {
-        const posts = await base44.entities.BlogPost.filter({ published: true }, '-published_at', 50);
-        return posts && posts.length > 0 ? posts : DEMO_POSTS;
+        const dbPosts = await base44.entities.BlogPost.filter({ published: true }, '-published_at', 50);
+        if (dbPosts && dbPosts.length > 0) return dbPosts;
       } catch {
-        return DEMO_POSTS;
+        // Fall back to demo posts
       }
+      return DEMO_POSTS;
     },
   });
 
@@ -158,9 +159,15 @@ export default function Blog() {
         ) : (
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {filteredPosts.map((post) => (
-              <Link key={post.id} to={`/BlogDetail?slug=${post.slug}`}>
-                <BlogCard post={post} />
-              </Link>
+              post.id && !['1','2','3','4'].includes(post.id) ? (
+                <Link key={post.id} to={`/BlogDetail?slug=${post.slug}`}>
+                  <BlogCard post={post} />
+                </Link>
+              ) : (
+                <div key={post.id} className="cursor-default">
+                  <BlogCard post={post} />
+                </div>
+              )
             ))}
           </div>
         )}

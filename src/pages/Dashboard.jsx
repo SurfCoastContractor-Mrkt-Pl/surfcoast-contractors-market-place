@@ -17,16 +17,18 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   // Must be declared before any conditional returns (Rules of Hooks)
+  const isAdmin = user?.role === 'admin';
+
   const { data: stripeAccounts = [] } = useQuery({
     queryKey: ['stripe-accounts-admin'],
     queryFn: () => base44.entities.Contractor.filter({ stripe_account_setup_complete: true }),
-    enabled: !!profiles.primaryType && user?.role === 'admin',
+    enabled: isAdmin && !!activeProfile,
   });
 
   const { data: lockedAccounts = [] } = useQuery({
     queryKey: ['locked-accounts-admin'],
     queryFn: () => base44.entities.Contractor.filter({ account_locked: true }),
-    enabled: !!profiles.primaryType && user?.role === 'admin',
+    enabled: isAdmin && !!activeProfile,
   });
 
   useEffect(() => {
@@ -72,8 +74,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  const isAdmin = user?.role === 'admin';
 
    return (
      <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
