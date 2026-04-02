@@ -12,7 +12,7 @@ export default function LayoutFooter({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex flex-col gap-1 mb-3">
-              <span className="text-xl font-black tracking-tight leading-none" style={{backgroundImage:'linear-gradient(90deg,#f97316,#fb923c)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>SurfCoast</span>
+              <span className="text-xl font-black tracking-tight leading-none gradient-text">SurfCoast</span>
               <span className="text-[8px] font-bold tracking-[3px] text-blue-300 uppercase leading-none">MARKETPLACE</span>
             </div>
             <p className="text-slate-300 max-w-sm text-sm leading-relaxed font-medium">
@@ -21,7 +21,7 @@ export default function LayoutFooter({
           </div>
 
           <div>
-            <h4 className="font-bold mb-3 text-white text-sm uppercase tracking-wide">For Contractors</h4>
+            <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color:'#f97316'}}>For Contractors</h4>
             <ul className="space-y-2 text-slate-200">
               <li className="text-sm font-medium"><Link to={createPageUrl('BecomeContractor')} className="hover:text-amber-400 transition-colors">Create Profile</Link></li>
               <li className="text-sm font-medium"><Link to={createPageUrl('Jobs')} className="hover:text-amber-400 transition-colors">Browse Jobs</Link></li>
@@ -30,7 +30,7 @@ export default function LayoutFooter({
           </div>
 
           <div>
-            <h4 className="font-bold mb-3 text-white text-sm uppercase tracking-wide">For Clients</h4>
+            <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color:'#f97316'}}>For Clients</h4>
             <ul className="space-y-2 text-slate-200">
               <li className="text-sm font-medium"><Link to={createPageUrl('FindContractors')} className="hover:text-amber-400 transition-colors">Find Contractors</Link></li>
               <li className="text-sm font-medium"><Link to={createPageUrl('PostJob')} className="hover:text-amber-400 transition-colors">Post a Job</Link></li>
@@ -40,7 +40,7 @@ export default function LayoutFooter({
           </div>
 
           <div>
-            <h4 className="font-bold mb-3 text-white text-sm uppercase tracking-wide">Markets & Vendors</h4>
+            <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color:'#f97316'}}>Markets & Vendors</h4>
             <ul className="space-y-2 text-slate-200">
               <li className="text-sm font-medium"><Link to={createPageUrl('BoothsAndVendorsMap')} className="hover:text-amber-400 transition-colors">Booths & Vendors</Link></li>
               <li className="text-sm font-medium"><Link to={createPageUrl('MarketDirectory')} className="hover:text-amber-400 transition-colors">Market Directory</Link></li>
@@ -50,7 +50,7 @@ export default function LayoutFooter({
           </div>
 
           <div className="flex flex-col items-center justify-start">
-            <h4 className="font-bold mb-3 text-sm text-center text-white uppercase tracking-wide">Connect</h4>
+            <h4 className="font-bold mb-3 text-sm text-center uppercase tracking-wide" style={{color:'#f97316'}}>Connect</h4>
             <div className="flex items-center gap-4 sm:gap-3">
               <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-amber-400 transition-colors" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
