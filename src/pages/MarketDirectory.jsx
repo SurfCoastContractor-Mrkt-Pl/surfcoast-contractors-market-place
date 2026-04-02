@@ -115,7 +115,7 @@ export default function MarketDirectory() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-       <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-slate-200">
          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
              <ShoppingBag className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
@@ -260,8 +260,8 @@ export default function MarketDirectory() {
         </div>
         </div>
 
-      {/* Grid */}
-       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
+        {/* Grid */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-16">
          {isConsumerMode ? (
            <>
              {/* Consumer Mode - Browse Products */}
@@ -322,6 +322,6 @@ export default function MarketDirectory() {
            </>
          )}
          </div>
-      </div>
-      );
-      }
+         </div>
+         );
+         }

@@ -55,12 +55,7 @@ export default function BoothsAndVendorsMap() {
         { is_active: true },
         '-updated_date'
       );
-      // Add mock coordinates if not present (in real app, these would be geocoded)
-      return result.map(vendor => ({
-        ...vendor,
-        latitude: vendor.latitude || (39.8 + Math.random() * 0.1),
-        longitude: vendor.longitude || (-98.5 + Math.random() * 0.1)
-      }));
+      return result;
     }
   });
 

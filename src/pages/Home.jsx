@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown, Store, Users } from "lucide-react";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";

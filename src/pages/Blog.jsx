@@ -158,7 +158,7 @@ export default function Blog() {
         ) : (
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {filteredPosts.map((post) => (
-              <Link key={post.id} to={createPageUrl(`BlogDetail?slug=${post.slug}`)}>
+              <Link key={post.id} to={`/BlogDetail?slug=${post.slug}`}>
                 <BlogCard post={post} />
               </Link>
             ))}
@@ -173,7 +173,7 @@ export default function Blog() {
           <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
             Browse verified contractors, read real reviews, and get quoted in minutes.
           </p>
-          <Link to={createPageUrl('FindContractors')}>
+          <Link to="/FindContractors">
             <button className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">
               Browse Professionals <ArrowRight className="w-5 h-5" />
             </button>

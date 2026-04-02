@@ -107,8 +107,8 @@ export default function FindContractors() {
   const filterContractors = (list) => {
     return list.filter(c => {
       // Search query
-      let matchesSearch = !searchQuery;
-      if (searchQuery && !matchesSearch) {
+      let matchesSearch = true;
+      if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const searchFields = [
           c.name?.toLowerCase() || '',

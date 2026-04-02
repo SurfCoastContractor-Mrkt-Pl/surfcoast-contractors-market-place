@@ -43,21 +43,16 @@ export default function CustomerSignup() {
       if (!formData.location.trim()) throw new Error('City/Zip is required');
 
       // Call signup backend function
-      const response = await fetch('/functions/customerSignup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: formData.full_name,
-          email: formData.email,
-          password: formData.password,
-          phone: formData.phone,
-          location: formData.location,
-        }),
+      const response = await base44.functions.invoke('customerSignup', {
+        full_name: formData.full_name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        location: formData.location,
       });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
+      if (!response.data?.success && response.data?.error) {
+        throw new Error(response.data.error || 'Signup failed');
       }
 
       // Check and grant early adopter status
