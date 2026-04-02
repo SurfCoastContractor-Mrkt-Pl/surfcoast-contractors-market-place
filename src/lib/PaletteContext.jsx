@@ -97,22 +97,22 @@ const PALETTES = {
 
 function applyPaletteToDOM(paletteName) {
   const selectedPalette = PALETTES[paletteName];
+  if (!selectedPalette) return;
+  
   const root = document.documentElement;
-
-  // Remove dark class that might override
+  
+  // Remove dark class if it exists (can interfere with CSS variables)
   root.classList.remove('dark');
-
-  // Apply all CSS variables directly to root element style attribute
+  
+  // Apply all CSS variables to root element
   Object.entries(selectedPalette).forEach(([key, value]) => {
     const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
     root.style.setProperty(cssVarName, value);
   });
-
-  // Preserve logo gradients
+  
+  // Logo gradient always stays consistent (red-orange to blue-purple)
   root.style.setProperty('--gradient-brand', 'linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%)');
   root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)');
-
-  console.log('✓ Palette applied to DOM:', paletteName);
 }
 
 export function PaletteProvider({ children }) {
@@ -120,71 +120,51 @@ export function PaletteProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('🎨 Palette system initializing...');
-    
     try {
+      // Try to get palette from sessionStorage
       let savedPalette = null;
-      let sessionStorageAvailable = true;
-      
       try {
         savedPalette = sessionStorage.getItem('app_palette');
-        console.log('✓ sessionStorage available');
       } catch (e) {
-        console.warn('⚠️ sessionStorage blocked:', e.message);
-        sessionStorageAvailable = false;
+        // sessionStorage might be blocked in some environments
       }
-      
-      let selectedPalette = null;
-      
+
+      let selectedPalette;
       if (savedPalette && PALETTES[savedPalette]) {
-        console.log('✓ Using saved palette:', savedPalette);
+        // Use saved palette from this session
         selectedPalette = savedPalette;
       } else {
-        const palettes = Object.keys(PALETTES);
-        selectedPalette = palettes[Math.floor(Math.random() * palettes.length)];
-        console.log('✓ Random palette selected:', selectedPalette);
+        // Randomly select a palette for this session
+        const paletteNames = Object.keys(PALETTES);
+        selectedPalette = paletteNames[Math.floor(Math.random() * paletteNames.length)];
         
-        if (sessionStorageAvailable) {
-          try {
-            sessionStorage.setItem('app_palette', selectedPalette);
-          } catch (e) {
-            console.warn('⚠️ Could not save palette:', e.message);
-          }
+        // Save to sessionStorage
+        try {
+          sessionStorage.setItem('app_palette', selectedPalette);
+        } catch (e) {
+          // Silently fail if sessionStorage is blocked
         }
       }
 
-      // Apply immediately before render
+      // Apply palette immediately
       applyPaletteToDOM(selectedPalette);
       setPalette(selectedPalette);
-      setIsLoading(false);
-    } catch (e) {
-      console.error('❌ Palette error:', e);
-      const palettes = Object.keys(PALETTES);
-      const selectedPalette = palettes[Math.floor(Math.random() * palettes.length)];
-      applyPaletteToDOM(selectedPalette);
-      setPalette(selectedPalette);
-      setIsLoading(false);
+    } catch (error) {
+      console.error('Error initializing palette:', error);
+      // Fallback to ocean palette
+      applyPaletteToDOM('ocean');
+      setPalette('ocean');
     }
+    
+    setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (!palette) return;
-    console.log('🎨 Palette updated in useEffect:', palette);
-    console.log('🎨 Current root element:', document.documentElement);
-    applyPaletteToDOM(palette);
-    console.log('🎨 After applying palette, root styles:', document.documentElement.style.cssText.substring(0, 200));
-  }, [palette]);
-
-  console.log('🎨 PaletteProvider render - isLoading:', isLoading, 'palette:', palette);
-  
   if (isLoading) {
-    console.log('🎨 PaletteProvider still loading...');
     return null;
   }
 
-  console.log('🎨 PaletteProvider rendering with palette:', palette, 'setPalette type:', typeof setPalette);
   return (
-    <PaletteContext.Provider value={{ palette, setPalette, PALETTES }}>
+    <PaletteContext.Provider value={{ palette, PALETTES }}>
       {children}
     </PaletteContext.Provider>
   );

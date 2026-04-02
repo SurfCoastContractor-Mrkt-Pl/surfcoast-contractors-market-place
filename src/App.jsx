@@ -84,7 +84,6 @@ import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
-import PaletteSwitcher from '@/components/palette/PaletteSwitcher';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -572,7 +571,6 @@ function App() {
           <ConsumerModeProvider>
             <AuthProvider>
               <Router>
-                <PaletteSwitcher />
                 <AuthenticatedApp />
               </Router>
               <Toaster />
