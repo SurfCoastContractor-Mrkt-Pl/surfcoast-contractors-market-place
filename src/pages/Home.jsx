@@ -14,39 +14,6 @@ export default function Home() {
 
   return (
     <div className="w-full bg-white">
-      {/* ==================== NAVIGATION BAR ==================== */}
-      <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-gray-900">SurfCoast</h1>
-          </div>
-
-          {/* Center Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">About</a>
-            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">For Pros</a>
-            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">For Customers</a>
-            <a href="#" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">Pricing</a>
-          </div>
-
-          {/* Right CTA Button */}
-          <button
-            onClick={() => navigate('/BecomeContractor')}
-            className="hidden md:block px-6 py-2 rounded-lg bg-orange-600 text-white text-sm font-bold hover:bg-orange-700 transition-all"
-          >
-            Claim Founding Spot
-          </button>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden p-2 text-gray-700">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </nav>
-
       {/* ==================== HERO SECTION ==================== */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -58,11 +25,11 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Being a contractor <span className="text-orange-600">isn't just a job.</span>
             </h1>
 
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            <p className="text-base text-gray-700 mb-8 leading-relaxed">
               It's a mindset built on hard work, ownership, and pride. Join a community of verified tradespeople and grow your business your way.
             </p>
 
@@ -86,7 +53,7 @@ export default function Home() {
           <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 p-8">
             <div className="flex items-center gap-3 mb-6">
               <Star className="w-8 h-8 text-orange-600 fill-orange-600" />
-              <h3 className="text-xl font-bold text-gray-900">Founding Member</h3>
+              <h3 className="text-lg font-bold text-gray-900">Founding Member</h3>
             </div>
 
             <p className="text-sm text-gray-600 mb-6">
@@ -141,14 +108,14 @@ export default function Home() {
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <blockquote className="mb-8">
-            <p className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+            <p className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
               Being a contractor <span className="text-orange-600">isn't a job title.</span>
               <br />
               <span className="text-orange-600">It's a mindset.</span>
             </p>
           </blockquote>
 
-          <p className="text-lg text-gray-700 leading-relaxed">
+          <p className="text-base text-gray-700 leading-relaxed">
             A mindset built on effort, ownership, and pride in doing the job right. At SurfCoast, we believe starting out is tough—and nobody makes it alone. That's why we're here to support you the way you actually need it. No gatekeeping. No one-size-fits-all playbook. Just real support, real people, and real opportunities. Through shared knowledge, accessible work, and a community that respects the grind, we help you take your first step, your next step, and every step toward building something of your own.
           </p>
         </div>
@@ -165,11 +132,11 @@ export default function Home() {
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Try it free. No pressure. No card.
             </h2>
 
-            <p className="text-gray-600 text-lg mb-8">
+            <p className="text-gray-600 text-base mb-8">
               Get full access to find jobs, connect with clients, and build your reputation risk-free.
             </p>
 
@@ -203,14 +170,14 @@ export default function Home() {
           {/* Right Column */}
           <div className="flex flex-col items-center justify-center text-center">
             <div className="mb-6">
-              <span className="text-9xl font-bold text-orange-600">14</span>
+              <span className="text-8xl font-bold text-orange-600">14</span>
             </div>
 
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
               Days completely free
             </h3>
 
-            <p className="text-gray-600 mb-8 max-w-sm">
+            <p className="text-sm text-gray-600 mb-8 max-w-sm">
               Full access to all pro features. Find jobs, connect with clients, and build your reputation.
             </p>
 
@@ -236,10 +203,10 @@ export default function Home() {
           <div className="border-r-0 md:border-r-2 border-gray-300 pr-0 md:pr-8">
             <div className="flex items-center gap-3 mb-4">
               <Briefcase className="w-6 h-6 text-blue-600" />
-              <h3 className="text-3xl font-bold text-gray-900">I'm a Pro</h3>
+              <h3 className="text-2xl font-bold text-gray-900">I'm a Pro</h3>
             </div>
 
-            <p className="text-gray-600 text-lg mb-6">
+            <p className="text-gray-600 text-base mb-6">
               Grow your business with verified clients, secure payments, and real support.
             </p>
 
@@ -274,10 +241,10 @@ export default function Home() {
           <div className="pl-0 md:pl-8">
             <div className="flex items-center gap-3 mb-4">
               <Users className="w-6 h-6 text-orange-600" />
-              <h3 className="text-3xl font-bold text-gray-900">I need a Pro</h3>
+              <h3 className="text-2xl font-bold text-gray-900">I need a Pro</h3>
             </div>
 
-            <p className="text-gray-600 text-lg mb-6">
+            <p className="text-gray-600 text-base mb-6">
               Find verified tradespeople you can trust, with transparent pricing and secure payments.
             </p>
 
@@ -313,7 +280,7 @@ export default function Home() {
       {/* ==================== SEARCH / NOTIFY ME SECTION ==================== */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
             See what's coming to your area
           </h2>
 
@@ -355,7 +322,7 @@ export default function Home() {
       {/* ==================== TOOLS SECTION ==================== */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-16 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-16 text-center">
             More than a directory
           </h2>
 
@@ -365,8 +332,8 @@ export default function Home() {
               <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-6">
                 <ShoppingBag className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Swap Meet Space</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Swap Meet Space</h3>
+              <p className="text-sm text-gray-600 mb-6">
                 Book your booth and sell goods at local markets. Connect with buyers in your community.
               </p>
               <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
@@ -379,8 +346,8 @@ export default function Home() {
               <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center mb-6">
                 <Briefcase className="w-6 h-6 text-orange-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Pro Marketplace</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Pro Marketplace</h3>
+              <p className="text-sm text-gray-600 mb-6">
                 Find quality jobs, grow your business, and build your reputation with verified clients.
               </p>
               <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
@@ -393,8 +360,8 @@ export default function Home() {
               <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mb-6">
                 <Users className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Consumer Hub</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Consumer Hub</h3>
+              <p className="text-sm text-gray-600 mb-6">
                 Find verified pros, get instant quotes, and pay securely with verified reviews.
               </p>
               <a href="#" className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2">
