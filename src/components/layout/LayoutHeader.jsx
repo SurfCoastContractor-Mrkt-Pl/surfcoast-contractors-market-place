@@ -147,19 +147,19 @@ export default function LayoutHeader({
         </div>
 
         {/* Right side actions */}
-        <div className="hidden lg:flex items-center gap-2 ml-auto flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-3 ml-auto flex-shrink-0">
           {!isLoggedIn && (
             <>
-              <Link to="/pricing">
-                <button className="text-sm font-medium text-slate-700 hover:text-blue-700 px-3 py-2 rounded-full hover:bg-blue-50 transition-colors duration-150">
-                  Pricing
-                </button>
-              </Link>
-              <Link to="/About">
-                <button className="text-sm font-medium text-slate-700 hover:text-blue-700 px-3 py-2 rounded-full hover:bg-blue-50 transition-colors duration-150">
-                  About
-                </button>
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link to="/About" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">About</Link>
+                <span className="text-slate-300">/</span>
+                <a href="#" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Pros</a>
+                <span className="text-slate-300">/</span>
+                <a href="#" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Customers</a>
+                <span className="text-slate-300">/</span>
+                <Link to="/pricing" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">Pricing</Link>
+              </div>
+              <div className="w-px h-5 bg-slate-200 mx-1"></div>
               <button
                 onClick={() => base44.auth.redirectToLogin()}
                 className="text-sm font-semibold text-slate-800 hover:text-blue-700 px-4 py-2 rounded-full border border-slate-300 hover:border-blue-300 transition-colors duration-150"
