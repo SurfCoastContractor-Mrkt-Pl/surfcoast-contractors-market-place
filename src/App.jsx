@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/lib/ErrorBoundary';
 import { getPageGradient } from '@/lib/pageGradient';
+import { PaletteProvider } from '@/lib/PaletteContext';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
@@ -565,16 +566,18 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClientInstance}>
-        <ConsumerModeProvider>
-          <AuthProvider>
-            <Router>
-              <AuthenticatedApp />
-            </Router>
-            <Toaster />
-          </AuthProvider>
-        </ConsumerModeProvider>
-      </QueryClientProvider>
+      <PaletteProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <ConsumerModeProvider>
+            <AuthProvider>
+              <Router>
+                <AuthenticatedApp />
+              </Router>
+              <Toaster />
+            </AuthProvider>
+          </ConsumerModeProvider>
+        </QueryClientProvider>
+      </PaletteProvider>
     </ErrorBoundary>
   )
 }

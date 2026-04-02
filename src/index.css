@@ -6,19 +6,19 @@
 
 @layer base {
   :root {
-    /* SurfCoast: clean whites, deep blue primary, warm orange accent */
+    /* Default Ocean Palette */
     --background: 210 20% 98%;
-    --foreground: 215 35% 10%;
+    --foreground: 210 50% 8%;
     --card: 0 0% 100%;
-    --card-foreground: 215 35% 10%;
+    --card-foreground: 210 50% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 215 35% 10%;
+    --popover-foreground: 210 50% 8%;
     --primary: 210 75% 38%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 30% 94%;
-    --secondary-foreground: 210 60% 20%;
+    --secondary: 173 58% 35%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 210 15% 94%;
-    --muted-foreground: 215 20% 25%;
+    --muted-foreground: 210 50% 20%;
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 50%;
@@ -33,15 +33,15 @@
     --chart-5: 200 70% 45%;
     --radius: 0.75rem;
     --sidebar-background: 210 30% 98%;
-    --sidebar-foreground: 215 35% 10%;
+    --sidebar-foreground: 210 50% 8%;
     --sidebar-primary: 210 75% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 30% 94%;
-    --sidebar-accent-foreground: 210 60% 20%;
+    --sidebar-accent: 173 58% 35%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 210 20% 82%;
     --sidebar-ring: 210 75% 38%;
 
-    /* Gradient tokens — blue & orange */
+    /* Gradient tokens — logo stays consistent across all themes (red-orange to blue-purple) */
     --gradient-brand: linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%);
     --gradient-soft: linear-gradient(135deg, #eff6ff 0%, #dbeafe 60%, #fff7ed 100%);
     --gradient-hero: linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%);
