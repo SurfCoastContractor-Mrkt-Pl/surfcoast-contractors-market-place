@@ -1,5 +1,6 @@
 import { CheckCircle, Zap, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { designTokens } from "@/lib/designTokens";
 
 const FREE_FEATURES = [
   "Public listing & discovery",

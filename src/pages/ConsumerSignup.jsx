@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Loader2, ShoppingBag } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { designTokens } from '@/lib/designTokens';
 import EarlyAdopterBanner from '@/components/home/EarlyAdopterBanner';
 
 export default function ConsumerSignup() {
@@ -81,22 +82,22 @@ export default function ConsumerSignup() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <div className="max-w-md mx-auto px-4 py-10">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-            <ShoppingBag className="w-5 h-5 text-primary" />
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: designTokens.colors.accent.light }}>
+            <ShoppingBag className="w-5 h-5" style={{ color: designTokens.colors.accent.DEFAULT }} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Shop at Local Markets</h1>
-            <p className="text-sm text-muted-foreground">Create your account to browse booths and vendors</p>
+            <h1 className="text-2xl font-bold" style={{ color: designTokens.colors.gray[900] }}>Shop at Local Markets</h1>
+            <p className="text-sm" style={{ color: designTokens.colors.gray[600] }}>Create your account to browse booths and vendors</p>
           </div>
         </div>
         <EarlyAdopterBanner />
-        <Card className="p-8">
+        <Card className="p-8" style={{ border: `1px solid ${designTokens.colors.gray[200]}` }}>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              <div className="p-4 rounded-lg text-sm" style={{ background: '#fee2e2', border: `1px solid #fecaca`, color: '#991b1b' }}>
                 {error}
               </div>
             )}
@@ -167,7 +168,7 @@ export default function ConsumerSignup() {
             <Button
               type="submit"
               className="w-full text-white font-semibold mt-6"
-              style={{backgroundColor: '#1E5A96'}}
+              style={{ backgroundColor: designTokens.colors.accent.DEFAULT, hover: { backgroundColor: designTokens.colors.accent.dark } }}
               disabled={loading}
             >
               {loading ? (
@@ -180,13 +181,13 @@ export default function ConsumerSignup() {
               )}
             </Button>
 
-            <p className="text-sm text-slate-600 text-center mt-4">
+            <p className="text-sm text-center mt-4" style={{ color: designTokens.colors.gray[600] }}>
               Already have an account?{' '}
               <button
                 type="button"
                 onClick={() => base44.auth.redirectToLogin()}
                 className="font-semibold hover:underline"
-                style={{ color: '#d4a843', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                style={{ color: designTokens.colors.primary.DEFAULT, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
               >
                 Login here
               </button>

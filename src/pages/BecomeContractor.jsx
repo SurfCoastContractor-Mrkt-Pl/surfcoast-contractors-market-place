@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { logError } from '@/lib/errorHandler';
+import { designTokens } from '@/lib/designTokens';
 import { HardHat, Loader2, CheckCircle, ChevronRight } from 'lucide-react';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import StripeConnectOnboarding from '@/components/contractor/StripeConnectOnboarding';
@@ -371,25 +372,25 @@ export default function BecomeContractor() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ fontFamily:"'Inter','Segoe UI',sans-serif" }}>
+    <div className="min-h-screen flex flex-col" style={{ fontFamily: designTokens.typography.fontFamily.base }}>
 
       {isPreview && (
-        <div className="bg-blue-600 text-white text-sm font-semibold py-2 px-4 text-center">
+        <div className="text-white text-sm font-semibold py-2 px-4 text-center" style={{ background: designTokens.colors.primary.DEFAULT }}>
           👁 <strong>Admin Preview Mode</strong> — Form interactions work normally but submission will not save any data.
         </div>
       )}
 
       {/* Hero */}
       <div className="text-center px-4 pt-10 pb-8 max-w-2xl mx-auto w-full">
-        <div className="w-14 h-14 rounded-2xl bg-amber-100 border-2 border-amber-300 flex items-center justify-center mx-auto mb-5">
-          <HardHat className="w-7 h-7 text-amber-600" />
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
+          <HardHat className="w-7 h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-3 leading-tight tracking-tight">Become a Contractor</h1>
-        <p className="text-base sm:text-lg text-slate-600 mb-6 leading-relaxed">Create your professional profile and start earning — free to join, get paid securely.</p>
+        <h1 className="text-3xl sm:text-5xl font-extrabold mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become a Contractor</h1>
+        <p className="text-base sm:text-lg mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start earning — free to join, get paid securely.</p>
         <div className="flex flex-wrap gap-4 justify-center">
           {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
-            <span key={item} className="flex items-center gap-1.5 text-sm text-slate-700">
-              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+            <span key={item} className="flex items-center gap-1.5 text-sm" style={{ color: designTokens.colors.gray[700] }}>
+              <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: designTokens.colors.success }} />
               {item}
             </span>
           ))}
@@ -447,9 +448,9 @@ export default function BecomeContractor() {
 
           {/* Error Message */}
           {dobError && (
-            <div className="p-4 mb-6 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
+            <div className="p-4 mb-6 rounded-xl flex items-start gap-3" style={{ background: '#fee2e2', border: `1px solid #fecaca` }}>
               <span className="text-lg leading-none">⚠</span>
-              <p className="text-sm text-red-700 flex-1">{dobError}</p>
+              <p className="text-sm flex-1" style={{ color: '#991b1b' }}>{dobError}</p>
             </div>
           )}
 
@@ -459,7 +460,8 @@ export default function BecomeContractor() {
               <button
                 type="button"
                 onClick={handlePrevStep}
-                className="flex-1 py-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-base font-bold transition-colors min-h-[52px]"
+                className="flex-1 py-4 rounded-xl text-base font-bold transition-colors min-h-[52px]"
+                style={{ border: `1px solid ${designTokens.colors.gray[300]}`, background: designTokens.colors.white, color: designTokens.colors.gray[700] }}
               >
                 ← Back
               </button>
@@ -468,7 +470,7 @@ export default function BecomeContractor() {
               type="submit"
               disabled={mutation.isPending}
               className="flex-1 py-4 rounded-xl text-base font-bold text-white transition-all min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              style={{ background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", boxShadow:"0 4px 20px rgba(217,119,6,0.35)" }}
+              style={{ background: `linear-gradient(135deg, ${designTokens.colors.accent.DEFAULT} 0%, ${designTokens.colors.accent.dark} 100%)`, boxShadow: `0 4px 20px ${designTokens.colors.accent.light}55` }}
             >
               {mutation.isPending ? (
                 <>

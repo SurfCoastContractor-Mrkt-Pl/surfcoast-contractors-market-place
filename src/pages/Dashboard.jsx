@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import { designTokens } from '@/lib/designTokens';
 import ContractorDashboard from '@/components/dashboard/ContractorDashboard';
 import CustomerDashboard from '@/components/dashboard/CustomerDashboard';
 
@@ -69,8 +70,8 @@ export default function Dashboard() {
 
   if (loading || !activeProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: designTokens.colors.background }}>
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: designTokens.colors.gray[300] }} />
       </div>
     );
   }
