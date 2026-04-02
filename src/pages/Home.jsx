@@ -64,14 +64,14 @@ export default function Home() {
   };
 
   return (
-    <div style={{ position:"fixed", inset:0, overflowY:"auto", overflowX:"hidden", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", background:"#0a1628" }}>
+    <div style={{ position:"fixed", inset:0, overflowY:"auto", overflowX:"hidden", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", background:"linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)" }}>
       <NewsletterSubscribeModal />
       <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
       <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.72)", zIndex:1 }} />
 
       <header style={{ position:"sticky", top:0, zIndex:10, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)", minHeight:"44px" }} role="banner">
         <div style={{ display:'flex', flexDirection:'column', gap:'2px' }}>
-          <h1 style={{ fontSize:'14px', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left', margin:0 }}>SurfCoast</h1>
+          <h1 style={{ fontSize:'14px', fontWeight:'800', background:'linear-gradient(135deg, #1d4ed8 0%, #ea580c 100%)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left', margin:0 }}>SurfCoast</h1>
           <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
         </div>
         <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }} aria-label="Main navigation">
