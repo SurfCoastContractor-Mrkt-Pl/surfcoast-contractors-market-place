@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { ShoppingBag, Home as HomeIcon, Wrench, Shield, CheckCircle, ChevronDown, Store, Users } from "lucide-react";
 import VendorSearchBar from "@/components/home/VendorSearchBar";
 import ContractorLocationSearch from "@/components/home/ContractorLocationSearch";
@@ -9,10 +8,6 @@ import FeaturedVendors from "@/components/home/FeaturedVendors";
 import NewsletterSubscribeModal from "@/components/home/NewsletterSubscribeModal";
 import MissionStatement from "@/components/home/MissionStatement";
 import { base44 } from "@/api/base44Client";
-// QRCode imports temporarily disabled due to package resolution issue
-// import InstagramQRCode from "@/components/social/InstagramQRCode";
-// import FacebookQRCode from "@/components/social/FacebookQRCode";
-// import FacebookGroupQRCode from "@/components/social/FacebookGroupQRCode";
 
 const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
 

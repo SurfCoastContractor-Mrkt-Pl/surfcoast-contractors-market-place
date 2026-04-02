@@ -30,7 +30,7 @@ export default function Layout({ children, currentPageName }) {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const isBackNav = useRef(false);
   const accountMenuRef = useRef(null);
-  const { isConsumerMode, toggleConsumerMode } = useConsumerMode();
+  useConsumerMode();
 
   // Use custom hooks for user data fetching with caching
   const { user } = useUserData();
