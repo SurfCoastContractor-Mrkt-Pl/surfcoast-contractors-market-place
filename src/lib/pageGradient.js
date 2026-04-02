@@ -136,8 +136,8 @@ function sampleGradient(position) {
  * Each page shows a gentle blend of its segment of the grand gradient.
  */
 export function getPageGradient(pathname) {
-  // Home page manages its own background — skip gradient injection to avoid conflict
-  if (pathname === '/') return '';
+  // Home page uses the hero gradient
+  if (pathname === '/') return 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)';
 
   // Normalize path — strip trailing slash (except root)
   const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
