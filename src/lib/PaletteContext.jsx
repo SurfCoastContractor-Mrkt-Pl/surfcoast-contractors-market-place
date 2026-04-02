@@ -95,85 +95,82 @@ const PALETTES = {
   },
 };
 
+function applyPaletteToDOM(paletteName) {
+  const selectedPalette = PALETTES[paletteName];
+  const root = document.documentElement;
+
+  // Remove dark class that might override
+  root.classList.remove('dark');
+
+  // Apply all CSS variables directly to root element style attribute
+  Object.entries(selectedPalette).forEach(([key, value]) => {
+    const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+    root.style.setProperty(cssVarName, value);
+  });
+
+  // Preserve logo gradients
+  root.style.setProperty('--gradient-brand', 'linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%)');
+  root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)');
+
+  console.log('✓ Palette applied to DOM:', paletteName);
+}
+
 export function PaletteProvider({ children }) {
   const [palette, setPalette] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Palette system loaded');
+    console.log('🎨 Palette system initializing...');
     
     try {
-      // Check sessionStorage for saved palette
       let savedPalette = null;
       let sessionStorageAvailable = true;
       
       try {
         savedPalette = sessionStorage.getItem('app_palette');
-        console.log('sessionStorage available, savedPalette:', savedPalette);
+        console.log('✓ sessionStorage available');
       } catch (e) {
-        console.warn('sessionStorage unavailable:', e.message);
+        console.warn('⚠️ sessionStorage blocked:', e.message);
         sessionStorageAvailable = false;
       }
       
+      let selectedPalette = null;
+      
       if (savedPalette && PALETTES[savedPalette]) {
-        console.log('Using saved palette:', savedPalette);
-        setPalette(savedPalette);
+        console.log('✓ Using saved palette:', savedPalette);
+        selectedPalette = savedPalette;
       } else {
-        // Random selection if not saved
         const palettes = Object.keys(PALETTES);
-        const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
-        console.log('Selected random palette:', randomPalette);
+        selectedPalette = palettes[Math.floor(Math.random() * palettes.length)];
+        console.log('✓ Random palette selected:', selectedPalette);
         
         if (sessionStorageAvailable) {
           try {
-            sessionStorage.setItem('app_palette', randomPalette);
-            console.log('Saved palette to sessionStorage');
+            sessionStorage.setItem('app_palette', selectedPalette);
           } catch (e) {
-            console.warn('Could not save to sessionStorage:', e.message);
+            console.warn('⚠️ Could not save palette:', e.message);
           }
         }
-        setPalette(randomPalette);
       }
+
+      // Apply immediately before render
+      applyPaletteToDOM(selectedPalette);
+      setPalette(selectedPalette);
+      setIsLoading(false);
     } catch (e) {
-      console.error('Palette initialization error:', e);
+      console.error('❌ Palette error:', e);
       const palettes = Object.keys(PALETTES);
-      const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
-      console.log('Fallback palette selected:', randomPalette);
-      setPalette(randomPalette);
+      const selectedPalette = palettes[Math.floor(Math.random() * palettes.length)];
+      applyPaletteToDOM(selectedPalette);
+      setPalette(selectedPalette);
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     if (!palette) return;
-
-    console.log('Applying palette:', palette);
-
-    // Apply palette to CSS variables
-    const selectedPalette = PALETTES[palette];
-    const root = document.documentElement;
-
-    // Remove any .dark class that might be overriding palette
-    root.classList.remove('dark');
-    console.log('.dark class removed from root');
-
-    // Apply theme colors — but preserve logo gradients
-    Object.entries(selectedPalette).forEach(([key, value]) => {
-      const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-      root.style.setProperty(cssVarName, value);
-    });
-
-    // Explicitly preserve logo gradient across all themes
-    root.style.setProperty('--gradient-brand', 'linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%)');
-    root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)');
-    
-    console.log('Palette CSS variables applied:', {
-      background: root.style.getPropertyValue('--background'),
-      foreground: root.style.getPropertyValue('--foreground'),
-      primary: root.style.getPropertyValue('--primary'),
-      palette: palette,
-    });
+    console.log('🎨 Palette updated:', palette);
+    applyPaletteToDOM(palette);
   }, [palette]);
 
   if (isLoading) {
