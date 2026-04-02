@@ -81,8 +81,8 @@ export default function LayoutMobileMenu({
                 <div className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors relative",
                   isActive
-                    ? "bg-violet-50 text-violet-700"
-                    : "text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                 )}>
                   {Icon && <Icon className="w-4 h-4" />}
                   {link.name}
@@ -101,7 +101,7 @@ export default function LayoutMobileMenu({
             <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={() => setExploreOpen(!exploreOpen)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               >
                 <span>Explore</span>
                 <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", exploreOpen && "rotate-180")} />
@@ -111,11 +111,11 @@ export default function LayoutMobileMenu({
                 <div className="mt-1 space-y-4 px-2 pb-2">
                   {exploreGroups.map(group => (
                     <div key={group.label}>
-                      <p className="px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-violet-400">{group.label}</p>
+                      <p className="px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-500">{group.label}</p>
                       {group.items.map(item => (
                         <Link key={item.path} to={item.path} onClick={handleNavClick}>
-                          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
-                            <ChevronRight className="w-3.5 h-3.5 text-violet-300" />
+                          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                           <ChevronRight className="w-3.5 h-3.5 text-blue-300" />
                             {item.name}
                           </div>
                         </Link>
@@ -128,22 +128,22 @@ export default function LayoutMobileMenu({
               {/* Pricing / About pills */}
               <div className="mt-1 space-y-1">
                 <Link to="/pricing" onClick={handleNavClick}>
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
-                    Pricing
-                  </div>
-                </Link>
-                <Link to="/About" onClick={handleNavClick}>
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
-                    About Us
-                  </div>
-                </Link>
+                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                     Pricing
+                   </div>
+                 </Link>
+                 <Link to="/About" onClick={handleNavClick}>
+                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                     About Us
+                   </div>
+                 </Link>
               </div>
 
               {/* CTA buttons */}
               <div className="mt-4 flex flex-col gap-2 px-2">
                 <button
                   onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
-                  className="w-full py-3 rounded-xl border border-violet-200 text-violet-700 font-semibold text-sm hover:bg-violet-50 transition-colors"
+                  className="w-full py-3 rounded-xl border border-blue-200 text-blue-700 font-semibold text-sm hover:bg-blue-50 transition-colors"
                 >
                   Log in
                 </button>
@@ -160,7 +160,7 @@ export default function LayoutMobileMenu({
           {isLoggedIn && (
             <div className="pt-2 border-t border-slate-100 space-y-1">
               <Link to="/About" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
                   About Us
                 </div>
               </Link>

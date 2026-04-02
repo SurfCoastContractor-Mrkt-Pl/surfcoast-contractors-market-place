@@ -125,12 +125,20 @@
 
   /* Globally ensure muted text is readable */
   .text-muted-foreground {
-    color: hsl(215, 20%, 30%) !important;
+    color: hsl(215, 20%, 25%) !important;
   }
 
   .dark .text-muted-foreground {
-    color: hsl(210, 15%, 62%) !important;
+    color: hsl(210, 15%, 50%) !important;
   }
+
+  /* Force gray text classes to be dark enough — globally */
+  .text-slate-400, .text-gray-400 { color: hsl(215, 15%, 38%) !important; }
+  .text-slate-500, .text-gray-500 { color: hsl(215, 15%, 32%) !important; }
+  .text-slate-600, .text-gray-600 { color: hsl(215, 20%, 26%) !important; }
+  .dark .text-slate-400, .dark .text-gray-400 { color: hsl(215, 15%, 62%) !important; }
+  .dark .text-slate-500, .dark .text-gray-500 { color: hsl(215, 15%, 58%) !important; }
+  .dark .text-slate-600, .dark .text-gray-600 { color: hsl(215, 15%, 72%) !important; }
 
   /* Contractor Profile Fonts - Premium Serif */
   .contractor-profile {
