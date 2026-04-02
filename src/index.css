@@ -20,7 +20,7 @@
     --secondary: 210 30% 94%;
     --secondary-foreground: 210 60% 25%;
     --muted: 210 15% 94%;
-    --muted-foreground: 210 10% 46%;
+    --muted-foreground: 210 10% 25%;
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
@@ -62,7 +62,7 @@
     --secondary: 210 20% 18%;
     --secondary-foreground: 210 20% 90%;
     --muted: 215 20% 16%;
-    --muted-foreground: 210 10% 60%;
+    --muted-foreground: 210 10% 70%;
     --accent: 25 95% 58%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 40%;

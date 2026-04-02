@@ -17,7 +17,7 @@
     --secondary: 210 8% 95%;
     --secondary-foreground: 210 8% 18%;
     --muted: 210 5% 88%;
-    --muted-foreground: 210 5% 40%;
+    --muted-foreground: 210 5% 25%;
     --accent: 210 58% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
@@ -40,7 +40,7 @@
     --secondary: 210 8% 25%;
     --secondary-foreground: 0 0% 95%;
     --muted: 210 8% 35%;
-    --muted-foreground: 210 5% 70%;
+    --muted-foreground: 210 5% 80%;
     --accent: 210 58% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
@@ -91,7 +91,7 @@
   }
 
   p {
-    @apply text-slate-700 leading-relaxed;
+    @apply text-foreground leading-relaxed;
   }
 
   a {
@@ -140,7 +140,7 @@
   }
 
   .text-elegant {
-    @apply text-slate-700 leading-relaxed;
+    @apply text-foreground leading-relaxed;
   }
 
   .section-spacing {
