@@ -20,7 +20,7 @@ const SURFCOAST_WAVES = [
   { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
   { id: 'swell', wave: 2, name: 'Swell', label: 'SurfCoast Swell', badgeTierRequired: 2, customersRequired: 3, color: '#0ea5e9', emoji: '🌊', description: 'Building momentum with your clients' },
   { id: 'breaker', wave: 3, name: 'Breaker', label: 'SurfCoast Breaker', badgeTierRequired: 3, customersRequired: 5, color: '#3b82f6', emoji: '🏄', description: 'Full Field Ops access unlocked', isFieldOpsUnlock: true },
-  { id: 'pipeline', wave: 4, name: 'Pipeline', label: 'SurfCoast Pipeline', badgeTierRequired: 5, customersRequired: 20, color: '#6366f1', emoji: '🌀', description: 'Elite contractor status' },
+  { id: 'pipeline', wave: 4, name: 'Pipeline', label: 'SurfCoast Pipeline', badgeTierRequired: 5, customersRequired: 20, color: '#1d4ed8', emoji: '🌀', description: 'Elite contractor status' },
   { id: 'residential_wave', wave: 5, name: 'Residential Wave', label: 'Residential Wave Rider', badgeTierRequired: 6, customersRequired: 50, color: '#f59e0b', emoji: '🏆', description: 'Top tier — HIS licensed professionals only', requiresHIS: true },
 ];
 
