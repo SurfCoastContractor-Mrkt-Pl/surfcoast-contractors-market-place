@@ -79,12 +79,14 @@
   }
 
   /* Force gray/slate text to always be dark enough to read */
-  .text-slate-400, .text-gray-400 { color: hsl(215, 15%, 38%) !important; }
-  .text-slate-500, .text-gray-500 { color: hsl(215, 15%, 32%) !important; }
-  .text-slate-600, .text-gray-600 { color: hsl(215, 20%, 26%) !important; }
-  .dark .text-slate-400, .dark .text-gray-400 { color: hsl(215, 15%, 62%) !important; }
-  .dark .text-slate-500, .dark .text-gray-500 { color: hsl(215, 15%, 58%) !important; }
-  .dark .text-slate-600, .dark .text-gray-600 { color: hsl(215, 15%, 72%) !important; }
+  .text-slate-300, .text-gray-300 { color: hsl(215, 15%, 35%) !important; }
+  .text-slate-400, .text-gray-400 { color: hsl(215, 15%, 30%) !important; }
+  .text-slate-500, .text-gray-500 { color: hsl(215, 18%, 25%) !important; }
+  .text-slate-600, .text-gray-600 { color: hsl(215, 20%, 20%) !important; }
+  .dark .text-slate-300, .dark .text-gray-300 { color: hsl(215, 15%, 70%) !important; }
+  .dark .text-slate-400, .dark .text-gray-400 { color: hsl(215, 15%, 65%) !important; }
+  .dark .text-slate-500, .dark .text-gray-500 { color: hsl(215, 15%, 60%) !important; }
+  .dark .text-slate-600, .dark .text-gray-600 { color: hsl(215, 15%, 75%) !important; }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
