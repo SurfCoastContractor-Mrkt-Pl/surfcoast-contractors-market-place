@@ -8,7 +8,7 @@ export default function About() {
     <div
       className="min-h-screen"
       style={{
-        background: 'linear-gradient(160deg, #7B1E00 0%, #C0390A 18%, #E8621A 35%, #F97316 52%, #e8f0f8 78%, #dce8f0 100%)',
+        background: 'linear-gradient(170deg, #7B1E00 0%, #C0390A 15%, #E8621A 30%, #F97316 48%, #c8dcee 72%, #b8d0e8 100%)',
         fontFamily: "'Montserrat', 'Inter', sans-serif",
       }}
     >
@@ -24,7 +24,7 @@ export default function About() {
         </Link>
       </div>
 
-      {/* Mission Content — sits on the sunset gradient */}
+      {/* Mission Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-0 pt-4">
 
         {/* Page Title */}
@@ -60,25 +60,24 @@ export default function About() {
             `This platform was built by someone living that same path—a father, husband, and entrepreneur who understands what it means to start from the ground up, master a craft, and keep learning. With a background in the trades, business ownership, and years of discipline through martial arts, this platform reflects those same values: accountability, growth, and respect for the work.`,
             `This isn't just a marketplace—it's a foundation for people who are serious about building something real.`,
           ].map((text, i) => (
-            <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: i >= 3 ? '#1a2a3a' : '#f0f4ff' }}>
+            <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: '#ffffff' }}>
               {text}
             </p>
           ))}
 
           <p
             className="font-black uppercase tracking-wider pt-4"
-            style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#0d2a4a', textShadow: 'none' }}
+            style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#ffffff', textShadow: '0 1px 8px rgba(0,0,0,0.2)' }}
           >
             We're here for the builders, the learners, and the ones who refuse to sit still.
           </p>
         </div>
       </main>
 
-      {/* Founder Section — full-width dark navy panel, completely separate from sunset */}
+      {/* Founder Section */}
       <section style={{ background: 'linear-gradient(160deg, #0d2a4a 0%, #0d1f3a 40%, #0a1628 100%)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
-          {/* Section Label */}
           <div className="flex items-center gap-4 mb-14">
             <div style={{ width: '40px', height: '2px', background: '#F97316' }} />
             <p className="font-black uppercase tracking-widest text-xs" style={{ color: '#F97316', letterSpacing: '0.2em' }}>
@@ -88,7 +87,6 @@ export default function About() {
 
           <div className="grid md:grid-cols-5 gap-12 items-start">
 
-            {/* Photo column — 2/5 width */}
             <div className="md:col-span-2">
               <img
                 src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/93f3cfcd7_IMG_3860.jpg"
@@ -97,7 +95,6 @@ export default function About() {
                 style={{ boxShadow: '0 24px 64px rgba(0,0,0,0.5)', border: '1px solid rgba(249,115,22,0.25)' }}
               />
 
-              {/* Name card below photo */}
               <div className="mt-6 pl-1">
                 <h3
                   className="font-black uppercase tracking-wide"
@@ -113,7 +110,6 @@ export default function About() {
                 </p>
               </div>
 
-              {/* Social tag */}
               <div
                 className="mt-6 px-4 py-3 rounded-lg"
                 style={{ background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.2)' }}
@@ -127,7 +123,6 @@ export default function About() {
               </div>
             </div>
 
-            {/* Bio column — 3/5 width */}
             <div className="md:col-span-3 space-y-5">
               <h2
                 className="font-black uppercase tracking-wide"
@@ -138,24 +133,13 @@ export default function About() {
               </h2>
 
               <div className="space-y-4" style={{ color: '#94a3b8', fontWeight: 500, fontSize: '0.95rem', lineHeight: 1.8 }}>
-                <p>
-                  Hector A. Navarrete isn't your typical platform builder—and that's exactly the point.
-                </p>
-                <p>
-                  Born and raised in San Diego, his early years were anything but easy. School didn't come naturally, and life threw its share of hard lessons. At one point, he faced over a decade of homelessness. But quitting was never part of the plan. Through persistence and grit, he fought his way back and earned his high school diploma—proving early on that resilience beats circumstance.
-                </p>
-                <p>
-                  From there, Hector took a hands-on path. He studied Computer Systems, stepped into the trades, and built a career in plumbing that now spans over a decade. Today, as the owner of SurfCoast Plumbing, he understands firsthand what it means to work hard, build trust, and earn every opportunity.
-                </p>
-                <p>
-                  As a husband and father, Hector is driven by something bigger than business—creating opportunities for others willing to put in the work. SurfCoast Contractor Marketplace is an extension of that belief: a place where everyday people can build skills, create income, and take ownership of their future.
-                </p>
-                <p>
-                  Outside of work, he's a lifelong learner, avid reader, and dedicated martial artist—holding a purple belt in Gracie Jiu-Jitsu under Professor Omar in Hemet, with additional training in Taekwondo and Krav Maga. Disciplines that mirror his mindset: stay sharp, stay humble, keep showing up.
-                </p>
+                <p>Hector A. Navarrete isn't your typical platform builder—and that's exactly the point.</p>
+                <p>Born and raised in San Diego, his early years were anything but easy. School didn't come naturally, and life threw its share of hard lessons. At one point, he faced over a decade of homelessness. But quitting was never part of the plan. Through persistence and grit, he fought his way back and earned his high school diploma—proving early on that resilience beats circumstance.</p>
+                <p>From there, Hector took a hands-on path. He studied Computer Systems, stepped into the trades, and built a career in plumbing that now spans over a decade. Today, as the owner of SurfCoast Plumbing, he understands firsthand what it means to work hard, build trust, and earn every opportunity.</p>
+                <p>As a husband and father, Hector is driven by something bigger than business—creating opportunities for others willing to put in the work. SurfCoast Contractor Marketplace is an extension of that belief: a place where everyday people can build skills, create income, and take ownership of their future.</p>
+                <p>Outside of work, he's a lifelong learner, avid reader, and dedicated martial artist—holding a purple belt in Gracie Jiu-Jitsu under Professor Omar in Hemet, with additional training in Taekwondo and Krav Maga. Disciplines that mirror his mindset: stay sharp, stay humble, keep showing up.</p>
               </div>
 
-              {/* Pull quote */}
               <div
                 className="mt-8 px-6 py-5 rounded-xl"
                 style={{ background: 'rgba(249,115,22,0.08)', borderLeft: '3px solid #F97316' }}
@@ -168,7 +152,6 @@ export default function About() {
                 </p>
               </div>
 
-              {/* Credential pills */}
               <div className="flex flex-wrap gap-2 pt-4">
                 {['10+ Years Plumbing', 'Computer Systems', 'Gracie Jiu-Jitsu Purple Belt', 'Business Owner', 'Platform Developer'].map(tag => (
                   <span
@@ -189,7 +172,6 @@ export default function About() {
                 ))}
               </div>
 
-              {/* Share */}
               <div className="pt-6">
                 <ShareAboutButton />
               </div>
@@ -213,7 +195,6 @@ export default function About() {
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '32px' }}>
-            {/* Wave FO Pricing Card */}
             <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(217,119,6,0.08)', border: '2px solid rgba(217,119,6,0.3)', textAlign: 'center' }}>
               <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px', color: '#ffffff' }}>WAVE FO Plans</h3>
               <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For contractors and solo professionals</p>
@@ -223,25 +204,12 @@ export default function About() {
               </div>
               <button
                 onClick={() => window.location.href = '/pricing'}
-                style={{
-                  width: '100%',
-                  padding: '11px 16px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  background: '#d97706',
-                  color: '#fff',
-                  minHeight: '40px',
-                  transition: 'all 0.2s'
-                }}
+                style={{ width: '100%', padding: '11px 16px', borderRadius: '8px', border: 'none', fontSize: '13px', fontWeight: 700, cursor: 'pointer', background: '#d97706', color: '#fff', minHeight: '40px', transition: 'all 0.2s' }}
               >
                 View All Plans
               </button>
             </div>
 
-            {/* WAVEShop Pricing Card */}
             <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '16px', padding: '28px 24px', backdropFilter: 'blur(18px)', background: 'rgba(157,122,84,0.08)', border: '2px solid rgba(157,122,84,0.3)', textAlign: 'center' }}>
               <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px', color: '#ffffff' }}>WAVEShop Vendor</h3>
               <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>For farmers market & swap meet booths</p>
@@ -251,19 +219,7 @@ export default function About() {
               </div>
               <button
                 onClick={() => window.location.href = '/pricing'}
-                style={{
-                  width: '100%',
-                  padding: '11px 16px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  background: '#9d7a54',
-                  color: '#fff',
-                  minHeight: '40px',
-                  transition: 'all 0.2s'
-                }}
+                style={{ width: '100%', padding: '11px 16px', borderRadius: '8px', border: 'none', fontSize: '13px', fontWeight: 700, cursor: 'pointer', background: '#9d7a54', color: '#fff', minHeight: '40px', transition: 'all 0.2s' }}
               >
                 View All Plans
               </button>
