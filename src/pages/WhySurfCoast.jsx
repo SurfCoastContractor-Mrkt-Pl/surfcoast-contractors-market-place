@@ -101,7 +101,7 @@ export default function WhySurfCoast() {
       </header>
 
       {/* HERO */}
-      <section style={{ background: "var(--gradient-hero)", color: "#fff", textAlign: "center", padding: "100px 24px 80px" }}>
+      <section style={{ background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)", color: "#fff", textAlign: "center", padding: "100px 24px 80px" }}>
         <p style={{ fontSize: "13px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#d97706", marginBottom: "20px" }}>The Real Worker's Platform</p>
         <h1 style={{ fontSize: "clamp(36px, 6vw, 68px)", fontWeight: "900", margin: "0 0 24px", lineHeight: 1.05, letterSpacing: "-2px", maxWidth: "900px", marginLeft: "auto", marginRight: "auto" }}>
           Built for the People Who<br />Actually Do the Work
@@ -214,7 +214,7 @@ export default function WhySurfCoast() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ background: "var(--gradient-hero)", color: "#fff", textAlign: "center", padding: "100px 24px" }}>
+      <section style={{ background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)", color: "#fff", textAlign: "center", padding: "100px 24px" }}>
         <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: "900", margin: "0 0 20px", letterSpacing: "-1.5px" }}>Ready to Get Started?</h2>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.75)", maxWidth: "540px", margin: "0 auto 40px", lineHeight: 1.65 }}>
           Create your free profile today — no credit card, no commitment. Join the marketplace built for people who actually work.

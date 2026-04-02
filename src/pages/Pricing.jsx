@@ -602,7 +602,7 @@ export default function Pricing() {
       {/* FOOTER */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "28px 24px", textAlign: "center" }}>
         <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "12px", margin: 0 }}>
-          © 2026 SurfCoast Marketplace · <a href="/terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Terms</a> · <a href="/privacy-policy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Privacy</a>
+          © 2026 SurfCoast Marketplace · <a href="/Terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Terms</a> · <a href="/PrivacyPolicy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Privacy</a>
         </p>
       </footer>
     </div>

@@ -66,7 +66,7 @@ export default function ConsumerSignup() {
         eventName: 'consumer_signup_success',
         properties: { 
           location: formData.location,
-          early_adopter: earlyAdopterRes.data.qualified,
+          early_adopter: earlyAdopterRes?.data?.qualified ?? false,
         },
       });
 
@@ -193,9 +193,14 @@ export default function ConsumerSignup() {
 
             <p className="text-sm text-slate-600 text-center mt-4">
               Already have an account?{' '}
-              <Link to={createPageUrl('Home')} className="font-semibold hover:underline" style={{color: '#d4a843'}}>
+              <button
+                type="button"
+                onClick={() => base44.auth.redirectToLogin()}
+                className="font-semibold hover:underline"
+                style={{ color: '#d4a843', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              >
                 Login here
-              </Link>
+              </button>
             </p>
           </form>
         </Card>
