@@ -29,12 +29,11 @@ export default function Home() {
   };
 
   return (
-    <div style={{ background:"linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)", minHeight:"100vh", display:"flex", flexDirection:"column" }}>
+    <div style={{ background:"linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)", backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", backgroundAttachment:"fixed", minHeight:"100vh" }}>
       <NewsletterSubscribeModal />
-      <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
-      <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.72)", zIndex:1 }} />
-
-      <div style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px 8px" : "28px 16px 8px", width:"100%", flex:1 }}>
+      <div style={{ position:"absolute", inset:0, background:"rgba(10,22,40,0.72)", pointerEvents:"none" }} />
+      
+      <div style={{ position:"relative", display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px 8px" : "28px 16px 8px", width:"100%", minHeight:"100vh" }}>
 
         <section style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "12px", maxWidth:"680px" }}>
           <h2 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h2>
