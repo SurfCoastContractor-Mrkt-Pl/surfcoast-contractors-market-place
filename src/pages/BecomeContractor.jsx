@@ -14,6 +14,7 @@ import OnboardingStep2Professional from '@/components/contractor/OnboardingStep2
 import OnboardingStep3Identity from '@/components/contractor/OnboardingStep3Identity';
 import OnboardingStep4Credentials from '@/components/contractor/OnboardingStep4Credentials';
 import OnboardingStep5Policies from '@/components/contractor/OnboardingStep5Policies';
+import AIProfileGenerator from '@/components/contractor/AIProfileGenerator';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 
@@ -420,10 +421,13 @@ export default function BecomeContractor() {
             />
           )}
           {currentStep === 2 && (
-            <OnboardingStep2Professional
-              formData={formData}
-              onFieldChange={handleChange}
-            />
+            <>
+              <OnboardingStep2Professional
+                formData={formData}
+                onFieldChange={handleChange}
+              />
+              <AIProfileGenerator formData={formData} onBioGenerated={(bio) => handleChange('bio', bio)} />
+            </>
           )}
           {currentStep === 3 && (
             <OnboardingStep3Identity
