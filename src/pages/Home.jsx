@@ -16,9 +16,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const dropdownButtonRef = useRef(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 600);
@@ -27,109 +24,17 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Auth redirect removed — homepage is always accessible
-
-  // Handle keyboard navigation for dropdown
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && dropdownOpen) {
-        setDropdownOpen(false);
-        dropdownButtonRef.current?.focus();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [dropdownOpen]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target) && !dropdownButtonRef.current?.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    if (dropdownOpen) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [dropdownOpen]);
-
-
-
   const handleSignup = (destination) => {
     navigate(destination);
   };
 
-  const handleLogin = () => {
-    base44.auth.redirectToLogin();
-    setDropdownOpen(false);
-  };
-
   return (
-    <div style={{ position:"fixed", inset:0, overflowY:"auto", overflowX:"hidden", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", background:"linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)" }}>
+    <div style={{ background:"linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)", minHeight:"100vh", display:"flex", flexDirection:"column" }}>
       <NewsletterSubscribeModal />
       <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
       <div style={{ position:"fixed", inset:0, background:"rgba(10,22,40,0.72)", zIndex:1 }} />
 
-      <header style={{ position:"sticky", top:0, zIndex:10, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)", minHeight:"44px" }} role="banner">
-        <div style={{ display:'flex', flexDirection:'column', gap:'2px' }}>
-          <h1 style={{ fontSize:'14px', fontWeight:'800', background:'linear-gradient(135deg, #1d4ed8 0%, #ea580c 100%)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left', margin:0 }}>SurfCoast</h1>
-          <span style={{ fontSize:'8px', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'4px' }}>MARKETPLACE</span>
-        </div>
-        <nav style={{ display:"flex", gap:"8px", alignItems:"center", position:"relative" }} aria-label="Main navigation">
-          <a href="/why-surfcoast" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Why SurfCoast</a>
-          <a href="/pricing" style={{ color:"rgba(255,255,255,0.85)", textDecoration:"none", fontSize:"12px", fontWeight:"600", padding:"6px 12px", whiteSpace:"nowrap", transition:"color 0.2s" }} onMouseEnter={(e) => e.target.style.color="#fff"} onMouseLeave={(e) => e.target.style.color="rgba(255,255,255,0.85)"}>Pricing</a>
-          <button 
-            ref={dropdownButtonRef}
-            onClick={() => setDropdownOpen(!dropdownOpen)} 
-            onMouseEnter={(e) => e.target.style.boxShadow = "0 0 12px rgba(37,137,199,0.6)"} 
-            onMouseLeave={(e) => e.target.style.boxShadow = "none"}
-            aria-haspopup="menu" 
-            aria-expanded={dropdownOpen}
-            aria-controls="user-menu"
-            style={{ color:"#fff", textDecoration:"none", fontSize:"12px", fontWeight:"700", padding:"6px 14px", background:"#1d6fa4", borderRadius:"20px", border:"1px solid #2589c7", whiteSpace:"nowrap", height:"32px", display:"flex", alignItems:"center", cursor:"pointer", gap:"6px", transition:"all 0.2s", outline:"2px solid transparent", outlineOffset:"2px" }}
-          >
-            Enter <ChevronDown size={14} aria-hidden="true" style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.2s" }} />
-          </button>
-          {dropdownOpen && (
-           <div 
-             ref={dropdownRef}
-             id="user-menu"
-             role="menu"
-             style={{ position:"absolute", top:"100%", right:0, marginTop:"8px", background:"rgba(29,111,164,0.95)", border:"1px solid #2589c7", borderRadius:"12px", boxShadow:"0 8px 24px rgba(0,0,0,0.4)", zIndex:50, minWidth:"160px", backdropFilter:"blur(12px)" }}
-           >
-
-             <button 
-               role="menuitem"
-               onClick={() => { navigate('/why-surfcoast'); setDropdownOpen(false); }} 
-               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
-             >
-               Why SurfCoast
-             </button>
-             <button 
-               role="menuitem"
-               onClick={handleLogin} 
-               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s", borderBottom:"1px solid rgba(255,255,255,0.1)" }}
-             >
-               Login / Sign Up
-             </button>
-             <button 
-               role="menuitem"
-               onClick={() => { navigate('/About'); setDropdownOpen(false); }} 
-               onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.1)"}
-               onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
-               style={{ width:"100%", padding:"10px 16px", border:"none", background:"transparent", color:"#fff", fontSize:"13px", fontWeight:"600", textAlign:"left", cursor:"pointer", transition:"background 0.2s" }}
-             >
-               About Us
-             </button>
-           </div>
-          )}
-        </nav>
-      </header>
-
-      <main style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px 8px" : "28px 16px 8px", width:"100%", flex:1 }}>
+      <div style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", padding:isMobile ? "clamp(16px, 3vw, 24px) 12px 8px" : "28px 16px 8px", width:"100%", flex:1 }}>
 
         <section style={{ textAlign:"center", marginBottom:isMobile ? "clamp(12px, 3vw, 16px)" : "12px", maxWidth:"680px" }}>
           <h2 style={{ fontSize:"clamp(28px, 6vw, 60px)", fontWeight:"800", color:"#ffffff", margin:"0 0 clamp(8px, 2vw, 12px)", lineHeight:1.1, letterSpacing:"-1.5px", textShadow:"0 2px 24px rgba(0,0,0,0.6)" }}>The Trades Marketplace</h2>
@@ -281,64 +186,7 @@ export default function Home() {
         <FeaturedVendors />
         <ContractorLocationSearch />
         <VendorSearchBar />
-      </main>
-
-      <section style={{ position:"relative", zIndex:2, width:"100%", padding:"6px 16px", background:"rgba(10,22,40,0.5)", flexShrink:0 }} aria-label="Trust and security features">
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:"16px", justifyContent:"center", alignItems:"center", maxWidth:"900px", margin:"0 auto", padding:"0 16px" }}>
-          {[
-            { icon: Shield, label: "Secure payments" },
-            { icon: CheckCircle, label: "Identity verified pros" },
-            { icon: Shield, label: "Licensed & insured" },
-            { icon: ShoppingBag, label: "Nationwide coverage" }
-          ].map(({ icon: Icon, label }, i) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:"6px", justifyContent:"center" }}>
-              <Icon size={14} style={{ color:"rgba(255,255,255,0.8)", flexShrink:0 }} strokeWidth={1.5} aria-hidden="true" />
-              <span style={{ fontSize:"12px", color:"rgba(255,255,255,0.8)" }}>{label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* QR Code section temporarily disabled due to package resolution issue */}
-      {/* <section style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(10,22,40,0.8)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"clamp(24px, 4vw, 32px) clamp(16px, 4vw, 24px)", flexShrink:0 }} aria-label="Connect with us on social media">
-        <div style={{ maxWidth:"900px", margin:"0 auto" }}>
-          <h2 style={{ color:"#ffffff", fontSize:"16px", fontWeight:"700", marginBottom:"20px", textAlign:"center" }}>Connect With Us</h2>
-          <div style={{ display:"grid", gridTemplateColumns:isMobile ? "1fr" : "repeat(3, 1fr)", gap:"20px", justifyContent:"center", alignItems:"start" }}>
-            <div style={{ display:"flex", justifyContent:"center" }}>
-              <InstagramQRCode size={60} />
-            </div>
-            <div style={{ display:"flex", justifyContent:"center" }}>
-              <FacebookQRCode size={60} />
-            </div>
-            <div style={{ display:"flex", justifyContent:"center" }}>
-              <FacebookGroupQRCode size={60} />
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-      <footer style={{ position:"relative", zIndex:2, padding:"clamp(16px, 3vw, 24px) clamp(16px, 4vw, 24px)", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
-        <div style={{ maxWidth:"900px", margin:"0 auto", display:"flex", flexDirection:"column", alignItems:"center", gap:"8px", marginBottom:"12px" }}>
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"2px" }}>
-            <h2 style={{ fontSize:"22px", fontWeight:"800", color:"#ffffff", letterSpacing:"-0.5px", lineHeight:1, margin:0 }}>SurfCoast</h2>
-            <span style={{ fontSize:"9px", fontWeight:"700", letterSpacing:"3px", color:"rgba(255,255,255,0.5)", textTransform:"uppercase", lineHeight:1 }}>MARKETPLACE</span>
-          </div>
-          <p style={{ color:"rgba(255,255,255,0.55)", fontSize:"12px", textAlign:"center", margin:0 }}>Premium marketplace connecting exceptional professionals with discerning clients.</p>
-        </div>
-        <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"clamp(6px, 2vw, 8px)", fontSize:"clamp(11px, 2vw, 13px)", color:"rgba(255,255,255,0.5)" }}>
-          <span>© 2026 SurfCoast Marketplace. All rights reserved.</span>
-          <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href="/Terms" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Terms</a>
-          <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href="/PrivacyPolicy" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Privacy</a>
-          <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-          <a href="/MarketDirectory" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none", transition:"color 0.2s" }}>Markets</a>
-        </div>
-      </footer>
-
-      <section style={{ position:"relative", zIndex:2, width:"100%", background:"rgba(0,0,0,0.55)", borderTop:"1px solid rgba(255,255,255,0.05)", padding:"6px clamp(16px, 4vw, 24px)", textAlign:"center", flexShrink:0 }} aria-label="Legal disclaimer">
-        <p style={{ color:"rgba(255,255,255,0.4)", fontSize:"clamp(10px, 2vw, 11px)", margin:0, lineHeight:"1.6" }}>SurfCoast Marketplace is a connection platform only. We do not employ contractors and are not responsible for the quality, safety, or legality of services provided. All agreements are between users and contractors directly.</p>
-      </section>
+      </div>
     </div>
   );
 }

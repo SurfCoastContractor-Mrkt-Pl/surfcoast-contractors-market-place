@@ -16,6 +16,7 @@ import ContractorAccount from './pages/ContractorAccount';
 import ContractorBusinessHub from './pages/ContractorBusinessHub';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import ContractorPublicProfile from './pages/ContractorPublicProfile';
 import ConsumerSignup from './pages/ConsumerSignup';
@@ -151,7 +152,11 @@ const AuthenticatedApp = () => {
     <>
     <PageGradientApplier />
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={
+        <LayoutWrapper currentPageName="Home">
+          <Home />
+        </LayoutWrapper>
+      } />
       <Route path="/About" element={
         <LayoutWrapper currentPageName="About">
           <About />
@@ -351,6 +356,11 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/Home" element={<Navigate to="/" replace />} />
+      <Route path="/Dashboard" element={
+        <LayoutWrapper currentPageName="Dashboard">
+          <Dashboard />
+        </LayoutWrapper>
+      } />
       <Route path="/job-expense-tracker" element={
         <LayoutWrapper currentPageName="JobExpenseTracker">
           <JobExpenseTracker />

@@ -76,7 +76,7 @@ export default function Dashboard() {
   }
 
    return (
-     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
+     <div className="w-full">
 
        {activeProfile === 'contractor' && <ContractorDashboard user={user} />}
        {activeProfile === 'client' && <CustomerDashboard user={user} />}
