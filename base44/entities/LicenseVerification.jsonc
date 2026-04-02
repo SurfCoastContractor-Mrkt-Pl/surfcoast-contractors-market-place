@@ -46,7 +46,8 @@
       "enum": [
         "api",
         "manual",
-        "document"
+        "document",
+        "mock"
       ],
       "description": "How it was verified"
     },
@@ -83,9 +84,18 @@
   ],
   "rls": {
     "create": {
-      "user_condition": {
-        "role": "service_role"
-      }
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
     },
     "read": {
       "$or": [
