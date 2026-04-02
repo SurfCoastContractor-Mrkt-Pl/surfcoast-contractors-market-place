@@ -61,6 +61,7 @@ import TradeGames from './pages/TradeGames';
 import GameChallenge from './pages/GameChallenge';
 import GameLeaderboard from './pages/GameLeaderboard';
 import SwapMeetRatings from './pages/SwapMeetRatings';
+import GitHubDashboard from './pages/GitHubDashboard';
 import FarmersMarketRatings from './pages/FarmersMarketRatings';
 import LocationRatingAdmin from './pages/LocationRatingAdmin';
 import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
@@ -353,6 +354,11 @@ const AuthenticatedApp = () => {
       <Route path="/game-analytics" element={
         <LayoutWrapper currentPageName="GameAnalyticsDashboard">
           <GameAnalyticsDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/github-dashboard" element={
+        <LayoutWrapper currentPageName="GitHubDashboard">
+          <GitHubDashboard />
         </LayoutWrapper>
       } />
       <Route path="/Home" element={<Navigate to="/" replace />} />
