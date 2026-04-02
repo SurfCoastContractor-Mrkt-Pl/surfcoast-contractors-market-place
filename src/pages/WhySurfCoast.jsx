@@ -82,7 +82,7 @@ export default function WhySurfCoast() {
   return (
     <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: "#fff", color: "#111" }}>
       {/* NAV */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(10,22,40,0.97)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0 24px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(14,30,58,0.97)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(37,99,235,0.18)", padding: "0 24px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="/" style={{ display: "flex", flexDirection: "column", gap: "1px", textDecoration: "none" }}>
           <span style={{ fontSize: "14px", fontWeight: "800", color: "#fff", letterSpacing: "-0.5px", lineHeight: 1 }}>SurfCoast</span>
           <span style={{ fontSize: "8px", fontWeight: "700", letterSpacing: "1.5px", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>MARKETPLACE</span>
@@ -101,7 +101,7 @@ export default function WhySurfCoast() {
       </header>
 
       {/* HERO */}
-      <section style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a3050 100%)", color: "#fff", textAlign: "center", padding: "100px 24px 80px" }}>
+      <section style={{ background: "linear-gradient(135deg, #0d2a52 0%, #1246a0 45%, #1d6fa4 75%, #d97706 140%)", color: "#fff", textAlign: "center", padding: "100px 24px 80px" }}>
         <p style={{ fontSize: "13px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#d97706", marginBottom: "20px" }}>The Real Worker's Platform</p>
         <h1 style={{ fontSize: "clamp(36px, 6vw, 68px)", fontWeight: "900", margin: "0 0 24px", lineHeight: 1.05, letterSpacing: "-2px", maxWidth: "900px", marginLeft: "auto", marginRight: "auto" }}>
           Built for the People Who<br />Actually Do the Work
@@ -124,7 +124,7 @@ export default function WhySurfCoast() {
             "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEShop FO for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
             "Every profile on SurfCoast is free. You never pay to be found. You only upgrade when you need more."
           ].map((p, i) => (
-            <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: i === 2 ? "#0a1628" : "#374151", fontWeight: i === 2 ? "700" : "400", margin: 0, borderLeft: i === 2 ? "4px solid #d97706" : "none", paddingLeft: i === 2 ? "20px" : "0" }}>{p}</p>
+            <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: i === 2 ? "#1246a0" : "#374151", fontWeight: i === 2 ? "700" : "400", margin: 0, borderLeft: i === 2 ? "4px solid #d97706" : "none", paddingLeft: i === 2 ? "20px" : "0" }}>{p}</p>
           ))}
         </div>
       </section>
@@ -138,9 +138,9 @@ export default function WhySurfCoast() {
             {WHO_TABS.map((t, i) => (
               <button key={i} onClick={() => setActiveTab(i)}
                 style={{ padding: "10px 22px", borderRadius: "24px", border: "2px solid", fontSize: "14px", fontWeight: "700", cursor: "pointer", transition: "all 0.2s",
-                  background: activeTab === i ? "#0a1628" : "transparent",
+                  background: activeTab === i ? "#1246a0" : "transparent",
                   color: activeTab === i ? "#fff" : "#374151",
-                  borderColor: activeTab === i ? "#0a1628" : "#d1d5db"
+                  borderColor: activeTab === i ? "#1246a0" : "#d1d5db"
                 }}>
                 {t.label}
               </button>
@@ -170,7 +170,7 @@ export default function WhySurfCoast() {
           ))}
         </div>
         <div style={{ marginTop: "40px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <a href="/pricing" style={{ background: "#0a1628", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>See All Plans & Pricing →</a>
+          <a href="/pricing" style={{ background: "linear-gradient(90deg, #0d2a52, #1246a0)", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>See All Plans & Pricing →</a>
         </div>
       </section>
 
@@ -193,7 +193,7 @@ export default function WhySurfCoast() {
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "48px", letterSpacing: "-1px", textAlign: "center" }}>SurfCoast vs. Typical Field Service Platform</h2>
           <div style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e5e7eb" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 140px 140px", background: "#0a1628", color: "#fff", padding: "16px 24px", fontSize: "13px", fontWeight: "700" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 140px 140px", background: "linear-gradient(90deg, #0d2a52 0%, #1246a0 100%)", color: "#fff", padding: "16px 24px", fontSize: "13px", fontWeight: "700" }}>
               <span>Feature</span>
               <span style={{ textAlign: "center" }}>SurfCoast</span>
               <span style={{ textAlign: "center" }}>Typical Platform</span>
@@ -214,7 +214,7 @@ export default function WhySurfCoast() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a3050 100%)", color: "#fff", textAlign: "center", padding: "100px 24px" }}>
+      <section style={{ background: "linear-gradient(135deg, #0d2a52 0%, #1246a0 50%, #1d6fa4 80%, #d97706 150%)", color: "#fff", textAlign: "center", padding: "100px 24px" }}>
         <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: "900", margin: "0 0 20px", letterSpacing: "-1.5px" }}>Ready to Get Started?</h2>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.75)", maxWidth: "540px", margin: "0 auto 40px", lineHeight: 1.65 }}>
           Create your free profile today — no credit card, no commitment. Join the marketplace built for people who actually work.
@@ -226,7 +226,7 @@ export default function WhySurfCoast() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ background: "#0a1628", borderTop: "1px solid rgba(255,255,255,0.06)", padding: "32px 24px", textAlign: "center" }}>
+      <footer style={{ background: "linear-gradient(90deg, #0d2240 0%, #0d1f3a 100%)", borderTop: "1px solid rgba(37,99,235,0.2)", padding: "32px 24px", textAlign: "center" }}>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", margin: 0 }}>© 2026 SurfCoast Marketplace. All rights reserved. · <a href="/Terms" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Terms</a> · <a href="/PrivacyPolicy" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Privacy</a></p>
       </footer>
     </div>

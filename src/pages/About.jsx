@@ -75,7 +75,7 @@ export default function About() {
       </main>
 
       {/* Founder Section — full-width dark navy panel, completely separate from sunset */}
-      <section style={{ background: '#0d1b2a' }}>
+      <section style={{ background: 'linear-gradient(160deg, #0d2a4a 0%, #0d1f3a 40%, #0a1628 100%)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
           {/* Section Label */}
@@ -199,7 +199,7 @@ export default function About() {
       </section>
 
       {/* What We Offer Section */}
-      <section style={{ background: '#0a1628', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section style={{ background: 'linear-gradient(160deg, #0a1628 0%, #0d2240 50%, #112d52 100%)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex items-center gap-4 mb-14">
             <div style={{ width: '40px', height: '2px', background: '#F97316' }} />
