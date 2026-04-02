@@ -160,14 +160,26 @@ const AuthenticatedApp = () => {
           <ActivityAuditDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={
+        <LayoutWrapper currentPageName="Admin">
+          <Admin />
+        </LayoutWrapper>
+      } />
       <Route path="/admin-control-hub" element={
         <LayoutWrapper currentPageName="AdminControlHub">
           <AdminControlHub />
         </LayoutWrapper>
       } />
-      <Route path="/AdminWaveFo" element={<AdminWaveFo />} />
-      <Route path="/adminfieldops" element={<AdminWaveFo />} /> {/* Legacy redirect */}
+      <Route path="/AdminWaveFo" element={
+        <LayoutWrapper currentPageName="AdminWaveFo">
+          <AdminWaveFo />
+        </LayoutWrapper>
+      } />
+      <Route path="/adminfieldops" element={
+        <LayoutWrapper currentPageName="AdminWaveFo">
+          <AdminWaveFo />
+        </LayoutWrapper>
+      } />
       <Route path="/advanced-analytics" element={
         <LayoutWrapper currentPageName="AdvancedAnalyticsDashboard">
           <AdvancedAnalyticsDashboard />
@@ -193,7 +205,11 @@ const AuthenticatedApp = () => {
           <AvailabilityManager />
         </LayoutWrapper>
       } />
-      <Route path="/BecomeContractor" element={<BecomeContractor />} />
+      <Route path="/BecomeContractor" element={
+        <LayoutWrapper currentPageName="BecomeContractor">
+          <BecomeContractor />
+        </LayoutWrapper>
+      } />
       <Route path="/BoothsAndVendorsMap" element={
         <LayoutWrapper currentPageName="BoothsAndVendorsMap">
           <BoothsAndVendorsMap />
@@ -237,7 +253,11 @@ const AuthenticatedApp = () => {
       <Route path="/contractorAccount" element={
         <Navigate to="/ContractorAccount" replace />
       } />
-      <Route path="/ContractorBillingHistory" element={<ContractorBillingHistory />} />
+      <Route path="/ContractorBillingHistory" element={
+        <LayoutWrapper currentPageName="ContractorBillingHistory">
+          <ContractorBillingHistory />
+        </LayoutWrapper>
+      } />
       <Route path="/ContractorBusinessHub" element={
         <LayoutWrapper currentPageName="ContractorBusinessHub">
           <ContractorBusinessHub />
@@ -258,7 +278,11 @@ const AuthenticatedApp = () => {
           <ContractorQuotesManagement />
         </LayoutWrapper>
       } />
-      <Route path="/ContractorVerificationDashboard" element={<ContractorVerificationDashboard />} />
+      <Route path="/ContractorVerificationDashboard" element={
+        <LayoutWrapper currentPageName="ContractorVerificationDashboard">
+          <ContractorVerificationDashboard />
+        </LayoutWrapper>
+      } />
       <Route path="/contractor/:contractorId" element={
         <LayoutWrapper currentPageName="ContractorPublicProfile">
           <ContractorPublicProfile />
@@ -279,7 +303,11 @@ const AuthenticatedApp = () => {
           <ContractorServices />
         </LayoutWrapper>
       } />
-      <Route path="/CustomerSignup" element={<CustomerSignup />} />
+      <Route path="/CustomerSignup" element={
+        <LayoutWrapper currentPageName="CustomerSignup">
+          <CustomerSignup />
+        </LayoutWrapper>
+      } />
       <Route path="/customer-portal" element={
         <LayoutWrapper currentPageName="CustomerPortal">
           <CustomerPortal />
@@ -300,8 +328,16 @@ const AuthenticatedApp = () => {
           <FarmersMarketRatings />
         </LayoutWrapper>
       } />
-      <Route path="/FieldOps" element={<WaveFo />} /> {/* Legacy redirect */}
-      <Route path="/FieldOpsReporting" element={<WaveFoReporting />} /> {/* Legacy redirect */}
+      <Route path="/FieldOps" element={
+        <LayoutWrapper currentPageName="WaveFo">
+          <WaveFo />
+        </LayoutWrapper>
+      } />
+      <Route path="/FieldOpsReporting" element={
+        <LayoutWrapper currentPageName="WaveFoReporting">
+          <WaveFoReporting />
+        </LayoutWrapper>
+      } />
       <Route path="/game-analytics" element={
         <LayoutWrapper currentPageName="GameAnalyticsDashboard">
           <GameAnalyticsDashboard />
@@ -338,7 +374,11 @@ const AuthenticatedApp = () => {
           <MarketShopInventory />
         </LayoutWrapper>
       } />
-      <Route path="/MarketShopSignup" element={<MarketShopSignup />} />
+      <Route path="/MarketShopSignup" element={
+        <LayoutWrapper currentPageName="MarketShopSignup">
+          <MarketShopSignup />
+        </LayoutWrapper>
+      } />
       <Route path="/multi-option-proposals" element={
         <LayoutWrapper currentPageName="MultiOptionProposals">
           <MultiOptionProposals />
@@ -364,8 +404,16 @@ const AuthenticatedApp = () => {
           <PlatformActivityDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/Pricing" element={<Pricing />} />
-      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/Pricing" element={
+        <LayoutWrapper currentPageName="Pricing">
+          <Pricing />
+        </LayoutWrapper>
+      } />
+      <Route path="/pricing" element={
+        <LayoutWrapper currentPageName="Pricing">
+          <Pricing />
+        </LayoutWrapper>
+      } />
       <Route path="/ProjectManagement" element={
         <LayoutWrapper currentPageName="ProjectManagement">
           <ProjectManagement />
@@ -451,10 +499,26 @@ const AuthenticatedApp = () => {
           <VendorDetail />
         </LayoutWrapper>
       } />
-      <Route path="/WaveFo" element={<WaveFo />} />
-      <Route path="/WaveFoReporting" element={<WaveFoReporting />} />
-      <Route path="/WhySurfCoast" element={<WhySurfCoast />} />
-      <Route path="/why-surfcoast" element={<WhySurfCoast />} />
+      <Route path="/WaveFo" element={
+        <LayoutWrapper currentPageName="WaveFo">
+          <WaveFo />
+        </LayoutWrapper>
+      } />
+      <Route path="/WaveFoReporting" element={
+        <LayoutWrapper currentPageName="WaveFoReporting">
+          <WaveFoReporting />
+        </LayoutWrapper>
+      } />
+      <Route path="/WhySurfCoast" element={
+        <LayoutWrapper currentPageName="WhySurfCoast">
+          <WhySurfCoast />
+        </LayoutWrapper>
+      } />
+      <Route path="/why-surfcoast" element={
+        <LayoutWrapper currentPageName="WhySurfCoast">
+          <WhySurfCoast />
+        </LayoutWrapper>
+      } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
       {Object.entries(Pages).map(([path, Page]) => (
         <Route

@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { CheckCircle, X } from "lucide-react";
 
-const NAV_LINKS = [
-  { label: "Why SurfCoast", href: "/why-surfcoast" },
-  { label: "Pricing", href: "/pricing" },
-];
-
 const WHO_TABS = [
   {
     label: "Contractors & Trades",
@@ -80,25 +75,7 @@ export default function WhySurfCoast() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: "#fff", color: "#111" }}>
-      {/* NAV */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(14,30,58,0.97)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(37,99,235,0.18)", padding: "0 24px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/" style={{ display: "flex", flexDirection: "column", gap: "1px", textDecoration: "none" }}>
-          <span style={{ fontSize: "14px", fontWeight: "800", color: "#fff", letterSpacing: "-0.5px", lineHeight: 1 }}>SurfCoast</span>
-          <span style={{ fontSize: "8px", fontWeight: "700", letterSpacing: "1.5px", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>MARKETPLACE</span>
-        </a>
-        <nav style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-          {NAV_LINKS.map(l => (
-            <a key={l.href} href={l.href} style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: "13px", fontWeight: "600", transition: "color 0.2s" }}
-              onMouseEnter={e => e.target.style.color = "#fff"}
-              onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.8)"}
-            >{l.label}</a>
-          ))}
-          <a href="/BecomeContractor" style={{ background: "#1d6fa4", color: "#fff", padding: "7px 18px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", textDecoration: "none", border: "1px solid #2589c7" }}>
-            Get Started Free
-          </a>
-        </nav>
-      </header>
+    <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", color: "#111" }}>
 
       {/* HERO */}
       <section style={{ background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)", color: "#fff", textAlign: "center", padding: "100px 24px 80px" }}>
@@ -225,10 +202,6 @@ export default function WhySurfCoast() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ background: "linear-gradient(90deg, #0d2240 0%, #0d1f3a 100%)", borderTop: "1px solid hsl(var(--border))", padding: "32px 24px", textAlign: "center" }}>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", margin: 0 }}>© 2026 SurfCoast Marketplace. All rights reserved. · <a href="/Terms" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Terms</a> · <a href="/PrivacyPolicy" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Privacy</a></p>
-      </footer>
     </div>
   );
 }

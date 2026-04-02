@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { logError } from '@/lib/errorHandler';
-import { ArrowLeft, HardHat, Loader2, CheckCircle, ChevronRight } from 'lucide-react';
+import { HardHat, Loader2, CheckCircle, ChevronRight } from 'lucide-react';
 import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import StripeConnectOnboarding from '@/components/contractor/StripeConnectOnboarding';
 import OnboardingProgressIndicator from '@/components/contractor/OnboardingProgressIndicator';
@@ -373,22 +373,6 @@ export default function BecomeContractor() {
   return (
     <div className="min-h-screen flex flex-col" style={{ fontFamily:"'Inter','Segoe UI',sans-serif" }}>
 
-      {/* Header */}
-      <header className="sticky top-0 z-10 flex items-center px-4 py-3 bg-white/70 backdrop-blur-md border-b border-black/8 shadow-sm">
-        <Link to="/" className="flex flex-col gap-0.5 no-underline">
-          <span className="text-base font-extrabold text-slate-900 tracking-tight leading-none">SurfCoast</span>
-          <span className="text-[9px] font-bold tracking-[0.18em] text-slate-500 uppercase leading-none ml-1">MARKETPLACE</span>
-        </Link>
-        <div className="ml-auto flex gap-2 items-center">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back
-          </button>
-        </div>
-      </header>
-
       {isPreview && (
         <div className="bg-blue-600 text-white text-sm font-semibold py-2 px-4 text-center">
           👁 <strong>Admin Preview Mode</strong> — Form interactions work normally but submission will not save any data.
@@ -501,14 +485,6 @@ export default function BecomeContractor() {
         </form>
       </div>
 
-      {/* Footer */}
-      <footer className="mt-auto flex flex-wrap justify-center items-center gap-2 px-6 py-3 bg-white/60 border-t border-slate-200 text-xs text-slate-400">
-        <span>© 2026 SurfCoast Marketplace</span>
-        <span className="text-slate-200">·</span>
-        <Link to="/Terms" className="text-slate-500 hover:text-slate-700 no-underline">Terms</Link>
-        <span className="text-slate-200">·</span>
-        <Link to="/PrivacyPolicy" className="text-slate-500 hover:text-slate-700 no-underline">Privacy</Link>
-      </footer>
     </div>
   );
 }

@@ -197,22 +197,7 @@ function FAQItem({ item }) {
 
 export default function Pricing() {
   return (
-    <div style={{ background: "#0f172a", minHeight: "100vh", color: "#f1f5f9", fontFamily: "'Inter','Segoe UI',sans-serif" }}>
-
-      {/* NAV */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,23,42,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 24px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/" style={{ display: "flex", flexDirection: "column", gap: "1px", textDecoration: "none" }}>
-          <span style={{ fontSize: "14px", fontWeight: "800", color: "#fff", letterSpacing: "-0.5px", lineHeight: 1 }}>SurfCoast</span>
-          <span style={{ fontSize: "8px", fontWeight: "700", letterSpacing: "1.5px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>MARKETPLACE</span>
-        </a>
-        <nav style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <a href="/why-surfcoast" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: "13px", fontWeight: "600" }}>Why SurfCoast</a>
-          <a href="/pricing" style={{ color: "#f59e0b", textDecoration: "none", fontSize: "13px", fontWeight: "700" }}>Pricing</a>
-          <a href="/BecomeContractor" style={{ background: "#1d6fa4", color: "#fff", padding: "7px 18px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", textDecoration: "none" }}>
-            Get Started Free
-          </a>
-        </nav>
-      </header>
+    <div style={{ minHeight: "100vh", color: "#f1f5f9", fontFamily: "'Inter','Segoe UI',sans-serif" }}>
 
       {/* HERO */}
       <section style={{ textAlign: "center", padding: "80px 24px 60px", maxWidth: "720px", margin: "0 auto" }}>
@@ -599,12 +584,6 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "28px 24px", textAlign: "center" }}>
-        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "12px", margin: 0 }}>
-          © 2026 SurfCoast Marketplace · <a href="/Terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Terms</a> · <a href="/PrivacyPolicy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Privacy</a>
-        </p>
-      </footer>
     </div>
   );
 }

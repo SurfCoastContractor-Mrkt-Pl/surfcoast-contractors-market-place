@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { ArrowLeft, Loader2, Users } from 'lucide-react';
+import { Loader2, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import EarlyAdopterBanner from '@/components/home/EarlyAdopterBanner';
 
@@ -86,28 +86,17 @@ export default function CustomerSignup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="relative py-14 text-white overflow-hidden" style={{backgroundImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61a047827463e7cdbc1eb/9f9e7efe6_Capture.PNG)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0,0,0,0.58)'}}></div>
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to={createPageUrl('Home')} className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-5 focus:outline-2 focus:outline-offset-2 focus:outline-white rounded">
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Link>
-          <div className="flex items-center gap-4">
-            <div className="w-13 h-13 rounded-xl flex items-center justify-center p-3" style={{backgroundColor: '#1E5A96'}}>
-              <Users className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Find a Contractor</h1>
-              <p className="text-white/75 mt-1">Create your client account to post jobs and hire</p>
-            </div>
+    <div className="min-h-screen">
+      <div className="max-w-md mx-auto px-4 py-10">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Users className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Find a Contractor</h1>
+            <p className="text-sm text-muted-foreground">Create your client account to post jobs and hire</p>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-md mx-auto px-4 py-8">
         <EarlyAdopterBanner />
         <Card className="p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
