@@ -2,6 +2,10 @@
 module.exports = {
     darkMode: ["class"],
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  safelist: [
+    'gradient-brand', 'gradient-soft', 'gradient-hero', 'gradient-card', 'gradient-text',
+    'nav-pill-active',
+  ],
   theme: {
   	extend: {
   		borderRadius: {

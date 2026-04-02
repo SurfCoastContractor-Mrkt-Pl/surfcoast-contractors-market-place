@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle } from 'lucide-react';
+import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
+
+// Grouped "Explore" mega-menu items for logged-out visitors
+const exploreGroups = [
+  {
+    label: 'For Contractors',
+    items: [
+      { name: 'Become a Contractor', path: '/BecomeContractor', icon: Briefcase },
+      { name: 'Browse Jobs', path: '/Jobs', icon: BarChart2 },
+      { name: 'Why SurfCoast', path: '/WhySurfCoast', icon: BarChart2 },
+    ],
+  },
+  {
+    label: 'For Clients',
+    items: [
+      { name: 'Find Contractors', path: '/FindContractors', icon: Users },
+      { name: 'Post a Job', path: '/PostJob', icon: Briefcase },
+    ],
+  },
+  {
+    label: 'Markets & Vendors',
+    items: [
+      { name: 'Market Directory', path: '/MarketDirectory', icon: Store },
+      { name: 'Booths & Vendors Map', path: '/BoothsAndVendorsMap', icon: Store },
+      { name: 'Swap Meet Ratings', path: '/swap-meet-ratings', icon: BarChart2 },
+      { name: 'Farmers Market Ratings', path: '/farmers-market-ratings', icon: BarChart2 },
+    ],
+  },
+];
 
 export default function LayoutHeader({
   mobileMenuOpen,
@@ -22,6 +50,7 @@ export default function LayoutHeader({
   createPageUrl,
 }) {
   const navigate = useNavigate();
+  const [exploreOpen, setExploreOpen] = useState(false);
 
   const handleLogout = () => {
     setAccountMenuOpen(false);
@@ -29,74 +58,139 @@ export default function LayoutHeader({
   };
 
   return (
-    <nav className="z-50 bg-white border-b border-slate-200">
-      {/* Main nav bar */}
-      <div className="flex items-center h-14 px-4 sm:px-6 lg:px-8 gap-4 relative">
+    <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-violet-100 sticky top-0">
+      <div className="flex items-center h-16 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto">
+
         {/* Logo */}
-        <Link to="/" className="flex-shrink-0 font-semibold text-slate-900 hover:text-slate-700 transition-colors">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <span style={{ fontSize: '14px', fontWeight: '800', color: '#1f2937', letterSpacing: '-0.5px', lineHeight: 1 }}>SurfCoast</span>
-            <span style={{ fontSize: '8px', fontWeight: '700', letterSpacing: '1.5px', color: 'rgba(31,41,55,0.5)', textTransform: 'uppercase', lineHeight: 1 }}>MARKETPLACE</span>
+        <Link to="/" className="flex-shrink-0 mr-2">
+          <div className="flex flex-col gap-[2px]">
+            <span className="text-[15px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
+            <span className="text-[7px] font-bold tracking-[2px] text-violet-400 uppercase leading-none">MARKETPLACE</span>
           </div>
         </Link>
 
-        {/* Desktop Nav - Left */}
-        <div className="hidden lg:flex items-center gap-1 flex-shrink">
+        {/* Desktop Nav Pills */}
+        <div className="hidden lg:flex items-center gap-1 flex-1">
+          {/* Core nav links */}
           {getNavLinks(isContractor).map(link => {
             const Icon = link.icon;
+            const isActive = currentPageName === link.page;
             return (
               <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
-                <Button
-                  variant="ghost"
-                  className={`text-sm relative ${currentPageName === link.page ? 'bg-primary/10 text-primary' : 'text-slate-600 hover:text-slate-900'}`}
-                >
-                  {Icon && <Icon className="w-4 h-4 mr-1" />}
+                <button className={cn(
+                  "relative flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
+                  isActive
+                    ? "bg-violet-50 text-violet-700 nav-pill-active"
+                    : "text-slate-600 hover:text-violet-700 hover:bg-violet-50"
+                )}>
+                  {Icon && <Icon className="w-3.5 h-3.5" />}
                   {link.name}
                   {link.badge && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    <span className="ml-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                       {link.badge > 99 ? '99+' : link.badge}
                     </span>
                   )}
-                </Button>
+                </button>
               </Link>
             );
           })}
+
+          {/* Explore dropdown (logged-out) or quick links (logged-in) */}
+          {!isLoggedIn && (
+            <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
+              <button className={cn(
+                "flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
+                exploreOpen ? "bg-violet-50 text-violet-700" : "text-slate-600 hover:text-violet-700 hover:bg-violet-50"
+              )}>
+                Explore
+                <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-150", exploreOpen && "rotate-180")} />
+              </button>
+
+              {exploreOpen && (
+                <div className="absolute top-full left-0 mt-1 w-[540px] bg-white border border-violet-100 rounded-2xl shadow-xl z-50 p-5">
+                  <div className="grid grid-cols-3 gap-6">
+                    {exploreGroups.map(group => (
+                      <div key={group.label}>
+                        <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-3">{group.label}</p>
+                        <div className="space-y-1">
+                          {group.items.map(item => (
+                            <Link
+                              key={item.path}
+                              to={item.path}
+                              onClick={() => setExploreOpen(false)}
+                              className="flex items-center gap-2 px-2 py-2 rounded-lg text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors duration-150"
+                            >
+                              <span className="w-5 h-5 rounded-md bg-violet-100 flex items-center justify-center flex-shrink-0">
+                                <item.icon className="w-3 h-3 text-violet-600" />
+                              </span>
+                              {item.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {isLoggedIn && (
+            <Link to={createPageUrl('MarketDirectory')}>
+              <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-slate-600 hover:text-violet-700 hover:bg-violet-50 transition-colors duration-150">
+                <Store className="w-3.5 h-3.5" />
+                Markets
+              </button>
+            </Link>
+          )}
         </div>
 
-        {/* Desktop Nav - Right */}
-        <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
+        {/* Right side actions */}
+        <div className="hidden lg:flex items-center gap-2 ml-auto flex-shrink-0">
           {!isLoggedIn && (
             <>
               <Link to="/pricing">
-                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Pricing</Button>
-              </Link>
-              <Link to="/why-surfcoast">
-                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">Why SurfCoast</Button>
+                <button className="text-sm font-medium text-slate-600 hover:text-violet-700 px-3 py-2 rounded-full hover:bg-violet-50 transition-colors duration-150">
+                  Pricing
+                </button>
               </Link>
               <Link to="/About">
-                <Button variant="ghost" className="text-slate-600 hover:text-slate-900 text-sm">About Us</Button>
+                <button className="text-sm font-medium text-slate-600 hover:text-violet-700 px-3 py-2 rounded-full hover:bg-violet-50 transition-colors duration-150">
+                  About
+                </button>
               </Link>
               <button
                 onClick={() => base44.auth.redirectToLogin()}
-                className="text-slate-600 hover:text-slate-900 font-medium text-sm px-4 py-2 rounded-lg transition-colors"
-                aria-label="Login to your account"
+                className="text-sm font-semibold text-slate-700 hover:text-violet-700 px-4 py-2 rounded-full border border-slate-200 hover:border-violet-300 transition-colors duration-150"
               >
-                Login
+                Log in
+              </button>
+              <button
+                onClick={() => base44.auth.redirectToLogin()}
+                className="text-sm font-semibold text-white px-4 py-2 rounded-full gradient-brand hover:opacity-90 transition-opacity duration-150 shadow-sm"
+              >
+                Get Started
               </button>
             </>
           )}
+
           {isLoggedIn && (
             <div className="relative" ref={accountMenuRef}>
-              <Button 
-                variant="ghost" 
-                className="text-slate-600 hover:text-slate-900 text-sm"
+              <button
                 onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-full text-sm font-medium border transition-colors duration-150",
+                  accountMenuOpen
+                    ? "bg-violet-50 border-violet-200 text-violet-700"
+                    : "border-slate-200 text-slate-700 hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700"
+                )}
                 aria-haspopup="menu"
                 aria-expanded={accountMenuOpen}
               >
-                <UserCircle className="w-5 h-5 mr-1" />
+                <UserCircle className="w-4 h-4" />
                 Account
-              </Button>
+                <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-150", accountMenuOpen && "rotate-180")} />
+              </button>
               {accountMenuOpen && (
                 <AccountDropdown
                   isContractor={isContractor}
@@ -113,18 +207,18 @@ export default function LayoutHeader({
           )}
         </div>
 
-        {/* Mobile Account Button */}
+        {/* Mobile: account icon */}
         {isLoggedIn && (
-          <div className="lg:hidden" ref={accountMenuRef}>
+          <div className="lg:hidden ml-auto" ref={accountMenuRef}>
             <button
-              className="p-2 flex-shrink-0"
+              className="p-2 rounded-full hover:bg-violet-50 transition-colors"
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
               aria-label="Account menu"
             >
-              <UserCircle className="w-6 h-6 text-slate-900" />
+              <UserCircle className="w-6 h-6 text-violet-700" />
             </button>
             {accountMenuOpen && (
-              <div className="fixed left-0 right-0 top-14 z-50 px-4">
+              <div className="fixed left-0 right-0 top-16 z-50 px-4">
                 <AccountDropdown
                   isContractor={isContractor}
                   hasCustomerProfile={hasCustomerProfile}
@@ -141,19 +235,21 @@ export default function LayoutHeader({
           </div>
         )}
 
-        {/* Mobile Menu Button */}
+        {/* Mobile: hamburger */}
         <button
-          className="lg:hidden p-2 flex-shrink-0 ml-auto"
+          className={cn(
+            "lg:hidden p-2 rounded-full hover:bg-violet-50 transition-colors flex-shrink-0",
+            isLoggedIn ? "" : "ml-auto"
+          )}
           onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setAccountMenuOpen(false); }}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-controls="mobile-menu"
           aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6 text-slate-900" />
-          ) : (
-            <Menu className="w-6 h-6 text-slate-900" />
-          )}
+          {mobileMenuOpen
+            ? <X className="w-5 h-5 text-violet-700" />
+            : <Menu className="w-5 h-5 text-slate-700" />
+          }
         </button>
       </div>
     </nav>
@@ -178,50 +274,78 @@ function AccountDropdown({
     navigate(path);
   };
 
-  const Item = ({ path, children, className }) => (
+  const Item = ({ path, children, className, icon: Icon }) => (
     <button
       onMouseDown={(e) => { e.preventDefault(); go(path); }}
-      className={cn("w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50", className)}
+      className={cn(
+        "w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors duration-150",
+        className
+      )}
     >
+      {Icon && <Icon className="w-4 h-4 text-violet-400 flex-shrink-0" />}
       {children}
     </button>
   );
 
+  const SectionLabel = ({ children }) => (
+    <div className="px-4 pt-3 pb-1 text-[10px] font-bold text-violet-400 uppercase tracking-widest">{children}</div>
+  );
+
   return (
-    <div className={cn("bg-white border border-slate-200 rounded-xl shadow-lg z-50 w-full", !isMobile && "absolute right-0 top-full mt-1 w-52")}>
-    <Item path={createPageUrl('Dashboard')}>Client Account</Item>
-    {isContractor ? (
-      <>
-        <div className="px-4 pt-2 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Contractor</div>
-        <Item path={createPageUrl('ContractorAccount')}>Contractor Portal</Item>
-        <Item path={createPageUrl('ContractorBusinessHub')}>Business Hub</Item>
-        <Item path={createPageUrl('ContractorBusinessHub') + '?tab=profile'}>My Profile</Item>
-        <Item path={createPageUrl('ContractorFinancialDashboard')}>Financial Dashboard</Item>
-        <Item path="/WaveFo">Wave FO</Item>
-      </>
-    ) : (
-      <Item path={createPageUrl('BecomeContractor')} className="text-primary hover:bg-primary/5">+ Become a Contractor</Item>
-    )}
-    {hasCustomerProfile ? (
-      <Item path={createPageUrl('ConsumerHub')}>Consumer Account</Item>
-    ) : (
-      <Item path={createPageUrl('ConsumerSignup')} className="text-primary hover:bg-primary/5">+ Become a Consumer</Item>
-    )}
-    {hasMarketShop ? (
-      <Item path={createPageUrl('MarketShopDashboard')}>MarketShop Account</Item>
-    ) : (
-      <Item path={createPageUrl('MarketShopSignup')} className="text-primary hover:bg-primary/5">+ Add MarketShop</Item>
-    )}
-    <div className="border-t border-slate-200">
-      <Item path="/About">About Us</Item>
-      <Item path={createPageUrl('MarketDirectory')}>Browse Markets & Vendors</Item>
-    </div>
-      <button
-        onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
-        className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-slate-200 rounded-b-xl font-semibold"
-      >
-        Logout
-      </button>
+    <div className={cn(
+      "bg-white border border-violet-100 rounded-2xl shadow-xl z-50 overflow-hidden",
+      isMobile ? "w-full" : "absolute right-0 top-full mt-2 w-60"
+    )}>
+      <div className="px-4 py-3 border-b border-violet-50 bg-gradient-to-r from-violet-50 to-indigo-50">
+        <p className="text-xs text-violet-500 font-medium">Signed in</p>
+      </div>
+
+      <SectionLabel>My Account</SectionLabel>
+      <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Client Account</Item>
+
+      {isContractor ? (
+        <>
+          <SectionLabel>Contractor</SectionLabel>
+          <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Contractor Portal</Item>
+          <Item path={createPageUrl('ContractorBusinessHub')} icon={Settings}>Business Hub</Item>
+          <Item path={createPageUrl('ContractorFinancialDashboard')} icon={BarChart2}>Financial Dashboard</Item>
+          <Item path="/WaveFo" icon={BarChart2}>Wave FO</Item>
+        </>
+      ) : (
+        <Item path={createPageUrl('BecomeContractor')} className="text-violet-600 font-medium" icon={Briefcase}>
+          + Become a Contractor
+        </Item>
+      )}
+
+      {hasCustomerProfile ? (
+        <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer Account</Item>
+      ) : (
+        <Item path={createPageUrl('ConsumerSignup')} className="text-violet-600 font-medium" icon={ShoppingBag}>
+          + Become a Consumer
+        </Item>
+      )}
+
+      {hasMarketShop ? (
+        <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>MarketShop Account</Item>
+      ) : (
+        <Item path={createPageUrl('MarketShopSignup')} className="text-violet-600 font-medium" icon={Store}>
+          + Add MarketShop
+        </Item>
+      )}
+
+      <div className="border-t border-violet-50 mt-1">
+        <Item path="/About" icon={Users}>About Us</Item>
+        <Item path={createPageUrl('MarketDirectory')} icon={Store}>Browse Markets</Item>
+      </div>
+
+      <div className="border-t border-violet-100">
+        <button
+          onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
+          className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors duration-150 font-semibold rounded-b-2xl"
+        >
+          Log out
+        </button>
+      </div>
     </div>
   );
 }

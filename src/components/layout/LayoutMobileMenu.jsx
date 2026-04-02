@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown, ChevronRight, Briefcase, Users, Store, BarChart2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { cn } from '@/lib/utils';
+
+const exploreGroups = [
+  {
+    label: 'For Contractors',
+    items: [
+      { name: 'Become a Contractor', path: '/BecomeContractor' },
+      { name: 'Browse Jobs', path: '/Jobs' },
+      { name: 'Why SurfCoast', path: '/WhySurfCoast' },
+    ],
+  },
+  {
+    label: 'For Clients',
+    items: [
+      { name: 'Find Contractors', path: '/FindContractors' },
+      { name: 'Post a Job', path: '/PostJob' },
+    ],
+  },
+  {
+    label: 'Markets & Vendors',
+    items: [
+      { name: 'Market Directory', path: '/MarketDirectory' },
+      { name: 'Booths & Vendors Map', path: '/BoothsAndVendorsMap' },
+      { name: 'Swap Meet Ratings', path: '/swap-meet-ratings' },
+      { name: 'Farmers Market Ratings', path: '/farmers-market-ratings' },
+    ],
+  },
+];
 
 export default function LayoutMobileMenu({
   mobileMenuOpen,
@@ -11,6 +40,8 @@ export default function LayoutMobileMenu({
   getNavLinks,
   createPageUrl,
 }) {
+  const [exploreOpen, setExploreOpen] = useState(false);
+
   if (!mobileMenuOpen) return null;
 
   const handleLogout = () => {
@@ -27,25 +58,36 @@ export default function LayoutMobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className="lg:hidden fixed inset-0 bg-black/40 z-40"
+        className="lg:hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40"
         onClick={() => setMobileMenuOpen(false)}
       />
       {/* Drawer */}
-      <div className="lg:hidden fixed top-14 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto" id="mobile-menu">
-        <div className="px-4 py-4 space-y-2">
+      <div
+        className="lg:hidden fixed top-16 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto"
+        id="mobile-menu"
+      >
+        <div className="px-4 py-5 space-y-1">
+
+          {/* Core nav links */}
           {getNavLinks(isContractor).map(link => {
             const Icon = link.icon;
+            const isActive = currentPageName === link.page;
             return (
               <Link
                 key={link.page}
                 to={link.page === '/' ? '/' : createPageUrl(link.page)}
                 onClick={handleNavClick}
               >
-                <div className={`flex items-center gap-3 p-3 rounded-lg relative ${currentPageName === link.page ? 'bg-amber-50 text-amber-600' : 'text-slate-600'}`}>
-                  <Icon className="w-5 h-5" />
+                <div className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors relative",
+                  isActive
+                    ? "bg-violet-50 text-violet-700"
+                    : "text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                )}>
+                  {Icon && <Icon className="w-4 h-4" />}
                   {link.name}
                   {link.badge && (
-                    <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                       {link.badge > 99 ? '99+' : link.badge}
                     </span>
                   )}
@@ -53,37 +95,80 @@ export default function LayoutMobileMenu({
               </Link>
             );
           })}
+
+          {/* Explore accordion (logged-out only) */}
           {!isLoggedIn && (
-            <div className="pt-4 border-t border-slate-100 space-y-2">
-              <Link to="/pricing" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                  Pricing
+            <div className="pt-2 border-t border-slate-100">
+              <button
+                onClick={() => setExploreOpen(!exploreOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors"
+              >
+                <span>Explore</span>
+                <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", exploreOpen && "rotate-180")} />
+              </button>
+
+              {exploreOpen && (
+                <div className="mt-1 space-y-4 px-2 pb-2">
+                  {exploreGroups.map(group => (
+                    <div key={group.label}>
+                      <p className="px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-violet-400">{group.label}</p>
+                      {group.items.map(item => (
+                        <Link key={item.path} to={item.path} onClick={handleNavClick}>
+                          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
+                            <ChevronRight className="w-3.5 h-3.5 text-violet-300" />
+                            {item.name}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
                 </div>
-              </Link>
-              <Link to="/why-surfcoast" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                  Why SurfCoast
-                </div>
-              </Link>
-              <Link to="/About" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
-                  About Us
-                </div>
-              </Link>
+              )}
+
+              {/* Pricing / About pills */}
+              <div className="mt-1 space-y-1">
+                <Link to="/pricing" onClick={handleNavClick}>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
+                    Pricing
+                  </div>
+                </Link>
+                <Link to="/About" onClick={handleNavClick}>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
+                    About Us
+                  </div>
+                </Link>
+              </div>
+
+              {/* CTA buttons */}
+              <div className="mt-4 flex flex-col gap-2 px-2">
+                <button
+                  onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
+                  className="w-full py-3 rounded-xl border border-violet-200 text-violet-700 font-semibold text-sm hover:bg-violet-50 transition-colors"
+                >
+                  Log in
+                </button>
+                <button
+                  onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
+                  className="w-full py-3 rounded-xl gradient-brand text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+                >
+                  Get Started
+                </button>
+              </div>
             </div>
           )}
+
           {isLoggedIn && (
-            <div className="pt-4 border-t border-slate-100 space-y-2">
+            <div className="pt-2 border-t border-slate-100 space-y-1">
               <Link to="/About" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 p-3 rounded-lg text-slate-600">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition-colors">
                   About Us
                 </div>
               </Link>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-3 py-3 rounded-lg text-red-600 border-t border-slate-100"
+                className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
               >
-                Logout
+                Log out
               </button>
             </div>
           )}
