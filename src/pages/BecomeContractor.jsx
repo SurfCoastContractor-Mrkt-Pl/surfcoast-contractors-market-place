@@ -381,12 +381,12 @@ export default function BecomeContractor() {
       )}
 
       {/* Hero */}
-      <div className="text-center px-4 pt-10 pb-8 max-w-2xl mx-auto w-full">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
-          <HardHat className="w-7 h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
+      <div className="text-center px-4 pt-6 pb-6 lg:pt-10 lg:pb-8 max-w-2xl mx-auto w-full">
+        <div className="w-12 lg:w-14 h-12 lg:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
+          <HardHat className="w-6 lg:w-7 h-6 lg:h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become a Contractor</h1>
-        <p className="text-base sm:text-lg mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start earning — free to join, get paid securely.</p>
+        <h1 className="text-2xl lg:text-5xl font-extrabold mb-2 lg:mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become a Contractor</h1>
+        <p className="text-sm lg:text-lg mb-4 lg:mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start earning — free to join, get paid securely.</p>
         <div className="flex flex-wrap gap-4 justify-center">
           {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
             <span key={item} className="flex items-center gap-1.5 text-sm" style={{ color: designTokens.colors.gray[700] }}>
@@ -398,7 +398,7 @@ export default function BecomeContractor() {
       </div>
 
       {/* Form container */}
-      <div className="max-w-2xl mx-auto w-full px-4 pb-16">
+      <div className="max-w-2xl mx-auto w-full px-4 pb-12 lg:pb-16">
 
         {/* Progress Indicator */}
         <OnboardingProgressIndicator
@@ -455,12 +455,12 @@ export default function BecomeContractor() {
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex gap-3 mt-2">
+          <div className="flex gap-2 lg:gap-3 mt-3">
             {currentStep > 1 && (
               <button
                 type="button"
                 onClick={handlePrevStep}
-                className="flex-1 py-4 rounded-xl text-base font-bold transition-colors min-h-[52px]"
+                className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold transition-colors min-h-[44px] lg:min-h-[52px]"
                 style={{ border: `1px solid ${designTokens.colors.gray[300]}`, background: designTokens.colors.white, color: designTokens.colors.gray[700] }}
               >
                 ← Back
@@ -469,7 +469,7 @@ export default function BecomeContractor() {
             <button
               type="submit"
               disabled={mutation.isPending}
-              className="flex-1 py-4 rounded-xl text-base font-bold text-white transition-all min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold text-white transition-all min-h-[44px] lg:min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ background: `linear-gradient(135deg, ${designTokens.colors.accent.DEFAULT} 0%, ${designTokens.colors.accent.dark} 100%)`, boxShadow: `0 4px 20px ${designTokens.colors.accent.light}55` }}
             >
               {mutation.isPending ? (

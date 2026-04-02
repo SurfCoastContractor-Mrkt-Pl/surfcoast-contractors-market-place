@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       {/* ==================== HERO SECTION ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Column */}
           <div>
             <div className="inline-block mb-6">
@@ -25,7 +25,7 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 lg:mb-6 leading-tight">
               Being a contractor <span className="text-orange-600">isn't just a job.</span>
             </h1>
 
@@ -50,7 +50,7 @@ export default function Home() {
           </div>
 
           {/* Right Column - Founding Member Card */}
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 p-8">
+          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 p-6 lg:p-8">
             <div className="flex items-center gap-3 mb-6">
               <Star className="w-8 h-8 text-orange-600 fill-orange-600" />
               <h3 className="text-lg font-bold text-gray-900">Founding Member</h3>
@@ -105,10 +105,10 @@ export default function Home() {
       </section>
 
       {/* ==================== MANIFESTO BLOCK ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <blockquote className="mb-8">
-            <p className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            <p className="text-2xl lg:text-5xl font-bold text-gray-900 leading-tight">
               Being a contractor <span className="text-orange-600">isn't a job title.</span>
               <br />
               <span className="text-orange-600">It's a mindset.</span>
@@ -122,8 +122,8 @@ export default function Home() {
       </section>
 
       {/* ==================== TWO WEEK TRIAL SECTION ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
           {/* Left Column */}
           <div>
             <div className="inline-block mb-4">
@@ -132,7 +132,7 @@ export default function Home() {
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4">
               Try it free. No pressure. No card.
             </h2>
 
@@ -170,7 +170,7 @@ export default function Home() {
           {/* Right Column */}
           <div className="flex flex-col items-center justify-center text-center">
             <div className="mb-6">
-              <span className="text-8xl font-bold text-orange-600">14</span>
+              <span className="text-6xl lg:text-8xl font-bold text-orange-600">14</span>
             </div>
 
             <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -197,10 +197,10 @@ export default function Home() {
       </section>
 
       {/* ==================== TWO-PATH SPLIT SECTION ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Path - For Pros */}
-          <div className="border-r-0 md:border-r-2 border-gray-300 pr-0 md:pr-8">
+          <div className="border-b-2 lg:border-b-0 lg:border-r-2 border-gray-300 pb-8 lg:pb-0 lg:pr-8">
             <div className="flex items-center gap-3 mb-4">
               <Briefcase className="w-6 h-6 text-blue-600" />
               <h3 className="text-2xl font-bold text-gray-900">I'm a Pro</h3>
@@ -238,7 +238,7 @@ export default function Home() {
           </div>
 
           {/* Right Path - For Customers */}
-          <div className="pl-0 md:pl-8">
+          <div className="pt-8 lg:pt-0 lg:pl-8">
             <div className="flex items-center gap-3 mb-4">
               <Users className="w-6 h-6 text-orange-600" />
               <h3 className="text-2xl font-bold text-gray-900">I need a Pro</h3>
@@ -278,14 +278,14 @@ export default function Home() {
       </section>
 
       {/* ==================== SEARCH / NOTIFY ME SECTION ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-8 text-center">
             See what's coming to your area
           </h2>
 
           {/* Search Bar */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-8">
+          <div className="flex flex-col gap-3 mb-8 lg:flex-row lg:gap-2">
             <input
               type="text"
               placeholder="Suburb or postcode..."
@@ -320,13 +320,13 @@ export default function Home() {
       </section>
 
       {/* ==================== TOOLS SECTION ==================== */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-16 text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-12 lg:mb-16 text-center">
             More than a directory
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Card 1 - Swap Meet */}
             <div className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-6">
@@ -373,8 +373,8 @@ export default function Home() {
       </section>
 
       {/* ==================== TRUST BAR ==================== */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-8 lg:py-12 px-4 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
             <span className="text-sm font-medium text-gray-700">Verified licences only</span>
@@ -395,8 +395,8 @@ export default function Home() {
       </section>
 
       {/* ==================== FOOTER ==================== */}
-      <footer className="bg-white border-t border-gray-200 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between">
+      <footer className="bg-white border-t border-gray-200 py-8 lg:py-12 px-4 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col gap-4 lg:flex-row lg:gap-0 lg:items-center lg:justify-between">
           <div className="text-sm text-gray-600 mb-4 sm:mb-0">
             © 2026 SurfCoast. All rights reserved.
           </div>

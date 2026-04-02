@@ -201,12 +201,12 @@ export default function Pricing() {
     <div style={{ minHeight: "100vh", color: "#f1f5f9", fontFamily: "'Inter','Segoe UI',sans-serif", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)" }}>
 
       {/* HERO */}
-      <section style={{ textAlign: "center", padding: "80px 24px 60px", maxWidth: "720px", margin: "0 auto" }}>
+      <section style={{ textAlign: "center", padding: "60px 24px 40px", maxWidth: "720px", margin: "0 auto" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.3)", borderRadius: "20px", padding: "5px 14px", marginBottom: "24px" }}>
           <Zap size={13} style={{ color: "#f59e0b" }} />
           <span style={{ fontSize: "12px", fontWeight: "700", color: "#f59e0b", letterSpacing: "1px", textTransform: "uppercase" }}>Simple, Honest Pricing</span>
         </div>
-        <h1 style={{ fontSize: "clamp(36px, 6vw, 60px)", fontWeight: "900", margin: "0 0 20px", lineHeight: 1.05, letterSpacing: "-2px" }}>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: "900", margin: "0 0 16px", lineHeight: 1.05, letterSpacing: "-1px" }}>
           Simple, Honest Pricing.<br />No Surprises.
         </h1>
         <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.65 }}>
@@ -221,8 +221,8 @@ export default function Pricing() {
       </section>
 
       {/* FREE FOREVER */}
-      <section style={{ maxWidth: "900px", margin: "0 auto 64px", padding: "0 24px" }}>
-        <div style={{ background: "rgba(22,163,74,0.08)", border: "1px solid rgba(22,163,74,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center" }}>
+      <section style={{ maxWidth: "900px", margin: "0 auto 48px", padding: "0 24px" }}>
+        <div style={{ background: "rgba(22,163,74,0.08)", border: "1px solid rgba(22,163,74,0.35)", borderRadius: "20px", padding: "24px 20px", display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
           <div>
             <div style={{ display: "inline-block", background: "#16a34a", color: "#fff", fontSize: "10px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", letterSpacing: "1.5px", marginBottom: "16px", textTransform: "uppercase" }}>Always Free</div>
             <h2 style={{ fontSize: "28px", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>Basic Profile</h2>
@@ -249,14 +249,14 @@ export default function Pricing() {
       </section>
 
       {/* WAVE FO PLANS */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVE FO (Field Operations) Plans</h2>
+      <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>WAVE FO (Field Operations) Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>For contractors, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px" }}>
           {WAVE_TIERS.map((tier, i) => (
             <div key={i} style={{ background: tier.tag === "Most Popular ⭐" ? "rgba(245,158,11,0.06)" : tier.tag === "All-In" ? "rgba(244,114,182,0.06)" : "rgba(255,255,255,0.03)", border: `1px solid ${tier.tag ? tier.accent + "55" : "rgba(255,255,255,0.08)"}`, borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}>
               {tier.tag && (
@@ -295,14 +295,14 @@ export default function Pricing() {
       </section>
 
       {/* COMMUNICATION & PROPOSAL PRICING */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#38bdf8", marginBottom: "10px" }}>Communication & Proposals</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>How Clients & Contractors Connect</h2>
+      <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#38bdf8", marginBottom: "10px" }}>Communication & Proposals</p>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>How Clients & Contractors Connect</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>Clear pricing for messaging and proposal requests on the platform.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
           {/* Client Communication Card */}
           <div style={{ background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.35)", borderRadius: "20px", padding: "40px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
             <div>
@@ -376,13 +376,13 @@ export default function Pricing() {
       </section>
 
       {/* MARKET BOOTHS & SPACES */}
-      <section style={{ maxWidth: "900px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#ec4899", marginBottom: "10px" }}>Booth & Space Operator Track</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>MarketShop Plans</h2>
+      <section style={{ maxWidth: "900px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#ec4899", marginBottom: "10px" }}>Booth & Space Operator Track</p>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>MarketShop Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Choose your payment model.</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "20px" }}>
           {/* 5% Facilitation Fee Option */}
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.35)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
@@ -439,14 +439,14 @@ export default function Pricing() {
       </section>
 
       {/* WAVESHOP FO - WAVE FO TIER */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>MarketShop Track — Optional Premium Program</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>WAVEShop FO for the MarketShop</h2>
+      <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>MarketShop Track — Optional Premium Program</p>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>WAVEShop FO for the MarketShop</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Optional advanced program for MarketShop vendors with professional tools, enhanced analytics, and streamlined booth management.</p>
         </div>
 
-        <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: "20px", padding: "40px 48px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "48px", alignItems: "start" }}>
+        <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: "20px", padding: "24px 20px", display: "grid", gridTemplateColumns: "1fr", gap: "24px", alignItems: "start" }}>
           <div style={{ minWidth: "240px" }}>
             <div style={{ display: "inline-block", background: "#a855f7", color: "#0f172a", fontSize: "10px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", letterSpacing: "1px", marginBottom: "16px", textTransform: "uppercase" }}>
               Premium Program
@@ -464,7 +464,7 @@ export default function Pricing() {
             </a>
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
           </div>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 20px" }}>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr", gap: "10px" }}>
             {WAVESHOP_FO_FEATURES.map((f, i) => (
               <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
                 <CheckCircle size={13} style={{ color: "#a855f7", marginTop: "2px", flexShrink: 0 }} />
@@ -476,22 +476,22 @@ export default function Pricing() {
       </section>
 
       {/* FAQ */}
-      <section style={{ maxWidth: "700px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Frequently Asked Questions</h2>
+      <section style={{ maxWidth: "700px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>Frequently Asked Questions</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)" }}>Straight answers, no runaround.</p>
         </div>
         {FAQ_ITEMS.map((item, i) => <FAQItem key={i} item={item} />)}
       </section>
 
       {/* FEE & SUBSCRIPTION OVERVIEW */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto 80px", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-1px" }}>Facilitation Fees & Subscriptions</h2>
+      <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px" }}>Facilitation Fees & Subscriptions</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "600px", margin: "0 auto" }}>A transparent breakdown of how different users interact with our platform payment models.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "24px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
           {/* Contractors */}
           <div style={{ background: "rgba(30,90,150,0.06)", border: "1px solid rgba(30,90,150,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
@@ -574,8 +574,8 @@ export default function Pricing() {
       </section>
 
       {/* BOTTOM CTA */}
-      <section style={{ textAlign: "center", padding: "80px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-1px" }}>Ready to get started?</h2>
+      <section style={{ textAlign: "center", padding: "60px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: "900", margin: "0 0 16px", letterSpacing: "-0.5px" }}>Ready to get started?</h2>
         <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.5)", maxWidth: "480px", margin: "0 auto 36px", lineHeight: 1.65 }}>
           Join the marketplace built for people who actually work.
         </p>
