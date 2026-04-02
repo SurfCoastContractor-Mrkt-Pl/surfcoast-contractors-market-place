@@ -97,8 +97,15 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 const PageGradientApplier = () => {
   const location = useLocation();
   useEffect(() => {
-    document.body.style.background = getPageGradient(location.pathname);
-    document.body.style.transition = 'background 0.6s ease';
+    const gradient = getPageGradient(location.pathname);
+    if (gradient) {
+      document.body.style.background = gradient;
+      document.body.style.transition = 'background 0.6s ease';
+    } else {
+      // Page manages its own background — reset body to transparent
+      document.body.style.background = 'transparent';
+      document.body.style.transition = '';
+    }
   }, [location.pathname]);
   return null;
 };

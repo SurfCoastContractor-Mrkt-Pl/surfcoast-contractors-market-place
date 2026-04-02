@@ -65,12 +65,8 @@ export function useUnreadCount(email) {
     queryKey: ['messages', 'unread', email],
     queryFn: async () => {
       if (!email) return 0;
-      try {
-        const unreadMessages = await base44.entities.Message.filter({ recipient_email: email, read: false }).catch(() => []);
-        return unreadMessages?.length || 0;
-      } catch (e) {
-        return 0;
-      }
+      const unreadMessages = await base44.entities.Message.filter({ recipient_email: email, read: false }).catch(() => []);
+      return unreadMessages?.length || 0;
     },
     enabled: !!email,
     staleTime: 3 * 60 * 1000, // 3 minutes (slightly relaxed for better performance)

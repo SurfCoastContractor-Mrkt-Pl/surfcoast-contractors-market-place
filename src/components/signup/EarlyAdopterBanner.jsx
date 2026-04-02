@@ -2,7 +2,7 @@ import React from 'react';
 import { AlertCircle, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
-export default function EarlyAdopterBanner() {
+export default function SignupEarlyAdopterBanner() {
   return (
     <Card className="mb-6 border-2 border-amber-300 bg-gradient-to-r from-amber-50 to-yellow-50">
       <CardContent className="p-6">

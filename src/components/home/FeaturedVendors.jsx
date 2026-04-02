@@ -303,11 +303,7 @@ export default function FeaturedVendors() {
         </button>
       </div>
 
-      <style>{`
-        div::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+
     </div>
   );
 }

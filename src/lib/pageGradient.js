@@ -136,6 +136,9 @@ function sampleGradient(position) {
  * Each page shows a gentle blend of its segment of the grand gradient.
  */
 export function getPageGradient(pathname) {
+  // Home page manages its own background — skip gradient injection to avoid conflict
+  if (pathname === '/') return '';
+
   // Normalize path — strip trailing slash (except root)
   const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
 

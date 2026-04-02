@@ -35,28 +35,33 @@ export default function ContractorLocationSearch() {
     try {
       let searchResults = [];
 
+      const loc = location.trim().toLowerCase();
       if (searchType === "contractors") {
-        searchResults = await base44.entities.Contractor.filter({
-          location: { $regex: location, $options: "i" }
-        });
-      } else if (searchType === "market-booths") {
-        searchResults = await base44.entities.MarketShop.filter({
-          city: { $regex: location, $options: "i" }
-        });
+        const all = await base44.entities.Contractor.filter({ available: true });
+        searchResults = (all || []).filter(c =>
+          c.location?.toLowerCase().includes(loc)
+        );
+      } else if (searchType === "market-booths" || searchType === "vendors") {
+        const all = await base44.entities.MarketShop.filter({ is_active: true });
+        searchResults = (all || []).filter(s =>
+          s.city?.toLowerCase().includes(loc) ||
+          s.state?.toLowerCase().includes(loc) ||
+          s.zip?.includes(loc)
+        );
       } else if (searchType === "farmers-markets") {
-        searchResults = await base44.entities.MarketShop.filter({
-          location: { $regex: location, $options: "i" },
-          market_type: "farmers_market"
-        });
-      } else if (searchType === "vendors") {
-        searchResults = await base44.entities.MarketShop.filter({
-          location: { $regex: location, $options: "i" }
-        });
+        const all = await base44.entities.MarketShop.filter({ is_active: true, shop_type: "farmers_market" });
+        searchResults = (all || []).filter(s =>
+          s.city?.toLowerCase().includes(loc) ||
+          s.state?.toLowerCase().includes(loc) ||
+          s.zip?.includes(loc)
+        );
       } else if (searchType === "swapmeets") {
-        searchResults = await base44.entities.MarketShop.filter({
-          location: { $regex: location, $options: "i" },
-          market_type: "swapmeet"
-        });
+        const all = await base44.entities.MarketShop.filter({ is_active: true, shop_type: "swap_meet" });
+        searchResults = (all || []).filter(s =>
+          s.city?.toLowerCase().includes(loc) ||
+          s.state?.toLowerCase().includes(loc) ||
+          s.zip?.includes(loc)
+        );
       }
 
       setResults(searchResults || []);
@@ -160,7 +165,7 @@ export default function ContractorLocationSearch() {
                 opacity: isLoading ? 0.7 : 1
               }}
             >
-              {isLoading ? <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} /> : <Search size={16} />}
+              {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
               {!isLoading && "Search"}
             </button>
           </div>
@@ -172,7 +177,7 @@ export default function ContractorLocationSearch() {
           <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
             {isLoading ? (
               <div style={{ textAlign: "center", padding: "20px" }}>
-                <Loader2 size={24} style={{ color: "#1d6fa4", animation: "spin 1s linear infinite", margin: "0 auto" }} />
+                <Loader2 size={24} className="animate-spin" style={{ color: "#1d6fa4", margin: "0 auto" }} />
               </div>
             ) : results.length > 0 ? (
               <div>
@@ -270,12 +275,7 @@ export default function ContractorLocationSearch() {
         )}
       </div>
 
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+
     </div>
   );
 }

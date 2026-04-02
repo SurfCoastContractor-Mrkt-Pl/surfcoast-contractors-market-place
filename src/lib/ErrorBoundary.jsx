@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AlertCircle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { base44 } from '@/api/base44Client';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -49,14 +50,8 @@ class ErrorBoundary extends Component {
         userAgent: navigator.userAgent
       };
 
-      // Attempt to log to backend without blocking UI
-      fetch('/api/errors', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(errorData)
-      }).catch(() => {
-        // Silently fail if logging doesn't work - don't block error boundary
-      });
+      // Attempt to log to backend — fire and forget, never blocks UI
+      base44.functions.invoke('logErrorEvent', errorData).catch(() => {});
     } catch (logError) {
       console.error('Failed to log error to backend:', logError);
     }
