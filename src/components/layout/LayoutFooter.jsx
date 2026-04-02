@@ -1,6 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, Linkedin, Lightbulb } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, Lightbulb } from 'lucide-react';
+
+// X (formerly Twitter) official logo SVG
+const XIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.26 5.632 5.904-5.632Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+  </svg>
+);
 
 const ORANGE = '#f97316';
 const WHITE = '#ffffff';
@@ -62,16 +69,16 @@ export default function LayoutFooter({
           <div className="flex flex-col items-start sm:items-center justify-start">
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>Connect</h4>
             <div className="flex items-center gap-4">
-              <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{color: LIGHT}} className="hover:text-amber-400 transition-colors">
+              <a href="https://www.instagram.com/surfcoastmkt_pl/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="transition-colors hover:opacity-80" style={{color:'#E1306C'}}>
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{color: LIGHT}} className="hover:text-amber-400 transition-colors">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="transition-colors hover:opacity-80" style={{color:'#1877F2'}}>
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" style={{color: LIGHT}} className="hover:text-amber-400 transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="transition-colors hover:opacity-80" style={{color:'#ffffff'}}>
+                <XIcon className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style={{color: LIGHT}} className="hover:text-amber-400 transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="transition-colors hover:opacity-80" style={{color:'#0A66C2'}}>
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
