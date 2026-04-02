@@ -93,22 +93,22 @@ export default function AdminDashboard() {
   // Early returns AFTER all hooks
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <ShieldOff className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
-          <p className="text-slate-400 mb-6">You do not have permission to view this page.</p>
+          <ShieldOff className="w-12 h-12 text-destructive mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-foreground mb-2">Access Denied</h1>
+          <p className="text-muted-foreground mb-6">You do not have permission to view this page.</p>
           <button
             onClick={() => navigate('/')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium"
+            className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium"
           >
             Go Home
           </button>
@@ -160,40 +160,41 @@ export default function AdminDashboard() {
   };
 
   const StatCard = ({ label, value, color, icon: Icon }) => (
-    <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+    <div className="bg-card border border-border rounded-xl p-4 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-slate-400">{label}</p>
+          <p className="text-sm text-muted-foreground">{label}</p>
           <p className={`text-3xl font-bold mt-2 ${color}`}>{value}</p>
         </div>
-        {Icon && <Icon className={`w-8 h-8 ${color} opacity-50`} />}
+        {Icon && <Icon className={`w-8 h-8 ${color} opacity-40`} />}
       </div>
     </div>
   );
 
   const StatusBadge = ({ status }) => {
     const colors = {
-      active: 'bg-green-900 text-green-200',
-      pending: 'bg-yellow-900 text-yellow-200',
-      suspended: 'bg-red-900 text-red-200',
-      visible: 'bg-green-900 text-green-200',
-      hidden: 'bg-red-900 text-red-200',
-      inactive: 'bg-slate-700 text-slate-200',
+      active: 'bg-green-100 text-green-800',
+      pending: 'bg-yellow-100 text-yellow-800',
+      suspended: 'bg-red-100 text-red-800',
+      visible: 'bg-green-100 text-green-800',
+      hidden: 'bg-red-100 text-red-800',
+      inactive: 'bg-secondary text-secondary-foreground',
+      locked: 'bg-red-100 text-red-800',
     };
-    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-slate-700'}`}>{status}</span>;
+    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-secondary text-secondary-foreground'}`}>{status}</span>;
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-slate-800 border-b border-slate-700">
+      <div className="bg-card border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Admin Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="bg-slate-800 border-b border-slate-700 overflow-x-auto">
+      <div className="bg-card border-b border-border overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-0.5 sm:gap-1">
             {[
@@ -210,8 +211,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab(key)}
                 className={`px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
                   activeTab === key
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-slate-400 hover:text-slate-300'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -236,33 +237,32 @@ export default function AdminDashboard() {
               <StatCard label="Suspended" value={suspendedVendors} color="text-red-400" icon={AlertTriangle} />
             </div>
 
-            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6">
-              <h2 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2"><Clock className="w-4 sm:w-5 h-4 sm:h-5" />Recent Activity by Account</h2>
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm">
+              <h2 className="text-base sm:text-lg font-semibold text-foreground mb-4 flex items-center gap-2"><Clock className="w-4 sm:w-5 h-4 sm:h-5" />Recent Activity by Account</h2>
               <div className="space-y-2 sm:space-y-3 max-h-96 overflow-y-auto">
-                  {/* Group vendors by email, show latest first */}
                   {groupedVendors.map(([email, shops]) => {
                     const latestShop = shops[0];
                     const statuses = shops.map(s => s.status);
                     const uniqueStatuses = [...new Set(statuses)];
 
                     return (
-                      <div key={email} className="p-3 bg-slate-700 rounded-lg">
+                      <div key={email} className="p-3 bg-secondary rounded-lg">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <p className="text-white font-medium text-sm">{email}</p>
-                            <p className="text-xs text-slate-400 mt-0.5">{shops.length} shop{shops.length !== 1 ? 's' : ''}</p>
+                            <p className="text-foreground font-medium text-sm">{email}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">{shops.length} shop{shops.length !== 1 ? 's' : ''}</p>
                           </div>
                           <div className="text-right">
                             <div className="flex gap-1 flex-wrap justify-end mb-1">
                               {uniqueStatuses.map(s => <StatusBadge key={s} status={s} />)}
                             </div>
-                            <p className="text-xs text-slate-400">{new Date(latestShop.created_date).toLocaleDateString()}</p>
+                            <p className="text-xs text-muted-foreground">{new Date(latestShop.created_date).toLocaleDateString()}</p>
                           </div>
                         </div>
                         {shops.length > 1 && (
-                          <div className="text-xs text-slate-400 space-y-1 mt-2 pl-2 border-l border-slate-600">
+                          <div className="text-xs text-muted-foreground space-y-1 mt-2 pl-2 border-l border-border">
                             {shops.map(s => (
-                              <p key={s.id}>{s.shop_name} <span className="text-slate-500">({s.shop_type.replace('_', ' ')})</span></p>
+                              <p key={s.id}>{s.shop_name} <span className="opacity-60">({s.shop_type.replace('_', ' ')})</span></p>
                             ))}
                           </div>
                         )}
@@ -277,19 +277,19 @@ export default function AdminDashboard() {
         {/* VENDORS */}
         {activeTab === 'vendors' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <input
                   type="text"
                   placeholder="Search by name or email..."
                   value={vendorSearchFilter}
                   onChange={e => setVendorSearchFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground placeholder:text-muted-foreground"
                 />
                 <select
                   value={vendorStatusFilter}
                   onChange={e => setVendorStatusFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
                 <select
                   value={vendorTypeFilter}
                   onChange={e => setVendorTypeFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Types</option>
                   <option value="farmers_market">Farmers Market</option>
@@ -309,27 +309,27 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+            <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
               <table className="w-full text-sm">
-                <thead className="border-b border-slate-700 bg-slate-900">
+                <thead className="border-b border-border bg-secondary">
                   <tr>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Shop Name</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Type</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Owner Email</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">City/State</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Sub Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Created</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Actions</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Shop Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Type</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Owner Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Created</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700">
+                <tbody className="divide-y divide-border">
                   {filteredVendors.map(v => (
-                    <tr key={v.id} className="hover:bg-slate-700 transition-colors">
-                      <td className="px-6 py-4 text-white">{v.shop_name}</td>
-                      <td className="px-6 py-4 text-slate-300 capitalize">{v.shop_type?.replace('_', ' ')}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">{v.email}</td>
-                      <td className="px-6 py-4 text-slate-400">{v.city}, {v.state}</td>
+                    <tr key={v.id} className="hover:bg-secondary/60 transition-colors">
+                      <td className="px-6 py-4 text-foreground font-medium">{v.shop_name}</td>
+                      <td className="px-6 py-4 text-muted-foreground capitalize">{v.shop_type?.replace('_', ' ')}</td>
+                      <td className="px-6 py-4 text-muted-foreground text-xs">{v.email}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{v.city}, {v.state}</td>
                       <td className="px-6 py-4"><StatusBadge status={v.status} /></td>
                       <td className="px-6 py-4"><StatusBadge status={v.wave_shop_subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(v.created_date).toLocaleDateString()}</td>
@@ -382,12 +382,12 @@ export default function AdminDashboard() {
         {/* CONTRACTORS */}
         {activeTab === 'contractors' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <select
                   value={contractorSubFilter}
                   onChange={e => setContractorSubFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Subscriptions</option>
                   <option value="active">Active</option>
@@ -396,7 +396,7 @@ export default function AdminDashboard() {
                 <select
                   value={contractorAcctFilter}
                   onChange={e => setContractorAcctFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Account Status</option>
                   <option value="active">Active</option>
@@ -405,27 +405,27 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+            <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
               <table className="w-full text-sm">
-                <thead className="border-b border-slate-700 bg-slate-900">
+                <thead className="border-b border-border bg-secondary">
                   <tr>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Name</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Email</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><Wrench className="w-4 h-4" />Trade</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><MapPin className="w-4 h-4" />City/State</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><CreditCard className="w-4 h-4" />Sub Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><Shield className="w-4 h-4" />Account</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300 flex items-center gap-1"><LinkIcon className="w-4 h-4" />Stripe Connected</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Created</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><Wrench className="w-4 h-4" />Trade</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><MapPin className="w-4 h-4" />City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><CreditCard className="w-4 h-4" />Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><Shield className="w-4 h-4" />Account</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><LinkIcon className="w-4 h-4" />Stripe Connected</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Created</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700">
+                <tbody className="divide-y divide-border">
                   {filteredContractors.map(c => (
-                    <tr key={c.id} className="hover:bg-slate-700 transition-colors">
-                      <td className="px-6 py-4 text-white">{c.name}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">{c.email}</td>
-                      <td className="px-6 py-4 text-slate-300 capitalize">{c.trade_specialty?.replace('_', ' ')}</td>
-                      <td className="px-6 py-4 text-slate-400">{c.location}</td>
+                    <tr key={c.id} className="hover:bg-secondary/60 transition-colors">
+                      <td className="px-6 py-4 text-foreground font-medium">{c.name}</td>
+                      <td className="px-6 py-4 text-muted-foreground text-xs">{c.email}</td>
+                      <td className="px-6 py-4 text-muted-foreground capitalize">{c.trade_specialty?.replace('_', ' ')}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{c.location}</td>
                       <td className="px-6 py-4"><StatusBadge status={c.wave_shop_subscription_status || 'inactive'} /></td>
                       <td className="px-6 py-4">{c.account_locked ? <StatusBadge status="locked" /> : <StatusBadge status="active" />}</td>
                       <td className="px-6 py-4">{c.stripe_account_setup_complete ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Ban className="w-4 h-4 text-red-400" />}</td>
@@ -441,12 +441,12 @@ export default function AdminDashboard() {
         {/* WAVE FO */}
         {activeTab === 'field_ops' && (
           <div className="flex flex-col items-center justify-center py-20">
-            <Briefcase className="w-12 h-12 text-blue-400 mb-4" />
-            <h2 className="text-xl font-bold text-white mb-2">Admin Wave FO</h2>
-            <p className="text-slate-400 text-sm mb-6">Impersonate any contractor and view their Wave FO dashboard.</p>
+            <Briefcase className="w-12 h-12 text-primary mb-4" />
+            <h2 className="text-xl font-bold text-foreground mb-2">Admin Wave FO</h2>
+            <p className="text-muted-foreground text-sm mb-6">Impersonate any contractor and view their Wave FO dashboard.</p>
             <Link
               to="/adminfieldops"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-colors flex items-center gap-2"
             >
               <Briefcase className="w-4 h-4" />
               Open Admin Wave FO
@@ -457,14 +457,14 @@ export default function AdminDashboard() {
         {/* NOTION */}
         {activeTab === 'notion' && (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-14 h-14 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center mb-4">
-              <BookOpen className="w-7 h-7 text-blue-400" />
+            <div className="w-14 h-14 bg-card border border-border rounded-xl flex items-center justify-center mb-4 shadow-sm">
+              <BookOpen className="w-7 h-7 text-primary" />
             </div>
-            <h2 className="text-xl font-bold text-white mb-2">Notion Hub</h2>
-            <p className="text-slate-400 text-sm mb-6 text-center max-w-sm">Manage project documentation and knowledge base articles linked to your Notion workspace.</p>
+            <h2 className="text-xl font-bold text-foreground mb-2">Notion Hub</h2>
+            <p className="text-muted-foreground text-sm mb-6 text-center max-w-sm">Manage project documentation and knowledge base articles linked to your Notion workspace.</p>
             <Link
               to="/NotionHub"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-colors flex items-center gap-2"
             >
               <ExternalLink className="w-4 h-4" />
               Open Notion Hub
@@ -485,12 +485,12 @@ export default function AdminDashboard() {
         {/* REVIEWS */}
         {activeTab === 'reviews' && (
           <div>
-            <div className="bg-slate-800 border border-slate-700 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <select
                   value={reviewStatusFilter}
                   onChange={e => setReviewStatusFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Status</option>
                    <option value="approved">Approved</option>
@@ -499,7 +499,7 @@ export default function AdminDashboard() {
                 <select
                   value={reviewRatingFilter}
                   onChange={e => setReviewRatingFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white"
+                  className="px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground"
                 >
                   <option value="all">All Ratings</option>
                   <option value="5">5 Stars</option>
@@ -511,30 +511,30 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-slate-800 border border-slate-700 rounded-xl">
+            <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
               <table className="w-full text-sm">
-                <thead className="border-b border-slate-700 bg-slate-900">
+                <thead className="border-b border-border bg-secondary">
                   <tr>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Shop Name</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Reviewer</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Rating</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Title</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Date</th>
-                    <th className="px-6 py-3 text-left font-semibold text-slate-300">Actions</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Shop Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Reviewer</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Rating</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Title</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Date</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700">
+                <tbody className="divide-y divide-border">
                   {filteredReviews.map(r => (
-                    <tr key={r.id} className="hover:bg-slate-700 transition-colors">
-                      <td className="px-6 py-4 text-white">{r.contractor_name || 'N/A'}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs flex items-center gap-1"><User className="w-4 h-4" />{r.reviewer_name}</td>
-                      <td className="px-6 py-4 text-yellow-400 flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={r.id} className="hover:bg-secondary/60 transition-colors">
+                      <td className="px-6 py-4 text-foreground font-medium">{r.contractor_name || 'N/A'}</td>
+                      <td className="px-6 py-4 text-muted-foreground text-xs flex items-center gap-1"><User className="w-4 h-4" />{r.reviewer_name}</td>
+                      <td className="px-6 py-4 text-amber-500 flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => (
                         <Star key={i} className={`w-4 h-4 ${i < (r.overall_rating || 0) ? 'fill-amber-400' : ''}`} />
                       ))}</td>
-                      <td className="px-6 py-4 text-slate-300">{r.job_title || 'N/A'}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{r.job_title || 'N/A'}</td>
                       <td className="px-6 py-4"><StatusBadge status={r.moderation_status || 'pending'} /></td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 text-muted-foreground text-xs">{new Date(r.created_date).toLocaleDateString()}</td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
                           {r.moderation_status === 'approved' && (

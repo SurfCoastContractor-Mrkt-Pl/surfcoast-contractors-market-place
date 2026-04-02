@@ -8,7 +8,7 @@ export default function About() {
     <div
       className="min-h-screen"
       style={{
-        background: 'linear-gradient(160deg, #7B1E00 0%, #C0390A 18%, #E8621A 35%, #F97316 52%, #FBBF24 70%, #FDE68A 88%, #FFF8DC 100%)',
+        background: 'linear-gradient(160deg, #7B1E00 0%, #C0390A 18%, #E8621A 35%, #F97316 52%, #e8f0f8 78%, #dce8f0 100%)',
         fontFamily: "'Montserrat', 'Inter', sans-serif",
       }}
     >
@@ -60,14 +60,14 @@ export default function About() {
             `This platform was built by someone living that same path—a father, husband, and entrepreneur who understands what it means to start from the ground up, master a craft, and keep learning. With a background in the trades, business ownership, and years of discipline through martial arts, this platform reflects those same values: accountability, growth, and respect for the work.`,
             `This isn't just a marketplace—it's a foundation for people who are serious about building something real.`,
           ].map((text, i) => (
-            <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: '#f0f4ff' }}>
+            <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: i >= 3 ? '#1a2a3a' : '#f0f4ff' }}>
               {text}
             </p>
           ))}
 
           <p
             className="font-black uppercase tracking-wider pt-4"
-            style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#ffffff', textShadow: '0 1px 8px rgba(0,0,0,0.2)' }}
+            style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#0d2a4a', textShadow: 'none' }}
           >
             We're here for the builders, the learners, and the ones who refuse to sit still.
           </p>

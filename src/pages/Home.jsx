@@ -31,19 +31,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  useEffect(() => {
-    const redirectIfLoggedIn = async () => {
-      try {
-        const isAuth = await base44.auth.isAuthenticated();
-        if (isAuth) {
-          navigate('/Dashboard', { replace: true });
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-      }
-    };
-    redirectIfLoggedIn();
-  }, [navigate]);
+  // Auth redirect removed — homepage is always accessible
 
   // Handle keyboard navigation for dropdown
   useEffect(() => {
