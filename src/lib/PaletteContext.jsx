@@ -169,14 +169,20 @@ export function PaletteProvider({ children }) {
 
   useEffect(() => {
     if (!palette) return;
-    console.log('🎨 Palette updated:', palette);
+    console.log('🎨 Palette updated in useEffect:', palette);
+    console.log('🎨 Current root element:', document.documentElement);
     applyPaletteToDOM(palette);
+    console.log('🎨 After applying palette, root styles:', document.documentElement.style.cssText.substring(0, 200));
   }, [palette]);
 
+  console.log('🎨 PaletteProvider render - isLoading:', isLoading, 'palette:', palette);
+  
   if (isLoading) {
+    console.log('🎨 PaletteProvider still loading...');
     return null;
   }
 
+  console.log('🎨 PaletteProvider rendering with palette:', palette, 'setPalette type:', typeof setPalette);
   return (
     <PaletteContext.Provider value={{ palette, setPalette, PALETTES }}>
       {children}

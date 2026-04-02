@@ -5,10 +5,16 @@ export default function PaletteSwitcher() {
   const { palette, setPalette, PALETTES } = usePalette();
 
   const handleClick = (paletteName) => {
-    console.log('🎨 Switching palette to:', paletteName);
+    console.log('🎨 Palette button clicked:', paletteName);
+    console.log('Current palette state:', palette);
+    console.log('setPalette function:', typeof setPalette);
+    console.trace('Click trace');
+    
     setPalette(paletteName);
+    
     try {
       sessionStorage.setItem('app_palette', paletteName);
+      console.log('✓ Saved to sessionStorage:', paletteName);
     } catch (e) {
       console.warn('Could not save palette:', e.message);
     }
@@ -27,11 +33,17 @@ export default function PaletteSwitcher() {
       borderRadius: 8,
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.2)',
+      pointerEvents: 'auto',
     }}>
-      {Object.keys(PALETTES).map((paletteName) => (
+      {Object.keys(PALETTES).map((paletteName) => {
+        console.log('Rendering palette button:', paletteName, 'current palette:', palette);
+        return (
         <button
           key={paletteName}
-          onClick={() => handleClick(paletteName)}
+          onClick={(e) => {
+            console.log('Button clicked, event:', e);
+            handleClick(paletteName);
+          }}
           style={{
             padding: '8px 14px',
             borderRadius: 4,
@@ -42,11 +54,13 @@ export default function PaletteSwitcher() {
             fontSize: 12,
             fontWeight: 600,
             transition: 'all 0.15s',
+            pointerEvents: 'auto',
           }}
         >
           {PALETTES[paletteName].name}
         </button>
-      ))}
+      );
+      })}
     </div>
   );
 }
