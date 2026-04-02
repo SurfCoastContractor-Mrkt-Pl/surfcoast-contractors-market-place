@@ -3,11 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClientInstance } from '@/lib/query-client';
 import { pagesConfig } from './pages.config';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/lib/ErrorBoundary';
+import { getPageGradient } from '@/lib/pageGradient';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
 import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
@@ -92,6 +93,16 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 // NOTE: Explicit routes (lines 73-177) take precedence over pagesConfig loop (lines 180-188).
 // If adding pages to this file, check pagesConfig to avoid duplicate route definitions.
 
+// Applies the page-specific gradient segment to document.body on every route change
+const PageGradientApplier = () => {
+  const location = useLocation();
+  useEffect(() => {
+    document.body.style.background = getPageGradient(location.pathname);
+    document.body.style.transition = 'background 0.6s ease';
+  }, [location.pathname]);
+  return null;
+};
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const hasRedirected = useRef(false);
@@ -130,6 +141,8 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
+    <>
+    <PageGradientApplier />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/About" element={
@@ -456,6 +469,7 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </>
   );
 };
 
