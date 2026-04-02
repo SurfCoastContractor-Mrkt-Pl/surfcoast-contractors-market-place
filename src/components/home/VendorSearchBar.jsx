@@ -85,69 +85,68 @@ export default function VendorSearchBar() {
     <div ref={containerRef} style={{ width: '100%', maxWidth: '860px', margin: '0 auto 16px', position: 'relative' }}>
       {/* Search Box */}
       <div style={{
-        background: 'rgba(255,255,255,0.07)',
-        border: '1px solid rgba(255,255,255,0.15)',
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
         borderRadius: '16px',
         padding: '12px 16px',
-        backdropFilter: 'blur(12px)',
       }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
           {/* Name search */}
-          <div style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Search size={15} style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }} />
-            <input
-               value={query}
-               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
-               onFocus={() => setShowResults(true)}
-               placeholder="Search vendors..."
-               style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%', caretColor: '#fff', placeholderColor: 'rgba(255,255,255,0.65)' }}
-             />
+          <div style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: '8px', background: '#f3f4f6', borderRadius: '10px', padding: '8px 12px' }}>
+           <Search size={15} style={{ color: '#9ca3af', flexShrink: 0 }} />
+           <input
+              value={query}
+              onChange={e => { setQuery(e.target.value); setShowResults(true); }}
+              onFocus={() => setShowResults(true)}
+              placeholder="Search vendors..."
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#1f2937', fontSize: '13px', width: '100%', caretColor: '#1f2937'}}
+            />
           </div>
 
           {/* Location */}
-          <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <MapPin size={15} style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', gap: '8px', background: '#f3f4f6', borderRadius: '10px', padding: '8px 12px' }}>
+            <MapPin size={15} style={{ color: '#9ca3af', flexShrink: 0 }} />
             <input
               value={location}
               onChange={e => { setLocation(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
               placeholder="City or ZIP..."
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '13px', width: '100%' }}
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: '#1f2937', fontSize: '13px', width: '100%' }}
             />
           </div>
 
           {/* Category */}
-          <div style={{ flex: '1 1 160px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Tag size={15} style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 160px', display: 'flex', alignItems: 'center', gap: '8px', background: '#f3f4f6', borderRadius: '10px', padding: '8px 12px' }}>
+            <Tag size={15} style={{ color: '#9ca3af', flexShrink: 0 }} />
             <select
               value={category}
               onChange={e => { setCategory(e.target.value); setShowResults(true); }}
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: category ? '#fff' : 'rgba(255,255,255,0.65)', fontSize: '13px', width: '100%', cursor: 'pointer' }}
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: category ? '#1f2937' : '#9ca3af', fontSize: '13px', width: '100%', cursor: 'pointer' }}
             >
-              <option value="" style={{ background: '#1a2a3a' }}>Category</option>
+              <option value="" style={{ background: '#ffffff', color: '#1f2937' }}>Category</option>
               {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
-                <option key={k} value={k} style={{ background: '#1a2a3a' }}>{v}</option>
+                <option key={k} value={k} style={{ background: '#ffffff', color: '#1f2937' }}>{v}</option>
               ))}
             </select>
           </div>
 
           {/* Type */}
-          <div style={{ flex: '1 1 150px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '8px 12px' }}>
-            <Store size={15} style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }} />
+          <div style={{ flex: '1 1 150px', display: 'flex', alignItems: 'center', gap: '8px', background: '#f3f4f6', borderRadius: '10px', padding: '8px 12px' }}>
+            <Store size={15} style={{ color: '#9ca3af', flexShrink: 0 }} />
             <select
               value={shopType}
               onChange={e => { setShopType(e.target.value); setShowResults(true); }}
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: shopType ? '#fff' : 'rgba(255,255,255,0.65)', fontSize: '13px', width: '100%', cursor: 'pointer' }}
+              style={{ background: 'transparent', border: 'none', outline: 'none', color: shopType ? '#1f2937' : '#9ca3af', fontSize: '13px', width: '100%', cursor: 'pointer' }}
             >
-              <option value="" style={{ background: '#1a2a3a' }}>Market Type</option>
+              <option value="" style={{ background: '#ffffff', color: '#1f2937' }}>Market Type</option>
               {Object.entries(SHOP_TYPE_LABELS).map(([k, v]) => (
-                <option key={k} value={k} style={{ background: '#1a2a3a' }}>{v}</option>
+                <option key={k} value={k} style={{ background: '#ffffff', color: '#1f2937' }}>{v}</option>
               ))}
             </select>
           </div>
 
           {hasFilters && (
-            <button onClick={clearAll} style={{ color: 'rgba(255,255,255,0.5)', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', flexShrink: 0 }}>
+            <button onClick={clearAll} style={{ color: '#9ca3af', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', flexShrink: 0 }}>
               <X size={16} />
             </button>
           )}
@@ -161,16 +160,15 @@ export default function VendorSearchBar() {
           top: 'calc(100% + 6px)',
           left: 0,
           right: 0,
-          background: 'rgba(13,27,42,0.98)',
-          border: '1px solid rgba(255,255,255,0.12)',
+          background: '#ffffff',
+          border: '1px solid #e5e7eb',
           borderRadius: '14px',
-          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
           zIndex: 100,
           overflow: 'hidden',
-          backdropFilter: 'blur(16px)',
         }}>
           {results.length === 0 ? (
-            <div style={{ padding: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.65)', fontSize: '13px' }}>
+            <div style={{ padding: '20px', textAlign: 'center', color: '#9ca3af', fontSize: '13px' }}>
               No vendors found matching your search
             </div>
           ) : (
@@ -179,8 +177,8 @@ export default function VendorSearchBar() {
                 <button
                   key={shop.id}
                   onClick={() => goToVendor(shop)}
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.06)', cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'transparent', border: 'none', borderBottom: '1px solid #f3f4f6', cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
                   {shop.logo_url ? (
@@ -191,22 +189,22 @@ export default function VendorSearchBar() {
                     </div>
                   )}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shop.shop_name}</p>
-                    <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,255,255,0.75)' }}>
+                    <p style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#1f2937', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shop.shop_name}</p>
+                    <p style={{ margin: 0, fontSize: '11px', color: '#6b7280' }}>
                       {SHOP_TYPE_LABELS[shop.shop_type]} · {shop.city}, {shop.state}
                     </p>
                   </div>
                   {shop.categories?.slice(0, 2).map(c => (
-                    <span key={c} style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '999px', background: 'rgba(249,115,22,0.25)', color: '#FFAA33', flexShrink: 0, fontWeight: '600' }}>
+                    <span key={c} style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '999px', background: '#fed7aa', color: '#92400e', flexShrink: 0, fontWeight: '600' }}>
                       {CATEGORY_LABELS[c] || c}
                     </span>
                   ))}
-                  <ChevronRight size={14} style={{ color: 'rgba(255,255,255,0.55)', flexShrink: 0 }} />
+                  <ChevronRight size={14} style={{ color: '#d1d5db', flexShrink: 0 }} />
                 </button>
               ))}
               <button
                 onClick={() => { window.location.href = '/MarketDirectory'; }}
-                style={{ width: '100%', padding: '12px 16px', background: 'transparent', border: 'none', color: '#F97316', fontSize: '12px', fontWeight: '600', cursor: 'pointer', textAlign: 'center' }}
+                style={{ width: '100%', padding: '12px 16px', background: 'transparent', border: 'none', color: '#ea580c', fontSize: '12px', fontWeight: '600', cursor: 'pointer', textAlign: 'center' }}
               >
                 View all vendors in Market Directory →
               </button>

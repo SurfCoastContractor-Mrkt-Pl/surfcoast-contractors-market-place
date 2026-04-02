@@ -74,7 +74,7 @@ export default function FeaturedVendors() {
         <h2 style={{
           fontSize: 'clamp(18px, 4vw, 24px)',
           fontWeight: '700',
-          color: '#ffffff',
+          color: '#1f2937',
           margin: 0,
           display: 'flex',
           alignItems: 'center',
@@ -83,7 +83,7 @@ export default function FeaturedVendors() {
           <Star size={20} style={{ color: '#f97316' }} />
           Featured Partners
         </h2>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', margin: '4px 0 0' }}>
+        <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0' }}>
           Premium vendors and markets we recommend
         </p>
       </div>
@@ -146,8 +146,8 @@ export default function FeaturedVendors() {
               onClick={() => window.location.href = `/MarketShopProfile?id=${shop.id}`}
               style={{
                 flex: '0 0 320px',
-                background: 'rgba(255,255,255,0.07)',
-                border: '1px solid rgba(255,255,255,0.12)',
+                background: '#ffffff',
+                border: '1px solid #e5e7eb',
                 borderRadius: '12px',
                 padding: '12px',
                 cursor: 'pointer',
@@ -157,13 +157,13 @@ export default function FeaturedVendors() {
                 color: 'inherit',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.borderColor = '#d1d5db';
                 e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.borderColor = '#e5e7eb';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
@@ -223,7 +223,7 @@ export default function FeaturedVendors() {
                     margin: 0,
                     fontSize: '13px',
                     fontWeight: '600',
-                    color: '#fff',
+                    color: '#1f2937',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -233,7 +233,7 @@ export default function FeaturedVendors() {
                   <p style={{
                     margin: '2px 0 0',
                     fontSize: '11px',
-                    color: 'rgba(255,255,255,0.75)',
+                    color: '#6b7280',
                   }}>
                     {shop.city}, {shop.state}
                   </p>
@@ -258,7 +258,7 @@ export default function FeaturedVendors() {
               {shop.products_summary && (
                 <p style={{
                   fontSize: '11px',
-                  color: 'rgba(255,255,255,0.75)',
+                  color: '#6b7280',
                   margin: 0,
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
