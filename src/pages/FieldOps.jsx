@@ -168,14 +168,22 @@ export default function WaveFo() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* Desktop Sidebar Navigation */}
-      <WaveFOSidebar
-        contractor={effectiveContractor}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        hasBreakerAccess={hasSurfCoastWaveFOAccess}
-        isOnline={isOnline}
-      />
+        {/* Desktop Sidebar Navigation - Admin only for non-admins */}
+        {isAdmin ? (
+          <WaveFOSidebar
+            contractor={effectiveContractor}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            hasBreakerAccess={hasSurfCoastWaveFOAccess}
+            isOnline={isOnline}
+          />
+        ) : (
+          <div className="hidden lg:flex flex-col items-center justify-center bg-slate-900 w-64 border-r border-slate-800 p-6">
+            <MapPin className="w-16 h-16 text-amber-400 mb-4" />
+            <p className="text-white text-lg font-semibold text-center mb-2">Wave FO Mobile-First</p>
+            <p className="text-slate-400 text-sm text-center">Wave FO is optimized for mobile devices. For the full experience, please use your phone.</p>
+          </div>
+        )}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
