@@ -7,13 +7,13 @@ export default function LayoutFooter({
   setSuggestionOpen,
 }) {
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-violet-950 to-slate-900 text-slate-100 py-10 sm:py-12 mt-auto">
+    <footer className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-slate-100 py-10 sm:py-12 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex flex-col gap-1 mb-3">
-              <span className="text-xl font-black tracking-tight leading-none gradient-text bg-gradient-to-r from-violet-300 to-indigo-300" style={{backgroundImage:'linear-gradient(90deg,#c4b5fd,#a5b4fc)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>SurfCoast</span>
-              <span className="text-[8px] font-bold tracking-[3px] text-violet-400 uppercase leading-none">MARKETPLACE</span>
+              <span className="text-xl font-black tracking-tight leading-none" style={{backgroundImage:'linear-gradient(90deg,#f97316,#fb923c)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>SurfCoast</span>
+              <span className="text-[8px] font-bold tracking-[3px] text-blue-400 uppercase leading-none">MARKETPLACE</span>
             </div>
             <p className="text-slate-400 max-w-sm text-xs leading-relaxed">
               Premium marketplace connecting exceptional professionals with discerning clients.
@@ -69,7 +69,7 @@ export default function LayoutFooter({
         </div>
 
         {/* Global Disclaimer */}
-        <div className="border-t border-violet-900/50 mt-6 pt-6">
+        <div className="border-t border-blue-900/50 mt-6 pt-6">
           <p className="text-xs text-slate-400 leading-relaxed">
             <span className="font-semibold text-slate-300">Legal Disclaimer:</span> SurfCoast Marketplace is a connection platform only and does not employ, endorse, or guarantee any contractor, vendor, product, or service. All users participate at their own risk. By using this platform, all parties waive any and all claims against SurfCoast Marketplace, its administrators, partners, and affiliates for any damages, injuries, illness, sickness, or death. Users are solely responsible for vetting and researching all parties and services.{' '}
             <Link to={createPageUrl('Terms')} className="text-slate-300 underline hover:text-white transition-colors">Terms of Service</Link>
@@ -78,7 +78,7 @@ export default function LayoutFooter({
           </p>
         </div>
 
-        <div className="border-t border-violet-900/40 mt-4 sm:mt-6 pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
+        <div className="border-t border-blue-900/40 mt-4 sm:mt-6 pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between text-slate-500 text-xs">
           <span className="text-xs">© {new Date().getFullYear()} SurfCoast Marketplace. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-3 sm:gap-3">
             <Link to={createPageUrl('Terms')} className="text-slate-400 hover:text-white transition-colors text-xs">Terms</Link>
