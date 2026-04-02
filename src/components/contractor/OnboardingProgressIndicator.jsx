@@ -27,21 +27,18 @@ export default function OnboardingProgressIndicator({ currentStep, totalSteps, s
                 {isCompleted ? (
                   <CheckCircle className="w-8 h-8 text-green-500" />
                 ) : isActive ? (
-                  <div className="relative">
-                    <Circle className="w-8 h-8 text-amber-500" fill="currentColor" />
-                    <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">
-                      {stepNumber}
-                    </span>
+                  <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">{stepNumber}</span>
                   </div>
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-slate-600 border-2 border-slate-500 flex items-center justify-center text-xs text-slate-400">
+                  <div className="w-8 h-8 rounded-full bg-amber-400 border-2 border-amber-500 flex items-center justify-center text-xs font-bold text-slate-900">
                     {stepNumber}
                   </div>
                 )}
               </div>
               <p
                 className={`text-xs text-center font-medium ${
-                  isActive ? 'text-amber-400' : isCompleted ? 'text-green-400' : 'text-slate-500'
+                  isActive ? 'text-slate-800' : isCompleted ? 'text-green-600' : 'text-amber-600'
                 }`}
                 style={{ maxWidth: '80px' }}
               >
