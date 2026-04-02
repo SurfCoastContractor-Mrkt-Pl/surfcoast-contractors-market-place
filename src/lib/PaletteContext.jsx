@@ -100,28 +100,45 @@ export function PaletteProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Palette system loaded');
+    
     try {
       // Check sessionStorage for saved palette
-      const savedPalette = sessionStorage.getItem('app_palette');
+      let savedPalette = null;
+      let sessionStorageAvailable = true;
+      
+      try {
+        savedPalette = sessionStorage.getItem('app_palette');
+        console.log('sessionStorage available, savedPalette:', savedPalette);
+      } catch (e) {
+        console.warn('sessionStorage unavailable:', e.message);
+        sessionStorageAvailable = false;
+      }
       
       if (savedPalette && PALETTES[savedPalette]) {
+        console.log('Using saved palette:', savedPalette);
         setPalette(savedPalette);
       } else {
         // Random selection if not saved
         const palettes = Object.keys(PALETTES);
         const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
-        try {
-          sessionStorage.setItem('app_palette', randomPalette);
-        } catch (e) {
-          // sessionStorage unavailable — continue with random palette anyway
-          console.warn('sessionStorage unavailable, palette will reset on page reload');
+        console.log('Selected random palette:', randomPalette);
+        
+        if (sessionStorageAvailable) {
+          try {
+            sessionStorage.setItem('app_palette', randomPalette);
+            console.log('Saved palette to sessionStorage');
+          } catch (e) {
+            console.warn('Could not save to sessionStorage:', e.message);
+          }
         }
         setPalette(randomPalette);
       }
     } catch (e) {
-      // Fallback if sessionStorage is completely blocked
+      console.error('Palette initialization error:', e);
       const palettes = Object.keys(PALETTES);
       const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
+      console.log('Fallback palette selected:', randomPalette);
       setPalette(randomPalette);
     }
     
@@ -131,9 +148,15 @@ export function PaletteProvider({ children }) {
   useEffect(() => {
     if (!palette) return;
 
+    console.log('Applying palette:', palette);
+
     // Apply palette to CSS variables
     const selectedPalette = PALETTES[palette];
     const root = document.documentElement;
+
+    // Remove any .dark class that might be overriding palette
+    root.classList.remove('dark');
+    console.log('.dark class removed from root');
 
     // Apply theme colors — but preserve logo gradients
     Object.entries(selectedPalette).forEach(([key, value]) => {
@@ -144,6 +167,13 @@ export function PaletteProvider({ children }) {
     // Explicitly preserve logo gradient across all themes
     root.style.setProperty('--gradient-brand', 'linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%)');
     root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%)');
+    
+    console.log('Palette CSS variables applied:', {
+      background: root.style.getPropertyValue('--background'),
+      foreground: root.style.getPropertyValue('--foreground'),
+      primary: root.style.getPropertyValue('--primary'),
+      palette: palette,
+    });
   }, [palette]);
 
   if (isLoading) {
