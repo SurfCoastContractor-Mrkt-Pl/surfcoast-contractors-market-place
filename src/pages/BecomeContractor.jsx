@@ -321,12 +321,10 @@ export default function BecomeContractor() {
   };
 
 
-  const BG_IMAGE = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png";
-
   if (!authChecked) {
     return (
-      <div style={{ position:"fixed", inset:0, display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1628" }}>
-        <div style={{ width:"32px", height:"32px", border:"3px solid rgba(255,255,255,0.2)", borderTop:"3px solid #d97706", borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div style={{ width:"32px", height:"32px", border:"3px solid rgba(0,0,0,0.1)", borderTop:"3px solid #d97706", borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
       </div>
     );
   }
@@ -353,7 +351,6 @@ export default function BecomeContractor() {
           contractorLocation={createdContractor.location}
           onComplete={() => {
             base44.analytics.track({ eventName: 'contractor_onboarding_compliance_accepted' });
-            // After compliance → show Stripe Connect step
             setShowStripeConnect(true);
             setSuccess(false);
           }}
@@ -361,7 +358,6 @@ export default function BecomeContractor() {
       );
     }
 
-    // Compliance already done, go straight to Stripe Connect
     return (
       <StripeConnectOnboarding
         contractor={createdContractor}
@@ -375,40 +371,41 @@ export default function BecomeContractor() {
   }
 
   return (
-    <div style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", fontFamily:"'Inter','Segoe UI',sans-serif", overflowX:"hidden", background:"#0a1628" }}>
-      <div style={{ position:"fixed", inset:0, backgroundImage:`url(${BG_IMAGE})`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
-      <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.7) 0%, rgba(10,22,40,0.6) 40%, rgba(10,22,40,0.85) 100%)", zIndex:1 }} />
+    <div className="min-h-screen flex flex-col" style={{ fontFamily:"'Inter','Segoe UI',sans-serif" }}>
 
       {/* Header */}
-      <header style={{ position:"relative", zIndex:10, display:"flex", alignItems:"center", padding:"12px 16px", background:"rgba(10,22,40,0.5)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
-        <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration:'none' }}>
-          <span style={{ fontSize:"clamp(14px, 4vw, 17px)", fontWeight:"800", color:"#ffffff", letterSpacing:"-0.5px", lineHeight:1 }}>SurfCoast</span>
-          <span style={{ fontSize:"clamp(7px, 2vw, 10px)", fontWeight:"700", letterSpacing:"1.5px", color:"rgba(255,255,255,0.6)", textTransform:"uppercase", lineHeight:1, marginLeft:"8px" }}>MARKETPLACE</span>
+      <header className="sticky top-0 z-10 flex items-center px-4 py-3 bg-white/70 backdrop-blur-md border-b border-black/8 shadow-sm">
+        <Link to="/" className="flex flex-col gap-0.5 no-underline">
+          <span className="text-base font-extrabold text-slate-900 tracking-tight leading-none">SurfCoast</span>
+          <span className="text-[9px] font-bold tracking-[0.18em] text-slate-500 uppercase leading-none ml-1">MARKETPLACE</span>
         </Link>
-        <div style={{ marginLeft:"auto", display:"flex", gap:"8px", alignItems:"center" }}>
-          <button onClick={() => navigate(-1)} style={{ color:"rgba(255,255,255,0.7)", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:"20px", padding:"6px 14px", fontSize:"13px", fontWeight:"600", cursor:"pointer", display:"flex", alignItems:"center", gap:"6px" }}>
-            <ArrowLeft style={{ width:"14px", height:"14px" }} /> Back
+        <div className="ml-auto flex gap-2 items-center">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Back
           </button>
         </div>
       </header>
 
       {isPreview && (
-        <div style={{ position:"relative", zIndex:10, background:"rgba(29,111,164,0.9)", backdropFilter:"blur(8px)", color:"#fff", fontSize:"13px", fontWeight:"600", padding:"8px 16px", textAlign:"center", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>
+        <div className="bg-blue-600 text-white text-sm font-semibold py-2 px-4 text-center">
           👁 <strong>Admin Preview Mode</strong> — Form interactions work normally but submission will not save any data.
         </div>
       )}
 
       {/* Hero */}
-      <div style={{ position:"relative", zIndex:2, textAlign:"center", padding:"40px 16px 32px", maxWidth:"700px", margin:"0 auto", width:"100%" }}>
-        <div style={{ width:"56px", height:"56px", borderRadius:"16px", background:"rgba(217,119,6,0.15)", border:"2px solid rgba(217,119,6,0.4)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px" }}>
-          <HardHat style={{ width:"28px", height:"28px", color:"#d97706" }} />
+      <div className="text-center px-4 pt-10 pb-8 max-w-2xl mx-auto w-full">
+        <div className="w-14 h-14 rounded-2xl bg-amber-100 border-2 border-amber-300 flex items-center justify-center mx-auto mb-5">
+          <HardHat className="w-7 h-7 text-amber-600" />
         </div>
-        <h1 style={{ fontSize:"clamp(28px, 5vw, 48px)", fontWeight:"800", color:"#ffffff", margin:"0 0 12px", lineHeight:1.1, letterSpacing:"-1px", textShadow:"0 2px 24px rgba(0,0,0,0.5)" }}>Become a Contractor</h1>
-        <p style={{ fontSize:"clamp(14px, 2.5vw, 17px)", color:"rgba(255,255,255,0.7)", margin:"0 0 24px", lineHeight:1.6 }}>Create your professional profile and start earning — free to join, get paid securely.</p>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:"16px", justifyContent:"center" }}>
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-3 leading-tight tracking-tight">Become a Contractor</h1>
+        <p className="text-base sm:text-lg text-slate-600 mb-6 leading-relaxed">Create your professional profile and start earning — free to join, get paid securely.</p>
+        <div className="flex flex-wrap gap-4 justify-center">
           {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
-            <span key={item} style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"13px", color:"rgba(255,255,255,0.75)" }}>
-              <CheckCircle style={{ width:"14px", height:"14px", color:"#4ade80", flexShrink:0 }} />
+            <span key={item} className="flex items-center gap-1.5 text-sm text-slate-700">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
               {item}
             </span>
           ))}
@@ -416,39 +413,16 @@ export default function BecomeContractor() {
       </div>
 
       {/* Form container */}
-      <div style={{ position:"relative", zIndex:2, maxWidth:"720px", margin:"0 auto", width:"100%", padding:"0 16px 48px" }}>
-        <style>{`
-          .contractor-form label { color: rgba(255,255,255,0.85) !important; }
-          .contractor-form .text-slate-500 { color: rgba(255,255,255,0.45) !important; }
-          .contractor-form .text-slate-900 { color: #ffffff !important; }
-          .contractor-form .bg-slate-50 { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
-          .contractor-form input, .contractor-form textarea, .contractor-form select { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
-          .contractor-form input::placeholder, .contractor-form textarea::placeholder { color: rgba(255,255,255,0.35) !important; }
-          .contractor-form .bg-amber-50 { background: rgba(217,119,6,0.12) !important; border-color: rgba(217,119,6,0.4) !important; }
-          .contractor-form .bg-amber-50 * { color: rgba(255,200,100,0.9) !important; }
-          .contractor-form .bg-red-50 { background: rgba(220,38,38,0.12) !important; border-color: rgba(220,38,38,0.4) !important; }
-          .contractor-form .bg-red-50 * { color: rgba(255,160,160,0.9) !important; }
-          .contractor-form .bg-blue-50 { background: rgba(29,111,164,0.15) !important; border-color: rgba(29,111,164,0.4) !important; }
-          .contractor-form .bg-blue-50 * { color: rgba(150,210,255,0.9) !important; }
-          .contractor-form .bg-white { background: rgba(255,255,255,0.06) !important; }
-          .contractor-form .bg-white * { color: rgba(255,255,255,0.85) !important; }
-          .contractor-form .bg-amber-100 { background: rgba(217,119,6,0.2) !important; }
-          .contractor-form .text-amber-700 { color: #fbbf24 !important; }
-          .contractor-form .bg-slate-100 { background: rgba(255,255,255,0.08) !important; }
-          .contractor-form .text-slate-700 { color: rgba(255,255,255,0.8) !important; }
-          .contractor-form .border-slate-200 { border-color: rgba(255,255,255,0.15) !important; }
-          .contractor-form [data-radix-select-trigger] { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
-        `}</style>
+      <div className="max-w-2xl mx-auto w-full px-4 pb-16">
 
         {/* Progress Indicator */}
-        <OnboardingProgressIndicator 
-          currentStep={currentStep} 
-          totalSteps={ONBOARDING_STEPS.length} 
+        <OnboardingProgressIndicator
+          currentStep={currentStep}
+          totalSteps={ONBOARDING_STEPS.length}
           steps={ONBOARDING_STEPS}
         />
 
-        <form onSubmit={currentStep === ONBOARDING_STEPS.length ? handleSubmit : (e) => { e.preventDefault(); handleNextStep(); }} className="contractor-form">
-          {/* STEP 1: Basic Info */}
+        <form onSubmit={currentStep === ONBOARDING_STEPS.length ? handleSubmit : (e) => { e.preventDefault(); handleNextStep(); }}>
           {currentStep === 1 && (
             <OnboardingStep1BasicInfo
               formData={formData}
@@ -460,16 +434,12 @@ export default function BecomeContractor() {
               isMinor={isMinor}
             />
           )}
-
-          {/* STEP 2: Professional Info */}
           {currentStep === 2 && (
             <OnboardingStep2Professional
               formData={formData}
               onFieldChange={handleChange}
             />
           )}
-
-          {/* STEP 3: Identity Verification */}
           {currentStep === 3 && (
             <OnboardingStep3Identity
               formData={formData}
@@ -479,8 +449,6 @@ export default function BecomeContractor() {
               onFaceUpload={handleFaceUpload}
             />
           )}
-
-          {/* STEP 4: Credentials & Parental Consent */}
           {currentStep === 4 && (
             <OnboardingStep4Credentials
               formData={formData}
@@ -489,29 +457,25 @@ export default function BecomeContractor() {
               age={age}
             />
           )}
-
-          {/* STEP 5: Policies & Fee Disclosure */}
           {currentStep === 5 && (
             <OnboardingStep5Policies />
           )}
 
           {/* Error Message */}
           {dobError && (
-            <div className="p-4 mb-6 rounded-lg bg-red-50 border border-red-200 flex items-start gap-3">
+            <div className="p-4 mb-6 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
               <span className="text-lg leading-none">⚠</span>
               <p className="text-sm text-red-700 flex-1">{dobError}</p>
             </div>
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-2">
             {currentStep > 1 && (
               <button
                 type="button"
                 onClick={handlePrevStep}
-                onMouseEnter={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.12)"}
-                onMouseLeave={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.07)"}
-                style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"1px solid rgba(255,255,255,0.2)", fontSize:"16px", fontWeight:"700", cursor:"pointer", transition:"all 0.2s", minHeight:"52px", background:"rgba(255,255,255,0.07)", color:"#fff" }}
+                className="flex-1 py-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-base font-bold transition-colors min-h-[52px]"
               >
                 ← Back
               </button>
@@ -519,19 +483,18 @@ export default function BecomeContractor() {
             <button
               type="submit"
               disabled={mutation.isPending}
-              onMouseEnter={(e) => !mutation.isPending && (e.target.style.boxShadow = "0 8px 32px rgba(217,119,6,0.5)")}
-              onMouseLeave={(e) => !mutation.isPending && (e.target.style.boxShadow = "0 4px 24px rgba(217,119,6,0.35)")}
-              style={{ flex: 1, padding:"16px", borderRadius:"12px", border:"none", fontSize:"16px", fontWeight:"700", cursor:mutation.isPending ? "not-allowed" : "pointer", transition:"all 0.2s", minHeight:"52px", background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", color:"#fff", opacity:mutation.isPending ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px", boxShadow:"0 4px 24px rgba(217,119,6,0.35)" }}
+              className="flex-1 py-4 rounded-xl text-base font-bold text-white transition-all min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{ background:"linear-gradient(135deg, #d97706 0%, #b45309 100%)", boxShadow:"0 4px 20px rgba(217,119,6,0.35)" }}
             >
               {mutation.isPending ? (
                 <>
-                  <Loader2 style={{ width:"18px", height:"18px", animation:"spin 0.8s linear infinite" }} />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Creating Profile...
                 </>
               ) : currentStep === ONBOARDING_STEPS.length ? (
                 'Create My Profile →'
               ) : (
-                <>Next <ChevronRight style={{ width:"18px", height:"18px" }} /></>
+                <>Next <ChevronRight className="w-5 h-5" /></>
               )}
             </button>
           </div>
@@ -539,13 +502,13 @@ export default function BecomeContractor() {
       </div>
 
       {/* Footer */}
-      <div style={{ position:"relative", zIndex:2, display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"8px", padding:"12px 24px", background:"rgba(10,22,40,0.75)", borderTop:"1px solid rgba(255,255,255,0.07)", fontSize:"12px", color:"rgba(255,255,255,0.35)" }}>
+      <footer className="mt-auto flex flex-wrap justify-center items-center gap-2 px-6 py-3 bg-white/60 border-t border-slate-200 text-xs text-slate-400">
         <span>© 2026 SurfCoast Marketplace</span>
-        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <Link to="/Terms" style={{ color:"rgba(255,255,255,0.4)", textDecoration:"none" }}>Terms</Link>
-        <span style={{ color:"rgba(255,255,255,0.15)" }}>·</span>
-        <Link to="/PrivacyPolicy" style={{ color:"rgba(255,255,255,0.4)", textDecoration:"none" }}>Privacy</Link>
-      </div>
+        <span className="text-slate-200">·</span>
+        <Link to="/Terms" className="text-slate-500 hover:text-slate-700 no-underline">Terms</Link>
+        <span className="text-slate-200">·</span>
+        <Link to="/PrivacyPolicy" className="text-slate-500 hover:text-slate-700 no-underline">Privacy</Link>
+      </footer>
     </div>
   );
 }
