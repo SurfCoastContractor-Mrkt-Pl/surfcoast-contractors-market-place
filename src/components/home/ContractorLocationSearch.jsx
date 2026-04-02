@@ -1,6 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapPin, Search, Loader2 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+
+// Hoisted outside component — never recreated on re-render
+const CATEGORIES = [
+  { id: "contractors", label: "Contractors", icon: "🔧" },
+  { id: "market-booths", label: "Market Booths", icon: "🏪" },
+  { id: "farmers-markets", label: "Farmers Markets", icon: "🌾" },
+  { id: "vendors", label: "Vendors", icon: "🛍️" },
+  { id: "swapmeets", label: "SwapMeets", icon: "🏬" }
+];
 
 export default function ContractorLocationSearch() {
   const [location, setLocation] = useState("");
@@ -10,19 +19,11 @@ export default function ContractorLocationSearch() {
   const [searchType, setSearchType] = useState("contractors");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
-  useState(() => {
+  useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 600);
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
-  });
-
-  const categories = [
-    { id: "contractors", label: "Contractors", icon: "🔧" },
-    { id: "market-booths", label: "Market Booths", icon: "🏪" },
-    { id: "farmers-markets", label: "Farmers Markets", icon: "🌾" },
-    { id: "vendors", label: "Vendors", icon: "🛍️" },
-    { id: "swapmeets", label: "SwapMeets", icon: "🏬" }
-  ];
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -77,7 +78,7 @@ export default function ContractorLocationSearch() {
 
         {/* Category Selector */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSearchType(cat.id)}

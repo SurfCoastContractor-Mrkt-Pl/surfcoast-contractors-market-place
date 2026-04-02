@@ -10,7 +10,7 @@ const SHOP_TYPE_LABELS = {
 };
 
 export default function FeaturedVendors() {
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPositionRef = useRef(0);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
   const scrollContainerRef = useRef(null);
 
@@ -21,36 +21,40 @@ export default function FeaturedVendors() {
     staleTime: 60000,
   });
 
-  // Auto-scroll carousel
+  // Auto-scroll carousel — uses ref so interval is only created once per isAutoScroll/data change
   useEffect(() => {
     if (!isAutoScroll || !scrollContainerRef.current || featuredShops.length === 0) return;
 
     const interval = setInterval(() => {
       const container = scrollContainerRef.current;
+      if (!container) return;
       const maxScroll = container.scrollWidth - container.clientWidth;
       
-      if (scrollPosition >= maxScroll) {
+      if (scrollPositionRef.current >= maxScroll) {
         container.scrollTo({ left: 0, behavior: 'smooth' });
-        setScrollPosition(0);
+        scrollPositionRef.current = 0;
       } else {
-        const newPosition = scrollPosition + 320;
+        const newPosition = scrollPositionRef.current + 320;
         container.scrollTo({ left: newPosition, behavior: 'smooth' });
-        setScrollPosition(newPosition);
+        scrollPositionRef.current = newPosition;
       }
-    }, 5000); // Auto-scroll every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [scrollPosition, isAutoScroll, featuredShops.length]);
+  }, [isAutoScroll, featuredShops.length]);
 
   const handleScroll = (direction) => {
     setIsAutoScroll(false);
     const container = scrollContainerRef.current;
+    if (!container) return;
     const scrollAmount = 320;
     
     if (direction === 'left') {
       container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      scrollPositionRef.current = Math.max(0, scrollPositionRef.current - scrollAmount);
     } else {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      scrollPositionRef.current += scrollAmount;
     }
 
     setTimeout(() => setIsAutoScroll(true), 3000);

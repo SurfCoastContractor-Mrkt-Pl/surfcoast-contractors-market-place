@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings } from 'lucide-react';
@@ -51,6 +51,7 @@ export default function LayoutHeader({
 }) {
   const navigate = useNavigate();
   const [exploreOpen, setExploreOpen] = useState(false);
+  const navLinks = useMemo(() => getNavLinks(isContractor), [isContractor, getNavLinks]);
 
   const handleLogout = () => {
     setAccountMenuOpen(false);
@@ -72,7 +73,7 @@ export default function LayoutHeader({
         {/* Desktop Nav Pills */}
         <div className="hidden lg:flex items-center gap-1 flex-1">
           {/* Core nav links */}
-          {getNavLinks(isContractor).map(link => {
+          {navLinks.map(link => {
             const Icon = link.icon;
             const isActive = currentPageName === link.page;
             return (
