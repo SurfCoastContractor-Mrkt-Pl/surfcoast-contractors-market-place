@@ -70,9 +70,18 @@
   ],
   "rls": {
     "create": {
-      "user_condition": {
-        "role": "service_role"
-      }
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
     },
     "read": {
       "$or": [
