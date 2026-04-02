@@ -154,7 +154,6 @@ const AuthenticatedApp = () => {
   return (
     <>
     <PageGradientApplier />
-    <PaletteSwitcher />
     <Routes>
       <Route path="/" element={
         <LayoutWrapper currentPageName="Home">
@@ -573,6 +572,7 @@ function App() {
           <ConsumerModeProvider>
             <AuthProvider>
               <Router>
+                <PaletteSwitcher />
                 <AuthenticatedApp />
               </Router>
               <Toaster />
