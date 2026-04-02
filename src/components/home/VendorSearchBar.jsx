@@ -187,12 +187,12 @@ export default function VendorSearchBar() {
                     <img src={shop.logo_url} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }} />
                   ) : (
                     <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Store size={16} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                      <Store size={16} style={{ color: 'rgba(255,255,255,0.75)' }} />
                     </div>
                   )}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shop.shop_name}</p>
-                    <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,255,255,0.45)' }}>
+                    <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,255,255,0.75)' }}>
                       {SHOP_TYPE_LABELS[shop.shop_type]} · {shop.city}, {shop.state}
                     </p>
                   </div>
