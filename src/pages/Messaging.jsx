@@ -211,7 +211,7 @@ export default function Messaging() {
 
           <Button
             onClick={() => setShowNewMessage(true)}
-            className="m-4 w-auto bg-blue-600 hover:bg-blue-700"
+            className="m-4 w-auto bg-orange-600 hover:bg-orange-700"
           >
             + New Message
           </Button>

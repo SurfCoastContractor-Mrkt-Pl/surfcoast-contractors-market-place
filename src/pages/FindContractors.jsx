@@ -285,7 +285,7 @@ export default function FindContractors() {
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
               <span className="text-sm text-slate-500">Filtering by:</span>
               {searchQuery && (
-                <Badge className="gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200">
+                <Badge className="gap-1 bg-orange-100 text-orange-800 hover:bg-orange-200">
                   🔍 {searchQuery}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchQuery('')} />
                 </Badge>

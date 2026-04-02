@@ -314,7 +314,7 @@ export default function Jobs() {
         <div className="mb-8">
           <Button 
             onClick={applyFilters}
-            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-lg"
+            className="w-full h-12 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-lg rounded-lg"
           >
             Apply Filters
           </Button>

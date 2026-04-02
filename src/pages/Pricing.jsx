@@ -198,7 +198,7 @@ function FAQItem({ item }) {
 
 export default function Pricing() {
   return (
-    <div style={{ minHeight: "100vh", color: "#f1f5f9", fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+    <div style={{ minHeight: "100vh", color: "#f1f5f9", fontFamily: "'Inter','Segoe UI',sans-serif", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)" }}>
 
       {/* HERO */}
       <section style={{ textAlign: "center", padding: "80px 24px 60px", maxWidth: "720px", margin: "0 auto" }}>
