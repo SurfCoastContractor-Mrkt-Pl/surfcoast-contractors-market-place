@@ -1,0 +1,47 @@
+{
+  "name": "PushSubscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "User email"
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "Push notification endpoint"
+    },
+    "auth_key": {
+      "type": "string",
+      "description": "Authentication key for push service"
+    },
+    "p256dh_key": {
+      "type": "string",
+      "description": "Encryption key for push service"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether subscription is active"
+    }
+  },
+  "required": [
+    "user_email",
+    "endpoint",
+    "auth_key",
+    "p256dh_key"
+  ],
+  "rls": {
+    "create": {
+      "data.user_email": "{{user.email}}"
+    },
+    "read": {
+      "data.user_email": "{{user.email}}"
+    },
+    "update": {
+      "data.user_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.user_email": "{{user.email}}"
+    }
+  }
+}

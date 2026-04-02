@@ -1,0 +1,103 @@
+{
+  "name": "ContractorTeam",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string",
+      "description": "Owner/founder contractor email"
+    },
+    "owner_id": {
+      "type": "string",
+      "description": "Owner contractor ID"
+    },
+    "team_name": {
+      "type": "string",
+      "description": "Name of the team or agency"
+    },
+    "description": {
+      "type": "string",
+      "description": "Team description"
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contractor_id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "lead",
+              "member"
+            ]
+          },
+          "joined_at": {
+            "type": "string"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "description": "Team members"
+    },
+    "revenue_share": {
+      "type": "object",
+      "properties": {
+        "default_percentage": {
+          "type": "number",
+          "description": "Default % for members"
+        },
+        "custom_splits": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Custom % per member"
+        }
+      },
+      "description": "Revenue sharing configuration"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether team is active"
+    }
+  },
+  "required": [
+    "owner_email",
+    "team_name"
+  ],
+  "rls": {
+    "create": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.owner_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.owner_email": "{{user.email}}"
+    }
+  }
+}

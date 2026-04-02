@@ -1,0 +1,110 @@
+{
+  "name": "EmailCampaign",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string",
+      "description": "Email of campaign creator"
+    },
+    "campaign_name": {
+      "type": "string",
+      "description": "Name of the campaign"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject line"
+    },
+    "body_html": {
+      "type": "string",
+      "description": "HTML email body"
+    },
+    "target_audience": {
+      "type": "string",
+      "enum": [
+        "contractors",
+        "clients",
+        "all"
+      ],
+      "description": "Who to send to"
+    },
+    "segment_filter": {
+      "type": "object",
+      "description": "Filter criteria for audience segmentation"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "sent",
+        "cancelled"
+      ],
+      "default": "draft",
+      "description": "Campaign status"
+    },
+    "scheduled_at": {
+      "type": "string",
+      "description": "When to send (ISO timestamp)"
+    },
+    "sent_at": {
+      "type": "string",
+      "description": "When it was sent"
+    },
+    "recipient_count": {
+      "type": "number",
+      "description": "Number of recipients"
+    },
+    "open_rate": {
+      "type": "number",
+      "description": "Email open rate percentage"
+    },
+    "click_rate": {
+      "type": "number",
+      "description": "Email click rate percentage"
+    },
+    "unsubscribe_count": {
+      "type": "number",
+      "default": 0,
+      "description": "How many unsubscribed"
+    }
+  },
+  "required": [
+    "creator_email",
+    "campaign_name",
+    "subject",
+    "body_html",
+    "target_audience"
+  ],
+  "rls": {
+    "create": {
+      "data.creator_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.creator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "data.creator_email": "{{user.email}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.creator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

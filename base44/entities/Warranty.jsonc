@@ -1,0 +1,135 @@
+{
+  "name": "Warranty",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "Associated ScopeOfWork ID"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "Contractor ID"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Contractor email"
+    },
+    "warranty_type": {
+      "type": "string",
+      "enum": [
+        "materials",
+        "labor",
+        "full",
+        "parts"
+      ],
+      "description": "Type of warranty coverage"
+    },
+    "duration_days": {
+      "type": "number",
+      "description": "Warranty period in days"
+    },
+    "start_date": {
+      "type": "string",
+      "description": "When warranty period begins"
+    },
+    "end_date": {
+      "type": "string",
+      "description": "When warranty expires"
+    },
+    "coverage_description": {
+      "type": "string",
+      "description": "What is covered under warranty"
+    },
+    "exclusions": {
+      "type": "string",
+      "description": "What is not covered"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "issue_description": {
+            "type": "string"
+          },
+          "reported_date": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "approved",
+              "resolved"
+            ]
+          },
+          "resolution": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Warranty claims"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether warranty is active"
+    }
+  },
+  "required": [
+    "scope_id",
+    "contractor_id",
+    "warranty_type",
+    "duration_days"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "scope_id": {
+            "$in": {
+              "entity": "ScopeOfWork",
+              "query": {
+                "data.client_email": "{{user.email}}"
+              },
+              "field": "id"
+            }
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

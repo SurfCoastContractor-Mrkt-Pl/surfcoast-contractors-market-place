@@ -1,0 +1,122 @@
+{
+  "name": "WhiteLabelBrand",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string",
+      "description": "Email of brand owner"
+    },
+    "brand_name": {
+      "type": "string",
+      "description": "Name of the white-label brand"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Custom domain for the brand"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "Brand logo URL"
+    },
+    "primary_color": {
+      "type": "string",
+      "description": "Primary brand color (hex)"
+    },
+    "secondary_color": {
+      "type": "string",
+      "description": "Secondary brand color (hex)"
+    },
+    "favicon_url": {
+      "type": "string",
+      "description": "Brand favicon URL"
+    },
+    "support_email": {
+      "type": "string",
+      "description": "Support email for the brand"
+    },
+    "support_phone": {
+      "type": "string",
+      "description": "Support phone for the brand"
+    },
+    "terms_url": {
+      "type": "string",
+      "description": "Custom terms of service URL"
+    },
+    "privacy_url": {
+      "type": "string",
+      "description": "Custom privacy policy URL"
+    },
+    "custom_pages": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Custom page content (landing, about, etc.)"
+    },
+    "feature_flags": {
+      "type": "object",
+      "properties": {
+        "enable_teams": {
+          "type": "boolean"
+        },
+        "enable_api": {
+          "type": "boolean"
+        },
+        "enable_video_calls": {
+          "type": "boolean"
+        },
+        "enable_marketplace": {
+          "type": "boolean"
+        }
+      },
+      "description": "Which features are enabled"
+    },
+    "payment_settings": {
+      "type": "object",
+      "properties": {
+        "platform_fee_percentage": {
+          "type": "number"
+        },
+        "stripe_account_id": {
+          "type": "string"
+        },
+        "use_custom_stripe": {
+          "type": "boolean"
+        }
+      },
+      "description": "Payment configuration"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the brand is active"
+    }
+  },
+  "required": [
+    "owner_email",
+    "brand_name"
+  ],
+  "rls": {
+    "create": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.owner_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.owner_email": "{{user.email}}"
+    }
+  }
+}

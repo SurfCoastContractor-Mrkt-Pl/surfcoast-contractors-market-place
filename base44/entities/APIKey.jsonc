@@ -1,0 +1,75 @@
+{
+  "name": "APIKey",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of API key owner"
+    },
+    "key_name": {
+      "type": "string",
+      "description": "Friendly name for the key"
+    },
+    "key_secret": {
+      "type": "string",
+      "description": "Encrypted API key"
+    },
+    "key_hash": {
+      "type": "string",
+      "description": "Hash of API key for verification"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "read:jobs",
+          "write:jobs",
+          "read:contractors",
+          "read:quotes",
+          "write:quotes",
+          "read:payments",
+          "admin"
+        ]
+      },
+      "description": "Allowed scopes"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether key is active"
+    },
+    "last_used": {
+      "type": "string",
+      "description": "ISO timestamp of last usage"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO timestamp of creation"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "ISO timestamp of expiration"
+    }
+  },
+  "required": [
+    "user_email",
+    "key_name",
+    "key_secret",
+    "scopes"
+  ],
+  "rls": {
+    "create": {
+      "data.user_email": "{{user.email}}"
+    },
+    "read": {
+      "data.user_email": "{{user.email}}"
+    },
+    "update": {
+      "data.user_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.user_email": "{{user.email}}"
+    }
+  }
+}

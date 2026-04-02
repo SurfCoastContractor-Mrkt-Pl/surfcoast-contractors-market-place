@@ -1,0 +1,100 @@
+{
+  "name": "PredictiveAnalytics",
+  "type": "object",
+  "properties": {
+    "metric_type": {
+      "type": "string",
+      "enum": [
+        "churn_risk",
+        "lifetime_value",
+        "seasonal_trend",
+        "conversion_rate"
+      ],
+      "description": "Type of metric being analyzed"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "ID of the entity being analyzed (contractor, customer, etc)"
+    },
+    "subject_email": {
+      "type": "string",
+      "description": "Email of the subject"
+    },
+    "subject_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Type of subject"
+    },
+    "prediction": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "Score 0-100 (higher = more likely)"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence level 0-1"
+        },
+        "recommendation": {
+          "type": "string",
+          "description": "Recommended action"
+        },
+        "factors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key factors influencing prediction"
+        }
+      },
+      "description": "Prediction data"
+    },
+    "calculated_at": {
+      "type": "string",
+      "description": "When this was calculated"
+    },
+    "is_current": {
+      "type": "boolean",
+      "default": true,
+      "description": "Is this the current prediction"
+    }
+  },
+  "required": [
+    "metric_type",
+    "subject_id",
+    "prediction"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.subject_email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

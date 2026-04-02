@@ -1,0 +1,119 @@
+{
+  "name": "EscrowMilestone",
+  "type": "object",
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "description": "Associated ScopeOfWork ID"
+    },
+    "milestone_name": {
+      "type": "string",
+      "description": "Name of the milestone"
+    },
+    "description": {
+      "type": "string",
+      "description": "Milestone description"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Amount held in escrow"
+    },
+    "percentage_of_total": {
+      "type": "number",
+      "description": "Percentage of total job cost"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_progress",
+        "submitted",
+        "approved",
+        "paid",
+        "disputed"
+      ],
+      "default": "pending",
+      "description": "Milestone status"
+    },
+    "due_date": {
+      "type": "string",
+      "description": "Milestone due date"
+    },
+    "completion_date": {
+      "type": "string",
+      "description": "When milestone was completed"
+    },
+    "submission_proof": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of proof documents/photos"
+    },
+    "client_approval_at": {
+      "type": "string",
+      "description": "When client approved this milestone"
+    },
+    "payment_released_at": {
+      "type": "string",
+      "description": "When payment was released from escrow"
+    },
+    "dispute_reason": {
+      "type": "string",
+      "description": "Reason for dispute if applicable"
+    },
+    "hold_release_date": {
+      "type": "string",
+      "description": "Date when funds are automatically released if no dispute"
+    }
+  },
+  "required": [
+    "scope_id",
+    "milestone_name",
+    "amount"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "scope_id": {
+            "$in": {
+              "entity": "ScopeOfWork",
+              "query": {
+                "$or": [
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  {
+                    "data.client_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
