@@ -60,8 +60,8 @@ export default function LayoutFooter({
             <ul className="space-y-2">
               <li><Link to={createPageUrl('BoothsAndVendorsMap')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Booths & Vendors</Link></li>
               <li><Link to={createPageUrl('MarketDirectory')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Market Directory</Link></li>
-              <li><Link to={createPageUrl('SwapMeetRatings')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Swap Meet Ratings</Link></li>
-              <li><Link to={createPageUrl('FarmersMarketRatings')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Farmers Market Ratings</Link></li>
+              <li><Link to="/swap-meet-ratings" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Swap Meet Ratings</Link></li>
+              <li><Link to="/farmers-market-ratings" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Farmers Market Ratings</Link></li>
             </ul>
           </div>
 

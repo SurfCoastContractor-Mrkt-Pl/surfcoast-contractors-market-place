@@ -43,7 +43,7 @@ export default function AdminFieldOps() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -51,7 +51,7 @@ export default function AdminFieldOps() {
 
   if (!isAdmin) {
     return (
-      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
         <div className="text-center text-white">
           <Shield className="w-12 h-12 text-red-400 mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Admin Access Only</h1>

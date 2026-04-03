@@ -99,7 +99,7 @@ export default function WaveFo() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center text-white">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-slate-400 text-sm">Loading Wave FO...</p>
@@ -122,7 +122,7 @@ export default function WaveFo() {
 
   if (contractor && !hasWaveFOAccess) {
     return (
-      <div className="fixed inset-0 overflow-y-auto bg-slate-950">
+      <div className="min-h-screen bg-slate-950">
         <FieldOpsAccessGate contractor={contractor} />
       </div>
     );
@@ -130,7 +130,7 @@ export default function WaveFo() {
 
   if (!user || (!contractor && !isAdmin)) {
     return (
-      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
         <div className="text-center text-white max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">Wave FO</h1>

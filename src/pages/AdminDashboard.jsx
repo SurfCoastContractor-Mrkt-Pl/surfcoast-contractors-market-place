@@ -60,7 +60,11 @@ export default function AdminDashboard() {
 
   const filteredContractors = useMemo(() => {
     return contractors.filter(c => {
-      if (contractorSubFilter !== 'all' && c.wave_shop_subscription_status !== contractorSubFilter) return false;
+      if (contractorSubFilter !== 'all') {
+        const isActive = c.stripe_account_charges_enabled;
+        if (contractorSubFilter === 'active' && !isActive) return false;
+        if (contractorSubFilter === 'inactive' && isActive) return false;
+      }
       if (contractorAcctFilter !== 'all' && c.account_locked !== (contractorAcctFilter === 'locked')) return false;
       if (contractorSearch) {
         const q = contractorSearch.toLowerCase();
