@@ -1,6 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 import { jsPDF } from 'npm:jspdf@4.0.0';
-import { base44Integrations } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
@@ -71,10 +70,10 @@ Deno.serve(async (req) => {
     doc.text('BILL TO:', margin, yPos);
     yPos += lineHeight;
     doc.setFontSize(10);
-    doc.text(scope.customer_name || 'Client', margin, yPos);
+    doc.text(scope.client_name || 'Client', margin, yPos);
     yPos += lineHeight;
     doc.setTextColor(100, 100, 100);
-    doc.text(scope.customer_email, margin, yPos);
+    doc.text(scope.client_email || '', margin, yPos);
     yPos += lineHeight;
 
     // Job details
@@ -177,18 +176,24 @@ Deno.serve(async (req) => {
     doc.text('Thank you for using SurfCoast Marketplace. For inquiries, contact support@surfcoast.com', margin, yPos);
     doc.text(`Generated on ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, margin, yPos + 5);
 
-    // Convert PDF to bytes and upload
+    // Upload PDF to storage and return a URL (frontend cannot handle raw binary via SDK)
     const pdfBytes = doc.output('arraybuffer');
     const fileName = `invoice_${scope.id}_${Date.now()}.pdf`;
-    
-    // Return the PDF as a downloadable file
-    return new Response(pdfBytes, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Length': pdfBytes.byteLength,
-      }
+    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const formData = new FormData();
+    formData.append('file', pdfBlob, fileName);
+
+    const uploadResult = await base44.asServiceRole.integrations.Core.UploadFile({ file: pdfBlob });
+    const pdfUrl = uploadResult?.file_url;
+
+    if (!pdfUrl) {
+      return Response.json({ error: 'Failed to upload invoice PDF' }, { status: 500 });
+    }
+
+    return Response.json({
+      success: true,
+      pdfUrl,
+      invoiceId: `SC-${scope.id?.slice(0, 8).toUpperCase()}`,
     });
 
   } catch (error) {

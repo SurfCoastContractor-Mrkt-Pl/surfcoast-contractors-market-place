@@ -36,9 +36,29 @@ export default function WaveFOJobMapDisplay({ contractor }) {
   const [loading, setLoading] = useState(true);
   const [contractorLocation, setContractorLocation] = useState(null);
   const [locating, setLocating] = useState(false);
-  const [mapCenter, setMapCenter] = useState([37.7749, -122.4194]); // Default to San Francisco
+  const [mapCenter, setMapCenter] = useState(null);
   const [mapZoom, setMapZoom] = useState(11);
   const mapRef = useRef(null);
+
+  // Auto-geolocate on mount
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setContractorLocation([latitude, longitude]);
+          setMapCenter([latitude, longitude]);
+          setMapZoom(13);
+        },
+        () => {
+          // Fallback to a neutral center if denied
+          setMapCenter([37.7749, -122.4194]);
+        }
+      );
+    } else {
+      setMapCenter([37.7749, -122.4194]);
+    }
+  }, []);
 
   // Fetch contractor's jobs on mount
   useEffect(() => {
@@ -117,7 +137,7 @@ export default function WaveFOJobMapDisplay({ contractor }) {
     }
   }, [jobsWithCoords]);
 
-  if (loading) {
+  if (loading || !mapCenter) {
     return (
       <div className="h-full flex items-center justify-center bg-slate-900">
         <div className="text-center text-slate-300">
@@ -199,7 +219,7 @@ export default function WaveFOJobMapDisplay({ contractor }) {
               <Popup>
                 <div className="text-sm min-w-[200px]">
                   <p className="font-semibold text-slate-900">{job.job_title}</p>
-                  <p className="text-xs text-slate-600 mt-1">{job.customer_name}</p>
+                  <p className="text-xs text-slate-600 mt-1">{job.client_name}</p>
                   {job.status && (
                     <p className="text-xs text-slate-500 mt-2">
                       Status: <span className="font-medium capitalize">{job.status}</span>

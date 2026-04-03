@@ -110,9 +110,12 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
     if (!['approved', 'active'].includes(scope.status)) return;
     setSaving(true);
     try {
+      const existing = scope.scope_summary || '';
       const updated = await base44.entities.ScopeOfWork.update(scope.id, {
         contractor_closeout_confirmed: true,
-        completion_notes: completionNotes,
+        scope_summary: completionNotes
+          ? (existing ? `${existing}\n\n[Completion Notes]: ${completionNotes}` : `[Completion Notes]: ${completionNotes}`)
+          : existing,
         status: 'pending_ratings',
       });
       onUpdate(updated);
@@ -127,18 +130,16 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
       const response = await base44.functions.invoke('generateFieldJobInvoice', {
         scope_id: scope.id
       });
-
-      if (response?.data) {
-        // If response contains blob data, download it
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
+      if (response?.data?.pdfUrl) {
         const link = document.createElement('a');
-        link.href = url;
-        link.download = `invoice_${scope.id}.pdf`;
+        link.href = response.data.pdfUrl;
+        link.download = `invoice_${response.data.invoiceId || scope.id}.pdf`;
+        link.target = '_blank';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+      } else {
+        alert('Failed to generate invoice. Please try again.');
       }
     } catch (error) {
       console.error('Error downloading invoice:', error);

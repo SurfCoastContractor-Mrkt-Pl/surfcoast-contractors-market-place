@@ -30,7 +30,7 @@ export default function RecommendedJobs({ contractor, user }) {
         });
         
         const subscriptions = await base44.entities.Subscription.filter({
-          email: user.email,
+          user_email: user.email,
           status: 'active'
         });
 
