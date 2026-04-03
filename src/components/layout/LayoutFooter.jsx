@@ -21,7 +21,7 @@ export default function LayoutFooter({
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 py-10 sm:py-12 mt-auto" style={{color: WHITE}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8">
 
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-2">
@@ -67,7 +67,17 @@ export default function LayoutFooter({
             </ul>
           </div>
 
-          {/* Connect — no 5th column slot, show inline after Markets on smaller grids */}
+          {/* Consumers */}
+          <div>
+            <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>Consumers</h4>
+            <ul className="space-y-2">
+              <li><Link to={createPageUrl('ConsumerHub')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Consumer Hub</Link></li>
+              <li><Link to={createPageUrl('ConsumerSignup')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Sign Up</Link></li>
+              <li><Link to={createPageUrl('Blog')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
+            </ul>
+          </div>
+
+          {/* Connect */}
           <div className="flex flex-col items-start sm:items-center justify-start">
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>Connect</h4>
             <div className="flex items-center gap-4">
