@@ -179,7 +179,7 @@ export default function ResidentialWaveDashboard() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-slate-400" />
               <p className="text-sm font-medium text-slate-500">Upcoming Jobs</p>
@@ -187,7 +187,7 @@ export default function ResidentialWaveDashboard() {
             <p className="text-3xl font-bold text-slate-800">{upcomingJobs}</p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <Users className="w-4 h-4 text-slate-400" />
               <p className="text-sm font-medium text-slate-500">Active Leads</p>
@@ -195,7 +195,7 @@ export default function ResidentialWaveDashboard() {
             <p className="text-3xl font-bold text-slate-800">{activeLeads}</p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <FileText className="w-4 h-4 text-slate-400" />
               <p className="text-sm font-medium text-slate-500">Unpaid Invoices</p>
@@ -203,7 +203,7 @@ export default function ResidentialWaveDashboard() {
             <p className="text-3xl font-bold text-slate-800">{unpaidInvoices}</p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign className="w-4 h-4 text-slate-400" />
               <p className="text-sm font-medium text-slate-500">Total Revenue</p>
@@ -225,7 +225,7 @@ export default function ResidentialWaveDashboard() {
           <TabsContent value="overview" className="mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Recent Jobs */}
-              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl overflow-hidden hover:bg-slate-50 transition-colors">
+              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl overflow-hidden">
                 <div className="px-5 py-4 border-b border-slate-200">
                   <p className="text-slate-800 font-semibold">Recent Jobs</p>
                 </div>
@@ -233,7 +233,7 @@ export default function ResidentialWaveDashboard() {
                   {jobs && jobs.length > 0 ? (
                     <div className="space-y-3">
                       {jobs.slice(0, 5).map(job => (
-                        <div key={job.id} className="flex justify-between items-start p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+                        <div key={job.id} className="flex justify-between items-start p-3 bg-slate-50 border border-slate-100 rounded-xl">
                           <div>
                             <p className="font-medium text-slate-800">{job.title}</p>
                             <p className="text-sm text-slate-500">{job.customer_name}</p>
@@ -258,7 +258,7 @@ export default function ResidentialWaveDashboard() {
               </div>
 
               {/* Subscription Status */}
-              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:bg-slate-50 transition-colors">
+              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
                 <div className="px-5 py-4 border-b border-slate-200">
                   <p className="text-slate-800 font-semibold">Subscription</p>
                 </div>
