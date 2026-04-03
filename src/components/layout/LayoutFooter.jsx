@@ -85,20 +85,15 @@ export default function LayoutFooter({
           </div>
         </div>
 
-        {/* Legal Disclaimer */}
-        <div className="border-t mt-6 pt-6" style={{borderColor:'#475569'}}>
-          <p className="text-sm leading-relaxed font-semibold" style={{color: LIGHT}}>
-            <span className="font-bold" style={{color: WHITE}}>Legal Disclaimer:</span> SurfCoast Marketplace is a connection platform only and does not employ, endorse, or guarantee any contractor, vendor, product, or service. All users participate at their own risk. By using this platform, all parties waive any and all claims against SurfCoast Marketplace, its administrators, partners, and affiliates for any damages, injuries, illness, sickness, or death. Users are solely responsible for vetting and researching all parties and services.{' '}
-            <Link to={createPageUrl('Terms')} className="underline hover:text-white transition-colors font-bold" style={{color: ORANGE}}>Terms of Service</Link>
-            {' | '}
-            <Link to={createPageUrl('PrivacyPolicy')} className="underline hover:text-white transition-colors font-bold" style={{color: ORANGE}}>Privacy Policy</Link>
-          </p>
-        </div>
-
         {/* Bottom bar */}
-        <div className="border-t mt-4 sm:mt-6 pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between" style={{borderColor:'#475569'}}>
-          <span className="text-sm font-semibold" style={{color: LIGHT}}>© {new Date().getFullYear()} SurfCoast Marketplace. All rights reserved.</span>
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="border-t mt-6 pt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between" style={{borderColor:'#475569'}}>
+          <div>
+            <span className="text-sm font-semibold" style={{color: LIGHT}}>© {new Date().getFullYear()} SurfCoast Marketplace. All rights reserved.</span>
+            <p className="text-xs mt-1 leading-relaxed" style={{color:'#64748b'}}>
+              Connection platform only. Does not employ, endorse, or guarantee any contractor, vendor, or service. All users participate at their own risk.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
             <Link to={createPageUrl('Terms')} className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Terms</Link>
             <span style={{color:'#94a3b8'}}>•</span>
             <Link to={createPageUrl('PrivacyPolicy')} className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Privacy</Link>

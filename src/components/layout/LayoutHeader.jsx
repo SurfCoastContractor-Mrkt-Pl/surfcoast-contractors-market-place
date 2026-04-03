@@ -151,11 +151,9 @@ export default function LayoutHeader({
           {!isLoggedIn && (
             <>
               <div className="flex items-center gap-3">
-                <Link to="/About" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">About</Link>
-                <span className="text-slate-300">/</span>
                 <Link to="/BecomeContractor" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Pros</Link>
                 <span className="text-slate-300">/</span>
-                <Link to="/CustomerSignup" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Customers</Link>
+                <Link to="/CustomerSignup" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Clients</Link>
                 <span className="text-slate-300">/</span>
                 <Link to="/pricing" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">Pricing</Link>
               </div>

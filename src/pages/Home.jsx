@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Star, Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag } from "lucide-react";
+import { Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag } from "lucide-react";
 import { base44 } from '@/api/base44Client';
 
 export default function Home() {
@@ -9,8 +9,6 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const trades = ["Plumbing", "Electrical", "Carpentry", "Landscaping", "Concreting", "Painting", "Roofing", "Tiling"];
 
   return (
     <div className="w-full bg-white">
@@ -52,7 +50,7 @@ export default function Home() {
           {/* Right Column - Founding Member Card */}
           <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 p-6 lg:p-8">
             <div className="flex items-center gap-3 mb-6">
-              <Star className="w-8 h-8 text-orange-600 fill-orange-600" />
+              <CheckCircle2 className="w-8 h-8 text-orange-600" />
               <h3 className="text-lg font-bold text-gray-900">Founding Member</h3>
             </div>
 
@@ -101,23 +99,6 @@ export default function Home() {
               Claim My Founding Spot
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ==================== MANIFESTO BLOCK ==================== */}
-      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <blockquote className="mb-8">
-            <p className="text-2xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              Being a contractor <span className="logo-gradient-text">isn't a job title.</span>
-              <br />
-              <span className="logo-gradient-text">It's a mindset.</span>
-            </p>
-          </blockquote>
-
-          <p className="text-base text-gray-700 leading-relaxed">
-            A mindset built on effort, ownership, and pride in doing the job right. At SurfCoast, we believe starting out is tough—and nobody makes it alone. That's why we're here to support you the way you actually need it. No gatekeeping. No one-size-fits-all playbook. Just real support, real people, and real opportunities. Through shared knowledge, accessible work, and a community that respects the grind, we help you take your first step, your next step, and every step toward building something of your own.
-          </p>
         </div>
       </section>
 
@@ -272,51 +253,6 @@ export default function Home() {
               className="w-full block px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all text-center"
             >
               Find a Pro
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== SEARCH / NOTIFY ME SECTION ==================== */}
-      <section className="py-12 lg:py-24 px-4 lg:px-8 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-8 text-center">
-            See what's coming to your area
-          </h2>
-
-          {/* Search Bar */}
-          <div className="flex flex-col gap-3 mb-8 lg:flex-row lg:gap-2">
-            <input
-              type="text"
-              placeholder="Suburb or postcode..."
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-            />
-            <select className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-100">
-              <option>Select a trade...</option>
-              {trades.map((trade) => (
-                <option key={trade} value={trade}>{trade}</option>
-              ))}
-            </select>
-            <button className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all whitespace-nowrap">
-              Notify me
-            </button>
-          </div>
-
-          {/* Trade Pills */}
-          <div className="flex flex-wrap gap-3 justify-center">
-            {trades.map((trade) => (
-              <button
-                key={trade}
-                className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all"
-              >
-                {trade}
-              </button>
-            ))}
-            <Link 
-              to="/FindContractors"
-              className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all"
-            >
-              + more
             </Link>
           </div>
         </div>
