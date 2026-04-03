@@ -4,11 +4,6 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
-
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Unauthorized - admin only' }, { status: 403 });
-    }
-
     const body = await req.json();
     const { message, level, category, stack, context, url } = body;
 
@@ -22,12 +17,12 @@ Deno.serve(async (req) => {
       category,
       stack: stack || null,
       context: context ? JSON.stringify(context) : null,
-      user_id: user.id,
+      user_id: user?.id || null,
       url: url || null,
       resolved: false
     });
 
-    return Response.json({ success: true, id: errorRecord.id });
+    return Response.json({ success: true, id: errorRecord.id, message: `Error logged: ${message}` });
   } catch (error) {
     console.error('logErrorEvent error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
