@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import ShareAboutButton from '@/components/about/ShareAboutButton';
+import WhatMakesUsDifferent from '@/components/about/WhatMakesUsDifferent';
+import TransparentRoadmap from '@/components/about/TransparentRoadmap';
 
 const tags = ['10+ Years Plumbing', 'Computer Systems', 'Gracie Jiu-Jitsu Purple Belt', 'Business Owner', 'Platform Developer'];
 
@@ -203,6 +205,9 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <WhatMakesUsDifferent />
+      <TransparentRoadmap />
 
       {/* Offerings Section */}
       <section style={{ background: 'linear-gradient(160deg, #0a1628 0%, #0d2240 50%, #112d52 100%)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
