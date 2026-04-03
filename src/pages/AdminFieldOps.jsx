@@ -71,7 +71,7 @@ export default function AdminFieldOps() {
   // Contractor picker view
   if (!selectedContractor) {
     return (
-      <div className="fixed inset-0 bg-slate-950 flex flex-col overflow-hidden">
+      <div className="min-h-screen bg-slate-950 flex flex-col">
         {/* Header */}
         <div className="bg-slate-900 px-4 py-4 border-b border-slate-800 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
@@ -98,7 +98,7 @@ export default function AdminFieldOps() {
         </div>
 
         {/* Contractor List */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1">
           {filtered.length === 0 ? (
             <div className="text-center text-slate-500 py-16 text-sm">No contractors found</div>
           ) : (
@@ -138,8 +138,8 @@ export default function AdminFieldOps() {
 
   // Full Field Ops view for selected contractor (admin-impersonated)
   return (
-    <div className="fixed inset-0 bg-slate-950 flex flex-col overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
-      <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
+      <div className="flex flex-col flex-1">
         {/* Admin Banner */}
         <div className="bg-amber-600 px-4 py-1.5 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export default function AdminFieldOps() {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto overscroll-contain">
+      <div className="flex-1">
         {activeTab === 'jobs' && <FieldJobsList contractor={selectedContractor} user={user} />}
         {activeTab === 'schedule' && <FieldSchedule contractor={selectedContractor} user={user} />}
         {activeTab === 'invoices' && <FieldInvoices contractor={selectedContractor} user={user} />}
