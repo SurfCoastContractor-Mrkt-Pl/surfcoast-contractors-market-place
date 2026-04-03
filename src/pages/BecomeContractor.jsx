@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { base44 } from '@/api/base44Client';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -17,9 +20,38 @@ import OnboardingStep5Policies from '@/components/contractor/OnboardingStep5Poli
 import AIProfileGenerator from '@/components/contractor/AIProfileGenerator';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
+const formSchema = z.object({
+  name: z.string().min(1, 'Full name is required'),
+  email: z.string().email('Valid email is required'),
+  phone: z.string().min(1, 'Phone number is required'),
+  date_of_birth: z.string().min(1, 'Date of birth is required'),
+  photo_url: z.string().optional().default(''),
+  id_document_url: z.string().optional().default(''),
+  face_photo_url: z.string().optional().default(''),
+  contractor_type: z.string().min(1, 'Please select a contractor type'),
+  trade_specialty: z.string().optional().default(''),
+  line_of_work: z.string().min(1, 'Please select your line of work'),
+  line_of_work_other: z.string().optional().default(''),
+  years_experience: z.string().optional().default(''),
+  rate_type: z.enum(['hourly', 'fixed']).default('hourly'),
+  hourly_rate: z.string().optional().default(''),
+  fixed_rate: z.string().optional().default(''),
+  fixed_rate_details: z.string().optional().default(''),
+  location: z.string().min(1, 'Location is required'),
+  bio: z.string().optional().default(''),
+  skills: z.array(z.string()).default([]),
+  certifications: z.array(z.string()).default([]),
+  available: z.boolean().default(true),
+  rating: z.number().nullable().optional(),
+  reviews_count: z.number().default(0),
+  credential_documents: z.array(z.object({}).passthrough()).default([]),
+  parental_consent_docs: z.record(z.any()).optional().default({}),
+});
+
 
 
 const ONBOARDING_STEPS = ['Basic Info', 'Professional', 'Identity', 'Credentials', 'Policies'];
+const STORAGE_KEY = 'contractor_onboarding_data';
 
 export default function BecomeContractor() {
   const navigate = useNavigate();
@@ -27,6 +59,50 @@ export default function BecomeContractor() {
   const [authChecked, setAuthChecked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [createdContractor, setCreatedContractor] = useState(null);
+  const [showStripeConnect, setShowStripeConnect] = useState(false);
+  const [detectionLoading, setDetectionLoading] = useState(false);
+  const [uploadingId, setUploadingId] = useState(false);
+  const [uploadingFace, setUploadingFace] = useState(false);
+
+  // Initialize react-hook-form
+  const methods = useForm({
+    resolver: zodResolver(formSchema),
+    mode: 'onChange',
+    defaultValues: () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {
+        name: '',
+        email: '',
+        phone: '',
+        date_of_birth: '',
+        photo_url: '',
+        id_document_url: '',
+        face_photo_url: '',
+        contractor_type: '',
+        trade_specialty: '',
+        line_of_work: '',
+        line_of_work_other: '',
+        years_experience: '',
+        rate_type: 'hourly',
+        hourly_rate: '',
+        fixed_rate: '',
+        fixed_rate_details: '',
+        location: '',
+        bio: '',
+        skills: [],
+        certifications: [],
+        available: true,
+        rating: null,
+        reviews_count: 0,
+        credential_documents: [],
+        parental_consent_docs: {},
+      };
+    }
+  });
+
+  const { watch, getValues } = methods;
+  const formData = watch();
 
   useEffect(() => {
     if (isPreview) { setAuthChecked(true); return; }
@@ -40,41 +116,14 @@ export default function BecomeContractor() {
       base44.auth.redirectToLogin(window.location.pathname);
     });
   }, [isPreview]);
-  const [createdContractor, setCreatedContractor] = useState(null);
-  const [showStripeConnect, setShowStripeConnect] = useState(false);
-  const [newCert, setNewCert] = useState('');
-  const [newSkill, setNewSkill] = useState('');
-  const [uploadingId, setUploadingId] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    date_of_birth: '',
-    photo_url: '',
-    id_document_url: '',
-    face_photo_url: '',
-    contractor_type: '',
-    trade_specialty: '',
-    line_of_work: '',
-    line_of_work_other: '',
-    years_experience: '',
-    rate_type: 'hourly',
-    hourly_rate: '',
-    fixed_rate: '',
-    fixed_rate_details: '',
-    location: '',
-    bio: '',
-    skills: [],
-    certifications: [],
-    available: true,
-    rating: null,
-    reviews_count: 0,
-    credential_documents: [],
-    parental_consent_docs: {},
-  });
-  const [dobError, setDobError] = useState('');
-  const [detectionLoading, setDetectionLoading] = useState(false);
-  const [uploadingFace, setUploadingFace] = useState(false);
+
+  // Auto-save form data to localStorage
+  useEffect(() => {
+    const subscription = watch((data) => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const getAge = (dob) => {
     if (!dob) return null;
@@ -91,17 +140,13 @@ export default function BecomeContractor() {
   const mutation = useMutation({
     mutationFn: async (data) => {
       if (isPreview) {
-        // Preview mode: don't submit, just simulate success
         return new Promise(resolve => setTimeout(resolve, 800));
       }
-      // Verify authenticated user and link to their User account
       try {
         const user = await base44.auth.me();
         if (!user?.email) {
           throw new Error('You must be logged in to create a contractor profile');
         }
-        
-        // Check if contractor already exists for this user
         const existing = await base44.entities.Contractor.filter({ email: user.email });
         if (existing && existing.length > 0) {
           throw new Error('A contractor profile for your account already exists');
@@ -113,6 +158,7 @@ export default function BecomeContractor() {
     },
     onSuccess: (data) => {
       setCreatedContractor(data);
+      localStorage.removeItem(STORAGE_KEY);
 
       base44.analytics.track({
         eventName: 'contractor_profile_created',
@@ -126,90 +172,36 @@ export default function BecomeContractor() {
       });
 
       if (data?.compliance_acknowledged) {
-        // Compliance done — go to Stripe Connect step
         base44.analytics.track({ eventName: 'contractor_onboarding_compliance_shown' });
         setShowStripeConnect(true);
       } else {
-        // Show compliance acknowledgment screen first
         base44.analytics.track({ eventName: 'contractor_onboarding_compliance_shown' });
         setSuccess(true);
       }
     },
   });
 
-  const validateStep = (step) => {
-    switch (step) {
-      case 1: // Basic Info
-        if (!formData.name?.trim()) {
-          setDobError('Full name is required');
-          return false;
-        }
-        if (!formData.date_of_birth) {
-          setDobError('Date of birth is required');
-          return false;
-        }
-        if (age === null || age < 13) {
-          setDobError('You must be at least 13 years old to register as a contractor');
-          return false;
-        }
-        if (!formData.location?.trim()) {
-          setDobError('Location is required');
-          return false;
-        }
-        setDobError('');
-        return true;
+  const validateStepFields = (step) => {
+    const fields = {
+      1: ['name', 'date_of_birth', 'location'],
+      2: ['line_of_work'],
+      3: ['id_document_url', 'face_photo_url'],
+      4: isMinor ? ['parental_consent_docs'] : [],
+      5: [],
+    };
 
-      case 2: // Professional
-        if (!formData.line_of_work) {
-          setDobError('Please select your line of work');
-          return false;
-        }
-        if (formData.line_of_work === 'other' && !formData.line_of_work_other?.trim()) {
-          setDobError('Please specify your line of work');
-          return false;
-        }
-        setDobError('');
-        return true;
-
-      case 3: // Identity
-        if (!formData.id_document_url) {
-          setDobError('Government-issued ID is required');
-          return false;
-        }
-        if (!formData.face_photo_url) {
-          setDobError('Face photo is required');
-          return false;
-        }
-        setDobError('');
-        return true;
-
-      case 4: // Credentials (skip for minors unless they have docs)
-        if (isMinor) {
-          const pd = formData.parental_consent_docs;
-          if (!pd?.parent_name || !pd?.parent_email || !pd?.parent_phone) {
-            setDobError('Please fill in parent/guardian contact information');
-            return false;
-          }
-          if (!pd?.parental_consent_form_url || !pd?.child_id_url || !pd?.parent_id_url ||
-              !pd?.proof_of_relationship_url || !pd?.child_proof_of_residence_url || !pd?.parent_proof_of_residence_url) {
-            setDobError('Please upload all required parental consent documents');
-            return false;
-          }
-        }
-        setDobError('');
-        return true;
-
-      case 5: // Policies
-        setDobError('');
-        return true;
-
-      default:
-        return true;
-    }
+    return fields[step] || [];
   };
 
-  const handleNextStep = () => {
-    if (validateStep(currentStep)) {
+  const handleNextStep = async () => {
+    const fieldsToValidate = validateStepFields(currentStep);
+    const isValid = await methods.trigger(fieldsToValidate);
+
+    if (isValid) {
+      if (currentStep === 1 && age !== null && age < 13) {
+        methods.setError('date_of_birth', { message: 'You must be at least 13 years old' });
+        return;
+      }
       setCurrentStep(currentStep + 1);
       window.scrollTo(0, 0);
     }
@@ -222,55 +214,43 @@ export default function BecomeContractor() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateStep(currentStep)) {
-      return;
-    }
-
+  const handleSubmit = async (data) => {
     if (!isPreview) {
       try {
         const user = await base44.auth.me();
         if (!user?.email) {
-          setDobError('You must be logged in to create a contractor profile');
+          methods.setError('email', { message: 'You must be logged in' });
           return;
         }
       } catch (err) {
-        setDobError('Failed to verify your account');
+        methods.setError('email', { message: 'Failed to verify your account' });
         return;
       }
     }
-    
-    setDobError('');
 
     base44.analytics.track({
       eventName: 'contractor_onboarding_form_submitted',
       properties: {
-        contractor_type: formData.contractor_type,
-        line_of_work: formData.line_of_work,
+        contractor_type: data.contractor_type,
+        line_of_work: data.line_of_work,
         is_minor: isMinor,
-        has_id_doc: !!formData.id_document_url,
-        has_face_photo: !!formData.face_photo_url,
-        skills_count: formData.skills.length,
-        certs_count: formData.certifications.length,
+        has_id_doc: !!data.id_document_url,
+        has_face_photo: !!data.face_photo_url,
+        skills_count: data.skills.length,
+        certs_count: data.certifications.length,
       },
     });
 
-    const data = {
-      ...formData,
+    const submitData = {
+      ...data,
       is_minor: isMinor,
-      years_experience: formData.years_experience ? Number(formData.years_experience) : null,
-      hourly_rate: formData.rate_type === 'hourly' && formData.hourly_rate ? Number(formData.hourly_rate) : null,
-      fixed_rate: formData.rate_type === 'fixed' && formData.fixed_rate ? Number(formData.fixed_rate) : null,
-      fixed_rate_details: formData.rate_type === 'fixed' ? formData.fixed_rate_details : null,
-      line_of_work_other: formData.line_of_work === 'other' ? formData.line_of_work_other : null,
+      years_experience: data.years_experience ? Number(data.years_experience) : null,
+      hourly_rate: data.rate_type === 'hourly' && data.hourly_rate ? Number(data.hourly_rate) : null,
+      fixed_rate: data.rate_type === 'fixed' && data.fixed_rate ? Number(data.fixed_rate) : null,
+      fixed_rate_details: data.rate_type === 'fixed' ? data.fixed_rate_details : null,
+      line_of_work_other: data.line_of_work === 'other' ? data.line_of_work_other : null,
     };
-    mutation.mutate(data);
-  };
-
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setDobError('');
+    mutation.mutate(submitData);
   };
 
 
@@ -282,7 +262,7 @@ export default function BecomeContractor() {
       if (userLoc) {
         const locationStr = await reverseGeocodeLocation(userLoc.lat, userLoc.lon);
         if (locationStr) {
-          handleChange('location', locationStr);
+          methods.setValue('location', locationStr);
         }
       }
     } catch (error) {
@@ -298,9 +278,9 @@ export default function BecomeContractor() {
     try {
       setUploadingId(true);
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      handleChange('id_document_url', file_url);
+      methods.setValue('id_document_url', file_url);
     } catch (error) {
-      setDobError('Failed to upload ID document. Please try again.');
+      methods.setError('id_document_url', { message: 'Failed to upload ID document' });
       logError('BecomeContractor.handleIdUpload', error);
     } finally {
       setUploadingId(false);
@@ -313,9 +293,9 @@ export default function BecomeContractor() {
     try {
       setUploadingFace(true);
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      handleChange('face_photo_url', file_url);
+      methods.setValue('face_photo_url', file_url);
     } catch (error) {
-      setDobError('Failed to upload face photo. Please try again.');
+      methods.setError('face_photo_url', { message: 'Failed to upload face photo' });
       logError('BecomeContractor.handleFaceUpload', error);
     } finally {
       setUploadingFace(false);
@@ -408,87 +388,81 @@ export default function BecomeContractor() {
           steps={ONBOARDING_STEPS}
         />
 
-        <form onSubmit={currentStep === ONBOARDING_STEPS.length ? handleSubmit : (e) => { e.preventDefault(); handleNextStep(); }}>
-          {currentStep === 1 && (
-            <OnboardingStep1BasicInfo
-              formData={formData}
-              dobError={dobError}
-              detectionLoading={detectionLoading}
-              onFieldChange={handleChange}
-              onDetectLocation={detectLocation}
-              age={age}
-              isMinor={isMinor}
-            />
-          )}
-          {currentStep === 2 && (
-            <>
-              <OnboardingStep2Professional
+        <FormProvider {...methods}>
+          <form onSubmit={currentStep === ONBOARDING_STEPS.length ? methods.handleSubmit(handleSubmit) : (e) => { e.preventDefault(); handleNextStep(); }}>
+            {currentStep === 1 && (
+              <OnboardingStep1BasicInfo
                 formData={formData}
-                onFieldChange={handleChange}
+                detectionLoading={detectionLoading}
+                onDetectLocation={detectLocation}
+                age={age}
+                isMinor={isMinor}
+                methods={methods}
               />
-              <AIProfileGenerator formData={formData} onBioGenerated={(bio) => handleChange('bio', bio)} />
-            </>
-          )}
-          {currentStep === 3 && (
-            <OnboardingStep3Identity
-              formData={formData}
-              uploadingId={uploadingId}
-              uploadingFace={uploadingFace}
-              onIdUpload={handleIdUpload}
-              onFaceUpload={handleFaceUpload}
-            />
-          )}
-          {currentStep === 4 && (
-            <OnboardingStep4Credentials
-              formData={formData}
-              onFieldChange={handleChange}
-              isMinor={isMinor}
-              age={age}
-            />
-          )}
-          {currentStep === 5 && (
-            <OnboardingStep5Policies />
-          )}
-
-          {/* Error Message */}
-          {dobError && (
-            <div className="p-4 mb-6 rounded-xl flex items-start gap-3" style={{ background: '#fee2e2', border: `1px solid #fecaca` }}>
-              <span className="text-lg leading-none">⚠</span>
-              <p className="text-sm flex-1" style={{ color: '#991b1b' }}>{dobError}</p>
-            </div>
-          )}
-
-          {/* Navigation Buttons */}
-          <div className="flex gap-2 lg:gap-3 mt-3">
-            {currentStep > 1 && (
-              <button
-                type="button"
-                onClick={handlePrevStep}
-                className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold transition-colors min-h-[44px] lg:min-h-[52px]"
-                style={{ border: `1px solid ${designTokens.colors.gray[300]}`, background: designTokens.colors.white, color: designTokens.colors.gray[700] }}
-              >
-                ← Back
-              </button>
             )}
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold text-white transition-all min-h-[44px] lg:min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, ${designTokens.colors.accent.DEFAULT} 0%, ${designTokens.colors.accent.dark} 100%)`, boxShadow: `0 4px 20px ${designTokens.colors.accent.light}55` }}
-            >
-              {mutation.isPending ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Creating Profile...
-                </>
-              ) : currentStep === ONBOARDING_STEPS.length ? (
-                'Create My Profile →'
-              ) : (
-                <>Next <ChevronRight className="w-5 h-5" /></>
+            {currentStep === 2 && (
+              <>
+                <OnboardingStep2Professional
+                  formData={formData}
+                  methods={methods}
+                />
+                <AIProfileGenerator formData={formData} onBioGenerated={(bio) => methods.setValue('bio', bio)} />
+              </>
+            )}
+            {currentStep === 3 && (
+              <OnboardingStep3Identity
+                formData={formData}
+                uploadingId={uploadingId}
+                uploadingFace={uploadingFace}
+                onIdUpload={handleIdUpload}
+                onFaceUpload={handleFaceUpload}
+                methods={methods}
+              />
+            )}
+            {currentStep === 4 && (
+              <OnboardingStep4Credentials
+                formData={formData}
+                isMinor={isMinor}
+                age={age}
+                methods={methods}
+              />
+            )}
+            {currentStep === 5 && (
+              <OnboardingStep5Policies />
+            )}
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 lg:gap-3 mt-3">
+              {currentStep > 1 && (
+                <button
+                  type="button"
+                  onClick={handlePrevStep}
+                  className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold transition-colors min-h-[44px] lg:min-h-[52px]"
+                  style={{ border: `1px solid ${designTokens.colors.gray[300]}`, background: designTokens.colors.white, color: designTokens.colors.gray[700] }}
+                >
+                  ← Back
+                </button>
               )}
-            </button>
-          </div>
-        </form>
+              <button
+                type="submit"
+                disabled={mutation.isPending}
+                className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold text-white transition-all min-h-[44px] lg:min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{ background: `linear-gradient(135deg, ${designTokens.colors.accent.DEFAULT} 0%, ${designTokens.colors.accent.dark} 100%)`, boxShadow: `0 4px 20px ${designTokens.colors.accent.light}55` }}
+              >
+                {mutation.isPending ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Creating Profile...
+                  </>
+                ) : currentStep === ONBOARDING_STEPS.length ? (
+                  'Create My Profile →'
+                ) : (
+                  <>Next <ChevronRight className="w-5 h-5" /></>
+                )}
+              </button>
+            </div>
+          </form>
+        </FormProvider>
       </div>
 
     </div>
