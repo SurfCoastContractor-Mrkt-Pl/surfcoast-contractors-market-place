@@ -82,6 +82,7 @@ import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationP
 import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
+import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -540,6 +541,11 @@ const AuthenticatedApp = () => {
       <Route path="/why-surfcoast" element={
         <LayoutWrapper currentPageName="WhySurfCoast">
           <WhySurfCoast />
+        </LayoutWrapper>
+      } />
+      <Route path="/workload-hub" element={
+        <LayoutWrapper currentPageName="ContractorWorkloadHub">
+          <ContractorWorkloadHub />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
