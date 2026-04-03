@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Upload, Loader2 } from 'lucide-react';
 
@@ -8,7 +9,9 @@ export default function OnboardingStep3Identity({
   uploadingFace,
   onIdUpload,
   onFaceUpload,
+  methods,
 }) {
+  const { formState: { errors } } = useFormContext();
   return (
     <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
       <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Identity Verification</h2>
@@ -30,6 +33,7 @@ export default function OnboardingStep3Identity({
         <div className="bg-white rounded-xl border border-blue-200 p-4 space-y-3">
           <Label className="font-semibold text-slate-800">Government-Issued ID / Driver's License *</Label>
           <p className="text-xs text-slate-500">Upload a clear photo of your ID. All four corners must be visible.</p>
+          {errors.id_document_url && <p className="text-xs text-red-500">{errors.id_document_url.message}</p>}
           <div className="relative">
             {formData.id_document_url ? (
               <div className="relative group">
@@ -60,6 +64,7 @@ export default function OnboardingStep3Identity({
         <div className="bg-white rounded-xl border border-blue-200 p-4 space-y-3">
           <Label className="font-semibold text-slate-800">Clear Face Photo *</Label>
           <p className="text-xs text-slate-500">Upload an unobstructed photo of your face for identity verification.</p>
+          {errors.face_photo_url && <p className="text-xs text-red-500">{errors.face_photo_url.message}</p>}
           <div className="relative">
             {formData.face_photo_url ? (
               <div className="relative group">

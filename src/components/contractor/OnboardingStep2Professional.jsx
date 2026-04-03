@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -10,31 +11,32 @@ import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
 
 export default function OnboardingStep2Professional({
   formData,
-  onFieldChange,
+  methods,
 }) {
+  const { register, watch, formState: { errors }, setValue } = useFormContext();
   const [newSkill, setNewSkill] = useState('');
   const [newCert, setNewCert] = useState('');
 
   const addSkill = () => {
     if (newSkill.trim()) {
-      onFieldChange('skills', [...formData.skills, newSkill.trim()]);
+      setValue('skills', [...formData.skills, newSkill.trim()]);
       setNewSkill('');
     }
   };
 
   const removeSkill = (idx) => {
-    onFieldChange('skills', formData.skills.filter((_, i) => i !== idx));
+    setValue('skills', formData.skills.filter((_, i) => i !== idx));
   };
 
   const addCertification = () => {
     if (newCert.trim()) {
-      onFieldChange('certifications', [...formData.certifications, newCert.trim()]);
+      setValue('certifications', [...formData.certifications, newCert.trim()]);
       setNewCert('');
     }
   };
 
   const removeCertification = (idx) => {
-    onFieldChange('certifications', formData.certifications.filter((_, i) => i !== idx));
+    setValue('certifications', formData.certifications.filter((_, i) => i !== idx));
   };
 
   return (
@@ -46,9 +48,11 @@ export default function OnboardingStep2Professional({
           <LineOfWorkSelector
             value={formData.line_of_work}
             customValue={formData.line_of_work_other}
-            onChange={(v) => onFieldChange('line_of_work', v)}
-            onCustomChange={(v) => onFieldChange('line_of_work_other', v)}
+            onChange={(v) => setValue('line_of_work', v)}
+            onCustomChange={(v) => setValue('line_of_work_other', v)}
+            error={errors.line_of_work?.message}
           />
+          {errors.line_of_work && <p className="text-xs text-red-500 mt-1">{errors.line_of_work.message}</p>}
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
@@ -57,15 +61,14 @@ export default function OnboardingStep2Professional({
             <Input
               id="years_experience"
               type="number"
-              value={formData.years_experience}
-              onChange={(e) => onFieldChange('years_experience', e.target.value)}
+              {...register('years_experience')}
               placeholder="e.g., 10"
               className="mt-1.5"
             />
           </div>
           <div>
             <Label htmlFor="rate_type">Rate Type</Label>
-            <Select value={formData.rate_type} onValueChange={(v) => onFieldChange('rate_type', v)}>
+            <Select value={formData.rate_type} onValueChange={(v) => setValue('rate_type', v)}>
               <SelectTrigger id="rate_type" className="mt-1.5">
                 <SelectValue />
               </SelectTrigger>
@@ -83,8 +86,7 @@ export default function OnboardingStep2Professional({
             <Input
               id="hourly_rate"
               type="number"
-              value={formData.hourly_rate}
-              onChange={(e) => onFieldChange('hourly_rate', e.target.value)}
+              {...register('hourly_rate')}
               placeholder="e.g., 75"
               className="mt-1.5"
             />
@@ -98,8 +100,7 @@ export default function OnboardingStep2Professional({
               <Input
                 id="fixed_rate"
                 type="number"
-                value={formData.fixed_rate}
-                onChange={(e) => onFieldChange('fixed_rate', e.target.value)}
+                {...register('fixed_rate')}
                 placeholder="e.g., 500"
                 className="mt-1.5"
               />
@@ -108,8 +109,7 @@ export default function OnboardingStep2Professional({
               <Label htmlFor="fixed_rate_details">Fixed Rate Details</Label>
               <Textarea
                 id="fixed_rate_details"
-                value={formData.fixed_rate_details}
-                onChange={(e) => onFieldChange('fixed_rate_details', e.target.value)}
+                {...register('fixed_rate_details')}
                 placeholder="Describe what your fixed rate covers..."
                 rows={3}
                 className="mt-1.5"
@@ -122,8 +122,7 @@ export default function OnboardingStep2Professional({
           <Label htmlFor="bio">About You</Label>
           <Textarea
             id="bio"
-            value={formData.bio}
-            onChange={(e) => onFieldChange('bio', e.target.value)}
+            {...register('bio')}
             placeholder="Tell potential clients about your experience, specialties, and what makes you stand out..."
             rows={4}
             className="mt-1.5"
@@ -205,7 +204,7 @@ export default function OnboardingStep2Professional({
           </div>
           <Switch
             checked={formData.available}
-            onCheckedChange={(v) => onFieldChange('available', v)}
+            onCheckedChange={(v) => setValue('available', v)}
           />
         </div>
       </div>

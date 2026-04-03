@@ -1,14 +1,16 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import CredentialDocumentsUpload from '@/components/contractor/CredentialDocumentsUpload';
 import MinorConsentUpload from '@/components/contractor/MinorConsentUpload';
 
 export default function OnboardingStep4Credentials({
   formData,
-  onFieldChange,
   isMinor,
   age,
+  methods,
 }) {
+  const { setValue } = useFormContext();
   return (
     <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
       <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Credentials & Documents</h2>
@@ -23,7 +25,7 @@ export default function OnboardingStep4Credentials({
           </p>
           <CredentialDocumentsUpload
             credentials={formData.credential_documents}
-            onChange={(docs) => onFieldChange('credential_documents', docs)}
+            onChange={(docs) => setValue('credential_documents', docs)}
             legalName={formData.name}
           />
         </div>
@@ -32,7 +34,7 @@ export default function OnboardingStep4Credentials({
         {isMinor && (
           <MinorConsentUpload
             data={formData.parental_consent_docs}
-            onChange={(docs) => onFieldChange('parental_consent_docs', docs)}
+            onChange={(docs) => setValue('parental_consent_docs', docs)}
             location={formData.location}
             age={age}
           />

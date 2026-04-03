@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -6,13 +7,12 @@ import { Loader2, MapPin } from 'lucide-react';
 
 export default function OnboardingStep1BasicInfo({
   formData,
-  dobError,
   detectionLoading,
-  onFieldChange,
   onDetectLocation,
   age,
   isMinor,
 }) {
+  const { register, formState: { errors }, watch } = useFormContext();
   const inputStyle = {
     background: "rgba(255,255,255,0.12)",
     border: "1.5px solid rgba(255,255,255,0.55)",
@@ -41,12 +41,11 @@ export default function OnboardingStep1BasicInfo({
           <label htmlFor="name" style={labelStyle}>Full Name *</label>
           <input
             id="name"
-            value={formData.name}
-            onChange={(e) => onFieldChange('name', e.target.value)}
-            required
-            style={inputStyle}
+            {...register('name')}
+            style={{ ...inputStyle, borderColor: errors.name ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
             placeholder="Your full name"
           />
+          {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -56,12 +55,11 @@ export default function OnboardingStep1BasicInfo({
           <input
             id="dob"
             type="date"
-            value={formData.date_of_birth}
-            onChange={(e) => { onFieldChange('date_of_birth', e.target.value); }}
+            {...register('date_of_birth')}
             max={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0]}
-            style={{ ...inputStyle, colorScheme: "dark" }}
+            style={{ ...inputStyle, colorScheme: "dark", borderColor: errors.date_of_birth ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
           />
-          {dobError && <p className="text-xs text-red-400 mt-1">{dobError}</p>}
+          {errors.date_of_birth && <p className="text-xs text-red-400 mt-1">{errors.date_of_birth.message}</p>}
           {isMinor && (
             <p className="text-xs mt-1 font-medium" style={{ color:"#fb923c" }}>⚠ Parental consent required — see later steps</p>
           )}
@@ -73,20 +71,18 @@ export default function OnboardingStep1BasicInfo({
             <input
               id="email"
               type="email"
-              value={formData.email}
-              onChange={(e) => onFieldChange('email', e.target.value)}
-              required
-              style={inputStyle}
+              {...register('email')}
+              style={{ ...inputStyle, borderColor: errors.email ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
               placeholder="you@email.com"
             />
+            {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>}
           </div>
           <div>
             <label htmlFor="phone" style={labelStyle}>Phone</label>
             <input
               id="phone"
               type="tel"
-              value={formData.phone}
-              onChange={(e) => onFieldChange('phone', e.target.value)}
+              {...register('phone')}
               style={inputStyle}
               placeholder="(555) 123-4567"
             />
@@ -130,12 +126,11 @@ export default function OnboardingStep1BasicInfo({
           </div>
           <input
             id="location"
-            value={formData.location}
-            onChange={(e) => onFieldChange('location', e.target.value)}
+            {...register('location')}
             placeholder="City, State"
-            required
-            style={inputStyle}
+            style={{ ...inputStyle, borderColor: errors.location ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
           />
+          {errors.location && <p className="text-xs text-red-400 mt-1">{errors.location.message}</p>}
         </div>
       </div>
     </div>
