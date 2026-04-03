@@ -85,6 +85,7 @@ import WhySurfCoast from './pages/WhySurfCoast';
 import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
 import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
+import WaveFOAbout from './pages/WaveFOAbout';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -558,6 +559,11 @@ const AuthenticatedApp = () => {
       <Route path="/wave-handbook" element={
         <LayoutWrapper currentPageName="WAVEHandbook">
           <WAVEHandbook />
+        </LayoutWrapper>
+      } />
+      <Route path="/wave-fo-about" element={
+        <LayoutWrapper currentPageName="WaveFOAbout">
+          <WaveFOAbout />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
