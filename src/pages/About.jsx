@@ -56,26 +56,46 @@ export default function About() {
             <ShareAboutButton />
           </div>
 
-          {/* Mission Text */}
-          <div className="space-y-5">
+          {/* Manifesto Statement */}
+          <div className="mb-10">
             <p
-              className="font-black uppercase tracking-wider"
-              style={{ fontSize: 'clamp(1rem, 2.4vw, 1.25rem)', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.2)' }}
+              className="font-black leading-none mb-6"
+              style={{
+                fontSize: 'clamp(2.6rem, 7vw, 5rem)',
+                color: '#ffffff',
+                letterSpacing: '-0.02em',
+                textShadow: '0 4px 32px rgba(0,0,0,0.3)',
+              }}
             >
-              We built this platform for the people who actually get things done.
+              Being a contractor isn't a job title.
+              <br />
+              <span style={{ color: '#FFB347' }}>It's a mindset.</span>
             </p>
 
+            <p
+              className="font-semibold leading-relaxed mb-10"
+              style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.85)', maxWidth: '600px' }}
+            >
+              It belongs to anyone willing to put in the work, deliver real value, and stand behind what they do — no matter where they started.
+            </p>
+
+            {/* Divider */}
+            <div style={{ width: '48px', height: '3px', background: '#FFB347', borderRadius: '2px', marginBottom: '36px' }} />
+          </div>
+
+          {/* Mission Body */}
+          <div className="space-y-5" style={{ maxWidth: '640px' }}>
             {missionParagraphs.map((text, i) => (
-              <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: 'rgba(255,255,255,0.92)' }}>
+              <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: 'rgba(255,255,255,0.88)' }}>
                 {text}
               </p>
             ))}
 
             <p
-              className="font-black uppercase tracking-wider pt-3"
-              style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.2)' }}
+              className="font-black italic pt-4"
+              style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#FFB347', textShadow: '0 1px 10px rgba(0,0,0,0.2)' }}
             >
-              We're here for the builders, the learners, and the ones who refuse to sit still.
+              "We're here for the builders, the learners, and the ones who refuse to sit still."
             </p>
           </div>
         </div>
