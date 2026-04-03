@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, BookOpen } from 'lucide-react';
+import AboutWAVEFO from '@/components/WAVEHandbook/AboutWAVEFO';
 
 export default function WAVEHandbook() {
   const [expandedChapter, setExpandedChapter] = useState(0);
   const [selectedSection, setSelectedSection] = useState('1.1');
 
   const chapters = [
+    {
+      id: 0,
+      title: 'About WAVE FO',
+      sections: [
+        {
+          id: '0.1',
+          title: 'Our Mission & Values',
+          content: <AboutWAVEFO />,
+        },
+      ],
+    },
     {
       id: 1,
       title: 'Getting Started with WAVE FO',
