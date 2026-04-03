@@ -33,7 +33,7 @@ export default function About() {
           <Link
             to="/"
             className="inline-flex items-center gap-2 mb-10 font-bold tracking-widest uppercase text-xs opacity-80 hover:opacity-100 transition-opacity"
-            style={{ color: '#ffffff' }}
+            style={{ color: '#1a1a1a' }}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Home
@@ -45,14 +45,14 @@ export default function About() {
               className="font-black uppercase mb-4 leading-tight"
               style={{
                 fontSize: 'clamp(2rem, 5.5vw, 3.2rem)',
-                color: '#ffffff',
-                textShadow: '0 2px 24px rgba(0,0,0,0.25)',
+                color: '#1a1a1a',
+                textShadow: '0 2px 12px rgba(255,255,255,0.2)',
                 letterSpacing: '0.06em',
               }}
             >
               About SurfCoast Marketplace
             </h1>
-            <div style={{ width: '64px', height: '3px', background: 'rgba(255,255,255,0.45)', borderRadius: '2px', marginBottom: '24px' }} />
+            <div style={{ width: '64px', height: '3px', background: 'rgba(0,0,0,0.25)', borderRadius: '2px', marginBottom: '24px' }} />
             <ShareAboutButton />
           </div>
 
@@ -62,38 +62,38 @@ export default function About() {
               className="font-black leading-none mb-6"
               style={{
                 fontSize: 'clamp(2.6rem, 7vw, 5rem)',
-                color: '#ffffff',
+                color: '#1a1a1a',
                 letterSpacing: '-0.02em',
-                textShadow: '0 4px 32px rgba(0,0,0,0.3)',
+                textShadow: '0 2px 12px rgba(255,255,255,0.2)',
               }}
             >
               Being a contractor isn't a job title.
               <br />
-              <span style={{ color: '#FFB347' }}>It's a mindset.</span>
+              <span style={{ color: '#7B1E00' }}>It's a mindset.</span>
             </p>
 
             <p
               className="font-semibold leading-relaxed mb-10"
-              style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.85)', maxWidth: '600px' }}
+              style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: '#2d2d2d', maxWidth: '600px' }}
             >
               It belongs to anyone willing to put in the work, deliver real value, and stand behind what they do — no matter where they started.
             </p>
 
             {/* Divider */}
-            <div style={{ width: '48px', height: '3px', background: '#FFB347', borderRadius: '2px', marginBottom: '36px' }} />
+            <div style={{ width: '48px', height: '3px', background: '#7B1E00', borderRadius: '2px', marginBottom: '36px' }} />
           </div>
 
           {/* Mission Body */}
           <div className="space-y-5" style={{ maxWidth: '640px' }}>
             {missionParagraphs.map((text, i) => (
-              <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: 'rgba(255,255,255,0.88)' }}>
+              <p key={i} className="text-base leading-relaxed" style={{ fontWeight: 500, color: '#1f1f1f' }}>
                 {text}
               </p>
             ))}
 
             <p
               className="font-black italic pt-4"
-              style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#FFB347', textShadow: '0 1px 10px rgba(0,0,0,0.2)' }}
+              style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: '#7B1E00', textShadow: '0 1px 6px rgba(255,255,255,0.3)' }}
             >
               "We're here for the builders, the learners, and the ones who refuse to sit still."
             </p>
