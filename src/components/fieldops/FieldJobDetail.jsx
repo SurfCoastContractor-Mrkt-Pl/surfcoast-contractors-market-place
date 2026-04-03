@@ -150,18 +150,18 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
   const payout = scope.cost_amount ? (scope.cost_amount * 0.82).toFixed(2) : null;
 
   return (
-    <div className="bg-slate-950 min-h-full">
+    <div className="bg-slate-100 min-h-full">
       <UploadQueueManager queue={queue} activeCount={activeCount} />
       
       {/* Header */}
-      <div className="sticky top-0 bg-slate-900 border-b border-slate-800 z-10">
+      <div className="sticky top-0 bg-white border-b border-slate-200 z-10">
         <div className="flex items-center gap-3 px-4 py-3">
-          <button onClick={onBack} className="p-2 -ml-2 rounded-full active:bg-slate-800">
-            <ArrowLeft className="w-6 h-6 text-white" />
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full active:bg-slate-100">
+            <ArrowLeft className="w-6 h-6 text-slate-700" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-white font-semibold truncate">{scope.job_title}</p>
-            <p className="text-slate-400 text-xs">{scope.customer_name}</p>
+            <p className="text-slate-800 font-semibold truncate">{scope.job_title}</p>
+            <p className="text-slate-500 text-xs">{scope.customer_name}</p>
           </div>
         </div>
       </div>
@@ -169,9 +169,9 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
       <div className="px-4 py-4 space-y-4">
         {/* Status Card */}
         <div className={`rounded-2xl p-4 border ${
-          scope.status === 'approved' ? 'bg-blue-900/20 border-blue-500/30' :
-          scope.status === 'pending_ratings' ? 'bg-green-900/20 border-green-500/30' :
-          'bg-slate-900 border-slate-800'
+          scope.status === 'approved' ? 'bg-blue-50 border-blue-200' :
+          scope.status === 'pending_ratings' ? 'bg-green-50 border-green-200' :
+          'bg-white border-slate-200'
         }`}>
           <div className="flex items-center gap-3">
             {scope.status === 'pending_ratings' ? (
@@ -180,9 +180,9 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               <Clock className="w-8 h-8 text-blue-400 flex-shrink-0" />
             )}
             <div>
-              <p className="text-white font-semibold capitalize">{scope.status?.replace(/_/g, ' ')}</p>
+              <p className="text-slate-800 font-semibold capitalize">{scope.status?.replace(/_/g, ' ')}</p>
               {scope.agreed_work_date && (
-                <p className="text-slate-400 text-sm">
+                <p className="text-slate-500 text-sm">
                   {new Date(scope.agreed_work_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
               )}
@@ -191,9 +191,9 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         </div>
 
         {/* Financial Summary */}
-        <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+        <div className="bg-white rounded-2xl p-4 border border-slate-200">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Financials</p>
+            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Financials</p>
             <button
               onClick={handleDownloadInvoice}
               disabled={downloadingInvoice}
@@ -214,19 +214,19 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           </div>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-slate-400 text-sm">Job Amount</span>
-              <span className="text-white font-semibold">
+              <span className="text-slate-500 text-sm">Job Amount</span>
+                <span className="text-slate-800 font-semibold">
                 ${scope.cost_amount?.toLocaleString()} {scope.cost_type === 'hourly' ? '/hr' : ''}
               </span>
             </div>
             {payout && (
               <>
                 <div className="flex justify-between">
-                  <span className="text-slate-400 text-sm">Platform Fee (18%)</span>
+                  <span className="text-slate-500 text-sm">Platform Fee (18%)</span>
                   <span className="text-red-400 text-sm">-${(scope.cost_amount * 0.18).toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between pt-2 border-t border-slate-800">
-                  <span className="text-slate-300 text-sm font-semibold">Your Payout</span>
+                <div className="flex justify-between pt-2 border-t border-slate-200">
+                  <span className="text-slate-700 text-sm font-semibold">Your Payout</span>
                   <span className="text-green-400 font-bold text-lg">${payout}</span>
                 </div>
               </>
@@ -235,31 +235,31 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         </div>
 
         {/* Client Info */}
-        <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">Client</p>
+        <div className="bg-white rounded-2xl p-4 border border-slate-200">
+          <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">Client</p>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
               <User className="w-5 h-5 text-slate-400" />
             </div>
             <div className="flex-1">
-              <p className="text-white font-semibold">{scope.customer_name}</p>
-              <p className="text-slate-400 text-sm">{scope.customer_email}</p>
+              <p className="text-slate-800 font-semibold">{scope.customer_name}</p>
+              <p className="text-slate-500 text-sm">{scope.customer_email}</p>
             </div>
           </div>
         </div>
 
         {/* Job Notes */}
         {scope.scope_summary && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Scope / Notes</p>
-            <p className="text-slate-300 text-sm leading-relaxed">{scope.scope_summary}</p>
+          <div className="bg-white rounded-2xl p-4 border border-slate-200">
+            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">Scope / Notes</p>
+            <p className="text-slate-600 text-sm leading-relaxed">{scope.scope_summary}</p>
           </div>
         )}
 
         {/* After Photos */}
         {scope.after_photo_urls?.length > 0 && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">
+          <div className="bg-white rounded-2xl p-4 border border-slate-200">
+            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">
               After Photos ({scope.after_photo_urls.length})
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -317,8 +317,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         )}
 
         {activeAction === 'photos' && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-white font-semibold mb-3">Upload After Photos</p>
+          <div className="bg-white rounded-2xl p-4 border border-slate-200">
+            <p className="text-slate-800 font-semibold mb-3">Upload After Photos</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -349,14 +349,14 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
 
 
         {activeAction === 'notes' && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
-            <p className="text-white font-semibold mb-3">Add Field Note</p>
+          <div className="bg-white rounded-2xl p-4 border border-slate-200">
+            <p className="text-slate-800 font-semibold mb-3">Add Field Note</p>
             <textarea
               value={note}
               onChange={e => setNote(e.target.value)}
               placeholder="Enter field notes, observations, or updates..."
               rows={5}
-              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-amber-500 placeholder-slate-500 min-h-[120px]"
+              className="w-full bg-slate-50 text-slate-800 rounded-xl p-4 text-base resize-none border border-slate-300 focus:outline-none focus:border-amber-500 placeholder-slate-400 min-h-[120px]"
             />
             <button
               onClick={handleSaveNote}
@@ -369,15 +369,15 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
         )}
 
         {activeAction === 'complete' && (
-          <div className="bg-slate-900 rounded-2xl p-4 border border-green-500/30">
-            <p className="text-white font-semibold mb-1">Mark Job as Complete</p>
-            <p className="text-slate-400 text-sm mb-3">This will notify the client to review and approve completion, then release payment.</p>
+          <div className="bg-white rounded-2xl p-4 border border-green-300">
+            <p className="text-slate-800 font-semibold mb-1">Mark Job as Complete</p>
+            <p className="text-slate-500 text-sm mb-3">This will notify the client to review and approve completion, then release payment.</p>
             <textarea
               value={completionNotes}
               onChange={e => setCompletionNotes(e.target.value)}
               placeholder="Describe the completed work (optional)..."
               rows={4}
-              className="w-full bg-slate-800 text-white rounded-xl p-4 text-base resize-none border border-slate-700 focus:outline-none focus:border-green-500 placeholder-slate-500 min-h-[120px]"
+              className="w-full bg-slate-50 text-slate-800 rounded-xl p-4 text-base resize-none border border-slate-300 focus:outline-none focus:border-green-500 placeholder-slate-400 min-h-[120px]"
             />
             <button
               onClick={handleMarkComplete}

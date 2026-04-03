@@ -73,9 +73,9 @@ export default function WaveFOJobsList({ contractor, user }) {
   const activeCount = scopes.filter(s => ['approved','active'].includes(s.status)).length;
 
   return (
-    <div className="bg-slate-950 min-h-full">
+    <div className="bg-slate-100 min-h-full">
       {/* View Tabs */}
-      <div className="flex gap-2 px-4 mt-4 border-b border-slate-800">
+      <div className="flex gap-2 px-4 mt-4 border-b border-slate-200">
         {VIEW_TABS.map(tab => (
           <button
             key={tab}
@@ -85,8 +85,8 @@ export default function WaveFOJobsList({ contractor, user }) {
             }}
             className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-colors ${
               viewTab === tab
-                ? 'border-blue-400 text-blue-400'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-slate-400 hover:text-slate-700'
             }`}
           >
             {tab === 'Recommended' && <Sparkles className="w-4 h-4" />}
@@ -101,10 +101,10 @@ export default function WaveFOJobsList({ contractor, user }) {
         <>
           {/* Today's Summary */}
           {todayJobs.length > 0 && (
-            <div className="mx-4 mt-4 bg-blue-600/20 border border-blue-500/30 rounded-2xl p-4">
-              <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-1">Today's Jobs</p>
-              <p className="text-white text-2xl font-bold">{todayJobs.length} Job{todayJobs.length !== 1 ? 's' : ''} Scheduled</p>
-              <p className="text-slate-400 text-sm mt-1">
+            <div className="mx-4 mt-4 bg-blue-100 border border-blue-200 rounded-2xl p-4">
+              <p className="text-blue-600 text-xs font-semibold uppercase tracking-wider mb-1">Today's Jobs</p>
+              <p className="text-slate-800 text-2xl font-bold">{todayJobs.length} Job{todayJobs.length !== 1 ? 's' : ''} Scheduled</p>
+              <p className="text-slate-500 text-sm mt-1">
                 {todayJobs.map(j => j.job_title).join(', ')}
               </p>
             </div>
@@ -112,16 +112,16 @@ export default function WaveFOJobsList({ contractor, user }) {
 
           {/* Stats Row */}
           <div className="grid grid-cols-3 gap-3 mx-4 mt-4">
-            <div className="bg-slate-900 rounded-2xl p-3 text-center">
-              <p className="text-2xl font-bold text-white">{activeCount}</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-slate-800">{activeCount}</p>
               <p className="text-slate-500 text-xs mt-0.5">Active</p>
             </div>
-            <div className="bg-slate-900 rounded-2xl p-3 text-center">
-              <p className="text-2xl font-bold text-white">{contractor.completed_jobs_count || 0}</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-slate-800">{contractor.completed_jobs_count || 0}</p>
               <p className="text-slate-500 text-xs mt-0.5">Completed</p>
             </div>
-            <div className="bg-slate-900 rounded-2xl p-3 text-center">
-              <p className="text-2xl font-bold text-white">{contractor.rating ? contractor.rating.toFixed(1) : '—'}</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-3 text-center">
+              <p className="text-2xl font-bold text-slate-800">{contractor.rating ? contractor.rating.toFixed(1) : '—'}</p>
               <p className="text-slate-500 text-xs mt-0.5">Rating</p>
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function WaveFOJobsList({ contractor, user }) {
                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors min-h-[44px] ${
                  filter === f
                    ? 'bg-blue-600 text-white'
-                   : 'bg-slate-800 text-slate-400'
+                   : 'bg-white border border-slate-200 text-slate-500'
                }`}
              >
                {f}
@@ -152,9 +152,9 @@ export default function WaveFOJobsList({ contractor, user }) {
           </div>
           ) : filtered.length === 0 ? (
           <div className="text-center py-16">
-            <Wrench className="w-12 h-12 text-slate-700 mx-auto mb-3" />
+            <Wrench className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <p className="text-slate-500 font-medium">No jobs found</p>
-            <p className="text-slate-600 text-sm mt-1">New jobs will appear here</p>
+            <p className="text-slate-400 text-sm mt-1">New jobs will appear here</p>
           </div>
           ) : (
           filtered.map(scope => (

@@ -7,12 +7,12 @@ import {
 import { useLocalCache, useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 const STATUS_CONFIG = {
-  pending_payment: { label: 'Awaiting Payment', color: 'text-yellow-400', bg: 'bg-yellow-900/20' },
-  funded: { label: 'Funded (In Escrow)', color: 'text-blue-400', bg: 'bg-blue-900/20' },
-  work_in_progress: { label: 'In Progress', color: 'text-purple-400', bg: 'bg-purple-900/20' },
-  pending_release: { label: 'Pending Release', color: 'text-orange-400', bg: 'bg-orange-900/20' },
-  released: { label: 'Paid Out', color: 'text-green-400', bg: 'bg-green-900/20' },
-  refunded: { label: 'Refunded', color: 'text-red-400', bg: 'bg-red-900/20' },
+  pending_payment: { label: 'Awaiting Payment', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200' },
+  funded: { label: 'Funded (In Escrow)', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200' },
+  work_in_progress: { label: 'In Progress', color: 'text-purple-700', bg: 'bg-purple-50 border-purple-200' },
+  pending_release: { label: 'Pending Release', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200' },
+  released: { label: 'Paid Out', color: 'text-green-700', bg: 'bg-green-50 border-green-200' },
+  refunded: { label: 'Refunded', color: 'text-red-700', bg: 'bg-red-50 border-red-200' },
 };
 
 export default function WaveFOInvoices({ contractor, user }) {
@@ -115,30 +115,30 @@ export default function WaveFOInvoices({ contractor, user }) {
   };
 
   return (
-    <div className="bg-slate-950 min-h-full">
+    <div className="bg-slate-100 min-h-full">
       {/* Slow Network Warning */}
       {isSlowNetwork && (
-        <div className="mx-4 mt-4 bg-yellow-900/30 border border-yellow-700/50 rounded-2xl p-3 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-          <p className="text-yellow-300 text-sm">Slow network detected. PDF generation may take longer.</p>
+        <div className="mx-4 mt-4 bg-yellow-50 border border-yellow-200 rounded-2xl p-3 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+          <p className="text-yellow-700 text-sm">Slow network detected. PDF generation may take longer.</p>
         </div>
       )}
 
       {/* Earnings Summary */}
        <div className="mx-4 mt-4 grid grid-cols-2 gap-3">
-        <div className="bg-green-900/20 border border-green-800/30 rounded-2xl p-4">
+        <div className="bg-green-50 border border-green-200 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
-            <TrendingUp className="w-4 h-4 text-green-400" />
-            <p className="text-green-400 text-xs font-semibold">Total Earned</p>
+            <TrendingUp className="w-4 h-4 text-green-600" />
+            <p className="text-green-700 text-xs font-semibold">Total Earned</p>
           </div>
-          <p className="text-white text-2xl font-bold">${totalEarned.toLocaleString()}</p>
+          <p className="text-slate-800 text-2xl font-bold">${totalEarned.toLocaleString()}</p>
         </div>
-        <div className="bg-blue-900/20 border border-blue-800/30 rounded-2xl p-4">
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
-            <Clock className="w-4 h-4 text-blue-400" />
-            <p className="text-blue-400 text-xs font-semibold">In Escrow</p>
+            <Clock className="w-4 h-4 text-blue-600" />
+            <p className="text-blue-700 text-xs font-semibold">In Escrow</p>
           </div>
-          <p className="text-white text-2xl font-bold">${pendingAmount.toLocaleString()}</p>
+          <p className="text-slate-800 text-2xl font-bold">${pendingAmount.toLocaleString()}</p>
         </div>
       </div>
 
@@ -149,7 +149,7 @@ export default function WaveFOInvoices({ contractor, user }) {
             key={f}
             onClick={() => setFilter(f)}
             className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-              filter === f ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'
+              filter === f ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-slate-500'
             }`}
           >
             {f}
@@ -160,37 +160,37 @@ export default function WaveFOInvoices({ contractor, user }) {
       {/* Invoice List */}
       <div className="px-4 mt-4 pb-6 space-y-3">
         {loading ? (
-          <div className="text-center py-12 text-slate-600">Loading...</div>
+          <div className="text-center py-12 text-slate-500">Loading...</div>
         ) : filteredEscrows.length === 0 ? (
           <div className="text-center py-16">
-            <DollarSign className="w-12 h-12 text-slate-800 mx-auto mb-3" />
+            <DollarSign className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <p className="text-slate-500 font-medium">No invoices found</p>
           </div>
         ) : (
           filteredEscrows.map(escrow => {
             const status = STATUS_CONFIG[escrow.status] || { label: escrow.status, color: 'text-slate-400', bg: 'bg-slate-900' };
             return (
-              <div key={escrow.id} className={`${status.bg} rounded-2xl p-4 border border-slate-800`}>
+              <div key={escrow.id} className={`${status.bg} rounded-2xl p-4 border`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-semibold truncate">{escrow.job_title}</p>
-                    <p className="text-slate-400 text-sm">Client: {escrow.customer_name}</p>
+                    <p className="text-slate-800 font-semibold truncate">{escrow.job_title}</p>
+                    <p className="text-slate-500 text-sm">Client: {escrow.customer_name}</p>
                     <span className={`text-xs font-semibold ${status.color} mt-1 inline-block`}>
                       {status.label}
                     </span>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-white font-bold text-lg">${escrow.amount?.toLocaleString()}</p>
+                    <p className="text-slate-800 font-bold text-lg">${escrow.amount?.toLocaleString()}</p>
                     <p className="text-green-400 text-sm">You get: ${escrow.contractor_payout_amount?.toLocaleString() || (escrow.amount * 0.82).toFixed(0)}</p>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col lg:flex-row gap-2 mt-3 pt-3 border-t border-slate-800/50">
+                <div className="flex flex-col lg:flex-row gap-2 mt-3 pt-3 border-t border-slate-200/80">
                   <button
                     onClick={() => handleGenerateAndDownloadPDF(escrow.scope_id)}
                     disabled={generating === escrow.scope_id}
-                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
+                    className="flex-1 bg-white border border-slate-200 text-slate-600 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px] hover:bg-slate-50"
                   >
                     {generating === escrow.scope_id ? (
                       <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
@@ -203,7 +203,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                   <button
                     onClick={() => handleSendInvoiceEmail(escrow, escrow.scope_id)}
                     disabled={sending === escrow.id + '_email'}
-                    className="flex-1 bg-slate-800 text-slate-300 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px]"
+                    className="flex-1 bg-white border border-slate-200 text-slate-600 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 min-h-[44px] hover:bg-slate-50"
                   >
                     {sending === escrow.id + '_email' ? (
                       <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />

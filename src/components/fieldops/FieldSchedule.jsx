@@ -61,7 +61,7 @@ export default function WaveFOSchedule({ contractor, user }) {
   };
 
   return (
-    <div className="bg-slate-950 min-h-full">
+    <div className="bg-slate-100 min-h-full">
       <div className="px-4 pt-4">
         {/* Monthly Calendar */}
         <WaveFOMonthlyCalendar
@@ -91,8 +91,8 @@ export default function WaveFOSchedule({ contractor, user }) {
                 isSelected
                   ? 'bg-blue-600 text-white'
                   : isToday
-                  ? 'bg-slate-800 text-blue-400'
-                  : 'bg-slate-900 text-slate-400'
+                  ? 'bg-white text-blue-600 border border-blue-200'
+                  : 'bg-white border border-slate-200 text-slate-600'
               }`}
             >
               <span className="text-xs font-medium">{DAYS[date.getDay()]}</span>
@@ -107,37 +107,37 @@ export default function WaveFOSchedule({ contractor, user }) {
 
       {/* Selected Day Content */}
       <div className="px-4 mt-6 pb-6">
-        <p className="text-slate-400 text-sm font-semibold mb-3">
+        <p className="text-slate-600 text-sm font-semibold mb-3">
           {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         </p>
 
         {loading ? (
-          <div className="text-center py-8 text-slate-600">Loading...</div>
+          <div className="text-center py-8 text-slate-500">Loading...</div>
         ) : dayJobs.length === 0 && daySlots.length === 0 ? (
           <div className="text-center py-16">
-            <Calendar className="w-12 h-12 text-slate-800 mx-auto mb-3" />
-            <p className="text-slate-600 font-medium">No jobs scheduled</p>
-            <p className="text-slate-700 text-sm mt-1">This day is open</p>
+            <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-500 font-medium">No jobs scheduled</p>
+            <p className="text-slate-400 text-sm mt-1">This day is open</p>
           </div>
         ) : (
           <div className="space-y-3">
             {dayJobs.map(scope => (
-              <div key={scope.id} className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+              <div key={scope.id} className="bg-white rounded-2xl p-4 border border-slate-200">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-5 h-5 text-blue-400" />
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-semibold truncate">{scope.job_title}</p>
-                    <p className="text-slate-400 text-sm">{scope.customer_name}</p>
+                    <p className="text-slate-800 font-semibold truncate">{scope.job_title}</p>
+                    <p className="text-slate-500 text-sm">{scope.customer_name}</p>
                     <div className="flex items-center gap-3 mt-2">
-                      <span className="text-xs text-green-400 font-semibold">
+                      <span className="text-xs text-green-700 font-semibold">
                         ${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : ''}
                       </span>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        scope.status === 'approved' ? 'bg-blue-900/50 text-blue-400' :
-                        scope.status === 'closed' ? 'bg-slate-700 text-slate-400' :
-                        'bg-yellow-900/50 text-yellow-400'
+                        scope.status === 'approved' ? 'bg-blue-100 text-blue-700' :
+                        scope.status === 'closed' ? 'bg-slate-100 text-slate-500' :
+                        'bg-yellow-100 text-yellow-700'
                       }`}>
                         {scope.status?.replace(/_/g, ' ')}
                       </span>
@@ -150,16 +150,16 @@ export default function WaveFOSchedule({ contractor, user }) {
             {daySlots.map(slot => (
               <div key={slot.id} className={`rounded-2xl p-4 border ${
                 slot.available
-                  ? 'bg-green-900/10 border-green-800/30'
-                  : 'bg-slate-900 border-slate-800'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-white border-slate-200'
               }`}>
                 <div className="flex items-center gap-3">
-                  <Clock className={`w-5 h-5 ${slot.available ? 'text-green-400' : 'text-slate-500'}`} />
+                  <Clock className={`w-5 h-5 ${slot.available ? 'text-green-600' : 'text-slate-400'}`} />
                   <div>
-                    <p className={`font-semibold text-sm ${slot.available ? 'text-green-400' : 'text-slate-400'}`}>
+                    <p className={`font-semibold text-sm ${slot.available ? 'text-green-700' : 'text-slate-600'}`}>
                       {slot.available ? 'Available Window' : 'Blocked Time'}
                     </p>
-                    <p className="text-slate-500 text-xs">
+                    <p className="text-slate-400 text-xs">
                       {new Date(`2000-01-01T${slot.start_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                       {' – '}
                       {new Date(`2000-01-01T${slot.end_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
