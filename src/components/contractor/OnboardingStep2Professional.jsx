@@ -13,7 +13,7 @@ export default function OnboardingStep2Professional({
   formData,
   methods,
 }) {
-  const { register, watch, formState: { errors }, setValue } = useFormContext();
+  const { register, formState: { errors }, setValue } = useFormContext();
   const [newSkill, setNewSkill] = useState('');
   const [newCert, setNewCert] = useState('');
 

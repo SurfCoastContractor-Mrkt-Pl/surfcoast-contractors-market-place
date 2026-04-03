@@ -1,7 +1,9 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { HardHat } from 'lucide-react';
 
-export default function OnboardingStep5Policies() {
+export default function OnboardingStep5Policies({ methods }) {
+  const { register, formState: { errors } } = useFormContext();
   return (
     <div style={{ background:"rgba(10,22,40,0.55)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"16px", padding:"28px", marginBottom:"16px" }}>
       <h2 style={{ fontSize:"16px", fontWeight:"700", color:"#ffffff", marginBottom:"20px", paddingBottom:"12px", borderBottom:"1px solid rgba(255,255,255,0.1)" }}>Policies & Acknowledgment</h2>
@@ -42,13 +44,14 @@ export default function OnboardingStep5Policies() {
             <input
               type="checkbox"
               id="solo_confirm"
-              required
+              {...register('compliance_acknowledged', { required: 'You must confirm this policy to continue' })}
               className="mt-0.5 w-4 h-4 accent-red-600"
             />
             <label htmlFor="solo_confirm" className="text-sm text-red-800 cursor-pointer leading-relaxed">
               I confirm that I am a single individual and not a company, crew, partnership, or multi-person entity. I understand that violation of this policy will result in a permanent ban from SurfCoast Contractor Market Place.
             </label>
           </div>
+          {errors.compliance_acknowledged && <p className="text-xs text-red-500 mt-2">{errors.compliance_acknowledged.message}</p>}
         </div>
       </div>
     </div>
