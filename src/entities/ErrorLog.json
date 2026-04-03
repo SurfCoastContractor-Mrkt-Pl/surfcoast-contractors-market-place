@@ -1,0 +1,94 @@
+{
+  "name": "ErrorLog",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "ID of the user who experienced the error"
+    },
+    "userEmail": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "userName": {
+      "type": "string",
+      "description": "Full name of the user"
+    },
+    "pageOrFeature": {
+      "type": "string",
+      "description": "Page or feature where the error occurred"
+    },
+    "actionAttempted": {
+      "type": "string",
+      "description": "User action that triggered the error"
+    },
+    "errorMessage": {
+      "type": "string",
+      "description": "Exact error message or code"
+    },
+    "errorStack": {
+      "type": "string",
+      "description": "Full error stack trace"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO timestamp of the error"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["mobile", "desktop"],
+      "description": "User's platform"
+    },
+    "system": {
+      "type": "string",
+      "enum": ["main_app", "wave_fo"],
+      "description": "Which system (main app or WAVE FO)"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Severity level of the error"
+    },
+    "isResolved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the error has been resolved"
+    },
+    "adminNotes": {
+      "type": "string",
+      "description": "Admin notes on the error resolution"
+    }
+  },
+  "required": [
+    "userEmail",
+    "pageOrFeature",
+    "actionAttempted",
+    "errorMessage",
+    "timestamp",
+    "platform",
+    "system",
+    "severity"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

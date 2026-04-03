@@ -71,6 +71,8 @@ import ActivityAuditDashboard from './pages/ActivityAuditDashboard';
 import PerformanceAnalyticsDashboard from './pages/PerformanceAnalyticsDashboard';
 import SystemHealthDashboard from './pages/SystemHealthDashboard';
 import AdminControlHub from './pages/AdminControlHub';
+import AdminErrorLogs from './pages/AdminErrorLogs';
+import PlatformTests from './pages/PlatformTests';
 import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
 import AdvancedAnalyticsDashboard from './pages/AdvancedAnalyticsDashboard';
 import AlertManagementDashboard from './pages/AlertManagementDashboard';
@@ -185,6 +187,16 @@ const AuthenticatedApp = () => {
       <Route path="/admin-control-hub" element={
         <LayoutWrapper currentPageName="AdminControlHub">
           <AdminControlHub />
+        </LayoutWrapper>
+      } />
+      <Route path="/admin-error-logs" element={
+        <LayoutWrapper currentPageName="AdminErrorLogs">
+          <AdminErrorLogs />
+        </LayoutWrapper>
+      } />
+      <Route path="/platform-tests" element={
+        <LayoutWrapper currentPageName="PlatformTests">
+          <PlatformTests />
         </LayoutWrapper>
       } />
       <Route path="/AdminWaveFo" element={

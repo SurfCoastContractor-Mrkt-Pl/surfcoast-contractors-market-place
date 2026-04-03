@@ -39,19 +39,24 @@ class ErrorBoundary extends Component {
       if (!error?.message) return;
 
       const timestamp = new Date().toISOString();
-      const errorData = {
-        message: error.message,
-        stack: error.stack || '',
-        component: errorInfo?.componentStack || 'Unknown Component',
-        level: errorCount > 2 ? 'critical' : 'error',
-        type: 'frontend_rendering_error',
-        timestamp,
-        url: window.location.href,
-        userAgent: navigator.userAgent
-      };
-
-      // Attempt to log to backend — fire and forget, never blocks UI
-      base44.functions.invoke('logErrorEvent', errorData).catch(() => {});
+      
+      // Determine severity
+      let severity = 'low';
+      if (errorCount > 2) severity = 'critical';
+      else if (error.message.includes('payment') || error.message.includes('auth')) severity = 'critical';
+      else if (error.message.includes('failed') || error.message.includes('error')) severity = 'high';
+      
+      // Log to new ErrorLog entity
+      base44.functions.invoke('logFrontendError', {
+        userEmail: 'unknown@surfcoast.io',
+        userName: 'Unknown User',
+        pageOrFeature: window.location.pathname,
+        actionAttempted: 'Component Render',
+        errorMessage: error.message,
+        errorStack: error.stack || '',
+        platform: window.innerWidth < 768 ? 'mobile' : 'desktop',
+        system: 'main_app'
+      }).catch(() => {});
     } catch (logError) {
       console.error('Failed to log error to backend:', logError);
     }
