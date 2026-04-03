@@ -88,6 +88,7 @@ import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
 import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
+import ContractorMyDay from './pages/ContractorMyDay';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -576,6 +577,11 @@ const AuthenticatedApp = () => {
       <Route path="/wave-fo-about" element={
         <LayoutWrapper currentPageName="WaveFOAbout">
           <WaveFOAbout />
+        </LayoutWrapper>
+      } />
+      <Route path="/my-day" element={
+        <LayoutWrapper currentPageName="ContractorMyDay">
+          <ContractorMyDay />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
