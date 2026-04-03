@@ -21,31 +21,32 @@ import AIProfileGenerator from '@/components/contractor/AIProfileGenerator';
 import { reverseGeocodeLocation, getUserLocation } from '@/components/location/geolocationUtils';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Full name is required'),
-  email: z.string().email('Valid email is required'),
-  phone: z.string().min(1, 'Phone number is required'),
-  date_of_birth: z.string().min(1, 'Date of birth is required'),
-  photo_url: z.string().optional().default(''),
-  id_document_url: z.string().optional().default(''),
-  face_photo_url: z.string().optional().default(''),
-  contractor_type: z.string().min(1, 'Please select a contractor type'),
-  trade_specialty: z.string().optional().default(''),
-  line_of_work: z.string().min(1, 'Please select your line of work'),
-  line_of_work_other: z.string().optional().default(''),
-  years_experience: z.string().optional().default(''),
-  rate_type: z.enum(['hourly', 'fixed']).default('hourly'),
-  hourly_rate: z.string().optional().default(''),
-  fixed_rate: z.string().optional().default(''),
-  fixed_rate_details: z.string().optional().default(''),
-  location: z.string().min(1, 'Location is required'),
-  bio: z.string().optional().default(''),
-  skills: z.array(z.string()).default([]),
-  certifications: z.array(z.string()).default([]),
-  available: z.boolean().default(true),
-  rating: z.number().nullable().optional(),
-  reviews_count: z.number().default(0),
-  credential_documents: z.array(z.object({}).passthrough()).default([]),
-  parental_consent_docs: z.record(z.any()).optional().default({}),
+name: z.string().min(1, 'Full name is required'),
+email: z.string().email('Valid email is required'),
+phone: z.string().min(1, 'Phone number is required'),
+date_of_birth: z.string().min(1, 'Date of birth is required'),
+photo_url: z.string().optional().default(''),
+id_document_url: z.string().min(1, 'ID document is required'),
+face_photo_url: z.string().min(1, 'Face photo is required'),
+contractor_type: z.string().min(1, 'Please select a contractor type'),
+trade_specialty: z.string().optional().default(''),
+line_of_work: z.string().min(1, 'Please select your line of work'),
+line_of_work_other: z.string().optional().default(''),
+years_experience: z.string().optional().default(''),
+rate_type: z.enum(['hourly', 'fixed']).default('hourly'),
+hourly_rate: z.string().optional().default(''),
+fixed_rate: z.string().optional().default(''),
+fixed_rate_details: z.string().optional().default(''),
+location: z.string().min(1, 'Location is required'),
+bio: z.string().optional().default(''),
+skills: z.array(z.string()).default([]),
+certifications: z.array(z.string()).default([]),
+available: z.boolean().default(true),
+compliance_acknowledged: z.boolean().default(false),
+rating: z.number().nullable().optional(),
+reviews_count: z.number().default(0),
+credential_documents: z.array(z.object({}).passthrough()).default([]),
+parental_consent_docs: z.record(z.any()).optional().default({}),
 });
 
 
@@ -187,7 +188,7 @@ export default function BecomeContractor() {
       2: ['line_of_work'],
       3: ['id_document_url', 'face_photo_url'],
       4: isMinor ? ['parental_consent_docs'] : [],
-      5: [],
+      5: ['compliance_acknowledged'],
     };
 
     return fields[step] || [];
@@ -428,7 +429,7 @@ export default function BecomeContractor() {
               />
             )}
             {currentStep === 5 && (
-              <OnboardingStep5Policies />
+              <OnboardingStep5Policies methods={methods} />
             )}
 
             {/* Navigation Buttons */}
