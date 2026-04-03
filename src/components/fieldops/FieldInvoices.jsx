@@ -102,11 +102,11 @@ export default function WaveFOInvoices({ contractor, user }) {
       const pdfUrl = response.data?.pdfUrl;
       
       await base44.integrations.Core.SendEmail({
-        to: escrow.customer_email,
+        to: escrow.client_email,
         subject: `Invoice: ${escrow.job_title} — $${escrow.amount}`,
-        body: `Hi ${escrow.customer_name},\n\nThank you for using SurfCoast! Your job with ${escrow.contractor_name} is now complete.\n\nInvoice Details:\n- Job: ${escrow.job_title}\n- Amount: $${escrow.amount}\n- Invoice ID: ${response.data?.invoiceId}\n\nYour invoice PDF is available here: ${pdfUrl}\n\nThank you for your business!\n\n— ${escrow.contractor_name}`,
+        body: `Hi ${escrow.client_name},\n\nThank you for using SurfCoast! Your job with ${escrow.contractor_name} is now complete.\n\nInvoice Details:\n- Job: ${escrow.job_title}\n- Amount: $${escrow.amount}\n- Invoice ID: ${response.data?.invoiceId}\n\nYour invoice PDF is available here: ${pdfUrl}\n\nThank you for your business!\n\n— ${escrow.contractor_name}`,
       });
-      alert('Invoice sent to ' + escrow.customer_email);
+      alert('Invoice sent to ' + escrow.client_email);
     } catch (e) {
       alert('Could not send email.');
       console.error(e);
@@ -174,7 +174,7 @@ export default function WaveFOInvoices({ contractor, user }) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-slate-800 font-semibold truncate">{escrow.job_title}</p>
-                    <p className="text-slate-500 text-sm">Client: {escrow.customer_name}</p>
+                    <p className="text-slate-500 text-sm">Client: {escrow.client_name}</p>
                     <span className={`text-xs font-semibold ${status.color} mt-1 inline-block`}>
                       {status.label}
                     </span>

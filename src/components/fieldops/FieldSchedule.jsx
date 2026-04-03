@@ -129,7 +129,7 @@ export default function WaveFOSchedule({ contractor, user }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-slate-800 font-semibold truncate">{scope.job_title}</p>
-                    <p className="text-slate-500 text-sm">{scope.customer_name}</p>
+                    <p className="text-slate-500 text-sm">{scope.client_name}</p>
                     <div className="flex items-center gap-3 mt-2">
                       <span className="text-xs text-green-700 font-semibold">
                         ${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : ''}

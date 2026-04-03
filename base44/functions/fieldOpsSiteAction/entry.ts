@@ -34,14 +34,14 @@ Deno.serve(async (req) => {
         contractor_checkin_location: location || null,
       };
       emailSubject = `✅ ${scope.contractor_name} has arrived at your job site`;
-      emailBody = `Hi ${scope.customer_name},\n\nGreat news! Your contractor <strong>${scope.contractor_name}</strong> has checked in at the job site for:\n\n<strong>${scope.job_title}</strong>\n\n📍 Check-in time: ${new Date(now).toLocaleString()}\n${location ? `📌 Location: ${location}\n` : ''}\nWe'll keep you updated as work progresses.\n\n— SurfCoast Marketplace`;
+      emailBody = `Hi ${scope.client_name},\n\nGreat news! Your contractor <strong>${scope.contractor_name}</strong> has checked in at the job site for:\n\n<strong>${scope.job_title}</strong>\n\n📍 Check-in time: ${new Date(now).toLocaleString()}\n${location ? `📌 Location: ${location}\n` : ''}\nWe'll keep you updated as work progresses.\n\n— SurfCoast Marketplace`;
     } else if (action === 'checkout') {
       updateData = {
         contractor_checkout_time: now,
         contractor_checkout_location: location || null,
       };
       emailSubject = `🏁 ${scope.contractor_name} has completed work for today`;
-      emailBody = `Hi ${scope.customer_name},\n\nYour contractor <strong>${scope.contractor_name}</strong> has checked out from the job site for:\n\n<strong>${scope.job_title}</strong>\n\n🕐 Check-out time: ${new Date(now).toLocaleString()}\n${note ? `📝 Notes: ${note}\n` : ''}\nIf you have any questions, please contact them through the platform.\n\n— SurfCoast Marketplace`;
+      emailBody = `Hi ${scope.client_name},\n\nYour contractor <strong>${scope.contractor_name}</strong> has checked out from the job site for:\n\n<strong>${scope.job_title}</strong>\n\n🕐 Check-out time: ${new Date(now).toLocaleString()}\n${note ? `📝 Notes: ${note}\n` : ''}\nIf you have any questions, please contact them through the platform.\n\n— SurfCoast Marketplace`;
     } else if (action === 'photo_update') {
       // Append new photos to existing field_ops_photos array
       const existing = scope.field_ops_photo_urls || [];
@@ -50,7 +50,7 @@ Deno.serve(async (req) => {
         field_ops_last_photo_at: now,
       };
       emailSubject = `📸 New job site photos from ${scope.contractor_name}`;
-      emailBody = `Hi ${scope.customer_name},\n\nYour contractor <strong>${scope.contractor_name}</strong> has uploaded ${photo_urls?.length || 0} new photo(s) from the job site for:\n\n<strong>${scope.job_title}</strong>\n\n${note ? `📝 Notes: ${note}\n` : ''}Log into your SurfCoast account to view the latest progress photos.\n\n— SurfCoast Marketplace`;
+      emailBody = `Hi ${scope.client_name},\n\nYour contractor <strong>${scope.contractor_name}</strong> has uploaded ${photo_urls?.length || 0} new photo(s) from the job site for:\n\n<strong>${scope.job_title}</strong>\n\n${note ? `📝 Notes: ${note}\n` : ''}Log into your SurfCoast account to view the latest progress photos.\n\n— SurfCoast Marketplace`;
     } else {
       return Response.json({ error: 'Unknown action' }, { status: 400 });
     }
@@ -58,10 +58,10 @@ Deno.serve(async (req) => {
     // Update scope with user context (respects RLS and contractor ownership)
     await base44.entities.ScopeOfWork.update(scope_id, updateData);
 
-    // Send email notification to customer
-    if (scope.customer_email) {
+    // Send email notification to client
+    if (scope.client_email) {
       await base44.asServiceRole.integrations.Core.SendEmail({
-        to: scope.customer_email,
+        to: scope.client_email,
         subject: emailSubject,
         body: emailBody,
       });

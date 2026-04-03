@@ -13,11 +13,11 @@ const TAB_CONTEXT = {
     prompts: ['How do I use the job map?', 'Why are some jobs not showing?', 'Can I filter by distance?'],
   },
   schedule: {
-    greeting: "📅 You're on the **Wave FO Schedule** — your personal job calendar!\n\nHere you can:\n• See upcoming jobs by date\n• Confirm agreed work dates with customers\n• Plan your week at a glance\n\nWhat would you like to know about scheduling?",
-    prompts: ['How do I confirm a work date?', 'How does the schedule work?', 'Can customers see my schedule?'],
+    greeting: "📅 You're on the **Wave FO Schedule** — your personal job calendar!\n\nHere you can:\n• See upcoming jobs by date\n• Confirm agreed work dates with clients\n• Plan your week at a glance\n\nWhat would you like to know about scheduling?",
+    prompts: ['How do I confirm a work date?', 'How does the schedule work?', 'Can clients see my schedule?'],
   },
   invoices: {
-    greeting: "💳 You're on **Wave FO Invoices** — your field billing center!\n\nInvoices let you:\n• Bill customers for completed work\n• Track payment status in real time\n• Keep a record of your earnings\n\nNeed help with an invoice?",
+    greeting: "💳 You're on **Wave FO Invoices** — your field billing center!\n\nInvoices let you:\n• Bill clients for completed work\n• Track payment status in real time\n• Keep a record of your earnings\n\nNeed help with an invoice?",
     prompts: ['How do I create an invoice?', 'When do I get paid?', 'What is the platform fee?'],
   },
   reports: {
@@ -25,7 +25,7 @@ const TAB_CONTEXT = {
     prompts: ['How do I reach the next wave?', 'What metrics should I focus on?', 'How are jobs counted?'],
   },
   profile: {
-    greeting: "👤 You're on your **Wave FO Profile**!\n\nYour profile is what customers see when they look you up. Make sure:\n• Your photo is clear and professional\n• Your skills and bio are up to date\n• Your availability status is accurate\n\nWant help improving your profile?",
+    greeting: "👤 You're on your **Wave FO Profile**!\n\nYour profile is what clients see when they look you up. Make sure:\n• Your photo is clear and professional\n• Your skills and bio are up to date\n• Your availability status is accurate\n\nWant help improving your profile?",
     prompts: ['How do I update my availability?', 'What makes a good profile?', 'How do ratings work?'],
   },
   supplies: {

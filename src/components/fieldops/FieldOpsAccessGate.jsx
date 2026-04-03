@@ -20,7 +20,7 @@ const SURFCOAST_WAVES = [
     bgClass: 'bg-slate-800/40',
     emoji: '〰️',
     description: 'Your first step into the platform',
-    features: ['View assigned jobs', 'Basic job status updates', 'Customer contact info'],
+    features: ['View assigned jobs', 'Basic job status updates', 'Client contact info'],
   },
   {
     id: 'swell',

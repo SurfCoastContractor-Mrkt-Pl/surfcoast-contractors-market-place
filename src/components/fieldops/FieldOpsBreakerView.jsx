@@ -319,7 +319,7 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
         <div className="mb-4">
           <h2 className="text-slate-800 font-bold text-base">{selectedScope.job_title}</h2>
           <p className="text-slate-500 text-xs mt-0.5">
-            Client: {selectedScope.customer_name} · {selectedScope.cost_type === 'hourly'
+            Client: {selectedScope.client_name} · {selectedScope.cost_type === 'hourly'
               ? `$${selectedScope.cost_amount}/hr`
               : `$${selectedScope.cost_amount} fixed`}
           </p>
@@ -369,7 +369,7 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0 mr-3">
                   <p className="text-slate-800 font-semibold text-sm truncate">{scope.job_title}</p>
-                  <p className="text-slate-500 text-xs mt-0.5 truncate">{scope.customer_name}</p>
+                  <p className="text-slate-500 text-xs mt-0.5 truncate">{scope.client_name}</p>
                 </div>
                 <div className={`flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                   isCheckedIn ? 'bg-green-100 text-green-700' :

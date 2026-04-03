@@ -161,7 +161,7 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-slate-800 font-semibold truncate">{scope.job_title}</p>
-            <p className="text-slate-500 text-xs">{scope.customer_name}</p>
+            <p className="text-slate-500 text-xs">{scope.client_name}</p>
           </div>
         </div>
       </div>
@@ -242,8 +242,8 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
               <User className="w-5 h-5 text-slate-400" />
             </div>
             <div className="flex-1">
-              <p className="text-slate-800 font-semibold">{scope.customer_name}</p>
-              <p className="text-slate-500 text-sm">{scope.customer_email}</p>
+              <p className="text-slate-800 font-semibold">{scope.client_name}</p>
+              <p className="text-slate-500 text-sm">{scope.client_email}</p>
             </div>
           </div>
         </div>

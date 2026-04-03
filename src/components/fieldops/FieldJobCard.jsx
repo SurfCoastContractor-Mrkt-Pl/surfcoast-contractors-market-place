@@ -30,7 +30,7 @@ const FieldJobCard = memo(({ scope, onSelect }) => {
             <span className={`text-xs font-semibold ${status.color}`}>{status.label}</span>
           </div>
           <p className="text-slate-800 font-semibold text-base leading-tight truncate">{scope.job_title}</p>
-          <p className="text-slate-500 text-sm mt-1 truncate">{scope.customer_name}</p>
+          <p className="text-slate-500 text-sm mt-1 truncate">{scope.client_name}</p>
         </div>
         <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0 mt-1" />
       </div>
