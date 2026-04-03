@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Star, Check, Lock, MapPin, Zap, Briefcase, Users, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Star, Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag } from "lucide-react";
 import { base44 } from '@/api/base44Client';
 
 export default function Home() {
-  const navigate = useNavigate();
   const [spotsRemaining, setSpotsRemaining] = useState(77);
 
   useEffect(() => {
@@ -35,18 +34,18 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => navigate('/BecomeContractor')}
-                className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+              <Link
+                to="/BecomeContractor"
+                className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all text-center"
               >
                 Join as a Pro
-              </button>
-              <button
-                onClick={() => navigate('/CustomerSignup')}
-                className="px-8 py-3 rounded-lg border-2 border-gray-300 text-gray-900 font-bold hover:bg-gray-50 transition-all"
+              </Link>
+              <Link
+                to="/CustomerSignup"
+                className="px-8 py-3 rounded-lg border-2 border-gray-300 text-gray-900 font-bold hover:bg-gray-50 transition-all text-center"
               >
                 Find a Tradesperson
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -95,12 +94,12 @@ export default function Home() {
             </div>
 
             {/* CTA Button */}
-            <button
-              onClick={() => navigate('/BecomeContractor')}
-              className="w-full px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+            <Link
+              to="/BecomeContractor"
+              className="w-full block px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all text-center"
             >
               Claim My Founding Spot
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -160,12 +159,12 @@ export default function Home() {
               ))}
             </div>
 
-            <button
-              onClick={() => navigate('/BecomeContractor')}
+            <Link
+              to="/BecomeContractor"
               className="px-8 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
             >
               Start my free trial
-            </button>
+            </Link>
           </div>
 
           {/* Right Column */}
@@ -182,12 +181,12 @@ export default function Home() {
               Full access to all pro features. Find jobs, connect with clients, and build your reputation.
             </p>
 
-            <button
-              onClick={() => navigate('/BecomeContractor')}
-              className="w-full max-w-sm px-8 py-3 rounded-lg text-white font-bold hover:shadow-lg transition-all mb-6 logo-gradient-bg"
+            <Link
+              to="/BecomeContractor"
+              className="w-full max-w-sm px-8 py-3 rounded-lg text-white font-bold hover:shadow-lg transition-all mb-6 logo-gradient-bg text-center block"
             >
               Start my free trial
-            </button>
+            </Link>
 
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Lock className="w-4 h-4" />
@@ -230,12 +229,12 @@ export default function Home() {
               </li>
             </ul>
 
-            <button
-              onClick={() => navigate('/BecomeContractor')}
-              className="w-full px-6 py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition-all"
+            <Link
+              to="/BecomeContractor"
+              className="w-full block px-6 py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition-all text-center"
             >
               Join as a Pro
-            </button>
+            </Link>
           </div>
 
           {/* Right Path - For Customers */}
@@ -268,12 +267,12 @@ export default function Home() {
               </li>
             </ul>
 
-            <button
-              onClick={() => navigate('/CustomerSignup')}
-              className="w-full px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all"
+            <Link
+              to="/CustomerSignup"
+              className="w-full block px-6 py-3 rounded-lg bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all text-center"
             >
               Find a Pro
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -313,12 +312,12 @@ export default function Home() {
                 {trade}
               </button>
             ))}
-            <button 
-              onClick={() => navigate('/FindContractors')}
+            <Link 
+              to="/FindContractors"
               className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:bg-orange-50 hover:border-orange-300 transition-all"
             >
               + more
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -340,12 +339,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Book your booth and sell goods at local markets. Connect with buyers in your community.
               </p>
-              <button 
-                onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
-                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              <Link 
+                to="/MarketShopSignup?type=swap_meet"
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2"
               >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
 
             {/* Card 2 - Pro Marketplace */}
@@ -357,12 +356,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Find quality jobs, grow your business, and build your reputation with verified clients.
               </p>
-              <button 
-                onClick={() => navigate('/BecomeContractor')}
-                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              <Link 
+                to="/BecomeContractor"
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2"
               >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
 
             {/* Card 3 - Consumer Hub */}
@@ -374,12 +373,12 @@ export default function Home() {
               <p className="text-sm text-gray-600 mb-6">
                 Find verified pros, get instant quotes, and pay securely with verified reviews.
               </p>
-              <button 
-                onClick={() => navigate('/CustomerSignup')}
-                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2 bg-none border-none cursor-pointer p-0"
+              <Link 
+                to="/CustomerSignup"
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors flex items-center gap-2"
               >
                 Learn more <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -411,30 +410,16 @@ export default function Home() {
       <footer className="bg-white border-t border-gray-200 py-8 lg:py-12 px-4 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col gap-4 lg:flex-row lg:gap-0 lg:items-center lg:justify-between">
           <div className="text-sm text-gray-600 mb-4 sm:mb-0">
-            © 2026 SurfCoast. All rights reserved.
+            © {new Date().getFullYear()} SurfCoast. All rights reserved.
           </div>
-          <div className="flex gap-8">
-            <a href="/About" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">About</a>
-            <a href="/PrivacyPolicy" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Privacy</a>
-            <a href="/Terms" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Terms</a>
-            <button 
-              onClick={() => navigate('/Dashboard')}
-              className="text-sm text-gray-700 hover:text-orange-600 transition-colors bg-none border-none cursor-pointer p-0"
-            >
-              Contact
-            </button>
+          <div className="flex gap-6">
+            <Link to="/About" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">About</Link>
+            <Link to="/PrivacyPolicy" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Privacy</Link>
+            <Link to="/Terms" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Terms</Link>
+            <Link to="/pricing" className="text-sm text-gray-700 hover:text-orange-600 transition-colors">Pricing</Link>
           </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-// Helper component for ShoppingBag icon
-function ShoppingBag(props) {
-  return (
-    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
-    </svg>
   );
 }

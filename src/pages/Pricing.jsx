@@ -1,6 +1,6 @@
 import { CheckCircle, Zap, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { designTokens } from "@/lib/designTokens";
+import { Link } from "react-router-dom";
 
 const FREE_FEATURES = [
   "Public listing & discovery",
@@ -215,9 +215,9 @@ export default function Pricing() {
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
           Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
         </p>
-        <a href="/BecomeContractor" style={{ display: "inline-block", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", color: "#ffffff", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none", transition: "all 0.2s" }}>
+        <Link to="/BecomeContractor" style={{ display: "inline-block", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", color: "#ffffff", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none", transition: "all 0.2s" }}>
           Get Started Free →
-        </a>
+        </Link>
       </section>
 
       {/* FREE FOREVER */}
@@ -233,9 +233,9 @@ export default function Pricing() {
             <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", margin: "0 0 28px", lineHeight: 1.7 }}>
               Every professional gets a free public profile — no credit card, no expiration. Build your reputation from day one.
             </p>
-            <a href="/BecomeContractor" style={{ display: "inline-block", background: "#16a34a", color: "#fff", padding: "12px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>
+            <Link to="/BecomeContractor" style={{ display: "inline-block", background: "#16a34a", color: "#fff", padding: "12px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>
               Create Free Profile — No Card Required
-            </a>
+            </Link>
           </div>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
             {FREE_FEATURES.map((f, i) => (
@@ -280,9 +280,9 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a href="/BecomeContractor" style={{ display: "block", textAlign: "center", background: tier.tag ? tier.accent : "rgba(255,255,255,0.08)", color: tier.tag ? "#0f172a" : "#f1f5f9", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", border: tier.tag ? "none" : `1px solid rgba(255,255,255,0.12)` }}>
+              <Link to="/BecomeContractor" style={{ display: "block", textAlign: "center", background: tier.tag ? tier.accent : "rgba(255,255,255,0.08)", color: tier.tag ? "#0f172a" : "#f1f5f9", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", border: tier.tag ? "none" : `1px solid rgba(255,255,255,0.12)` }}>
                 Get Started Free
-              </a>
+              </Link>
             </div>
           ))}
         </div>
@@ -401,9 +401,9 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "rgba(236,72,153,0.12)", color: "#ec4899", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(236,72,153,0.3)" }}>
+            <Link to="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "rgba(236,72,153,0.12)", color: "#ec4899", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(236,72,153,0.3)" }}>
               Get Started with 5%
-            </a>
+            </Link>
           </div>
 
           {/* $20/month Subscription Option */}
@@ -431,9 +431,9 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#ec4899", color: "#0f172a", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none" }}>
+            <Link to="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#ec4899", color: "#0f172a", padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: "700", textDecoration: "none" }}>
               Get Started for $20/month
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -459,9 +459,9 @@ export default function Pricing() {
               <p style={{ fontSize: "13px", fontWeight: "800", color: "#a855f7", margin: "0 0 4px" }}>Premium Experience</p>
               <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Advanced tools, superior efficiency, and enhanced user-friendly interface for serious booth operators.</p>
             </div>
-            <a href="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#a855f7", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none", marginBottom: "12px" }}>
+            <Link to="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#a855f7", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none", marginBottom: "12px" }}>
               Upgrade to WAVEShop FO →
-            </a>
+            </Link>
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
           </div>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr", gap: "10px" }}>
@@ -580,8 +580,8 @@ export default function Pricing() {
           Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Get Started Free</a>
-          <a href="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>Why SurfCoast →</a>
+          <Link to="/BecomeContractor" style={{ background: "#f59e0b", color: "#0f172a", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none" }}>Get Started Free</Link>
+          <Link to="/why-surfcoast" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "15px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)" }}>Why SurfCoast →</Link>
         </div>
       </section>
 

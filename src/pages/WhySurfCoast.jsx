@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { CheckCircle, X } from "lucide-react";
 
 const WHO_TABS = [
@@ -87,8 +88,8 @@ export default function WhySurfCoast() {
           SurfCoast Marketplace exists for independent workers, solo operators, and small trades businesses who need real tools — not corporate software built for someone else.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</a>
-          <a href="/pricing" style={{ background: "transparent", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.3)" }}>View All Plans</a>
+          <Link to="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</Link>
+          <Link to="/pricing" style={{ background: "transparent", color: "#fff", padding: "14px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.3)" }}>View All Plans</Link>
         </div>
       </section>
 
@@ -147,7 +148,7 @@ export default function WhySurfCoast() {
           ))}
         </div>
         <div style={{ marginTop: "40px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <a href="/pricing" style={{ background: "linear-gradient(90deg, #0d2a52, #1246a0)", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>See All Plans & Pricing →</a>
+          <Link to="/pricing" style={{ background: "linear-gradient(90deg, #0d2a52, #1246a0)", color: "#fff", padding: "13px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "700", textDecoration: "none" }}>See All Plans & Pricing →</Link>
         </div>
       </section>
 
@@ -197,8 +198,8 @@ export default function WhySurfCoast() {
           Create your free profile today — no credit card, no commitment. Join the marketplace built for people who actually work.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</a>
-          <a href="/pricing" style={{ background: "transparent", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.35)" }}>View All Plans</a>
+          <Link to="/BecomeContractor" style={{ background: "#d97706", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none" }}>Get Started Free</Link>
+          <Link to="/pricing" style={{ background: "transparent", color: "#fff", padding: "16px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "700", textDecoration: "none", border: "2px solid rgba(255,255,255,0.35)" }}>View All Plans</Link>
         </div>
       </section>
 
