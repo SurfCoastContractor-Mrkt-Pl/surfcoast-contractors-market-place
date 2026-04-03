@@ -27,11 +27,11 @@ export default function SupplyHousesFinder({ contractor, isOpen, onClose }) {
           try {
             const { latitude, longitude } = position.coords;
             const response = await base44.functions.invoke('findNearbySupplyHouses', {
-              latitude,
-              longitude,
-              trade_specialty: contractor?.trade_specialty || 'general',
-              radius: 5
-            });
+                              latitude,
+                              longitude,
+                              trade_specialty: contractor?.trade_specialty || 'general',
+                              radius: 10
+                            });
 
             if (response.data.success) {
               setSupplyHouses(response.data.supplies_houses || []);
@@ -107,7 +107,7 @@ export default function SupplyHousesFinder({ contractor, isOpen, onClose }) {
           {searched && supplyHouses.length > 0 && (
             <div className="space-y-3">
               <p className="text-slate-300 text-sm font-semibold">
-                Found {supplyHouses.length} nearby supply houses (within 5 miles)
+                Found {supplyHouses.length} supply houses within 10 miles
               </p>
               {supplyHouses.map((house, idx) => (
                 <a
@@ -129,6 +129,9 @@ export default function SupplyHousesFinder({ contractor, isOpen, onClose }) {
                       <div className="flex items-center gap-1 text-yellow-400">
                         <Star className="w-3 h-3 fill-yellow-400" />
                         {house.rating}
+                        {house.user_ratings_total > 0 && (
+                          <span className="text-slate-500">({house.user_ratings_total})</span>
+                        )}
                       </div>
                     )}
                     {house.open_now !== null && (
