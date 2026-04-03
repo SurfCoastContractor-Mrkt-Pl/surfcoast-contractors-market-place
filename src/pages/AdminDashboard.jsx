@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, Flag, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, AlertCircle, User, Waves, Briefcase, BookOpen, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw } from 'lucide-react';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 import SendVendorEmailModal from '@/components/admin/SendVendorEmailModal';
 
@@ -23,6 +22,7 @@ export default function AdminDashboard() {
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
   const [vendorTypeFilter, setVendorTypeFilter] = useState('all');
   const [vendorSearchFilter, setVendorSearchFilter] = useState('');
+  const [contractorSearch, setContractorSearch] = useState('');
   const [contractorSubFilter, setContractorSubFilter] = useState('all');
   const [contractorAcctFilter, setContractorAcctFilter] = useState('all');
   const [reviewStatusFilter, setReviewStatusFilter] = useState('all');
@@ -62,9 +62,13 @@ export default function AdminDashboard() {
     return contractors.filter(c => {
       if (contractorSubFilter !== 'all' && c.wave_shop_subscription_status !== contractorSubFilter) return false;
       if (contractorAcctFilter !== 'all' && c.account_locked !== (contractorAcctFilter === 'locked')) return false;
+      if (contractorSearch) {
+        const q = contractorSearch.toLowerCase();
+        if (!c.name?.toLowerCase().includes(q) && !c.email?.toLowerCase().includes(q)) return false;
+      }
       return true;
     });
-  }, [contractors, contractorSubFilter, contractorAcctFilter]);
+  }, [contractors, contractorSubFilter, contractorAcctFilter, contractorSearch]);
 
   const filteredReviews = useMemo(() => {
     return reviews.filter(r => {
@@ -188,8 +192,19 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Admin Dashboard</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">Vendors · Contractors · Reviews · Licenses</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link to="/admin-control-hub" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
+              Control Hub →
+            </Link>
+            <Link to="/adminfieldops" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
+              Wave FO →
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -384,6 +399,16 @@ export default function AdminDashboard() {
           <div>
             <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Search name or email..."
+                    value={contractorSearch}
+                    onChange={e => setContractorSearch(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground placeholder:text-muted-foreground"
+                  />
+                </div>
                 <select
                   value={contractorSubFilter}
                   onChange={e => setContractorSubFilter(e.target.value)}
@@ -403,6 +428,7 @@ export default function AdminDashboard() {
                   <option value="locked">Locked</option>
                 </select>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">{filteredContractors.length} of {contractors.length} contractors</p>
             </div>
 
             <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
@@ -411,11 +437,11 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Name</th>
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Email</th>
-                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><Wrench className="w-4 h-4" />Trade</th>
-                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><MapPin className="w-4 h-4" />City/State</th>
-                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><CreditCard className="w-4 h-4" />Sub Status</th>
-                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><Shield className="w-4 h-4" />Account</th>
-                    <th className="px-6 py-3 text-left font-semibold text-foreground flex items-center gap-1"><LinkIcon className="w-4 h-4" />Stripe Connected</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Trade</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">City/State</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Sub Status</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Account</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Stripe</th>
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Created</th>
                   </tr>
                 </thead>
@@ -426,7 +452,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-muted-foreground text-xs">{c.email}</td>
                       <td className="px-6 py-4 text-muted-foreground capitalize">{c.trade_specialty?.replace('_', ' ')}</td>
                       <td className="px-6 py-4 text-muted-foreground">{c.location}</td>
-                      <td className="px-6 py-4"><StatusBadge status={c.wave_shop_subscription_status || 'inactive'} /></td>
+                      <td className="px-6 py-4"><StatusBadge status={c.stripe_account_charges_enabled ? 'active' : (c.stripe_account_setup_complete ? 'pending' : 'inactive')} /></td>
                       <td className="px-6 py-4">{c.account_locked ? <StatusBadge status="locked" /> : <StatusBadge status="active" />}</td>
                       <td className="px-6 py-4">{c.stripe_account_setup_complete ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Ban className="w-4 h-4 text-red-400" />}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{new Date(c.created_date).toLocaleDateString()}</td>
@@ -440,17 +466,44 @@ export default function AdminDashboard() {
 
         {/* WAVE FO */}
         {activeTab === 'field_ops' && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Briefcase className="w-12 h-12 text-primary mb-4" />
+          <div className="max-w-lg mx-auto py-12 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-5">
+              <Briefcase className="w-8 h-8 text-blue-600" />
+            </div>
             <h2 className="text-xl font-bold text-foreground mb-2">Admin Wave FO</h2>
-            <p className="text-muted-foreground text-sm mb-6">Impersonate any contractor and view their Wave FO dashboard.</p>
-            <Link
-              to="/adminfieldops"
-              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-colors flex items-center gap-2"
-            >
-              <Briefcase className="w-4 h-4" />
-              Open Admin Wave FO
-            </Link>
+            <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
+              Impersonate any contractor to view their Wave FO dashboard — jobs, schedule, invoices, and profile — without affecting their data.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/adminfieldops"
+                className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-colors flex items-center gap-2 justify-center"
+              >
+                <Briefcase className="w-4 h-4" />
+                Open Admin Wave FO
+              </Link>
+              <Link
+                to="/FieldOps"
+                className="px-6 py-3 border border-border hover:bg-muted text-foreground rounded-xl font-semibold transition-colors flex items-center gap-2 justify-center"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Go to My Wave FO
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-3 gap-4 text-center">
+              <div className="bg-card border border-border rounded-xl p-4">
+                <p className="text-2xl font-bold text-foreground">{contractors.length}</p>
+                <p className="text-xs text-muted-foreground mt-1">Total Contractors</p>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-4">
+                <p className="text-2xl font-bold text-green-600">{contractors.filter(c => c.stripe_account_setup_complete).length}</p>
+                <p className="text-xs text-muted-foreground mt-1">Stripe Connected</p>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-4">
+                <p className="text-2xl font-bold text-red-600">{contractors.filter(c => c.account_locked).length}</p>
+                <p className="text-xs text-muted-foreground mt-1">Locked Accounts</p>
+              </div>
+            </div>
           </div>
         )}
 

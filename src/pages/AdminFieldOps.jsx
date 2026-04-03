@@ -77,20 +77,24 @@ export default function AdminFieldOps() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-amber-400" />
-              <span className="text-white font-bold">Admin Wave FO</span>
+              <span className="text-white font-bold text-sm">Admin Wave FO</span>
+              <span className="bg-amber-900 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">ADMIN</span>
             </div>
-            <Link to="/FieldOps" className="text-slate-400 hover:text-white text-xs">← Wave FO</Link>
+            <Link to="/admin" className="text-slate-400 hover:text-white text-xs flex items-center gap-1">
+              ← Admin
+            </Link>
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
-              placeholder="Search contractors..."
+              placeholder="Search by name or email..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full bg-slate-800 text-white placeholder-slate-500 rounded-xl pl-9 pr-4 py-2.5 text-sm border border-slate-700 focus:outline-none focus:border-blue-500"
             />
           </div>
+          <p className="text-slate-500 text-xs mt-2">{filtered.length} of {contractors.length} contractors</p>
         </div>
 
         {/* Contractor List */}
@@ -104,18 +108,24 @@ export default function AdminFieldOps() {
                 onClick={() => setSelectedContractor(c)}
                 className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-800 hover:bg-slate-800/50 transition-colors text-left"
               >
-                <div className="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {c.photo_url
                     ? <img src={c.photo_url} alt="" className="w-full h-full object-cover" />
                     : <span className="text-white font-bold text-sm">{c.name?.charAt(0)}</span>
                   }
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">{c.name}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-white text-sm font-medium truncate">{c.name}</p>
+                    {c.account_locked && <span className="text-[10px] bg-red-900 text-red-400 px-1.5 py-0.5 rounded font-bold">LOCKED</span>}
+                  </div>
                   <p className="text-slate-500 text-xs truncate">{c.email}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500">{c.unique_customers_count || 0} customers</span>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="text-right">
+                    <p className="text-xs text-slate-400">{c.completed_jobs_count || 0} jobs</p>
+                    <p className="text-[10px] text-slate-600 capitalize">{c.trade_specialty?.replace('_', ' ') || c.line_of_work?.split('_').slice(0,2).join(' ') || '—'}</p>
+                  </div>
                   <ChevronRight className="w-4 h-4 text-slate-600" />
                 </div>
               </button>

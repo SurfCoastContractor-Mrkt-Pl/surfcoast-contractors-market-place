@@ -4,239 +4,179 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Activity, Database, BarChart3, Heart, Zap, Settings, Clock } from 'lucide-react';
+import { AlertCircle, Activity, Database, BarChart3, Heart, Zap, Settings, Clock, Users, Shield, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AdminGuard from '@/components/auth/AdminGuard';
 
 const DASHBOARD_SECTIONS = [
   {
     title: 'System Monitoring',
     icon: Heart,
+    color: 'text-green-600',
     items: [
-      { label: 'System Health', path: '/system-health', icon: Heart, color: 'text-green-600' },
-      { label: 'Performance Analytics', path: '/performance-analytics', icon: Zap, color: 'text-blue-600' },
-      { label: 'Error Monitoring', path: '/error-monitoring', icon: AlertCircle, color: 'text-red-600' },
-      { label: 'Activity Audit Log', path: '/activity-audit', icon: Activity, color: 'text-purple-600' }
+      { label: 'System Health', path: '/system-health', icon: Heart, color: 'text-green-600', desc: 'Service status & uptime' },
+      { label: 'Performance Analytics', path: '/performance-analytics', icon: Zap, color: 'text-blue-600', desc: 'Response times & throughput' },
+      { label: 'Error Monitoring', path: '/error-monitoring', icon: AlertCircle, color: 'text-red-600', desc: 'Errors, warnings & alerts' },
+      { label: 'Activity Audit Log', path: '/activity-audit', icon: Activity, color: 'text-purple-600', desc: 'User & system audit trail' },
     ]
   },
   {
-    title: 'Data Management',
+    title: 'Data & Analytics',
     icon: Database,
+    color: 'text-indigo-600',
     items: [
-      { label: 'Database Management', path: '/database-management', icon: Database, color: 'text-slate-600' },
-      { label: 'API Usage Analytics', path: '/api-usage-analytics', icon: BarChart3, color: 'text-indigo-600' }
+      { label: 'Database Management', path: '/database-management', icon: Database, color: 'text-slate-600', desc: 'Entity data & migrations' },
+      { label: 'API Usage Analytics', path: '/api-usage-analytics', icon: BarChart3, color: 'text-indigo-600', desc: 'API calls & usage trends' },
+      { label: 'Advanced Analytics', path: '/advanced-analytics', icon: BarChart3, color: 'text-violet-600', desc: 'Predictive & deep insights' },
+      { label: 'Platform Activity', path: '/platform-activity', icon: Activity, color: 'text-sky-600', desc: 'Real-time platform events' },
     ]
   },
   {
-    title: 'Operations',
+    title: 'Platform Operations',
     icon: Settings,
+    color: 'text-orange-600',
     items: [
-      { label: 'Rate Limit Management', path: '/rate-limit-dashboard', icon: Clock, color: 'text-orange-600' },
-      { label: 'System Settings', path: '/admin-settings', icon: Settings, color: 'text-slate-700' }
+      { label: 'Admin Dashboard', path: '/admin', icon: Shield, color: 'text-amber-600', desc: 'Vendors, contractors & reviews' },
+      { label: 'Compliance Dashboard', path: '/ComplianceDashboard', icon: Shield, color: 'text-green-700', desc: 'License & compliance review' },
+      { label: 'Contractor Verification', path: '/ContractorVerificationDashboard', icon: Users, color: 'text-blue-700', desc: 'ID & credential verification' },
+      { label: 'Alert Management', path: '/alert-management', icon: AlertCircle, color: 'text-red-500', desc: 'Alerts & incident tracking' },
     ]
   }
 ];
 
 function AdminControlHubContent() {
-  const [expandedSection, setExpandedSection] = useState(null);
-
-  // Fetch summary stats
-  const { data: stats = {} } = useQuery({
+  const { data: stats = {}, refetch, isFetching } = useQuery({
     queryKey: ['adminStats'],
     queryFn: async () => {
-      const [errors, health, activity, metrics] = await Promise.all([
-        base44.asServiceRole.entities.ErrorLog.list('-created_date', 1).catch(() => []),
+      const [errors, health, activity] = await Promise.all([
+        base44.asServiceRole.entities.ErrorLog.list('-created_date', 5).catch(() => []),
         base44.asServiceRole.entities.HealthCheck.list('-created_date', 1).catch(() => []),
-        base44.asServiceRole.entities.ActivityLog.list('-created_date', 1).catch(() => []),
-        base44.asServiceRole.entities.PerformanceMetric.list('-created_date', 1).catch(() => [])
+        base44.asServiceRole.entities.ActivityLog.list('-created_date', 5).catch(() => []),
       ]);
-
-      return {
-        recentError: errors[0],
-        recentHealth: health[0],
-        recentActivity: activity[0],
-        recentMetric: metrics[0]
-      };
+      return { errors, recentHealth: health[0], activities: activity };
     },
     refetchInterval: 60000
   });
 
-  const getStatusColor = (status) => {
-    const colors = {
-      healthy: 'bg-green-100 text-green-900',
-      degraded: 'bg-yellow-100 text-yellow-900',
-      unhealthy: 'bg-red-100 text-red-900',
-      error: 'bg-red-100 text-red-900',
-      success: 'bg-green-100 text-green-900'
-    };
-    return colors[status] || 'bg-slate-100 text-slate-900';
-  };
+  const getStatusColor = (status) => ({
+    healthy: 'bg-green-100 text-green-800',
+    degraded: 'bg-yellow-100 text-yellow-800',
+    unhealthy: 'bg-red-100 text-red-800',
+    error: 'bg-red-100 text-red-800',
+    success: 'bg-green-100 text-green-800',
+  }[status] || 'bg-slate-100 text-slate-700');
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Admin Control Hub</h1>
-          <p className="text-slate-600">Centralized platform monitoring and management</p>
-        </div>
-
-        {/* Quick Status */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-slate-600 mb-1">System Status</div>
-              <Badge className="bg-green-100 text-green-900">OPERATIONAL</Badge>
-              <p className="text-xs text-slate-500 mt-2">All systems nominal</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-slate-600 mb-1">Active Errors</div>
-              <div className="text-2xl font-bold text-red-600">3</div>
-              <p className="text-xs text-slate-500 mt-2">Requires attention</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-slate-600 mb-1">Uptime (24h)</div>
-              <div className="text-2xl font-bold text-green-600">99.9%</div>
-              <p className="text-xs text-slate-500 mt-2">High availability</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-slate-600 mb-1">Avg Response</div>
-              <div className="text-2xl font-bold text-blue-600">247ms</div>
-              <p className="text-xs text-slate-500 mt-2">Healthy performance</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Dashboard Sections */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {DASHBOARD_SECTIONS.map((section, idx) => {
-            const Icon = section.icon;
-            const isExpanded = expandedSection === idx;
-
-            return (
-              <Card key={idx} className={isExpanded ? 'md:col-span-3' : ''}>
-                <CardHeader 
-                  className="cursor-pointer hover:bg-slate-50"
-                  onClick={() => setExpandedSection(isExpanded ? null : idx)}
-                >
-                  <CardTitle className="flex items-center justify-between text-lg">
-                    <span className="flex items-center gap-2">
-                      <Icon className="w-5 h-5" />
-                      {section.title}
-                    </span>
-                    <span className="text-2xl text-slate-300">{isExpanded ? '−' : '+'}</span>
-                  </CardTitle>
-                </CardHeader>
-
-                {isExpanded && (
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {section.items.map((item, itemIdx) => {
-                        const ItemIcon = item.icon;
-                        return (
-                          <Link
-                            key={itemIdx}
-                            to={item.path}
-                            className="p-4 rounded-lg border border-slate-200 hover:border-slate-400 hover:bg-white transition-all"
-                          >
-                            <div className="flex items-center gap-3">
-                              <ItemIcon className={`w-6 h-6 ${item.color}`} />
-                              <div>
-                                <p className="font-semibold text-slate-900">{item.label}</p>
-                                <p className="text-xs text-slate-500">View details →</p>
-                              </div>
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Recent Activity */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Errors</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats.recentError ? (
-                <div>
-                  <Badge className={getStatusColor(stats.recentError.level)}>
-                    {stats.recentError.level}
-                  </Badge>
-                  <p className="text-sm font-semibold mt-2">{stats.recentError.message}</p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    {stats.recentError.category}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-slate-500 text-sm">No errors recorded</p>
-              )}
-              <Link to="/error-monitoring">
-                <Button variant="outline" size="sm" className="mt-4">
-                  View All Errors
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activities</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {stats.recentActivity ? (
-                <div>
-                  <Badge variant="outline" className="bg-slate-100">
-                    {stats.recentActivity.action_type}
-                  </Badge>
-                  <p className="text-sm font-semibold mt-2">
-                    {stats.recentActivity.description || `${stats.recentActivity.action_type} ${stats.recentActivity.entity_name}`}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    by {stats.recentActivity.user_email}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-slate-500 text-sm">No activities recorded</p>
-              )}
-              <Link to="/activity-audit">
-                <Button variant="outline" size="sm" className="mt-4">
-                  View Audit Log
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Links */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Quick Links</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Link to="/system-health">
-              <Button variant="outline" className="w-full">Health Check</Button>
-            </Link>
-            <Link to="/performance-analytics">
-              <Button variant="outline" className="w-full">Performance</Button>
-            </Link>
-            <Link to="/error-monitoring">
-              <Button variant="outline" className="w-full">Errors</Button>
-            </Link>
-            <Link to="/activity-audit">
-              <Button variant="outline" className="w-full">Audit Log</Button>
-            </Link>
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <div className="bg-white border-b border-slate-200 px-6 py-5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Admin Control Hub</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Platform monitoring, operations & management</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Badge className="bg-green-100 text-green-800 border-0 text-xs px-3 py-1">● OPERATIONAL</Badge>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching} className="gap-2">
+              <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+
+        {/* Quick Nav Cards */}
+        {DASHBOARD_SECTIONS.map((section, idx) => {
+          const SectionIcon = section.icon;
+          return (
+            <div key={idx}>
+              <div className="flex items-center gap-2 mb-4">
+                <SectionIcon className={`w-4 h-4 ${section.color}`} />
+                <h2 className="text-sm font-bold text-slate-600 uppercase tracking-wider">{section.title}</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {section.items.map((item, itemIdx) => {
+                  const ItemIcon = item.icon;
+                  return (
+                    <Link
+                      key={itemIdx}
+                      to={item.path}
+                      className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-200 transition-colors`}>
+                          <ItemIcon className={`w-4 h-4 ${item.color}`} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-900 text-sm leading-tight">{item.label}</p>
+                          <p className="text-xs text-slate-500 mt-0.5 leading-snug">{item.desc}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Live Feed */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500" />
+                Recent Errors
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {stats.errors?.length > 0 ? stats.errors.map((err, i) => (
+                <div key={i} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg">
+                  <Badge className={`${getStatusColor(err.level)} border-0 text-xs flex-shrink-0`}>{err.level}</Badge>
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-slate-800 truncate">{err.message}</p>
+                    <p className="text-[10px] text-slate-500">{err.category}</p>
+                  </div>
+                </div>
+              )) : (
+                <p className="text-slate-400 text-sm py-4 text-center">✓ No recent errors</p>
+              )}
+              <Link to="/error-monitoring">
+                <Button variant="outline" size="sm" className="mt-2 w-full text-xs">View Error Log →</Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Activity className="w-4 h-4 text-purple-500" />
+                Recent Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {stats.activities?.length > 0 ? stats.activities.map((act, i) => (
+                <div key={i} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg">
+                  <Badge variant="outline" className="text-[10px] flex-shrink-0 border-slate-300">{act.action_type}</Badge>
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-slate-800 truncate">
+                      {act.description || `${act.action_type} ${act.entity_name}`}
+                    </p>
+                    <p className="text-[10px] text-slate-500">{act.user_email}</p>
+                  </div>
+                </div>
+              )) : (
+                <p className="text-slate-400 text-sm py-4 text-center">No recent activity</p>
+              )}
+              <Link to="/activity-audit">
+                <Button variant="outline" size="sm" className="mt-2 w-full text-xs">View Audit Log →</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+
       </div>
     </div>
   );

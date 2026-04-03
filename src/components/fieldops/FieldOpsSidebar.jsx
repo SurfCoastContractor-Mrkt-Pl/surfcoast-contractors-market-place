@@ -1,5 +1,6 @@
 import React from 'react';
-import { LogOut, Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap } from 'lucide-react';
+import { Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
@@ -84,11 +85,18 @@ export default function FieldOpsSidebar({
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-slate-800 text-xs text-slate-500">
-        <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-red-400'}`} />
+      <div className="px-4 py-3 border-t border-slate-800 space-y-2">
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isOnline ? 'bg-green-400' : 'bg-red-400'}`} />
           <span>{isOnline ? 'Online' : 'Offline'}</span>
         </div>
+        <Link
+          to="/ContractorAccount"
+          className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Back to Portal
+        </Link>
       </div>
     </div>
   );

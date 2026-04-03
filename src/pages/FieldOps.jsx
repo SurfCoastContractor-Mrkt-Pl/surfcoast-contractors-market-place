@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Briefcase, Bell, MapPin, ArrowLeft } from 'lucide-react';
+import { Briefcase, Bell, ArrowLeft } from 'lucide-react';
 import SupplyHousesFinder from '@/components/contractor/SupplyHousesFinder';
 import WaveFOJobsList from '@/components/fieldops/FieldJobsList';
 import WaveFOSchedule from '@/components/fieldops/FieldSchedule';
@@ -37,7 +37,7 @@ export default function WaveFo() {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
-  const [showSupplyHouses, setShowSupplyHouses] = useState(false);
+
   const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
 
   useEffect(() => {
@@ -169,21 +169,13 @@ export default function WaveFo() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Desktop Sidebar Navigation - Admin only for non-admins */}
-        {isAdmin ? (
-          <WaveFOSidebar
-            contractor={effectiveContractor}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            hasBreakerAccess={hasSurfCoastWaveFOAccess}
-            isOnline={isOnline}
-          />
-        ) : (
-          <div className="hidden lg:flex flex-col items-center justify-center bg-slate-900 w-64 border-r border-slate-800 p-6">
-            <MapPin className="w-16 h-16 text-amber-400 mb-4" />
-            <p className="text-white text-lg font-semibold text-center mb-2">Wave FO Mobile-First</p>
-            <p className="text-slate-400 text-sm text-center">Wave FO is optimized for mobile devices. For the full experience, please use your phone.</p>
-          </div>
-        )}
+        <WaveFOSidebar
+          contractor={effectiveContractor}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          hasBreakerAccess={hasSurfCoastWaveFOAccess}
+          isOnline={isOnline}
+        />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -245,17 +237,13 @@ export default function WaveFo() {
           {activeTab === 'reports' && <WaveFOReporting contractor={effectiveContractor} user={user} />}
           {activeTab === 'profile' && <WaveFOProfile contractor={effectiveContractor} user={user} onUpdate={setContractor} />}
           {activeTab === 'supplies' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <MapPin className="w-6 h-6" />
-                Find Supply Houses
-              </h2>
-              <button
-                onClick={() => setShowSupplyHouses(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
-              >
-                Find Nearby Supply Houses
-              </button>
+            <div className="p-4">
+              <SupplyHousesFinder
+                contractor={effectiveContractor}
+                isOpen={true}
+                onClose={() => setActiveTab('jobs')}
+                inline={true}
+              />
             </div>
           )}
           {activeTab === 'breaker' && <SurfCoastWaveFOView contractor={effectiveContractor} user={user} />}
@@ -271,12 +259,7 @@ export default function WaveFo() {
         />
       )}
 
-      {/* Supply Houses Modal */}
-      <SupplyHousesFinder
-        contractor={effectiveContractor}
-        isOpen={showSupplyHouses}
-        onClose={() => setShowSupplyHouses(false)}
-      />
+
     </div>
   );
 }
