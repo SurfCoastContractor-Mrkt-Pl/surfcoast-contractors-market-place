@@ -135,6 +135,7 @@ export default function Layout({ children, currentPageName }) {
       <LayoutFooter
         createPageUrl={createPageUrl}
         setSuggestionOpen={setSuggestionOpen}
+        handbookLink="/wave-handbook"
       />
     </div>
   );

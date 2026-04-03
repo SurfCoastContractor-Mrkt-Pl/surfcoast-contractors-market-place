@@ -16,6 +16,7 @@ const LIGHT = '#e2e8f0';
 export default function LayoutFooter({
   createPageUrl,
   setSuggestionOpen,
+  handbookLink,
 }) {
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 py-10 sm:py-12 mt-auto" style={{color: WHITE}}>
@@ -40,6 +41,7 @@ export default function LayoutFooter({
               <li><Link to={createPageUrl('BecomeContractor')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Create Profile</Link></li>
               <li><Link to={createPageUrl('Jobs')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Browse Jobs</Link></li>
               <li><Link to={createPageUrl('Blog')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
+              {handbookLink && <li><Link to={handbookLink} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>WAVE Handbook</Link></li>}
             </ul>
           </div>
 

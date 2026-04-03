@@ -84,6 +84,7 @@ import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
 import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
 import SMSHub from './pages/SMSHub';
+import WAVEHandbook from './pages/WAVEHandbook';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -552,6 +553,11 @@ const AuthenticatedApp = () => {
       <Route path="/sms-hub" element={
         <LayoutWrapper currentPageName="SMSHub">
           <SMSHub />
+        </LayoutWrapper>
+      } />
+      <Route path="/wave-handbook" element={
+        <LayoutWrapper currentPageName="WAVEHandbook">
+          <WAVEHandbook />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
