@@ -83,6 +83,7 @@ import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
 import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
+import SMSHub from './pages/SMSHub';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -546,6 +547,11 @@ const AuthenticatedApp = () => {
       <Route path="/workload-hub" element={
         <LayoutWrapper currentPageName="ContractorWorkloadHub">
           <ContractorWorkloadHub />
+        </LayoutWrapper>
+      } />
+      <Route path="/sms-hub" element={
+        <LayoutWrapper currentPageName="SMSHub">
+          <SMSHub />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

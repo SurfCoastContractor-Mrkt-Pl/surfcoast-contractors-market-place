@@ -1,0 +1,134 @@
+{
+  "name": "SMSMessage",
+  "type": "object",
+  "properties": {
+    "conversation_id": {
+      "type": "string",
+      "description": "ID of the associated SMSConversation"
+    },
+    "sender_email": {
+      "type": "string",
+      "description": "Email of the sender (contractor or client)"
+    },
+    "sender_phone": {
+      "type": "string",
+      "description": "Phone number of the sender"
+    },
+    "sender_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "client"
+      ],
+      "description": "Whether sender is contractor or client"
+    },
+    "recipient_phone": {
+      "type": "string",
+      "description": "Phone number of the recipient"
+    },
+    "body": {
+      "type": "string",
+      "description": "SMS message content"
+    },
+    "twilio_sid": {
+      "type": "string",
+      "description": "Twilio message SID for tracking"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "sending",
+        "sent",
+        "failed",
+        "delivered"
+      ],
+      "default": "queued",
+      "description": "Delivery status of the message"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "outbound",
+        "inbound"
+      ],
+      "description": "Whether message was sent or received"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the message has been read"
+    }
+  },
+  "required": [
+    "conversation_id",
+    "sender_email",
+    "sender_phone",
+    "sender_type",
+    "recipient_phone",
+    "body"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.sender_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.sender_email": "{{user.email}}"
+        },
+        {
+          "data.conversation_id": {
+            "$in": {
+              "entity": "SMSConversation",
+              "query": {
+                "$or": [
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  },
+                  {
+                    "data.client_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

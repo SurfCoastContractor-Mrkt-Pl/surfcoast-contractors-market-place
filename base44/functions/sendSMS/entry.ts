@@ -4,33 +4,69 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
-    
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { phoneNumber, message } = await req.json();
+    const { conversation_id, recipient_phone, message_body, sender_type } = await req.json();
 
-    if (!phoneNumber || !message) {
+    if (!conversation_id || !recipient_phone || !message_body) {
       return Response.json(
-        { error: 'Missing phoneNumber or message' },
+        { error: 'Missing required fields: conversation_id, recipient_phone, message_body' },
         { status: 400 }
       );
     }
 
-    // Placeholder for SMS service integration (Twilio, AWS SNS, etc.)
-    // For now, log the SMS intent
-    console.log(`SMS to ${phoneNumber}: ${message}`);
+    // Fetch conversation to verify access and get details
+    const conversation = await base44.entities.SMSConversation.filter({
+      id: conversation_id,
+    });
+
+    if (!conversation || conversation.length === 0) {
+      return Response.json({ error: 'Conversation not found' }, { status: 404 });
+    }
+
+    const conv = conversation[0];
+
+    // Verify user has access to this conversation
+    const hasAccess =
+      conv.contractor_email === user.email ||
+      conv.client_email === user.email;
+
+    if (!hasAccess) {
+      return Response.json({ error: 'Forbidden: No access to this conversation' }, { status: 403 });
+    }
+
+    // TODO: Integrate Twilio when credentials are available
+    // For now, create the message record with "pending" status
+    const messageRecord = await base44.entities.SMSMessage.create({
+      conversation_id,
+      sender_email: user.email,
+      sender_phone: sender_type === 'contractor' ? conv.contractor_phone : conv.client_phone,
+      sender_type,
+      recipient_phone,
+      body: message_body,
+      status: 'queued',
+      direction: 'outbound',
+    });
+
+    // Update conversation's last message
+    await base44.entities.SMSConversation.update(conversation_id, {
+      last_message: message_body.substring(0, 100),
+      last_message_time: new Date().toISOString(),
+    });
 
     return Response.json({
       success: true,
-      messageId: `sms_${Date.now()}`,
-      timestamp: new Date().toISOString()
+      message_id: messageRecord.id,
+      status: 'queued',
+      note: 'Twilio integration pending - message queued locally',
     });
   } catch (error) {
-    console.error('SMS send error:', error);
+    console.error('SMS Send Error:', error);
     return Response.json(
-      { error: error.message },
+      { error: `Failed to send SMS: ${error.message}` },
       { status: 500 }
     );
   }
