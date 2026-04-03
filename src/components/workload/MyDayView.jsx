@@ -2,32 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Clock, MapPin, DollarSign, Phone, AlertCircle, CheckCircle } from 'lucide-react';
+import { useOfflineSync } from '@/hooks/useOfflineSync';
 import JobCard from './JobCard';
+import OfflineJobCard from './OfflineJobCard';
 
 export default function MyDayView({ contractor, selectedDate }) {
   const today = selectedDate || new Date();
   const dateStr = today.toISOString().split('T')[0];
+  
+  const { isOnline, loadAndCacheScopes } = useOfflineSync(contractor?.email);
 
   // Fetch scopes for this contractor for today
   const { data: scopes = [], isLoading } = useQuery({
     queryKey: ['myDayScopes', contractor?.id, dateStr],
     queryFn: async () => {
       if (!contractor?.email) return [];
-      const allScopes = await base44.entities.ScopeOfWork.filter({
-        contractor_email: contractor.email,
-      });
-      // Filter for today's agreed work date
-      return allScopes.filter(
-        (scope) =>
-          scope.agreed_work_date === dateStr && scope.status !== 'cancelled'
-      );
+      return await loadAndCacheScopes();
     },
     enabled: !!contractor?.email,
   });
 
-  const jobCount = scopes.length;
-  const approvedCount = scopes.filter((s) => s.status === 'approved').length;
-  const totalEarnings = scopes.reduce((sum, s) => sum + (s.cost_amount || 0), 0);
+  // Filter for today
+  const todayScopes = scopes.filter(
+    (scope) =>
+      scope.agreed_work_date === dateStr && scope.status !== 'cancelled'
+  );
+
+  const jobCount = todayScopes.length;
+  const approvedCount = todayScopes.filter((s) => s.status === 'approved').length;
+  const totalEarnings = todayScopes.reduce((sum, s) => sum + (s.cost_amount || 0), 0);
 
   if (isLoading) {
     return (
@@ -82,8 +85,12 @@ export default function MyDayView({ contractor, selectedDate }) {
           </div>
         ) : (
           <div className="grid gap-6">
-            {scopes.map((scope) => (
-              <JobCard key={scope.id} scope={scope} contractor={contractor} />
+            {todayScopes.map((scope) => (
+              isOnline ? (
+                <JobCard key={scope.id} scope={scope} contractor={contractor} />
+              ) : (
+                <OfflineJobCard key={scope.id} scope={scope} contractor={contractor} isOnline={isOnline} />
+              )
             ))}
           </div>
         )}

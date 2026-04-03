@@ -1,65 +1,130 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { base44 } from '@/api/base44Client';
+import {
+  saveScopsLocally,
+  getLocalScopes,
+  getPendingChanges,
+  markChangeAsSynced,
+  savePendingChange,
+  getSyncMetadata,
+  saveSyncMetadata,
+} from '@/lib/offlineStorage';
 
-const QUEUE_KEY = 'offline_sync_queue';
-
-export function useOfflineSync() {
-  const [queue, setQueue] = useState([]);
-  const [syncing, setSyncing] = useState(false);
+export const useOfflineSync = (contractorEmail) => {
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncError, setSyncError] = useState(null);
+  const [pendingCount, setPendingCount] = useState(0);
   const [lastSyncTime, setLastSyncTime] = useState(null);
-  const retryCountRef = useRef({});
 
-  // Load queue from localStorage on init
+  // Monitor online/offline status
   useEffect(() => {
-    const stored = localStorage.getItem(QUEUE_KEY);
-    if (stored) {
-      setQueue(JSON.parse(stored));
-    }
-  }, []);
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-  // Persist queue to localStorage
-  useEffect(() => {
-    localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
-  }, [queue]);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
-  const addToQueue = useCallback((action, data) => {
-    const item = {
-      id: `${Date.now()}-${Math.random()}`,
-      action,
-      data,
-      timestamp: new Date().toISOString(),
-      retries: 0
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
-    setQueue(prev => [...prev, item]);
-    return item.id;
   }, []);
 
-  const syncQueue = useCallback(async (syncFn) => {
-    if (queue.length === 0 || syncing) return;
-    
-    setSyncing(true);
-    const failed = [];
+  // Update pending changes count
+  useEffect(() => {
+    const updatePendingCount = async () => {
+      const changes = await getPendingChanges();
+      setPendingCount(changes.filter((c) => !c.synced).length);
+    };
 
-    for (const item of queue) {
-      try {
-        await syncFn(item);
-        retryCountRef.current[item.id] = 0;
-      } catch (error) {
-        item.retries = (item.retries || 0) + 1;
-        if (item.retries < 3) {
-          failed.push(item);
+    updatePendingCount();
+    const interval = setInterval(updatePendingCount, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Load scopes from server and cache locally
+  const loadAndCacheScopes = useCallback(async () => {
+    try {
+      const scopes = await base44.entities.ScopeOfWork.filter({
+        contractor_email: contractorEmail,
+      });
+      await saveScopsLocally(scopes);
+      return scopes;
+    } catch (error) {
+      console.error('Error loading scopes:', error);
+      // Fall back to local data if offline
+      return await getLocalScopes(contractorEmail);
+    }
+  }, [contractorEmail]);
+
+  // Sync pending changes back to server
+  const syncPendingChanges = useCallback(async () => {
+    if (!isOnline || !contractorEmail) return;
+
+    setIsSyncing(true);
+    setSyncError(null);
+
+    try {
+      const pendingChanges = await getPendingChanges();
+      const unsyncedChanges = pendingChanges.filter((c) => !c.synced);
+
+      for (const change of unsyncedChanges) {
+        try {
+          // Apply the change to the server
+          await base44.entities[change.entityType].update(change.entityId, {
+            [change.field]: change.newValue,
+          });
+
+          // Mark as synced
+          await markChangeAsSynced(change.id);
+        } catch (error) {
+          console.error(`Failed to sync change ${change.id}:`, error);
+          setSyncError(`Failed to sync: ${error.message}`);
         }
       }
+
+      // Update last sync time
+      const now = new Date().toISOString();
+      await saveSyncMetadata('lastSyncTime', now);
+      setLastSyncTime(now);
+    } catch (error) {
+      console.error('Sync error:', error);
+      setSyncError(error.message);
+    } finally {
+      setIsSyncing(false);
     }
+  }, [isOnline, contractorEmail]);
 
-    setQueue(failed);
-    setLastSyncTime(new Date().toISOString());
-    setSyncing(false);
-  }, [queue, syncing]);
+  // Auto-sync when coming back online
+  useEffect(() => {
+    if (isOnline && pendingCount > 0) {
+      syncPendingChanges();
+    }
+  }, [isOnline, pendingCount, syncPendingChanges]);
 
-  const clearQueue = useCallback(() => {
-    setQueue([]);
-    localStorage.removeItem(QUEUE_KEY);
-  }, []);
+  // Record a local change
+  const recordChange = useCallback(
+    async (entityType, entityId, field, newValue, oldValue) => {
+      await savePendingChange(entityType, entityId, field, newValue, oldValue);
+      setPendingCount((prev) => prev + 1);
 
-  return { queue, syncing, lastSyncTime, addToQueue, syncQueue, clearQueue };
-}
+      // Try to sync immediately if online
+      if (isOnline) {
+        setTimeout(syncPendingChanges, 1000);
+      }
+    },
+    [isOnline, syncPendingChanges]
+  );
+
+  return {
+    isOnline,
+    isSyncing,
+    syncError,
+    pendingCount,
+    lastSyncTime,
+    loadAndCacheScopes,
+    syncPendingChanges,
+    recordChange,
+  };
+};
