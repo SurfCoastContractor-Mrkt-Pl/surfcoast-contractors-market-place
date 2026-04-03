@@ -59,7 +59,7 @@ export default function LayoutHeader({
   };
 
   return (
-    <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 sticky top-0">
+    <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 sticky top-0 overflow-visible">
       <div className="flex items-center h-16 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto">
 
         {/* Logo */}
@@ -292,7 +292,7 @@ function AccountDropdown({
 
   return (
     <div className={cn(
-      "bg-white border border-blue-100 rounded-2xl shadow-xl z-50 overflow-hidden",
+      "bg-white border border-blue-100 rounded-2xl shadow-xl z-[60] overflow-hidden",
       isMobile ? "w-full" : "absolute right-0 top-full mt-2 w-60"
     )}>
       <div className="px-4 py-3 border-b border-blue-50 bg-gradient-to-r from-blue-50 to-sky-50">

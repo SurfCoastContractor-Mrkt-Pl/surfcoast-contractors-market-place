@@ -146,13 +146,13 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   };
 
   // Always show FAB; expand when open and not minimized
-  if (!open || minimized) {
-    return (
-      <div 
-        className="fixed z-50"
-        ref={widgetRef}
-        style={{ bottom: `${position.bottom}px`, left: `${position.left}px` }}
-      >
+   if (!open || minimized) {
+     return (
+       <div 
+         className="fixed z-[40]"
+         ref={widgetRef}
+         style={{ bottom: `${position.bottom}px`, left: `${position.left}px` }}
+       >
         <button
           onClick={() => { setMinimized(false); onOpen && onOpen(); }}
           onMouseDown={handleMouseDown}
@@ -169,7 +169,7 @@ export default function FloatingAgentWidget({ open, onClose, onOpen }) {
   return (
     <div 
       ref={widgetRef}
-      className={`fixed z-50 flex flex-col bg-white shadow-2xl border border-slate-200 pointer-events-auto transition-shadow ${
+      className={`fixed z-[40] flex flex-col bg-white shadow-2xl border border-slate-200 pointer-events-auto transition-shadow ${
         expanded 
           ? 'inset-0 rounded-none' 
           : 'w-80 max-w-[calc(100vw-3rem)] h-[420px] rounded-xl'
