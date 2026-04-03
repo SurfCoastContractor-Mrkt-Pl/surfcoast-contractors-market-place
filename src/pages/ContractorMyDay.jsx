@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Calendar, Clock, AlertCircle, CheckCircle, MapPin, DollarSign, Zap } from 'lucide-react';
+import { Calendar, Clock, AlertCircle, CheckCircle, DollarSign, Zap } from 'lucide-react';
 import moment from 'moment';
 
 export default function ContractorMyDay() {
@@ -42,6 +42,7 @@ export default function ContractorMyDay() {
         }
       } catch (error) {
         console.error('Failed to load my day data:', error);
+        alert('Could not load your day data. Please refresh the page.');
       }
       setLoading(false);
     };
@@ -135,7 +136,7 @@ export default function ContractorMyDay() {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center gap-2 text-sm">
                       <Clock className="w-4 h-4 text-slate-400" />
-                      <span className="text-slate-600">{moment(job.agreed_work_date).format('hh:mm A')}</span>
+                      <span className="text-slate-600">{moment(job.agreed_work_date).format('MMM DD, YYYY')}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="w-4 h-4 text-slate-400" />
@@ -143,7 +144,7 @@ export default function ContractorMyDay() {
                     </div>
                   </div>
 
-                  <button className="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                  <button onClick={() => window.location.href = `/FieldOps?job=${job.id}`} className="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
                     View Details
                   </button>
                 </div>
@@ -170,7 +171,7 @@ export default function ContractorMyDay() {
                     <p className="text-sm text-slate-500 capitalize">{task.status.replace(/_/g, ' ')}</p>
                   </div>
                   <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-                    {moment(task.created_date).fromNow()}
+                    {moment(task.updated_date).fromNow()}
                   </span>
                 </div>
               ))}

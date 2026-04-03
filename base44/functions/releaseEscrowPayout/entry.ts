@@ -24,6 +24,16 @@ Deno.serve(async (req) => {
       }, { status: 400 });
     }
 
+    // Check for idempotency: already released
+    if (escrow.status === 'released' && escrow.stripe_transfer_id) {
+      return Response.json({ 
+        success: true, 
+        message: 'Payout already released',
+        transferId: escrow.stripe_transfer_id,
+        amount: escrow.contractor_payout_amount
+      });
+    }
+
     // Fetch contractor to get Stripe Connect account
     const contractors = await base44.asServiceRole.entities.Contractor.filter({
       email: escrow.contractor_email
@@ -42,7 +52,13 @@ Deno.serve(async (req) => {
       }, { status: 400 });
     }
 
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      console.error('STRIPE_SECRET_KEY not configured');
+      return Response.json({ error: 'Payment processing not configured' }, { status: 500 });
+    }
+
+    const stripe = new Stripe(stripeKey);
 
     try {
       // Create transfer from platform account to contractor's connected account

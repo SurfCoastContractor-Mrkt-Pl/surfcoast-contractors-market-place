@@ -36,7 +36,8 @@ export function classifyError(error) {
   const status = error?.status;
 
   // Network errors
-  if (message.includes('network') || message.includes('fetch') || !navigator.onLine) {
+  if (message.includes('network') || message.includes('fetch') || message.includes('timeout') || 
+      (typeof navigator !== 'undefined' && !navigator.onLine)) {
     return ERROR_TYPES.NETWORK;
   }
 
@@ -55,8 +56,10 @@ export function classifyError(error) {
     return ERROR_TYPES.VALIDATION;
   }
 
-  // Payment errors
-  if (message.includes('payment') || message.includes('stripe') || message.includes('charge')) {
+  // Payment errors (including Stripe-specific errors)
+  if (message.includes('payment') || message.includes('charge') || 
+      message.includes('stripe') || message.includes('card_error') || 
+      message.includes('rate_limit') || message.includes('authentication_error')) {
     return ERROR_TYPES.PAYMENT;
   }
 

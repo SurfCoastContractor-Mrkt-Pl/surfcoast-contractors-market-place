@@ -8,6 +8,15 @@ export const logError = async (message, category = 'unknown', context = {}) => {
     // Also log to console in development
     console.error(`[${category}]`, message, context);
 
+    // Get current user if authenticated
+    let userId = null;
+    try {
+      const user = await base44.auth.me();
+      userId = user?.email || null;
+    } catch {
+      // User not authenticated, continue without user context
+    }
+
     // Log to database
     await base44.entities.ErrorLog.create({
       message,
@@ -17,6 +26,7 @@ export const logError = async (message, category = 'unknown', context = {}) => {
       stack: context.stack || '',
       url: typeof window !== 'undefined' ? window.location.href : '',
       user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      user_id: userId,
     });
   } catch (err) {
     console.error('Failed to log error:', err);

@@ -89,6 +89,7 @@ import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
 import ContractorMyDay from './pages/ContractorMyDay';
+import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -182,17 +183,23 @@ const AuthenticatedApp = () => {
       } />
       <Route path="/admin" element={
         <LayoutWrapper currentPageName="Admin">
-          <Admin />
+          <AdminGuard>
+            <Admin />
+          </AdminGuard>
         </LayoutWrapper>
       } />
       <Route path="/admin-control-hub" element={
         <LayoutWrapper currentPageName="AdminControlHub">
-          <AdminControlHub />
+          <AdminGuard>
+            <AdminControlHub />
+          </AdminGuard>
         </LayoutWrapper>
       } />
       <Route path="/admin-error-logs" element={
         <LayoutWrapper currentPageName="AdminErrorLogs">
-          <AdminErrorLogs />
+          <AdminGuard>
+            <AdminErrorLogs />
+          </AdminGuard>
         </LayoutWrapper>
       } />
       <Route path="/platform-tests" element={

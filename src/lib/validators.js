@@ -1,10 +1,10 @@
 // Centralized validation utilities for input sanitization and data validation
 
 export const validators = {
-  // Email validation
+  // Email validation (RFC 5322 simplified)
   email: (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value) ? null : 'Invalid email format';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return emailRegex.test(value) && value.length > 5 ? null : 'Invalid email format';
   },
 
   // Required field
@@ -12,10 +12,10 @@ export const validators = {
     return value && String(value).trim() !== '' ? null : `${fieldName} is required`;
   },
 
-  // Phone number (basic US format)
+  // Phone number (international: 7-15 digits)
   phone: (value) => {
-    const phoneRegex = /^[\d\s\-\(\)]{10,}$/;
-    return phoneRegex.test(value?.replace(/\s+/g, '')) ? null : 'Invalid phone format';
+    const digitsOnly = value?.replace(/\D/g, '') || '';
+    return digitsOnly.length >= 7 && digitsOnly.length <= 15 ? null : 'Phone must be 7-15 digits';
   },
 
   // Number range
