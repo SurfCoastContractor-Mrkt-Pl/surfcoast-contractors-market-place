@@ -162,12 +162,12 @@ export default function ResidentialWaveDashboard() {
   const totalRevenue = invoices?.filter(i => i.status === 'paid').reduce((sum, inv) => sum + (inv.total_amount || 0), 0) || 0;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900">Residential Wave</h1>
-          <p className="text-slate-600 mt-2">Manage your contracting business</p>
+          <h1 className="text-4xl font-bold text-slate-800">Residential Wave</h1>
+          <p className="text-slate-500 mt-2">Manage your contracting business</p>
           {!subscription?.stripe_subscription_id && (
             <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-yellow-800 text-sm">
@@ -179,53 +179,37 @@ export default function ResidentialWaveDashboard() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600 flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Upcoming Jobs
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">{upcomingJobs}</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Calendar className="w-4 h-4 text-slate-400" />
+              <p className="text-sm font-medium text-slate-500">Upcoming Jobs</p>
+            </div>
+            <p className="text-3xl font-bold text-slate-800">{upcomingJobs}</p>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600 flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                Active Leads
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">{activeLeads}</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Users className="w-4 h-4 text-slate-400" />
+              <p className="text-sm font-medium text-slate-500">Active Leads</p>
+            </div>
+            <p className="text-3xl font-bold text-slate-800">{activeLeads}</p>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600 flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                Unpaid Invoices
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">{unpaidInvoices}</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <FileText className="w-4 h-4 text-slate-400" />
+              <p className="text-sm font-medium text-slate-500">Unpaid Invoices</p>
+            </div>
+            <p className="text-3xl font-bold text-slate-800">{unpaidInvoices}</p>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600 flex items-center gap-2">
-                <DollarSign className="w-4 h-4" />
-                Total Revenue
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">${totalRevenue.toFixed(0)}</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white border border-slate-200 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="w-4 h-4 text-slate-400" />
+              <p className="text-sm font-medium text-slate-500">Total Revenue</p>
+            </div>
+            <p className="text-3xl font-bold text-slate-800">${totalRevenue.toFixed(0)}</p>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -241,26 +225,26 @@ export default function ResidentialWaveDashboard() {
           <TabsContent value="overview" className="mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Recent Jobs */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle>Recent Jobs</CardTitle>
-                </CardHeader>
-                <CardContent>
+              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-slate-200">
+                  <p className="text-slate-800 font-semibold">Recent Jobs</p>
+                </div>
+                <div className="p-5">
                   {jobs && jobs.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {jobs.slice(0, 5).map(job => (
-                        <div key={job.id} className="flex justify-between items-start p-3 bg-slate-50 rounded-lg">
+                        <div key={job.id} className="flex justify-between items-start p-3 bg-slate-50 border border-slate-100 rounded-xl">
                           <div>
-                            <p className="font-medium text-slate-900">{job.title}</p>
-                            <p className="text-sm text-slate-600">{job.customer_name}</p>
+                            <p className="font-medium text-slate-800">{job.title}</p>
+                            <p className="text-sm text-slate-500">{job.customer_name}</p>
                             {job.scheduled_date && (
-                              <p className="text-xs text-slate-500 mt-1">{job.scheduled_date}</p>
+                              <p className="text-xs text-slate-400 mt-1">{job.scheduled_date}</p>
                             )}
                           </div>
-                          <span className={`text-xs font-semibold px-2 py-1 rounded ${
-                            job.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            job.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                            'bg-slate-100 text-slate-800'
+                          <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${
+                            job.status === 'completed' ? 'bg-green-100 text-green-700' :
+                            job.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
+                            'bg-slate-100 text-slate-600'
                           }`}>
                             {job.status}
                           </span>
@@ -268,43 +252,43 @@ export default function ResidentialWaveDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-slate-600 text-sm">No jobs yet. Create one to get started.</p>
+                    <p className="text-slate-500 text-sm">No jobs yet. Create one to get started.</p>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Subscription Status */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Subscription</CardTitle>
-                </CardHeader>
-                <CardContent>
+              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-slate-200">
+                  <p className="text-slate-800 font-semibold">Subscription</p>
+                </div>
+                <div className="p-5">
                   {subscription ? (
                     <div className="space-y-3">
                       <div>
-                        <p className="text-xs text-slate-600">Plan</p>
-                        <p className="font-semibold text-slate-900 capitalize">{subscription.plan_name}</p>
+                        <p className="text-xs text-slate-400">Plan</p>
+                        <p className="font-semibold text-slate-800 capitalize">{subscription.plan_name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600">Status</p>
-                        <p className={`font-semibold capitalize ${subscription.status === 'active' ? 'text-green-600' : 'text-slate-600'}`}>
+                        <p className="text-xs text-slate-400">Status</p>
+                        <p className={`font-semibold capitalize ${subscription.status === 'active' ? 'text-green-600' : 'text-slate-500'}`}>
                           {subscription.status}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600">Next Billing</p>
-                        <p className="font-semibold text-slate-900">{subscription.next_billing_date}</p>
+                        <p className="text-xs text-slate-400">Next Billing</p>
+                        <p className="font-semibold text-slate-800">{subscription.next_billing_date}</p>
                       </div>
-                      <Button variant="outline" className="w-full mt-4">Manage Subscription</Button>
+                      <Button variant="outline" className="w-full mt-4 border-slate-200 text-slate-700 hover:bg-slate-50">Manage Subscription</Button>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-slate-600 text-sm mb-4">Upgrade to unlock advanced features</p>
-                      <Button className="w-full">Start Subscription</Button>
+                      <p className="text-slate-500 text-sm mb-4">Upgrade to unlock advanced features</p>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700">Start Subscription</Button>
                     </div>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
           </TabsContent>
 
