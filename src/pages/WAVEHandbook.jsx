@@ -1,10 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { base44 } from '@/api/base44Client';
 import AboutWAVEFO from '@/components/WAVEHandbook/AboutWAVEFO';
+import WAVEFOEcosystemOverview from '@/components/WAVEHandbook/WAVEFOEcosystemOverview';
+import SubscriptionGate from '@/components/WAVEHandbook/SubscriptionGate';
 
 export default function WAVEHandbook() {
+  const navigate = useNavigate();
   const [expandedChapter, setExpandedChapter] = useState(0);
   const [selectedSection, setSelectedSection] = useState('1.1');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Check subscription status on mount
+  useEffect(() => {
+    checkSubscription();
+  }, []);
+
+  const checkSubscription = async () => {
+    try {
+      const user = await base44.auth.me();
+      if (!user) {
+        setIsSubscribed(false);
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if user has a contractor profile with active subscription
+      const contractors = await base44.entities.Contractor.filter({ email: user.email });
+      // Check if user has a market shop
+      const marketShops = await base44.entities.MarketShop.filter({ email: user.email });
+
+      // If either exists, assume active subscription (in real implementation, check subscription status)
+      setIsSubscribed((contractors && contractors.length > 0) || (marketShops && marketShops.length > 0));
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+      setIsSubscribed(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const chapters = [
     {
@@ -15,6 +51,17 @@ export default function WAVEHandbook() {
           id: '0.1',
           title: 'Our Mission & Values',
           content: <AboutWAVEFO />,
+        },
+      ],
+    },
+    {
+      id: 6,
+      title: 'WAVE FO Ecosystem Overview',
+      sections: [
+        {
+          id: '6.1',
+          title: 'Complete Tier & Pricing Breakdown',
+          content: <WAVEFOEcosystemOverview />,
         },
       ],
     },
@@ -330,6 +377,20 @@ export default function WAVEHandbook() {
   const currentSection = chapters
     .flatMap(ch => ch.sections)
     .find(s => s.id === selectedSection);
+
+  // Show loading spinner while checking subscription
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Show gate if not subscribed
+  if (!isSubscribed) {
+    return <SubscriptionGate onSubscribe={() => navigate('/pricing')} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
