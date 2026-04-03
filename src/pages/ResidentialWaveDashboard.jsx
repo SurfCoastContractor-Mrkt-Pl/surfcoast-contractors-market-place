@@ -65,7 +65,7 @@ export default function ResidentialWaveDashboard() {
 
   const { data: subscription } = useQuery({
     queryKey: ['residentialWaveSubscription', user?.email],
-    queryFn: () => user?.email ? base44.entities.ResidentialWaveSubscription.filter({ contractor_email: user.email }).then(subs => subs?.[0]) : Promise.resolve(null),
+    queryFn: () => user?.email ? base44.entities.ResidentialWaveSubscription.filter({ contractor_email: user.email }).then(subs => subs?.[0] ?? null) : Promise.resolve(null),
     enabled: !!user?.email,
   });
 
