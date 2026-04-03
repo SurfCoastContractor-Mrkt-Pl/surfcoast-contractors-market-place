@@ -98,6 +98,10 @@ export const AuthProvider = ({ children }) => {
       setUser(currentUser);
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
+      // Store session info securely
+      if (currentUser?.email) {
+        sessionStorage.setItem('auth_user', currentUser.email);
+      }
     } catch (error) {
       console.error('User auth check failed:', error);
       setIsLoadingAuth(false);
@@ -111,6 +115,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = (shouldRedirect = true) => {
+    // Clear any session data before logout
+    localStorage.removeItem('auth_session');
+    sessionStorage.clear();
     setUser(null);
     setIsAuthenticated(false);
     base44.auth.logout();
