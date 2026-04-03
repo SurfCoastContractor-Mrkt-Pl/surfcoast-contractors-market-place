@@ -3,60 +3,75 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    
     const body = await req.json();
-    const { severity = 'critical', testType = 'payment' } = body;
-    
-    let errorMessage = '';
-    let errorStack = '';
-    let actionAttempted = '';
-    
-    // Simulate different error types
-    switch (testType) {
-      case 'payment':
-        errorMessage = 'Stripe payment processing failed: Invalid API key or network timeout';
-        errorStack = 'Error: stripe.checkout.sessions.create() failed at createPaymentCheckout.js:45';
-        actionAttempted = 'Attempting to create Stripe checkout session for payment';
-        break;
-      case 'login':
-        errorMessage = 'Authentication failed: User credentials invalid or database timeout';
-        errorStack = 'Error: base44.auth.me() returned null at AuthContext.jsx:32';
-        actionAttempted = 'User attempting to log in';
-        break;
-      case 'form':
-        errorMessage = 'Form submission failed: Required fields missing or validation error';
-        errorStack = 'Error: handleSubmit() validation failed at TaskForm.jsx:78';
-        actionAttempted = 'Submitting contractor profile form';
-        break;
-      case 'api':
-        errorMessage = 'API call failed: Network error or server unreachable (status 503)';
-        errorStack = 'Error: fetch() failed at useUserData.js:21';
-        actionAttempted = 'Fetching contractor data from API';
-        break;
-      default:
-        errorMessage = 'Unknown error occurred in the system';
-        actionAttempted = 'Generic platform operation';
+    const { severity, testType } = body;
+
+    if (!severity || !testType) {
+      return Response.json(
+        { error: 'Missing required parameters: severity and testType' },
+        { status: 400 }
+      );
     }
-    
-    // Log the test error
-    const result = await base44.functions.invoke('logFrontendError', {
-      userEmail: 'admin@surfcoast.io',
-      userName: 'Test Admin User',
-      userId: 'admin-test',
-      pageOrFeature: `Test Page (${testType})`,
-      actionAttempted,
-      errorMessage,
-      errorStack,
-      platform: 'desktop',
-      system: 'main_app'
+
+    // Define test error scenarios
+    const errorScenarios = {
+      payment: {
+        message: '[TEST] Payment processing failed due to invalid card',
+        stack: 'Error: Payment declined\n  at processPayment (stripe.js:42)\n  at createCheckout (checkout.js:15)\n  at handlePaymentClick (PaymentDemo.jsx:89)',
+        context: { attemptedAmount: 99.99, paymentMethod: 'card' }
+      },
+      login: {
+        message: '[TEST] Authentication service temporarily unavailable',
+        stack: 'Error: Auth service error\n  at verifyCredentials (auth.js:78)\n  at loginUser (AuthContext.jsx:156)',
+        context: { service: 'authentication', endpoint: '/auth/login' }
+      },
+      form: {
+        message: '[TEST] Form validation error on submission',
+        stack: 'Error: Invalid form data\n  at validateForm (FormValidator.js:45)\n  at onSubmit (BecomeContractor.jsx:203)',
+        context: { formName: 'ContractorOnboarding', missingFields: ['email', 'phone'] }
+      },
+      api: {
+        message: '[TEST] API request timeout or network error',
+        stack: 'Error: Timeout on API call\n  at fetchData (apiClient.js:62)\n  at useQuery (useFetch.js:34)',
+        context: { endpoint: '/api/contractors', timeout: 30000 }
+      }
+    };
+
+    const scenario = errorScenarios[testType] || errorScenarios.api;
+
+    // Log the test error to the ErrorLog entity
+    const errorLog = await base44.asServiceRole.entities.ErrorLog.create({
+      message: scenario.message,
+      level: severity === 'critical' ? 'critical' : severity === 'high' ? 'error' : 'warning',
+      category: testType === 'payment' ? 'payment' : testType === 'login' ? 'auth' : 'validation',
+      stack: scenario.stack,
+      context: scenario.context,
+      user_id: 'test-user',
+      url: 'https://app.base44.com/platform-tests',
+      user_agent: 'Test Error Trigger - Platform Tests',
+      resolved: false
     });
-    
+
+    // Invoke the alert function to notify admin
+    await base44.asServiceRole.functions.invoke('sendAdminAlerts', {
+      errorId: errorLog.id,
+      severity: severity,
+      message: scenario.message,
+      testType: testType,
+      isTestError: true
+    });
+
     return Response.json({
       success: true,
       message: `Test ${severity} error (${testType}) triggered successfully`,
-      errorLogId: result.data?.errorLogId
+      errorId: errorLog.id
     });
   } catch (error) {
-    console.error('Error in triggerTestError:', error.message);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Error triggering test error:', error);
+    return Response.json(
+      { error: error.message || 'Failed to trigger test error' },
+      { status: 500 }
+    );
   }
 });
