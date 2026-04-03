@@ -99,10 +99,10 @@ export default function WaveFo() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-center text-white">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400 text-sm">Loading Wave FO...</p>
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+        <div className="text-center text-slate-800">
+          <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-500 text-sm">Loading Wave FO...</p>
         </div>
       </div>
     );
@@ -122,7 +122,7 @@ export default function WaveFo() {
 
   if (contractor && !hasWaveFOAccess) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="min-h-screen bg-slate-100">
         <FieldOpsAccessGate contractor={contractor} />
       </div>
     );
@@ -130,18 +130,18 @@ export default function WaveFo() {
 
   if (!user || (!contractor && !isAdmin)) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
-        <div className="text-center text-white max-w-sm">
-          <Briefcase className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
+        <div className="text-center text-slate-800 max-w-sm">
+          <Briefcase className="w-16 h-16 text-blue-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">Wave FO</h1>
-          <p className="text-slate-400 mb-6">Sign in with a contractor account to access Wave FO.</p>
+          <p className="text-slate-500 mb-6">Sign in with a contractor account to access Wave FO.</p>
           <button
             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveFo`)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
           >
             Sign In to Wave FO
           </button>
-          <Link to="/" className="block mt-4 text-slate-400 text-sm hover:text-white">← Back to Home</Link>
+          <Link to="/" className="block mt-4 text-slate-500 text-sm hover:text-slate-800">← Back to Home</Link>
         </div>
       </div>
     );
@@ -158,7 +158,7 @@ export default function WaveFo() {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-950 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div className="fixed inset-0 bg-slate-100 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Admin Test Mode Banner */}
       {isAdmin && (
         <div className={`${!contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4`}>
@@ -180,16 +180,16 @@ export default function WaveFo() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Desktop Top Bar */}
-        <div className="hidden lg:flex items-center justify-between bg-slate-900 px-6 py-4 border-b border-slate-800 flex-shrink-0">
-          <h1 className="text-white font-semibold text-lg">
+        <div className="hidden lg:flex items-center justify-between bg-white px-6 py-4 border-b border-slate-200 flex-shrink-0">
+          <h1 className="text-slate-800 font-semibold text-lg">
             {NAV_TABS.find(t => t.id === activeTab)?.label || 'Wave FO'}
           </h1>
-          <Link to="/ContractorAccount" className="relative p-2 mr-1 group flex items-center gap-1 text-slate-400 hover:text-white transition-colors text-sm">
+          <Link to="/ContractorAccount" className="relative p-2 mr-1 group flex items-center gap-1 text-slate-500 hover:text-slate-800 transition-colors text-sm">
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden xl:inline">Portal</span>
           </Link>
           <button className="relative p-2">
-            <Bell className="w-5 h-5 text-slate-400" />
+            <Bell className="w-5 h-5 text-slate-500" />
             {notifCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
                 {notifCount}
@@ -221,8 +221,8 @@ export default function WaveFo() {
         />
 
         {/* Mobile Back Button */}
-        <div className="lg:hidden flex items-center bg-slate-900 border-b border-slate-800 px-4 py-2">
-          <Link to="/ContractorAccount" className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors text-sm">
+        <div className="lg:hidden flex items-center bg-white border-b border-slate-200 px-4 py-2">
+          <Link to="/ContractorAccount" className="flex items-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors text-sm">
             <ArrowLeft className="w-4 h-4" />
             Back to Portal
           </Link>

@@ -97,8 +97,8 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
         isCurrentWave && fullyUnlocked
           ? `${waveDef.borderClass} ${waveDef.bgClass}`
           : fullyUnlocked
-          ? 'border-slate-600 bg-slate-800/50'
-          : 'border-slate-800 bg-slate-900/30 opacity-40 grayscale'
+          ? 'border-slate-300 bg-white'
+          : 'border-slate-200 bg-slate-50 opacity-50 grayscale'
       }`}
       style={isCurrentWave && fullyUnlocked ? { boxShadow: `0 0 20px ${waveDef.glowColor}` } : {}}
     >
@@ -107,7 +107,7 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
           <span className="text-xl">{waveDef.emoji}</span>
           <div>
             <div className="flex items-center gap-2">
-              <p className={`font-bold text-sm ${fullyUnlocked ? 'text-white' : 'text-slate-600'}`}>
+              <p className={`font-bold text-sm ${fullyUnlocked ? 'text-slate-800' : 'text-slate-500'}`}>
                 {waveDef.label}
               </p>
               {isCurrentWave && fullyUnlocked && (
@@ -132,7 +132,7 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
 
       <ul className="space-y-1 mb-3 mt-3">
         {waveDef.features.map((f, i) => (
-          <li key={i} className={`text-xs flex items-center gap-1.5 ${fullyUnlocked ? 'text-slate-300' : 'text-slate-700'}`}>
+          <li key={i} className={`text-xs flex items-center gap-1.5 ${fullyUnlocked ? 'text-slate-600' : 'text-slate-400'}`}>
             <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: fullyUnlocked ? waveDef.color : '#334155' }} />
             {f}
           </li>
@@ -141,7 +141,7 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
 
       {waveDef.requiresHIS && (
         <div className={`text-xs px-2 py-1.5 rounded-lg flex items-center gap-1.5 mb-3 ${
-          hasHIS ? 'bg-green-900/30 text-green-400' : 'bg-yellow-900/30 text-yellow-500'
+        hasHIS ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
         }`}>
           {hasHIS ? <CheckCircle className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
           HIS License: {hasHIS ? 'Verified ✓' : 'Required — add via your profile'}
@@ -150,11 +150,11 @@ function WaveCard({ waveDef, completedJobsCount, isUnlocked, isCurrentWave, hasH
 
       {!isUnlocked && (
         <div className="mt-2">
-          <div className="flex justify-between text-xs text-slate-700 mb-1">
+          <div className="flex justify-between text-xs text-slate-500 mb-1">
             <span>{completedJobsCount}/{waveDef.jobsRequired} jobs</span>
             <span>{progress}%</span>
           </div>
-          <div className="w-full h-1.5 bg-slate-800 rounded-full">
+          <div className="w-full h-1.5 bg-slate-200 rounded-full">
             <div
               className="h-1.5 rounded-full transition-all"
               style={{ width: `${progress}%`, background: waveDef.color }}
@@ -182,29 +182,29 @@ export default function FieldOpsAccessGate({ contractor }) {
   const toBreaker = Math.max(0, BREAKER_WAVE.jobsRequired - completedJobsCount);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col px-4 py-8 max-w-lg mx-auto">
+    <div className="min-h-screen bg-slate-100 flex flex-col px-4 py-8 max-w-lg mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-800"
-          style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a5f)' }}>
-          <Waves className="w-8 h-8 text-blue-400" />
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-200"
+          style={{ background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)' }}>
+          <Waves className="w-8 h-8 text-blue-600" />
         </div>
-        <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast Waves</p>
-        <h1 className="text-white text-2xl font-bold mb-2">Wave FO</h1>
-        <p className="text-slate-400 text-sm leading-relaxed max-w-xs mx-auto">
+        <p className="text-blue-600 text-xs font-bold uppercase tracking-widest mb-1">SurfCoast Waves</p>
+        <h1 className="text-slate-800 text-2xl font-bold mb-2">Wave FO</h1>
+        <p className="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">
           Wave FO grows with you. Earn your waves by completing verified jobs and building your reputation on SurfCoast.
         </p>
       </div>
 
       {/* Current Wave Status */}
-      <div className="rounded-2xl border border-slate-700 bg-slate-900 p-4 mb-6">
+      <div className="rounded-2xl border border-slate-300 bg-white p-4 mb-6">
         <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">Your Current Wave</p>
         {currentWave ? (
           <div className="flex items-center gap-3">
             <span className="text-3xl">{currentWave.emoji}</span>
             <div className="flex-1">
-              <p className="text-white font-bold">{currentWave.label}</p>
-              <p className="text-slate-400 text-xs">{completedJobsCount} completed jobs · Wave {currentWave.wave}</p>
+              <p className="text-slate-800 font-bold">{currentWave.label}</p>
+              <p className="text-slate-500 text-xs">{completedJobsCount} completed jobs · Wave {currentWave.wave}</p>
             </div>
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: currentWave.color }}>
               <TrendingUp className="w-4 h-4 text-white" />
@@ -214,19 +214,19 @@ export default function FieldOpsAccessGate({ contractor }) {
           <div className="flex items-center gap-3">
             <span className="text-3xl">🌅</span>
             <div>
-              <p className="text-white font-bold">No Wave Yet</p>
-              <p className="text-slate-400 text-xs">Complete 15 jobs to unlock Wave FO</p>
+              <p className="text-slate-800 font-bold">No Wave Yet</p>
+              <p className="text-slate-500 text-xs">Complete 15 jobs to unlock Wave FO</p>
             </div>
           </div>
         )}
 
         {/* Progress to Wave FO unlock */}
          {toBreaker > 0 && (
-           <div className="mt-4 pt-4 border-t border-slate-800">
+           <div className="mt-4 pt-4 border-t border-slate-200">
              <p className="text-xs text-yellow-400 mb-2 font-semibold">
                🏄 Wave FO unlocks at <strong>SurfCoast Breaker</strong> — {toBreaker} more job{toBreaker !== 1 ? 's' : ''} needed
              </p>
-            <div className="w-full h-2 bg-slate-800 rounded-full">
+            <div className="w-full h-2 bg-slate-200 rounded-full">
               <div
                 className="h-2 rounded-full bg-blue-500 transition-all"
                 style={{ width: `${Math.min(100, Math.round((completedJobsCount / BREAKER_WAVE.jobsRequired) * 100))}%` }}
@@ -237,7 +237,7 @@ export default function FieldOpsAccessGate({ contractor }) {
       </div>
 
       {/* Wave Tiers */}
-      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">The Waves</p>
+      <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">The Waves</p>
       <div className="space-y-3 mb-8">
         {SURFCOAST_WAVES.map(waveDef => {
           const isUnlocked = completedJobsCount >= waveDef.jobsRequired;
@@ -255,10 +255,10 @@ export default function FieldOpsAccessGate({ contractor }) {
         })}
       </div>
 
-      <Link to="/" className="block text-center text-slate-500 text-sm py-2 hover:text-white transition-colors">
+      <Link to="/" className="block text-center text-slate-500 text-sm py-2 hover:text-slate-800 transition-colors">
         ← Back to SurfCoast Platform
       </Link>
-      <Link to="/adminfieldops" className="block text-center text-slate-700 text-xs py-2 hover:text-slate-400 transition-colors mt-1">
+      <Link to="/adminfieldops" className="block text-center text-slate-400 text-xs py-2 hover:text-slate-600 transition-colors mt-1">
         Admin Field Ops →
       </Link>
     </div>

@@ -47,17 +47,17 @@ function CheckInPanel({ scope, onRefresh }) {
   };
 
   return (
-    <div className="bg-slate-800 rounded-2xl p-4 mb-3">
+    <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-3">
       <div className="flex items-center gap-2 mb-3">
-        <MapPin className="w-4 h-4 text-blue-400" />
-        <span className="text-white font-semibold text-sm">Site Check-In</span>
+        <MapPin className="w-4 h-4 text-blue-500" />
+        <span className="text-slate-800 font-semibold text-sm">Site Check-In</span>
         {isCheckedIn && (
-          <span className="ml-auto text-[10px] bg-green-900 text-green-400 px-2 py-0.5 rounded-full font-semibold">
+          <span className="ml-auto text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">
             ● ON SITE
           </span>
         )}
         {isCheckedOut && (
-          <span className="ml-auto text-[10px] bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full font-semibold">
+          <span className="ml-auto text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-semibold">
             COMPLETED
           </span>
         )}
@@ -65,7 +65,7 @@ function CheckInPanel({ scope, onRefresh }) {
 
       {/* Timestamps */}
       {scope.contractor_checkin_time && (
-        <div className="text-xs text-slate-400 mb-2 flex items-center gap-1">
+        <div className="text-xs text-slate-500 mb-2 flex items-center gap-1">
           <Clock className="w-3 h-3" />
           In: {new Date(scope.contractor_checkin_time).toLocaleTimeString()}
           {scope.contractor_checkout_time && (
@@ -80,7 +80,7 @@ function CheckInPanel({ scope, onRefresh }) {
           <button
             onClick={getLocation}
             disabled={geoLoading}
-            className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-700 transition-colors"
           >
             {geoLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <MapPin className="w-3 h-3" />}
             {location ? `📌 ${location}` : 'Capture GPS location (optional)'}
@@ -94,7 +94,7 @@ function CheckInPanel({ scope, onRefresh }) {
           value={note}
           onChange={e => setNote(e.target.value)}
           placeholder="Add a note for the client (optional)..."
-          className="w-full bg-slate-700 text-white text-xs rounded-xl p-3 mb-3 resize-none border border-slate-600 focus:border-blue-500 focus:outline-none"
+          className="w-full bg-slate-50 text-slate-800 text-xs rounded-xl p-3 mb-3 resize-none border border-slate-300 focus:border-blue-500 focus:outline-none"
           rows={2}
         />
       )}
@@ -122,7 +122,7 @@ function CheckInPanel({ scope, onRefresh }) {
           </button>
         )}
         {isCheckedOut && (
-          <div className="flex-1 flex items-center justify-center gap-2 bg-slate-700 text-slate-400 text-sm py-3 rounded-xl">
+          <div className="flex-1 flex items-center justify-center gap-2 bg-slate-100 text-slate-500 text-sm py-3 rounded-xl">
             <CheckCircle className="w-4 h-4 text-green-500" /> Day Complete
           </div>
         )}
@@ -179,14 +179,14 @@ function PhotoUploadPanel({ scope, onRefresh }) {
   };
 
   return (
-    <div className="bg-slate-800 rounded-2xl p-4 mb-3">
+    <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-3">
       <div className="flex items-center gap-2 mb-3">
-        <Camera className="w-4 h-4 text-purple-400" />
-        <span className="text-white font-semibold text-sm">Photo Documentation</span>
+        <Camera className="w-4 h-4 text-purple-500" />
+        <span className="text-slate-800 font-semibold text-sm">Photo Documentation</span>
         {existingPhotos.length > 0 && (
           <button
             onClick={() => setShowGallery(!showGallery)}
-            className="ml-auto flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors"
+            className="ml-auto flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 transition-colors"
           >
             {existingPhotos.length} photo{existingPhotos.length !== 1 ? 's' : ''}
             {showGallery ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -198,7 +198,7 @@ function PhotoUploadPanel({ scope, onRefresh }) {
       {showGallery && existingPhotos.length > 0 && (
         <div className="grid grid-cols-3 gap-1.5 mb-3">
           {existingPhotos.map((url, i) => (
-            <div key={i} className="aspect-square rounded-lg overflow-hidden bg-slate-700">
+            <div key={i} className="aspect-square rounded-lg overflow-hidden bg-slate-100">
               <img src={url} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
@@ -209,7 +209,7 @@ function PhotoUploadPanel({ scope, onRefresh }) {
       {previews.length > 0 && (
         <div className="flex gap-2 mb-3 flex-wrap">
           {previews.map((url, i) => (
-            <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-700">
+            <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100">
               <img src={url} alt="" className="w-full h-full object-cover" />
               <button
                 onClick={() => removePreview(i)}
@@ -228,13 +228,13 @@ function PhotoUploadPanel({ scope, onRefresh }) {
           value={note}
           onChange={e => setNote(e.target.value)}
           placeholder="Add a note about these photos (optional)..."
-          className="w-full bg-slate-700 text-white text-xs rounded-xl p-3 mb-3 resize-none border border-slate-600 focus:border-purple-500 focus:outline-none"
+          className="w-full bg-slate-50 text-slate-800 text-xs rounded-xl p-3 mb-3 resize-none border border-slate-300 focus:border-purple-500 focus:outline-none"
           rows={2}
         />
       )}
 
       <div className="flex gap-2">
-        <label className="flex-1 flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-sm py-3 rounded-xl cursor-pointer transition-colors">
+        <label className="flex-1 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm py-3 rounded-xl cursor-pointer transition-colors">
           <Image className="w-4 h-4 text-purple-400" />
           {files.length > 0 ? `${files.length} selected` : 'Select Photos'}
           <input
@@ -311,20 +311,20 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
       <div className="p-4">
         <button
           onClick={() => setSelectedScope(null)}
-          className="flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-4 transition-colors"
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm mb-4 transition-colors"
         >
           ← Back to Jobs
         </button>
 
         <div className="mb-4">
-          <h2 className="text-white font-bold text-base">{selectedScope.job_title}</h2>
-          <p className="text-slate-400 text-xs mt-0.5">
+          <h2 className="text-slate-800 font-bold text-base">{selectedScope.job_title}</h2>
+          <p className="text-slate-500 text-xs mt-0.5">
             Client: {selectedScope.customer_name} · {selectedScope.cost_type === 'hourly'
               ? `$${selectedScope.cost_amount}/hr`
               : `$${selectedScope.cost_amount} fixed`}
           </p>
           {selectedScope.agreed_work_date && (
-            <p className="text-slate-500 text-xs mt-0.5">
+            <p className="text-slate-400 text-xs mt-0.5">
               📅 Work date: {selectedScope.agreed_work_date}
             </p>
           )}
@@ -334,9 +334,9 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
         <PhotoUploadPanel scope={selectedScope} onRefresh={fetchScopes} />
 
         {/* Notification notice */}
-        <div className="bg-blue-950 border border-blue-900 rounded-xl p-3 flex items-start gap-2">
-          <Send className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-          <p className="text-blue-300 text-xs leading-relaxed">
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-start gap-2">
+          <Send className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+          <p className="text-blue-700 text-xs leading-relaxed">
             Your client is automatically notified by email when you check in, check out, or upload new photos.
           </p>
         </div>
@@ -348,10 +348,10 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
   return (
     <div className="p-4">
       <div className="flex items-center gap-2 mb-4">
-       <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-900 rounded-full">
-         <span className="text-blue-300 text-[10px] font-bold">🏄 BREAKER</span>
+       <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-100 rounded-full">
+         <span className="text-blue-700 text-[10px] font-bold">🏄 BREAKER</span>
        </div>
-       <p className="text-slate-400 text-xs">SurfCoast Waves FO — select a job to check in</p>
+       <p className="text-slate-500 text-xs">SurfCoast Waves FO — select a job to check in</p>
       </div>
 
       <div className="space-y-3">
@@ -364,22 +364,22 @@ export default function SurfCoastWaveFOView({ contractor, user }) {
             <button
               key={scope.id}
               onClick={() => setSelectedScope(scope)}
-              className="w-full text-left bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-slate-600 rounded-2xl p-4 transition-all"
+              className="w-full text-left bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-2xl p-4 transition-all"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0 mr-3">
-                  <p className="text-white font-semibold text-sm truncate">{scope.job_title}</p>
-                  <p className="text-slate-400 text-xs mt-0.5 truncate">{scope.customer_name}</p>
+                  <p className="text-slate-800 font-semibold text-sm truncate">{scope.job_title}</p>
+                  <p className="text-slate-500 text-xs mt-0.5 truncate">{scope.customer_name}</p>
                 </div>
                 <div className={`flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                  isCheckedIn ? 'bg-green-900 text-green-400' :
-                  isCheckedOut ? 'bg-slate-700 text-slate-400' :
-                  'bg-yellow-900 text-yellow-400'
+                  isCheckedIn ? 'bg-green-100 text-green-700' :
+                  isCheckedOut ? 'bg-slate-100 text-slate-500' :
+                  'bg-yellow-100 text-yellow-700'
                 }`}>
                   {isCheckedIn ? '● ON SITE' : isCheckedOut ? 'DONE' : 'NOT STARTED'}
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-xs text-slate-500">
+              <div className="flex items-center gap-3 text-xs text-slate-400">
                 {scope.agreed_work_date && <span>📅 {scope.agreed_work_date}</span>}
                 {photoCount > 0 && <span>📸 {photoCount} photo{photoCount !== 1 ? 's' : ''}</span>}
                 {isCheckedIn && scope.contractor_checkin_time && (

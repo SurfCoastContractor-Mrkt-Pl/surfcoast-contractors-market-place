@@ -43,20 +43,20 @@ export default function AdminFieldOps() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
-        <div className="text-center text-white">
-          <Shield className="w-12 h-12 text-red-400 mx-auto mb-4" />
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
+        <div className="text-center text-slate-800">
+          <Shield className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Admin Access Only</h1>
-          <p className="text-slate-400 text-sm mb-6">You must be an admin to view this page.</p>
-          <Link to="/" className="text-blue-400 hover:text-blue-300 text-sm">← Back to Home</Link>
+          <p className="text-slate-500 text-sm mb-6">You must be an admin to view this page.</p>
+          <Link to="/" className="text-blue-600 hover:text-blue-700 text-sm">← Back to Home</Link>
         </div>
       </div>
     );
@@ -71,16 +71,16 @@ export default function AdminFieldOps() {
   // Contractor picker view
   if (!selectedContractor) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col">
+      <div className="min-h-screen bg-slate-100 flex flex-col">
         {/* Header */}
-        <div className="bg-slate-900 px-4 py-4 border-b border-slate-800 flex-shrink-0">
+        <div className="bg-white px-4 py-4 border-b border-slate-200 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-amber-400" />
-              <span className="text-white font-bold text-sm">Admin Wave FO</span>
+              <Shield className="w-5 h-5 text-amber-500" />
+              <span className="text-slate-800 font-bold text-sm">Admin Wave FO</span>
               <span className="bg-amber-900 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">ADMIN</span>
             </div>
-            <Link to="/admin" className="text-slate-400 hover:text-white text-xs flex items-center gap-1">
+            <Link to="/admin" className="text-slate-500 hover:text-slate-800 text-xs flex items-center gap-1">
               ← Admin
             </Link>
           </div>
@@ -91,10 +91,10 @@ export default function AdminFieldOps() {
               placeholder="Search by name or email..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-slate-800 text-white placeholder-slate-500 rounded-xl pl-9 pr-4 py-2.5 text-sm border border-slate-700 focus:outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 text-slate-800 placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 text-sm border border-slate-300 focus:outline-none focus:border-blue-500"
             />
           </div>
-          <p className="text-slate-500 text-xs mt-2">{filtered.length} of {contractors.length} contractors</p>
+          <p className="text-slate-400 text-xs mt-2">{filtered.length} of {contractors.length} contractors</p>
         </div>
 
         {/* Contractor List */}
@@ -106,7 +106,7 @@ export default function AdminFieldOps() {
               <button
                 key={c.id}
                 onClick={() => setSelectedContractor(c)}
-                className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-800 hover:bg-slate-800/50 transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-200 hover:bg-slate-200/60 transition-colors text-left"
               >
                 <div className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {c.photo_url
@@ -116,17 +116,17 @@ export default function AdminFieldOps() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-white text-sm font-medium truncate">{c.name}</p>
+                    <p className="text-slate-800 text-sm font-medium truncate">{c.name}</p>
                     {c.account_locked && <span className="text-[10px] bg-red-900 text-red-400 px-1.5 py-0.5 rounded font-bold">LOCKED</span>}
                   </div>
-                  <p className="text-slate-500 text-xs truncate">{c.email}</p>
+                  <p className="text-slate-400 text-xs truncate">{c.email}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <div className="text-right">
-                    <p className="text-xs text-slate-400">{c.completed_jobs_count || 0} jobs</p>
-                    <p className="text-[10px] text-slate-600 capitalize">{c.trade_specialty?.replace('_', ' ') || c.line_of_work?.split('_').slice(0,2).join(' ') || '—'}</p>
+                    <p className="text-xs text-slate-500">{c.completed_jobs_count || 0} jobs</p>
+                    <p className="text-[10px] text-slate-400 capitalize">{c.trade_specialty?.replace('_', ' ') || c.line_of_work?.split('_').slice(0,2).join(' ') || '—'}</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-600" />
+                  <ChevronRight className="w-4 h-4 text-slate-400" />
                 </div>
               </button>
             ))
@@ -138,7 +138,7 @@ export default function AdminFieldOps() {
 
   // Full Field Ops view for selected contractor (admin-impersonated)
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-slate-100 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
       <div className="flex flex-col flex-1">
         {/* Admin Banner */}
         <div className="bg-amber-600 px-4 py-1.5 flex items-center justify-between flex-shrink-0">
@@ -155,17 +155,17 @@ export default function AdminFieldOps() {
         </div>
 
         {/* Header */}
-        <div className="bg-slate-900 px-4 py-3 flex-shrink-0 border-b border-slate-800">
+        <div className="bg-white px-4 py-3 flex-shrink-0 border-b border-slate-200">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center overflow-hidden flex-shrink-0">
             {selectedContractor.photo_url
               ? <img src={selectedContractor.photo_url} alt="" className="w-full h-full object-cover" />
               : <span className="text-white font-bold text-sm">{selectedContractor.name?.charAt(0)}</span>
             }
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white font-semibold text-sm truncate">{selectedContractor.name}</p>
-            <p className="text-slate-400 text-xs truncate capitalize">
+            <p className="text-slate-800 font-semibold text-sm truncate">{selectedContractor.name}</p>
+            <p className="text-slate-500 text-xs truncate capitalize">
               {selectedContractor.line_of_work?.replace(/_/g, ' ') || selectedContractor.trade_specialty || 'Contractor'}
             </p>
           </div>
@@ -185,7 +185,7 @@ export default function AdminFieldOps() {
       </div>
 
         {/* Bottom Navigation */}
-        <div className="bg-slate-900 border-t border-slate-800 flex-shrink-0">
+        <div className="bg-white border-t border-slate-200 flex-shrink-0">
           <div className="flex">
             {NAV_TABS.map(tab => {
               const Icon = tab.icon;
@@ -195,12 +195,12 @@ export default function AdminFieldOps() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 flex flex-col items-center py-3 gap-1 transition-colors ${
-                    isActive ? 'text-blue-400' : 'text-slate-500'
+                    isActive ? 'text-blue-600' : 'text-slate-400'
                   }`}
                 >
                   <Icon className="w-6 h-6" />
                   <span className="text-[10px] font-medium">{tab.label}</span>
-                  {isActive && <div className="w-1 h-1 rounded-full bg-blue-400" />}
+                  {isActive && <div className="w-1 h-1 rounded-full bg-blue-600" />}
                 </button>
               );
             })}
