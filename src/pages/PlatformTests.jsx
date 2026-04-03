@@ -30,13 +30,14 @@ export default function PlatformTests() {
   const triggerTestError = async (severity, testType) => {
     setErrorTriggering(true);
     try {
-      const response = await base44.functions.invoke('triggerTestError', {
-        severity,
-        testType
+      const response = await base44.functions.invoke('logErrorEvent', {
+        message: `Test ${severity} error: ${testType}`,
+        level: severity,
+        category: testType
       });
       setTriggeredErrors([
         ...triggeredErrors,
-        { severity, testType, status: 'SUCCESS', message: response.data.message }
+        { severity, testType, status: 'SUCCESS', message: `Simulated ${severity} error logged` }
       ]);
       setTimeout(() => {
         alert(`✅ Test ${severity} error (${testType}) triggered!\n\nCheck Admin Error Logs or your email for the notification.`);
