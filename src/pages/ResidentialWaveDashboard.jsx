@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, FileText, Users, DollarSign, Plus, Loader2 } from 'lucide-react';
 import ResidentialWaveJobsTab from '@/components/residential-wave/ResidentialWaveJobsTab';
@@ -93,15 +92,15 @@ export default function ResidentialWaveDashboard() {
   // Access denied for non-construction trades
   if (hasAccess === false && accessError === 'invalid_trade') {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <Card className="border-red-200 bg-red-50">
-          <CardHeader>
-            <CardTitle className="text-red-900">Access Restricted</CardTitle>
-          </CardHeader>
-          <CardContent className="text-red-800">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-12">
+        <div className="max-w-2xl w-full bg-white border border-red-200 rounded-2xl overflow-hidden">
+          <div className="px-6 py-4 border-b border-red-100 bg-red-50">
+            <p className="text-red-900 font-semibold">Access Restricted</p>
+          </div>
+          <div className="p-6 text-slate-700">
             <p className="mb-4">Residential Wave is exclusively available for construction trade contractors.</p>
-            <p className="mb-6 font-medium">Supported trades:</p>
-            <ul className="list-disc list-inside space-y-1 mb-6">
+            <p className="mb-3 font-medium text-slate-800">Supported trades:</p>
+            <ul className="list-disc list-inside space-y-1 mb-6 text-slate-600">
               <li>Plumbing</li>
               <li>HVAC</li>
               <li>Electrical</li>
@@ -110,9 +109,9 @@ export default function ResidentialWaveDashboard() {
               <li>Painting</li>
               <li>Lawn Services</li>
             </ul>
-            <p className="text-sm">If you believe this is an error, please update your contractor profile trade specialty.</p>
-          </CardContent>
-        </Card>
+            <p className="text-sm text-slate-500">If you believe this is an error, please update your contractor profile trade specialty.</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -120,38 +119,30 @@ export default function ResidentialWaveDashboard() {
   // No subscription
   if (hasAccess === false && accessError === 'no_subscription') {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <Card>
-          <CardHeader>
-            <CardTitle>Residential Wave - Premium Invoice Management</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-slate-600 mb-6">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-12">
+        <div className="max-w-2xl w-full bg-white border border-slate-200 rounded-2xl overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-200">
+            <p className="text-slate-800 font-semibold">Residential Wave — Premium Invoice Management</p>
+          </div>
+          <div className="p-6">
+            <p className="text-slate-500 mb-6">
               Manage invoices, process customer payments, and track your residential projects with our premium system.
             </p>
-            <div className="bg-slate-50 rounded-lg p-6 mb-6">
-              <div className="text-4xl font-bold text-slate-900 mb-2">$100<span className="text-lg">/month</span></div>
-              <p className="text-slate-600 mb-4">Includes:</p>
+            <div className="bg-slate-50 border border-slate-100 rounded-xl p-6 mb-6">
+              <div className="text-4xl font-bold text-slate-800 mb-2">$100<span className="text-lg font-medium text-slate-500">/month</span></div>
+              <p className="text-slate-500 text-sm mb-4">Includes:</p>
               <ul className="space-y-2 text-slate-600 text-sm">
-                <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span> Unlimited invoices
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span> Secure customer payment processing
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span> Payment tracking & receipts
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span> Document management
-                </li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✓</span> Unlimited invoices</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✓</span> Secure customer payment processing</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✓</span> Payment tracking & receipts</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✓</span> Document management</li>
               </ul>
             </div>
             <Button onClick={handleSubscribe} className="w-full bg-blue-600 hover:bg-blue-700 h-11">
               Subscribe Now
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
