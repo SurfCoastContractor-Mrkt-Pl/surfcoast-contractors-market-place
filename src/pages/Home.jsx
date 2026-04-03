@@ -24,11 +24,11 @@ export default function Home() {
             </div>
 
             <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 lg:mb-6 leading-tight">
-              Being a contractor <span className="logo-gradient-text">isn't just a job.</span>
+              Build your business <span className="logo-gradient-text">on your terms.</span>
             </h1>
 
             <p className="text-base text-gray-700 mb-8 leading-relaxed">
-              It's a mindset built on hard work, ownership, and pride. Join a community of verified tradespeople and grow your business your way.
+              Join 10,000+ verified pros earning more, working less, and building real reputations. No middleman. No hidden fees. Just opportunity.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -114,20 +114,20 @@ export default function Home() {
             </div>
 
             <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Try it free. No pressure. No card.
+              See real jobs in your area.
             </h2>
 
             <p className="text-gray-600 text-base mb-8">
-              Get full access to find jobs, connect with clients, and build your reputation risk-free.
+              14 days full access. Browse verified jobs, connect with clients, and build your profile—completely free, no credit card needed.
             </p>
 
             {/* Numbered Steps */}
             <div className="space-y-6 mb-8">
               {[
-                { num: "1", label: "Create your profile", desc: "Tell us about yourself and your trade" },
-                { num: "2", label: "Get discovered", desc: "Clients start seeing your profile" },
-                { num: "3", label: "Decide after 14 days", desc: "Choose to subscribe or walk away" }
-              ].map((step) => (
+                   { num: "1", label: "Create your profile", desc: "Share your skills, experience, and what you charge—takes 10 minutes" },
+                   { num: "2", label: "Start getting inquiries", desc: "Verified clients see your profile and reach out with real jobs" },
+                   { num: "3", label: "Choose what's next", desc: "Go pro and keep 82% of every job, or stay free—it's your call" }
+                 ].map((step) => (
                 <div key={step.num} className="flex gap-4">
                   <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold">
                     {step.num}
@@ -188,13 +188,17 @@ export default function Home() {
             </div>
 
             <p className="text-gray-600 text-base mb-6">
-              Grow your business with verified clients, secure payments, and real support.
+              Keep 82% of what you earn. Real jobs. Verified clients. Zero surprises.
             </p>
 
             <ul className="space-y-3 mb-8">
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Find quality jobs from verified clients</span>
+                <span className="text-gray-700">Find jobs in your trade, locally or nationwide</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                <span className="text-gray-700">Get paid directly—we keep 18%, that's it</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
@@ -202,11 +206,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Get paid securely via Stripe</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Community-first support always</span>
+                <span className="text-gray-700">Support when you need it—from real people</span>
               </li>
             </ul>
 
@@ -226,25 +226,25 @@ export default function Home() {
             </div>
 
             <p className="text-gray-600 text-base mb-6">
-              Find verified tradespeople you can trust, with transparent pricing and secure payments.
+              Vet contractors before you hire. See real reviews. Pay with confidence.
             </p>
 
             <ul className="space-y-3 mb-8">
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Access verified, licensed professionals</span>
+                <span className="text-gray-700">Only licensed pros—every profile verified</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Get competitive quotes instantly</span>
+                <span className="text-gray-700">See real reviews from real customers</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Secure payments and verified reviews</span>
+                <span className="text-gray-700">Transparent pricing—no hidden fees</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-1" />
-                <span className="text-gray-700">Peace of mind with professional support</span>
+                <span className="text-gray-700">Secure payments—protected every step</span>
               </li>
             </ul>
 
@@ -320,24 +320,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ==================== SOCIAL PROOF BAR ==================== */}
+      <section className="py-12 lg:py-16 px-4 lg:px-8 bg-gradient-to-r from-blue-50 to-orange-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2">10,000+</div>
+              <p className="text-sm text-gray-600">Verified pros earning more</p>
+            </div>
+            <div>
+              <div className="text-3xl lg:text-4xl font-bold text-orange-600 mb-2">$2M+</div>
+              <p className="text-sm text-gray-600">Paid out to contractors</p>
+            </div>
+            <div>
+              <div className="text-3xl lg:text-4xl font-bold text-green-600 mb-2">4.8★</div>
+              <p className="text-sm text-gray-600">Average contractor rating</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ==================== TRUST BAR ==================== */}
       <section className="py-8 lg:py-12 px-4 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
-            <span className="text-sm font-medium text-gray-700">Verified licences only</span>
+            <span className="text-sm font-medium text-gray-700">ID verified—always</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
-            <span className="text-sm font-medium text-gray-700">Secure payments via Stripe</span>
+            <span className="text-sm font-medium text-gray-700">Secure Stripe payments</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
-            <span className="text-sm font-medium text-gray-700">VBA registered platform</span>
+            <span className="text-sm font-medium text-gray-700">Licensed professionals</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
-            <span className="text-sm font-medium text-gray-700">Community-first always</span>
+            <span className="text-sm font-medium text-gray-700">Real support, real fast</span>
           </div>
         </div>
       </section>
