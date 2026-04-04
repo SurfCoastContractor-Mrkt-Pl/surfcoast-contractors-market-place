@@ -15,6 +15,7 @@ import { differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
 import MetricsPanel from './MetricsPanel';
 import { calculateContractorMetrics } from '@/lib/metricsCalculator';
+import OnboardingNudgeBanner from '@/components/contractor/OnboardingNudgeBanner';
 
 const SURFCOAST_WAVES = [
   { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
@@ -214,7 +215,22 @@ export default function ContractorDashboard() {
             </button>
           </div>
           <p className="text-slate-600">Track your active jobs and communications</p>
+          {contractorProfile && (
+            <div className="mt-2 flex gap-4 text-sm">
+              <span className="text-slate-500">
+                👁️ <strong className="text-slate-800">{(contractorProfile.profile_views || 0).toLocaleString()}</strong> total profile views
+              </span>
+              <span className="text-slate-500">
+                📅 <strong className="text-slate-800">{contractorProfile.profile_views_this_week || 0}</strong> this week
+              </span>
+            </div>
+          )}
         </div>
+
+        {/* Onboarding Nudge (Issue #4) */}
+        {contractorProfile && (
+          <OnboardingNudgeBanner contractor={contractorProfile} />
+        )}
 
         {/* Metrics Panel */}
         {metrics && (

@@ -38,6 +38,9 @@ export default function ContractorPublicProfile() {
     try {
       setLoading(true);
       
+      // Track profile view (Issue #2)
+      base44.functions.invoke('trackProfileView', { contractor_id: contractorId }).catch(() => {});
+
       // Fetch contractor details
       const contractorData = await base44.entities.Contractor.filter({ id: contractorId });
       if (!contractorData || contractorData.length === 0) {
@@ -160,7 +163,7 @@ export default function ContractorPublicProfile() {
                 </p>
               )}
 
-              <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-3 gap-4 mb-4">
                 <div className="bg-slate-700 rounded-lg p-4 text-center">
                   <div className="text-2xl font-bold text-blue-400">{contractor.completed_jobs_count || 0}</div>
                   <div className="text-xs text-slate-400 mt-1">Jobs Completed</div>
@@ -173,6 +176,26 @@ export default function ContractorPublicProfile() {
                   <div className="text-2xl font-bold text-blue-400">{contractor.rating ? contractor.rating.toFixed(1) : 'N/A'}</div>
                   <div className="text-xs text-slate-400 mt-1">Avg Rating</div>
                 </div>
+              </div>
+
+              {/* Issue #7 — Availability shown before client pays $1.50 */}
+              <div className="mb-6">
+                {contractor.availability_status === 'available' ? (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-green-900/40 border border-green-500/40 rounded-lg">
+                    <span className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse flex-shrink-0" />
+                    <span className="text-sm font-semibold text-green-300">Available for new work</span>
+                  </div>
+                ) : contractor.availability_status === 'booked' ? (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-amber-900/40 border border-amber-500/40 rounded-lg">
+                    <span className="w-2.5 h-2.5 bg-amber-400 rounded-full flex-shrink-0" />
+                    <span className="text-sm font-semibold text-amber-300">Currently booked — may have limited availability</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-700/60 border border-slate-500/40 rounded-lg">
+                    <span className="w-2.5 h-2.5 bg-slate-400 rounded-full flex-shrink-0" />
+                    <span className="text-sm text-slate-400">Availability not listed</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col gap-3">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag } from "lucide-react";
 import { base44 } from '@/api/base44Client';
+import SocialProofStats from '@/components/home/SocialProofStats';
 
 export default function Home() {
   const [spotsRemaining, setSpotsRemaining] = useState(77);
@@ -319,6 +320,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ==================== SOCIAL PROOF STATS (Issue #3) ==================== */}
+      <SocialProofStats />
 
       {/* ==================== TRUST BAR ==================== */}
       <section className="py-8 lg:py-12 px-4 lg:px-8 bg-gray-50">

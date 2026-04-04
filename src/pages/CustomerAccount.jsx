@@ -37,6 +37,7 @@ import AuthTopBar from '@/components/auth/AuthTopBar';
 import TrialBadge from '@/components/customer/TrialBadge';
 import ConsumerModeToggle from '@/components/consumer/ConsumerModeToggle';
 import PersistentChatSidebar from '@/components/chat/PersistentChatSidebar';
+import PostSignupContractorDiscovery from '@/components/home/PostSignupContractorDiscovery';
 
 export default function CustomerAccount() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -217,6 +218,11 @@ export default function CustomerAccount() {
       <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"transparent", minHeight:"100vh"}}>
+         {/* Issue #6 — Contractor Discovery after signup */}
+         {(!scopes || scopes.length === 0) && (!postedJobs || postedJobs.length === 0) && (
+           <PostSignupContractorDiscovery />
+         )}
+
          {/* Admin Preview Banner */}
          {isAdminPreview && (
            <Card className="p-5 bg-blue-50 border-blue-200/60 rounded-2xl">

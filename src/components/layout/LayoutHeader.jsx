@@ -5,6 +5,7 @@ import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
+import NotificationBell from '@/components/notifications/NotificationBell';
 
 // Grouped "Explore" mega-menu items for logged-out visitors
 const exploreGroups = [
@@ -173,6 +174,10 @@ export default function LayoutHeader({
                 Get Started
               </button>
             </>
+          )}
+
+          {isLoggedIn && (
+            <NotificationBell />
           )}
 
           {isLoggedIn && (

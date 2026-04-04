@@ -37,6 +37,9 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
       }
       const record = await base44.entities.ScopeOfWork.create(data);
 
+      // Notify client immediately after scope creation (Issue #1)
+      base44.functions.invoke('notifyScopeCreated', { scope_id: record.id }).catch(e => console.error('notifyScopeCreated failed:', e));
+
       const costLine = data.cost_type === 'fixed'
          ? `Estimate: $${data.cost_amount.toFixed(2)}`
          : `Hourly Rate: $${data.cost_amount.toFixed(2)}/hr${data.estimated_hours ? ` (Est. ${data.estimated_hours} hours = $${(data.cost_amount * data.estimated_hours).toFixed(2)} total)` : ''}`;
