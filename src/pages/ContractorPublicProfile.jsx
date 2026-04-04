@@ -1,78 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-
-// Track contact info view event
-const trackContactInfoView = (contractorId, contractorName, contactType) => {
-  base44.analytics.track({
-    eventName: 'contractor_contact_info_viewed',
-    properties: {
-      contractor_id: contractorId,
-      contractor_name: contractorName,
-      contact_type: contactType, // 'phone', 'email', 'quote', 'service_request'
-      timestamp: new Date().toISOString(),
-    },
-  });
-};
+import { useUserData } from '@/hooks/useUserData';
 import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft, ClipboardList, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
 import CredentialDisplayCard from '@/components/contractor/CredentialDisplayCard';
 import CustomerBookingCalendar from '@/components/calendar/CustomerBookingCalendar';
 
+const trackContactInfoView = (contractorId, contractorName, contactType) => {
+  base44.analytics.track({
+    eventName: 'contractor_contact_info_viewed',
+    properties: { contractor_id: contractorId, contractor_name: contractorName, contact_type: contactType, timestamp: new Date().toISOString() },
+  });
+};
+
 export default function ContractorPublicProfile() {
   const { contractorId } = useParams();
   const navigate = useNavigate();
-  const [contractor, setContractor] = useState(null);
-  const [services, setServices] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [portfolio, setPortfolio] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [serviceRequestOpen, setServiceRequestOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [showBooking, setShowBooking] = useState(false);
 
-  useEffect(() => {
-    base44.auth.me().then(setCurrentUser).catch(() => setCurrentUser(null));
-  }, []);
+  const { user: currentUser } = useUserData();
 
+  // Fire-and-forget profile view tracking
   useEffect(() => {
-    fetchData();
+    base44.functions.invoke('trackProfileView', { contractor_id: contractorId }).catch(() => {});
   }, [contractorId]);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      
-      // Track profile view (Issue #2)
-      base44.functions.invoke('trackProfileView', { contractor_id: contractorId }).catch(() => {});
+  const { data: contractorData, isLoading: loadingContractor } = useQuery({
+    queryKey: ['contractor-profile', contractorId],
+    queryFn: () => base44.entities.Contractor.filter({ id: contractorId }),
+    staleTime: 5 * 60 * 1000,
+  });
 
-      // Fetch contractor details
-      const contractorData = await base44.entities.Contractor.filter({ id: contractorId });
-      if (!contractorData || contractorData.length === 0) {
-        navigate('/');
-        return;
-      }
-      setContractor(contractorData[0]);
+  const contractor = contractorData?.[0] ?? null;
 
-      // Fetch services
-      const servicesData = await base44.entities.ServiceOffering.filter({ contractor_id: contractorId });
-      setServices(servicesData || []);
+  const { data: services = [] } = useQuery({
+    queryKey: ['contractor-services-public', contractorId],
+    queryFn: () => base44.entities.ServiceOffering.filter({ contractor_id: contractorId }),
+    enabled: !!contractor,
+    staleTime: 5 * 60 * 1000,
+  });
 
-      // Fetch verified reviews
-      const reviewsData = await base44.entities.Review.filter({ contractor_id: contractorId, verified: true });
-      setReviews((reviewsData || []).sort((a, b) => new Date(b.created_date) - new Date(a.created_date)));
+  const { data: rawReviews = [] } = useQuery({
+    queryKey: ['contractor-reviews-public', contractorId],
+    queryFn: () => base44.entities.Review.filter({ contractor_id: contractorId, verified: true }),
+    enabled: !!contractor,
+    staleTime: 5 * 60 * 1000,
+  });
 
-      // Fetch portfolio projects
-      const portfolioData = await base44.entities.PortfolioProject.filter({ contractor_id: contractorId });
-      setPortfolio(portfolioData || []);
-    } catch (error) {
-      console.error('Error fetching contractor data:', error);
-    } finally {
-      setLoading(false);
+  const { data: portfolio = [] } = useQuery({
+    queryKey: ['contractor-portfolio-public', contractorId],
+    queryFn: () => base44.entities.PortfolioProject.filter({ contractor_id: contractorId }),
+    enabled: !!contractor,
+    staleTime: 10 * 60 * 1000,
+  });
+
+  const reviews = [...rawReviews].sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+  const loading = loadingContractor;
+
+  useEffect(() => {
+    if (!loadingContractor && contractorData && contractorData.length === 0) {
+      navigate('/');
     }
-  };
+  }, [loadingContractor, contractorData, navigate]);
 
   if (loading) {
     return (

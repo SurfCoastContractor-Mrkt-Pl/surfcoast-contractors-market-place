@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag, Star, Zap, Shield } from "lucide-react";
-import { base44 } from '@/api/base44Client';
 import SocialProofStats from '@/components/home/SocialProofStats';
 
 export default function Home() {
   const [spotsRemaining] = useState(77);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="w-full bg-white">
