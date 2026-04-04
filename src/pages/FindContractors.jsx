@@ -3,30 +3,14 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Users, MapPin, Star, X } from 'lucide-react';
+import { Users, MapPin, Star } from 'lucide-react';
 import ContractorCard from '@/components/contractors/ContractorCard';
 import LocationSelector from '@/components/location/LocationSelector';
 import SavedSearches from '@/components/search/SavedSearches';
+import FilterPanel from '@/components/search/FilterPanel';
 import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
 import { useUserData } from '@/hooks/useUserData';
-
-const trades = [
-  { id: 'electrician', name: 'Electrician' },
-  { id: 'plumber', name: 'Plumber' },
-  { id: 'carpenter', name: 'Carpenter' },
-  { id: 'hvac', name: 'HVAC Technician' },
-  { id: 'mason', name: 'Mason' },
-  { id: 'roofer', name: 'Roofer' },
-  { id: 'painter', name: 'Painter' },
-  { id: 'welder', name: 'Welder' },
-  { id: 'tiler', name: 'Tiler' },
-  { id: 'landscaper', name: 'Landscaper' },
-  { id: 'other', name: 'Other' },
-];
 
 export default function FindContractors() {
   const { user } = useUserData();
@@ -37,6 +21,7 @@ export default function FindContractors() {
   const [tradeFilter, setTradeFilter] = useState('');
   const [lineOfWorkFilter, setLineOfWorkFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('');
+  const [availabilityFilter, setAvailabilityFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
@@ -107,22 +92,25 @@ export default function FindContractors() {
       }
 
       // Type filter
-      const matchesType = !typeFilter || typeFilter === 'all' || c.contractor_type === typeFilter;
+      const matchesType = !typeFilter || c.contractor_type === typeFilter;
       
       // Trade filter
-      const matchesTrade = !tradeFilter || tradeFilter === 'all' || c.trade_specialty === tradeFilter;
+      const matchesTrade = !tradeFilter || c.trade_specialty === tradeFilter;
       
       // Line of work filter
-      const matchesLineOfWork = !lineOfWorkFilter || lineOfWorkFilter === 'all' || c.line_of_work === lineOfWorkFilter;
+      const matchesLineOfWork = !lineOfWorkFilter || c.line_of_work === lineOfWorkFilter;
       
       // Rating filter
       const matchesRating = !ratingFilter || (c.rating || 0) >= parseInt(ratingFilter);
+
+      // Availability filter
+      const matchesAvailability = !availabilityFilter || c.availability_status === availabilityFilter;
 
       // Location radius filter
       const distance = contractorDistances[c.id];
       const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
 
-      return matchesSearch && matchesType && matchesTrade && matchesLineOfWork && matchesRating && matchesRadius;
+      return matchesSearch && matchesType && matchesTrade && matchesLineOfWork && matchesRating && matchesAvailability && matchesRadius;
     });
   };
 
@@ -135,9 +123,10 @@ export default function FindContractors() {
     setTradeFilter('');
     setLineOfWorkFilter('');
     setRatingFilter('');
+    setAvailabilityFilter('');
   };
 
-  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || lineOfWorkFilter || ratingFilter;
+  const hasActiveFilters = searchQuery || typeFilter || tradeFilter || lineOfWorkFilter || ratingFilter || availabilityFilter;
 
   return (
     <div className="min-h-screen bg-slate-50 pt-0">
@@ -169,148 +158,34 @@ export default function FindContractors() {
          )}
 
          {/* Location Selector */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <MapPin className="w-5 h-5 text-slate-500" />
             <span className="font-medium text-slate-700">Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
+         </div>
 
-          {userLocation && (
-            <div className="mt-6 space-y-4">
-              <div className="p-4 bg-slate-50 rounded-xl">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-medium text-slate-700">
-                    Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
-                  </label>
-                </div>
-                <input
-                  type="range"
-                  min="5"
-                  max="100"
-                  step="5"
-                  value={searchRadius}
-                  onChange={(e) => setSearchRadius(Number(e.target.value))}
-                  className="w-full accent-amber-500"
-                />
-                <div className="flex justify-between text-xs text-slate-500 mt-2">
-                  <span>5 mi</span>
-                  <span>100 mi</span>
-                </div>
-                </div>
-                </div>
-                )}
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-5 h-5 text-slate-500" />
-            <span className="font-medium text-slate-700">Filters</span>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <Input
-                placeholder="Search by name, location..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="trade_specific">Trade Specific</SelectItem>
-                  <SelectItem value="general">General Contractor</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={tradeFilter} onValueChange={setTradeFilter} disabled={typeFilter === 'general'}>
-              <SelectTrigger>
-                <SelectValue placeholder="Trade" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Trades</SelectItem>
-                {trades.map(trade => (
-                  <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={lineOfWorkFilter} onValueChange={setLineOfWorkFilter} disabled={typeFilter === 'trade_specific'}>
-              <SelectTrigger>
-                <SelectValue placeholder="Service" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Services</SelectItem>
-                <SelectItem value="freelance_writer">Freelance Writer</SelectItem>
-                <SelectItem value="freelance_designer">Freelance Designer</SelectItem>
-                <SelectItem value="freelance_developer">Freelance Developer</SelectItem>
-                <SelectItem value="consultant">Consultant</SelectItem>
-                <SelectItem value="virtual_assistant">Virtual Assistant</SelectItem>
-                <SelectItem value="handyman">Handyman</SelectItem>
-                <SelectItem value="appliance_repair">Appliance Repair</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={ratingFilter} onValueChange={setRatingFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Rating" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Ratings</SelectItem>
-                <SelectItem value="5">⭐⭐⭐⭐⭐ 5.0</SelectItem>
-                <SelectItem value="4">⭐⭐⭐⭐ 4.0+</SelectItem>
-                <SelectItem value="3">⭐⭐⭐ 3.0+</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {hasActiveFilters && (
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
-              <span className="text-sm text-slate-500">Filtering by:</span>
-              {searchQuery && (
-                <Badge className="gap-1 bg-orange-100 text-orange-800 hover:bg-orange-200">
-                  🔍 {searchQuery}
-                  <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchQuery('')} />
-                </Badge>
-              )}
-              {typeFilter && (
-                <Badge className="gap-1 bg-purple-100 text-purple-800 hover:bg-purple-200">
-                  {typeFilter}
-                  <X className="w-3 h-3 cursor-pointer" onClick={() => setTypeFilter('')} />
-                </Badge>
-              )}
-              {tradeFilter && (
-                <Badge className="gap-1 bg-green-100 text-green-800 hover:bg-green-200">
-                  {trades.find(t => t.id === tradeFilter)?.name}
-                  <X className="w-3 h-3 cursor-pointer" onClick={() => setTradeFilter('')} />
-                </Badge>
-              )}
-              {lineOfWorkFilter && (
-                <Badge className="gap-1 bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
-                  {lineOfWorkFilter}
-                  <X className="w-3 h-3 cursor-pointer" onClick={() => setLineOfWorkFilter('')} />
-                </Badge>
-              )}
-              {ratingFilter && (
-                <Badge className="gap-1 bg-amber-100 text-amber-800 hover:bg-amber-200">
-                  ⭐ {ratingFilter}+ stars
-                  <X className="w-3 h-3 cursor-pointer" onClick={() => setRatingFilter('')} />
-                </Badge>
-              )}
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-600 hover:text-slate-900 ml-2">
-                Reset all
-              </Button>
-            </div>
-          )}
-        </div>
+         {/* Filter Panel */}
+         <FilterPanel
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          typeFilter={typeFilter}
+          setTypeFilter={setTypeFilter}
+          tradeFilter={tradeFilter}
+          setTradeFilter={setTradeFilter}
+          lineOfWorkFilter={lineOfWorkFilter}
+          setLineOfWorkFilter={setLineOfWorkFilter}
+          ratingFilter={ratingFilter}
+          setRatingFilter={setRatingFilter}
+          availabilityFilter={availabilityFilter}
+          setAvailabilityFilter={setAvailabilityFilter}
+          onClearFilters={clearFilters}
+          hasActiveFilters={hasActiveFilters}
+          searchRadius={searchRadius}
+          setSearchRadius={setSearchRadius}
+          userLocation={userLocation}
+         />
 
         {/* Featured Contractors */}
         {filteredFeatured.length > 0 && (
