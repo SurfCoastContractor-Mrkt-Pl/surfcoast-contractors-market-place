@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { useUserData, useUserProfiles } from '@/hooks/useUserData';
 import { Card } from '@/components/ui/card';
 import { createPageUrl } from '@/utils';
 import { Input } from '@/components/ui/input';
@@ -29,8 +30,9 @@ const trades = [
 
 export default function Jobs() {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState(null);
-  const [isContractor, setIsContractor] = useState(null);
+  const { user } = useUserData();
+  const userEmail = user?.email || null;
+  const { isContractor } = useUserProfiles(userEmail);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
@@ -43,24 +45,10 @@ export default function Jobs() {
   const [activeTradeFilter, setActiveTradeFilter] = useState('');
   const [activeUrgencyFilter, setActiveUrgencyFilter] = useState('');
 
-  // Check if user is a contractor
-  useEffect(() => {
-    const checkUserType = async () => {
-      const user = await base44.auth.me();
-      if (user) {
-        setUserEmail(user.email);
-        const contractors = await base44.entities.Contractor.filter({ email: user.email });
-        setIsContractor(contractors && contractors.length > 0);
-      } else {
-        setIsContractor(false);
-      }
-    };
-    checkUserType();
-  }, []);
-
   const { data: jobs, isLoading } = useQuery({
-    queryKey: ['jobs'],
+    queryKey: ['jobs', 'open'],
     queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date'),
+    staleTime: 3 * 60 * 1000, // 3 min — jobs are more dynamic but don't need instant refresh
   });
 
 
@@ -152,14 +140,6 @@ export default function Jobs() {
   };
 
   const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeUrgencyFilter;
-
-  if (isContractor === null) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-slate-500">Loading...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-50">

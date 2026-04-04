@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Card } from '@/components/ui/card';
 import { createPageUrl } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import ContractorCard from '@/components/contractors/ContractorCard';
 import LocationSelector from '@/components/location/LocationSelector';
 import SavedSearches from '@/components/search/SavedSearches';
 import { calculateDistance, geocodeLocation } from '@/components/location/geolocationUtils';
+import { useUserData } from '@/hooks/useUserData';
 
 const trades = [
   { id: 'electrician', name: 'Electrician' },
@@ -29,31 +29,22 @@ const trades = [
 ];
 
 export default function FindContractors() {
-  const [searchQuery, setSearchQuery] = useState('');
-   const [typeFilter, setTypeFilter] = useState('');
-   const [tradeFilter, setTradeFilter] = useState('');
-   const [lineOfWorkFilter, setLineOfWorkFilter] = useState('');
-   const [ratingFilter, setRatingFilter] = useState('');
-   const [userLocation, setUserLocation] = useState(null);
-   const [contractorDistances, setContractorDistances] = useState({});
-   const [searchRadius, setSearchRadius] = useState(35);
-    const [userEmail, setUserEmail] = useState(null);
+  const { user } = useUserData();
+  const userEmail = user?.email || null;
 
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const user = await base44.auth.me();
-        setUserEmail(user?.email || null);
-      } catch {
-        setUserEmail(null);
-      }
-    };
-    loadUser();
-  }, []);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [tradeFilter, setTradeFilter] = useState('');
+  const [lineOfWorkFilter, setLineOfWorkFilter] = useState('');
+  const [ratingFilter, setRatingFilter] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [contractorDistances, setContractorDistances] = useState({});
+  const [searchRadius, setSearchRadius] = useState(35);
 
   const { data: contractorData, isLoading } = useQuery({
     queryKey: ['all-contractors'],
     queryFn: () => base44.entities.Contractor.filter({ account_locked: false, minor_hours_locked: false }),
+    staleTime: 5 * 60 * 1000, // 5 min — contractor list doesn't change by the second
   });
 
   const contractors = contractorData;
