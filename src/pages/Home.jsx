@@ -72,7 +72,7 @@ export default function Home() {
             {/* Bottom row: 3 small circles (centered under gaps) */}
 
             {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
-            <div className="absolute bottom-0 left-[29%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-40">
+            <div className="absolute bottom-16 left-[29%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-40">
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Why SurfCoast</span>
                 <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn →</span>
@@ -80,7 +80,7 @@ export default function Home() {
             </div>
 
             {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
-            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-30">
+            <div className="absolute bottom-16 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-30">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Solo/Startup</span>
                 <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>For you →</span>
@@ -88,7 +88,7 @@ export default function Home() {
             </div>
 
             {/* Small Circle 3: About Us (under gap 3-4) */}
-            <div className="absolute bottom-0 left-[71%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-20">
+            <div className="absolute bottom-16 left-[71%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-20">
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>About Us</span>
                 <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Our story →</span>
