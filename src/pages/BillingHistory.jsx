@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { Download, AlertCircle } from 'lucide-react';
+import SubscriptionStatusCard from '@/components/subscription/SubscriptionStatusCard';
+import PaymentMethodManager from '@/components/subscription/PaymentMethodManager';
 
 export default function BillingHistory() {
   const [subscription, setSubscription] = useState(null);
@@ -92,45 +94,13 @@ export default function BillingHistory() {
           <p className="text-muted-foreground">Manage your subscription and view payment history.</p>
         </div>
 
-        {/* Current Subscription */}
-        <div className="bg-card border-2 border-border rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-6">Current Subscription</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-muted-foreground mb-2">Plan</p>
-              <p className="text-2xl font-bold text-foreground capitalize">{subscription.tier}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground mb-2">Monthly Cost</p>
-              <p className="text-2xl font-bold text-foreground">${(subscription.amount_cents / 100).toFixed(2)}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground mb-2">Status</p>
-              <p className={`text-lg font-bold capitalize ${
-                subscription.status === 'active' ? 'text-secondary' : 'text-destructive'
-              }`}>
-                {subscription.status}
-              </p>
-            </div>
-            <div>
-              <p className="text-muted-foreground mb-2">Next Billing Date</p>
-              <p className="text-lg font-bold text-foreground">
-                {new Date(subscription.billing_cycle_end).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 flex gap-3">
-            <a
-              href="/SubscriptionUpgrade"
-              className="px-6 py-2 rounded-lg bg-primary text-white font-semibold hover:opacity-90"
-            >
-              Change Plan
-            </a>
-            <button className="px-6 py-2 rounded-lg border-2 border-border font-semibold hover:bg-muted">
-              Cancel Subscription
-            </button>
-          </div>
+        {/* Current Subscription & Payment Methods */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <SubscriptionStatusCard
+            subscription={subscription}
+            onChangePlan={() => window.location.href = '/SubscriptionUpgrade'}
+          />
+          <PaymentMethodManager userEmail={user?.email} />
         </div>
 
         {/* Invoice History */}
