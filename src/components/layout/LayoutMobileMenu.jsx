@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight, Briefcase, Users, Store, BarChart2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
+import AboutNavLinks from './AboutNavLinks';
 
 const exploreGroups = [
   {
@@ -41,6 +42,7 @@ export default function LayoutMobileMenu({
   createPageUrl,
 }) {
   const [exploreOpen, setExploreOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   if (!mobileMenuOpen) return null;
 
@@ -96,6 +98,22 @@ export default function LayoutMobileMenu({
             );
           })}
 
+          {/* About SurfCoast accordion — always visible */}
+          <div className="pt-2 border-t border-slate-100">
+            <button
+              onClick={() => setAboutOpen(!aboutOpen)}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+            >
+              <span className="font-semibold">About SurfCoast</span>
+              <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", aboutOpen && "rotate-180")} />
+            </button>
+            {aboutOpen && (
+              <div className="mt-1 pb-1">
+                <AboutNavLinks onLinkClick={handleNavClick} isMobile />
+              </div>
+            )}
+          </div>
+
           {/* Explore accordion (logged-out only) */}
           {!isLoggedIn && (
             <div className="pt-2 border-t border-slate-100">
@@ -125,20 +143,6 @@ export default function LayoutMobileMenu({
                 </div>
               )}
 
-              {/* Pricing / About pills */}
-              <div className="mt-1 space-y-1">
-                <Link to="/pricing" onClick={handleNavClick}>
-                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                     Pricing
-                   </div>
-                 </Link>
-                 <Link to="/About" onClick={handleNavClick}>
-                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                     About Us
-                   </div>
-                 </Link>
-              </div>
-
               {/* CTA buttons */}
               <div className="mt-4 flex flex-col gap-2 px-2">
                 <button
@@ -158,12 +162,7 @@ export default function LayoutMobileMenu({
           )}
 
           {isLoggedIn && (
-            <div className="pt-2 border-t border-slate-100 space-y-1">
-              <Link to="/About" onClick={handleNavClick}>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                  About Us
-                </div>
-              </Link>
+            <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
