@@ -18,6 +18,9 @@ import { calculateContractorMetrics } from '@/lib/metricsCalculator';
 import OnboardingNudgeBanner from '@/components/contractor/OnboardingNudgeBanner';
 import ContractorAnalyticsMetrics from '@/components/contractor/ContractorAnalyticsMetrics';
 import LegendStatusBadge from '@/components/contractor/LegendStatusBadge';
+import CompletionRateWidget from '@/components/contractor/CompletionRateWidget';
+import ReferralsCompletedWidget from '@/components/contractor/ReferralsCompletedWidget';
+import RecentCompletedJobsFeed from '@/components/contractor/RecentCompletedJobsFeed';
 
 const SURFCOAST_WAVES = [
   { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
@@ -139,16 +142,40 @@ export default function ContractorDashboard() {
   });
 
   const { data: completedScopes = [] } = useQuery({
-   queryKey: ['contractor-completed-scopes', user?.email],
-   queryFn: async () => {
-     if (!user?.email) return [];
-     const scopes = await base44.entities.ScopeOfWork.filter({
-       contractor_email: user.email,
-       status: 'closed'
-     });
-     return scopes || [];
-   },
-   enabled: !!user?.email,
+    queryKey: ['contractor-completed-scopes', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const scopes = await base44.entities.ScopeOfWork.filter({
+        contractor_email: user.email,
+        status: 'closed'
+      });
+      return scopes || [];
+    },
+    enabled: !!user?.email,
+  });
+
+  const { data: allScopes = [] } = useQuery({
+    queryKey: ['contractor-all-scopes', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const scopes = await base44.entities.ScopeOfWork.filter({
+        contractor_email: user.email
+      });
+      return scopes || [];
+    },
+    enabled: !!user?.email,
+  });
+
+  const { data: referrals = [] } = useQuery({
+    queryKey: ['contractor-referrals', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const refs = await base44.entities.Referral.filter({
+        referrer_email: user.email
+      });
+      return refs || [];
+    },
+    enabled: !!user?.email,
   });
 
   const metrics = useMemo(() => {
@@ -263,6 +290,15 @@ export default function ContractorDashboard() {
         {contractorProfile && (
           <div className="mb-8">
             <LegendStatusBadge jobsCompleted={completedScopes.length} />
+          </div>
+        )}
+
+        {/* Additional Metrics Row */}
+        {contractorProfile && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <CompletionRateWidget completedScopes={completedScopes} totalScopes={allScopes} />
+            <ReferralsCompletedWidget referrals={referrals} />
+            <RecentCompletedJobsFeed completedScopes={completedScopes} reviews={allReviews} />
           </div>
         )}
 
