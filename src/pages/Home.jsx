@@ -1,319 +1,209 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Lock, Briefcase, Users, ArrowRight, CheckCircle2, ShoppingBag, Star, Zap, Shield } from "lucide-react";
-import SocialProofStats from '@/components/home/SocialProofStats';
+import { ArrowRight, CheckCircle2, Briefcase, Users, Zap } from "lucide-react";
 
 export default function Home() {
   const [spotsRemaining] = useState(77);
 
+  const waveOSTiers = [
+    { name: "Starter", price: "$19", jobs: "5+" },
+    { name: "Pro", price: "$39", jobs: "32+" },
+    { name: "Max", price: "$59", jobs: "64+" },
+    { name: "Premium", price: "$100", jobs: "100+" },
+    { name: "Residential Bundle", price: "$125", jobs: "100+" },
+  ];
+
   return (
-    <div className="w-full bg-background">
+    <div className="w-full bg-background min-h-screen">
 
       {/* ==================== HERO ==================== */}
       <section className="relative overflow-hidden bg-background py-16 lg:py-28 px-4 lg:px-8">
-        {/* Decorative blobs */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500 rounded-full opacity-10 -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500 rounded-full opacity-10 translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left */}
-          <div>
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-orange-100 border border-orange-200">
-              <Zap className="w-3.5 h-3.5 text-orange-600" />
-              <span className="text-xs font-bold text-orange-700 uppercase tracking-wide">Limited Founding Member Offer</span>
-            </div>
+        <div className="relative max-w-5xl mx-auto text-center mb-16">
+          <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight">
+            Built for the <span className="logo-gradient-text">Solo Journey</span>
+          </h1>
+          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+            SurfCoast connects independent entrepreneurs, solo professionals, and consumers in one ecosystem. Free to join. Verified. Community-first.
+          </p>
 
-            <h1 className="text-4xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight tracking-tight">
-              Being an entrepreneur <br />
-              <span className="logo-gradient-text">isn't just a job.</span>
-            </h1>
-
-            <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-lg">
-              It's a mindset built on hard work, ownership, and pride. Join a verified community of tradespeople and grow your business your way.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Link
-                to="/BecomeContractor"
-                className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:bg-orange-700 transition-all shadow-lg shadow-primary/40 text-center text-lg"
-              >
-                Join as an Entrepreneur
-              </Link>
-              <Link
-                to="/CustomerSignup"
-                className="px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-center text-lg"
-              >
-                Find a Tradesperson
-              </Link>
-            </div>
-
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {["Free to join", "No transaction fees", "Verified platform"].map(t => (
-                <div key={t} className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                  {t}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right — Founding Member Card */}
-          <div className="bg-card rounded-2xl border-2 border-primary shadow-xl shadow-primary/30 p-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                <Star className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-primary uppercase tracking-wider">Founding Member</p>
-                <h3 className="text-xl font-extrabold text-foreground">1 Year Free Access</h3>
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground mb-5">Join our first 100 members and lock in your free year.</p>
-
-            <div className="mb-6">
-              <div className="flex items-center justify-between text-sm font-semibold text-foreground mb-2">
-                <span>{100 - spotsRemaining} of 100 claimed</span>
-                <span className="text-primary">{spotsRemaining} left</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-3">
-                <div
-                  className="bg-primary h-3 rounded-full transition-all"
-                  style={{ width: `${((100 - spotsRemaining) / 100) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3 mb-8">
-              {[
-                "1 year of premium access — free",
-                "Verified badge immediately",
-                "Community-first support",
-                "No platform fees ever",
-              ].map(b => (
-                <div key={b} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="text-sm text-foreground font-medium">{b}</span>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              to="/BecomeContractor"
-              className="w-full block px-6 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-center shadow-md shadow-primary/40"
-            >
-              Claim My Founding Spot →
-            </Link>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 border border-orange-200 mb-8">
+            <Zap className="w-4 h-4 text-orange-600" />
+            <span className="text-sm font-bold text-orange-700 uppercase tracking-wide">{100 - spotsRemaining} Founding Members — {spotsRemaining} Spots Left</span>
           </div>
         </div>
-      </section>
 
-      {/* ==================== 14-DAY TRIAL ==================== */}
-      <section className="py-16 lg:py-24 px-4 lg:px-8 bg-background border-t border-border">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-secondary bg-secondary/20 mb-4 uppercase tracking-wide">
-              For Entrepreneurs
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-extrabold text-foreground mb-5 leading-tight">
-              Try it free.<br />No pressure. No card.
-            </h2>
-            <p className="text-muted-foreground text-lg mb-10">
-              Get full access to find jobs, connect with clients, and build your reputation risk-free.
-            </p>
+        {/* ==================== 4 LARGE CIRCLES + SMALLER CIRCLES IN GAPS ==================== */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Container for circles */}
+          <div className="relative h-[600px] flex items-center justify-center">
 
-            <div className="space-y-6 mb-10">
-              {[
-                { num: "1", label: "Create your profile", desc: "Tell us about yourself and your trade" },
-                { num: "2", label: "Get discovered", desc: "Clients start seeing your profile immediately" },
-                { num: "3", label: "Decide after 14 days", desc: "Subscribe or walk away — your choice" }
-              ].map((step) => (
-                <div key={step.num} className="flex gap-5">
-                  <div className="flex-shrink-0 w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-lg shadow-md shadow-primary/40">
-                    {step.num}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground text-lg">{step.label}</h4>
-                    <p className="text-muted-foreground text-sm">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              to="/BecomeContractor"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all shadow-md shadow-primary/40 text-lg"
-            >
-              Start my free trial <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-
-          <div className="flex flex-col items-center justify-center text-center bg-muted rounded-2xl border-2 border-primary/40 p-12">
-            <span className="text-8xl lg:text-9xl font-extrabold text-primary leading-none mb-4">14</span>
-            <h3 className="text-2xl font-extrabold text-foreground mb-3">Days completely free</h3>
-            <p className="text-muted-foreground mb-8 max-w-xs">
-              Full access to all pro features. Find jobs, connect with clients, build your reputation.
-            </p>
-            <Link
-              to="/BecomeContractor"
-              className="w-full max-w-xs px-8 py-4 rounded-xl font-bold text-white text-center block bg-secondary hover:opacity-90 transition-all shadow-lg"
-            >
-              Start my free trial
-            </Link>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mt-5">
-              <Lock className="w-4 h-4" />
-              <span>No credit card required, ever</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== TWO-PATH SPLIT ==================== */}
-      <section className="py-16 lg:py-24 px-4 lg:px-8 bg-muted border-t border-border">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-foreground text-center mb-12">Who are you?</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Entrepreneurs */}
-            <div className="bg-card rounded-2xl border-2 border-secondary/30 p-8 hover:border-secondary hover:shadow-xl transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center mb-6 group-hover:bg-secondary transition-colors">
-                <Briefcase className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
-              </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I'm an Entrepreneur</h3>
-              <p className="text-muted-foreground mb-6">Grow your business with verified clients, secure payments, and real support.</p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  "Find quality jobs from verified clients",
-                  "Build your reputation with verified reviews",
-                  "Get paid securely via Stripe",
-                  "Community-first support always",
-                ].map(item => (
-                  <li key={item} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-secondary flex-shrink-0" />
-                    <span className="text-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/BecomeContractor"
-                className="w-full block px-6 py-4 rounded-xl border-2 border-secondary text-secondary font-bold hover:bg-secondary hover:text-white transition-all text-center"
-              >
-                Join as an Entrepreneur
+            {/* Circle 1: Entrepreneurs (Top-Left) */}
+            <div className="absolute top-0 left-1/4 -translate-x-1/2 w-40 h-40 rounded-full bg-secondary/20 border-2 border-secondary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+              <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
+                <Briefcase className="w-8 h-8 text-secondary mb-2" />
+                <span className="font-bold text-foreground text-sm">Entrepreneurs</span>
+                <span className="text-xs text-muted-foreground">Enter →</span>
               </Link>
             </div>
 
-            {/* Clients */}
-            <div className="bg-card rounded-2xl border-2 border-primary/30 p-8 hover:border-primary hover:shadow-xl transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-                <Users className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
+            {/* Circle 2: Clients & Consumers (Top-Right) */}
+            <div className="absolute top-0 right-1/4 translate-x-1/2 w-40 h-40 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+              <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
+                <Users className="w-8 h-8 text-primary mb-2" />
+                <span className="font-bold text-foreground text-sm">Clients & Consumers</span>
+                <span className="text-xs text-muted-foreground">Enter →</span>
+              </Link>
+            </div>
+
+            {/* Circle 3: Mission Statement (Bottom-Left) */}
+            <div className="absolute bottom-0 left-1/4 -translate-x-1/2 w-40 h-40 rounded-full bg-muted border-2 border-border flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
+                <span className="font-bold text-foreground text-sm mb-2">Mission</span>
+                <span className="text-xs text-muted-foreground leading-tight">Empowering independent workers to own their path</span>
               </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I need an Entrepreneur</h3>
-              <p className="text-muted-foreground mb-6">Find verified entrepreneurs you can trust, with transparent pricing and secure payments.</p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  "Access verified, licensed entrepreneurs",
-                  "Get competitive quotes instantly",
-                  "Secure payments and verified reviews",
-                  "Peace of mind with professional support",
-                ].map(item => (
-                  <li key={item} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/CustomerSignup"
-                className="w-full block px-6 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-center"
-              >
-                Find a Pro
+            </div>
+
+            {/* Circle 4: WAVE OS (Bottom-Right) */}
+            <div className="absolute bottom-0 right-1/4 translate-x-1/2 w-40 h-40 rounded-full bg-blue-100/30 border-2 border-blue-400 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+              <Link to="/pricing" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
+                <Zap className="w-8 h-8 text-blue-600 mb-2" />
+                <span className="font-bold text-foreground text-sm">WAVE OS</span>
+                <span className="text-xs text-muted-foreground">Tiers & Pricing →</span>
+              </Link>
+            </div>
+
+            {/* Small Circle 1: Why SurfCoast (Gap between Entrepreneurs & Clients) */}
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 border-2 border-orange-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+              <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
+                <span className="font-bold text-foreground text-xs">Why SurfCoast</span>
+                <span className="text-[10px] text-muted-foreground">Learn →</span>
+              </Link>
+            </div>
+
+            {/* Small Circle 2: Solo/Startup (Gap between Entrepreneurs & Mission) */}
+            <div className="absolute bottom-1/3 left-1/3 -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-50 border-2 border-secondary/40 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
+                <span className="font-bold text-foreground text-xs">Solo/Startup</span>
+                <span className="text-[10px] text-muted-foreground">For you →</span>
+              </div>
+            </div>
+
+            {/* Small Circle 3: About Us (Gap between Clients & WAVE OS) */}
+            <div className="absolute bottom-1/3 right-1/3 translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+              <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
+                <span className="font-bold text-foreground text-xs">About Us</span>
+                <span className="text-[10px] text-muted-foreground">Our story →</span>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== TOOLS / MORE THAN A DIRECTORY ==================== */}
-      <section className="py-16 lg:py-24 px-4 lg:px-8 bg-background border-t border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-foreground mb-3">More than a directory</h2>
-            <p className="text-muted-foreground text-lg">A full ecosystem built for entrepreneurs and their clients.</p>
+      {/* ==================== WAVE OS PRICING SECTION ==================== */}
+      <section className="py-20 px-4 lg:px-8 bg-muted border-t border-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">WAVE OS Tiers</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Optional software for contractors. Start free. Unlock tiers as you complete jobs. Licensed pros get instant access.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {waveOSTiers.map((tier, i) => (
+              <div key={i} className="bg-card rounded-xl border border-border p-6 text-center hover:shadow-lg hover:border-primary transition-all">
+                <h3 className="font-bold text-foreground text-sm mb-2">{tier.name}</h3>
+                <div className="text-3xl font-extrabold text-primary mb-1">{tier.price}</div>
+                <p className="text-xs text-muted-foreground mb-4">/month</p>
+                <div className="bg-muted rounded px-3 py-2 mb-4 text-xs font-semibold text-foreground">
+                  {tier.jobs} jobs to unlock
+                </div>
+                <Link
+                  to="/pricing"
+                  className="text-xs font-bold text-primary hover:opacity-70 transition-opacity flex items-center justify-center gap-1"
+                >
+                  View details <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              <strong>For Licensed Professionals:</strong> Have a C-36, H.I.S. License, or equivalent credentials? Gain instant access to all WAVE OS tiers. Choose which to subscribe to and start immediately.
+            </p>
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
+            >
+              Explore All Plans <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== FEATURES ==================== */}
+      <section className="py-20 px-4 lg:px-8 bg-background border-t border-border">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-extrabold text-foreground text-center mb-16">What You Get</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {[
-              {
-                icon: ShoppingBag,
-                color: "blue",
-                title: "Swap Meet Space",
-                desc: "Book your booth and sell goods at local markets. Connect with buyers in your community.",
-                link: "/MarketShopSignup?type=swap_meet",
-              },
-              {
-                icon: Briefcase,
-                color: "orange",
-                title: "Entrepreneur Marketplace",
-                desc: "Find quality jobs, grow your business, and build your reputation with verified clients.",
-                link: "/BecomeContractor",
-              },
-              {
-                icon: Users,
-                color: "green",
-                title: "Consumer Hub",
-                desc: "Find verified entrepreneurs, get instant quotes, and pay securely with verified reviews.",
-                link: "/CustomerSignup",
-              },
-            ].map(({ icon: Icon, color, title, desc, link }) => {
-              const colorClass = color === "blue" ? "secondary" : color === "orange" ? "primary" : "secondary";
-              return (
-                <div key={title} className={`bg-card border-2 border-${colorClass === "primary" ? "primary" : "secondary"}/30 rounded-2xl p-8 hover:border-${colorClass === "primary" ? "primary" : "secondary"} hover:shadow-xl transition-all group`}>
-                  <div className={`w-12 h-12 rounded-xl bg-${colorClass === "primary" ? "primary" : "secondary"}/20 flex items-center justify-center mb-6 group-hover:bg-${colorClass === "primary" ? "primary" : "secondary"} transition-colors`}>
-                    <Icon className={`w-6 h-6 text-${colorClass === "primary" ? "primary" : "secondary"} group-hover:text-white transition-colors`} />
-                  </div>
-                  <h3 className="text-xl font-extrabold text-foreground mb-3">{title}</h3>
-                  <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{desc}</p>
-                  <Link to={link} className={`text-${colorClass === "primary" ? "primary" : "secondary"} font-bold hover:opacity-70 transition-opacity flex items-center gap-2`}>
-                    Learn more <ArrowRight className="w-4 h-4" />
-                  </Link>
+              { title: "Free Profile", desc: "Create a verified profile at no cost. Build your reputation from day one." },
+              { title: "Community First", desc: "Connect with verified professionals and clients in a supportive ecosystem." },
+              { title: "Secure Payments", desc: "All transactions protected by Stripe. Get paid fast, keep your trust intact." },
+              { title: "Mobile Ready", desc: "Full access from any device. Manage your business on the go." },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4">
+                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-bold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground">{item.desc}</p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ==================== SOCIAL PROOF ==================== */}
-      <SocialProofStats />
+      {/* ==================== CTA ==================== */}
+      <section className="py-20 px-4 lg:px-8 bg-muted border-t border-border">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-extrabold text-foreground mb-6">Ready to start?</h2>
+          <p className="text-muted-foreground text-lg mb-10">Join SurfCoast today. No credit card. No commitment. Just you, your skills, and real opportunities.</p>
 
-      {/* ==================== TRUST BAR ==================== */}
-      <section className="py-10 px-4 lg:px-8 bg-primary">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { icon: Shield, text: "Verified licences only" },
-            { icon: CheckCircle2, text: "Secure payments via Stripe" },
-            { icon: Star, text: "VBA registered platform" },
-            { icon: Users, text: "Community-first always" },
-          ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-3 justify-center lg:justify-start">
-              <Icon className="w-5 h-5 text-white/80 flex-shrink-0" />
-              <span className="text-sm font-semibold text-white">{text}</span>
-            </div>
-          ))}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/BecomeContractor"
+              className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
+            >
+              Join as Entrepreneur
+            </Link>
+            <Link
+              to="/CustomerSignup"
+              className="px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-lg"
+            >
+              Find a Professional
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ==================== FOOTER ==================== */}
       <footer className="bg-card py-10 px-4 lg:px-8 border-t border-border">
-        <div className="max-w-7xl mx-auto flex flex-col gap-4 lg:flex-row lg:gap-0 lg:items-center lg:justify-between">
+        <div className="max-w-6xl mx-auto flex flex-col gap-4 lg:flex-row lg:gap-0 lg:items-center lg:justify-between">
           <div className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} SurfCoast. All rights reserved.
           </div>
           <div className="flex gap-6">
             {[
               { label: "About", to: "/About" },
-              { label: "Privacy", to: "/PrivacyPolicy" },
-              { label: "Terms", to: "/Terms" },
+              { label: "Why SurfCoast", to: "/why-surfcoast" },
               { label: "Pricing", to: "/pricing" },
+              { label: "Privacy", to: "/PrivacyPolicy" },
             ].map(({ label, to }) => (
               <Link key={label} to={to} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 {label}
