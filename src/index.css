@@ -6,18 +6,18 @@
 
 @layer base {
   :root {
-    /* Deep Industrial-Tech Palette */
+    /* Industrial-Tech Palette */
     /* Primary Colors */
-    --deep-slate: #1A1A1B;           /* Dark Mode Base */
+    --dark-gray: #2A2A2A;            /* Dark Mode Base */
     --safety-orange: #FF8C00;        /* Primary Actions */
     --electric-cobalt: #2E5BFF;      /* WAVE OS Brand */
     --gunmetal-steel: #333335;       /* Accent Borders */
     --titanium-white: #F2F2F2;       /* Typography */
     
     /* Background & Surface */
-    --background: 0 0% 10%;          /* Deep Slate equivalent #1A1A1B */
+    --background: 0 0% 16%;          /* Dark gray equivalent #2A2A2A */
     --foreground: 0 0% 95%;          /* Titanium White equivalent */
-    --card: 0 0% 16%;                /* Dark surface for cards */
+    --card: 0 0% 20%;                /* Dark surface for cards */
     --card-foreground: 0 0% 95%;     /* White text on cards */
     --popover: 0 0% 16%;
     --popover-foreground: 0 0% 95%;
@@ -64,18 +64,18 @@
     --sidebar-border: 0 0% 25%;
     --sidebar-ring: 33 100% 50%;
 
-    /* Gradient tokens — Industrial-Tech (Deep Slate + Cobalt + Orange) */
-    --gradient-brand: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
-    --gradient-soft: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 60%, #FF8C00 100%);
-    --gradient-hero: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
-    --gradient-card: linear-gradient(145deg, #1A1A1B 0%, #333335 100%);
+    /* Gradient tokens — Industrial-Tech (Gray + Cobalt + Orange) */
+    --gradient-brand: linear-gradient(135deg, #2A2A2A 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-soft: linear-gradient(135deg, #2A2A2A 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-hero: linear-gradient(135deg, #2A2A2A 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-card: linear-gradient(145deg, #2A2A2A 0%, #333335 100%);
   }
 
   .dark {
     /* Dark mode is the DEFAULT — same as root */
-    --background: 0 0% 10%;
+    --background: 0 0% 16%;
     --foreground: 0 0% 95%;
-    --card: 0 0% 16%;
+    --card: 0 0% 20%;
     --card-foreground: 0 0% 95%;
     --popover: 0 0% 16%;
     --popover-foreground: 0 0% 95%;
