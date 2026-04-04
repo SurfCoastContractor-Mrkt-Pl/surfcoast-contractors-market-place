@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { Bell, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useUserData } from '@/hooks/useUserData';
 
 export default function NotificationBell() {
   const [showDropdown, setShowDropdown] = useState(false);
   const queryClient = useQueryClient();
+  const { user } = useUserData();
 
   const { data } = useQuery({
     queryKey: ['notifications', 'unread'],
     queryFn: () => base44.functions.invoke('getUnreadNotifications', {}).then(res => res.data),
-    staleTime: 60 * 1000,       // treat as fresh for 1 min
-    refetchInterval: 60 * 1000, // poll every 60s (was 30s, halved the requests)
+    enabled: !!user,             // only poll when logged in
+    staleTime: 60 * 1000,
+    refetchInterval: 60 * 1000,
+    retry: false,                // don't retry on network errors
   });
 
   const unreadCount = data?.unreadCount || 0;
