@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { useUserData } from '@/hooks/useUserData';
+import { useQuery } from '@tanstack/react-query';
 import AuthTopBar from '@/components/auth/AuthTopBar';
 import {
   HardHat, BarChart3, Briefcase, User, DollarSign,
@@ -186,27 +188,31 @@ export default function ContractorAccount() {
   const urlParams = new URLSearchParams(window.location.search);
   const section = urlParams.get('section');
   const navigate = useNavigate();
-  const [contractorName, setContractorName] = useState('');
 
+  const { user, isLoading: loadingUser } = useUserData();
+
+  const { data: contractorData } = useQuery({
+    queryKey: ['contractor-own', user?.email],
+    queryFn: () => base44.entities.Contractor.filter({ email: user.email }),
+    enabled: !!user?.email && !section,
+    staleTime: 10 * 60 * 1000,
+    select: (data) => data?.[0],
+  });
+  const contractorName = contractorData?.name || '';
+
+  // Redirect section params to Business Hub
   useEffect(() => {
-    // If a section param is present, redirect to the full hub page with that tab
     if (section) {
       navigate('/ContractorBusinessHub?tab=' + section, { replace: true });
-      return;
     }
+  }, [section, navigate]);
 
-    base44.auth.me().then(user => {
-      if (!user) {
-        base44.auth.redirectToLogin();
-        return;
-      }
-      base44.entities.Contractor.filter({ email: user.email }).then(results => {
-        if (results?.[0]?.name) setContractorName(results[0].name);
-      });
-    }).catch(() => {
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (!loadingUser && !user) {
       base44.auth.redirectToLogin();
-    });
-  }, [section]);
+    }
+  }, [loadingUser, user]);
 
   if (section) return null; // redirecting
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUserData } from '@/hooks/useUserData';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -49,40 +50,22 @@ export default function CustomerAccount() {
    const [closeoutScope, setCloseoutScope] = useState(null);
    const [reviewScope, setReviewScope] = useState(null);
    const queryClient = useQueryClient();
-   const [loading, setLoading] = useState(true);
-   const [userEmail, setUserEmail] = useState(null);
    const [showWelcome, setShowWelcome] = useState(false);
    const [agentOpen, setAgentOpen] = useState(false);
    const [activeSidebarChat, setActiveSidebarChat] = useState(null);
 
-   useEffect(() => {
-     const checkAuth = async () => {
-       try {
-         if (isAdminPreview && adminPreviewEmail) {
-           setUserEmail(adminPreviewEmail);
-           setLoading(false);
-           return;
-         }
-         const user = await base44.auth.me();
-         if (!user) {
-           base44.auth.redirectToLogin();
-           return;
-         }
-         setUserEmail(user.email);
+   const { user, isLoading: loadingUser } = useUserData();
 
-         // Check if this is a new customer (no profile yet)
-         const profiles = await base44.entities.CustomerProfile.filter({ email: user.email });
-         if (!profiles || profiles.length === 0) {
-           setShowWelcome(true);
-         }
-       } catch (error) {
-         base44.auth.redirectToLogin();
-       } finally {
-         setLoading(false);
-       }
-     };
-     checkAuth();
-   }, []);
+   // Resolve the effective email (admin preview or real user)
+   const userEmail = isAdminPreview && adminPreviewEmail ? adminPreviewEmail : user?.email || null;
+   const loading = loadingUser;
+
+   // Redirect unauthenticated non-preview users
+   useEffect(() => {
+     if (!isAdminPreview && !loadingUser && !user) {
+       base44.auth.redirectToLogin();
+     }
+   }, [loadingUser, user, isAdminPreview]);
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
     queryKey: ['customer-payments', userEmail],
@@ -114,6 +97,9 @@ export default function CustomerAccount() {
     queryFn: () => base44.entities.CustomerProfile.filter({ email: userEmail }),
     enabled: !!userEmail,
     select: (data) => data[0],
+    onSuccess: (profile) => {
+      if (!profile && !isAdminPreview) setShowWelcome(true);
+    },
   });
 
   const { data: proposals } = useQuery({
