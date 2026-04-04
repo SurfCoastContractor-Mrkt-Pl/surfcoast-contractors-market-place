@@ -20,17 +20,17 @@ import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
 const BASE_NAV_TABS = [
-  { id: 'jobs', label: 'Wave FO Jobs' },
-  { id: 'map', label: 'Wave FO Map' },
-  { id: 'schedule', label: 'Wave FO Schedule' },
-  { id: 'invoices', label: 'Wave FO Invoices' },
-  { id: 'reports', label: 'Wave FO Reports' },
-  { id: 'profile', label: 'Wave FO Profile' },
+  { id: 'jobs', label: 'WAVE OS Jobs' },
+  { id: 'map', label: 'WAVE OS Map' },
+  { id: 'schedule', label: 'WAVE OS Schedule' },
+  { id: 'invoices', label: 'WAVE OS Invoices' },
+  { id: 'reports', label: 'WAVE OS Reports' },
+  { id: 'profile', label: 'WAVE OS Profile' },
   { id: 'supplies', label: 'Supply Houses' },
 ];
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave FO' };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast WAVE OS' };
 
-export default function WaveFo() {
+export default function WaveOS() {
   const [activeTab, setActiveTab] = useState('jobs');
   const [user, setUser] = useState(null);
   const [contractor, setContractor] = useState(null);
@@ -69,7 +69,7 @@ export default function WaveFo() {
           if (contractors?.length > 0) setContractor(contractors[0]);
         }
       } catch (e) {
-        console.error('Wave FO auth error:', e);
+        console.error('WAVE OS auth error:', e);
       }
       setLoading(false);
       };
@@ -104,25 +104,25 @@ export default function WaveFo() {
       <div className="min-h-screen bg-slate-100 flex items-center justify-center">
         <div className="text-center text-slate-800">
           <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-500 text-sm">Loading Wave FO...</p>
+          <p className="text-slate-500 text-sm">Loading WAVE OS...</p>
         </div>
       </div>
     );
   }
 
-  // Check Wave FO access — requires SurfCoast Wave FO (55 completed jobs)
+  // Check WAVE OS access — requires SurfCoast WAVE OS (55 completed jobs)
   // Admins bypass all tier/contractor requirements for testing
   const completedJobsCount = contractor?.completed_jobs_count || 0;
   const BREAKER_JOBS_REQUIRED = 55;
   // Show AI assistant only for Ripple (15-34 jobs) and Swell (35-54 jobs) tiers
-  const showWaveFOAssistant = !isAdmin && completedJobsCount >= 15 && completedJobsCount < BREAKER_JOBS_REQUIRED;
-  const hasWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const hasSurfCoastWaveFOAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const NAV_TABS = hasSurfCoastWaveFOAccess
+  const showWaveOSAssistant = !isAdmin && completedJobsCount >= 15 && completedJobsCount < BREAKER_JOBS_REQUIRED;
+  const hasWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const hasSurfCoastWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const NAV_TABS = hasSurfCoastWaveOSAccess
     ? [...BASE_NAV_TABS, BREAKER_TAB]
     : BASE_NAV_TABS;
 
-  if (contractor && !hasWaveFOAccess) {
+  if (contractor && !hasWaveOSAccess) {
     return (
       <div className="min-h-screen bg-slate-100">
         <FieldOpsAccessGate contractor={contractor} />
@@ -135,13 +135,13 @@ export default function WaveFo() {
       <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
         <div className="text-center text-slate-800 max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Wave FO</h1>
-          <p className="text-slate-500 mb-6">Sign in with a contractor account to access Wave FO.</p>
-          <button
-            onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveFo`)}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
-          >
-            Sign In to Wave FO
+          <h1 className="text-2xl font-bold mb-2">WAVE OS</h1>
+           <p className="text-slate-500 mb-6">Sign in with a contractor account to access WAVE OS.</p>
+           <button
+             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveOS`)}
+             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
+           >
+             Sign In to WAVE OS
           </button>
           <Link to="/" className="block mt-4 text-slate-500 text-sm hover:text-slate-800">← Back to Home</Link>
         </div>
@@ -191,7 +191,7 @@ export default function WaveFo() {
                 setActiveTab(tab);
                 setSidebarOpen(false);
               }}
-              hasBreakerAccess={hasSurfCoastWaveFOAccess}
+              hasBreakerAccess={hasSurfCoastWaveOSAccess}
               isOnline={isOnline}
             />
           </div>
@@ -202,7 +202,7 @@ export default function WaveFo() {
         {/* Desktop Top Bar */}
         <div className="hidden lg:flex items-center justify-between bg-white px-6 py-4 border-b border-slate-200 flex-shrink-0">
           <h1 className="text-slate-800 font-semibold text-lg">
-            {NAV_TABS.find(t => t.id === activeTab)?.label || 'Wave FO'}
+            {NAV_TABS.find(t => t.id === activeTab)?.label || 'WAVE OS'}
           </h1>
           <Link to="/ContractorAccount" className="relative p-2 mr-1 group flex items-center gap-1 text-slate-500 hover:text-slate-800 transition-colors text-sm">
             <ArrowLeft className="w-4 h-4" />
@@ -235,7 +235,7 @@ export default function WaveFo() {
           contractor={effectiveContractor}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          hasBreakerAccess={hasSurfCoastWaveFOAccess}
+          hasBreakerAccess={hasSurfCoastWaveOSAccess}
           isOnline={isOnline}
           notifCount={notifCount}
         />
@@ -271,8 +271,8 @@ export default function WaveFo() {
       </div>
       </div>
 
-      {/* Wave FO AI Assistant — Ripple & Swell tiers only */}
-      {showWaveFOAssistant && (
+      {/* WAVE OS AI Assistant — Ripple & Swell tiers only */}
+      {showWaveOSAssistant && (
         <WaveFOAssistant
           contractor={effectiveContractor}
           activeTab={activeTab}

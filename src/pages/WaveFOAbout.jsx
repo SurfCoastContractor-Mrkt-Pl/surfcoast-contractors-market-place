@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Zap, Users, Map, BarChart3, MessageSquare, FileCheck, Clock } from 'lucide-react';
 
-export default function WaveFOAbout() {
+export default function WaveOSAbout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Hero Section */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <h1 className="text-5xl sm:text-6xl font-black tracking-tight mb-6 gradient-text">
-          WAVE FO
+          WAVE OS
         </h1>
         <p className="text-xl sm:text-2xl text-slate-700 max-w-3xl mx-auto mb-4 leading-relaxed">
           The Operating System for Independent Contractors
@@ -67,9 +67,9 @@ export default function WaveFOAbout() {
 
       {/* Our Solution */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Enter WAVE FO</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Enter WAVE OS</h2>
         <p className="text-lg text-slate-700 max-w-3xl mx-auto text-center mb-12 leading-relaxed">
-          Built specifically for contractors, WAVE FO unifies every aspect of your business—from the moment you accept a job to the day you get paid and everything in between.
+          Built specifically for entrepreneurs, WAVE OS unifies every aspect of your business—from the moment you accept a job to the day you get paid and everything in between.
         </p>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -217,7 +217,7 @@ export default function WaveFOAbout() {
 
       {/* The Difference */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">The WAVE FO Difference</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">The WAVE OS Difference</h2>
         <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-l-4 border-blue-600 rounded-lg p-8 mb-8">
           <h3 className="text-xl font-bold text-slate-900 mb-4">Competitors think in silos</h3>
           <p className="text-slate-700">
@@ -227,7 +227,7 @@ export default function WaveFOAbout() {
         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-600 rounded-lg p-8">
           <h3 className="text-xl font-bold text-slate-900 mb-4">We think in workflows</h3>
           <p className="text-slate-700">
-            A contractor's day isn't about managing separate tools—it's about managing jobs. Accept a lead → Schedule it → Complete the work → Document it → Get paid → Keep the client happy. Every piece of WAVE FO serves that flow.
+            An entrepreneur's day isn't about managing separate tools—it's about managing jobs. Accept a lead → Schedule it → Complete the work → Document it → Get paid → Keep the client happy. Every piece of WAVE OS serves that flow.
           </p>
         </div>
       </section>
@@ -266,7 +266,7 @@ export default function WaveFOAbout() {
             Ready to Run Your Business Like a Pro?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join contractors building their own empires on WAVE FO. 14 days free. No credit card required.
+            Join entrepreneurs building their own empires on WAVE OS. 14 days free. No credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/BecomeContractor" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors">

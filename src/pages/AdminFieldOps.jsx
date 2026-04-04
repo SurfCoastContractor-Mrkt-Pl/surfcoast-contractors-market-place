@@ -16,7 +16,7 @@ const NAV_TABS = [
   { id: 'clients', label: 'Clients', icon: Users },
 ];
 
-export default function AdminFieldOps() {
+export default function AdminWaveOS() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -77,7 +77,7 @@ export default function AdminFieldOps() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-amber-500" />
-              <span className="text-slate-800 font-bold text-sm">Admin Wave FO</span>
+              <span className="text-slate-800 font-bold text-sm">Admin WAVE OS</span>
               <span className="bg-amber-900 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">ADMIN</span>
             </div>
             <Link to="/admin" className="text-slate-500 hover:text-slate-800 text-xs flex items-center gap-1">
