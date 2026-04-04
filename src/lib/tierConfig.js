@@ -74,3 +74,104 @@ export const canAccessFeature = (profileTier, feature, currentValue) => {
   }
   return true;
 };
+
+/**
+ * WAVE OS Tier Unlock Requirements
+ * Starter/Pro/Max: 15+ completed jobs
+ * Premium/Residential Bundle: Licensed Sole Prop with H.I.S. License
+ */
+export const WAVE_OS_TIER_REQUIREMENTS = {
+  starter: {
+    price: 19,
+    unlockType: 'performance',
+    requiredCompletedJobs: 15,
+    requiresLicense: false,
+    requiresHISLicense: false,
+  },
+  pro: {
+    price: 39,
+    unlockType: 'performance',
+    requiredCompletedJobs: 15,
+    requiresLicense: false,
+    requiresHISLicense: false,
+  },
+  max: {
+    price: 59,
+    unlockType: 'performance',
+    requiredCompletedJobs: 15,
+    requiresLicense: false,
+    requiresHISLicense: false,
+  },
+  premium: {
+    price: 100,
+    unlockType: 'license',
+    requiredCompletedJobs: 0,
+    requiresLicense: true,
+    requiresHISLicense: true,
+  },
+  residential_bundle: {
+    price: 125,
+    unlockType: 'license',
+    requiredCompletedJobs: 0,
+    requiresLicense: true,
+    requiresHISLicense: true,
+  },
+};
+
+/**
+ * Check if contractor can unlock a WAVE OS tier
+ * @param {Object} contractor - Contractor data object
+ * @param {string} tierName - Tier name (starter, pro, max, premium, residential_bundle)
+ * @returns {Object} { canUnlock: boolean, reason: string }
+ */
+export const canUnlockWaveOSTier = (contractor, tierName) => {
+  const requirement = WAVE_OS_TIER_REQUIREMENTS[tierName?.toLowerCase()];
+  
+  if (!requirement) {
+    return { canUnlock: false, reason: 'Invalid tier name' };
+  }
+
+  if (requirement.unlockType === 'performance') {
+    const completedJobs = contractor?.completed_jobs_count || 0;
+    if (completedJobs < requirement.requiredCompletedJobs) {
+      return {
+        canUnlock: false,
+        reason: `Need ${requirement.requiredCompletedJobs} completed jobs (you have ${completedJobs})`,
+        progress: completedJobs,
+        required: requirement.requiredCompletedJobs,
+      };
+    }
+    return { canUnlock: true, reason: 'Unlocked via job completion', progress: completedJobs, required: requirement.requiredCompletedJobs };
+  }
+
+  if (requirement.unlockType === 'license') {
+    const hasLicense = contractor?.is_licensed_sole_proprietor === true;
+    const hasHISLicense = contractor?.his_license_status === 'active';
+
+    if (!hasLicense) {
+      return { canUnlock: false, reason: 'Requires Licensed Sole Proprietor status' };
+    }
+    if (!hasHISLicense) {
+      return { canUnlock: false, reason: 'Requires active H.I.S. License' };
+    }
+    return { canUnlock: true, reason: 'Unlocked via H.I.S. License', hasLicense, hasHISLicense };
+  }
+
+  return { canUnlock: false, reason: 'Unknown unlock type' };
+};
+
+/**
+ * Get next milestone for contractor to unlock tier (performance-based only)
+ * @param {Object} contractor - Contractor data object
+ * @param {string} tierName - Tier name
+ * @returns {Object | null} { jobsNeeded: number } or null if already unlocked
+ */
+export const getNextUnlockMilestone = (contractor, tierName) => {
+  const requirement = WAVE_OS_TIER_REQUIREMENTS[tierName?.toLowerCase()];
+  if (!requirement || requirement.unlockType !== 'performance') return null;
+
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const jobsNeeded = Math.max(0, requirement.requiredCompletedJobs - completedJobs);
+
+  return jobsNeeded > 0 ? { jobsNeeded, progress: completedJobs, required: requirement.requiredCompletedJobs } : null;
+};
