@@ -1,37 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Bell, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function NotificationBell() {
-  const [unreadCount, setUnreadCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchNotifications();
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  const { data } = useQuery({
+    queryKey: ['notifications', 'unread'],
+    queryFn: () => base44.functions.invoke('getUnreadNotifications', {}).then(res => res.data),
+    staleTime: 60 * 1000,       // treat as fresh for 1 min
+    refetchInterval: 60 * 1000, // poll every 60s (was 30s, halved the requests)
+  });
 
-  const fetchNotifications = async () => {
-    try {
-      const res = await base44.functions.invoke('getUnreadNotifications', {});
-      setUnreadCount(res.data.unreadCount || 0);
-      setNotifications(res.data.notifications || []);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
-  };
+  const unreadCount = data?.unreadCount || 0;
+  const notifications = data?.notifications || [];
 
   const handleMarkRead = async (notificationId) => {
-    try {
-      await base44.functions.invoke('markNotificationRead', { notificationId });
-      fetchNotifications();
-    } catch (error) {
-      console.error('Error marking notification read:', error);
-    }
+    await base44.functions.invoke('markNotificationRead', { notificationId });
+    queryClient.invalidateQueries({ queryKey: ['notifications', 'unread'] });
   };
 
   return (
