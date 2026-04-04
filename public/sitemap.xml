@@ -23,4 +23,16 @@
   <url><loc>https://surfcoastcmp.com/Blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://surfcoastcmp.com/Terms</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://surfcoastcmp.com/PrivacyPolicy</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <!-- Trade SEO landing pages -->
+  <url><loc>https://surfcoastcmp.com/contractors/plumbers</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/electricians</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/hvac-technicians</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/carpenters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/painters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/roofers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/masons</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/landscapers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/welders</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/tilers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://surfcoastcmp.com/contractors/general-contractors</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

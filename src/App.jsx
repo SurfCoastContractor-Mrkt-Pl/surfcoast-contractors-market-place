@@ -89,6 +89,7 @@ import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
 import ContractorMyDay from './pages/ContractorMyDay';
+import TradeLanding from './pages/TradeLanding';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -589,6 +590,11 @@ const AuthenticatedApp = () => {
       <Route path="/my-day" element={
         <LayoutWrapper currentPageName="ContractorMyDay">
           <ContractorMyDay />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractors/:slug" element={
+        <LayoutWrapper currentPageName="TradeLanding">
+          <TradeLanding />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

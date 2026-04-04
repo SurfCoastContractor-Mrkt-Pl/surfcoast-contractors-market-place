@@ -27,6 +27,18 @@ const STATIC_ROUTES = [
   { path: '/Blog',                      priority: '0.7', changefreq: 'weekly' },
   { path: '/Terms',                     priority: '0.4', changefreq: 'yearly' },
   { path: '/PrivacyPolicy',            priority: '0.4', changefreq: 'yearly' },
+  // Trade SEO landing pages
+  { path: '/contractors/plumbers',          priority: '0.8', changefreq: 'weekly' },
+  { path: '/contractors/electricians',      priority: '0.8', changefreq: 'weekly' },
+  { path: '/contractors/hvac-technicians',  priority: '0.8', changefreq: 'weekly' },
+  { path: '/contractors/carpenters',        priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/painters',          priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/roofers',           priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/masons',            priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/landscapers',       priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/welders',           priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/tilers',            priority: '0.7', changefreq: 'weekly' },
+  { path: '/contractors/general-contractors', priority: '0.8', changefreq: 'weekly' },
 ];
 
 function urlEntry(loc, changefreq = 'monthly', priority = '0.5', lastmod = null) {
