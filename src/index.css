@@ -6,21 +6,21 @@
 
 @layer base {
   :root {
-    /* Industrial-Tech Palette */
+    /* Deep Industrial-Tech Palette */
     /* Primary Colors */
-    --light-gray: #E8E8E8;           /* Light Gray Base (was Deep Slate) */
+    --deep-slate: #1A1A1B;           /* Dark Mode Base */
     --safety-orange: #FF8C00;        /* Primary Actions */
     --electric-cobalt: #2E5BFF;      /* WAVE OS Brand */
     --gunmetal-steel: #333335;       /* Accent Borders */
-    --titanium-white: #F2F2F2;       /* Light surfaces */
+    --titanium-white: #F2F2F2;       /* Typography */
     
     /* Background & Surface */
-    --background: 0 0% 91%;          /* Light Gray #E8E8E8 */
-    --foreground: 0 0% 12%;          /* Dark text for contrast */
-    --card: 0 0% 98%;                /* White/near-white cards */
-    --card-foreground: 0 0% 12%;     /* Dark text on cards */
-    --popover: 0 0% 98%;
-    --popover-foreground: 0 0% 12%;
+    --background: 0 0% 10%;          /* Deep Slate equivalent #1A1A1B */
+    --foreground: 0 0% 95%;          /* Titanium White equivalent */
+    --card: 0 0% 16%;                /* Dark surface for cards */
+    --card-foreground: 0 0% 95%;     /* White text on cards */
+    --popover: 0 0% 16%;
+    --popover-foreground: 0 0% 95%;
     
     /* Primary Action (Safety Orange) */
     --primary: 33 100% 50%;          /* #FF8C00 */
@@ -31,8 +31,8 @@
     --secondary-foreground: 0 0% 100%;
     
     /* Muted & Borders */
-    --muted: 0 0% 85%;               /* Light muted background */
-    --muted-foreground: 0 0% 45%;    /* Dark gray text */
+    --muted: 0 0% 20%;               /* Darker gray for muted text */
+    --muted-foreground: 0 0% 60%;    /* Light gray text */
     --accent: 33 100% 50%;           /* Orange for emphasis */
     --accent-foreground: 0 0% 100%;
     
@@ -41,69 +41,69 @@
     --destructive-foreground: 0 0% 100%;
     
     /* Borders & Input */
-    --border: 0 0% 80%;              /* Light gray borders */
-    --input: 0 0% 96%;               /* Light input backgrounds */
+    --border: 0 0% 25%;              /* Gunmetal borders */
+    --input: 0 0% 14%;               /* Dark input backgrounds */
     --ring: 33 100% 50%;             /* Orange focus rings */
     
     /* Charts */
     --chart-1: 33 100% 50%;          /* Orange */
     --chart-2: 214 100% 50%;         /* Cobalt */
-    --chart-3: 0 0% 70%;             /* Light gray */
+    --chart-3: 0 0% 20%;             /* Steel gray */
     --chart-4: 43 85% 55%;           /* Amber accent */
     --chart-5: 200 70% 45%;          /* Blue accent */
     
     --radius: 0.75rem;
     
     /* Sidebar */
-    --sidebar-background: 0 0% 91%;
-    --sidebar-foreground: 0 0% 12%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 214 100% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 80%;
+    --sidebar-border: 0 0% 25%;
     --sidebar-ring: 33 100% 50%;
 
-    /* Gradient tokens — Industrial-Tech (Light Gray + Cobalt + Orange) */
-    --gradient-brand: linear-gradient(135deg, #E8E8E8 0%, #2E5BFF 50%, #FF8C00 100%);
-    --gradient-soft: linear-gradient(135deg, #E8E8E8 0%, #2E5BFF 60%, #FF8C00 100%);
-    --gradient-hero: linear-gradient(135deg, #E8E8E8 0%, #2E5BFF 50%, #FF8C00 100%);
-    --gradient-card: linear-gradient(145deg, #F2F2F2 0%, #E8E8E8 100%);
+    /* Gradient tokens — Industrial-Tech (Deep Slate + Cobalt + Orange) */
+    --gradient-brand: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-soft: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-hero: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-card: linear-gradient(145deg, #1A1A1B 0%, #333335 100%);
   }
 
   .dark {
-    /* Light theme as default — same as root */
-    --background: 0 0% 91%;
-    --foreground: 0 0% 12%;
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 12%;
-    --popover: 0 0% 98%;
-    --popover-foreground: 0 0% 12%;
+    /* Dark mode is the DEFAULT — same as root */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 16%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 16%;
+    --popover-foreground: 0 0% 95%;
     --primary: 33 100% 50%;
     --primary-foreground: 0 0% 100%;
     --secondary: 214 100% 50%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 85%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%;
     --accent: 33 100% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 33 100% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 80%;
-    --input: 0 0% 96%;
+    --border: 0 0% 25%;
+    --input: 0 0% 14%;
     --ring: 33 100% 50%;
     --chart-1: 33 100% 50%;
     --chart-2: 214 100% 50%;
-    --chart-3: 0 0% 70%;
+    --chart-3: 0 0% 20%;
     --chart-4: 43 85% 55%;
     --chart-5: 200 70% 45%;
-    --sidebar-background: 0 0% 91%;
-    --sidebar-foreground: 0 0% 12%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 214 100% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 80%;
+    --sidebar-border: 0 0% 25%;
     --sidebar-ring: 33 100% 50%;
   }
 }
