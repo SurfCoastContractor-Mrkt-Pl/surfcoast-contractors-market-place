@@ -7,9 +7,9 @@ import AboutNavLinks from './AboutNavLinks';
 
 const exploreGroups = [
   {
-    label: 'For Contractors',
+    label: 'For Entrepreneurs',
     items: [
-      { name: 'Become a Contractor', path: '/BecomeContractor' },
+      { name: 'Become an Entrepreneur', path: '/BecomeContractor' },
       { name: 'Browse Jobs', path: '/Jobs' },
       { name: 'Why SurfCoast', path: '/WhySurfCoast' },
     ],
@@ -17,7 +17,7 @@ const exploreGroups = [
   {
     label: 'For Clients',
     items: [
-      { name: 'Find Contractors', path: '/FindContractors' },
+      { name: 'Find Entrepreneurs', path: '/FindContractors' },
       { name: 'Post a Job', path: '/PostJob' },
     ],
   },

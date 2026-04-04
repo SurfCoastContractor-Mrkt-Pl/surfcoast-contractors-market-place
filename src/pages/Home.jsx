@@ -24,7 +24,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight tracking-tight">
-              Being a contractor <br />
+              Being an entrepreneur <br />
               <span className="logo-gradient-text">isn't just a job.</span>
             </h1>
 
@@ -37,7 +37,7 @@ export default function Home() {
                 to="/BecomeContractor"
                 className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:bg-orange-700 transition-all shadow-lg shadow-primary/40 text-center text-lg"
               >
-                Join as a Pro
+                Join as an Entrepreneur
               </Link>
               <Link
                 to="/CustomerSignup"
@@ -89,7 +89,7 @@ export default function Home() {
                 "1 year of premium access — free",
                 "Verified badge immediately",
                 "Community-first support",
-                "Never pay per transaction",
+                "No platform fees ever",
               ].map(b => (
                 <div key={b} className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0" />
@@ -113,7 +113,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
             <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-secondary bg-secondary/20 mb-4 uppercase tracking-wide">
-              For Pros
+              For Entrepreneurs
             </span>
             <h2 className="text-3xl lg:text-5xl font-extrabold text-foreground mb-5 leading-tight">
               Try it free.<br />No pressure. No card.
@@ -173,17 +173,17 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl lg:text-4xl font-extrabold text-foreground text-center mb-12">Who are you?</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Pros */}
+            {/* Entrepreneurs */}
             <div className="bg-card rounded-2xl border-2 border-secondary/30 p-8 hover:border-secondary hover:shadow-xl transition-all group">
               <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center mb-6 group-hover:bg-secondary transition-colors">
                 <Briefcase className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I'm a Pro</h3>
+              <h3 className="text-2xl font-extrabold text-foreground mb-3">I'm an Entrepreneur</h3>
               <p className="text-muted-foreground mb-6">Grow your business with verified clients, secure payments, and real support.</p>
               <ul className="space-y-3 mb-8">
                 {[
                   "Find quality jobs from verified clients",
-                  "Build reputation with verified reviews",
+                  "Build your reputation with verified reviews",
                   "Get paid securely via Stripe",
                   "Community-first support always",
                 ].map(item => (
@@ -197,7 +197,7 @@ export default function Home() {
                 to="/BecomeContractor"
                 className="w-full block px-6 py-4 rounded-xl border-2 border-secondary text-secondary font-bold hover:bg-secondary hover:text-white transition-all text-center"
               >
-                Join as a Pro
+                Join as an Entrepreneur
               </Link>
             </div>
 
@@ -206,11 +206,11 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
                 <Users className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I need a Pro</h3>
-              <p className="text-muted-foreground mb-6">Find verified tradespeople you can trust, with transparent pricing and secure payments.</p>
+              <h3 className="text-2xl font-extrabold text-foreground mb-3">I need an Entrepreneur</h3>
+              <p className="text-muted-foreground mb-6">Find verified entrepreneurs you can trust, with transparent pricing and secure payments.</p>
               <ul className="space-y-3 mb-8">
                 {[
-                  "Access verified, licensed professionals",
+                  "Access verified, licensed entrepreneurs",
                   "Get competitive quotes instantly",
                   "Secure payments and verified reviews",
                   "Peace of mind with professional support",
@@ -237,7 +237,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl lg:text-4xl font-extrabold text-foreground mb-3">More than a directory</h2>
-            <p className="text-muted-foreground text-lg">A full ecosystem built for tradespeople and their clients.</p>
+            <p className="text-muted-foreground text-lg">A full ecosystem built for entrepreneurs and their clients.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -252,7 +252,7 @@ export default function Home() {
               {
                 icon: Briefcase,
                 color: "orange",
-                title: "Pro Marketplace",
+                title: "Entrepreneur Marketplace",
                 desc: "Find quality jobs, grow your business, and build your reputation with verified clients.",
                 link: "/BecomeContractor",
               },
@@ -260,7 +260,7 @@ export default function Home() {
                 icon: Users,
                 color: "green",
                 title: "Consumer Hub",
-                desc: "Find verified pros, get instant quotes, and pay securely with verified reviews.",
+                desc: "Find verified entrepreneurs, get instant quotes, and pay securely with verified reviews.",
                 link: "/CustomerSignup",
               },
             ].map(({ icon: Icon, color, title, desc, link }) => {

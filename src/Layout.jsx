@@ -18,7 +18,7 @@ const customerLinks = [
   { name: 'Earn Credits', page: 'Referrals' },
 ];
 
-const contractorLinks = [
+const entrepreneurLinks = [
   { name: 'My Account', page: 'ContractorAccount' },
   { name: 'Earn Credits', page: 'Referrals' },
 ];
@@ -104,7 +104,7 @@ export default function Layout({ children, currentPageName }) {
         currentPageName={currentPageName}
         getNavLinks={getNavLinks}
         accountMenuRef={accountMenuRef}
-        contractorLinks={contractorLinks}
+        entrepreneurLinks={entrepreneurLinks}
         customerLinks={customerLinks}
         hasMarketShop={hasMarketShop}
         hasCustomerProfile={hasCustomerProfile}
@@ -118,7 +118,7 @@ export default function Layout({ children, currentPageName }) {
         isContractor={isContractor}
         currentPageName={currentPageName}
         getNavLinks={getNavLinks}
-        contractorLinks={contractorLinks}
+        entrepreneurLinks={entrepreneurLinks}
         customerLinks={customerLinks}
         hasMarketShop={hasMarketShop}
         hasCustomerProfile={hasCustomerProfile}

@@ -10,9 +10,9 @@ import NotificationBell from '@/components/notifications/NotificationBell';
 // Grouped "Explore" mega-menu items for logged-out visitors
 const exploreGroups = [
   {
-    label: 'For Contractors',
+    label: 'For Entrepreneurs',
     items: [
-      { name: 'Become a Contractor', path: '/BecomeContractor', icon: Briefcase },
+      { name: 'Become an Entrepreneur', path: '/BecomeContractor', icon: Briefcase },
       { name: 'Browse Jobs', path: '/Jobs', icon: BarChart2 },
       { name: 'Why SurfCoast', path: '/WhySurfCoast', icon: BarChart2 },
     ],
@@ -20,7 +20,7 @@ const exploreGroups = [
   {
     label: 'For Clients',
     items: [
-      { name: 'Find Contractors', path: '/FindContractors', icon: Users },
+      { name: 'Find Entrepreneurs', path: '/FindContractors', icon: Users },
       { name: 'Post a Job', path: '/PostJob', icon: Briefcase },
     ],
   },
@@ -45,7 +45,7 @@ export default function LayoutHeader({
   currentPageName,
   getNavLinks,
   accountMenuRef,
-  contractorLinks,
+  entrepreneurLinks,
   customerLinks,
   hasMarketShop,
   hasCustomerProfile,
@@ -154,7 +154,7 @@ export default function LayoutHeader({
           {!isLoggedIn && (
             <>
               <div className="flex items-center gap-3">
-                <Link to="/BecomeContractor" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Pros</Link>
+                <Link to="/BecomeContractor" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Entrepreneurs</Link>
                 <span className="text-slate-300">/</span>
                 <Link to="/CustomerSignup" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Clients</Link>
                 <span className="text-slate-300">/</span>
@@ -261,7 +261,7 @@ export default function LayoutHeader({
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
                   createPageUrl={createPageUrl}
-                  contractorLinks={contractorLinks}
+                  entrepreneurLinks={entrepreneurLinks}
                   customerLinks={customerLinks}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
@@ -298,7 +298,7 @@ function AccountDropdown({
   hasCustomerProfile,
   hasMarketShop,
   createPageUrl,
-  contractorLinks,
+  entrepreneurLinks,
   customerLinks,
   onLogout,
   setAccountMenuOpen,
@@ -342,15 +342,15 @@ function AccountDropdown({
 
       {isContractor ? (
         <>
-          <SectionLabel>Contractor</SectionLabel>
-          <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Contractor Portal</Item>
+          <SectionLabel>Entrepreneur</SectionLabel>
+          <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Entrepreneur Portal</Item>
           <Item path={createPageUrl('ContractorBusinessHub')} icon={Settings}>Business Hub</Item>
           <Item path={createPageUrl('ContractorFinancialDashboard')} icon={BarChart2}>Financial Dashboard</Item>
           <Item path="/WaveFo" icon={BarChart2}>Wave FO</Item>
         </>
       ) : (
         <Item path={createPageUrl('BecomeContractor')} className="text-blue-600 font-medium" icon={Briefcase}>
-          + Become a Contractor
+          + Become an Entrepreneur
         </Item>
       )}
 
