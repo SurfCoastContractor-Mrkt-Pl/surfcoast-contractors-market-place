@@ -133,7 +133,6 @@
     <priority>0.4</priority>
   </url>
 
-  <!-- Trade-specific landing pages -->
   <url>
     <loc>https://surfcoastcmp.com/contractors/plumbers</loc>
     <changefreq>weekly</changefreq>
