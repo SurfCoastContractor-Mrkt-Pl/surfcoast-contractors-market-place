@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { designTokens } from '@/lib/designTokens';
+import { useUserData, useUserProfiles } from '@/hooks/useUserData';
 import ContractorDashboard from '@/components/dashboard/ContractorDashboard';
 import CustomerDashboard from '@/components/dashboard/CustomerDashboard';
 
@@ -11,64 +11,33 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [profiles, setProfiles] = useState({ customer: false, contractor: false, marketshop: false });
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  const { user, isLoading: loadingUser } = useUserData();
+  const { isContractor, isLoading: loadingProfiles } = useUserProfiles(user?.email);
 
-  // Must be declared before any conditional returns (Rules of Hooks)
   const isAdmin = user?.role === 'admin';
+  const loading = loadingUser || loadingProfiles;
+  const activeProfile = isContractor ? 'contractor' : 'client';
+
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (!loadingUser && !user) {
+      base44.auth.redirectToLogin('/Dashboard');
+    }
+  }, [loadingUser, user]);
 
   const { data: stripeAccounts = [] } = useQuery({
     queryKey: ['stripe-accounts-admin'],
     queryFn: () => base44.entities.Contractor.filter({ stripe_account_setup_complete: true }),
-    enabled: isAdmin && !!activeProfile,
+    enabled: isAdmin && !loading,
   });
 
   const { data: lockedAccounts = [] } = useQuery({
     queryKey: ['locked-accounts-admin'],
     queryFn: () => base44.entities.Contractor.filter({ account_locked: true }),
-    enabled: isAdmin && !!activeProfile,
+    enabled: isAdmin && !loading,
   });
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const currentUser = await base44.auth.me();
-        setUser(currentUser);
-        if (!currentUser) { base44.auth.redirectToLogin('/Dashboard'); return; }
-
-        // Fetch each independently so one failure doesn't block the others
-        const [contractors, customers, shops] = await Promise.all([
-          base44.entities.Contractor.filter({ email: currentUser.email }).catch(() => []),
-          base44.entities.CustomerProfile.filter({ email: currentUser.email }).catch(() => []),
-          base44.entities.MarketShop.filter({ email: currentUser.email }).catch(() => []),
-        ]);
-
-        const hasContractor = contractors && contractors.length > 0;
-        const hasMarketShop = shops && shops.length > 0;
-        const primaryType = hasContractor ? 'contractor' : 'client';
-
-        setProfiles({ client: !hasContractor, contractor: hasContractor, marketshop: hasMarketShop, primaryType, hasMarketShop });
-        setActiveProfile(primaryType);
-      } catch (error) {
-        console.error('Dashboard load error:', error);
-        if (error?.status === 401 || error?.status === 403) {
-          base44.auth.redirectToLogin('/Dashboard');
-        } else {
-          // Non-auth error: default to client view so something renders
-          setActiveProfile('client');
-          setProfiles({ client: true, contractor: false, marketshop: false, primaryType: 'client', hasMarketShop: false });
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
-
-  if (loading || !activeProfile) {
+  if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: designTokens.colors.background }}>
         <Loader2 className="w-8 h-8 animate-spin" style={{ color: designTokens.colors.gray[300] }} />
