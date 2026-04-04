@@ -127,6 +127,16 @@
       "default": false,
       "description": "Whether the client's trial has expired"
     },
+    "is_founding_member": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether customer is part of first 100 founding members (1 year free)"
+    },
+    "successful_referral_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of successful referrals completed during trial period"
+    },
     "pending_rating_scope_id": {
       "type": "string",
       "description": "ID of the ScopeOfWork pending a rating submission"
