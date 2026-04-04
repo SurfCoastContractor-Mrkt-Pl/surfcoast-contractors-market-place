@@ -14,10 +14,11 @@ const trackContactInfoView = (contractorId, contractorName, contactType) => {
     },
   });
 };
-import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft, ClipboardList } from 'lucide-react';
+import { Star, MessageSquare, MapPin, Award, Briefcase, Image as ImageIcon, ChevronLeft, ClipboardList, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ServiceRequestForm from '@/components/service-request/ServiceRequestForm';
 import CredentialDisplayCard from '@/components/contractor/CredentialDisplayCard';
+import CustomerBookingCalendar from '@/components/calendar/CustomerBookingCalendar';
 
 export default function ContractorPublicProfile() {
   const { contractorId } = useParams();
@@ -29,6 +30,12 @@ export default function ContractorPublicProfile() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [serviceRequestOpen, setServiceRequestOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showBooking, setShowBooking] = useState(false);
+
+  useEffect(() => {
+    base44.auth.me().then(setCurrentUser).catch(() => setCurrentUser(null));
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -217,10 +224,30 @@ export default function ContractorPublicProfile() {
                  <ClipboardList className="w-5 h-5" />
                  Submit Service Request
                </button>
+               <button
+                 onClick={() => setShowBooking(!showBooking)}
+                 className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors border border-slate-600"
+               >
+                 <Calendar className="w-4 h-4" />
+                 {showBooking ? 'Hide Availability' : 'View Availability & Book'}
+               </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Booking Calendar — shown when toggled */}
+        {showBooking && (
+          <div className="mb-8">
+            <CustomerBookingCalendar
+              contractorId={contractor.id}
+              contractorEmail={contractor.email}
+              contractorName={contractor.name}
+              customerEmail={currentUser?.email || ''}
+              customerName={currentUser?.full_name || 'Guest'}
+            />
+          </div>
+        )}
 
         {/* Credentials Section */}
          <div className="mb-8">

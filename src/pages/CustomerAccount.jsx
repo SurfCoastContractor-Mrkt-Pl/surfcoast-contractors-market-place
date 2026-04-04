@@ -30,6 +30,8 @@ import QuickJobPostForm from '@/components/customer/QuickJobPostForm';
 import ScopeChatPanel from '@/components/scopeofwork/ScopeChatPanel';
 import ProjectProgressBar from '@/components/progresspayments/ProjectProgressBar';
 import QuoteComparisonDashboard from '@/components/quote/QuoteComparisonDashboard';
+import ScopeDetailExpander from '@/components/customer/ScopeDetailExpander';
+import PostCloseoutReviewPrompt from '@/components/customer/PostCloseoutReviewPrompt';
 import ReferralDashboard from '@/components/referral/ReferralDashboard';
 import CustomerJobsManager from '@/components/customer/CustomerJobsManager';
 import CustomerQuotesTab from '@/components/customer/CustomerQuotesTab';
@@ -45,6 +47,7 @@ export default function CustomerAccount() {
    const isAdminPreview = urlParams.get('admin') === 'true';
 
    const [closeoutScope, setCloseoutScope] = useState(null);
+   const [reviewScope, setReviewScope] = useState(null);
    const queryClient = useQueryClient();
    const [loading, setLoading] = useState(true);
    const [userEmail, setUserEmail] = useState(null);
@@ -215,7 +218,21 @@ export default function CustomerAccount() {
         onOpen={() => setAgentOpen(true)}
       />
 
-      <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }); }} />
+      <JobCloseout scope={closeoutScope} role="customer" open={!!closeoutScope} onClose={() => {
+        const closed = closeoutScope;
+        setCloseoutScope(null);
+        queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] });
+        // Prompt for review after closeout
+        if (closed) setTimeout(() => setReviewScope(closed), 500);
+      }} />
+      <PostCloseoutReviewPrompt
+        scope={reviewScope}
+        reviewerType="client"
+        reviewerEmail={userEmail}
+        reviewerName={customerProfile?.full_name || userEmail}
+        open={!!reviewScope}
+        onClose={() => setReviewScope(null)}
+      />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"transparent", minHeight:"100vh"}}>
          {/* Issue #6 — Contractor Discovery after signup */}
@@ -450,100 +467,28 @@ export default function CustomerAccount() {
                     </div>
                   )}
 
+                  {/* Pending approval alert */}
+                  {scopes?.filter(s => s.status === 'pending_approval').length > 0 && (
+                    <div className="flex items-start gap-3 p-3 mb-4 bg-amber-50 border border-amber-200 rounded-xl">
+                      <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                      <p className="text-sm font-semibold text-amber-800">
+                        {scopes.filter(s => s.status === 'pending_approval').length} scope(s) awaiting your approval — expand to review and act.
+                      </p>
+                    </div>
+                  )}
+
                   {scopes?.length > 0 ? (
                     <div className="space-y-3">
-                      {scopes.map(s => {
-                       const scopePhases = (progressPayments || []).filter(pp => pp.scope_id === s.id);
-                       const hasProgressPayments = scopePhases.length > 0;
-                       return (
-                       <React.Fragment key={s.id}>
-                       <div className="border border-slate-300 rounded-xl overflow-hidden bg-white">
-                         {hasProgressPayments && s.status === 'approved' && (
-                           <div className="p-3 border-b border-slate-200">
-                             <ProjectProgressBar payments={scopePhases} />
-                           </div>
-                         )}
-                         <div className="flex items-center justify-between p-3 bg-white gap-3">
-                            <div className="flex items-center gap-3 flex-1 min-w-0">
-                              <FileText className="w-5 h-5 text-amber-500 shrink-0" />
-                              <div className="min-w-0">
-                                <div className="text-sm font-medium text-slate-900 truncate">{s.job_title}</div>
-                                <div className="text-xs text-slate-700">Contractor: {s.contractor_name} — {s.cost_type === 'fixed' ? `$${s.cost_amount} fixed` : s.cost_type === 'quote' ? `Quote: $${s.cost_amount}` : `$${s.cost_amount}/hr`} </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 shrink-0">
-                             {s.status === 'approved' && (
-                               <Button
-                                 size="sm"
-                                 variant="outline"
-                                 className="text-xs h-7 px-2.5 gap-1 border-emerald-300 text-emerald-700 hover:bg-emerald-50"
-                                 onClick={() => setActiveSidebarChat(s)}
-                                 title="Open persistent chat sidebar"
-                               >
-                                 💬 Sidebar Chat
-                               </Button>
-                             )}
-                             <ScopeChatPanel
-                               scope={s}
-                               userEmail={userEmail}
-                               userName={customerProfile?.full_name || userEmail}
-                               userType="customer"
-                             />
-                             <Badge className={
-                               s.status === 'closed' ? 'bg-slate-100 text-slate-600' :
-                               s.status === 'approved' ? 'bg-green-100 text-green-700' :
-                               s.status === 'rejected' ? 'bg-red-100 text-red-700' :
-                               'bg-amber-100 text-amber-700'
-                             }>
-                               {s.status === 'pending_approval' ? 'Pending' : s.status}
-                             </Badge>
-                            </div>
-                            </div>
-                            {s.status === 'pending_approval' && (
-                            <div className="p-3 bg-amber-50 border-t border-slate-200 space-y-2">
-                              <p className="text-xs text-amber-800 font-medium">Action Required: Approve or Reject this scope</p>
-                              <div className="flex gap-2">
-                                <Button 
-                                  size="sm" 
-                                  className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs h-7"
-                                  onClick={async () => {
-                                    await base44.entities.ScopeOfWork.update(s.id, { status: 'approved' });
-                                    await base44.integrations.Core.SendEmail({
-                                      to: s.contractor_email,
-                                      subject: `✅ Scope Approved: "${s.job_title}"`,
-                                      body: `Dear ${s.contractor_name},\n\nThe client ${s.client_name} has approved your scope of work for "${s.job_title}". You can now proceed with the work as agreed.\n\nContractorHub`,
-                                    });
-                                    queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] });
-                                  }}
-                                >
-                                  Approve
-                                </Button>
-                                <Button 
-                                  size="sm" 
-                                  variant="outline" 
-                                  className="flex-1 border-red-300 text-red-700 hover:bg-red-50 text-xs h-7"
-                                  onClick={() => {
-                                    if (window.confirm(`Are you sure you want to reject the scope "${s.job_title}"? This cannot be undone.`)) {
-                                      base44.entities.ScopeOfWork.update(s.id, { status: 'rejected', customer_notes: 'Rejected by client' }).then(() => queryClient.invalidateQueries({ queryKey: ['customer-scopes', userEmail] }));
-                                    }
-                                  }}
-                                >
-                                  Reject
-                                </Button>
-                              </div>
-                            </div>
-                            )}
-                            {s.status !== 'closed' && s.status !== 'rejected' && (
-                            <div className="p-3 bg-slate-50 border-t border-slate-200">
-                              <Button size="sm" variant="outline" className="w-full text-xs h-7 border-green-300 text-green-700 hover:bg-green-50" onClick={() => setCloseoutScope(s)}>
-                                <LogOut className="w-3 h-3 mr-1" /> Close Out Job
-                              </Button>
-                            </div>
-                            )}
-                            </div>
-                            </React.Fragment>
-                            );})}
-
+                      {scopes.map(s => (
+                        <ScopeDetailExpander
+                          key={s.id}
+                          scope={s}
+                          userEmail={userEmail}
+                          userName={customerProfile?.full_name || userEmail}
+                          onOpenChat={(scope) => setActiveSidebarChat(scope)}
+                          onCloseout={(scope) => setCloseoutScope(scope)}
+                        />
+                      ))}
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">No scope of work agreements found.</p>

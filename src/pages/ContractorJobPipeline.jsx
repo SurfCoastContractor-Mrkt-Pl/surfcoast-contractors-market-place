@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, DollarSign, FileText, AlertCircle, Loader2, CheckCircle2, Clock } from 'lucide-react';
+import { Calendar, DollarSign, FileText, AlertCircle, Loader2, CheckCircle2, Clock, Briefcase, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 
 const STATUS_CONFIG = {
   pending_approval: { label: 'Pending Approval', icon: Clock, color: 'bg-yellow-50 border-yellow-200' },
@@ -28,21 +30,24 @@ export default function ContractorJobPipeline() {
   }, []);
 
   const { data: jobs = [], isLoading, error } = useQuery({
-      queryKey: ['contractorJobPipeline', user?.email],
-      queryFn: async () => {
-        if (!user?.email) return [];
-
-        const allScopes = await base44.entities.ScopeOfWork.filter(
-          { contractor_email: user.email },
-          '-agreed_work_date',
-          500
-        );
-
-      // Filter to active statuses
-      return allScopes.filter(s => 
+    queryKey: ['contractorJobPipeline', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const allScopes = await base44.entities.ScopeOfWork.filter(
+        { contractor_email: user.email },
+        '-agreed_work_date',
+        500
+      );
+      return allScopes.filter(s =>
         ['pending_approval', 'approved', 'pending_ratings'].includes(s.status)
       );
     },
+    enabled: !!user?.email,
+  });
+
+  const { data: openJobs = [], isLoading: jobsLoading } = useQuery({
+    queryKey: ['openJobLeads'],
+    queryFn: async () => base44.entities.Job.filter({ status: 'open' }, '-created_date', 50),
     enabled: !!user?.email,
   });
 
@@ -89,88 +94,157 @@ export default function ContractorJobPipeline() {
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Your Job Pipeline</h1>
-          <p className="text-slate-600">Current and upcoming jobs</p>
-        </div>
-
-        {/* Job Count */}
         <div className="mb-6">
-          <div className="inline-block px-4 py-2 bg-blue-100 text-blue-900 rounded-lg font-semibold">
-            {jobs.length} active {jobs.length === 1 ? 'job' : 'jobs'}
-          </div>
+          <h1 className="text-3xl font-bold text-slate-900 mb-1">Job Pipeline</h1>
+          <p className="text-slate-600">Your active work and incoming leads</p>
         </div>
 
-        {/* Jobs List */}
-        {jobs.length === 0 ? (
-          <div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
-            <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-600 text-lg">No active jobs right now</p>
-            <p className="text-slate-500 text-sm mt-2">Check back soon or browse new opportunities</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {jobs.map((job) => {
-              const config = STATUS_CONFIG[job.status];
-              const StatusIcon = config?.icon || FileText;
+        <Tabs defaultValue="active">
+          <TabsList className="mb-6">
+            <TabsTrigger value="active">
+              Active Jobs
+              {jobs.length > 0 && (
+                <Badge className="ml-2 bg-blue-600 text-white text-xs">{jobs.length}</Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="leads">
+              Open Job Leads
+              {openJobs.length > 0 && (
+                <Badge className="ml-2 bg-green-600 text-white text-xs">{openJobs.length}</Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
 
-              return (
-                <div key={job.id} className={`border rounded-lg p-6 ${config?.color || 'bg-slate-50 border-slate-200'}`}>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <StatusIcon className="w-5 h-5 text-slate-600" />
-                        <span className="inline-block px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
-                          {config?.label || job.status}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-semibold text-slate-900 mb-1">{job.job_title}</h3>
-                      <p className="text-slate-600">Client: <span className="font-medium">{job.client_name}</span></p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {job.agreed_work_date && (
-                      <div>
-                        <p className="text-xs text-slate-600 mb-1">Work Date</p>
-                        <p className="font-semibold text-slate-900">
-                          {format(new Date(job.agreed_work_date), 'MMM d, yyyy')}
-                        </p>
-                      </div>
-                    )}
-                    
-                    {job.cost_amount && (
-                      <div>
-                        <p className="text-xs text-slate-600 mb-1">Amount</p>
-                        <div className="flex items-center gap-1">
-                          <DollarSign className="w-4 h-4 text-slate-600" />
-                          <p className="font-semibold text-slate-900">
-                            {job.cost_amount.toFixed(2)}
-                          </p>
+          {/* Active Jobs Tab */}
+          <TabsContent value="active">
+            {jobs.length === 0 ? (
+              <div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
+                <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-600 text-lg">No active jobs right now</p>
+                <p className="text-slate-500 text-sm mt-2">Browse new leads in the Leads tab</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {jobs.map((job) => {
+                  const config = STATUS_CONFIG[job.status];
+                  const StatusIcon = config?.icon || FileText;
+                  return (
+                    <div key={job.id} className={`border rounded-lg p-6 ${config?.color || 'bg-slate-50 border-slate-200'}`}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <StatusIcon className="w-5 h-5 text-slate-600" />
+                            <span className="inline-block px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
+                              {config?.label || job.status}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-slate-900 mb-1">{job.job_title}</h3>
+                          <p className="text-slate-600">Client: <span className="font-medium">{job.client_name}</span></p>
                         </div>
                       </div>
-                    )}
-
-                    {job.cost_type && (
-                      <div>
-                        <p className="text-xs text-slate-600 mb-1">Type</p>
-                        <p className="font-semibold text-slate-900 capitalize">
-                          {job.cost_type}
-                        </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        {job.agreed_work_date && (
+                          <div>
+                            <p className="text-xs text-slate-600 mb-1">Work Date</p>
+                            <p className="font-semibold text-slate-900">{format(new Date(job.agreed_work_date), 'MMM d, yyyy')}</p>
+                          </div>
+                        )}
+                        {job.cost_amount && (
+                          <div>
+                            <p className="text-xs text-slate-600 mb-1">Amount</p>
+                            <div className="flex items-center gap-1">
+                              <DollarSign className="w-4 h-4 text-slate-600" />
+                              <p className="font-semibold text-slate-900">{job.cost_amount.toFixed(2)}</p>
+                            </div>
+                          </div>
+                        )}
+                        {job.cost_type && (
+                          <div>
+                            <p className="text-xs text-slate-600 mb-1">Type</p>
+                            <p className="font-semibold text-slate-900 capitalize">{job.cost_type}</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-
-                  {job.scope_summary && (
-                    <div className="mt-4 pt-4 border-t border-slate-300">
-                      <p className="text-sm text-slate-700 line-clamp-2">{job.scope_summary}</p>
+                      {job.scope_summary && (
+                        <div className="mt-4 pt-4 border-t border-slate-300">
+                          <p className="text-sm text-slate-700 line-clamp-2">{job.scope_summary}</p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Open Job Leads Tab */}
+          <TabsContent value="leads">
+            {jobsLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+              </div>
+            ) : openJobs.length === 0 ? (
+              <div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
+                <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-600 text-lg">No open jobs posted right now</p>
+                <p className="text-slate-500 text-sm mt-2">Check back soon for new opportunities</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {openJobs.map(job => (
+                  <div key={job.id} className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-1">{job.title}</h3>
+                        {job.location && (
+                          <div className="flex items-center gap-1 text-sm text-slate-600 mb-2">
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span>{job.location}</span>
+                          </div>
+                        )}
+                        <p className="text-sm text-slate-600 line-clamp-2">{job.description}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        {(job.budget_min || job.budget_max) && (
+                          <p className="font-bold text-green-700">
+                            {job.budget_min && job.budget_max
+                              ? `$${job.budget_min}–$${job.budget_max}`
+                              : job.budget_min ? `From $${job.budget_min}` : `Up to $${job.budget_max}`}
+                          </p>
+                        )}
+                        {job.budget_type && (
+                          <p className="text-xs text-slate-500 capitalize">{job.budget_type}</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-2 flex-wrap">
+                        {job.urgency && (
+                          <Badge className={
+                            job.urgency === 'urgent' ? 'bg-red-100 text-red-700' :
+                            job.urgency === 'high' ? 'bg-orange-100 text-orange-700' :
+                            'bg-slate-100 text-slate-600'
+                          }>
+                            {job.urgency}
+                          </Badge>
+                        )}
+                        {job.trade_needed && (
+                          <Badge className="bg-blue-100 text-blue-700 capitalize">{job.trade_needed}</Badge>
+                        )}
+                      </div>
+                      <a
+                        href={`/ContractorBusinessHub`}
+                        className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        Submit Scope →
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
