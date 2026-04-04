@@ -208,13 +208,13 @@ const AuthenticatedApp = () => {
           <PlatformTests />
         </LayoutWrapper>
       } />
-      <Route path="/AdminWaveFo" element={
-        <LayoutWrapper currentPageName="AdminWaveFo">
+      <Route path="/AdminWaveOS" element={
+        <LayoutWrapper currentPageName="AdminWaveOS">
           <AdminWaveFo />
         </LayoutWrapper>
       } />
       <Route path="/adminfieldops" element={
-        <LayoutWrapper currentPageName="AdminWaveFo">
+        <LayoutWrapper currentPageName="AdminWaveOS">
           <AdminWaveFo />
         </LayoutWrapper>
       } />
@@ -367,12 +367,12 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/FieldOps" element={
-        <LayoutWrapper currentPageName="WaveFo">
+        <LayoutWrapper currentPageName="WaveOS">
           <WaveFo />
         </LayoutWrapper>
       } />
       <Route path="/FieldOpsReporting" element={
-        <LayoutWrapper currentPageName="WaveFoReporting">
+        <LayoutWrapper currentPageName="WaveOSReporting">
           <WaveFoReporting />
         </LayoutWrapper>
       } />
@@ -547,8 +547,8 @@ const AuthenticatedApp = () => {
           <VendorDetail />
         </LayoutWrapper>
       } />
-      <Route path="/WaveFo" element={
-        <LayoutWrapper currentPageName="WaveFo">
+      <Route path="/WaveOS" element={
+        <LayoutWrapper currentPageName="WaveOS">
           <WaveFo />
         </LayoutWrapper>
       } />
@@ -582,8 +582,8 @@ const AuthenticatedApp = () => {
           <WAVEHandbook />
         </LayoutWrapper>
       } />
-      <Route path="/wave-fo-about" element={
-        <LayoutWrapper currentPageName="WaveFOAbout">
+      <Route path="/wave-os-about" element={
+        <LayoutWrapper currentPageName="WaveOSAbout">
           <WaveFOAbout />
         </LayoutWrapper>
       } />

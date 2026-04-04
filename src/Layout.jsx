@@ -48,9 +48,9 @@ export default function Layout({ children, currentPageName }) {
     if (isContractor === true) {
       baseLinks.push({ name: 'Browse Jobs', page: 'Jobs', icon: Briefcase });
     } else if (isContractor === false) {
-      baseLinks.push({ name: 'Find Contractors', page: 'FindContractors', icon: Users });
+      baseLinks.push({ name: 'Find Entrepreneurs', page: 'FindContractors', icon: Users });
     }
-    baseLinks.push({ name: 'Messages', page: 'Messaging', icon: MessageCircle, badge: unreadCount > 0 ? unreadCount : null });
+    baseLinks.push({ name: 'Marketplace Messages', page: 'Messaging', icon: MessageCircle, badge: unreadCount > 0 ? unreadCount : null });
     return baseLinks;
   };
 

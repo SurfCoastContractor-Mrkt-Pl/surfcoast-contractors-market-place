@@ -84,8 +84,15 @@ export default function Messaging() {
       const conversationMap = new Map();
       
       allMessages.forEach(msg => {
-        const otherParty = msg.consumer_email === userEmail ? msg.vendor_email : msg.consumer_email;
-        const otherName = msg.consumer_email === userEmail ? msg.shop_name : msg.consumer_name;
+        // Enforce rule: consumers cannot message other consumers, vendors cannot message other vendors
+        // Only consumer-to-vendor and vendor-to-consumer conversations are allowed
+        const isUserConsumer = msg.consumer_email === userEmail;
+        const isUserVendor = msg.vendor_email === userEmail;
+        
+        if (!isUserConsumer && !isUserVendor) return; // Invalid conversation
+        
+        const otherParty = isUserConsumer ? msg.vendor_email : msg.consumer_email;
+        const otherName = isUserConsumer ? msg.shop_name : msg.consumer_name;
         const key = [userEmail, otherParty].sort().join('|');
         
         if (!conversationMap.has(key)) {
@@ -109,7 +116,7 @@ export default function Messaging() {
           convo.lastMessageTime = new Date(msg.created_date);
         }
         
-        if (!msg.read && msg.vendor_email === userEmail) {
+        if (!msg.read && isUserVendor) {
           convo.unreadCount++;
         }
       });
@@ -181,10 +188,10 @@ export default function Messaging() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-md text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-3">Messaging Unavailable</h2>
           <p className="text-slate-600 mb-4">
-            This messaging hub is for consumers and market vendors. Contractors and customers have a dedicated messaging system built into their job postings, scopes of work, and proposals.
+            This messaging hub is for the SurfCoast Marketplace—consumers messaging vendors and vice versa. Entrepreneurs and Clients have a dedicated messaging system built into "Where you find the Pro's: Hire an Entrepreneur" section for job postings, scopes of work, and proposals.
           </p>
           <p className="text-sm text-slate-500">
-            Go to your <strong>Account → Scopes</strong> tab to open project chats with your contractor or customer.
+            Go to your <strong>Account → Scopes</strong> tab to open project chats with your Entrepreneur or Client.
           </p>
         </div>
       </div>
