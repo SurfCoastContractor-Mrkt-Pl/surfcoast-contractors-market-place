@@ -193,6 +193,8 @@ export default class GameLogicEngine {
       return this.validateElectricalPlacement(part);
     } else if (tradeType === 'carpentry') {
       return this.validateCarpentryPlacement(part);
+    } else if (tradeType === 'hvac') {
+      return this.validateHVACPlacement(part);
     }
 
     return { isValid: true, message: 'Part placed.' };
@@ -311,8 +313,43 @@ export default class GameLogicEngine {
 
   // Carpentry-specific validation
   validateCarpentryPlacement(part) {
-    // Check for structural integrity, proper assembly, etc.
-    return { isValid: true, message: 'Placement valid.' };
+    if (part.type === 'stud') {
+      const studs = this.currentState.parts?.filter(p => p.type === 'stud') || [];
+      const bottomPlate = this.currentState.parts?.find(p => p.type === 'beam' && p.position.y < 0.5);
+      if (!bottomPlate) {
+        return { isValid: false, message: 'Place the bottom plate before adding studs.' };
+      }
+      // Check stud is roughly vertical (small x offset)
+      for (const other of studs) {
+        if (other.id === part.id) continue;
+        const xDist = Math.abs(other.position.x - part.position.x);
+        if (xDist < 0.3) {
+          return { isValid: false, message: 'Studs too close together — maintain 16" spacing.' };
+        }
+      }
+    }
+    if (part.type === 'beam') {
+      const studs = this.currentState.parts?.filter(p => p.type === 'stud') || [];
+      if (part.position.y > 1 && studs.length < 2) {
+        return { isValid: false, message: 'Place at least 2 studs before adding the top plate.' };
+      }
+    }
+    return { isValid: true, message: 'Good placement!' };
+  }
+
+  // HVAC-specific validation
+  validateHVACPlacement(part) {
+    const hasAirHandler = this.currentState.parts?.some(p => p.type === 'junction_box');
+    if (!hasAirHandler && part.type !== 'junction_box') {
+      return { isValid: false, message: 'Start by placing the air handler unit.' };
+    }
+    if (part.type === 'fitting') {
+      const ducts = this.currentState.parts?.filter(p => p.type === 'pipe') || [];
+      if (ducts.length === 0) {
+        return { isValid: false, message: 'Connect duct runs before placing registers.' };
+      }
+    }
+    return { isValid: true, message: 'Component placed.' };
   }
 
   // Check if two parts are properly connected
@@ -338,10 +375,10 @@ export default class GameLogicEngine {
   }
 
   // Calculate score with time bonus and combo multipliers
+  // Returns a live partial score even if not solved yet
   calculateScore() {
-    if (!this.isSolved()) return 0;
-
     let score = 100;
+    const solved = this.isSolved();
     const movePenalty = Math.max(0, (this.movesCount - 5) * 2);
     const hintPenalty = this.hintsUsed * 5;
     const errorPenalty = this.errors.length * 3;
@@ -355,8 +392,17 @@ export default class GameLogicEngine {
     // Combo multiplier: consecutive correct placements boost score
     const comboMultiplier = 1 + (Math.min(this.consecutiveCorrectPlacements, 10) * 0.05);
 
-    score = Math.max(0, (score - movePenalty - hintPenalty - errorPenalty + timeBonus) * comboMultiplier);
-    return Math.round(score);
+    // If solved, return full score; otherwise return partial progress score
+    if (solved) {
+      score = Math.max(0, (score - movePenalty - hintPenalty - errorPenalty + timeBonus) * comboMultiplier);
+    } else {
+      // Live partial score based on progress toward solution
+      const placedCount = this.currentState.parts?.length || 0;
+      const solutionCount = this.solutionState.parts?.length || 1;
+      const progressPct = Math.min(placedCount / solutionCount, 1);
+      score = Math.round(progressPct * 60) - Math.min(hintPenalty, 20);
+    }
+    return Math.max(0, Math.round(score));
   }
 
   // Get detailed score breakdown
@@ -375,16 +421,48 @@ export default class GameLogicEngine {
     };
   }
 
-  // Get progressive hints (each hint gets more specific)
+  // Get progressive hints — trade-specific and increasingly helpful
   getHint() {
-    const hints = [
-      'Look at the solution image to see the target layout.',
-      'Check if all required parts from the library are placed.',
-      'Ensure pipes/wires are properly connected end-to-end.',
-      'Verify the direction and orientation of each part.',
-      'Look for specific positioning requirements in the educational content.'
+    const tradeHints = {
+      plumbing: [
+        'In plumbing, flow goes from high to low — start at the fixture drain and work toward the wall.',
+        'Every drain needs a P-trap to prevent sewer gases from entering. Check yours is present.',
+        'Pipes must be connected end-to-end — place fittings where two pipes meet.',
+        'The solution requires: a drain pipe, P-trap, and wall connection in that order.',
+        'Tip: Remove all parts and start fresh — place the drain pipe first, then P-trap below it, then wall fitting.'
+      ],
+      electrical: [
+        'All wires must connect to either a junction box or a breaker — floating wires fail inspection.',
+        'Use the hot wire (red/black) from breaker to load, and neutral (white/yellow) to complete the circuit.',
+        'Ground wires (green) connect to the ground bar in the panel — essential for safety.',
+        'Check your wire count: the solution needs both a hot and a neutral wire connected to the breaker.',
+        'Tip: Place the junction box first, then run hot wire, neutral wire, and finally ground wire.'
+      ],
+      carpentry: [
+        'Walls start with the bottom plate — make sure it\'s laid flat on the floor before adding studs.',
+        'Studs should be spaced 16 inches on center. Look at your current stud positions.',
+        'The top plate goes across the top of all studs — add it after all studs are in place.',
+        'Fire blocking goes horizontally between studs at mid-wall height (~4 feet).',
+        'Tip: Place bottom plate → 3 studs at -1.2, 0, +1.2 → top plate on top.'
+      ],
+      hvac: [
+        'Start with the air handler — it\'s the source of all conditioned air in the system.',
+        'The main trunk duct runs from the air handler along the length of the space.',
+        'Branch ducts split off the trunk to deliver air to individual rooms.',
+        'Supply registers go at the end of branch ducts — one per room.',
+        'Tip: Air handler → main trunk → 2 branch ducts left and right → registers at branch ends.'
+      ]
+    };
+
+    const tradeType = this.gameData?.trade_type || 'plumbing';
+    const hints = tradeHints[tradeType] || [
+      'Check the educational content panel for clues.',
+      'Try placing parts in the order listed in the instructions.',
+      'Make sure all parts from the solution are placed.',
+      'Verify each part is connected to the next.',
+      'Reset and try placing parts one at a time.'
     ];
-    
+
     const hintIndex = Math.min(this.hintsUsed, hints.length - 1);
     this.hintsUsed++;
     return hints[hintIndex];
