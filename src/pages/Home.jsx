@@ -38,8 +38,8 @@ export default function Home() {
             <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-40">
               <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Briefcase className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Entrepreneurs</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Entrepreneurs</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
               </Link>
             </div>
 
@@ -47,16 +47,16 @@ export default function Home() {
             <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-30">
               <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Users className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Clients &<br />Consumers</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Clients &<br />Consumers</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
               </Link>
             </div>
 
             {/* Circle 3: Mission Statement */}
             <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-20">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-sm mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Mission</span>
-                <span className="text-xs text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Empowering independent workers</span>
+                <span className="font-bold text-black text-lg mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Mission</span>
+                <span className="text-sm text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Empowering independent workers</span>
               </div>
             </div>
 
@@ -64,8 +64,8 @@ export default function Home() {
             <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-10">
               <Link to="/wave-os-details" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Zap className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>WAVE OS</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn More →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>WAVE OS</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn More →</span>
               </Link>
             </div>
 
@@ -74,24 +74,24 @@ export default function Home() {
             {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
             <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-40">
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Why SurfCoast</span>
-                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Why SurfCoast</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn →</span>
               </Link>
             </div>
 
             {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
             <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-30">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Solo/Startup</span>
-                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>For you →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Solo/Startup</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>For you →</span>
               </div>
             </div>
 
             {/* Small Circle 3: About Us (under gap 3-4) */}
             <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-20">
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>About Us</span>
-                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Our story →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>About Us</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Our story →</span>
               </Link>
             </div>
           </div>
