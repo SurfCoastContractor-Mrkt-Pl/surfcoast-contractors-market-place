@@ -97,6 +97,7 @@ export default function ContractorBusinessHub() {
    const [downloadingId, setDownloadingId] = useState(null);
    const [activeSidebarChat, setActiveSidebarChat] = useState(null);
    const [activeCategory, setActiveCategory] = useState(initialCategory);
+   const [activeTab, setActiveTab] = useState(initialTab);
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -153,7 +154,7 @@ export default function ContractorBusinessHub() {
   const { data: pastWorkPayments } = useQuery({
     queryKey: ['contractor-past-work', contractor?.id],
     queryFn: () => base44.entities.Payment.filter({ contractor_id: contractor?.id, status: 'work_scheduled' }),
-    enabled: !!contractor?.id,
+    enabled: !!contractor?.id && activeCategory === 'jobs',
   });
 
   const { data: progressPayments } = useQuery({
@@ -165,14 +166,15 @@ export default function ContractorBusinessHub() {
   const { data: incomingQuotes } = useQuery({
     queryKey: ['contractor-quotes', userEmail],
     queryFn: () => base44.entities.QuoteRequest.filter({ contractor_email: userEmail }),
-    enabled: !!userEmail,
+    enabled: !!userEmail && activeCategory === 'jobs',
   });
 
   const { data: liveSessions } = useQuery({
     queryKey: ['contractor-live-sessions-count', userEmail],
     queryFn: () => base44.entities.TimedChatSession.filter({ contractor_email: userEmail, status: 'active' }),
-    enabled: !!userEmail,
-    refetchInterval: 15000,
+    enabled: !!userEmail && activeTab === 'live-sessions',
+    refetchInterval: activeTab === 'live-sessions' ? 15000 : false,
+    staleTime: 30 * 1000, // 30s — live sessions need to be fresh
   });
 
   const { data: contractorServices, refetch: refetchServices } = useQuery({
@@ -325,7 +327,7 @@ export default function ContractorBusinessHub() {
               <AccountLockedBanner contractor={contractor} lockedScope={lockedScope} />
             )}
 
-            <Tabs defaultValue={initialTab}>
+            <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
               {(() => {
                 const categories = [
                   { id: 'business', label: 'Business Overview', icon: BarChart3 },

@@ -15,7 +15,7 @@ export function useUserData() {
         return null;
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 10 * 60 * 1000, // 10 minutes — auth user rarely changes mid-session
     retry: false,
   });
 
@@ -44,8 +44,8 @@ export function useUserProfiles(email) {
       };
     },
     enabled: !!email,
-    staleTime: 15 * 60 * 1000, // 15 minutes
-    gcTime: 20 * 60 * 1000, // 20 minutes (cleanup after unmount)
+    staleTime: 30 * 60 * 1000, // 30 minutes — profile type (contractor/customer) doesn't change often
+    gcTime: 60 * 60 * 1000, // 1 hour — keep in cache across navigation
   });
 
   return {
@@ -69,8 +69,8 @@ export function useUnreadCount(email) {
       return unreadMessages?.length || 0;
     },
     enabled: !!email,
-    staleTime: 3 * 60 * 1000, // 3 minutes (slightly relaxed for better performance)
-    gcTime: 5 * 60 * 1000, // 5 minutes (cleanup after unmount)
+    staleTime: 60 * 1000, // 1 minute — unread count should be relatively fresh
+    gcTime: 5 * 60 * 1000, // 5 minutes
   });
 
   return { unreadCount, isLoading, error };
