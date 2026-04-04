@@ -51,7 +51,55 @@ function urlEntry(loc, changefreq = 'monthly', priority = '0.5', lastmod = null)
   </url>`;
 }
 
+const ROBOTS_TXT = `User-agent: *
+Disallow: /admin
+Disallow: /admin-control-hub
+Disallow: /admin-error-logs
+Disallow: /AdminWaveFo
+Disallow: /adminfieldops
+Disallow: /AdminDashboard
+Disallow: /Dashboard
+Disallow: /ContractorAccount
+Disallow: /Messaging
+Disallow: /Messages
+Disallow: /PaymentHistory
+Disallow: /CustomerAccount
+Disallow: /ConsumerHub
+Disallow: /WaveFo
+Disallow: /FieldOps
+Disallow: /platform-tests
+Disallow: /github-dashboard
+Disallow: /error-monitoring
+Disallow: /database-management
+Disallow: /system-health
+Allow: /
+Allow: /About
+Allow: /FindContractors
+Allow: /BecomeContractor
+Allow: /Pricing
+Allow: /Blog
+Allow: /Jobs
+Allow: /MarketDirectory
+Allow: /ComplianceGuide
+Allow: /Terms
+Allow: /PrivacyPolicy
+
+Sitemap: https://surfcoastcmp.com/sitemap.xml`;
+
 Deno.serve(async (req) => {
+  const url = new URL(req.url);
+
+  // Serve robots.txt if that path is requested
+  if (url.pathname.endsWith('/robots.txt')) {
+    return new Response(ROBOTS_TXT, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=86400',
+      },
+    });
+  }
+
   try {
     const base44 = createClientFromRequest(req);
 
