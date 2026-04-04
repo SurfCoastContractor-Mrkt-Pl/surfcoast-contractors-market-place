@@ -1,38 +1,203 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://surfcoastcmp.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://surfcoastcmp.com/About</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://surfcoastcmp.com/WhySurfCoast</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://surfcoastcmp.com/Pricing</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://surfcoastcmp.com/wave-fo-about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/BecomeContractor</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/CustomerSignup</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/ConsumerSignup</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/FindContractors</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/Jobs</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/MarketDirectory</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/BoothsAndVendorsMap</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/swap-meet-ratings</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://surfcoastcmp.com/farmers-market-ratings</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://surfcoastcmp.com/MarketShopSignup</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/QuoteRequestWizard</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/ComplianceGuide</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://surfcoastcmp.com/wave-handbook</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://surfcoastcmp.com/leaderboard</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
-  <url><loc>https://surfcoastcmp.com/trade-games</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://surfcoastcmp.com/Blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/Terms</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://surfcoastcmp.com/PrivacyPolicy</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <!-- Trade SEO landing pages -->
-  <url><loc>https://surfcoastcmp.com/contractors/plumbers</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/electricians</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/hvac-technicians</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/carpenters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/painters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/roofers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/masons</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/landscapers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/welders</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/tilers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://surfcoastcmp.com/contractors/general-contractors</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/About</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/WhySurfCoast</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/Pricing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/PricingGuide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/wave-fo-about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/BecomeContractor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/FindContractors</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/Jobs</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/PostJob</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/QuickJobPost</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/MarketDirectory</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/BoothsAndVendorsMap</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/swap-meet-ratings</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/farmers-market-ratings</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/MarketShopSignup</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/QuoteRequestWizard</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/ComplianceGuide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/trade-games</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/Blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/Terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/PrivacyPolicy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Trade-specific landing pages -->
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/plumbers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/electricians</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/hvac-technicians</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/carpenters</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/painters</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/roofers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/masons</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/landscapers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/welders</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/tilers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://surfcoastcmp.com/contractors/general-contractors</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>
