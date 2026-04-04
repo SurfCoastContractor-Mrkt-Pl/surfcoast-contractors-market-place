@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
 import ScenarioIntroModal from '@/components/tradegames/ScenarioIntroModal';
+import GameCompletionModal from '@/components/tradegames/GameCompletionModal';
 
 export default function GameChallenge() {
   const { token } = useParams();
@@ -18,6 +19,7 @@ export default function GameChallenge() {
   const [error, setError] = useState(null);
   const [gameActive, setGameActive] = useState(false);
   const [showScenario, setShowScenario] = useState(false);
+  const [completionResult, setCompletionResult] = useState(null);
 
   useEffect(() => {
     const loadChallenge = async () => {
@@ -86,12 +88,23 @@ export default function GameChallenge() {
       }
 
       setGameActive(false);
-      alert(`Challenge completed! You earned a ${response.data.discount}% discount!`);
+      setCompletionResult({ score: results.score, discount: response.data.discount });
     } catch (err) {
       console.error('Error completing challenge:', err);
       alert('Error completing challenge. Please try again.');
     }
   };
+
+  if (completionResult) {
+    return (
+      <GameCompletionModal
+        score={completionResult.score}
+        discount={completionResult.discount}
+        onClose={() => navigate('/')}
+        onPlayAgain={() => { setCompletionResult(null); setShowScenario(true); }}
+      />
+    );
+  }
 
   if (loading) {
     return (

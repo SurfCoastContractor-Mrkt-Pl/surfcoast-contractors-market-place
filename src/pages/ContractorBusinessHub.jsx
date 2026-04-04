@@ -70,6 +70,7 @@ import PerformanceAnalyticsDashboard from '@/components/contractor/PerformanceAn
 import AdvancedSchedulingManager from '@/components/contractor/AdvancedSchedulingManager';
 import AutomationAndSmartTools from '@/components/contractor/AutomationAndSmartTools';
 import TeamManagementHub from '@/components/contractor/TeamManagementHub';
+import MyChallengesDashboard from '@/components/tradegames/MyChallengesDashboard';
 
 export default function ContractorBusinessHub() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -368,6 +369,7 @@ export default function ContractorBusinessHub() {
                   <TabsTrigger value="automation" className="text-xs sm:text-sm whitespace-nowrap">Automation</TabsTrigger>
                   <TabsTrigger value="crm" className="text-xs sm:text-sm whitespace-nowrap">CRM</TabsTrigger>
                   <TabsTrigger value="team" className="text-xs sm:text-sm whitespace-nowrap">Team</TabsTrigger>
+                  <TabsTrigger value="challenges" className="text-xs sm:text-sm whitespace-nowrap">Challenges</TabsTrigger>
                   </>}
                 {activeCategory === 'jobs' && <>
                   <TabsTrigger value="my-jobs" className="text-xs sm:text-sm whitespace-nowrap">My Jobs</TabsTrigger>
@@ -503,7 +505,22 @@ export default function ContractorBusinessHub() {
               </TabsContent>
 
               <TabsContent value="team">
-                <TeamManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+                 <TeamManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+               </TabsContent>
+
+              <TabsContent value="challenges">
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h2 className="text-lg font-semibold text-slate-900">My Game Challenges</h2>
+                      <p className="text-sm text-slate-500">Track challenges you've sent to clients and their completion status.</p>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => window.location.href='/trade-games'} className="gap-1.5">
+                      <span>🎮</span> Browse Games
+                    </Button>
+                  </div>
+                  <MyChallengesDashboard contractorEmail={userEmail} />
+                </Card>
               </TabsContent>
 
               <TabsContent value="live-sessions">

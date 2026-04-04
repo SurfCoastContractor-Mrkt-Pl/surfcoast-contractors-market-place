@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import TradeGameViewer from '@/components/tradegames/TradeGameViewer';
 import GameChallengeCreator from '@/components/tradegames/GameChallengeCreator';
-import { Play, Zap } from 'lucide-react';
+import GameCompletionModal from '@/components/tradegames/GameCompletionModal';
+import MyChallengesDashboard from '@/components/tradegames/MyChallengesDashboard';
+import { Play, Zap, Trophy } from 'lucide-react';
 import ScenarioIntroModal from '@/components/tradegames/ScenarioIntroModal';
 
 const TRADE_FILTERS = ['all', 'plumbing', 'electrical', 'carpentry', 'hvac'];
@@ -18,6 +20,7 @@ export default function TradeGames() {
   const [showChallengeCreator, setShowChallengeCreator] = useState(false);
   const [showScenario, setShowScenario] = useState(false);
   const [tradeFilter, setTradeFilter] = useState('all');
+  const [completionResult, setCompletionResult] = useState(null);
 
   // Fetch current user
   useEffect(() => {
@@ -75,8 +78,7 @@ export default function TradeGames() {
         console.error('Error updating stats:', err);
       }
 
-      // Show success message
-      alert(`Congratulations! You earned a ${response.data.discount}% discount!`);
+      setCompletionResult({ score: results.score, discount: response.data.discount });
       setSelectedGame(null);
     } catch (err) {
       console.error('Error completing game session:', err);
@@ -152,6 +154,18 @@ export default function TradeGames() {
     );
   }
 
+  // Completion modal
+  if (completionResult) {
+    return (
+      <GameCompletionModal
+        score={completionResult.score}
+        discount={completionResult.discount}
+        onClose={() => setCompletionResult(null)}
+        onPlayAgain={() => { setCompletionResult(null); }}
+      />
+    );
+  }
+
   // Games list with Under Construction overlay
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
@@ -166,11 +180,24 @@ export default function TradeGames() {
 
       <div className="max-w-7xl mx-auto opacity-30 pointer-events-none">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Trade Games</h1>
-          <p className="text-lg text-slate-600">
-            Learn trade skills, solve puzzles, and earn discounts on quotes.
-          </p>
+        <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">Trade Games</h1>
+            <p className="text-lg text-slate-600">
+              Learn trade skills, solve puzzles, and earn discounts on quotes.
+            </p>
+          </div>
+          {user && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => {}}
+            >
+              <Trophy className="w-4 h-4" />
+              My Challenges
+            </Button>
+          )}
         </div>
 
         {/* Game Filters */}
