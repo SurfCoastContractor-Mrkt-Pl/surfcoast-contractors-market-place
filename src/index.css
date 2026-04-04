@@ -6,51 +6,51 @@
 
 @layer base {
   :root {
-    /* Royal Palette */
+    /* Industrial-Tech Palette */
     /* Primary Colors */
-    --deep-slate: #0A0E27;           /* Deep Navy Base */
-    --regal-gold: #D4AF37;           /* Regal Gold for Actions */
-    --deep-royal-blue: #1E3A8A;      /* Deep Royal Blue */
-    --rich-purple: #4C1D95;          /* Rich Purple Accent */
+    --deep-slate: #555556;           /* Mid-Gray Base */
+    --safety-orange: #FF8C00;        /* Primary Actions */
+    --electric-cobalt: #2E5BFF;      /* WAVE OS Brand */
+    --gunmetal-steel: #404040;       /* Accent Borders */
     --titanium-white: #FFFFFF;       /* Typography - Bright white for contrast */
     
     /* Background & Surface */
-    --background: 220 20% 8%;        /* Deep cool gray-blue */
-    --foreground: 0 0% 100%;         /* Pure white for contrast */
-    --card: 220 20% 12%;             /* Slightly lighter deep blue-gray */
+    --background: 0 0% 33%;          /* Gray equivalent #555556 */
+    --foreground: 0 0% 100%;         /* Pure white for contrast on gray */
+    --card: 0 0% 35%;                /* Slightly lighter gray for cards */
     --card-foreground: 0 0% 100%;    /* White text on cards */
-    --popover: 220 20% 12%;
+    --popover: 0 0% 35%;
     --popover-foreground: 0 0% 100%;
     
-    /* Primary Action (Regal Gold) */
-    --primary: 45 100% 50%;          /* #D4AF37 - Regal Gold */
-    --primary-foreground: 0 0% 10%;
+    /* Primary Action (Safety Orange) */
+    --primary: 33 100% 50%;          /* #FF8C00 */
+    --primary-foreground: 0 0% 100%;
     
-    /* Secondary (Deep Royal Blue) */
-    --secondary: 225 80% 30%;        /* Deep Royal Blue */
+    /* Secondary (Electric Cobalt for WAVE OS) */
+    --secondary: 214 100% 50%;       /* #2E5BFF */
     --secondary-foreground: 0 0% 100%;
     
     /* Muted & Borders */
-    --muted: 220 15% 35%;            /* Cooler medium gray for muted text */
+    --muted: 0 0% 40%;               /* Medium gray for muted text */
     --muted-foreground: 0 0% 85%;    /* Light text on muted backgrounds */
-    --accent: 270 50% 40%;           /* Rich Purple for emphasis */
+    --accent: 33 100% 50%;           /* Orange for emphasis */
     --accent-foreground: 0 0% 100%;
     
     /* Destructive */
-    --destructive: 0 84% 60%;        /* Warm red */
+    --destructive: 33 100% 50%;      /* Orange as warning/destructive */
     --destructive-foreground: 0 0% 100%;
     
     /* Borders & Input */
-    --border: 220 20% 20%;           /* Deep blue-tinted borders */
-    --input: 220 20% 15%;            /* Darker blue-tinted input */
-    --ring: 45 100% 50%;             /* Gold focus rings */
+    --border: 0 0% 42%;              /* Medium-dark gray borders */
+    --input: 0 0% 30%;               /* Darker gray input backgrounds */
+    --ring: 33 100% 50%;             /* Orange focus rings */
     
     /* Charts */
-    --chart-1: 45 100% 50%;          /* Gold */
-    --chart-2: 225 80% 30%;          /* Royal Blue */
-    --chart-3: 270 50% 40%;          /* Purple */
-    --chart-4: 45 100% 60%;          /* Light Gold */
-    --chart-5: 225 80% 50%;          /* Light Royal Blue */
+    --chart-1: 33 100% 50%;          /* Orange */
+    --chart-2: 214 100% 50%;         /* Cobalt */
+    --chart-3: 0 0% 20%;             /* Steel gray */
+    --chart-4: 43 85% 55%;           /* Amber accent */
+    --chart-5: 200 70% 45%;          /* Blue accent */
     
     --radius: 0.75rem;
     
@@ -64,47 +64,47 @@
     --sidebar-border: 0 0% 25%;
     --sidebar-ring: 33 100% 50%;
 
-    /* Gradient tokens — Royal Palette (Deep Blue + Gold + Purple) */
-    --gradient-brand: linear-gradient(135deg, #1E3A8A 0%, #4C1D95 50%, #D4AF37 100%);
-    --gradient-soft: linear-gradient(135deg, #1E3A8A 0%, #4C1D95 60%, #D4AF37 100%);
-    --gradient-hero: linear-gradient(135deg, #0A0E27 0%, #1E3A8A 50%, #D4AF37 100%);
-    --gradient-card: linear-gradient(145deg, #0A0E27 0%, #1a2a4a 100%);
+    /* Gradient tokens — Industrial-Tech (Gray + Cobalt + Orange) */
+    --gradient-brand: linear-gradient(135deg, #555556 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-soft: linear-gradient(135deg, #555556 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-hero: linear-gradient(135deg, #555556 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-card: linear-gradient(145deg, #555556 0%, #404040 100%);
   }
 
   .dark {
     /* Dark mode is the DEFAULT — same as root */
-    --background: 220 20% 8%;
+    --background: 0 0% 33%;
     --foreground: 0 0% 100%;
-    --card: 220 20% 12%;
+    --card: 0 0% 35%;
     --card-foreground: 0 0% 100%;
-    --popover: 220 20% 12%;
+    --popover: 0 0% 35%;
     --popover-foreground: 0 0% 100%;
-    --primary: 45 100% 50%;
-    --primary-foreground: 0 0% 10%;
-    --secondary: 225 80% 30%;
+    --primary: 33 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 100% 50%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 15% 35%;
+    --muted: 0 0% 40%;
     --muted-foreground: 0 0% 85%;
-    --accent: 270 50% 40%;
+    --accent: 33 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 33 100% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 20% 20%;
-    --input: 220 20% 15%;
-    --ring: 45 100% 50%;
-    --chart-1: 45 100% 50%;
-    --chart-2: 225 80% 30%;
-    --chart-3: 270 50% 40%;
-    --chart-4: 45 100% 60%;
-    --chart-5: 225 80% 50%;
-    --sidebar-background: 220 20% 8%;
+    --border: 0 0% 42%;
+    --input: 0 0% 30%;
+    --ring: 33 100% 50%;
+    --chart-1: 33 100% 50%;
+    --chart-2: 214 100% 50%;
+    --chart-3: 0 0% 40%;
+    --chart-4: 43 85% 55%;
+    --chart-5: 200 70% 45%;
+    --sidebar-background: 0 0% 33%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 45 100% 50%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 270 50% 40%;
+    --sidebar-primary: 33 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 100% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 20% 20%;
-    --sidebar-ring: 45 100% 50%;
+    --sidebar-border: 0 0% 42%;
+    --sidebar-ring: 33 100% 50%;
   }
 }
 
