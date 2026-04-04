@@ -5,6 +5,9 @@ module.exports = {
   safelist: [
     'gradient-brand', 'gradient-soft', 'gradient-hero', 'gradient-card', 'gradient-text',
     'nav-pill-active',
+    'border-blue-100', 'border-blue-300', 'hover:border-blue-300', 'bg-blue-100', 'bg-blue-600', 'text-blue-600', 'hover:text-blue-700', 'hover:bg-blue-600',
+    'border-orange-100', 'border-orange-300', 'hover:border-orange-300', 'bg-orange-100', 'bg-orange-600', 'text-orange-600', 'hover:text-orange-700', 'hover:bg-orange-600',
+    'border-green-100', 'border-green-300', 'hover:border-green-300', 'bg-green-100', 'bg-green-600', 'text-green-600', 'hover:text-green-700', 'hover:bg-green-600',
   ],
   theme: {
   	extend: {
