@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Libre+Baskerville:ital,wght@0,400;0,700&family=Montserrat:wght@400;500;600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;0,700&family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Libre+Baskerville:ital,wght@0,400;0,700&family=Montserrat:wght@400;500;600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;0,700&family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,105 +6,105 @@
 
 @layer base {
   :root {
-    /* Royal Palette */
+    /* Industrial-Tech Palette */
     /* Primary Colors */
-    --deep-royal-blue: #1B3B6F;      /* Deep Royal Blue */
-    --regal-gold: #D4AF37;           /* Regal Gold */
-    --dark-navy: #0F1B35;            /* Dark Navy Base */
-    --light-gold: #E5C158;           /* Light Gold Accent */
+    --deep-slate: #555556;           /* Mid-Gray Base */
+    --safety-orange: #FF8C00;        /* Primary Actions */
+    --electric-cobalt: #2E5BFF;      /* WAVE OS Brand */
+    --gunmetal-steel: #404040;       /* Accent Borders */
     --titanium-white: #FFFFFF;       /* Typography - Bright white for contrast */
     
     /* Background & Surface */
-    --background: 220 15% 12%;       /* Dark cool gray (#1f2844) */
-    --foreground: 0 0% 100%;         /* Pure white for contrast */
-    --card: 220 15% 18%;             /* Slightly lighter cool gray (#2d3d52) */
+    --background: 0 0% 33%;          /* Gray equivalent #555556 */
+    --foreground: 0 0% 100%;         /* Pure white for contrast on gray */
+    --card: 0 0% 35%;                /* Slightly lighter gray for cards */
     --card-foreground: 0 0% 100%;    /* White text on cards */
-    --popover: 220 15% 18%;
+    --popover: 0 0% 35%;
     --popover-foreground: 0 0% 100%;
     
-    /* Primary Action (Deep Royal Blue) */
-    --primary: 225 80% 30%;          /* #1B3B6F */
+    /* Primary Action (Safety Orange) */
+    --primary: 33 100% 50%;          /* #FF8C00 */
     --primary-foreground: 0 0% 100%;
     
-    /* Secondary (Regal Gold) */
-    --secondary: 45 100% 50%;        /* #D4AF37 */
-    --secondary-foreground: 0 0% 10%;
+    /* Secondary (Electric Cobalt for WAVE OS) */
+    --secondary: 214 100% 50%;       /* #2E5BFF */
+    --secondary-foreground: 0 0% 100%;
     
     /* Muted & Borders */
-    --muted: 220 15% 35%;            /* Muted cool gray */
-    --muted-foreground: 0 0% 80%;    /* Light text on muted backgrounds */
-    --accent: 45 100% 50%;           /* Gold for emphasis */
-    --accent-foreground: 0 0% 10%;
+    --muted: 0 0% 40%;               /* Medium gray for muted text */
+    --muted-foreground: 0 0% 85%;    /* Light text on muted backgrounds */
+    --accent: 33 100% 50%;           /* Orange for emphasis */
+    --accent-foreground: 0 0% 100%;
     
     /* Destructive */
-    --destructive: 0 84% 60%;        /* Red */
+    --destructive: 33 100% 50%;      /* Orange as warning/destructive */
     --destructive-foreground: 0 0% 100%;
     
     /* Borders & Input */
-    --border: 220 15% 25%;           /* Cool gray borders */
-    --input: 220 15% 15%;            /* Darker cool gray input backgrounds */
-    --ring: 45 100% 50%;             /* Gold focus rings */
+    --border: 0 0% 42%;              /* Medium-dark gray borders */
+    --input: 0 0% 30%;               /* Darker gray input backgrounds */
+    --ring: 33 100% 50%;             /* Orange focus rings */
     
     /* Charts */
-    --chart-1: 225 80% 30%;          /* Royal Blue */
-    --chart-2: 45 100% 50%;          /* Gold */
-    --chart-3: 220 15% 30%;          /* Cool gray */
-    --chart-4: 45 85% 55%;           /* Light gold */
-    --chart-5: 225 60% 50%;          /* Lighter blue */
+    --chart-1: 33 100% 50%;          /* Orange */
+    --chart-2: 214 100% 50%;         /* Cobalt */
+    --chart-3: 0 0% 20%;             /* Steel gray */
+    --chart-4: 43 85% 55%;           /* Amber accent */
+    --chart-5: 200 70% 45%;          /* Blue accent */
     
     --radius: 0.75rem;
     
     /* Sidebar */
-    --sidebar-background: 220 15% 15%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 225 80% 30%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 45 100% 50%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 220 15% 25%;
-    --sidebar-ring: 45 100% 50%;
+    --sidebar-accent: 214 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 33 100% 50%;
 
-    /* Gradient tokens — Royal (Navy + Gold) */
-    --gradient-brand: linear-gradient(135deg, #0F1B35 0%, #1B3B6F 50%, #D4AF37 100%);
-    --gradient-soft: linear-gradient(135deg, #0F1B35 0%, #1B3B6F 60%, #D4AF37 100%);
-    --gradient-hero: linear-gradient(135deg, #0F1B35 0%, #1B3B6F 50%, #D4AF37 100%);
-    --gradient-card: linear-gradient(145deg, #1f2844 0%, #2d3d52 100%);
+    /* Gradient tokens — Industrial-Tech (Gray + Cobalt + Orange) */
+    --gradient-brand: linear-gradient(135deg, #555556 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-soft: linear-gradient(135deg, #555556 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-hero: linear-gradient(135deg, #555556 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-card: linear-gradient(145deg, #555556 0%, #404040 100%);
   }
 
   .dark {
     /* Dark mode is the DEFAULT — same as root */
-    --background: 220 15% 12%;
+    --background: 0 0% 33%;
     --foreground: 0 0% 100%;
-    --card: 220 15% 18%;
+    --card: 0 0% 35%;
     --card-foreground: 0 0% 100%;
-    --popover: 220 15% 18%;
+    --popover: 0 0% 35%;
     --popover-foreground: 0 0% 100%;
-    --primary: 225 80% 30%;
+    --primary: 33 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 45 100% 50%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 220 15% 35%;
-    --muted-foreground: 0 0% 80%;
-    --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 84% 60%;
+    --secondary: 214 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 40%;
+    --muted-foreground: 0 0% 85%;
+    --accent: 33 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 33 100% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 25%;
-    --input: 220 15% 15%;
-    --ring: 45 100% 50%;
-    --chart-1: 225 80% 30%;
-    --chart-2: 45 100% 50%;
-    --chart-3: 220 15% 30%;
-    --chart-4: 45 85% 55%;
-    --chart-5: 225 60% 50%;
-    --sidebar-background: 220 15% 15%;
+    --border: 0 0% 42%;
+    --input: 0 0% 30%;
+    --ring: 33 100% 50%;
+    --chart-1: 33 100% 50%;
+    --chart-2: 214 100% 50%;
+    --chart-3: 0 0% 40%;
+    --chart-4: 43 85% 55%;
+    --chart-5: 200 70% 45%;
+    --sidebar-background: 0 0% 33%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 225 80% 30%;
+    --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 45 100% 50%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 220 15% 25%;
-    --sidebar-ring: 45 100% 50%;
+    --sidebar-accent: 214 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 42%;
+    --sidebar-ring: 33 100% 50%;
   }
 }
 
@@ -130,7 +130,7 @@
  right: 12px;
  height: 2px;
  border-radius: 99px;
- background: linear-gradient(90deg, #1B3B6F 0%, #D4AF37 100%);
+ background: linear-gradient(90deg, #2E5BFF 0%, #FF8C00 100%);
 }
 
 @layer base {
@@ -185,7 +185,7 @@
 
   /* Sunset Gradient Text */
   .sunset-gradient-text {
-    background: linear-gradient(to bottom, #1B3B6F, #225aa6, #D4AF37);
+    background: linear-gradient(to bottom, #D94600, #F97316, #FCD34D);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -198,12 +198,12 @@
   .text-heading { color: #F2F2F2; font-weight: 700; }
   .text-body { color: #E5E5E5; }
   .text-muted { color: #999999; }
-  .text-accent { color: #D4AF37; }
-  .text-primary { color: #1B3B6F; }
+  .text-accent { color: #FF8C00; }
+  .text-primary { color: #2E5BFF; }
 
   /* Logo Gradient Accent - Apply to key elements */
   .logo-gradient-text {
-    background: linear-gradient(135deg, #0F1B35 0%, #1B3B6F 50%, #D4AF37 100%);
+    background: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -211,16 +211,16 @@
   }
 
   .logo-gradient-bg {
-    background: linear-gradient(135deg, #0F1B35 0%, #1B3B6F 50%, #D4AF37 100%);
+    background: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
   }
 
   .logo-gradient-border {
-    border-image: linear-gradient(135deg, #1B3B6F 0%, #225aa6 50%, #D4AF37 100%) 1;
+    border-image: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%) 1;
   }
 
   /* Button Utilities */
   .btn-primary {
-    background: #1B3B6F;
+    background: #FF8C00;
     color: #ffffff;
     padding: 12px 32px;
     border-radius: 8px;
@@ -230,22 +230,22 @@
     transition: all 0.2s;
   }
   .btn-primary:hover {
-    background: #142d52;
-    box-shadow: 0 4px 12px rgba(27, 59, 111, 0.4);
+    background: #E67E00;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
   }
 
   .btn-secondary {
     background-color: transparent;
-    color: #D4AF37;
+    color: #FF8C00;
     padding: 12px 24px;
     border-radius: 8px;
-    border: 2px solid #D4AF37;
+    border: 2px solid #FF8C00;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
   }
   .btn-secondary:hover {
-    background-color: rgba(212, 175, 55, 0.1);
+    background-color: rgba(255, 140, 0, 0.1);
   }
 
   .btn-outline {
@@ -253,31 +253,31 @@
     color: #E5E5E5;
     padding: 8px 16px;
     border-radius: 9999px;
-    border: 1px solid #2d3d52;
+    border: 1px solid #505050;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
   }
   .btn-outline:hover {
-    background-color: rgba(212, 175, 55, 0.1);
-    border-color: #D4AF37;
+    background-color: rgba(255, 140, 0, 0.1);
+    border-color: #FF8C00;
   }
 
   /* Card Utilities */
   .card-base {
-    background-color: #1f2844;
-    border: 1px solid #2d3d52;
+    background-color: #1A1A1B;
+    border: 1px solid #505050;
     border-radius: 12px;
     padding: 24px;
   }
   .card-base:hover {
-    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
     transition: box-shadow 0.2s;
   }
 
   .card-elevated {
-    background-color: #2d3d52;
+    background-color: #252525;
     border: none;
     border-radius: 12px;
     padding: 24px;
@@ -285,16 +285,16 @@
   }
 
   .card-featured {
-    background: linear-gradient(to bottom right, #1B3B6F, #225aa6);
-    border: 2px solid #D4AF37;
+    background: linear-gradient(to bottom right, #FF8C00, #E67E00);
+    border: 2px solid #FF8C00;
     border-radius: 16px;
     padding: 32px;
   }
 
   /* Input Utilities */
   .input-base {
-    background-color: #2d3d52;
-    border: 1px solid #3d4d62;
+    background-color: #252525;
+    border: 1px solid #505050;
     border-radius: 8px;
     padding: 12px 16px;
     color: #F2F2F2;
@@ -306,14 +306,14 @@
   }
   .input-base:focus {
     outline: none;
-    border-color: #D4AF37;
-    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+    border-color: #FF8C00;
+    box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3);
   }
 
   /* Badge Utilities */
   .badge-pill {
-    background-color: rgba(212, 175, 55, 0.2);
-    color: #D4AF37;
+    background-color: rgba(255, 140, 0, 0.2);
+    color: #FF8C00;
     border-radius: 9999px;
     padding: 4px 12px;
     font-size: 12px;
@@ -322,8 +322,8 @@
   }
 
   .badge-success {
-    background-color: rgba(27, 59, 111, 0.2);
-    color: #1B3B6F;
+    background-color: rgba(46, 91, 255, 0.2);
+    color: #2E5BFF;
     border-radius: 6px;
     padding: 4px 8px;
     font-size: 12px;
@@ -352,7 +352,7 @@
   }
 
   .trust-item svg {
-    color: #D4AF37;
+    color: #FF8C00;
     flex-shrink: 0;
     width: 20px;
     height: 20px;
@@ -360,27 +360,27 @@
 
   /* Error/Status States */
   .error-message {
-    background-color: rgba(212, 175, 55, 0.15);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    color: #D4AF37;
+    background-color: rgba(255, 140, 0, 0.15);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    color: #FF8C00;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
   }
 
   .success-message {
-    background-color: rgba(27, 59, 111, 0.15);
-    border: 1px solid rgba(27, 59, 111, 0.3);
-    color: #1B3B6F;
+    background-color: rgba(46, 91, 255, 0.15);
+    border: 1px solid rgba(46, 91, 255, 0.3);
+    color: #2E5BFF;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
   }
 
   .warning-message {
-    background-color: rgba(212, 175, 55, 0.15);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    color: #D4AF37;
+    background-color: rgba(255, 140, 0, 0.15);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    color: #FF8C00;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
