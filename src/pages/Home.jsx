@@ -35,63 +35,63 @@ export default function Home() {
             {/* Top row: 4 large circles */}
 
             {/* Circle 1: Entrepreneurs */}
-            <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-secondary/20 border-2 border-secondary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <Briefcase className="w-8 h-8 text-secondary mb-2" />
-                <span className="font-bold text-foreground text-sm">Entrepreneurs</span>
-                <span className="text-xs text-muted-foreground">Enter →</span>
+                <Briefcase className="w-8 h-8 text-black mb-2" />
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Entrepreneurs</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
               </Link>
             </div>
 
             {/* Circle 2: Clients & Consumers */}
-            <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <Users className="w-8 h-8 text-primary mb-2" />
-                <span className="font-bold text-foreground text-sm">Clients &<br />Consumers</span>
-                <span className="text-xs text-muted-foreground">Enter →</span>
+                <Users className="w-8 h-8 text-black mb-2" />
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Clients &<br />Consumers</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Enter →</span>
               </Link>
             </div>
 
             {/* Circle 3: Mission Statement */}
-            <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-muted border-2 border-border flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-foreground text-sm mb-2">Mission</span>
-                <span className="text-xs text-muted-foreground leading-tight">Empowering independent workers</span>
+                <span className="font-bold text-black text-sm mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Mission</span>
+                <span className="text-xs text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Empowering independent workers</span>
               </div>
             </div>
 
             {/* Circle 4: WAVE OS */}
-            <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-blue-100/30 border-2 border-blue-400 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <Link to="/wave-os-details" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <Zap className="w-8 h-8 text-blue-600 mb-2" />
-                <span className="font-bold text-foreground text-sm">WAVE OS</span>
-                <span className="text-xs text-muted-foreground">Learn More →</span>
+                <Zap className="w-8 h-8 text-black mb-2" />
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>WAVE OS</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn More →</span>
               </Link>
             </div>
 
             {/* Bottom row: 3 small circles (centered under gaps) */}
 
             {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
-            <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 border-2 border-orange-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-foreground text-xs">Why SurfCoast</span>
-                <span className="text-[10px] text-muted-foreground">Learn →</span>
+                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Why SurfCoast</span>
+                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn →</span>
               </Link>
             </div>
 
             {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
-            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-foreground text-xs">Solo/Startup</span>
-                <span className="text-[10px] text-muted-foreground">For you →</span>
+                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Solo/Startup</span>
+                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>For you →</span>
               </div>
             </div>
 
             {/* Small Circle 3: About Us (under gap 3-4) */}
-            <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-foreground text-xs">About Us</span>
-                <span className="text-[10px] text-muted-foreground">Our story →</span>
+                <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>About Us</span>
+                <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Our story →</span>
               </Link>
             </div>
           </div>
