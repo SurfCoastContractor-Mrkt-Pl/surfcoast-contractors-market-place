@@ -92,6 +92,9 @@ import ContractorMyDay from './pages/ContractorMyDay';
 import TradeLanding from './pages/TradeLanding';
 import ContractorTrialDashboard from './pages/ContractorTrialDashboard';
 import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
+import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
+import BillingHistory from './pages/BillingHistory';
+import SubscriptionSuccess from './pages/SubscriptionSuccess';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -607,6 +610,21 @@ const AuthenticatedApp = () => {
       <Route path="/customer-trial" element={
         <LayoutWrapper currentPageName="CustomerTrialDashboard">
           <CustomerTrialDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/SubscriptionUpgrade" element={
+        <LayoutWrapper currentPageName="SubscriptionUpgrade">
+          <SubscriptionUpgrade />
+        </LayoutWrapper>
+      } />
+      <Route path="/BillingHistory" element={
+        <LayoutWrapper currentPageName="BillingHistory">
+          <BillingHistory />
+        </LayoutWrapper>
+      } />
+      <Route path="/subscription-success" element={
+        <LayoutWrapper currentPageName="SubscriptionSuccess">
+          <SubscriptionSuccess />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

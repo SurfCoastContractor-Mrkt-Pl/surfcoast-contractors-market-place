@@ -1,0 +1,89 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user with the subscription"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": ["contractor", "customer"],
+      "description": "Whether user is contractor or customer"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "description": "Stripe customer ID"
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "description": "Stripe subscription ID"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["starter", "pro", "max", "premium", "residential"],
+      "description": "WAVE OS subscription tier"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "past_due", "cancelled"],
+      "default": "active",
+      "description": "Subscription status"
+    },
+    "amount_cents": {
+      "type": "number",
+      "description": "Monthly price in cents (1900 = $19.00)"
+    },
+    "billing_cycle_start": {
+      "type": "string",
+      "description": "ISO timestamp of billing cycle start"
+    },
+    "billing_cycle_end": {
+      "type": "string",
+      "description": "ISO timestamp of billing cycle end"
+    },
+    "cancelled_at": {
+      "type": "string",
+      "description": "ISO timestamp when subscription was cancelled"
+    }
+  },
+  "required": ["user_email", "user_type", "stripe_customer_id", "stripe_subscription_id", "tier", "status"],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
