@@ -15,6 +15,7 @@ import WaveFOJobMapDisplay from '@/components/fieldops/JobMapDisplay';
 import WaveFOSidebar from '@/components/fieldops/FieldOpsSidebar';
 import WaveFOMobileNav from '@/components/fieldops/FieldOpsMobileNav';
 import WaveFOAssistant from '@/components/fieldops/WaveFOAssistant';
+import FieldOpsHamburgerMenu from '@/components/fieldops/FieldOpsHamburgerMenu';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 
@@ -37,6 +38,7 @@ export default function WaveFo() {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
 
@@ -168,14 +170,32 @@ export default function WaveFo() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* Desktop Sidebar Navigation - Admin only for non-admins */}
-        <WaveFOSidebar
-          contractor={effectiveContractor}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          hasBreakerAccess={hasSurfCoastWaveFOAccess}
-          isOnline={isOnline}
-        />
+        {/* Mobile Hamburger */}
+        <FieldOpsHamburgerMenu onToggleSidebar={setSidebarOpen} />
+
+        {/* Sidebar — Desktop visible, Mobile overlay */}
+        <div className={`${
+          sidebarOpen ? 'fixed inset-0 z-50 lg:static lg:z-auto' : 'hidden lg:block'
+        }`}>
+          {sidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black/30 lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+          <div className={`${sidebarOpen ? 'fixed left-0 top-0 h-full w-64 z-40' : ''}`}>
+            <WaveFOSidebar
+              contractor={effectiveContractor}
+              activeTab={activeTab}
+              onTabChange={(tab) => {
+                setActiveTab(tab);
+                setSidebarOpen(false);
+              }}
+              hasBreakerAccess={hasSurfCoastWaveFOAccess}
+              isOnline={isOnline}
+            />
+          </div>
+        </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">

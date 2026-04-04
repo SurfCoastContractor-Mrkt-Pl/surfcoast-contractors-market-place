@@ -5,6 +5,7 @@ import { Calendar, DollarSign, FileText, AlertCircle, Loader2, CheckCircle2, Clo
 import { format } from 'date-fns';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import ResponsiveJobTabs from '@/components/contractor/ResponsiveJobTabs';
 
 const STATUS_CONFIG = {
   pending_approval: { label: 'Pending Approval', icon: Clock, color: 'bg-yellow-50 border-yellow-200' },
@@ -15,6 +16,7 @@ const STATUS_CONFIG = {
 export default function ContractorJobPipeline() {
   const [user, setUser] = useState(null);
   const [isContractor, setIsContractor] = useState(false);
+  const [activeTab, setActiveTab] = useState('active');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -100,20 +102,21 @@ export default function ContractorJobPipeline() {
         </div>
 
         <Tabs defaultValue="active">
-          <TabsList className="mb-6 bg-orange-50 border-2 border-orange-100 p-1 rounded-xl">
-            <TabsTrigger value="active" className="rounded-lg font-semibold data-[state=active]:bg-white data-[state=active]:text-orange-700 data-[state=active]:shadow-sm">
-              Active Jobs
-              {jobs.length > 0 && (
-                <span className="ml-2 px-2 py-0.5 bg-orange-600 text-white text-xs font-bold rounded-full">{jobs.length}</span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="leads" className="rounded-lg font-semibold data-[state=active]:bg-white data-[state=active]:text-orange-700 data-[state=active]:shadow-sm">
-              Open Job Leads
-              {openJobs.length > 0 && (
-                <span className="ml-2 px-2 py-0.5 bg-green-600 text-white text-xs font-bold rounded-full">{openJobs.length}</span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+          <ResponsiveJobTabs 
+            tabs={[
+              { 
+                id: 'active', 
+                label: `Active Jobs${jobs.length > 0 ? ` (${jobs.length})` : ''}` 
+              },
+              { 
+                id: 'leads', 
+                label: `Open Leads${openJobs.length > 0 ? ` (${openJobs.length})` : ''}` 
+              }
+            ]}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+          <div className="mb-6" />
 
           {/* Active Jobs Tab */}
           <TabsContent value="active">
