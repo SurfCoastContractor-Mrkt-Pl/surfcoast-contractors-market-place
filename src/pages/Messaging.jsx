@@ -192,68 +192,77 @@ export default function Messaging() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 lg:p-8">
-        {/* Sidebar - Conversations List */}
-        <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Messages</h2>
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-              <Input
-                placeholder="Search conversations..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 text-sm"
-              />
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* Header */}
+      <div className="bg-white border-b border-slate-200 px-4 lg:px-8 py-4 flex-shrink-0">
+        <h2 className="text-xl font-bold text-slate-900">Messages</h2>
+      </div>
+
+      <div className="flex-1 overflow-hidden flex flex-col lg:flex-row gap-6 p-4 lg:p-8 max-w-7xl mx-auto w-full">
+        {/* Mobile: Show conversation list only if no selection; Desktop: Always show */}
+        {!selectedConversation && !showNewMessage && (
+          <div className="flex flex-col w-full lg:w-1/3 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="p-4 border-b border-slate-200 flex-shrink-0">
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
+                <Input
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 text-sm h-10"
+                />
+              </div>
+              <Button
+                onClick={() => setShowNewMessage(true)}
+                className="w-full h-10 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-sm"
+              >
+                + New Message
+              </Button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto">
+              {filteredConversations.length === 0 ? (
+                <div className="p-6 text-center text-slate-500 text-sm">
+                  <p>No conversations yet</p>
+                </div>
+              ) : (
+                filteredConversations.map(conv => (
+                  <button
+                    key={conv.key}
+                    onClick={() => setSelectedConversation(conv)}
+                    className="w-full p-4 border-b border-slate-100 text-left hover:bg-slate-50 active:bg-blue-50 transition-colors min-h-16 flex flex-col justify-center"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <h3 className="font-semibold text-slate-900 truncate text-sm">{conv.otherName}</h3>
+                      {conv.unreadCount > 0 && (
+                        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex-shrink-0">
+                          {conv.unreadCount}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-600 truncate">{conv.lastMessage}</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      {new Date(conv.lastMessageTime).toLocaleDateString()}
+                    </p>
+                  </button>
+                ))
+              )}
             </div>
           </div>
+        )}
 
-          <Button
-            onClick={() => setShowNewMessage(true)}
-            className="m-4 w-auto bg-orange-600 hover:bg-orange-700"
-          >
-            + New Message
-          </Button>
-
-          {/* Conversations */}
-          <div className="flex-1 overflow-y-auto">
-            {filteredConversations.length === 0 ? (
-              <div className="p-6 text-center text-slate-500">
-                <p>No conversations yet</p>
-              </div>
-            ) : (
-              filteredConversations.map(conv => (
-                <button
-                  key={conv.key}
-                  onClick={() => setSelectedConversation(conv)}
-                  className={`w-full p-4 border-b border-slate-100 text-left hover:bg-slate-50 transition-colors ${
-                    selectedConversation?.key === conv.key ? 'bg-blue-50' : ''
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-slate-900 truncate">{conv.otherName}</h3>
-                      <p className="text-sm text-slate-600 truncate">{conv.lastMessage}</p>
-                    </div>
-                    {conv.unreadCount > 0 && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex-shrink-0">
-                        {conv.unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-slate-500 mt-2">
-                    {new Date(conv.lastMessageTime).toLocaleDateString()}
-                  </p>
-                </button>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Main Chat Area */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[600px] lg:h-[800px]">
-          {showNewMessage ? (
+        {/* Chat or Form Area */}
+        {showNewMessage ? (
+          <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+            <div className="flex-shrink-0 p-4 border-b border-slate-200 flex items-center justify-between lg:hidden">
+              <h3 className="font-semibold text-slate-900">New Message</h3>
+              <button
+                onClick={() => setShowNewMessage(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
             <NewMessageForm
               user={user}
               onMessageSent={() => {
@@ -263,20 +272,31 @@ export default function Messaging() {
               }}
               onCancel={() => setShowNewMessage(false)}
             />
-          ) : selectedConversation ? (
+          </div>
+        ) : selectedConversation ? (
+          <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+            <div className="flex-shrink-0 p-4 border-b border-slate-200 flex items-center justify-between lg:hidden">
+              <h3 className="font-semibold text-slate-900 truncate">{selectedConversation.otherName}</h3>
+              <button
+                onClick={() => setSelectedConversation(null)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
             <MessageConversation
               conversation={selectedConversation}
               user={user}
               onSendMessage={(shopId, vendorEmail, shopName, body) => handleSendMessage(shopId, vendorEmail, shopName, body)}
             />
-          ) : (
-            <div className="flex items-center justify-center h-full text-slate-500">
-              <div className="text-center">
-                <p className="mb-4">Select a conversation or start a new one</p>
-              </div>
+          </div>
+        ) : (
+          <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex items-center justify-center hidden lg:flex">
+            <div className="text-center text-slate-500">
+              <p className="mb-4 font-medium">Select a conversation or start a new one</p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
