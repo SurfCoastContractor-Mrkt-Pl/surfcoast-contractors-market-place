@@ -30,12 +30,12 @@ export default function Home() {
         {/* ==================== 4 LARGE CIRCLES IN ROW + 3 SMALL CIRCLES UNDERNEATH ==================== */}
         <div className="relative max-w-6xl mx-auto">
           {/* Container for circles */}
-          <div className="relative h-[500px] flex items-center justify-center">
+          <div className="relative h-[400px] flex items-center justify-center">
 
             {/* Top row: 4 large circles */}
 
             {/* Circle 1: Entrepreneurs */}
-            <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-40">
               <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Briefcase className="w-8 h-8 text-black mb-2" />
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Entrepreneurs</span>
@@ -44,7 +44,7 @@ export default function Home() {
             </div>
 
             {/* Circle 2: Clients & Consumers */}
-            <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-30">
               <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Users className="w-8 h-8 text-black mb-2" />
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Clients &<br />Consumers</span>
@@ -53,7 +53,7 @@ export default function Home() {
             </div>
 
             {/* Circle 3: Mission Statement */}
-            <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-20">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-sm mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Mission</span>
                 <span className="text-xs text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Empowering independent workers</span>
@@ -61,7 +61,7 @@ export default function Home() {
             </div>
 
             {/* Circle 4: WAVE OS */}
-            <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer z-10">
               <Link to="/wave-os-details" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Zap className="w-8 h-8 text-black mb-2" />
                 <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>WAVE OS</span>
@@ -72,7 +72,7 @@ export default function Home() {
             {/* Bottom row: 3 small circles (centered under gaps) */}
 
             {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
-            <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-40">
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Why SurfCoast</span>
                 <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Learn →</span>
@@ -80,7 +80,7 @@ export default function Home() {
             </div>
 
             {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
-            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-30">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Solo/Startup</span>
                 <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>For you →</span>
@@ -88,7 +88,7 @@ export default function Home() {
             </div>
 
             {/* Small Circle 3: About Us (under gap 3-4) */}
-            <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer z-20">
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-black text-xs" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>About Us</span>
                 <span className="text-[10px] text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace"}}>Our story →</span>
