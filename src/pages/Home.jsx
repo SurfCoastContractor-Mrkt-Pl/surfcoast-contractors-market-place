@@ -24,12 +24,12 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight tracking-tight">
-              Being an entrepreneur <br />
+              Being a tradesperson <br />
               <span className="logo-gradient-text">isn't just a job.</span>
             </h1>
 
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-lg">
-              It's a mindset built on hard work, ownership, and pride. Join a verified community of tradespeople and grow your business your way.
+              It's a mindset built on hard work, ownership, and pride. Join a verified community and grow your business your way.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -37,13 +37,13 @@ export default function Home() {
                 to="/BecomeContractor"
                 className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:bg-orange-700 transition-all shadow-lg shadow-primary/40 text-center text-lg"
               >
-                Join as an Entrepreneur
+                Join as a Tradesperson
               </Link>
               <Link
                 to="/CustomerSignup"
                 className="px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-center text-lg"
               >
-                Find a Tradesperson
+                Find Help
               </Link>
             </div>
 
@@ -113,7 +113,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
             <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-secondary bg-secondary/20 mb-4 uppercase tracking-wide">
-              For Entrepreneurs
+              For Tradespeople
             </span>
             <h2 className="text-3xl lg:text-5xl font-extrabold text-foreground mb-5 leading-tight">
               Try it free.<br />No pressure. No card.
@@ -178,15 +178,15 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center mb-6 group-hover:bg-secondary transition-colors">
                 <Briefcase className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I'm an Entrepreneur</h3>
+              <h3 className="text-2xl font-extrabold text-foreground mb-3">I'm a Tradesperson</h3>
               <p className="text-muted-foreground mb-6">Grow your business with verified clients, secure payments, and real support.</p>
               <ul className="space-y-3 mb-8">
                 {[
-                  "Find quality jobs from verified clients",
-                  "Build your reputation with verified reviews",
-                  "Get paid securely via Stripe",
-                  "Community-first support always",
-                ].map(item => (
+                     "Find quality jobs from verified clients",
+                     "Build your reputation with verified reviews",
+                     "Get paid securely",
+                     "Community-first support always",
+                   ].map(item => (
                   <li key={item} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-secondary flex-shrink-0" />
                     <span className="text-foreground">{item}</span>
@@ -197,7 +197,7 @@ export default function Home() {
                 to="/BecomeContractor"
                 className="w-full block px-6 py-4 rounded-xl border-2 border-secondary text-secondary font-bold hover:bg-secondary hover:text-white transition-all text-center"
               >
-                Join as an Entrepreneur
+                Join as a Tradesperson
               </Link>
             </div>
 
@@ -206,15 +206,15 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
                 <Users className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-2xl font-extrabold text-foreground mb-3">I need an Entrepreneur</h3>
-              <p className="text-muted-foreground mb-6">Find verified entrepreneurs you can trust, with transparent pricing and secure payments.</p>
+              <h3 className="text-2xl font-extrabold text-foreground mb-3">I need help</h3>
+              <p className="text-muted-foreground mb-6">Find verified tradespeople you can trust, with transparent pricing and secure payments.</p>
               <ul className="space-y-3 mb-8">
                 {[
-                  "Access verified, licensed entrepreneurs",
-                  "Get competitive quotes instantly",
-                  "Secure payments and verified reviews",
-                  "Peace of mind with professional support",
-                ].map(item => (
+                   "Access verified, licensed tradespeople",
+                   "Get competitive quotes instantly",
+                   "Secure payments and verified reviews",
+                   "Peace of mind with professional support",
+                 ].map(item => (
                   <li key={item} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0" />
                     <span className="text-foreground">{item}</span>
@@ -252,15 +252,15 @@ export default function Home() {
               {
                 icon: Briefcase,
                 color: "orange",
-                title: "Entrepreneur Marketplace",
+                title: "Service Marketplace",
                 desc: "Find quality jobs, grow your business, and build your reputation with verified clients.",
                 link: "/BecomeContractor",
               },
               {
                 icon: Users,
                 color: "green",
-                title: "Consumer Hub",
-                desc: "Find verified entrepreneurs, get instant quotes, and pay securely with verified reviews.",
+                title: "Client Hub",
+                desc: "Find verified tradespeople, get instant quotes, and pay securely with verified reviews.",
                 link: "/CustomerSignup",
               },
             ].map(({ icon: Icon, color, title, desc, link }) => {
