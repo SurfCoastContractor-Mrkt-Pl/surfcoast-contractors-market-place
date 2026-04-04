@@ -6,81 +6,81 @@
 
 @layer base {
   :root {
-    /* Default Ocean Palette */
-    --background: 210 20% 98%;
-    --foreground: 210 50% 8%;
-    --card: 0 0% 100%;
-    --card-foreground: 210 50% 8%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 50% 8%;
-    --primary: 210 75% 38%;
+    /* Industrial-Tech Palette */
+    --background: 220 9% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 8% 14%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 8% 14%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 33 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 173 58% 35%;
+    --secondary: 220 100% 59%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 15% 94%;
-    --muted-foreground: 210 50% 20%;
-    --accent: 25 95% 53%;
+    --muted: 220 8% 25%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 33 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 50%;
+    --destructive: 33 100% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 20% 82%;
-    --input: 210 20% 88%;
-    --ring: 210 75% 38%;
-    --chart-1: 210 75% 38%;
-    --chart-2: 25 95% 53%;
-    --chart-3: 173 58% 35%;
+    --border: 0 0% 31%;
+    --input: 220 8% 16%;
+    --ring: 33 100% 50%;
+    --chart-1: 33 100% 50%;
+    --chart-2: 220 100% 59%;
+    --chart-3: 220 8% 25%;
     --chart-4: 43 85% 55%;
     --chart-5: 200 70% 45%;
     --radius: 0.75rem;
-    --sidebar-background: 210 30% 98%;
-    --sidebar-foreground: 210 50% 8%;
-    --sidebar-primary: 210 75% 38%;
+    --sidebar-background: 220 9% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 173 58% 35%;
+    --sidebar-accent: 220 100% 59%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 210 20% 82%;
-    --sidebar-ring: 210 75% 38%;
+    --sidebar-border: 0 0% 31%;
+    --sidebar-ring: 33 100% 50%;
 
-    /* Gradient tokens — logo stays consistent across all themes (red-orange to blue-purple) */
-    --gradient-brand: linear-gradient(135deg, #1e5a96 0%, #2176cc 50%, #f97316 100%);
-    --gradient-soft: linear-gradient(135deg, #eff6ff 0%, #dbeafe 60%, #fff7ed 100%);
-    --gradient-hero: linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #ea580c 100%);
-    --gradient-card: linear-gradient(145deg, #ffffff 0%, #eff6ff 100%);
+    /* Gradient tokens — Safety Orange + Cobalt for industrial-tech brand */
+    --gradient-brand: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
+    --gradient-soft: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-hero: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 60%, #FF8C00 100%);
+    --gradient-card: linear-gradient(145deg, #1A1A1B 0%, #505050 100%);
   }
 
   .dark {
-    --background: 215 30% 9%;
-    --foreground: 210 20% 95%;
-    --card: 215 25% 12%;
-    --card-foreground: 210 20% 95%;
-    --popover: 215 25% 12%;
-    --popover-foreground: 210 20% 95%;
-    --primary: 210 75% 55%;
+    --background: 220 9% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 8% 14%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 8% 14%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 33 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 20% 20%;
-    --secondary-foreground: 210 20% 88%;
-    --muted: 215 20% 18%;
-    --muted-foreground: 210 15% 50%;
-    --accent: 25 95% 58%;
+    --secondary: 220 100% 59%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 8% 25%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 33 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 45%;
+    --destructive: 33 100% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 215 20% 22%;
-    --input: 215 20% 18%;
-    --ring: 210 75% 55%;
-    --chart-1: 210 75% 55%;
-    --chart-2: 25 95% 58%;
-    --chart-3: 173 58% 45%;
+    --border: 0 0% 31%;
+    --input: 220 8% 16%;
+    --ring: 33 100% 50%;
+    --chart-1: 33 100% 50%;
+    --chart-2: 220 100% 59%;
+    --chart-3: 220 8% 25%;
     --chart-4: 43 85% 60%;
     --chart-5: 200 70% 55%;
-    --sidebar-background: 215 30% 10%;
-    --sidebar-foreground: 210 20% 88%;
-    --sidebar-primary: 210 75% 55%;
+    --sidebar-background: 220 9% 11%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 20% 20%;
-    --sidebar-accent-foreground: 210 75% 70%;
-    --sidebar-border: 215 20% 22%;
-    --sidebar-ring: 210 75% 55%;
+    --sidebar-accent: 220 100% 59%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 31%;
+    --sidebar-ring: 33 100% 50%;
   }
 }
 
@@ -99,14 +99,14 @@
 /* Nav pill active underline */
 .nav-pill-active { position: relative; }
 .nav-pill-active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 12px;
-  right: 12px;
-  height: 2px;
-  border-radius: 99px;
-  background: linear-gradient(90deg, #1d4ed8 0%, #ea580c 100%);
+ content: '';
+ position: absolute;
+ bottom: -2px;
+ left: 12px;
+ right: 12px;
+ height: 2px;
+ border-radius: 99px;
+ background: linear-gradient(90deg, #2E5BFF 0%, #FF8C00 100%);
 }
 
 @layer base {
@@ -171,15 +171,15 @@
   /* ========== DESIGN TOKEN GLOBAL UTILITIES ========== */
 
   /* Text Color Utilities */
-  .text-heading { color: #111827; font-weight: 700; }
-  .text-body { color: #374151; }
-  .text-muted { color: #4b5563; }
-  .text-accent { color: #ea580c; }
-  .text-primary { color: #2176cc; }
+  .text-heading { color: #F2F2F2; font-weight: 700; }
+  .text-body { color: #E5E5E5; }
+  .text-muted { color: #999999; }
+  .text-accent { color: #FF8C00; }
+  .text-primary { color: #2E5BFF; }
 
   /* Logo Gradient Accent - Apply to key elements */
   .logo-gradient-text {
-    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
+    background: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -187,7 +187,7 @@
   }
 
   .logo-gradient-bg {
-    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
+    background: linear-gradient(135deg, #1A1A1B 0%, #2E5BFF 50%, #FF8C00 100%);
   }
 
   .logo-gradient-border {
@@ -196,7 +196,7 @@
 
   /* Button Utilities */
   .btn-primary {
-    background: linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%);
+    background: #FF8C00;
     color: #ffffff;
     padding: 12px 32px;
     border-radius: 8px;
@@ -206,90 +206,90 @@
     transition: all 0.2s;
   }
   .btn-primary:hover {
-    background: linear-gradient(135deg, #1a4db8 0%, #1c63b8 50%, #d94600 100%);
-    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+    background: #E67E00;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
   }
 
   .btn-secondary {
     background-color: transparent;
-    color: #2176cc;
+    color: #FF8C00;
     padding: 12px 24px;
     border-radius: 8px;
-    border: 2px solid #2176cc;
+    border: 2px solid #FF8C00;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
   }
   .btn-secondary:hover {
-    background-color: #eff6ff;
+    background-color: rgba(255, 140, 0, 0.1);
   }
 
   .btn-outline {
     background-color: transparent;
-    color: #4b5563;
+    color: #E5E5E5;
     padding: 8px 16px;
     border-radius: 9999px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #505050;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
   }
   .btn-outline:hover {
-    background-color: #fff7ed;
-    border-color: #ea580c;
+    background-color: rgba(255, 140, 0, 0.1);
+    border-color: #FF8C00;
   }
 
   /* Card Utilities */
   .card-base {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
+    background-color: #1A1A1B;
+    border: 1px solid #505050;
     border-radius: 12px;
     padding: 24px;
   }
   .card-base:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
     transition: box-shadow 0.2s;
   }
 
   .card-elevated {
-    background-color: #f9fafb;
+    background-color: #252525;
     border: none;
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   .card-featured {
-    background: linear-gradient(to bottom right, #fed7aa, #fff7ed);
-    border: 2px solid #fed7aa;
+    background: linear-gradient(to bottom right, #FF8C00, #E67E00);
+    border: 2px solid #FF8C00;
     border-radius: 16px;
     padding: 32px;
   }
 
   /* Input Utilities */
   .input-base {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
+    background-color: #252525;
+    border: 1px solid #505050;
     border-radius: 8px;
     padding: 12px 16px;
-    color: #111827;
+    color: #F2F2F2;
     font-size: 16px;
     transition: all 0.2s;
   }
   .input-base::placeholder {
-    color: #9ca3af;
+    color: #808080;
   }
   .input-base:focus {
     outline: none;
-    border-color: #ea580c;
-    box-shadow: 0 0 0 2px #fed7aa;
+    border-color: #FF8C00;
+    box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3);
   }
 
   /* Badge Utilities */
   .badge-pill {
-    background-color: #fed7aa;
-    color: #92400e;
+    background-color: rgba(255, 140, 0, 0.2);
+    color: #FF8C00;
     border-radius: 9999px;
     padding: 4px 12px;
     font-size: 12px;
@@ -298,8 +298,8 @@
   }
 
   .badge-success {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: rgba(46, 91, 255, 0.2);
+    color: #2E5BFF;
     border-radius: 6px;
     padding: 4px 8px;
     font-size: 12px;
@@ -324,11 +324,11 @@
     gap: 12px;
     font-size: 14px;
     font-weight: 500;
-    color: #374151;
+    color: #E5E5E5;
   }
 
   .trust-item svg {
-    color: #ea580c;
+    color: #FF8C00;
     flex-shrink: 0;
     width: 20px;
     height: 20px;
@@ -336,27 +336,27 @@
 
   /* Error/Status States */
   .error-message {
-    background-color: #fee2e2;
-    border: 1px solid #fecaca;
-    color: #991b1b;
+    background-color: rgba(255, 140, 0, 0.15);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    color: #FF8C00;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
   }
 
   .success-message {
-    background-color: #dcfce7;
-    border: 1px solid #bbf7d0;
-    color: #166534;
+    background-color: rgba(46, 91, 255, 0.15);
+    border: 1px solid rgba(46, 91, 255, 0.3);
+    color: #2E5BFF;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
   }
 
   .warning-message {
-    background-color: #fef3c7;
-    border: 1px solid #fde68a;
-    color: #92400e;
+    background-color: rgba(255, 140, 0, 0.15);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    color: #FF8C00;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
