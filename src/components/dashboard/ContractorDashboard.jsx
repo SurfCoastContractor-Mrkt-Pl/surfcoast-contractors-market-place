@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import MetricsPanel from './MetricsPanel';
 import { calculateContractorMetrics } from '@/lib/metricsCalculator';
 import OnboardingNudgeBanner from '@/components/contractor/OnboardingNudgeBanner';
+import ContractorAnalyticsMetrics from '@/components/contractor/ContractorAnalyticsMetrics';
+import LegendStatusBadge from '@/components/contractor/LegendStatusBadge';
 
 const SURFCOAST_WAVES = [
   { id: 'ripple', wave: 1, name: 'Ripple', label: 'SurfCoast Ripple', badgeTierRequired: 1, customersRequired: 1, color: '#64748b', emoji: '〰️', description: 'Your first step into the platform' },
@@ -125,15 +127,28 @@ export default function ContractorDashboard() {
   });
 
   const { data: allReviews = [] } = useQuery({
-    queryKey: ['contractor-reviews', user?.email],
-    queryFn: async () => {
-      if (!user?.email) return [];
-      const reviews = await base44.entities.Review.filter({
-        contractor_id: contractorProfile?.id
-      });
-      return reviews || [];
-    },
-    enabled: !!contractorProfile?.id,
+   queryKey: ['contractor-reviews', user?.email],
+   queryFn: async () => {
+     if (!user?.email) return [];
+     const reviews = await base44.entities.Review.filter({
+       contractor_id: contractorProfile?.id
+     });
+     return reviews || [];
+   },
+   enabled: !!contractorProfile?.id,
+  });
+
+  const { data: completedScopes = [] } = useQuery({
+   queryKey: ['contractor-completed-scopes', user?.email],
+   queryFn: async () => {
+     if (!user?.email) return [];
+     const scopes = await base44.entities.ScopeOfWork.filter({
+       contractor_email: user.email,
+       status: 'closed'
+     });
+     return scopes || [];
+   },
+   enabled: !!user?.email,
   });
 
   const metrics = useMemo(() => {
@@ -230,6 +245,25 @@ export default function ContractorDashboard() {
         {/* Onboarding Nudge (Issue #4) */}
         {contractorProfile && (
           <OnboardingNudgeBanner contractor={contractorProfile} />
+        )}
+
+        {/* Analytics Metrics */}
+        {contractorProfile && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Analytics</h2>
+            <ContractorAnalyticsMetrics 
+              contractorProfile={contractorProfile}
+              completedScopes={completedScopes}
+              allReviews={allReviews}
+            />
+          </div>
+        )}
+
+        {/* Legend Status Badge */}
+        {contractorProfile && (
+          <div className="mb-8">
+            <LegendStatusBadge jobsCompleted={completedScopes.length} />
+          </div>
         )}
 
         {/* Metrics Panel */}
