@@ -90,6 +90,8 @@ import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
 import ContractorMyDay from './pages/ContractorMyDay';
 import TradeLanding from './pages/TradeLanding';
+import ContractorTrialDashboard from './pages/ContractorTrialDashboard';
+import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -595,6 +597,16 @@ const AuthenticatedApp = () => {
       <Route path="/contractors/:slug" element={
         <LayoutWrapper currentPageName="TradeLanding">
           <TradeLanding />
+        </LayoutWrapper>
+      } />
+      <Route path="/contractor-trial" element={
+        <LayoutWrapper currentPageName="ContractorTrialDashboard">
+          <ContractorTrialDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/customer-trial" element={
+        <LayoutWrapper currentPageName="CustomerTrialDashboard">
+          <CustomerTrialDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
