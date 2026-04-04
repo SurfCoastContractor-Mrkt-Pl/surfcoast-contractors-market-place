@@ -95,6 +95,7 @@ import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
 import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
 import BillingHistory from './pages/BillingHistory';
 import SubscriptionSuccess from './pages/SubscriptionSuccess';
+import WAVEOSDetails from './pages/WAVEOSDetails';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -625,6 +626,11 @@ const AuthenticatedApp = () => {
       <Route path="/subscription-success" element={
         <LayoutWrapper currentPageName="SubscriptionSuccess">
           <SubscriptionSuccess />
+        </LayoutWrapper>
+      } />
+      <Route path="/wave-os-details" element={
+        <LayoutWrapper currentPageName="WAVEOSDetails">
+          <WAVEOSDetails />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

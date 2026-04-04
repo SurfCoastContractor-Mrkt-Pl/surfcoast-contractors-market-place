@@ -5,14 +5,6 @@ import { ArrowRight, CheckCircle2, Briefcase, Users, Zap } from "lucide-react";
 export default function Home() {
   const [spotsRemaining] = useState(77);
 
-  const waveOSTiers = [
-    { name: "Starter", price: "$19", jobs: "5+" },
-    { name: "Pro", price: "$39", jobs: "32+" },
-    { name: "Max", price: "$59", jobs: "64+" },
-    { name: "Premium", price: "$100", jobs: "100+" },
-    { name: "Residential Bundle", price: "$125", jobs: "100+" },
-  ];
-
   return (
     <div className="w-full bg-background min-h-screen">
 
@@ -35,13 +27,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ==================== 4 LARGE CIRCLES + SMALLER CIRCLES IN GAPS ==================== */}
+        {/* ==================== 4 LARGE CIRCLES IN ROW + 3 SMALL CIRCLES UNDERNEATH ==================== */}
         <div className="relative max-w-6xl mx-auto">
           {/* Container for circles */}
-          <div className="relative h-[600px] flex items-center justify-center">
+          <div className="relative h-[500px] flex items-center justify-center">
 
-            {/* Circle 1: Entrepreneurs (Top-Left) */}
-            <div className="absolute top-0 left-1/4 -translate-x-1/2 w-40 h-40 rounded-full bg-secondary/20 border-2 border-secondary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            {/* Top row: 4 large circles */}
+
+            {/* Circle 1: Entrepreneurs */}
+            <div className="absolute top-0 left-[12.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-secondary/20 border-2 border-secondary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Briefcase className="w-8 h-8 text-secondary mb-2" />
                 <span className="font-bold text-foreground text-sm">Entrepreneurs</span>
@@ -49,98 +43,57 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Circle 2: Clients & Consumers (Top-Right) */}
-            <div className="absolute top-0 right-1/4 translate-x-1/2 w-40 h-40 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            {/* Circle 2: Clients & Consumers */}
+            <div className="absolute top-0 left-[37.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Users className="w-8 h-8 text-primary mb-2" />
-                <span className="font-bold text-foreground text-sm">Clients & Consumers</span>
+                <span className="font-bold text-foreground text-sm">Clients &<br />Consumers</span>
                 <span className="text-xs text-muted-foreground">Enter →</span>
               </Link>
             </div>
 
-            {/* Circle 3: Mission Statement (Bottom-Left) */}
-            <div className="absolute bottom-0 left-1/4 -translate-x-1/2 w-40 h-40 rounded-full bg-muted border-2 border-border flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+            {/* Circle 3: Mission Statement */}
+            <div className="absolute top-0 left-[62.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-muted border-2 border-border flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-foreground text-sm mb-2">Mission</span>
-                <span className="text-xs text-muted-foreground leading-tight">Empowering independent workers to own their path</span>
+                <span className="text-xs text-muted-foreground leading-tight">Empowering independent workers</span>
               </div>
             </div>
 
-            {/* Circle 4: WAVE OS (Bottom-Right) */}
-            <div className="absolute bottom-0 right-1/4 translate-x-1/2 w-40 h-40 rounded-full bg-blue-100/30 border-2 border-blue-400 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
-              <Link to="/pricing" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
+            {/* Circle 4: WAVE OS */}
+            <div className="absolute top-0 left-[87.5%] -translate-x-1/2 w-40 h-40 rounded-full bg-blue-100/30 border-2 border-blue-400 flex items-center justify-center hover:shadow-2xl transition-all group cursor-pointer">
+              <Link to="/wave-os-details" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Zap className="w-8 h-8 text-blue-600 mb-2" />
                 <span className="font-bold text-foreground text-sm">WAVE OS</span>
-                <span className="text-xs text-muted-foreground">Tiers & Pricing →</span>
+                <span className="text-xs text-muted-foreground">Learn More →</span>
               </Link>
             </div>
 
-            {/* Small Circle 1: Why SurfCoast (Gap between Entrepreneurs & Clients) */}
-            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 border-2 border-orange-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            {/* Bottom row: 3 small circles (centered under gaps) */}
+
+            {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
+            <div className="absolute bottom-0 left-[25%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 border-2 border-orange-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-foreground text-xs">Why SurfCoast</span>
                 <span className="text-[10px] text-muted-foreground">Learn →</span>
               </Link>
             </div>
 
-            {/* Small Circle 2: Solo/Startup (Gap between Entrepreneurs & Mission) */}
-            <div className="absolute bottom-1/3 left-1/3 -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-50 border-2 border-secondary/40 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
+            <div className="absolute bottom-0 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-foreground text-xs">Solo/Startup</span>
                 <span className="text-[10px] text-muted-foreground">For you →</span>
               </div>
             </div>
 
-            {/* Small Circle 3: About Us (Gap between Clients & WAVE OS) */}
-            <div className="absolute bottom-1/3 right-1/3 translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
+            {/* Small Circle 3: About Us (under gap 3-4) */}
+            <div className="absolute bottom-0 left-[75%] -translate-x-1/2 w-28 h-28 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 border-2 border-slate-300 flex items-center justify-center hover:shadow-lg transition-all group cursor-pointer">
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
                 <span className="font-bold text-foreground text-xs">About Us</span>
                 <span className="text-[10px] text-muted-foreground">Our story →</span>
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== WAVE OS PRICING SECTION ==================== */}
-      <section className="py-20 px-4 lg:px-8 bg-muted border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">WAVE OS Tiers</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Optional software for contractors. Start free. Unlock tiers as you complete jobs. Licensed pros get instant access.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {waveOSTiers.map((tier, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border p-6 text-center hover:shadow-lg hover:border-primary transition-all">
-                <h3 className="font-bold text-foreground text-sm mb-2">{tier.name}</h3>
-                <div className="text-3xl font-extrabold text-primary mb-1">{tier.price}</div>
-                <p className="text-xs text-muted-foreground mb-4">/month</p>
-                <div className="bg-muted rounded px-3 py-2 mb-4 text-xs font-semibold text-foreground">
-                  {tier.jobs} jobs to unlock
-                </div>
-                <Link
-                  to="/pricing"
-                  className="text-xs font-bold text-primary hover:opacity-70 transition-opacity flex items-center justify-center gap-1"
-                >
-                  View details <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              <strong>For Licensed Professionals:</strong> Have a C-36, H.I.S. License, or equivalent credentials? Gain instant access to all WAVE OS tiers. Choose which to subscribe to and start immediately.
-            </p>
-            <Link
-              to="/pricing"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
-            >
-              Explore All Plans <ArrowRight className="w-5 h-5" />
-            </Link>
           </div>
         </div>
       </section>
