@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Users, Briefcase, Star, Eye } from 'lucide-react';
 
 export default function SocialProofStats() {
-  const [stats, setStats] = useState(null);
-
-  useEffect(() => {
-    base44.functions.invoke('getPlatformStats', {})
-      .then(res => setStats(res.data))
-      .catch(() => {}); // fail silently — stats are non-critical
-  }, []);
+  const { data: stats } = useQuery({
+    queryKey: ['platform-stats'],
+    queryFn: () => base44.functions.invoke('getPlatformStats', {}).then(res => res.data),
+    staleTime: 15 * 60 * 1000, // 15 min — stats don't change second-to-second
+    gcTime: 30 * 60 * 1000,
+  });
 
   const items = [
     {
