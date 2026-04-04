@@ -367,8 +367,8 @@ export default function BecomeContractor() {
         <div className="w-12 lg:w-14 h-12 lg:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
           <HardHat className="w-6 lg:w-7 h-6 lg:h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 className="text-2xl lg:text-5xl font-extrabold mb-2 lg:mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become a Tradesperson</h1>
-        <p className="text-sm lg:text-lg mb-4 lg:mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start taking jobs — free to join, get paid securely.</p>
+        <h1 className="text-2xl lg:text-5xl font-extrabold mb-2 lg:mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become an Entrepreneur</h1>
+        <p className="text-sm lg:text-lg mb-4 lg:mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start earning — free to join, get paid securely.</p>
         <div className="flex flex-wrap gap-4 justify-center">
           {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
             <span key={item} className="flex items-center gap-1.5 text-sm" style={{ color: designTokens.colors.gray[700] }}>
