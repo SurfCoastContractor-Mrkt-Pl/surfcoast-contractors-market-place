@@ -38,8 +38,8 @@ export default function Home() {
             <div className="absolute top-0 left-[18%] -translate-x-1/2 w-40 h-40 rounded-full flex items-center justify-center transition-all group cursor-pointer z-40" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <Link to="/BecomeContractor" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Briefcase className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Entrepreneurs</span>
-                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Enter →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Entrepreneurs</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Enter →</span>
               </Link>
             </div>
 
@@ -47,16 +47,16 @@ export default function Home() {
             <div className="absolute top-0 left-[40%] -translate-x-1/2 w-40 h-40 rounded-full flex items-center justify-center transition-all group cursor-pointer z-30" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <Link to="/CustomerSignup" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Users className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Clients &<br />Consumers</span>
-                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Enter →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Clients &<br />Consumers</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Enter →</span>
               </Link>
             </div>
 
             {/* Circle 3: Mission Statement */}
             <div className="absolute top-0 left-[60%] -translate-x-1/2 w-40 h-40 rounded-full flex items-center justify-center transition-all group cursor-pointer z-20" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-lg mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Mission</span>
-                <span className="text-sm text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Empowering independent workers</span>
+                <span className="font-bold text-black text-lg mb-2" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Mission</span>
+                <span className="text-sm text-black leading-tight" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Empowering independent workers</span>
               </div>
             </div>
 
@@ -64,8 +64,8 @@ export default function Home() {
             <div className="absolute top-0 left-[82%] -translate-x-1/2 w-40 h-40 rounded-full flex items-center justify-center transition-all group cursor-pointer z-10" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <Link to="/wave-os-details" className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 group-hover:scale-105 transition-transform">
                 <Zap className="w-8 h-8 text-black mb-2" />
-                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>WAVE OS</span>
-                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Learn More →</span>
+                <span className="font-bold text-black text-lg" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>WAVE OS</span>
+                <span className="text-sm text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Learn More →</span>
               </Link>
             </div>
 
@@ -74,24 +74,24 @@ export default function Home() {
             {/* Small Circle 1: Why SurfCoast (under gap 1-2) */}
             <div className="absolute bottom-16 left-[29%] -translate-x-1/2 w-28 h-28 rounded-full flex items-center justify-center transition-all group cursor-pointer z-40" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 25px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <Link to="/why-surfcoast" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Why SurfCoast</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Learn →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Why SurfCoast</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Learn →</span>
               </Link>
             </div>
 
             {/* Small Circle 2: Solo/Startup (under gap 2-3) */}
             <div className="absolute bottom-16 left-[50%] -translate-x-1/2 w-28 h-28 rounded-full flex items-center justify-center transition-all group cursor-pointer z-30" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 25px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Solo/Startup</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>For you →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Solo/Startup</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>For you →</span>
               </div>
             </div>
 
             {/* Small Circle 3: About Us (under gap 3-4) */}
             <div className="absolute bottom-16 left-[71%] -translate-x-1/2 w-28 h-28 rounded-full flex items-center justify-center transition-all group cursor-pointer z-20" style={{ backgroundColor: 'rgba(255, 251, 0, 0.75)', border: '2px solid rgba(255, 251, 0, 0.9)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 25px rgba(255, 251, 0, 0.8)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
               <Link to="/About" className="absolute inset-0 flex flex-col items-center justify-center text-center px-3 group-hover:scale-105 transition-transform">
-                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>About Us</span>
-                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 'bold', fontStyle: 'italic'}}>Our story →</span>
+                <span className="font-bold text-black text-sm" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>About Us</span>
+                <span className="text-xs text-black" style={{fontFamily: "'BankGothic MD BT', 'Courier Prime', monospace", fontWeight: 900, fontStyle: 'italic'}}>Our story →</span>
               </Link>
             </div>
           </div>
