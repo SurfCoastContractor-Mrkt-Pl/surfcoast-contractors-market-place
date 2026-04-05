@@ -5,8 +5,8 @@ const T = {
   bg: "#EBEBEC",
   card: "#fff",
   dark: "#1A1A1B",
-  sub: "#555",
-  muted: "#888",
+  sub: "#333",
+  muted: "#555",
   border: "#D0D0D2",
   amber: "#8C5E10",
   amberBg: "#F0E0C0",
@@ -59,7 +59,7 @@ function Logo() {
       >
         SurfCoast
       </span>
-      <div style={{ ...mono, fontSize: 8, color: "#999", letterSpacing: "0.18em", marginTop: 1 }}>
+      <div style={{ ...mono, fontSize: 8, color: "#555", letterSpacing: "0.18em", marginTop: 1 }}>
         MARKETPLACE
       </div>
     </div>
@@ -70,7 +70,7 @@ function Logo() {
 function TickerBar() {
   return (
     <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-      <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>founding_100 — 77 spots remaining · 1 year all-access free</span>
+      <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>founding_100 — 77 spots remaining · 1 year all-access free</span>
       <span style={{ ...mono, fontSize: 11, color: T.amber }}>California · Nationwide</span>
     </div>
   );
