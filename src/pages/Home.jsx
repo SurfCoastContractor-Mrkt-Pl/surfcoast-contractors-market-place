@@ -19,6 +19,20 @@ const cardStyle = {
   border: `0.5px solid ${T.border}`,
   borderRadius: 10,
   boxShadow: T.shadow,
+  transition: "box-shadow 0.2s ease",
+};
+
+const goldGlow = "3px 3px 0px #8C5E10, 0 0 18px 4px rgba(255, 180, 0, 0.35)";
+const goldGlowSm = "0 0 14px 3px rgba(255, 180, 0, 0.3)";
+
+const hoverGlow = {
+  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlow; },
+  onMouseLeave: (e) => { e.currentTarget.style.boxShadow = T.shadow; },
+};
+
+const hoverGlowSm = {
+  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlowSm; },
+  onMouseLeave: (e) => { e.currentTarget.style.boxShadow = "none"; },
 };
 
 const mono = { fontFamily: "monospace" };
@@ -143,7 +157,7 @@ function HeroPlatformCard() {
     <div style={{ borderLeft: `3px solid ${borderColor}`, paddingLeft: 12, marginBottom: 14 }}>
       <div style={{ ...mono, fontSize: 10, color: labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{labelText}</div>
       {tiles.map(({ text, tinted }) => (
-        <div key={text} style={{ background: tinted ? T.amberTint : T.bg, border: `0.5px solid ${tinted ? "#D9B88A" : T.border}`, borderRadius: 6, padding: "6px 10px", fontSize: 12, color: tinted ? T.amber : T.sub, marginBottom: 5, ...mono }}>
+        <div key={text} style={{ background: tinted ? T.amberTint : T.bg, border: `0.5px solid ${tinted ? "#D9B88A" : T.border}`, borderRadius: 6, padding: "6px 10px", fontSize: 12, color: tinted ? T.amber : T.sub, marginBottom: 5, ...mono, transition: "box-shadow 0.2s ease", cursor: "default" }} {...hoverGlowSm}>
           {text}
         </div>
       ))}
@@ -151,7 +165,7 @@ function HeroPlatformCard() {
   );
 
   return (
-    <div style={{ ...cardStyle, padding: 20, minWidth: 0 }}>
+    <div style={{ ...cardStyle, padding: 20, minWidth: 0 }} {...hoverGlow}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14, paddingBottom: 10, borderBottom: `1px solid ${T.border}` }}>
         <span style={{ ...mono, fontSize: 11, color: T.muted }}>surfcoast / platform_map</span>
         <span style={{ ...mono, fontSize: 11, color: T.amber }}>● live</span>
@@ -185,19 +199,19 @@ function HeroSection() {
           </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
             <Link to="/PostJob" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Post a Job — Free</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post a Job — Free</button>
             </Link>
             <Link to="/wave-os-details" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>What is WAVE OS?</button>
+              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>What is WAVE OS?</button>
             </Link>
             <Link to="/BecomeContractor" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Join as Contractor</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join as Contractor</button>
             </Link>
             <Link to="/MarketShopSignup" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Market Shop</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Market Shop</button>
             </Link>
           </div>
-          <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
+          <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             {[
               { amount: "$0", label: "To respond to leads", amber: true },
               { amount: "5%", label: "Facilitation fee (vendors)", amber: false },
@@ -265,7 +279,7 @@ const TAB_DATA = [
       return (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
           {roles.map((r) => (
-            <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }}>
+            <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{r.label}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
               <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
@@ -337,7 +351,7 @@ const TAB_DATA = [
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {slots.map((s) => (
-                <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center" }}>
+                <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
                   <div style={{ fontSize: 18, color: s.filled ? T.amber : "#CCC", marginBottom: 5 }}>{s.icon}</div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#AAA", marginBottom: 4 }}>{s.trade}</div>
                   <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#CCC" }}>{s.status}</div>
@@ -411,7 +425,7 @@ function IntegritySection() {
             { label: "TRIGGER_01 // 72HR_PHOTO_RULE", heading: "72-Hour Photo Rule", desc: "Contractors must upload after-photos within 72 hours of the agreed work date. Failure triggers an immediate account hold blocking all platform activity.", badge: "immediate account hold" },
             { label: "TRIGGER_02 // MUTUAL_RATINGS", heading: "Mandatory Mutual Ratings", desc: "Both parties must submit ratings at closeout. Non-compliant accounts are held until the rating is submitted.", badge: "hold: non-compliant party only" },
           ].map((c) => (
-            <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }}>
+            <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{c.heading}</h3>
               <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
@@ -420,7 +434,7 @@ function IntegritySection() {
           ))}
         </div>
 
-        <div style={{ ...cardStyle, padding: 18 }}>
+        <div style={{ ...cardStyle, padding: 18 }} {...hoverGlow}>
           <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>HOLD STATUS — FULL PLATFORM BLOCK</div>
           <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
         </div>
@@ -446,7 +460,7 @@ function LaunchEngineSection() {
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           {cards.map((c) => (
-            <div key={c.label} style={{ ...cardStyle, borderTop: `3px solid ${c.topBorder}`, padding: 20, flex: "1 1 200px" }}>
+            <div key={c.label} style={{ ...cardStyle, borderTop: `3px solid ${c.topBorder}`, padding: 20, flex: "1 1 200px" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 38, fontWeight: 700, color: c.numberColor, marginBottom: 4 }}>{c.number}</div>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>{c.label}</div>
               <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
