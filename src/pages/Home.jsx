@@ -198,8 +198,8 @@ function HeroSection() {
           <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
             {[
               { amount: "$0", label: "To respond to leads", amber: true },
-              { amount: "18%", label: "Facilitation fee only", amber: false },
-              { amount: "$19", label: "WAVE OS starts at", amber: true },
+              { amount: "5%", label: "Facilitation fee (vendors)", amber: false },
+              { amount: "18%", label: "Facilitation fee (contractors)", amber: true },
             ].map(({ amount, label, amber }, i) => (
               <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? `1px solid ${T.border}` : "none" }}>
                 <div style={{ ...mono, fontSize: 20, fontWeight: 700, color: amber ? T.amber : T.dark }}>{amount}</div>
