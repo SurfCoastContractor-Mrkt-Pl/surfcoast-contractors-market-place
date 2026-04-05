@@ -189,7 +189,7 @@ function HeroSection() {
               <button style={{ background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Post a Job — Free</button>
             </Link>
             <Link to="/wave-os-details" style={{ textDecoration: "none" }}>
-              <button style={{ background: T.amberBg, color: T.amber, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Explore WAVE OS</button>
+              <button style={{ background: T.amberBg, color: T.amber, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>What is WAVE OS?</button>
             </Link>
             <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
               <button style={{ background: "transparent", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Join as Contractor</button>
