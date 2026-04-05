@@ -203,7 +203,7 @@ export default function LayoutHeader({
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
                   createPageUrl={createPageUrl}
-                  contractorLinks={contractorLinks}
+                  entrepreneurLinks={entrepreneurLinks}
                   customerLinks={customerLinks}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
