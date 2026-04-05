@@ -195,7 +195,7 @@ function HeroSection() {
           <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
-          <p style={{ fontSize: 15, color: "#1A1A1B", lineHeight: 1.65, marginBottom: 26 }}>
+          <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26 }}>
             SurfCoast Marketplace is the Community Hub. Where you can hire and support your neighbors trying to build something from the ground up. A place where you don't have to wonder if you will be able to find someone to give you a helping hand. By supporting each other, we take small steps in building our communities and develop relationships through time. Not just in my neighborhood or yours. But we help communities nationwide.
           </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
@@ -220,7 +220,7 @@ function HeroSection() {
             ].map(({ amount, label, amber }, i) => (
               <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? `1px solid ${T.border}` : "none" }}>
                 <div style={{ ...mono, fontSize: 20, fontWeight: 700, color: amber ? T.amber : T.dark }}>{amount}</div>
-                <div style={{ fontSize: 11, color: T.sub, marginTop: 3 }}>{label}</div>
+                <div style={{ fontSize: 11, color: T.dark, marginTop: 3 }}>{label}</div>
               </div>
             ))}
           </div>
@@ -283,7 +283,7 @@ const TAB_DATA = [
             <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{r.label}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
-              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
               <Link to={r.cta.to} style={{ textDecoration: "none" }}>
                 <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>{r.cta.label} →</button>
@@ -302,14 +302,14 @@ const TAB_DATA = [
         <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.bg}`, transition: "box-shadow 0.2s ease", borderRadius: 4 }} {...hoverGlowSm}>
           <div>
             <div style={{ fontSize: 13, color: T.dark, fontWeight: 600 }}>{label}</div>
-            <div style={{ fontSize: 11, color: T.muted }}>{note}</div>
+            <div style={{ fontSize: 11, color: "#444" }}>{note}</div>
           </div>
           <span style={{ ...mono, fontSize: 14, fontWeight: 700, color: amberVal ? T.amber : T.dark }}>{value}</span>
         </div>
       );
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.sub, marginBottom: 24, lineHeight: 1.6 }}>We never charge a contractor to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6 }}>We never charge a contractor to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             <div style={{ flex: "1 1 240px", paddingRight: 28 }}>
               <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em" }}>FOR CONTRACTORS</div>
@@ -344,11 +344,11 @@ const TAB_DATA = [
       ];
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.sub, marginBottom: 24, lineHeight: 1.6 }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6 }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
           <div style={{ background: T.bg, borderRadius: 10, padding: 20, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4 }}>Kitchen Renovation — Full Project</div>
-              <div style={{ ...mono, fontSize: 11, color: T.muted }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
+              <div style={{ ...mono, fontSize: 11, color: "#444" }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {slots.map((s) => (
@@ -421,7 +421,7 @@ function IntegritySection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8 }}>100% compliance. Automated.</h2>
-        <p style={{ fontSize: 14, color: T.sub, marginBottom: 28, lineHeight: 1.6 }}>Non-compliance triggers immediate account holds with no manual review required.</p>
+        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6 }}>Non-compliance triggers immediate account holds with no manual review required.</p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
           {[
@@ -431,7 +431,7 @@ function IntegritySection() {
             <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{c.heading}</h3>
-              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
               <span style={{ ...mono, fontSize: 10, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "3px 8px" }}>{c.badge}</span>
             </div>
           ))}
@@ -439,7 +439,7 @@ function IntegritySection() {
 
         <div style={{ ...cardStyle, padding: 18 }} {...hoverGlow}>
           <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>HOLD STATUS — FULL PLATFORM BLOCK</div>
-          <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
+          <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
         </div>
       </div>
     </section>
@@ -459,14 +459,14 @@ function LaunchEngineSection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// LAUNCH ENGINE</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8 }}>Three mechanics. One flywheel.</h2>
-        <p style={{ fontSize: 14, color: T.sub, marginBottom: 28, lineHeight: 1.6 }}>Each mechanic feeds the next. Early movers win.</p>
+        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6 }}>Each mechanic feeds the next. Early movers win.</p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           {cards.map((c) => (
             <div key={c.label} style={{ ...cardStyle, borderTop: `3px solid ${c.topBorder}`, padding: 20, flex: "1 1 200px" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 38, fontWeight: 700, color: c.numberColor, marginBottom: 4 }}>{c.number}</div>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>{c.label}</div>
-              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
               {tag(c.tag, c.amber)}
             </div>
           ))}
