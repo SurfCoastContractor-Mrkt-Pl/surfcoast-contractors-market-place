@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Briefcase, Users, Zap } from "lucide-react";
+import { CheckCircle2, Briefcase, Users, Zap } from "lucide-react";
 
 export default function Home() {
   const [spotsRemaining] = useState(77);
