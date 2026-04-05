@@ -177,7 +177,7 @@ function HeroSection() {
     <section style={{ background: "#fff", padding: "56px 24px 44px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// PLATFORM · CALIFORNIA · NATIONWIDE</div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
           <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
