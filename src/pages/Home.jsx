@@ -86,7 +86,6 @@ function Navbar() {
 
       <div style={{ display: "flex", gap: 20, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
         {[
-          { label: "Market Shop", to: "/MarketShopSignup" },
           { label: "About Us", to: "/About" },
         ].map(({ label, to }) => (
           <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: T.sub, fontWeight: 500 }}>
@@ -193,6 +192,9 @@ function HeroSection() {
             </Link>
             <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
               <button style={{ background: "transparent", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Join as Contractor</button>
+            </Link>
+            <Link to="/MarketShopSignup" style={{ textDecoration: "none" }}>
+              <button style={{ background: "transparent", color: T.amber, border: `1px solid ${T.amber}`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Market Shop</button>
             </Link>
           </div>
           <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
