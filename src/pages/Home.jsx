@@ -182,7 +182,7 @@ function HeroSection() {
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
           <p style={{ fontSize: 15, color: "#444", lineHeight: 1.65, marginBottom: 26 }}>
-            SurfCoast Marketplace is the venue. WAVE OS is the software. Together they form the complete operating system for the modern sole-proprietor.
+            SurfCoast Marketplace is the Community Hub. Where you can hire and support your neighbors trying to build something from the ground up. A place where you don't have to wonder if you will be able to find someone to give you a helping hand. By supporting each other, we take small steps in building our communities and develop relationships through time. Not just in my neighborhood or yours. But we help communities nationwide.
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
             <Link to="/PostJob" style={{ textDecoration: "none" }}>
