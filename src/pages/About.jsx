@@ -209,6 +209,27 @@ export default function About() {
       <WhatMakesUsDifferent />
       <TransparentRoadmap />
 
+      {/* Why SurfCoast Link Section */}
+      <section style={{ background: '#f5f5f6', borderTop: '1px solid #e0e0e2', padding: '48px 24px' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#888', letterSpacing: '0.1em', marginBottom: 12 }}>// PLATFORM PHILOSOPHY</p>
+          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, color: '#1a1a1b', marginBottom: 12 }}>Why SurfCoast?</h2>
+          <p style={{ fontSize: 14, color: '#555', lineHeight: 1.7, marginBottom: 24, maxWidth: 560, margin: '0 auto 24px' }}>
+            Learn how our toll-road model, fee structure, and compliance systems were designed to protect workers — not extract from them.
+          </p>
+          <Link
+            to="/WhySurfCoast"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: '#1a1a1b', color: '#fff', textDecoration: 'none',
+              borderRadius: 7, padding: '10px 22px', fontSize: 13, fontWeight: 700,
+            }}
+          >
+            Read Why SurfCoast <ChevronRight style={{ width: 15, height: 15 }} />
+          </Link>
+        </div>
+      </section>
+
       {/* Offerings Section */}
       <section style={{ background: 'linear-gradient(160deg, #0a1628 0%, #0d2240 50%, #112d52 100%)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
