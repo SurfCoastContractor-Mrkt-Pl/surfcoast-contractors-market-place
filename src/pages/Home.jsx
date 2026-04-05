@@ -161,8 +161,8 @@ function HeroPlatformCard() {
         { text: "Market Shop — Vendors · Consumers", tinted: false },
       ])}
       {block(T.amber, T.amber, "WAVE OS — STANDALONE SOFTWARE BRAND", [
-        { text: "WAVE Service — Starter → Premium", tinted: true },
-        { text: "WAVEshop OS — Vendor software", tinted: true },
+        { text: "WAVE TIERS, WAVEshop OS", tinted: true },
+        { text: "What is WAVE OS?", tinted: true },
       ])}
       <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono }}>
         Logic gate: consumers cannot access service side
