@@ -5,13 +5,13 @@ const T = {
   bg: "#EBEBEC",
   card: "#fff",
   dark: "#1A1A1B",
-  sub: "#333",
-  muted: "#555",
+  sub: "#1A1A1B",
+  muted: "#333",
   border: "#D0D0D2",
-  amber: "#8C5E10",
+  amber: "#7A4E08",
   amberBg: "#F0E0C0",
   amberTint: "#FBF5EC",
-  shadow: "3px 3px 0px #8C5E10",
+  shadow: "3px 3px 0px #7A4E08",
 };
 
 const cardStyle = {
@@ -74,7 +74,7 @@ function Logo() {
       >
         SurfCoast
       </span>
-      <div style={{ ...mono, fontSize: 8, color: "#555", letterSpacing: "0.18em", marginTop: 1 }}>
+      <div style={{ ...mono, fontSize: 8, color: "#222", letterSpacing: "0.18em", marginTop: 1 }}>
         MARKETPLACE
       </div>
     </div>
@@ -195,7 +195,7 @@ function HeroSection() {
           <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
-          <p style={{ fontSize: 15, color: "#444", lineHeight: 1.65, marginBottom: 26 }}>
+          <p style={{ fontSize: 15, color: "#1A1A1B", lineHeight: 1.65, marginBottom: 26 }}>
             SurfCoast Marketplace is the Community Hub. Where you can hire and support your neighbors trying to build something from the ground up. A place where you don't have to wonder if you will be able to find someone to give you a helping hand. By supporting each other, we take small steps in building our communities and develop relationships through time. Not just in my neighborhood or yours. But we help communities nationwide.
           </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
@@ -260,7 +260,7 @@ const TAB_DATA = [
         },
         {
           topBorder: T.border,
-          labelColor: "#777",
+          labelColor: "#444",
           label: "MARKET SHOP · VENDOR",
           heading: "The Seller",
           desc: "Claim a booth or space at a farmers market or swap meet. Upgrade to WAVEshop OS for live inventory management.",
@@ -269,7 +269,7 @@ const TAB_DATA = [
         },
         {
           topBorder: T.border,
-          labelColor: "#777",
+          labelColor: "#444",
           label: "MARKET SHOP · CONSUMER",
           heading: "The Shopper",
           desc: "Browse and shop from local vendors. Consumer accounts are scoped to Market Shop only — no service side access.",
@@ -283,7 +283,7 @@ const TAB_DATA = [
             <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{r.label}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
+              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
               <Link to={r.cta.to} style={{ textDecoration: "none" }}>
                 <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>{r.cta.label} →</button>
@@ -353,9 +353,9 @@ const TAB_DATA = [
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {slots.map((s) => (
                 <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
-                  <div style={{ fontSize: 18, color: s.filled ? T.amber : "#CCC", marginBottom: 5 }}>{s.icon}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#AAA", marginBottom: 4 }}>{s.trade}</div>
-                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#CCC" }}>{s.status}</div>
+                  <div style={{ fontSize: 18, color: s.filled ? T.amber : "#777", marginBottom: 5 }}>{s.icon}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#555", marginBottom: 4 }}>{s.trade}</div>
+                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#666" }}>{s.status}</div>
                 </div>
               ))}
             </div>
@@ -431,7 +431,7 @@ function IntegritySection() {
             <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{c.heading}</h3>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
+              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
               <span style={{ ...mono, fontSize: 10, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "3px 8px" }}>{c.badge}</span>
             </div>
           ))}
@@ -439,7 +439,7 @@ function IntegritySection() {
 
         <div style={{ ...cardStyle, padding: 18 }} {...hoverGlow}>
           <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>HOLD STATUS — FULL PLATFORM BLOCK</div>
-          <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
+          <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
         </div>
       </div>
     </section>
@@ -466,7 +466,7 @@ function LaunchEngineSection() {
             <div key={c.label} style={{ ...cardStyle, borderTop: `3px solid ${c.topBorder}`, padding: 20, flex: "1 1 200px" }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 38, fontWeight: 700, color: c.numberColor, marginBottom: 4 }}>{c.number}</div>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>{c.label}</div>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
+              <p style={{ fontSize: 13, color: "#1A1A1B", lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
               {tag(c.tag, c.amber)}
             </div>
           ))}
@@ -483,14 +483,14 @@ function CTABar() {
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
         <div>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 6 }}>Ready to run your business on WAVE OS?</h2>
-          <p style={{ fontSize: 14, color: "#666" }}>Free to start. No lead fees. California-born. Nationwide.</p>
+          <p style={{ fontSize: 14, color: "#bbb" }}>Free to start. No lead fees. California-born. Nationwide.</p>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
             <button style={{ background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join the Founding 100</button>
           </Link>
           <Link to="/PostJob" style={{ textDecoration: "none" }}>
-            <button style={{ background: "transparent", color: "#888", border: `1px solid #444`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post an RFP</button>
+            <button style={{ background: "transparent", color: "#ccc", border: `1px solid #666`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post an RFP</button>
           </Link>
         </div>
       </div>
@@ -502,10 +502,10 @@ function CTABar() {
 function Footer() {
   const col = (header, links) => (
     <div style={{ flex: "1 1 150px" }}>
-      <div style={{ ...mono, fontSize: 10, color: "#888", marginBottom: 14, letterSpacing: "0.1em" }}>{header}</div>
+      <div style={{ ...mono, fontSize: 10, color: "#bbb", marginBottom: 14, letterSpacing: "0.1em" }}>{header}</div>
       {links.map(({ label, to }) => (
         <div key={label} style={{ marginBottom: 8 }}>
-          <Link to={to} style={{ fontSize: 13, color: "#555", textDecoration: "none" }}>{label}</Link>
+          <Link to={to} style={{ fontSize: 13, color: "#aaa", textDecoration: "none" }}>{label}</Link>
         </div>
       ))}
     </div>
@@ -517,8 +517,8 @@ function Footer() {
         <div style={{ display: "flex", gap: 40, flexWrap: "wrap", marginBottom: 36 }}>
           <div style={{ flex: "1 1 200px" }}>
             <Logo />
-            <div style={{ ...mono, fontSize: 9, color: "#555", letterSpacing: "0.14em", marginTop: 4, marginBottom: 10 }}>MARKETPLACE · WAVE OS</div>
-            <p style={{ fontSize: 12, color: "#555", lineHeight: 1.6, maxWidth: 210 }}>The complete operating system for California's independent workforce.</p>
+            <div style={{ ...mono, fontSize: 9, color: "#bbb", letterSpacing: "0.14em", marginTop: 4, marginBottom: 10 }}>MARKETPLACE · WAVE OS</div>
+            <p style={{ fontSize: 12, color: "#aaa", lineHeight: 1.6, maxWidth: 210 }}>The complete operating system for California's independent workforce.</p>
           </div>
           {col("PLATFORM", [
             { label: "Marketplace", to: "/FindContractors" },
@@ -536,8 +536,8 @@ function Footer() {
           ])}
         </div>
         <div style={{ borderTop: `1px solid #2a2a2b`, paddingTop: 16, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-          <span style={{ ...mono, fontSize: 11, color: "#555" }}>© {new Date().getFullYear()} SurfCoast. All rights reserved.</span>
-          <span style={{ ...mono, fontSize: 11, color: "#555" }}>toll-road model · not a lead farm</span>
+          <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>© {new Date().getFullYear()} SurfCoast. All rights reserved.</span>
+          <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>toll-road model · not a lead farm</span>
         </div>
       </div>
     </footer>
