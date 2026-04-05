@@ -78,32 +78,62 @@ function TickerBar() {
 
 // ── Navbar ─────────────────────────────────────────────────────
 function Navbar() {
+  const [enterOpen, setEnterOpen] = useState(false);
+
   return (
     <nav style={{ background: "#fff", borderBottom: `1px solid ${T.border}`, padding: "12px 24px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
       <Link to="/" style={{ textDecoration: "none", marginRight: 20 }}><Logo /></Link>
 
       <div style={{ display: "flex", gap: 20, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
         {[
-          { label: "Market Shop", to: "/MarketShopSignup", amber: false },
-          { label: "About Us", to: "/About", amber: false },
-          { label: "Pricing", to: "/Pricing", amber: false },
-        ].map(({ label, to, amber }) => (
-          <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: amber ? T.amber : T.sub, fontWeight: 500 }}>
+          { label: "Market Shop", to: "/MarketShopSignup" },
+          { label: "About Us", to: "/About" },
+          { label: "Pricing", to: "/Pricing" },
+        ].map(({ label, to }) => (
+          <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: T.sub, fontWeight: 500 }}>
             {label}
           </Link>
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <Link to="/Dashboard" style={{ textDecoration: "none" }}>
-          <button style={{ background: "transparent", border: `1px solid ${T.border}`, borderRadius: 6, padding: "7px 14px", fontSize: 13, color: T.dark, cursor: "pointer" }}>Sign in</button>
-        </Link>
-        <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-          <button style={{ background: T.amberBg, border: "none", borderRadius: 6, padding: "7px 14px", fontSize: 13, color: T.amber, fontWeight: 700, cursor: "pointer" }}>I'm a Pro</button>
-        </Link>
-        <Link to="/PostJob" style={{ textDecoration: "none" }}>
-          <button style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 14px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer" }}>Need a Pro</button>
-        </Link>
+      <div style={{ position: "relative" }}>
+        <button
+          onClick={() => setEnterOpen((v) => !v)}
+          style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+        >
+          Enter
+          <span style={{ fontSize: 9, opacity: 0.7 }}>▼</span>
+        </button>
+
+        {enterOpen && (
+          <>
+            {/* backdrop */}
+            <div onClick={() => setEnterOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 10 }} />
+            <div style={{ position: "absolute", right: 0, top: "calc(100% + 6px)", background: "#fff", border: `1px solid ${T.border}`, borderRadius: 8, boxShadow: "0 4px 16px rgba(0,0,0,0.10)", minWidth: 170, zIndex: 20, overflow: "hidden" }}>
+              <Link to="/Dashboard" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
+                <div style={{ padding: "11px 18px", fontSize: 13, color: T.dark, cursor: "pointer", borderBottom: `1px solid ${T.border}` }}
+                  onMouseEnter={e => e.currentTarget.style.background = T.bg}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                  Sign In
+                </div>
+              </Link>
+              <Link to="/BecomeContractor" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
+                <div style={{ padding: "11px 18px", fontSize: 13, color: T.amber, fontWeight: 700, cursor: "pointer", borderBottom: `1px solid ${T.border}`, background: T.amberTint }}
+                  onMouseEnter={e => e.currentTarget.style.background = T.amberBg}
+                  onMouseLeave={e => e.currentTarget.style.background = T.amberTint}>
+                  I'm a Pro
+                </div>
+              </Link>
+              <Link to="/PostJob" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
+                <div style={{ padding: "11px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", background: T.dark }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#333"}
+                  onMouseLeave={e => e.currentTarget.style.background = T.dark}>
+                  Need a Pro
+                </div>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </nav>
   );
