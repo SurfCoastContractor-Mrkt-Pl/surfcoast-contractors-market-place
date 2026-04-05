@@ -168,11 +168,7 @@ const AuthenticatedApp = () => {
     <>
     <PageGradientApplier />
     <Routes>
-      <Route path="/" element={
-        <LayoutWrapper currentPageName="Home">
-          <Home />
-        </LayoutWrapper>
-      } />
+      <Route path="/" element={<Home />} />
       <Route path="/About" element={
         <LayoutWrapper currentPageName="About">
           <About />
