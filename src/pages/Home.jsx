@@ -502,10 +502,10 @@ function CTABar() {
 function Footer() {
   const col = (header, links) => (
     <div style={{ flex: "1 1 150px" }}>
-      <div style={{ ...mono, fontSize: 10, color: "#bbb", marginBottom: 14, letterSpacing: "0.1em" }}>{header}</div>
+      <div style={{ ...mono, fontSize: 10, color: "#ddd", marginBottom: 14, letterSpacing: "0.1em" }}>{header}</div>
       {links.map(({ label, to }) => (
         <div key={label} style={{ marginBottom: 8 }}>
-          <Link to={to} style={{ fontSize: 13, color: "#aaa", textDecoration: "none" }}>{label}</Link>
+          <Link to={to} style={{ fontSize: 13, color: "#ccc", textDecoration: "none" }}>{label}</Link>
         </div>
       ))}
     </div>
@@ -517,8 +517,8 @@ function Footer() {
         <div style={{ display: "flex", gap: 40, flexWrap: "wrap", marginBottom: 36 }}>
           <div style={{ flex: "1 1 200px" }}>
             <Logo />
-            <div style={{ ...mono, fontSize: 9, color: "#bbb", letterSpacing: "0.14em", marginTop: 4, marginBottom: 10 }}>MARKETPLACE · WAVE OS</div>
-            <p style={{ fontSize: 12, color: "#aaa", lineHeight: 1.6, maxWidth: 210 }}>The complete operating system for California's independent workforce.</p>
+            <div style={{ ...mono, fontSize: 9, color: "#ccc", letterSpacing: "0.14em", marginTop: 4, marginBottom: 10 }}>MARKETPLACE · WAVE OS</div>
+            <p style={{ fontSize: 12, color: "#ccc", lineHeight: 1.6, maxWidth: 210 }}>The complete operating system for California's independent workforce.</p>
           </div>
           {col("PLATFORM", [
             { label: "Marketplace", to: "/FindContractors" },
@@ -536,8 +536,8 @@ function Footer() {
           ])}
         </div>
         <div style={{ borderTop: `1px solid #2a2a2b`, paddingTop: 16, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-          <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>© {new Date().getFullYear()} SurfCoast. All rights reserved.</span>
-          <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>toll-road model · not a lead farm</span>
+          <span style={{ ...mono, fontSize: 11, color: "#ccc" }}>© {new Date().getFullYear()} SurfCoast. All rights reserved.</span>
+          <span style={{ ...mono, fontSize: 11, color: "#ccc" }}>toll-road model · not a lead farm</span>
         </div>
       </div>
     </footer>
