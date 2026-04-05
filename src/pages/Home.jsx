@@ -24,6 +24,7 @@ const cardStyle = {
 
 const goldGlow = "3px 3px 0px #8C5E10, 0 0 18px 4px rgba(255, 180, 0, 0.35)";
 const goldGlowSm = "0 0 14px 3px rgba(255, 180, 0, 0.3)";
+const purpleBlueGlow = "0 0 18px 5px rgba(100, 80, 220, 0.45)";
 
 const hoverGlow = {
   onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlow; },
@@ -199,16 +200,16 @@ function HeroSection() {
           </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
             <Link to="/PostJob" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post a Job — Free</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Post a Job — Free</button>
             </Link>
             <Link to="/wave-os-details" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>What is WAVE OS?</button>
+              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>What is WAVE OS?</button>
             </Link>
             <Link to="/BecomeContractor" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join as Contractor</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Join as Contractor</button>
             </Link>
             <Link to="/MarketShopSignup" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Market Shop</button>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Market Shop</button>
             </Link>
           </div>
           <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
