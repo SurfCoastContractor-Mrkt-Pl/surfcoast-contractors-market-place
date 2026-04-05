@@ -183,18 +183,18 @@ function HeroSection() {
           <p style={{ fontSize: 15, color: "#444", lineHeight: 1.65, marginBottom: 26 }}>
             SurfCoast Marketplace is the Community Hub. Where you can hire and support your neighbors trying to build something from the ground up. A place where you don't have to wonder if you will be able to find someone to give you a helping hand. By supporting each other, we take small steps in building our communities and develop relationships through time. Not just in my neighborhood or yours. But we help communities nationwide.
           </p>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
-            <Link to="/PostJob" style={{ textDecoration: "none" }}>
-              <button style={{ background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Post a Job — Free</button>
+          <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
+            <Link to="/PostJob" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Post a Job — Free</button>
             </Link>
-            <Link to="/wave-os-details" style={{ textDecoration: "none" }}>
-              <button style={{ background: T.amberBg, color: T.amber, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>What is WAVE OS?</button>
+            <Link to="/wave-os-details" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>What is WAVE OS?</button>
             </Link>
-            <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-              <button style={{ background: "transparent", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Join as Contractor</button>
+            <Link to="/BecomeContractor" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Join as Contractor</button>
             </Link>
-            <Link to="/MarketShopSignup" style={{ textDecoration: "none" }}>
-              <button style={{ background: "transparent", color: T.amber, border: `1px solid ${T.amber}`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Market Shop</button>
+            <Link to="/MarketShopSignup" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>Market Shop</button>
             </Link>
           </div>
           <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
