@@ -111,7 +111,7 @@ function Navbar() {
       <div style={{ position: "relative" }}>
         <button
           onClick={() => setEnterOpen((v) => !v)}
-          style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+          style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, transition: "box-shadow 0.2s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
         >
           Enter
           <span style={{ fontSize: 9, opacity: 0.7 }}>▼</span>
@@ -178,7 +178,7 @@ function HeroPlatformCard() {
         { text: "WAVE TIERS, WAVEshop OS", tinted: true },
         { text: "What is WAVE OS?", tinted: true },
       ])}
-      <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono }}>
+      <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
         Logic gate: consumers cannot access service side
       </div>
     </div>
@@ -285,7 +285,7 @@ const TAB_DATA = [
               <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
               <Link to={r.cta.to} style={{ textDecoration: "none" }}>
-                <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer" }}>{r.cta.label} →</button>
+                <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>{r.cta.label} →</button>
               </Link>
             </div>
           ))}
@@ -298,7 +298,7 @@ const TAB_DATA = [
     label: "How Fees Work",
     content: () => {
       const row = (label, note, value, amberVal) => (
-        <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.bg}` }}>
+        <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.bg}`, transition: "box-shadow 0.2s ease", borderRadius: 4 }} {...hoverGlowSm}>
           <div>
             <div style={{ fontSize: 13, color: T.dark, fontWeight: 600 }}>{label}</div>
             <div style={{ fontSize: 11, color: T.muted }}>{note}</div>
@@ -344,7 +344,7 @@ const TAB_DATA = [
       return (
         <div>
           <p style={{ fontSize: 14, color: T.sub, marginBottom: 24, lineHeight: 1.6 }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
-          <div style={{ background: T.bg, borderRadius: 10, padding: 20 }}>
+          <div style={{ background: T.bg, borderRadius: 10, padding: 20, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4 }}>Kitchen Renovation — Full Project</div>
               <div style={{ ...mono, fontSize: 11, color: T.muted }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
@@ -361,7 +361,7 @@ const TAB_DATA = [
           </div>
           <div style={{ marginTop: 16 }}>
             <Link to="/PostJob" style={{ textDecoration: "none" }}>
-              <button style={{ ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "8px 16px", cursor: "pointer" }}>Post a multi-trade job →</button>
+              <button style={{ ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "8px 16px", cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post a multi-trade job →</button>
             </Link>
           </div>
         </div>
@@ -386,6 +386,8 @@ function TabbedSection() {
             <button
               key={t.id}
               onClick={() => setActive(t.id)}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
               style={{
                 ...mono,
                 fontSize: 12,
@@ -396,7 +398,7 @@ function TabbedSection() {
                 color: active === t.id ? T.amber : T.muted,
                 fontWeight: active === t.id ? 700 : 400,
                 cursor: "pointer",
-                transition: "background 0.15s",
+                transition: "background 0.15s, box-shadow 0.2s ease",
               }}
             >
               {t.label}
@@ -484,10 +486,10 @@ function CTABar() {
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-            <button style={{ background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Join the Founding 100</button>
+            <button style={{ background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join the Founding 100</button>
           </Link>
           <Link to="/PostJob" style={{ textDecoration: "none" }}>
-            <button style={{ background: "transparent", color: "#888", border: `1px solid #444`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>Post an RFP</button>
+            <button style={{ background: "transparent", color: "#888", border: `1px solid #444`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post an RFP</button>
           </Link>
         </div>
       </div>
