@@ -88,7 +88,7 @@ function Navbar() {
         {[
           { label: "Market Shop", to: "/MarketShopSignup" },
           { label: "About Us", to: "/About" },
-          { label: "Pricing", to: "/Pricing" },
+          { label: "Why SurfCoast", to: "/WhySurfCoast" },
         ].map(({ label, to }) => (
           <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: T.sub, fontWeight: 500 }}>
             {label}
