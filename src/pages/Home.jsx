@@ -85,6 +85,7 @@ function Navbar() {
       <div style={{ display: "flex", gap: 20, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
         {[
           { label: "Market Shop", to: "/MarketShopSignup", amber: false },
+          { label: "About Us", to: "/About", amber: false },
           { label: "Pricing", to: "/Pricing", amber: false },
         ].map(({ label, to, amber }) => (
           <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: amber ? T.amber : T.sub, fontWeight: 500 }}>
@@ -98,7 +99,10 @@ function Navbar() {
           <button style={{ background: "transparent", border: `1px solid ${T.border}`, borderRadius: 6, padding: "7px 14px", fontSize: 13, color: T.dark, cursor: "pointer" }}>Sign in</button>
         </Link>
         <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-          <button style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 14px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer" }}>Get started free</button>
+          <button style={{ background: T.amberBg, border: "none", borderRadius: 6, padding: "7px 14px", fontSize: 13, color: T.amber, fontWeight: 700, cursor: "pointer" }}>I'm a Pro</button>
+        </Link>
+        <Link to="/PostJob" style={{ textDecoration: "none" }}>
+          <button style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 14px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer" }}>Need a Pro</button>
         </Link>
       </div>
     </nav>
