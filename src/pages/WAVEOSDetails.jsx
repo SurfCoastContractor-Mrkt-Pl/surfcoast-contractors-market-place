@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 export default function WAVEOSDetails() {
   const tiers = [
     { name: "Starter", price: "$19", jobs: "5+", features: ["5 active jobs", "Basic messaging", "Job scheduling", "Mobile app access"] },
-    { name: "Pro", price: "$39", jobs: "32+", features: ["Unlimited jobs", "CRM tools", "Invoice generation", "Priority placement"] },
-    { name: "Max", price: "$59", jobs: "64+", features: ["Everything in Pro", "GPS tracking", "Field ops suite", "Document hub"] },
+    { name: "Pro", price: "$39", jobs: "6+", features: ["Unlimited jobs", "CRM tools", "Invoice generation", "Priority placement"] },
+    { name: "Max", price: "$59", jobs: "50+", features: ["Everything in Pro", "GPS tracking", "Field ops suite", "Document hub"] },
     { name: "Premium", price: "$100", jobs: "100+", features: ["Everything in Max", "AI scheduling", "HubSpot sync", "Advanced tools"] },
     { name: "Residential Bundle", price: "$125", jobs: "100+", features: ["Everything in Premium", "Unlimited messaging", "Residential Wave tools", "No additional fees"] },
   ];

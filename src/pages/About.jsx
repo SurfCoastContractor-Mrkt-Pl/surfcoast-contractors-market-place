@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import ShareAboutButton from '@/components/about/ShareAboutButton';
-import WhatMakesUsDifferent from '@/components/about/WhatMakesUsDifferent';
-import TransparentRoadmap from '@/components/about/TransparentRoadmap';
 
 const T = {
   dark: '#1A1A1B',

@@ -43,14 +43,14 @@ const STAND_APART = [
   },
   {
     title: "Pricing built for solo operators",
-    body: "No enterprise minimums, no per-seat fees. WAVE FO Starter is just $19/month — every tier is priced for the independent worker, not a 10-person office."
+    body: "No enterprise minimums, no per-seat fees. WAVE OS Starter is just $19/month — every tier is priced for the independent worker, not a 10-person office."
   },
   {
     title: "Works for every worker type",
     body: "Trades, booth operators, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche."
   },
   {
-    title: "WAVEShop FO has no commissions when subscribed",
+    title: "WAVEshop OS has no commissions when subscribed",
     body: "Choose your model: pay 5% per sale OR subscribe to $20/month to keep 100% of earnings. No commissions with subscription."
   },
   {
@@ -99,7 +99,7 @@ export default function WhySurfCoast() {
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
             "SurfCoast Marketplace is a two-sided platform connecting people who need work done with the people who do it. Whether you're a homeowner looking for a licensed plumber or a booth operator setting up at the local farmers market — SurfCoast is where that connection happens.",
-            "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEShop FO for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
+            "There are two tracks: the Contractor Marketplace for trades and residential services, and WAVEshop OS for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
             "Every profile on SurfCoast is free. You never pay to be found. You only upgrade when you need more."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: i === 2 ? "hsl(210, 75%, 38%)" : "hsl(215, 20%, 20%)", fontWeight: i === 2 ? "700" : "400", margin: 0, borderLeft: i === 2 ? "4px solid hsl(25, 95%, 53%)" : "none", paddingLeft: i === 2 ? "20px" : "0" }}>{p}</p>
@@ -135,14 +135,14 @@ export default function WhySurfCoast() {
         </div>
       </section>
 
-      {/* WAVE FO EXPLANATION */}
+      {/* WAVE OS EXPLANATION */}
       <section style={{ maxWidth: "860px", margin: "0 auto", padding: "80px 24px" }}>
-        <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "24px", letterSpacing: "-1px" }}>What Is WAVE FO (Field Operations)?</h2>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", marginBottom: "24px", letterSpacing: "-1px" }}>What Is WAVE OS?</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {[
-            "WAVE FO (Field Operations) is SurfCoast's field operations ecosystem — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract.",
-            "WAVEShop FO is the same ecosystem applied to market booth operators — farmers market sellers, flea market booth holders, and swap meet space operators. It gives in-person sellers the same professional tools: inventory, scheduling, client management, and analytics, all under one flat monthly rate.",
-            "You start with a free Basic Profile. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
+            "WAVE OS is SurfCoast's optional business management software — a tiered set of tools built specifically for contractors and independent workers. It starts free and grows with you. Every tier unlocks more — better scheduling, smarter invoicing, deeper analytics, compliance tools — without locking you into a contract. WAVE OS starts at $19 per month and unlocks based on jobs completed on the platform.",
+            "WAVEshop OS is the same ecosystem applied to market booth operators — farmers market sellers, flea market booth holders, and swap meet space operators. It gives in-person sellers professional tools: inventory, scheduling, client management, and analytics, all under a flat $35 per month.",
+            "You start with a free Basic Profile. The free Basic Dashboard handles the essentials for everyone. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "#374151", margin: 0 }}>{p}</p>
           ))}
