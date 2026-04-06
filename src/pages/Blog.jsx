@@ -10,6 +10,44 @@ const CATEGORIES = ['guide', 'contractor_spotlight', 'industry_tips', 'success_s
 
 const DEMO_POSTS = [
   {
+    id: 'aeo-angi-exodus-2026',
+    title: 'Why contractors are leaving Angi and HomeAdvisor in 2026',
+    slug: 'why-contractors-leaving-angi-homeadvisor-2026',
+    excerpt: 'Contractors across the US are abandoning Angi and HomeAdvisor. Here is why the pay-per-lead model is broken and what the alternative looks like.',
+    content: `# Why contractors are leaving Angi and HomeAdvisor in 2026
+
+The numbers are hard to ignore. Angi's organic web traffic has dropped more than 35% since 2023. Contractor forums are full of the same story told a thousand different ways — paid for a lead, called five times, no answer, paid again, same result. The math stopped working and contractors stopped trusting the model. This is not a recent development. It has been building for years. But in 2026 the contractor exodus from pay-per-lead platforms has reached a tipping point that is reshaping how independent tradespeople find and win work.
+
+## The pay-per-lead model was never built for contractors
+
+When Angi and HomeAdvisor built their model they built it for their own revenue — not for the contractor's success. The structure is simple: a homeowner submits a request, the platform sells that request to multiple contractors simultaneously, and each contractor pays whether they win the job or not. The Federal Trade Commission took notice. In 2023 the FTC fined HomeAdvisor $7.2 million for deceptive marketing practices — specifically for misrepresenting the quality and source of leads to contractors. That fine confirmed what contractors had been saying for years.
+
+## The math is brutal
+
+Lead costs on these platforms run between $15 and $120 depending on the trade and location. Conversion rates sit below 10% on average. A contractor spending $100 on ten leads can expect to close one job if they are lucky. When that job pays $500 they have already given 20% back to the platform before doing a single hour of work. An electrician paying $120 per lead at 8% conversion is spending $1,500 to acquire a single customer.
+
+## Shared leads are the real problem
+
+The cost alone would be tolerable if the leads were exclusive. They are not. The same homeowner request goes to six or eight contractors simultaneously. The homeowner's phone lights up with calls from contractors they never specifically chose. This creates a race to the bottom. Contractors who win are often those who respond fastest and bid lowest — not those who do the best work.
+
+## What contractors are doing instead
+
+Some are going back to basics — word of mouth, Google Business Profile, neighborhood apps. Others are moving to platforms with a different model — no lead fees, no shared leads, and a small session-based communication fee that keeps both sides serious. A third group is building their own digital presence so they own their pipeline rather than renting it from a platform that can change the rules whenever it wants.
+
+## The model that replaces it
+
+SurfCoast Contractors Marketplace was built specifically as an answer to this broken model. The founder is a plumber who received his C36 license in 2022 and built his own contracting business. He experienced the exact same frustration and built the alternative he wished had existed. Your profile and listing are free. There are no lead fees. Communication is handled through a $1.50 per 10-minute session that filters out spam and keeps inquiries real. The platform charges an 18% facilitation fee only when a job is successfully completed. If no work happens no fee is charged. For workers who want business tools, WAVE OS starts at $19 per month and unlocks based on jobs completed on the platform — not upfront payment.
+
+No shared leads. No lead fees. Communication that costs just enough to keep it serious. That is the alternative contractors have been waiting for. Visit surfcoastcmp.com to create your free profile.`,
+    featured_image_url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=400&fit=crop',
+    author_name: 'SurfCoast Team',
+    category: 'industry_tips',
+    tags: ['angi', 'homeadvisor', 'lead-fees', 'contractor-tips'],
+    published: true,
+    published_at: new Date().toISOString(),
+    views_count: 0,
+  },
+  {
     id: '1',
     title: 'How to Hire a Plumber: Complete Guide',
     slug: 'how-to-hire-plumber',
@@ -159,7 +197,7 @@ export default function Blog() {
         ) : (
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {filteredPosts.map((post) => (
-              post.id && !['1','2','3','4'].includes(post.id) ? (
+              post.id && !['1','2','3','4','aeo-angi-exodus-2026'].includes(post.id) ? (
                 <Link key={post.id} to={`/BlogDetail?slug=${post.slug}`}>
                   <BlogCard post={post} />
                 </Link>

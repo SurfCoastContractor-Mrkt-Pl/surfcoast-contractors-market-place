@@ -146,8 +146,12 @@ const WAVESHOP_FO_FEATURES = [
 
 const FAQ_ITEMS = [
   {
+    q: "How much does SurfCoast Contractors Marketplace cost?",
+    a: "SurfCoast Contractors Marketplace has a transparent performance-based pricing model. For all workers: Profile creation and listing are free forever. An 18% facilitation fee applies only when a job is completed and paid through the platform. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Receiving and responding to a client's proposal request is always free for the worker. For clients: Browsing worker profiles is free. Sending a request for proposal (RFP) to a specific worker costs $1.75 per proposal request. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. For WAVE OS subscribers: Starter $19 per month unlocks at 5 completed jobs. Pro $39 per month and Max $59 per month unlock progressively. Premium $100 per month unlocks at 100 completed jobs and requires a verified professional license as a licensed Sole Proprietor. The Residential Bundle at $125 per month is WAVE OS Premium plus unlimited messaging — same license requirement. For Market Shop vendors: $20 per month flat fee which waives the 5% facilitation fee entirely, or 5% per sale with no monthly fee. WAVEshop OS is $35 per month for advanced inventory, analytics, and market hub tools. For everyone: The first 100 signups receive one full year of free access. After the Founding 100 spots are taken, new signups receive a free 14-day trial."
+  },
+  {
     q: "Is the Basic Profile really free forever?",
-    a: "Yes. No credit card, no trial, no expiration. Your profile stays live and searchable as long as you want it."
+    a: "Yes. No credit card, no trial, no expiration. Your profile and listing stay live and searchable as long as you want them. Communication sessions cost $1.50 per 10 minutes when you are ready to connect with a potential client — or $50 per month for unlimited messaging."
   },
   {
     q: "Can I cancel anytime?",
@@ -158,16 +162,16 @@ const FAQ_ITEMS = [
     a: "No. Never. You pay the monthly rate and nothing else."
   },
   {
-    q: "What's the difference between WAVE OS and WAVEShop FO?",
-    a: "WAVE OS is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEShop FO is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEShop FO is a premium $35/month add-on for vendors who want advanced booth management features."
+    q: "What's the difference between WAVE OS and WAVEshop OS?",
+    a: "WAVE OS is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEshop OS is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEshop OS is a premium $35/month add-on for vendors who want advanced booth management features."
   },
   {
     q: "What's the facilitation fee structure for MarketShop vendors?",
-    a: "MarketShop vendors can choose between two payment models: pay a 5% facilitation fee per sale, or subscribe to the $20/month plan to waive the fee entirely and keep 100% of your sales. WAVEShop FO is an optional premium program at $35/month that includes advanced tools and waives all facilitation fees."
+    a: "MarketShop vendors can choose between two payment models: pay a 5% facilitation fee per sale, or subscribe to the $20/month plan to waive the fee entirely and keep 100% of your sales. WAVEshop OS is an optional premium program at $35/month that includes advanced tools."
   },
   {
     q: "Do I need a license to join?",
-    a: "No. Unlicensed workers can join on a Basic Profile. Licensed contractors unlock additional compliance and document features in higher tiers."
+    a: "No. Unlicensed workers can join on a Basic Profile. Motivated individuals as young as 13 are welcome. Licensed contractors unlock additional compliance and document features in higher tiers."
   },
   {
     q: "What is the 18% facilitation fee?",
@@ -175,7 +179,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is messaging free?",
-    a: "No. Client messaging is a paid feature. Sessions are available for $1.50 each, or you can add the $50/month Unlimited Communication plan. The WAVE Residential Bundle includes unlimited messaging at no extra charge."
+    a: "No. Communication is not free — profile and listing are free. Sessions are available for $1.50 per 10 minutes each, or you can add the $50/month Unlimited Communication plan. The WAVE Residential Bundle includes unlimited messaging at no extra charge."
   },
   {
     q: "Can I upgrade or downgrade my plan?",
@@ -213,7 +217,7 @@ export default function Pricing() {
           Month-to-month. No setup fees. No annual contracts. Cancel anytime.
         </p>
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
-          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE OS</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
+          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE OS</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEshop OS</strong> for market booth operators
         </p>
         <Link to="/BecomeContractor" style={{ display: "inline-block", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", color: "#ffffff", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none", transition: "all 0.2s" }}>
           Get Started Free →
@@ -248,11 +252,11 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* WAVE FO PLANS */}
+      {/* WAVE OS PLANS */}
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVE OS (Field Operations) Plans</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVE OS Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>For contractors, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
         </div>
 
@@ -438,11 +442,11 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* WAVESHOP FO - WAVE FO TIER */}
+      {/* WAVESHOP OS - MARKET TRACK */}
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#a855f7", marginBottom: "10px" }}>MarketShop Track — Optional Premium Program</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVEShop FO for the MarketShop</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVEshop OS for the MarketShop</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "580px", margin: "0 auto" }}>Optional advanced program for MarketShop vendors with professional tools, enhanced analytics, and streamlined booth management.</p>
         </div>
 
@@ -556,7 +560,7 @@ export default function Pricing() {
           {/* Vendors (WAVEShop FO for the MarketShop) */}
           <div style={{ background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
-              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#a855f7" }}>WAVEShop FO for the MarketShop</h3>
+              <h3 style={{ fontSize: "15px", fontWeight: "800", margin: "0 0 8px", color: "#a855f7" }}>WAVEshop OS for the MarketShop</h3>
               <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>Optional premium program for MarketShop vendors</p>
             </div>
             <div style={{ background: "rgba(168,85,247,0.1)", borderRadius: "8px", padding: "12px", marginBottom: "8px" }}>

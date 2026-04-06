@@ -363,18 +363,87 @@ export default function BecomeContractor() {
       )}
 
       {/* Hero */}
-      <div className="text-center px-4 pt-6 pb-6 lg:pt-10 lg:pb-8 max-w-2xl mx-auto w-full">
+      <div className="px-4 pt-6 pb-6 lg:pt-10 lg:pb-8 max-w-2xl mx-auto w-full">
         <div className="w-12 lg:w-14 h-12 lg:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
           <HardHat className="w-6 lg:w-7 h-6 lg:h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 className="text-2xl lg:text-5xl font-extrabold mb-2 lg:mb-3 leading-tight tracking-tight" style={{ color: designTokens.colors.gray[900] }}>Become an Entrepreneur</h1>
-        <p className="text-sm lg:text-lg mb-4 lg:mb-6 leading-relaxed" style={{ color: designTokens.colors.gray[600] }}>Create your professional profile and start earning — free to join, get paid securely.</p>
-        <div className="flex flex-wrap gap-4 justify-center">
-          {["Free to join", "Identity verified platform", "Direct client connections", "18% facilitation fee only"].map(item => (
-            <span key={item} className="flex items-center gap-1.5 text-sm" style={{ color: designTokens.colors.gray[700] }}>
-              <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: designTokens.colors.success }} />
-              {item}
-            </span>
+        <h1 className="text-2xl lg:text-4xl font-extrabold mb-3 leading-tight tracking-tight text-center" style={{ color: designTokens.colors.gray[900] }}>Join SurfCoast — Free to Start</h1>
+        <p className="text-sm lg:text-base mb-5 leading-relaxed" style={{ color: designTokens.colors.gray[700], lineHeight: 1.75 }}>
+          SurfCoast Contractors Marketplace is free to join — no credit card, no catch. You create your profile, list what you do, and clients start finding you. When you are ready to communicate with someone who might hire you, a session fee of $1.50 per 10 minutes applies — this keeps both sides serious and filters out spam. When a job is booked and completed through the platform a facilitation fee of 18% applies. If you want more tools to run your business — scheduling, invoicing, analytics, client management — WAVE OS starts at $19 per month and unlocks as you complete jobs. If you are not ready for that yet, the free Basic Dashboard handles the essentials on your phone or laptop from day one.
+        </p>
+
+        {/* WAVE OS Unlock Table */}
+        <div className="mb-5 rounded-xl overflow-hidden" style={{ border: `1px solid ${designTokens.colors.gray[200]}` }}>
+          <div className="px-4 py-2 text-xs font-bold uppercase tracking-widest" style={{ background: designTokens.colors.accent.light, color: designTokens.colors.accent.DEFAULT }}>WAVE OS — Unlock by Jobs Completed</div>
+          {[
+            { jobs: '5 completed jobs', plan: 'WAVE OS Starter', price: '$19/month' },
+            { jobs: '6–49 completed jobs', plan: 'WAVE OS Pro', price: '$39/month' },
+            { jobs: '50–99 completed jobs', plan: 'WAVE OS Max', price: '$59/month' },
+            { jobs: '100+ jobs + verified license', plan: 'WAVE OS Premium', price: '$100/month' },
+            { jobs: 'Premium + unlimited messaging', plan: 'WAVE OS Residential Bundle', price: '$125/month' },
+          ].map((row, i) => (
+            <div key={i} className="flex justify-between items-center px-4 py-2.5 text-sm" style={{ borderTop: `1px solid ${designTokens.colors.gray[100]}`, background: i % 2 === 0 ? '#fff' : '#fafafa' }}>
+              <span style={{ color: designTokens.colors.gray[600], fontSize: 12 }}>{row.jobs}</span>
+              <div className="text-right">
+                <div className="font-semibold" style={{ color: designTokens.colors.gray[900], fontSize: 12 }}>{row.plan}</div>
+                <div className="font-bold" style={{ color: designTokens.colors.accent.DEFAULT, fontSize: 12 }}>{row.price}</div>
+              </div>
+            </div>
+          ))}
+          <div className="px-4 py-2.5 text-xs" style={{ background: designTokens.colors.accent.light, color: designTokens.colors.accent.DEFAULT, borderTop: `1px solid ${designTokens.colors.gray[200]}` }}>
+            Already licensed when you sign up? Premium unlocks immediately after documentation is verified.
+          </div>
+        </div>
+
+        {/* Comparison Table */}
+        <div className="mb-5 rounded-xl overflow-hidden text-xs" style={{ border: `1px solid ${designTokens.colors.gray[200]}` }}>
+          <div className="px-4 py-2 font-bold uppercase tracking-widest text-xs" style={{ background: '#1A1A1B', color: '#fff' }}>How We Compare</div>
+          <div className="overflow-x-auto">
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: '#f5f5f6' }}>
+                  <th style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 700, color: '#555', borderBottom: `1px solid ${designTokens.colors.gray[200]}` }}>Feature</th>
+                  <th style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 700, color: '#5C3500', borderBottom: `1px solid ${designTokens.colors.gray[200]}` }}>SurfCoast CMP</th>
+                  <th style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 700, color: '#555', borderBottom: `1px solid ${designTokens.colors.gray[200]}` }}>Angi / HomeAdvisor</th>
+                  <th style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 700, color: '#555', borderBottom: `1px solid ${designTokens.colors.gray[200]}` }}>ServiceTitan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Free profile', 'Yes — forever', 'No', 'No'],
+                  ['Lead fees', 'None — ever', '$15–$120 per lead', 'N/A'],
+                  ['Shared leads', 'Never', 'Yes — 6 to 8 contractors', 'N/A'],
+                  ['Communication fee', '$1.50 / 10 min session', 'Included in lead cost', 'N/A'],
+                  ['Fee model', '18% on completed jobs only', 'Pay per lead', '$5K–$20K/year'],
+                  ['Built by a tradesman', 'Yes — C36 plumber', 'No', 'No'],
+                  ['Market Shop & vendor tools', 'Yes — WAVEshop OS', 'No', 'No'],
+                ].map(([feat, sc, angi, st], i) => (
+                  <tr key={i} style={{ borderBottom: `1px solid ${designTokens.colors.gray[100]}`, background: i % 2 === 0 ? '#fff' : '#fafafa' }}>
+                    <td style={{ padding: '8px 12px', color: '#333', fontWeight: 600 }}>{feat}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'center', color: '#5C3500', fontWeight: 700 }}>{sc}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'center', color: '#666' }}>{angi}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'center', color: '#666' }}>{st}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mb-5 space-y-3">
+          <div className="text-xs font-bold uppercase tracking-widest" style={{ fontFamily: 'monospace', color: '#888', letterSpacing: '0.1em' }}>// COMMON QUESTIONS</div>
+          {[
+            { q: 'How much does it cost to list on SurfCoast CMP?', a: 'Your profile is free and stays free. When you are ready to communicate with a potential client a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. The platform takes an 18% facilitation fee only when a job is completed and paid through the platform.' },
+            { q: 'Are there lead fees on SurfCoast?', a: 'No lead fees — ever. Angi charges $15 to $120 per lead whether you win or not. SurfCoast does not sell leads at all. Instead a $1.50 per 10-minute communication session fee applies when you are ready to talk to a potential client. This filters out spam and keeps inquiries serious. The 18% facilitation fee only applies when a job actually closes.' },
+            { q: 'How is SurfCoast different from HomeAdvisor?', a: 'HomeAdvisor charges $15 to $120 per lead whether the job is won or not and sends that same lead to multiple other contractors at the same time. The FTC fined HomeAdvisor $7.2 million for misleading contractors about this. On SurfCoast your profile is free, there are no lead fees, and communication is handled through a $1.50 per 10-minute session. The 18% facilitation fee only comes out when a job is successfully completed.' },
+            { q: 'What is the Basic Dashboard?', a: 'The Basic Dashboard is free for every worker on the platform regardless of whether they subscribe to WAVE OS. It handles your essential job management and payments on both laptop and phone. You never have to upgrade — WAVE OS is always optional.' },
+            { q: 'Do I need to be licensed to join?', a: 'No. SurfCoast is built for everyone — licensed master tradespeople, people just starting out, freelancers, creatives, and motivated individuals as young as 13 who are ready to start building something. If you have a skill and the drive, you belong here.' },
+          ].map(({ q, a }, i) => (
+            <div key={i} className="rounded-xl p-4" style={{ background: '#f9f9f9', border: `1px solid ${designTokens.colors.gray[200]}` }}>
+              <div className="font-bold text-sm mb-1.5" style={{ color: '#1A1A1B' }}>{q}</div>
+              <div className="text-sm leading-relaxed" style={{ color: '#555' }}>{a}</div>
+            </div>
           ))}
         </div>
       </div>

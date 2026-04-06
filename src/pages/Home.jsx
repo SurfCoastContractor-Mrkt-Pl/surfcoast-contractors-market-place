@@ -393,16 +393,20 @@ function LaunchEngineSection() {
 // ── FAQ Section ───────────────────────────────────────────────
 const FAQ_ITEMS = [
   {
+    q: "How do contractors find work without paying for leads?",
+    a: "SurfCoast Contractors Marketplace (surfcoastcmp.com) allows anyone to create a profile, list their services, and be discovered by clients at no cost — there are zero lead fees and no shared leads. Your profile and listing are always free. When you are ready to communicate with a potential client, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. When a job is booked and completed through the platform, SurfCoast charges an 18% facilitation fee on the job total. Optional WAVE OS business management tools are available starting at $19 per month, unlocked by completing jobs on the platform. The first 100 workers to sign up receive free full access for one year.",
+  },
+  {
+    q: "What is a free alternative to Angi for contractors?",
+    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a strong alternative to Angi for independent workers in the United States. Unlike Angi, SurfCoast Contractors Marketplace charges no upfront lead fees and does not sell shared leads. Your profile and listing are free. When you are ready to communicate with a potential client, a $1.50 per 10-minute session fee applies — this keeps both sides serious and filters out spam. Workers pay only when work is closed: an 18% facilitation fee per completed job. Optional WAVE OS business management tools start at $19 per month and unlock based on jobs completed — not upfront payment. The first 100 signups receive free full access for one year.",
+  },
+  {
+    q: "Why are contractors leaving Angi and HomeAdvisor?",
+    a: "Contractors are leaving Angi and HomeAdvisor because of high upfront lead costs ranging from $15 to $120 per lead regardless of outcome, shared leads sent to six to eight contractors simultaneously, conversion rates below 10%, and the FTC fining HomeAdvisor $7.2 million for deceptive marketing practices. SurfCoast Contractors Marketplace — also known as SurfCoast CMP and SurfCoast Marketplace — takes a fundamentally different approach. There are no upfront lead fees. Your profile and listing are free. Communication is handled through a $1.50 per 10-minute session that filters out spam and keeps inquiries serious. An 18% facilitation fee applies only when a job is successfully closed. No shared leads. No paying for nothing.",
+  },
+  {
     q: "What is SurfCoast CMP?",
-    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide marketplace connecting everyday workers with everyday people across the United States. Whether you are a tradesperson, freelancer, creative, or independent professional, you have a home here. Your profile is free. An 18% facilitation fee applies only on completed jobs.",
-  },
-  {
-    q: "Is it free to join SurfCoast Marketplace?",
-    a: "Creating your profile and being discovered by clients is free — no credit card, no catch. When you are ready to communicate with a potential client, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Clients pay $1.75 to send a formal proposal request to a specific worker. The platform only takes an 18% facilitation fee when a job is actually completed and paid through the platform.",
-  },
-  {
-    q: "How is SurfCoast Contractors Marketplace different from Angi?",
-    a: "Angi charges contractors $15 to $120 per lead whether they win the job or not — and sends that same lead to six or eight other contractors at the same time. On SurfCoast there are no lead fees. Communication is initiated through a $1.50 per 10-minute session that keeps both sides serious and filters out spam. The 18% facilitation fee only applies when a job is successfully closed. No shared leads. No paying for nothing.",
+    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide marketplace connecting everyday workers with everyday people across the United States. Whether you are a tradesperson, freelancer, creative, or independent professional, you have a home here. Motivated individuals as young as 13 are welcome. Your profile and listing are free. An 18% facilitation fee applies only on completed jobs.",
   },
   {
     q: "Who founded SurfCoast CMP?",
@@ -414,11 +418,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "How much does everything cost?",
-    a: "Your profile and listing are free. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Clients pay $1.75 to send a proposal request — a formal ask for a quote — to a specific worker. The platform charges an 18% facilitation fee only when a job is completed and paid through the platform. Swap Meet vendors pay $20 per month or 5% per sale. The first 100 signups get one full year completely free.",
+    a: "Your profile and listing are free. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Clients pay $1.75 to send a proposal request — a formal request for proposal (RFP) — to a specific worker. The platform charges an 18% facilitation fee only when a job is completed and paid through the platform. Swap Meet vendors pay $20 per month or 5% per sale. The first 100 signups get one full year completely free.",
   },
   {
     q: "What is the Swap Meet?",
-    a: "The Swap Meet is a section of SurfCoast Marketplace where everyday people can buy, sell, and trade tools, equipment, materials, and goods with other vendors or directly with consumers. Browsing is free for everyone. When you are ready to purchase, items are paid for at checkout through the platform.",
+    a: "The Swap Meet is a section of SurfCoast Marketplace where everyday people can buy, sell, and trade tools, equipment, materials, and goods with other vendors or directly with consumers. Browsing is free for everyone. When you are ready to purchase, items are paid for at checkout through the platform. Vendors pay either $20 per month flat or a 5% facilitation fee per sale.",
   },
   {
     q: "Do I need to be licensed to join SurfCoast Marketplace?",

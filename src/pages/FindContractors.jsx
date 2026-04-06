@@ -138,6 +138,26 @@ export default function FindContractors() {
         </div>
       </div>
 
+      {/* AEO FAQ */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-0">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [{
+            "@type": "Question",
+            "name": "How do I find a verified worker without using Angi?",
+            "acceptedAnswer": { "@type": "Answer", "text": "SurfCoast Marketplace (surfcoastcmp.com) is a nationwide marketplace where everyday people can browse verified workers by trade and location at no cost. Browsing profiles is always free and requires no account. When you are ready to communicate with a specific worker, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Sending a formal request for proposal (RFP) to a specific worker costs $1.75 per proposal request — the worker responds at no charge. Every profile on SurfCoast shows verified credentials, real client reviews, portfolio photos, and availability." }
+          }]
+        })}} />
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3" style={{ fontFamily: 'monospace', letterSpacing: '0.1em' }}>// FREQUENTLY ASKED</p>
+          <h2 className="text-lg font-bold text-slate-900 mb-3">How do I find a verified worker without using Angi?</h2>
+          <p className="text-sm text-slate-700 leading-relaxed">
+            SurfCoast Marketplace (surfcoastcmp.com) is a nationwide marketplace where everyday people can browse verified workers by trade and location at no cost. Browsing profiles is always free and requires no account. When you are ready to communicate with a specific worker, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Sending a formal request for proposal (RFP) to a specific worker costs $1.75 per proposal request — the worker responds at no charge. Every profile on SurfCoast shows verified credentials, real client reviews, portfolio photos, and availability.
+          </p>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
          {/* Saved Searches */}
          {userEmail && (
