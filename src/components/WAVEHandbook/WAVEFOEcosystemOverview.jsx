@@ -4,15 +4,15 @@ export default function WAVEFOEcosystemOverview() {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-4">WAVE FO Ecosystem Overview</h3>
+        <h3 className="text-2xl font-bold text-slate-900 mb-4">WAVE OS Ecosystem Overview</h3>
         <p className="text-slate-700 leading-relaxed mb-4">
-          The WAVE FO ecosystem is designed to support independent professionals on the SurfCoast platform. It comprises two main systems: <strong>WAVE FO</strong> for contractors managing client projects, and <strong>WAVEshop FO</strong> for vendors handling in-person sales.
+          The WAVE OS ecosystem is designed to support independent professionals on the SurfCoast platform. It comprises two main systems: <strong>WAVE OS</strong> for contractors managing client projects, and <strong>WAVEshop FO</strong> for vendors handling in-person sales.
         </p>
       </div>
 
       {/* WAVE FO Section */}
       <div>
-        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE FO (Contractor System)</h4>
+        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE OS (Contractor System)</h4>
         <p className="text-slate-700 mb-4">
           This system is exclusively for contractors who source projects from <code className="bg-slate-100 px-2 py-1 rounded">SurfCoastcmp.com</code> client postings.
         </p>
@@ -63,9 +63,9 @@ export default function WAVEFOEcosystemOverview() {
         </div>
 
         <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <h5 className="font-semibold text-slate-900 mb-2">WAVE FO Summary</h5>
+          <h5 className="font-semibold text-slate-900 mb-2">WAVE OS Summary</h5>
           <p className="text-slate-700 text-sm">
-            This system is an integrated operating platform for independent contractors. It provides a structured environment for contractors to accept and manage field-based jobs solely from the SurfCoastcmp.com platform. Its tiered subscription model offers a progressive suite of features that evolve with contractor experience. All jobs processed through WAVE FO are subject to an <strong>18% facilitation fee</strong>. Access is contingent upon an active subscription.
+            This system is an integrated operating platform for independent contractors. It provides a structured environment for contractors to accept and manage field-based jobs solely from the SurfCoastcmp.com platform. Its tiered subscription model offers a progressive suite of features that evolve with contractor experience. All jobs processed through WAVE OS are subject to an <strong>18% facilitation fee</strong>. Access is contingent upon an active subscription.
           </p>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function WAVEFOEcosystemOverview() {
         <h4 className="text-xl font-bold text-slate-900 mb-4">Key Differences at a Glance</h4>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h5 className="font-semibold text-slate-900 mb-2">WAVE FO</h5>
+            <h5 className="font-semibold text-slate-900 mb-2">WAVE OS</h5>
             <ul className="text-slate-700 text-sm space-y-2 list-disc list-inside">
               <li>Contractor-focused platform</li>
               <li>Sources jobs from SurfCoastcmp.com</li>

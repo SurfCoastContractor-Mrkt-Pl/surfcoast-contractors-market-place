@@ -4,7 +4,7 @@ import { ShieldCheck, DollarSign, Lightbulb, Gem } from 'lucide-react';
 export default function AboutWAVEFO() {
   return (
     <div className="space-y-8 p-4 md:p-8">
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">About WAVE FO</h2>
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">About WAVE OS</h2>
       
       <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
         At SurfCoast, we understand the challenges independent contractors face. You're not just a skilled professional; you're a business owner, a project manager, a client liaison, and often, your own accountant. Many tools on the market address one or two aspects of your work, leaving you juggling multiple apps, drowning in paperwork, and struggling to prove your professionalism.
@@ -16,7 +16,7 @@ export default function AboutWAVEFO() {
           <div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Built for Trust & Compliance</h3>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Unlike generic platforms, WAVE FO is engineered with robust identity and license verification processes. We proactively support you in maintaining compliance with state-specific regulations and even minor labor laws, giving your clients peace of mind and elevating your professional standing. Your detailed credentials, from HIS licenses to insurance bonds, are organized and verifiable.
+              Unlike generic platforms, WAVE OS is engineered with robust identity and license verification processes. We proactively support you in maintaining compliance with state-specific regulations and even minor labor laws, giving your clients peace of mind and elevating your professional standing. Your detailed credentials, from HIS licenses to insurance bonds, are organized and verifiable.
             </p>
           </div>
         </div>
@@ -34,7 +34,7 @@ export default function AboutWAVEFO() {
           <div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Your Business, Integrated</h3>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Competitors often provide piecemeal solutions. WAVE FO offers a comprehensive hub for your entire business. From smart scheduling and route optimization to client communication (including SMS), project milestones, and even inventory management—we bring all your critical tools together, so you can focus on the work you love.
+              Competitors often provide piecemeal solutions. WAVE OS offers a comprehensive hub for your entire business. From smart scheduling and route optimization to client communication (including SMS), project milestones, and even inventory management—we bring all your critical tools together, so you can focus on the work you love.
             </p>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function AboutWAVEFO() {
       </div>
 
       <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed pt-4">
-        WAVE FO is more than just software—it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace.
+        WAVE OS is more than just software—it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace.
       </p>
     </div>
   );

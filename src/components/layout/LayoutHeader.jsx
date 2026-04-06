@@ -316,7 +316,7 @@ function AccountDropdown({
           <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Entrepreneur Portal</Item>
           <Item path={createPageUrl('ContractorBusinessHub')} icon={Settings}>Business Hub</Item>
           <Item path={createPageUrl('ContractorFinancialDashboard')} icon={BarChart2}>Financial Dashboard</Item>
-          <Item path="/WaveFo" icon={BarChart2}>Wave FO</Item>
+          <Item path="/WaveFo" icon={BarChart2}>Wave OS</Item>
         </>
       ) : (
         <Item path={createPageUrl('BecomeContractor')} className="text-blue-600 font-medium" icon={Briefcase}>

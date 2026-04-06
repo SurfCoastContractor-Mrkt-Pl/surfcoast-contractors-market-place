@@ -45,7 +45,7 @@ export default function WAVEHandbook() {
   const chapters = [
     {
       id: 0,
-      title: 'About WAVE FO',
+      title: 'About WAVE OS',
       sections: [
         {
           id: '0.1',
@@ -56,7 +56,7 @@ export default function WAVEHandbook() {
     },
     {
       id: 6,
-      title: 'WAVE FO Ecosystem Overview',
+      title: 'WAVE OS Ecosystem Overview',
       sections: [
         {
           id: '6.1',
@@ -67,7 +67,7 @@ export default function WAVEHandbook() {
     },
     {
       id: 1,
-      title: 'Getting Started with WAVE FO',
+      title: 'Getting Started with WAVE OS',
       sections: [
         {
           id: '1.1',
@@ -402,7 +402,7 @@ export default function WAVEHandbook() {
             <h1 className="text-4xl font-bold text-slate-900">WAVE Handbook</h1>
           </div>
           <p className="text-lg text-slate-600">Master Your Trade, On Your Terms.</p>
-          <p className="text-slate-500 mt-2">Your comprehensive guide to running a successful contracting business with WAVE FO.</p>
+          <p className="text-slate-500 mt-2">Your comprehensive guide to running a successful contracting business with WAVE OS.</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">

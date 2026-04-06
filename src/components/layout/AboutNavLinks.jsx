@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const links = [
   { name: 'About Us', path: '/About', icon: Info },
   { name: 'Why SurfCoast', path: '/WhySurfCoast', icon: BarChart2 },
-  { name: 'WAVE FO Ecosystem', path: '/WaveFOAbout', icon: BookOpen },
+  { name: 'WAVE OS Ecosystem', path: '/WaveFOAbout', icon: BookOpen },
   { name: 'Pricing', path: '/Pricing', icon: DollarSign },
 ];
 

@@ -17,7 +17,7 @@ export default function SubscriptionGate({ onSubscribe }) {
         </h1>
         
         <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-          The complete WAVE Handbook, including detailed ecosystem pricing, features, and tier comparisons, is exclusively available to active WAVE FO ecosystem subscribers.
+          The complete WAVE Handbook, including detailed ecosystem pricing, features, and tier comparisons, is exclusively available to active WAVE OS ecosystem subscribers.
         </p>
 
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
@@ -26,7 +26,7 @@ export default function SubscriptionGate({ onSubscribe }) {
           <div className="grid md:grid-cols-2 gap-6 text-left">
             {/* WAVE FO */}
             <div className="border-2 border-blue-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-bold text-blue-600 mb-2">WAVE FO</h3>
+              <h3 className="text-xl font-bold text-blue-600 mb-2">WAVE OS</h3>
               <p className="text-slate-600 text-sm mb-4">For independent contractors managing client projects</p>
               <ul className="text-sm text-slate-700 space-y-2 mb-6">
                 <li className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function SubscriptionGate({ onSubscribe }) {
         </div>
 
         <p className="text-slate-600 mb-8">
-          Subscribe to any plan in the WAVE FO ecosystem to access the complete handbook and unlock all features.
+          Subscribe to any plan in the WAVE OS ecosystem to access the complete handbook and unlock all features.
         </p>
 
         <Button
