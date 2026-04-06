@@ -75,7 +75,7 @@ const WAVE_TIERS = [
     ],
   },
   {
-    name: "WAVE FO Premium",
+    name: "WAVE OS Premium",
     price: 100,
     tag: null,
     subtitle: "Best for licensed sole proprietors (HIS verified)",
@@ -102,7 +102,7 @@ const WAVE_TIERS = [
     subtitle: "Best for licensed operators who want everything",
     accent: "#f472b6",
     features: [
-      "Everything in WAVE FO Premium ($100/month value)",
+      "Everything in WAVE OS Premium ($100/month value)",
       "Unlimited client messaging — $50/month add-on included",
       "No per-session messaging fees",
       "Residential Wave lead management",
@@ -158,8 +158,8 @@ const FAQ_ITEMS = [
     a: "No. Never. You pay the monthly rate and nothing else."
   },
   {
-    q: "What's the difference between WAVE FO and WAVEShop FO?",
-    a: "WAVE FO is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEShop FO is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEShop FO is a premium $35/month add-on for vendors who want advanced booth management features."
+    q: "What's the difference between WAVE OS and WAVEShop FO?",
+    a: "WAVE OS is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEShop FO is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEShop FO is a premium $35/month add-on for vendors who want advanced booth management features."
   },
   {
     q: "What's the facilitation fee structure for MarketShop vendors?",
@@ -213,7 +213,7 @@ export default function Pricing() {
           Month-to-month. No setup fees. No annual contracts. Cancel anytime.
         </p>
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
-          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE FO</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
+          Start free — upgrade when you're ready. Two tracks: <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVE OS</strong> for contractors · <strong style={{ color: "rgba(255,255,255,0.7)" }}>WAVEShop FO</strong> for market booth operators
         </p>
         <Link to="/BecomeContractor" style={{ display: "inline-block", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", color: "#ffffff", padding: "14px 36px", borderRadius: "8px", fontSize: "16px", fontWeight: "800", textDecoration: "none", transition: "all 0.2s" }}>
           Get Started Free →
@@ -252,7 +252,7 @@ export default function Pricing() {
       <section style={{ maxWidth: "1200px", margin: "0 auto 60px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "#f59e0b", marginBottom: "10px" }}>Contractor Track</p>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVE FO (Field Operations) Plans</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: "900", margin: "0 0 12px", letterSpacing: "-0.5px", background: "linear-gradient(135deg, #1d4ed8 0%, #2176cc 50%, #ea580c 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>WAVE OS (Field Operations) Plans</h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>For contractors, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
         </div>
 
