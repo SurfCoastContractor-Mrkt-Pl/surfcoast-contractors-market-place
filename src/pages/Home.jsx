@@ -8,7 +8,7 @@ const T = {
   sub: "#1A1A1B",
   muted: "#333",
   border: "#D0D0D2",
-  amber: "#7A4E08",
+  amber: "#5C3500",
   amberBg: "#F0E0C0",
   amberTint: "#FBF5EC",
   shadow: "3px 3px 0px #7A4E08",
