@@ -471,9 +471,7 @@ function CTABar() {
           <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
             <button style={{ background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join the Founding 100</button>
           </Link>
-          <Link to="/PostJob" style={{ textDecoration: "none" }}>
-            <button style={{ background: "transparent", color: "#ccc", border: `1px solid #666`, borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post an RFP</button>
-          </Link>
+
         </div>
       </div>
     </section>
