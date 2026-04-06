@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings, Info } from 'lucide-react';
+import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
@@ -53,7 +53,6 @@ export default function LayoutHeader({
 }) {
   const navigate = useNavigate();
   const [exploreOpen, setExploreOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
   const navLinks = useMemo(() => getNavLinks(isContractor), [isContractor, getNavLinks]);
 
   const handleLogout = () => {
@@ -212,36 +211,7 @@ export default function LayoutHeader({
             </div>
           )}
 
-          {/* About Menu — always visible on desktop */}
-          <div className="relative">
-            <button
-              onClick={() => { setAboutOpen(!aboutOpen); setAccountMenuOpen(false); }}
-              className={cn(
-                "flex items-center gap-2 px-3.5 py-2 rounded-full text-sm font-medium border transition-colors duration-150",
-                aboutOpen
-                  ? "bg-blue-50 border-blue-200 text-blue-700"
-                  : "border-slate-300 text-slate-800 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-              )}
-              aria-haspopup="menu"
-              aria-expanded={aboutOpen}
-            >
-              <Info className="w-4 h-4" />
-              About
-              <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-150", aboutOpen && "rotate-180")} />
-            </button>
-            {aboutOpen && (
-              <>
-                {/* Click-away backdrop */}
-                <div className="fixed inset-0 z-40" onClick={() => setAboutOpen(false)} />
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-blue-100 rounded-2xl shadow-xl z-50 overflow-hidden">
-                  <div className="px-4 py-2.5 border-b border-blue-50 bg-gradient-to-r from-blue-50 to-sky-50">
-                    <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">About SurfCoast</p>
-                  </div>
-                  <AboutNavLinks onLinkClick={() => setAboutOpen(false)} />
-                </div>
-              </>
-            )}
-          </div>
+
         </div>
 
         {/* Mobile: account icon */}
@@ -372,6 +342,11 @@ function AccountDropdown({
 
       <div className="border-t border-blue-50 mt-1">
         <Item path={createPageUrl('MarketDirectory')} icon={Store}>Browse Markets</Item>
+      </div>
+
+      <div className="border-t border-blue-50 mt-1">
+        <SectionLabel>About</SectionLabel>
+        <AboutNavLinks onLinkClick={() => setAccountMenuOpen(false)} />
       </div>
 
       <div className="border-t border-blue-100">
