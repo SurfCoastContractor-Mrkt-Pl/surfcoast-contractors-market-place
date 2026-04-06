@@ -104,7 +104,7 @@ function HeroPlatformCard() {
 
 function HeroSection() {
    return (
-     <section style={{ background: "#F5F5F6", padding: "56px 24px 44px" }}>
+     <section style={{ background: "#ECECED", padding: "56px 24px 44px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
@@ -297,7 +297,7 @@ function TabbedSection() {
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24 }}>How the platform works.</h2>
 
-        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#F5F5F6", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
+        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
           {TAB_DATA.map((t) => (
             <button
               key={t.id}
@@ -432,7 +432,7 @@ const FAQ_ITEMS = [
 
 function FAQSection() {
    return (
-     <section style={{ background: "#F5F5F6", padding: "52px 24px" }}>
+     <section style={{ background: "#ECECED", padding: "52px 24px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
