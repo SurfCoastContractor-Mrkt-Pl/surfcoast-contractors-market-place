@@ -73,12 +73,8 @@ export default function LayoutHeader({
           </div>
         </Link>
 
-        {/* Desktop Nav Pills */}
+        {/* Desktop Nav Pills — logged-out only shows Explore dropdown */}
         <div className="hidden lg:flex items-center gap-1 flex-1">
-          <Link to="/" className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-150">
-            <Home className="w-3.5 h-3.5" />
-            Home
-          </Link>
           {!isLoggedIn && (
             <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
               <button className={cn(
