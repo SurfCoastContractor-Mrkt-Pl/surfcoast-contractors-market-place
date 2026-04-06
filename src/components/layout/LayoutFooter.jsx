@@ -14,7 +14,6 @@ const WHITE = '#ffffff';
 const LIGHT = '#e2e8f0';
 
 export default function LayoutFooter({
-  createPageUrl,
   setSuggestionOpen,
   handbookLink,
 }) {
@@ -38,9 +37,9 @@ export default function LayoutFooter({
           <div>
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>For Contractors</h4>
             <ul className="space-y-2">
-              <li><Link to={createPageUrl('BecomeContractor')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Create Profile</Link></li>
-              <li><Link to={createPageUrl('Jobs')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Browse Jobs</Link></li>
-              <li><Link to={createPageUrl('Blog')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
+              <li><Link to="/BecomeContractor" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Create Profile</Link></li>
+               <li><Link to="/Jobs" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Browse Jobs</Link></li>
+               <li><Link to="/Blog" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
               {handbookLink && <li><Link to={handbookLink} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>WAVE Handbook</Link></li>}
             </ul>
           </div>
@@ -49,10 +48,10 @@ export default function LayoutFooter({
           <div>
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>For Clients</h4>
             <ul className="space-y-2">
-              <li><Link to={createPageUrl('FindContractors')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Find Contractors</Link></li>
-              <li><Link to={createPageUrl('PostJob')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Post a Job</Link></li>
-              <li><Link to={createPageUrl('MyJobs')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>My Job Postings</Link></li>
-              <li><Link to={createPageUrl('Blog')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
+              <li><Link to="/FindContractors" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Find Contractors</Link></li>
+               <li><Link to="/PostJob" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Post a Job</Link></li>
+               <li><Link to="/MyJobs" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>My Job Postings</Link></li>
+               <li><Link to="/Blog" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
             </ul>
           </div>
 
@@ -60,8 +59,8 @@ export default function LayoutFooter({
           <div>
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>Markets & Vendors</h4>
             <ul className="space-y-2">
-              <li><Link to={createPageUrl('BoothsAndVendorsMap')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Booths & Vendors</Link></li>
-              <li><Link to={createPageUrl('MarketDirectory')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Market Directory</Link></li>
+              <li><Link to="/BoothsAndVendorsMap" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Booths & Vendors</Link></li>
+               <li><Link to="/MarketDirectory" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Market Directory</Link></li>
               <li><Link to="/swap-meet-ratings" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Swap Meet Ratings</Link></li>
               <li><Link to="/farmers-market-ratings" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Farmers Market Ratings</Link></li>
             </ul>
@@ -71,9 +70,9 @@ export default function LayoutFooter({
           <div>
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>Consumers</h4>
             <ul className="space-y-2">
-              <li><Link to={createPageUrl('ConsumerHub')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Consumer Hub</Link></li>
-              <li><Link to={createPageUrl('ConsumerSignup')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Sign Up</Link></li>
-              <li><Link to={createPageUrl('Blog')} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
+              <li><Link to="/ConsumerHub" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Consumer Hub</Link></li>
+               <li><Link to="/ConsumerSignup" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Sign Up</Link></li>
+               <li><Link to="/Blog" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
             </ul>
           </div>
 
@@ -106,9 +105,9 @@ export default function LayoutFooter({
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
-            <Link to={createPageUrl('Terms')} className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Terms</Link>
-            <span style={{color:'#94a3b8'}}>•</span>
-            <Link to={createPageUrl('PrivacyPolicy')} className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Privacy</Link>
+            <Link to="/Terms" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Terms</Link>
+             <span style={{color:'#94a3b8'}}>•</span>
+             <Link to="/PrivacyPolicy" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Privacy</Link>
             <button
               onClick={() => setSuggestionOpen(true)}
               className="flex items-center gap-1 text-sm font-bold hover:text-amber-400 transition-colors min-h-[44px] px-2 py-1 active:bg-slate-700 rounded sm:min-h-auto sm:py-0"

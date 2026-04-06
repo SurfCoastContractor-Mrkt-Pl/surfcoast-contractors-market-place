@@ -26,7 +26,7 @@ export default function FindContractors() {
   const [contractorDistances, setContractorDistances] = useState({});
   const [searchRadius, setSearchRadius] = useState(35);
 
-  const { data: contractorData, isLoading } = useQuery({
+  const { data: contractorData, isLoading, error } = useQuery({
     queryKey: ['all-contractors'],
     queryFn: () => base44.entities.Contractor.filter({ account_locked: false, minor_hours_locked: false }),
     staleTime: 5 * 60 * 1000, // 5 min — contractor list doesn't change by the second
@@ -259,7 +259,13 @@ export default function FindContractors() {
             </div>
           </div>
 
-          {isLoading ? (
+          {error ? (
+            <div className="text-center py-16 bg-white rounded-2xl border border-red-200">
+              <div className="w-12 h-12 text-red-400 mx-auto mb-4">⚠️</div>
+              <h3 className="text-lg font-medium text-red-900 mb-2">Unable to load contractors</h3>
+              <p className="text-red-700">Please refresh the page and try again.</p>
+            </div>
+          ) : isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map(i => (
                 <div key={i} className="h-64 bg-white rounded-xl animate-pulse" />

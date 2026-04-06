@@ -49,7 +49,6 @@ export default function LayoutHeader({
   customerLinks,
   hasMarketShop,
   hasCustomerProfile,
-  createPageUrl,
   unreadCount,
 }) {
   const navigate = useNavigate();
@@ -294,10 +293,10 @@ function AccountDropdown({
         <SectionLabel>Navigate</SectionLabel>
         <Item path="/" icon={Home}>Home</Item>
         {isContractor
-          ? <Item path={createPageUrl('Jobs')} icon={Briefcase}>Browse Jobs</Item>
-          : <Item path={createPageUrl('FindContractors')} icon={Users}>Find Entrepreneurs</Item>
-        }
-        <Item path={createPageUrl('Messaging')} icon={MessageCircle}>
+           ? <Item path="/Jobs" icon={Briefcase}>Browse Jobs</Item>
+           : <Item path="/FindContractors" icon={Users}>Find Entrepreneurs</Item>
+         }
+         <Item path="/Messaging" icon={MessageCircle}>
           Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
         </Item>
         <Item path={createPageUrl('MarketDirectory')} icon={Store}>Markets</Item>
@@ -306,32 +305,32 @@ function AccountDropdown({
 
         {/* My Accounts */}
         <SectionLabel>My Accounts</SectionLabel>
-        <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Dashboard</Item>
-        {isContractor && (
-          <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Entrepreneur Portal</Item>
-        )}
-        {hasCustomerProfile && (
-          <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer</Item>
-        )}
-        {hasMarketShop && (
-          <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>Market Booth</Item>
-        )}
+        <Item path="/Dashboard" icon={UserCircle}>Dashboard</Item>
+         {isContractor && (
+           <Item path="/ContractorAccount" icon={Briefcase}>Entrepreneur Portal</Item>
+         )}
+         {hasCustomerProfile && (
+           <Item path="/ConsumerHub" icon={ShoppingBag}>Consumer</Item>
+         )}
+         {hasMarketShop && (
+           <Item path="/MarketShopDashboard" icon={Store}>Market Booth</Item>
+         )}
 
         <Divider />
 
         {/* Join As */}
         <SectionLabel>Join As</SectionLabel>
         {!isContractor && (
-          <Item path={createPageUrl('BecomeContractor')} icon={Briefcase} highlight>+ Entrepreneur</Item>
-        )}
-        <Item path={createPageUrl('CustomerSignup')} icon={Users} highlight>+ Client</Item>
-        {!hasCustomerProfile && (
-          <Item path={createPageUrl('ConsumerSignup')} icon={ShoppingBag} highlight>+ Consumer</Item>
-        )}
-        {!hasMarketShop && (
-          <Item path={createPageUrl('MarketShopSignup')} icon={Store} highlight>+ Market Booth</Item>
-        )}
-        <Item path={createPageUrl('MarketShopSignup')} icon={Store} highlight>+ Vendor Space</Item>
+           <Item path="/BecomeContractor" icon={Briefcase} highlight>+ Entrepreneur</Item>
+         )}
+         <Item path="/CustomerSignup" icon={Users} highlight>+ Client</Item>
+         {!hasCustomerProfile && (
+           <Item path="/ConsumerSignup" icon={ShoppingBag} highlight>+ Consumer</Item>
+         )}
+         {!hasMarketShop && (
+           <Item path="/MarketShopSignup" icon={Store} highlight>+ Market Booth</Item>
+         )}
+         <Item path="/MarketShopSignup" icon={Store} highlight>+ Vendor Space</Item>
 
         <Divider />
 
