@@ -58,29 +58,6 @@ const tag = (text, amber) => (
   </span>
 );
 
-// ── Logo ───────────────────────────────────────────────────────
-function Logo() {
-  return (
-    <div style={{ lineHeight: 1.1 }}>
-      <span
-        style={{
-          fontWeight: 800,
-          fontSize: 22,
-          background: "linear-gradient(90deg, #e84e1b 0%, #7c3aed 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}
-      >
-        SurfCoast
-      </span>
-      <div style={{ ...mono, fontSize: 8, color: "#222", letterSpacing: "0.18em", marginTop: 1 }}>
-        MARKETPLACE
-      </div>
-    </div>
-  );
-}
-
 // ── Ticker ─────────────────────────────────────────────────────
 function TickerBar() {
   return (
@@ -88,67 +65,6 @@ function TickerBar() {
       <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>founding_100 — 77 spots remaining · 1 year all-access free</span>
       <span style={{ ...mono, fontSize: 11, color: T.amber }}>California · Nationwide</span>
     </div>
-  );
-}
-
-// ── Navbar ─────────────────────────────────────────────────────
-function Navbar() {
-  const [enterOpen, setEnterOpen] = useState(false);
-
-  return (
-    <nav style={{ background: "#fff", borderBottom: `1px solid ${T.border}`, padding: "12px 24px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-      <Link to="/" style={{ textDecoration: "none", marginRight: 20 }}><Logo /></Link>
-
-      <div style={{ display: "flex", gap: 20, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
-        {[
-          { label: "About Us", to: "/About" },
-        ].map(({ label, to }) => (
-          <Link key={label} to={to} style={{ textDecoration: "none", fontSize: 14, color: T.sub, fontWeight: 500 }}>
-            {label}
-          </Link>
-        ))}
-      </div>
-
-      <div style={{ position: "relative" }}>
-        <button
-          onClick={() => setEnterOpen((v) => !v)}
-          style={{ background: T.dark, border: "none", borderRadius: 6, padding: "7px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, transition: "box-shadow 0.2s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
-        >
-          Enter
-          <span style={{ fontSize: 9, opacity: 0.7 }}>▼</span>
-        </button>
-
-        {enterOpen && (
-          <>
-            {/* backdrop */}
-            <div onClick={() => setEnterOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 10 }} />
-            <div style={{ position: "absolute", right: 0, top: "calc(100% + 6px)", background: "#fff", border: `1px solid ${T.border}`, borderRadius: 8, boxShadow: "0 4px 16px rgba(0,0,0,0.10)", minWidth: 170, zIndex: 20, overflow: "hidden" }}>
-              <Link to="/Dashboard" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
-                <div style={{ padding: "11px 18px", fontSize: 13, color: T.dark, cursor: "pointer", borderBottom: `1px solid ${T.border}` }}
-                  onMouseEnter={e => e.currentTarget.style.background = T.bg}
-                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                  Sign In
-                </div>
-              </Link>
-              <Link to="/BecomeContractor" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
-                <div style={{ padding: "11px 18px", fontSize: 13, color: T.amber, fontWeight: 700, cursor: "pointer", borderBottom: `1px solid ${T.border}`, background: T.amberTint }}
-                  onMouseEnter={e => e.currentTarget.style.background = T.amberBg}
-                  onMouseLeave={e => e.currentTarget.style.background = T.amberTint}>
-                  I'm a Pro
-                </div>
-              </Link>
-              <Link to="/PostJob" style={{ textDecoration: "none" }} onClick={() => setEnterOpen(false)}>
-                <div style={{ padding: "11px 18px", fontSize: 13, color: "#fff", fontWeight: 700, cursor: "pointer", background: T.dark }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#333"}
-                  onMouseLeave={e => e.currentTarget.style.background = T.dark}>
-                  Need a Pro
-                </div>
-              </Link>
-            </div>
-          </>
-        )}
-      </div>
-    </nav>
   );
 }
 
@@ -381,7 +297,6 @@ function TabbedSection() {
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24 }}>How the platform works.</h2>
 
-        {/* Tab bar */}
         <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
           {TAB_DATA.map((t) => (
             <button
@@ -407,7 +322,6 @@ function TabbedSection() {
           ))}
         </div>
 
-        {/* Tab content */}
         <div>{current && current.content()}</div>
       </div>
     </section>
@@ -503,7 +417,6 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }}>
       <TickerBar />
-      <Navbar />
       <HeroSection />
       <TabbedSection />
       <IntegritySection />
