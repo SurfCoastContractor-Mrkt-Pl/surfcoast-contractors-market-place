@@ -103,8 +103,8 @@ function HeroPlatformCard() {
 }
 
 function HeroSection() {
-  return (
-    <section style={{ background: "#fff", padding: "56px 24px 44px" }}>
+   return (
+     <section style={{ background: "#F5F5F6", padding: "56px 24px 44px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
@@ -128,7 +128,7 @@ function HeroSection() {
               <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Market Shop</button>
             </Link>
           </div>
-          <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
+          <div style={{ display: "flex", background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             {[
               { amount: "$0", label: "Profile and listing", amber: true },
               { amount: "5%", label: "Facilitation fee (vendors)", amber: false },
@@ -297,7 +297,7 @@ function TabbedSection() {
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24 }}>How the platform works.</h2>
 
-        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
+        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#F5F5F6", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
           {TAB_DATA.map((t) => (
             <button
               key={t.id}
@@ -431,8 +431,8 @@ const FAQ_ITEMS = [
 ];
 
 function FAQSection() {
-  return (
-    <section style={{ background: "#fff", padding: "52px 24px" }}>
+   return (
+     <section style={{ background: "#F5F5F6", padding: "52px 24px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
