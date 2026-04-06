@@ -3,13 +3,16 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const body = await req.json().catch(() => ({}));
 
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    // Support entity automation payload ({ event, data }) and direct calls ({ entity_type, entity_id })
+    let entity_type = body.entity_type;
+    let entity_id = body.entity_id;
+
+    if (!entity_type && body.event?.entity_name) {
+      entity_type = body.event.entity_name;
+      entity_id = body.event.entity_id;
     }
-
-    const { entity_type, entity_id } = await req.json();
 
     if (!entity_type || !entity_id) {
       return Response.json({ error: 'Missing entity_type or entity_id' }, { status: 400 });
@@ -19,7 +22,7 @@ Deno.serve(async (req) => {
     let contactData = null;
 
     if (entity_type === 'Contractor') {
-      const contractors = await base44.entities.Contractor.filter({ id: entity_id });
+      const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: entity_id });
       if (contractors?.length) {
         const contractor = contractors[0];
         contactData = {
@@ -34,7 +37,7 @@ Deno.serve(async (req) => {
         };
       }
     } else if (entity_type === 'CustomerProfile') {
-      const customers = await base44.entities.CustomerProfile.filter({ id: entity_id });
+      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ id: entity_id });
       if (customers?.length) {
         const customer = customers[0];
         contactData = {
