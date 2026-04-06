@@ -68,8 +68,8 @@ export default function LayoutHeader({
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 mr-2">
           <div className="flex flex-col gap-[2px]">
-            <span className="text-[15px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
-            <span className="text-[7px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
+            <span className="text-[22px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
+            <span className="text-[10px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
           </div>
         </Link>
 
