@@ -109,6 +109,7 @@ export default function Layout({ children, currentPageName }) {
         hasMarketShop={hasMarketShop}
         hasCustomerProfile={hasCustomerProfile}
         createPageUrl={createPageUrl}
+        unreadCount={unreadCount}
       />
 
       <LayoutMobileMenu

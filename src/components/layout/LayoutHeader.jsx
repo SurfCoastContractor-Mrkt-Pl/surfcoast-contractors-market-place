@@ -50,6 +50,7 @@ export default function LayoutHeader({
   hasMarketShop,
   hasCustomerProfile,
   createPageUrl,
+  unreadCount,
 }) {
   const navigate = useNavigate();
   const [exploreOpen, setExploreOpen] = useState(false);
@@ -72,33 +73,8 @@ export default function LayoutHeader({
           </div>
         </Link>
 
-        {/* Desktop Nav Pills */}
+        {/* Desktop Nav Pills — logged-out only shows Explore dropdown */}
         <div className="hidden lg:flex items-center gap-1 flex-1">
-          {/* Core nav links */}
-          {navLinks.map(link => {
-            const Icon = link.icon;
-            const isActive = currentPageName === link.page;
-            return (
-              <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
-                <button className={cn(
-                  "relative flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
-                  isActive
-                    ? "bg-blue-50 text-blue-700 nav-pill-active"
-                    : "text-slate-700 hover:text-blue-700 hover:bg-blue-50"
-                )}>
-                  {Icon && <Icon className="w-3.5 h-3.5" />}
-                  {link.name}
-                  {link.badge && (
-                    <span className="ml-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                      {link.badge > 99 ? '99+' : link.badge}
-                    </span>
-                  )}
-                </button>
-              </Link>
-            );
-          })}
-
-          {/* Explore dropdown (logged-out) or quick links (logged-in) */}
           {!isLoggedIn && (
             <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
               <button className={cn(
@@ -136,15 +112,6 @@ export default function LayoutHeader({
                 </div>
               )}
             </div>
-          )}
-
-          {isLoggedIn && (
-            <Link to={createPageUrl('MarketDirectory')}>
-              <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-150">
-                <Store className="w-3.5 h-3.5" />
-                Markets
-              </button>
-            </Link>
           )}
         </div>
 
@@ -204,6 +171,7 @@ export default function LayoutHeader({
                   createPageUrl={createPageUrl}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
+                  unreadCount={unreadCount}
                 />
               )}
             </div>
@@ -231,6 +199,7 @@ export default function LayoutHeader({
                   createPageUrl={createPageUrl}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
+                  unreadCount={unreadCount}
                   isMobile
                 />
               </div>
@@ -277,6 +246,7 @@ function AccountDropdown({
   onLogout,
   setAccountMenuOpen,
   isMobile,
+  unreadCount,
 }) {
   const navigate = useNavigate();
 
@@ -320,22 +290,36 @@ function AccountDropdown({
       {/* Scrollable body */}
       <div className="overflow-y-auto flex-1">
 
-        {/* My Active Accounts */}
-        <SectionLabel>My Account</SectionLabel>
-        <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Client Dashboard</Item>
+        {/* Navigate */}
+        <SectionLabel>Navigate</SectionLabel>
+        <Item path="/" icon={Home}>Home</Item>
+        {isContractor
+          ? <Item path={createPageUrl('Jobs')} icon={Briefcase}>Browse Jobs</Item>
+          : <Item path={createPageUrl('FindContractors')} icon={Users}>Find Entrepreneurs</Item>
+        }
+        <Item path={createPageUrl('Messaging')} icon={MessageCircle}>
+          Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
+        </Item>
+        <Item path={createPageUrl('MarketDirectory')} icon={Store}>Markets</Item>
+
+        <Divider />
+
+        {/* My Accounts */}
+        <SectionLabel>My Accounts</SectionLabel>
+        <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Dashboard</Item>
         {isContractor && (
           <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Entrepreneur Portal</Item>
         )}
         {hasCustomerProfile && (
-          <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer Dashboard</Item>
+          <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer</Item>
         )}
         {hasMarketShop && (
-          <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>Market Booth Dashboard</Item>
+          <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>Market Booth</Item>
         )}
 
         <Divider />
 
-        {/* Sign Up For */}
+        {/* Join As */}
         <SectionLabel>Join As</SectionLabel>
         {!isContractor && (
           <Item path={createPageUrl('BecomeContractor')} icon={Briefcase} highlight>+ Entrepreneur</Item>
@@ -351,12 +335,12 @@ function AccountDropdown({
 
         <Divider />
 
-        {/* Info Links */}
-        <SectionLabel>Explore</SectionLabel>
-        <Item path="/About" icon={UserCircle}>About</Item>
+        {/* Info */}
+        <SectionLabel>Info</SectionLabel>
+        <Item path="/About" icon={Info}>About</Item>
         <Item path="/WhySurfCoast" icon={BarChart2}>Why SurfCoast</Item>
-        <Item path="/pricing" icon={BarChart2}>Pricing</Item>
-        <Item path="/wave-os-details" icon={Settings}>WAVE OS</Item>
+        <Item path="/pricing" icon={DollarSign}>Pricing</Item>
+        <Item path="/wave-os-details" icon={Zap}>WAVE OS</Item>
 
         <Divider />
       </div>
