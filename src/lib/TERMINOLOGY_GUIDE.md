@@ -8,7 +8,7 @@ This document defines the official terminology used throughout the SurfCoast pla
 ### Service Side
 | Official Term | Use When | Examples | ❌ Avoid |
 |---|---|---|---|
-| **Contractor** | Primary term for service providers | "Contractor Account", "Browse Contractors", "Contractor Dashboard" | Entrepreneur, Worker, Service Provider |
+| **Entrepreneur** | Primary term for service providers | "Entrepreneur Account", "Browse Entrepreneurs", "Entrepreneur Dashboard" | Contractor (old), Worker, Service Provider |
 | **Client** | Person/business posting work | "Find Clients", "Client Inquiry", "Client Review" | Customer (service side), User |
 
 ### Market Side
