@@ -19,6 +19,7 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import ContractorPublicProfile from './pages/ContractorPublicProfile';
+import FindContractors from './pages/FindContractors';
 import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
 import SearchAnalytics from './pages/SearchAnalytics';
