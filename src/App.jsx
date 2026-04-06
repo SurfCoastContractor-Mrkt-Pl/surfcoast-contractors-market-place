@@ -332,6 +332,11 @@ const AuthenticatedApp = () => {
           <ContractorPublicProfile />
         </LayoutWrapper>
       } />
+      <Route path="/SearchContractors" element={
+        <LayoutWrapper currentPageName="FindContractors">
+          <FindContractors />
+        </LayoutWrapper>
+      } />
       <Route path="/contractor-inventory" element={
         <LayoutWrapper currentPageName="ContractorInventoryDashboard">
           <ContractorInventoryDashboard />
