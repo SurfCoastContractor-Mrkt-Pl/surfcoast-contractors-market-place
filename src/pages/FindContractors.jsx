@@ -133,7 +133,7 @@ export default function FindContractors() {
       {/* Header */}
       <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-16 border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Find Contractors</h1>
+          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Find Entrepreneurs</h1>
           <p className="text-lg text-slate-600 font-light">Discover exceptional talent in your area</p>
         </div>
       </div>
@@ -212,7 +212,7 @@ export default function FindContractors() {
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-6">
               <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-              <h2 className="text-lg font-semibold text-slate-900">Featured Contractors</h2>
+              <h2 className="text-lg font-semibold text-slate-900">Featured Entrepreneurs</h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredFeatured.map(contractor => (
