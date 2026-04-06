@@ -10,7 +10,11 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
-    const errorData = await req.json();
+    const body = await req.json();
+
+    // Support both direct calls ({ message, level, category })
+    // and entity automation payloads ({ event, data: { message, level, category } })
+    const errorData = body.data ?? body;
 
     // Validate required fields
     if (!errorData.message || !errorData.level || !errorData.category) {
