@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings } from 'lucide-react';
+import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings, Info, DollarSign, Zap } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
@@ -202,8 +202,6 @@ export default function LayoutHeader({
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
                   createPageUrl={createPageUrl}
-                  entrepreneurLinks={entrepreneurLinks}
-                  customerLinks={customerLinks}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
                 />
@@ -231,8 +229,6 @@ export default function LayoutHeader({
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
                   createPageUrl={createPageUrl}
-                  entrepreneurLinks={entrepreneurLinks}
-                  customerLinks={customerLinks}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
                   isMobile
@@ -278,8 +274,6 @@ function AccountDropdown({
   hasCustomerProfile,
   hasMarketShop,
   createPageUrl,
-  entrepreneurLinks,
-  customerLinks,
   onLogout,
   setAccountMenuOpen,
   isMobile,
@@ -291,11 +285,14 @@ function AccountDropdown({
     navigate(path);
   };
 
-  const Item = ({ path, children, className, icon: Icon }) => (
+  const Item = ({ path, children, className, icon: Icon, highlight }) => (
     <button
       onMouseDown={(e) => { e.preventDefault(); go(path); }}
       className={cn(
-        "w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150",
+        "w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors duration-150",
+        highlight
+          ? "text-blue-600 font-semibold hover:bg-blue-50"
+          : "text-slate-700 hover:bg-blue-50 hover:text-blue-700",
         className
       )}
     >
@@ -305,61 +302,67 @@ function AccountDropdown({
   );
 
   const SectionLabel = ({ children }) => (
-    <div className="px-4 pt-3 pb-1 text-[10px] font-bold text-blue-500 uppercase tracking-widest">{children}</div>
+    <div className="px-4 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{children}</div>
   );
+
+  const Divider = () => <div className="border-t border-slate-100 my-1" />;
 
   return (
     <div className={cn(
-      "bg-white border border-blue-100 rounded-2xl shadow-xl z-[60] overflow-hidden",
-      isMobile ? "w-full" : "absolute right-0 top-full mt-2 w-60"
+      "bg-white border border-blue-100 rounded-2xl shadow-xl z-[60] flex flex-col",
+      isMobile ? "w-full max-h-[80vh]" : "absolute right-0 top-full mt-2 w-64 max-h-[80vh]"
     )}>
-      <div className="px-4 py-3 border-b border-blue-50 bg-gradient-to-r from-blue-50 to-sky-50">
-        <p className="text-xs text-blue-600 font-medium">Signed in</p>
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-blue-50 bg-gradient-to-r from-blue-50 to-sky-50 flex-shrink-0 rounded-t-2xl">
+        <p className="text-xs text-blue-600 font-semibold">Signed in</p>
       </div>
 
-      <SectionLabel>My Account</SectionLabel>
-      <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Client Account</Item>
+      {/* Scrollable body */}
+      <div className="overflow-y-auto flex-1">
 
-      {isContractor ? (
-        <>
-          <SectionLabel>Entrepreneur</SectionLabel>
+        {/* My Active Accounts */}
+        <SectionLabel>My Account</SectionLabel>
+        <Item path={createPageUrl('Dashboard')} icon={UserCircle}>Client Dashboard</Item>
+        {isContractor && (
           <Item path={createPageUrl('ContractorAccount')} icon={Briefcase}>Entrepreneur Portal</Item>
-          <Item path={createPageUrl('ContractorBusinessHub')} icon={Settings}>Business Hub</Item>
-          <Item path={createPageUrl('ContractorFinancialDashboard')} icon={BarChart2}>Financial Dashboard</Item>
-          <Item path="/WaveFo" icon={BarChart2}>Wave OS</Item>
-        </>
-      ) : (
-        <Item path={createPageUrl('BecomeContractor')} className="text-blue-600 font-medium" icon={Briefcase}>
-          + Become an Entrepreneur
-        </Item>
-      )}
+        )}
+        {hasCustomerProfile && (
+          <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer Dashboard</Item>
+        )}
+        {hasMarketShop && (
+          <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>Market Booth Dashboard</Item>
+        )}
 
-      {hasCustomerProfile ? (
-        <Item path={createPageUrl('ConsumerHub')} icon={ShoppingBag}>Consumer Account</Item>
-      ) : (
-        <Item path={createPageUrl('ConsumerSignup')} className="text-blue-600 font-medium" icon={ShoppingBag}>
-          + Become a Consumer
-        </Item>
-      )}
+        <Divider />
 
-      {hasMarketShop ? (
-        <Item path={createPageUrl('MarketShopDashboard')} icon={Store}>MarketShop Account</Item>
-      ) : (
-        <Item path={createPageUrl('MarketShopSignup')} className="text-blue-600 font-medium" icon={Store}>
-          + Add MarketShop
-        </Item>
-      )}
+        {/* Sign Up For */}
+        <SectionLabel>Join As</SectionLabel>
+        {!isContractor && (
+          <Item path={createPageUrl('BecomeContractor')} icon={Briefcase} highlight>+ Entrepreneur</Item>
+        )}
+        <Item path={createPageUrl('CustomerSignup')} icon={Users} highlight>+ Client</Item>
+        {!hasCustomerProfile && (
+          <Item path={createPageUrl('ConsumerSignup')} icon={ShoppingBag} highlight>+ Consumer</Item>
+        )}
+        {!hasMarketShop && (
+          <Item path={createPageUrl('MarketShopSignup')} icon={Store} highlight>+ Market Booth</Item>
+        )}
+        <Item path={createPageUrl('MarketShopSignup')} icon={Store} highlight>+ Vendor Space</Item>
 
-      <div className="border-t border-blue-50 mt-1">
-        <Item path={createPageUrl('MarketDirectory')} icon={Store}>Browse Markets</Item>
+        <Divider />
+
+        {/* Info Links */}
+        <SectionLabel>Explore</SectionLabel>
+        <Item path="/About" icon={UserCircle}>About</Item>
+        <Item path="/WhySurfCoast" icon={BarChart2}>Why SurfCoast</Item>
+        <Item path="/pricing" icon={BarChart2}>Pricing</Item>
+        <Item path="/wave-os-details" icon={Settings}>WAVE OS</Item>
+
+        <Divider />
       </div>
 
-      <div className="border-t border-blue-50 mt-1">
-        <SectionLabel>About</SectionLabel>
-        <AboutNavLinks onLinkClick={() => setAccountMenuOpen(false)} />
-      </div>
-
-      <div className="border-t border-blue-100">
+      {/* Logout — always visible at bottom */}
+      <div className="flex-shrink-0 border-t border-blue-100 rounded-b-2xl">
         <button
           onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
           className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors duration-150 font-semibold rounded-b-2xl"
