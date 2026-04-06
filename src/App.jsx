@@ -338,6 +338,9 @@ const AuthenticatedApp = () => {
           <FindContractors />
         </LayoutWrapper>
       } />
+      <Route path="/searchcontractors" element={
+        <Navigate to="/SearchContractors" replace />
+      } />
       <Route path="/contractor-inventory" element={
         <LayoutWrapper currentPageName="ContractorInventoryDashboard">
           <ContractorInventoryDashboard />
