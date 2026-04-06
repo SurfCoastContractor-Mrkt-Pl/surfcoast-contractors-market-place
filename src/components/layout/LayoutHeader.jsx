@@ -74,7 +74,7 @@ export default function LayoutHeader({
         </Link>
 
         {/* Desktop Nav Pills */}
-        <div className="hidden lg:flex items-center gap-1 flex-1">
+        <div className="hidden lg:flex items-center gap-0.5 flex-1">
           {/* Core nav links */}
           {navLinks.map(link => {
             const Icon = link.icon;
@@ -82,12 +82,12 @@ export default function LayoutHeader({
             return (
               <Link key={link.page} to={link.page === '/' ? '/' : createPageUrl(link.page)}>
                 <button className={cn(
-                  "relative flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
+                  "relative flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-colors duration-150",
                   isActive
                     ? "bg-blue-50 text-blue-700 nav-pill-active"
                     : "text-slate-700 hover:text-blue-700 hover:bg-blue-50"
                 )}>
-                  {Icon && <Icon className="w-3.5 h-3.5" />}
+                  {Icon && <Icon className="w-2.5 h-2.5" />}
                   {link.name}
                   {link.badge && (
                     <span className="ml-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
@@ -103,7 +103,7 @@ export default function LayoutHeader({
           {!isLoggedIn && (
             <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
               <button className={cn(
-                "flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
+                "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-colors duration-150",
                 exploreOpen ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:text-blue-700 hover:bg-blue-50"
               )}>
                 Explore
@@ -141,8 +141,8 @@ export default function LayoutHeader({
 
           {isLoggedIn && (
             <Link to={createPageUrl('MarketDirectory')}>
-              <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-150">
-                <Store className="w-3.5 h-3.5" />
+              <button className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-150">
+                <Store className="w-2.5 h-2.5" />
                 Markets
               </button>
             </Link>
