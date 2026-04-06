@@ -167,7 +167,6 @@ export default function LayoutHeader({
                   isContractor={isContractor}
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
-                  createPageUrl={createPageUrl}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
                   unreadCount={unreadCount}
@@ -195,7 +194,6 @@ export default function LayoutHeader({
                   isContractor={isContractor}
                   hasCustomerProfile={hasCustomerProfile}
                   hasMarketShop={hasMarketShop}
-                  createPageUrl={createPageUrl}
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
                   unreadCount={unreadCount}
@@ -241,7 +239,6 @@ function AccountDropdown({
   isContractor,
   hasCustomerProfile,
   hasMarketShop,
-  createPageUrl,
   onLogout,
   setAccountMenuOpen,
   isMobile,
@@ -293,13 +290,13 @@ function AccountDropdown({
         <SectionLabel>Navigate</SectionLabel>
         <Item path="/" icon={Home}>Home</Item>
         {isContractor
-           ? <Item path="/Jobs" icon={Briefcase}>Browse Jobs</Item>
-           : <Item path="/FindContractors" icon={Users}>Find Entrepreneurs</Item>
-         }
-         <Item path="/Messaging" icon={MessageCircle}>
-          Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
+          ? <Item path="/JobsBoard" icon={Briefcase}>Browse Jobs</Item>
+          : <Item path="/SearchContractors" icon={Users}>Find Entrepreneurs</Item>
+        }
+        <Item path="/ProjectManagement" icon={MessageCircle}>
+         Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
         </Item>
-        <Item path={createPageUrl('MarketDirectory')} icon={Store}>Markets</Item>
+        <Item path="/BoothsAndVendorsMap" icon={Store}>Markets</Item>
 
         <Divider />
 
