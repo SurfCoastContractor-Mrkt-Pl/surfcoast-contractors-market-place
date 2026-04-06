@@ -36,7 +36,7 @@ const hoverGlowSm = {
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = "none"; },
 };
 
-const mono = { fontFamily: "monospace" };
+const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
 
 const tag = (text, amber) => (
   <span
@@ -107,11 +107,11 @@ function HeroSection() {
      <section style={{ background: "#ECECED", padding: "56px 24px 44px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
         <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
           Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
         </h1>
-        <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26 }}>
+        <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26, fontWeight: 700, fontStyle: "italic" }}>
           SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — connects everyday workers with everyday people across the USA. Your profile and listing are free. Communication sessions start at $1.50 per 10 minutes. A facilitation fee of 18% applies only when work is successfully completed through the platform.
         </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
@@ -294,8 +294,8 @@ function TabbedSection() {
   return (
     <section style={{ background: T.bg, padding: "52px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
-        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24 }}>How the platform works.</h2>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// PLATFORM OVERVIEW</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
 
         <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
           {TAB_DATA.map((t) => (
@@ -333,9 +333,9 @@ function IntegritySection() {
   return (
     <section style={{ background: "#F5F5F6", padding: "52px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
-        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8 }}>100% compliance. Automated.</h2>
-        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6 }}>Non-compliance triggers immediate account holds with no manual review required.</p>
+        <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>100% compliance. Automated.</h2>
+        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Non-compliance triggers immediate account holds with no manual review required.</p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
           {[
@@ -371,9 +371,9 @@ function LaunchEngineSection() {
   return (
     <section style={{ background: T.bg, padding: "52px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// LAUNCH ENGINE</div>
-        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8 }}>Three mechanics. One flywheel.</h2>
-        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6 }}>Each mechanic feeds the next. Early movers win.</p>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// LAUNCH ENGINE</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Three mechanics. One flywheel.</h2>
+        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Each mechanic feeds the next. Early movers win.</p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           {cards.map((c) => (
@@ -443,8 +443,8 @@ function FAQSection() {
         })),
       })}} />
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// FREQUENTLY ASKED QUESTIONS</div>
-        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 28 }}>Common questions.</h2>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// FREQUENTLY ASKED QUESTIONS</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 28, fontStyle: "italic" }}>Common questions.</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16 }}>
           {FAQ_ITEMS.map(({ q, a }) => (
             <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
