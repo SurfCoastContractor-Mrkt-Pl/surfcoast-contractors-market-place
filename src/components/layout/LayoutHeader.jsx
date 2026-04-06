@@ -242,11 +242,21 @@ export default function LayoutHeader({
           </div>
         )}
 
+        {/* Mobile: Get Started button (logged-out only) */}
+        {!isLoggedIn && (
+          <button
+            onClick={() => base44.auth.redirectToLogin()}
+            className="lg:hidden ml-auto mr-2 text-xs font-semibold text-white px-3 py-1.5 rounded-full gradient-brand hover:opacity-90 transition-opacity flex-shrink-0"
+          >
+            Get Started
+          </button>
+        )}
+
         {/* Mobile: hamburger (existing nav) */}
         <button
           className={cn(
             "lg:hidden p-2 rounded-full hover:bg-blue-50 transition-colors flex-shrink-0",
-            isLoggedIn ? "" : "ml-auto"
+            isLoggedIn ? "" : ""
           )}
           onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setAccountMenuOpen(false); }}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
