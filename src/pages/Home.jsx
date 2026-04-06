@@ -11,7 +11,7 @@ const T = {
   amber: "#5C3500",
   amberBg: "#F0E0C0",
   amberTint: "#FBF5EC",
-  shadow: "3px 3px 0px #7A4E08",
+  shadow: "3px 3px 0px #5C3500",
 };
 
 const cardStyle = {
@@ -22,7 +22,7 @@ const cardStyle = {
   transition: "box-shadow 0.2s ease",
 };
 
-const goldGlow = "3px 3px 0px #8C5E10, 0 0 18px 4px rgba(255, 180, 0, 0.35)";
+const goldGlow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)";
 const goldGlowSm = "0 0 14px 3px rgba(255, 180, 0, 0.3)";
 const purpleBlueGlow = "0 0 18px 5px rgba(100, 80, 220, 0.45)";
 
