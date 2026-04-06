@@ -107,13 +107,13 @@ function HeroSection() {
     <section style={{ background: "#fff", padding: "56px 24px 44px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
-          <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
-            Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
-          </h1>
-          <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26 }}>
-            SurfCoast Marketplace is the Community Hub. Where you can hire and support your neighbors trying to build something from the ground up. A place where you don't have to wonder if you will be able to find someone to give you a helping hand. By supporting each other, we take small steps in building our communities and develop relationships through time. Not just in my neighborhood or yours. But we help communities nationwide.
-          </p>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
+        <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
+          Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
+        </h1>
+        <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26 }}>
+          SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — connects everyday workers with everyday people across the USA. Your profile and listing are free. Communication sessions start at $1.50 per 10 minutes. A facilitation fee of 18% applies only when work is successfully completed through the platform.
+        </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
             <Link to="/PostJob" style={{ textDecoration: "none", flexShrink: 0 }}>
               <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Post a Job — Free</button>
@@ -130,7 +130,7 @@ function HeroSection() {
           </div>
           <div style={{ display: "flex", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             {[
-              { amount: "$0", label: "To respond to leads", amber: true },
+              { amount: "$0", label: "Profile and listing", amber: true },
               { amount: "5%", label: "Facilitation fee (vendors)", amber: false },
               { amount: "18%", label: "Facilitation fee (contractors)", amber: true },
             ].map(({ amount, label, amber }, i) => (
@@ -390,6 +390,70 @@ function LaunchEngineSection() {
   );
 }
 
+// ── FAQ Section ───────────────────────────────────────────────
+const FAQ_ITEMS = [
+  {
+    q: "What is SurfCoast CMP?",
+    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide marketplace connecting everyday workers with everyday people across the United States. Whether you are a tradesperson, freelancer, creative, or independent professional, you have a home here. Your profile is free. An 18% facilitation fee applies only on completed jobs.",
+  },
+  {
+    q: "Is it free to join SurfCoast Marketplace?",
+    a: "Creating your profile and being discovered by clients is free — no credit card, no catch. When you are ready to communicate with a potential client, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Clients pay $1.75 to send a formal proposal request to a specific worker. The platform only takes an 18% facilitation fee when a job is actually completed and paid through the platform.",
+  },
+  {
+    q: "How is SurfCoast Contractors Marketplace different from Angi?",
+    a: "Angi charges contractors $15 to $120 per lead whether they win the job or not — and sends that same lead to six or eight other contractors at the same time. On SurfCoast there are no lead fees. Communication is initiated through a $1.50 per 10-minute session that keeps both sides serious and filters out spam. The 18% facilitation fee only applies when a job is successfully closed. No shared leads. No paying for nothing.",
+  },
+  {
+    q: "Who founded SurfCoast CMP?",
+    a: "SurfCoast Contractors Marketplace was founded in 2026 by Hector A. Navarrete — a plumber who received his C36 license in 2022 and owns SurfCoast Plumbing. The platform is headquartered in the Inland Empire, California. He built it because he lived the same frustrations that every independent worker on here has faced.",
+  },
+  {
+    q: "What is WAVE OS?",
+    a: "WAVE OS is the optional business software built into SurfCoast Marketplace. Think of it as your business command center — scheduling, invoicing, job tracking, client management, and analytics. It starts at $19 per month and unlocks as you complete jobs on the platform. You do not need it to use the marketplace. A free Basic Dashboard covers the essentials for everyone.",
+  },
+  {
+    q: "How much does everything cost?",
+    a: "Your profile and listing are free. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Clients pay $1.75 to send a proposal request — a formal ask for a quote — to a specific worker. The platform charges an 18% facilitation fee only when a job is completed and paid through the platform. Swap Meet vendors pay $20 per month or 5% per sale. The first 100 signups get one full year completely free.",
+  },
+  {
+    q: "What is the Swap Meet?",
+    a: "The Swap Meet is a section of SurfCoast Marketplace where everyday people can buy, sell, and trade tools, equipment, materials, and goods with other vendors or directly with consumers. Browsing is free for everyone. When you are ready to purchase, items are paid for at checkout through the platform.",
+  },
+  {
+    q: "Do I need to be licensed to join SurfCoast Marketplace?",
+    a: "No. SurfCoast is built for everyone — from licensed master tradespeople to someone just starting out. We support over 60 categories of workers including trades, freelancers, creatives, pet sitters, tutors, and more. Motivated individuals as young as 13 are welcome to start building their path here. If you have a skill and the drive to build something with it, you belong here.",
+  },
+];
+
+function FAQSection() {
+  return (
+    <section style={{ background: "#fff", padding: "52px 24px" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": FAQ_ITEMS.map(({ q, a }) => ({
+          "@type": "Question",
+          "name": q,
+          "acceptedAnswer": { "@type": "Answer", "text": a },
+        })),
+      })}} />
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// FREQUENTLY ASKED QUESTIONS</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 28 }}>Common questions.</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16 }}>
+          {FAQ_ITEMS.map(({ q, a }) => (
+            <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 10, lineHeight: 1.4 }}>{q}</h3>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0 }}>{a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── CTA Bar ────────────────────────────────────────────────────
 function CTABar() {
   return (
@@ -421,6 +485,7 @@ export default function Home() {
       <TabbedSection />
       <IntegritySection />
       <LaunchEngineSection />
+      <FAQSection />
       <CTABar />
     </div>
   );
