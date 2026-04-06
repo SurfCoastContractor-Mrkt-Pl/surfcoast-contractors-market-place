@@ -20,7 +20,7 @@ const exploreGroups = [
   {
     label: 'For Clients',
     items: [
-      { name: 'Find Entrepreneurs', path: '/FindContractors', icon: Users },
+      { name: 'Find Entrepreneurs', path: '/SearchContractors', icon: Users },
       { name: 'Post a Job', path: '/PostJob', icon: Briefcase },
     ],
   },
