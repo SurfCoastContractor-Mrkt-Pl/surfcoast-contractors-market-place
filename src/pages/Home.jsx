@@ -63,7 +63,7 @@ function TickerBar() {
   return (
     <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
       <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>founding_100 — 77 spots remaining · 1 year all-access free</span>
-      <span style={{ ...mono, fontSize: 11, color: T.amber }}>California · Nationwide</span>
+      <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
     </div>
   );
 }
