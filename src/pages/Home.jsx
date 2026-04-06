@@ -197,9 +197,9 @@ const TAB_DATA = [
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
           {roles.map((r) => (
             <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }} {...hoverGlow}>
-              <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{r.label}</div>
+              <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>{r.label}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
-              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12, flex: 1 }}>{r.desc}</p>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12, flex: 1, fontWeight: 700, fontStyle: "italic" }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
               <Link to={r.cta.to} style={{ textDecoration: "none" }}>
                 <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>{r.cta.label} →</button>
@@ -217,18 +217,18 @@ const TAB_DATA = [
       const row = (label, note, value, amberVal) => (
         <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.bg}`, transition: "box-shadow 0.2s ease", borderRadius: 4 }} {...hoverGlowSm}>
           <div>
-            <div style={{ fontSize: 13, color: T.dark, fontWeight: 600 }}>{label}</div>
-            <div style={{ fontSize: 11, color: "#444" }}>{note}</div>
+            <div style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>{label}</div>
+            <div style={{ fontSize: 11, color: "#444", fontWeight: 700, fontStyle: "italic" }}>{note}</div>
           </div>
           <span style={{ ...mono, fontSize: 14, fontWeight: 700, color: amberVal ? T.amber : T.dark }}>{value}</span>
         </div>
       );
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6 }}>We never charge a contractor to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We never charge a contractor to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             <div style={{ flex: "1 1 240px", paddingRight: 28 }}>
-              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em" }}>FOR CONTRACTORS</div>
+              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CONTRACTORS</div>
               {row("Facilitation fee", "on job close", "18%", false)}
               {row("Respond to RFP", "no upfront cost", "$0", true)}
               {row("Timed session", "60-min window", "$1.50", false)}
@@ -237,7 +237,7 @@ const TAB_DATA = [
             </div>
             <div style={{ width: 1, background: T.border, flexShrink: 0 }} />
             <div style={{ flex: "1 1 240px", paddingLeft: 28 }}>
-              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em" }}>FOR CLIENTS</div>
+              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CLIENTS</div>
               {row("Job posting", "no account needed", "$0", true)}
               {row("Request for Proposal", "direct to contractor", "$1.75", false)}
               {row("Timed session", "60-min window", "$1.50", false)}
@@ -260,18 +260,18 @@ const TAB_DATA = [
       ];
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6 }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
           <div style={{ background: T.bg, borderRadius: 10, padding: 20, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4 }}>Kitchen Renovation — Full Project</div>
-              <div style={{ ...mono, fontSize: 11, color: "#444" }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4, fontStyle: "italic" }}>Kitchen Renovation — Full Project</div>
+              <div style={{ ...mono, fontSize: 11, color: "#444", fontWeight: 700, fontStyle: "italic" }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {slots.map((s) => (
                 <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
                   <div style={{ fontSize: 18, color: s.filled ? T.amber : "#777", marginBottom: 5 }}>{s.icon}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#555", marginBottom: 4 }}>{s.trade}</div>
-                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#666" }}>{s.status}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#555", marginBottom: 4, fontStyle: "italic" }}>{s.trade}</div>
+                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#666", fontWeight: 700, fontStyle: "italic" }}>{s.status}</div>
                 </div>
               ))}
             </div>
@@ -343,8 +343,8 @@ function IntegritySection() {
             { label: "TRIGGER_02 // MUTUAL_RATINGS", heading: "Mandatory Mutual Ratings", desc: "Both parties must submit ratings at closeout. Non-compliant accounts are held until the rating is submitted.", badge: "hold: non-compliant party only" },
           ].map((c) => (
             <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
-              <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{c.heading}</h3>
+              <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>{c.label}</div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>{c.heading}</h3>
               <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12 }}>{c.desc}</p>
               <span style={{ ...mono, fontSize: 10, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "3px 8px" }}>{c.badge}</span>
             </div>
@@ -448,8 +448,8 @@ function FAQSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16 }}>
           {FAQ_ITEMS.map(({ q, a }) => (
             <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 10, lineHeight: 1.4 }}>{q}</h3>
-              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0 }}>{a}</p>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 10, lineHeight: 1.4, fontStyle: "italic" }}>{q}</h3>
+              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0, fontWeight: 700, fontStyle: "italic" }}>{a}</p>
             </div>
           ))}
         </div>
