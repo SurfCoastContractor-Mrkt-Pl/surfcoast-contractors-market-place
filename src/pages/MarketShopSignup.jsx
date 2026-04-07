@@ -117,50 +117,63 @@ export default function MarketShopSignup() {
   };
 
   // If no type param, show type selection screen
+  const T = { bg: "#EBEBEC", card: "#fff", dark: "#1A1A1B", muted: "#333", border: "#D0D0D2", amber: "#5C3500", amberBg: "#F0E0C0", amberTint: "#FBF5EC", shadow: "3px 3px 0px #5C3500" };
+  const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
+
   if (!type) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
+        {/* Ticker */}
+        <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+          <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// MARKET SHOP · OPEN YOUR BOOTH OR SPACE</span>
+          <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+        </div>
+
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: "52px 24px" }}>
           <button
             onClick={() => navigate('/MarketDirectory')}
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 font-medium"
+            style={{ ...mono, fontSize: 11, color: T.muted, background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, marginBottom: 28, padding: 0 }}
           >
-            <ChevronLeft className="w-4 h-4" /> Back
+            <ChevronLeft style={{ width: 13, height: 13 }} /> Back to Directory
           </button>
 
-          <div className="text-center mb-12">
-            <p className="text-lg text-slate-500 mb-2 font-medium">Welcome to the Marketplace</p>
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">Pick Your Market</h1>
-            <p className="text-lg text-slate-600">Select the type of marketplace that fits your business</p>
-          </div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em" }}>// PICK YOUR MARKET TYPE</div>
+          <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: T.dark, marginBottom: 10, lineHeight: 1.1 }}>Open Your Market Booth</h1>
+          <p style={{ fontSize: 15, color: T.muted, marginBottom: 40, fontStyle: "italic" }}>Select the type of marketplace that fits your business.</p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, maxWidth: 700 }}>
             <button
               onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
-              className="rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
+              style={{ background: T.card, border: `0.5px solid ${T.border}`, borderTop: `3px solid #16a34a`, borderRadius: 10, boxShadow: T.shadow, padding: 28, textAlign: "left", cursor: "pointer", transition: "box-shadow 0.2s ease" }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 3px 0px #5C3500, 0 0 18px 4px rgba(255,180,0,0.25)`}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = T.shadow}
             >
-              <div className="w-16 h-16 rounded-xl bg-green-200 flex items-center justify-center">
-                <Leaf className="w-8 h-8 text-green-700" strokeWidth={1.5} />
+              <div style={{ width: 44, height: 44, borderRadius: 8, background: "#dcfce7", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                <Leaf style={{ width: 22, height: 22, color: "#16a34a" }} strokeWidth={1.5} />
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-green-900 mb-2">Farmers Market Vendor</h2>
-                <p className="text-green-800">Set up your market booth and start selling fresh produce, goods, and homemade products</p>
-              </div>
-              <div className="mt-2 text-sm text-green-700 font-semibold">Get Started →</div>
+              <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>// FARMERS MARKET</div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: T.dark, marginBottom: 8 }}>Farmers Market Vendor</h2>
+              <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.65, fontStyle: "italic", marginBottom: 16 }}>
+                Set up your market booth and start selling fresh produce, goods, and homemade products.
+              </p>
+              <span style={{ ...mono, fontSize: 11, color: T.amber }}>Get Started →</span>
             </button>
 
             <button
               onClick={() => navigate('/MarketShopSignup?type=swap_meet')}
-              className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all p-8 text-left flex flex-col gap-4"
+              style={{ background: T.card, border: `0.5px solid ${T.border}`, borderTop: `3px solid ${T.amber}`, borderRadius: 10, boxShadow: T.shadow, padding: 28, textAlign: "left", cursor: "pointer", transition: "box-shadow 0.2s ease" }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 3px 0px #5C3500, 0 0 18px 4px rgba(255,180,0,0.25)`}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = T.shadow}
             >
-              <div className="w-16 h-16 rounded-xl bg-amber-200 flex items-center justify-center">
-                <Tag className="w-8 h-8 text-amber-700" strokeWidth={1.5} />
+              <div style={{ width: 44, height: 44, borderRadius: 8, background: T.amberTint, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                <Tag style={{ width: 22, height: 22, color: T.amber }} strokeWidth={1.5} />
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-amber-900 mb-2">Swap Meet Vendor</h2>
-                <p className="text-amber-800">Claim your space, list your goods, and connect with buyers at your local swap meet</p>
-              </div>
-              <div className="mt-2 text-sm text-amber-700 font-semibold">Get Started →</div>
+              <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>// SWAP MEET</div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: T.dark, marginBottom: 8 }}>Swap Meet Vendor</h2>
+              <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.65, fontStyle: "italic", marginBottom: 16 }}>
+                Claim your space, list your goods, and connect with buyers at your local swap meet.
+              </p>
+              <span style={{ ...mono, fontSize: 11, color: T.amber }}>Get Started →</span>
             </button>
           </div>
         </div>
@@ -299,7 +312,13 @@ export default function MarketShopSignup() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${theme.themeClass} py-8 px-4`}>
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: "#EBEBEC" }}>
+      {/* Ticker */}
+      <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// MARKET SHOP · {type === 'swap_meet' ? 'SWAP MEET' : 'FARMERS MARKET'} SIGNUP</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
+    <div style={{ padding: "16px 0 32px" }}>
       {showPaymentSelector && createdShop && (
         <MarketShopPaymentModelSelector
           shopId={createdShop.id}
@@ -609,6 +628,7 @@ export default function MarketShopSignup() {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 }
