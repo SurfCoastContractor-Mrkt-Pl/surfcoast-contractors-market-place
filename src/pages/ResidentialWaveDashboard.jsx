@@ -134,7 +134,7 @@ export default function ResidentialWaveDashboard() {
           <div style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16, paddingBottom: 16, borderBottom: "0.5px solid " + T.border }}>
             <p style={{ color: T.dark, fontWeight: 600, margin: 0, fontStyle: "italic" }}>Residential Wave — Premium Invoice Management</p>
           </div>
-          <div style={{ padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}
+          <div style={{ padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
             <p className="text-slate-500 mb-6">
               Manage invoices, process customer payments, and track your residential projects with our premium system.
             </p>

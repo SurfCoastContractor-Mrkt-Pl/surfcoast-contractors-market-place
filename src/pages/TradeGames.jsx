@@ -86,10 +86,20 @@ export default function TradeGames() {
     }
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   // Challenge creator modal
   if (showChallengeCreator && selectedGame) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+      <div style={{ minHeight: "100vh", background: T.bg, paddingLeft: 24, paddingRight: 24, paddingTop: 24, paddingBottom: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
         <div className="max-w-2xl mx-auto">
           <Button
             variant="outline"
@@ -168,13 +178,13 @@ export default function TradeGames() {
 
   // Games list with Under Construction overlay
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+    <div style={{ position: "relative", minHeight: "100vh", background: T.bg, paddingLeft: 24, paddingRight: 24, paddingTop: 24, paddingBottom: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       {/* Under Construction Overlay */}
-      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-        <div className="text-center bg-white p-8 rounded-xl shadow-2xl border border-gray-300 max-w-sm">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Under Construction</h2>
-          <p className="text-gray-700 text-lg mb-2">Educational Tools and Visual Aids</p>
-          <p className="text-gray-500 text-sm">Coming soon with exciting interactive learning experiences</p>
+      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, paddingLeft: 16, paddingRight: 16 }}>
+        <div style={{ textAlign: "center", background: T.card, paddingLeft: 32, paddingRight: 32, paddingTop: 32, paddingBottom: 32, borderRadius: 12, boxShadow: T.shadow, border: "1px solid " + T.border, maxWidth: 448 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: T.dark, marginBottom: 12, fontStyle: "italic" }}>Under Construction</h2>
+          <p style={{ color: T.dark, fontSize: 16, marginBottom: 8, fontStyle: "italic" }}>Educational Tools and Visual Aids</p>
+          <p style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Coming soon with exciting interactive learning experiences</p>
         </div>
       </div>
 

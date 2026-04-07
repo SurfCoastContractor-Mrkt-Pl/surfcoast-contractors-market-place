@@ -41,9 +41,19 @@ export default function GameLeaderboard() {
     enabled: !!gameId
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!gameId) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+      <div style={{ minHeight: "100vh", background: T.bg, paddingLeft: 24, paddingRight: 24, paddingTop: 24, paddingBottom: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center py-12">
             <h1 className="text-3xl font-bold text-slate-900 mb-4">No Game Selected</h1>
@@ -57,14 +67,14 @@ export default function GameLeaderboard() {
 
   if (gameLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-6">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingLeft: 24, paddingRight: 24, paddingTop: 24, paddingBottom: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-8">
