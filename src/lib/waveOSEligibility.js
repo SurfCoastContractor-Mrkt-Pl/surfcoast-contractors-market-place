@@ -9,41 +9,41 @@ export const WAVE_OS_TIERS = {
   starter: {
     name: 'WAVE OS Starter',
     stripeProductId: 'prod_UFJx2uh0L4Pj0y',
-    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID', // secret key ref
+    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID',
     monthlyPrice: 19,
-    jobsRequired: 15,
-    requiresHIS: false,
+    jobsRequired: 5,  // Unlocks at 5 completed jobs
+    requiresLicense: false,
     description: 'Entry-level WAVE OS subscription',
     features: ['Job management', 'Basic scheduling', 'Client messaging'],
   },
   pro: {
     name: 'WAVE OS Pro',
     stripeProductId: 'prod_UFJxBAprP2FfPS',
-    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID', // Will need to map to actual Pro price
+    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID',
     monthlyPrice: 39,
-    jobsRequired: 15,
-    requiresHIS: false,
+    jobsRequired: 6,  // Unlocks at 6 completed jobs
+    requiresLicense: false,
     description: 'Professional WAVE OS with advanced features',
     features: ['All Starter features', 'Advanced analytics', 'Custom invoicing', 'Team management'],
   },
   max: {
     name: 'WAVE OS Max',
     stripeProductId: 'prod_UFJxm6E04YMx9y',
-    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID', // Will need to map to actual Max price
+    stripePriceId: 'STRIPE_SUBSCRIPTION_PRICE_ID',
     monthlyPrice: 59,
-    jobsRequired: 15,
-    requiresHIS: false,
+    jobsRequired: 50,  // Unlocks at 50 completed jobs
+    requiresLicense: false,
     description: 'Maximum WAVE OS with all features',
     features: ['All Pro features', 'Unlimited projects', 'Priority support', 'API access'],
   },
   premium: {
-    name: 'WAVE FO Premium',
+    name: 'WAVE OS Premium',
     stripeProductId: 'prod_UFJxSbz1OcJqQZ',
     stripePriceId: 'STRIPE_WAVE_FO_PREMIUM_PRICE_ID',
     monthlyPrice: 100,
-    jobsRequired: 0, // Not gated by jobs
-    requiresHIS: true, // CRITICAL: H.I.S. license REQUIRED
-    description: 'Premium WAVE OS for licensed contractors only',
+    jobsRequired: 100,  // Unlocks at 100 completed jobs (waived if license verified at signup)
+    requiresLicense: true,  // CRITICAL: Verified Licensed Sole Proprietor required
+    description: 'Premium WAVE OS for licensed sole proprietors only',
     features: ['All Max features', 'Licensed-only tools', 'Compliance dashboard', 'Advanced reporting'],
   },
   residentialBundle: {
@@ -65,19 +65,29 @@ export const WAVE_OS_TIERS = {
  * @param {boolean} hasHISLicense - Whether contractor has H.I.S. license verified
  * @returns {object} { eligible: boolean, reason: string }
  */
-export function checkWaveOSEligibility(tierKey, completedJobsCount, hasHISLicense) {
+/**
+ * @param {string} tierKey
+ * @param {number} completedJobsCount
+ * @param {boolean} isLicensedSoleProprietor - contractor.is_licensed_sole_proprietor
+ * @param {boolean} licenseVerified - contractor.license_verified
+ */
+export function checkWaveOSEligibility(tierKey, completedJobsCount, isLicensedSoleProprietor, licenseVerified) {
   const tier = WAVE_OS_TIERS[tierKey];
 
   if (!tier) {
     return { eligible: false, reason: 'Invalid WAVE OS tier.' };
   }
 
-  // Check H.I.S. license requirement
-  if (tier.requiresHIS && !hasHISLicense) {
-    return {
-      eligible: false,
-      reason: `${tier.name} requires a verified H.I.S. (Home Improvement Salesperson) license. Add it in your profile under Credentials.`,
-    };
+  // Check Licensed Sole Proprietor requirement (Premium + Residential Bundle)
+  if (tier.requiresLicense) {
+    if (!isLicensedSoleProprietor || !licenseVerified) {
+      return {
+        eligible: false,
+        reason: `${tier.name} requires a verified professional license as a Licensed Sole Proprietor. Add your license in your profile under Credentials.`,
+      };
+    }
+    // If license is verified, jobs requirement is waived for licensed contractors
+    return { eligible: true, reason: 'Eligible for this tier.' };
   }
 
   // Check jobs requirement
@@ -98,9 +108,9 @@ export function checkWaveOSEligibility(tierKey, completedJobsCount, hasHISLicens
  * @param {boolean} hasHISLicense
  * @returns {array} Array of tier keys contractor can subscribe to
  */
-export function getEligibleWaveOSTiers(completedJobsCount, hasHISLicense) {
+export function getEligibleWaveOSTiers(completedJobsCount, isLicensedSoleProprietor, licenseVerified) {
   return Object.keys(WAVE_OS_TIERS).filter(tierKey => {
-    const { eligible } = checkWaveOSEligibility(tierKey, completedJobsCount, hasHISLicense);
+    const { eligible } = checkWaveOSEligibility(tierKey, completedJobsCount, isLicensedSoleProprietor, licenseVerified);
     return eligible;
   });
 }

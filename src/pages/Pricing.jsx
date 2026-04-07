@@ -464,7 +464,7 @@ export default function Pricing() {
               <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>Advanced tools, superior efficiency, and enhanced user-friendly interface for serious booth operators.</p>
             </div>
             <Link to="/MarketShopSignup" style={{ display: "block", textAlign: "center", background: "#a855f7", color: "#0f172a", padding: "13px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", textDecoration: "none", marginBottom: "12px" }}>
-              Upgrade to WAVEShop FO →
+              Upgrade to WAVEshop OS →
             </Link>
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Month-to-month · Cancel anytime</p>
           </div>

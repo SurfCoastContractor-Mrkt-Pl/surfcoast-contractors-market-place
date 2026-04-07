@@ -325,9 +325,8 @@ function AccountDropdown({
            <Item path="/ConsumerSignup" icon={ShoppingBag} highlight>+ Consumer</Item>
          )}
          {!hasMarketShop && (
-           <Item path="/MarketShopSignup" icon={Store} highlight>+ Market Booth</Item>
+           <Item path="/MarketShopSignup" icon={Store} highlight>+ Market Booth / Vendor Space</Item>
          )}
-         <Item path="/MarketShopSignup" icon={Store} highlight>+ Vendor Space</Item>
 
         <Divider />
 

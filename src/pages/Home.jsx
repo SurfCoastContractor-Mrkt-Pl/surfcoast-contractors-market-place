@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { useEffect, useState } from "react";
 
 const T = {
   bg: "#EBEBEC",
@@ -60,9 +61,24 @@ const tag = (text, amber) => (
 
 // ── Ticker ─────────────────────────────────────────────────────
 function TickerBar() {
+  const [spotsRemaining, setSpotsRemaining] = useState(null);
+
+  useEffect(() => {
+    import('@/api/base44Client').then(({ base44 }) => {
+      base44.entities.Contractor.filter({ is_founding_member: true }).then((founders) => {
+        const taken = founders ? founders.length : 0;
+        setSpotsRemaining(Math.max(0, 100 - taken));
+      }).catch(() => setSpotsRemaining(null));
+    });
+  }, []);
+
+  const label = spotsRemaining !== null
+    ? `founding_100 — ${spotsRemaining} spot${spotsRemaining !== 1 ? 's' : ''} remaining · 1 year all-access free`
+    : `founding_100 — limited spots remaining · 1 year all-access free`;
+
   return (
     <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-      <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>founding_100 — 77 spots remaining · 1 year all-access free</span>
+      <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>{label}</span>
       <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
     </div>
   );
