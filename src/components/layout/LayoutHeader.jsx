@@ -293,7 +293,7 @@ function AccountDropdown({
           ? <Item path="/Jobs" icon={Briefcase}>Browse Jobs</Item>
           : <Item path="/SearchContractors" icon={Users}>Find Entrepreneurs</Item>
         }
-        <Item path="/Messaging" icon={MessageCircle}>
+        <Item path={isContractor ? "/ContractorInquiries" : "/Messaging"} icon={MessageCircle}>
          Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
         </Item>
         <Item path="/BoothsAndVendorsMap" icon={Store}>Markets</Item>
