@@ -2,112 +2,113 @@
   "name": "Campaign",
   "type": "object",
   "properties": {
-    "name": {
+    "contractor_id": {
       "type": "string",
-      "description": "Campaign name"
+      "description": "ID of the contractor managing this campaign"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "campaign_name": {
+      "type": "string",
+      "description": "Name of the marketing campaign"
     },
     "description": {
       "type": "string",
-      "description": "Campaign description"
+      "description": "Campaign description and goals"
     },
-    "type": {
+    "campaign_type": {
       "type": "string",
       "enum": [
+        "email",
+        "sms",
+        "social_media",
+        "seasonal",
         "referral",
-        "promotion",
-        "seasonal"
+        "custom"
       ],
-      "description": "Campaign type"
+      "description": "Type of campaign"
     },
     "status": {
       "type": "string",
       "enum": [
+        "draft",
+        "scheduled",
         "active",
-        "paused",
-        "ended"
+        "completed",
+        "paused"
       ],
-      "default": "active",
-      "description": "Campaign status"
+      "default": "draft",
+      "description": "Current status"
     },
     "start_date": {
       "type": "string",
-      "description": "ISO timestamp when campaign started"
+      "format": "date-time",
+      "description": "When campaign starts"
     },
     "end_date": {
       "type": "string",
-      "description": "ISO timestamp when campaign ended or will end"
+      "format": "date-time",
+      "description": "When campaign ends"
     },
-    "duration_days": {
-      "type": "number",
-      "description": "Duration in days (e.g., 90 for 3 months)"
-    },
-    "target_signups": {
-      "type": "number",
-      "description": "Target number of completed profile signups to trigger campaign end"
-    },
-    "current_signups": {
-      "type": "number",
-      "default": 0,
-      "description": "Current count of verified signups with 100% profile completion"
-    },
-    "ended_reason": {
+    "target_audience": {
       "type": "string",
       "enum": [
-        "duration_reached",
-        "signup_target_reached",
-        "manual_stop"
+        "existing_clients",
+        "past_clients",
+        "website_visitors",
+        "referrals",
+        "custom"
       ],
-      "description": "Reason campaign ended"
+      "description": "Who to target"
     },
-    "config": {
-      "type": "object",
-      "description": "Campaign configuration",
-      "properties": {
-        "trial_extension_days": {
-          "type": "number",
-          "description": "Days to extend trial per referral completion"
-        },
-        "required_profile_completion_percent": {
-          "type": "number",
-          "description": "Profile completion percentage required (0-100)"
-        }
-      }
+    "message": {
+      "type": "string",
+      "description": "Campaign message content"
+    },
+    "call_to_action": {
+      "type": "string",
+      "description": "CTA button text and link"
+    },
+    "budget": {
+      "type": "number",
+      "description": "Campaign budget"
+    },
+    "analytics_sent": {
+      "type": "number",
+      "default": 0,
+      "description": "Messages sent"
+    },
+    "analytics_opened": {
+      "type": "number",
+      "default": 0,
+      "description": "Messages opened/clicked"
+    },
+    "analytics_conversions": {
+      "type": "number",
+      "default": 0,
+      "description": "Conversions from campaign"
     }
   },
   "required": [
-    "name",
-    "type",
-    "start_date",
-    "duration_days",
-    "target_signups"
+    "contractor_id",
+    "contractor_email",
+    "campaign_name",
+    "campaign_type"
   ],
   "rls": {
     "create": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "data.contractor_email": "{{user.email}}"
     },
     "read": {
-      "$or": [
-        {
-          "data.status": "active"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "data.contractor_email": "{{user.email}}"
     },
     "update": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "data.contractor_email": "{{user.email}}"
     },
     "delete": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "data.contractor_email": "{{user.email}}"
     }
   }
 }

@@ -2,81 +2,62 @@
   "name": "ProposalOption",
   "type": "object",
   "properties": {
-    "proposal_id": {
+    "quote_request_id": {
       "type": "string",
-      "description": "ID of the parent Proposal"
+      "description": "ID of the associated QuoteRequest"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
     },
     "contractor_email": {
       "type": "string",
-      "description": "Email of the contractor (for quick access)"
+      "description": "Email of the contractor"
     },
     "option_number": {
       "type": "number",
-      "description": "Display order of the option (1, 2, 3, etc.)"
+      "description": "Option order (1, 2, 3, etc.)"
     },
-    "title": {
+    "option_name": {
       "type": "string",
-      "description": "Short title for this option (e.g., 'Basic', 'Standard', 'Premium')"
+      "description": "Name of this option (e.g., 'Basic', 'Standard', 'Premium')"
     },
     "description": {
       "type": "string",
-      "description": "Detailed description of the work to be performed"
+      "description": "Detailed description of this option"
     },
-    "scope_summary": {
-      "type": "string",
-      "description": "Summary of scope of work"
-    },
-    "cost_type": {
-      "type": "string",
-      "enum": [
-        "hourly",
-        "fixed"
-      ],
-      "description": "Whether the cost is hourly or fixed"
-    },
-    "cost_amount": {
+    "price": {
       "type": "number",
-      "description": "The hourly rate or fixed total cost"
+      "description": "Price for this option"
     },
-    "estimated_hours": {
-      "type": "number",
-      "description": "Estimated hours if hourly pricing"
-    },
-    "estimated_duration": {
+    "timeline": {
       "type": "string",
-      "description": "Estimated duration in human-readable format (e.g., '2-4 hours')"
+      "description": "Estimated timeline for completion"
     },
     "includes": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of what's included in this option"
-    },
-    "excludes": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "List of what's NOT included"
+      "description": "Features/deliverables included"
     },
     "notes": {
       "type": "string",
-      "description": "Additional notes or considerations for this option"
+      "description": "Additional notes or terms"
     },
-    "created_from_template_id": {
-      "type": "string",
-      "description": "ID of the ServiceOffering template this was created from (if applicable)"
+    "selected": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether client selected this option"
     }
   },
   "required": [
-    "proposal_id",
+    "quote_request_id",
+    "contractor_id",
     "contractor_email",
     "option_number",
-    "title",
-    "description",
-    "cost_type",
-    "cost_amount"
+    "option_name",
+    "price"
   ],
   "rls": {
     "create": {
@@ -90,17 +71,6 @@
         {
           "user_condition": {
             "role": "admin"
-          }
-        },
-        {
-          "data.proposal_id": {
-            "$in": {
-              "entity": "Proposal",
-              "query": {
-                "data.customer_email": "{{user.email}}"
-              },
-              "field": "id"
-            }
           }
         }
       ]
@@ -118,16 +88,7 @@
       ]
     },
     "delete": {
-      "$or": [
-        {
-          "data.contractor_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "data.contractor_email": "{{user.email}}"
     }
   }
 }
