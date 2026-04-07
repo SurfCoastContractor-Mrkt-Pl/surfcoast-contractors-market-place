@@ -197,8 +197,18 @@ export default function ContractorDashboard() {
     closed: <CheckCircle className="w-4 h-4" />,
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#333",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   return (
-    <div className="min-h-screen" style={{ background: '#555556', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: T.bg, padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {pendingRatingScopes.length > 0 && (
         <PendingRatingModal
           scope={pendingRatingScopes[0]}
@@ -210,17 +220,17 @@ export default function ContractorDashboard() {
       <div className="max-w-7xl mx-auto">
         {/* Payout Not Set Up — Amber Warning Banner */}
         {contractorProfile && !contractorProfile.stripe_account_charges_enabled && (
-          <div style={{ background: '#fffbeb', border: '2px solid #f59e0b', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: '240px' }}>
-              <Zap style={{ width: '20px', height: '20px', color: '#d97706', flexShrink: 0 }} />
-              <p style={{ margin: 0, fontSize: '14px', fontWeight: '600', color: '#92400e' }}>
-                Your payout account isn't set up yet — you won't receive payment until you complete this step
-              </p>
+          <div style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '8px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: '240px' }}>
+           <Zap style={{ width: '20px', height: '20px', color: T.amber, flexShrink: 0 }} />
+           <p style={{ margin: 0, fontSize: '14px', fontWeight: '600', color: T.dark }}>
+             Your payout account isn't set up yet — you won't receive payment until you complete this step
+           </p>
             </div>
             <Button
               onClick={handleSetupPayouts}
               disabled={payoutLoading}
-              style={{ background: '#d97706', color: '#fff', borderRadius: '8px', fontWeight: '700', fontSize: '14px', whiteSpace: 'nowrap', flexShrink: 0 }}
+              style={{ background: T.amber, color: '#fff', borderRadius: '8px', fontWeight: '700', fontSize: '14px', whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               {payoutLoading ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
               Set Up Payouts Now →
@@ -232,7 +242,7 @@ export default function ContractorDashboard() {
          <div className="mb-8">
            <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
              <div className="flex items-center gap-3 flex-wrap">
-               <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#fff', margin: 0 }}>My Dashboard</h1>
+               <h1 style={{ fontSize: '36px', fontWeight: 800, color: T.dark, margin: 0 }}>My Dashboard</h1>
               {contractorProfile?.stripe_account_charges_enabled && (
                 <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   💸 Payouts Active — deposits within 2 business days
@@ -256,14 +266,14 @@ export default function ContractorDashboard() {
               <LogOut className="w-4 h-4" /> Logout
             </button>
           </div>
-          <p style={{ color: '#ccc', marginTop: '8px' }}>Track your active jobs and communications</p>
+          <p style={{ color: T.muted, marginTop: '8px' }}>Track your active jobs and communications</p>
           {contractorProfile && (
             <div className="mt-2 flex gap-4 text-sm">
-              <span style={{ color: '#aaa' }}>
-                👁️ <strong style={{ color: '#fff' }}>{(contractorProfile.profile_views || 0).toLocaleString()}</strong> total profile views
+              <span style={{ color: T.muted }}>
+                👁️ <strong style={{ color: T.dark }}>{(contractorProfile.profile_views || 0).toLocaleString()}</strong> total profile views
               </span>
-              <span style={{ color: '#aaa' }}>
-                📅 <strong style={{ color: '#fff' }}>{contractorProfile.profile_views_this_week || 0}</strong> this week
+              <span style={{ color: T.muted }}>
+                📅 <strong style={{ color: T.dark }}>{contractorProfile.profile_views_this_week || 0}</strong> this week
               </span>
             </div>
           )}
@@ -277,7 +287,7 @@ export default function ContractorDashboard() {
         {/* Analytics Metrics */}
         {contractorProfile && (
           <div className="mb-8">
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#fff', marginBottom: '16px' }}>Analytics</h2>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: T.dark, marginBottom: '16px' }}>Analytics</h2>
             <ContractorAnalyticsMetrics 
               contractorProfile={contractorProfile}
               completedScopes={completedScopes}
@@ -340,17 +350,17 @@ export default function ContractorDashboard() {
           const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
 
           return (
-            <div style={{ marginBottom: '24px', borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
+            <div style={{ marginBottom: '24px', borderRadius: '10px', border: `1px solid ${T.border}`, background: T.card, padding: '20px', boxShadow: T.shadow }}>
               <div className="flex items-center gap-2 mb-4">
-                <Waves className="w-5 h-5" style={{ color: '#FF8C00' }} />
-                <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>SurfCoast-Waves Progress</h2>
+                <Waves className="w-5 h-5" style={{ color: T.amber }} />
+                <h2 style={{ fontSize: '16px', fontWeight: 800, color: T.dark, margin: 0 }}>SurfCoast-Waves Progress</h2>
                 {currentWave && (
                   <span className="ml-auto text-xs font-semibold px-2.5 py-1 rounded-full text-white" style={{ background: currentWave.color }}>
                     {currentWave.emoji} {currentWave.label}
                   </span>
                 )}
                 {!currentWave && (
-                  <span style={{ marginLeft: 'auto', fontSize: '12px', color: '#999', fontWeight: '500' }}>No wave yet — complete your first verified job</span>
+                  <span style={{ marginLeft: 'auto', fontSize: '12px', color: T.muted, fontWeight: '500' }}>No wave yet — complete your first verified job</span>
                 )}
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -361,10 +371,10 @@ export default function ContractorDashboard() {
                   return (
                     <div
                       key={w.id}
-                      className="rounded-xl border p-3 transition-all"
+                      className="rounded-lg border p-3 transition-all"
                       style={{
-                        borderColor: isCurrent ? w.color : isUnlocked ? '#505050' : '#505050',
-                        background: isCurrent ? `${w.color}1a` : isUnlocked ? '#303030' : '#303030',
+                        borderColor: isCurrent ? w.color : isUnlocked ? T.border : T.border,
+                        background: isCurrent ? `${w.color}08` : T.bg,
                         opacity: isUnlocked ? 1 : 0.45,
                         boxShadow: isCurrent ? `0 0 0 2px ${w.color}44` : 'none',
                       }}
@@ -373,20 +383,20 @@ export default function ContractorDashboard() {
                         <span className="text-lg">{w.emoji}</span>
                         {isUnlocked
                           ? <CheckCircle className="w-3.5 h-3.5" style={{ color: w.color }} />
-                          : <Lock className="w-3 h-3" style={{ color: '#666' }} />
+                          : <Lock className="w-3 h-3" style={{ color: '#999' }} />
                         }
                       </div>
-                      <p style={{ fontSize: '12px', fontWeight: 800, color: '#fff', lineHeight: '1.2', marginBottom: '4px' }}>{w.name}</p>
-                      <p style={{ fontSize: '10px', color: '#aaa', lineHeight: '1.2', marginBottom: '8px' }}>{w.customersRequired} customer{w.customersRequired !== 1 ? 's' : ''}</p>
+                      <p style={{ fontSize: '12px', fontWeight: 800, color: T.dark, lineHeight: '1.2', marginBottom: '4px' }}>{w.name}</p>
+                      <p style={{ fontSize: '10px', color: T.muted, lineHeight: '1.2', marginBottom: '8px' }}>{w.customersRequired} customer{w.customersRequired !== 1 ? 's' : ''}</p>
                       {w.isFieldOpsUnlock && (
-                        <span style={{ fontSize: '9px', fontWeight: 800, padding: '4px 6px', borderRadius: '4px', background: '#2E5BFF', color: '#fff' }}>Field Ops</span>
+                        <span style={{ fontSize: '9px', fontWeight: 800, padding: '4px 6px', borderRadius: '4px', background: w.color, color: '#fff' }}>Field Ops</span>
                       )}
                       {!isUnlocked && (
                         <div style={{ marginTop: '8px' }}>
-                          <div style={{ width: '100%', height: '4px', background: '#505050', borderRadius: '9999px' }}>
-                            <div style={{ height: '4px', borderRadius: '9999px', width: `${progress}%`, background: w.color }} />
+                          <div style={{ width: '100%', height: '3px', background: T.border, borderRadius: '9999px' }}>
+                            <div style={{ height: '3px', borderRadius: '9999px', width: `${progress}%`, background: w.color }} />
                           </div>
-                          <p style={{ fontSize: '10px', color: '#666', marginTop: '4px' }}>{uniqueCustomers}/{w.customersRequired}</p>
+                          <p style={{ fontSize: '10px', color: T.muted, marginTop: '4px' }}>{uniqueCustomers}/{w.customersRequired}</p>
                         </div>
                       )}
                     </div>
@@ -400,20 +410,20 @@ export default function ContractorDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
            {/* Active Jobs */}
            <div className="lg:col-span-2">
-             <div style={{ borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
-               <div style={{ borderBottom: '1px solid #505050', paddingBottom: '16px', marginBottom: '16px' }}>
+             <div style={{ borderRadius: '10px', border: `1px solid ${T.border}`, background: T.card, padding: '20px', boxShadow: T.shadow }}>
+               <div style={{ borderBottom: `1px solid ${T.border}`, paddingBottom: '16px', marginBottom: '16px' }}>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                   <Briefcase className="w-5 h-5" style={{ color: '#FF8C00' }} />
-                   <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>Active Jobs</h3>
+                   <Briefcase className="w-5 h-5" style={{ color: T.amber }} />
+                   <h3 style={{ fontSize: '16px', fontWeight: 800, color: T.dark, margin: 0 }}>Active Jobs</h3>
                  </div>
-                 <p style={{ fontSize: '14px', color: '#aaa', margin: '0' }}>Projects you're currently working on</p>
+                 <p style={{ fontSize: '14px', color: T.muted, margin: '0' }}>Projects you're currently working on</p>
                </div>
               <div>
                 {scopesLoading ? (
-                  <div style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>Loading jobs...</div>
+                  <div style={{ textAlign: 'center', padding: '32px 0', color: T.muted }}>Loading jobs...</div>
                 ) : activeScopes.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '32px 0' }}>
-                    <p style={{ color: '#aaa', marginBottom: '16px' }}>No active jobs yet</p>
+                    <p style={{ color: T.muted, marginBottom: '16px' }}>No active jobs yet</p>
                     <Link to="/Jobs">
                       <Button>Browse Jobs</Button>
                     </Link>
@@ -421,11 +431,11 @@ export default function ContractorDashboard() {
                 ) : (
                   <div className="space-y-4">
                     {activeScopes.map((scope) => (
-                      <div key={scope.id} style={{ border: '1px solid #505050', borderRadius: '8px', padding: '16px' }}>
+                      <div key={scope.id} style={{ border: `1px solid ${T.border}`, borderRadius: '8px', padding: '16px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                           <div>
-                            <h3 style={{ fontWeight: '600', color: '#fff', margin: '0 0 4px 0' }}>{scope.job_title}</h3>
-                            <p style={{ fontSize: '14px', color: '#aaa', margin: 0 }}>Customer: {scope.customer_name}</p>
+                            <h3 style={{ fontWeight: '600', color: T.dark, margin: '0 0 4px 0' }}>{scope.job_title}</h3>
+                            <p style={{ fontSize: '14px', color: T.muted, margin: 0 }}>Customer: {scope.customer_name}</p>
                           </div>
                           <Badge className={statusColor[scope.status] || 'bg-slate-100 text-slate-800'}>
                             {scope.status.replace(/_/g, ' ')}
@@ -433,17 +443,17 @@ export default function ContractorDashboard() {
                         </div>
                         <div className="grid grid-cols-2 gap-4 text-sm mb-3">
                           <div>
-                            <p style={{ color: '#aaa', margin: 0 }}>Scope:</p>
-                            <p style={{ fontWeight: '500', color: '#fff', margin: 0 }}>${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
+                            <p style={{ color: T.muted, margin: 0 }}>Scope:</p>
+                            <p style={{ fontWeight: '500', color: T.dark, margin: 0 }}>${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
                             {scope.platform_fee_percentage && (
-                              <p style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                              <p style={{ fontSize: '12px', color: T.muted, marginTop: '4px' }}>
                                 Payout: ${(scope.contractor_payout_amount || scope.cost_amount - (scope.cost_amount * scope.platform_fee_percentage / 100)).toFixed(2)}
                               </p>
                             )}
                           </div>
                           <div>
-                            <p style={{ color: '#aaa', margin: 0 }}>Work Date:</p>
-                            <p style={{ fontWeight: '500', color: '#fff', margin: 0 }}>{scope.agreed_work_date || 'TBD'}</p>
+                            <p style={{ color: T.muted, margin: 0 }}>Work Date:</p>
+                            <p style={{ fontWeight: '500', color: T.dark, margin: 0 }}>{scope.agreed_work_date || 'TBD'}</p>
                           </div>
                         </div>
                         <Link to={`/ProjectManagement?scopeId=${scope.id}`}>
@@ -459,26 +469,26 @@ export default function ContractorDashboard() {
 
           {/* Recent Messages */}
           <div>
-            <div style={{ borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
-              <div style={{ borderBottom: '1px solid #505050', paddingBottom: '16px', marginBottom: '16px' }}>
+            <div style={{ borderRadius: '10px', border: `1px solid ${T.border}`, background: T.card, padding: '20px', boxShadow: T.shadow }}>
+              <div style={{ borderBottom: `1px solid ${T.border}`, paddingBottom: '16px', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <MessageSquare className="w-5 h-5" style={{ color: '#FF8C00' }} />
-                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>Messages</h3>
+                  <MessageSquare className="w-5 h-5" style={{ color: T.amber }} />
+                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: T.dark, margin: 0 }}>Messages</h3>
                 </div>
-                <p style={{ fontSize: '14px', color: '#aaa', margin: '0' }}>Recent unread messages</p>
+                <p style={{ fontSize: '14px', color: T.muted, margin: '0' }}>Recent unread messages</p>
               </div>
               <div>
                 {messagesLoading ? (
-                  <div style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>Loading...</div>
+                  <div style={{ textAlign: 'center', padding: '32px 0', color: T.muted }}>Loading...</div>
                 ) : recentMessages.length === 0 ? (
-                  <p style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>No new messages</p>
+                  <p style={{ textAlign: 'center', padding: '32px 0', color: T.muted }}>No new messages</p>
                 ) : (
                   <div className="space-y-3">
                     {recentMessages.map((msg) => (
-                      <div key={msg.id} style={{ borderLeft: '2px solid #FF8C00', paddingLeft: '12px', paddingTop: '8px', paddingBottom: '8px' }}>
-                        <p style={{ fontSize: '12px', fontWeight: '600', color: '#fff', margin: 0 }}>{msg.sender_name}</p>
-                        <p style={{ fontSize: '12px', color: '#aaa', margin: '4px 0 0 0' }} className="line-clamp-2">{msg.body}</p>
-                        <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                      <div key={msg.id} style={{ borderLeft: `2px solid ${T.amber}`, paddingLeft: '12px', paddingTop: '8px', paddingBottom: '8px' }}>
+                        <p style={{ fontSize: '12px', fontWeight: '600', color: T.dark, margin: 0 }}>{msg.sender_name}</p>
+                        <p style={{ fontSize: '12px', color: T.muted, margin: '4px 0 0 0' }} className="line-clamp-2">{msg.body}</p>
+                        <p style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
                           {new Date(msg.created_date).toLocaleDateString()}
                         </p>
                       </div>
