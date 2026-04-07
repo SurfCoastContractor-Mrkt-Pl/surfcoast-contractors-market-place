@@ -11,7 +11,7 @@ export default function WaveOSAbout() {
           WAVE OS
         </h1>
         <p className="text-xl sm:text-2xl text-slate-700 max-w-3xl mx-auto mb-4 leading-relaxed">
-          The Operating System for Independent Contractors
+          The Operating System for Independent Entrepreneurs
         </p>
         <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
           Every job, every dollar, every client interaction—unified in one platform built from the ground up for how contractors actually work.
@@ -32,7 +32,7 @@ export default function WaveOSAbout() {
           <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">The Fragmentation Problem</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-red-600">What Most Contractors Face</h3>
+              <h3 className="text-lg font-semibold text-red-600">What Most Entrepreneurs Face</h3>
               <ul className="space-y-3 text-slate-700">
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 font-bold">•</span>
@@ -182,7 +182,7 @@ export default function WaveOSAbout() {
       {/* What Sets Us Apart */}
       <section className="bg-slate-900 text-white py-16 mt-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-12 text-center">Why Contractors Choose WAVE OS</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center">Why Entrepreneurs Choose WAVE OS</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-12 h-12 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
@@ -197,7 +197,7 @@ export default function WaveOSAbout() {
               <div className="w-12 h-12 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
                 <Users className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold mb-2">Built by Contractors</h3>
+              <h3 className="text-lg font-bold mb-2">Built by Entrepreneurs</h3>
               <p className="text-slate-300 text-sm">
                 We understand field work. Every feature solves a real problem you actually face.
               </p>
@@ -239,7 +239,7 @@ export default function WaveOSAbout() {
           <div className="bg-slate-100 rounded-lg p-4">
             <FileCheck className="w-8 h-8 text-blue-600 mx-auto mb-2" />
             <p className="text-sm font-semibold text-slate-900">Identity Verified</p>
-            <p className="text-xs text-slate-600">Every contractor checked</p>
+            <p className="text-xs text-slate-600">Every entrepreneur checked</p>
           </div>
           <div className="bg-slate-100 rounded-lg p-4">
             <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />

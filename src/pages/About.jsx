@@ -201,7 +201,7 @@ export default function About() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             <div style={{ ...cardStyle, borderTop: `3px solid ${T.amber}`, padding: 28, textAlign: "center" }}>
               <h3 style={{ fontSize: 17, fontWeight: 700, color: T.dark, marginBottom: 8 }}>WAVE OS Plans</h3>
-              <p style={{ fontSize: 13, color: T.muted, marginBottom: 16, fontStyle: "italic" }}>For contractors and solo professionals</p>
+              <p style={{ fontSize: 13, color: T.muted, marginBottom: 16, fontStyle: "italic" }}>For entrepreneurs and solo professionals</p>
               <div style={{ ...mono, fontSize: 34, fontWeight: 700, color: T.amber, marginBottom: 4 }}>From $19</div>
               <div style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>/month</div>
               <Link to="/pricing" style={{ display: "block", background: T.dark, color: "#fff", textDecoration: "none", borderRadius: 6, padding: "10px 16px", fontSize: 13, fontWeight: 700 }}>View All Plans →</Link>
