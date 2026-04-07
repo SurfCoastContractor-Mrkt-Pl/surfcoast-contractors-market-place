@@ -113,29 +113,29 @@ export default function RoleChoice() {
               <div style={{ width: 56, height: 56, borderRadius: 10, background: T.orangeTint, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Briefcase style={{ width: 32, height: 32, color: T.orange }} />
               </div>
-              <h2 style={{ fontSize: 22, fontWeight: 800, color: T.dark, fontStyle: "italic" }}>I'm Looking for Work</h2>
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: T.dark, fontStyle: "italic" }}>I Need Work Done</h2>
             </div>
 
             <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.6, marginBottom: 20, fontWeight: 600, fontStyle: "italic" }}>
-              Post jobs, find contractors, and manage projects all in one place.
+              Post projects, find trusted entrepreneurs, and manage work from start to finish.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24, flex: 1 }}>
               <div style={{ display: "flex", gap: 8 }}>
                 <span style={{ ...mono, fontSize: 11, color: T.orange, fontWeight: 700 }}>✓</span>
-                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Browse contractors instantly</span>
+                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Search by trade, location, or rating</span>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <span style={{ ...mono, fontSize: 11, color: T.orange, fontWeight: 700 }}>✓</span>
-                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Post jobs with before/after photos</span>
+                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Post jobs with photos & requirements</span>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <span style={{ ...mono, fontSize: 11, color: T.orange, fontWeight: 700 }}>✓</span>
-                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Get quotes and manage proposals</span>
+                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Receive quotes and compare options</span>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <span style={{ ...mono, fontSize: 11, color: T.orange, fontWeight: 700 }}>✓</span>
-                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Track progress and make payments</span>
+                <span style={{ fontSize: 13, color: T.dark, fontWeight: 600, fontStyle: "italic" }}>Track progress, approve work, pay safely</span>
               </div>
             </div>
 
