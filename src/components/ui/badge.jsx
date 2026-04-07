@@ -4,23 +4,37 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-bold transition-colors focus:outline-none",
   {
     variants: {
       variant: {
+        // Default = amber/dark (matches SC brand)
         default:
-          "border-transparent bg-blue-600 text-white shadow hover:bg-blue-700",
-        secondary:
-          "border-transparent bg-blue-100 text-blue-900 hover:bg-blue-200",
-        destructive:
-          "border-transparent bg-red-600 text-white shadow hover:bg-red-700",
-        outline: "border-slate-400 text-slate-800",
-        warning:
-          "border-transparent bg-amber-100 text-amber-900 hover:bg-amber-200",
+          "border-amber-800/30 bg-amber-50 text-amber-900 hover:bg-amber-100",
+        // Dark pill (used for status)
+        dark:
+          "border-transparent bg-[#1A1A1B] text-[#F0E0C0]",
+        // Outline
+        outline:
+          "border-[#D0D0D2] bg-white text-[#1A1A1B]",
+        // Success / verified
         success:
-          "border-transparent bg-emerald-100 text-emerald-900 hover:bg-emerald-200",
+          "border-green-300/50 bg-green-50 text-green-800",
+        // Warning / pending
+        warning:
+          "border-amber-300/50 bg-amber-50 text-amber-900",
+        // Destructive / error
+        destructive:
+          "border-red-300/50 bg-red-50 text-red-800",
+        // Secondary (neutral gray)
+        secondary:
+          "border-[#D0D0D2] bg-[#EBEBEC] text-[#333]",
+        // Orange (strong highlight)
         orange:
-          "border-transparent bg-orange-100 text-orange-900 hover:bg-orange-200",
+          "border-orange-300 bg-orange-50 text-orange-900",
+        // Legacy blue — still available if explicitly used
+        blue:
+          "border-blue-300/50 bg-blue-50 text-blue-900",
       },
     },
     defaultVariants: {

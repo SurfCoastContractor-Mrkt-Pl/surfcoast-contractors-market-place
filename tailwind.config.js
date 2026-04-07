@@ -3,11 +3,22 @@ module.exports = {
     darkMode: ["class"],
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   safelist: [
+    // Gradient utilities
     'gradient-brand', 'gradient-soft', 'gradient-hero', 'gradient-card', 'gradient-text',
     'nav-pill-active',
+    // SC design system utilities
+    'sc-card', 'sc-card-amber', 'sc-card-dark',
+    'sc-hover-glow', 'sc-tag', 'sc-btn', 'sc-btn-dark', 'sc-btn-amber', 'sc-btn-outline',
+    'sc-badge', 'sc-badge-dark', 'sc-badge-success', 'sc-badge-warning', 'sc-badge-error',
+    'sc-bg-page', 'sc-bg-section', 'sc-bg-alt', 'sc-bg-dark', 'sc-bg-amber',
+    'sc-heading', 'sc-subheading', 'sc-body', 'sc-mono', 'sc-section-label',
+    'sc-input', 'sc-alert', 'sc-alert-error', 'sc-alert-success', 'sc-table', 'sc-divider',
+    'sc-ticker',
+    // Legacy color classes still used in some components
     'border-blue-100', 'border-blue-300', 'hover:border-blue-300', 'bg-blue-100', 'bg-blue-600', 'text-blue-600', 'hover:text-blue-700', 'hover:bg-blue-600',
     'border-orange-100', 'border-orange-300', 'hover:border-orange-300', 'bg-orange-100', 'bg-orange-600', 'text-orange-600', 'hover:text-orange-700', 'hover:bg-orange-600',
     'border-green-100', 'border-green-300', 'hover:border-green-300', 'bg-green-100', 'bg-green-600', 'text-green-600', 'hover:text-green-700', 'hover:bg-green-600',
+    'border-amber-300', 'bg-amber-50', 'text-amber-900', 'bg-amber-100',
   ],
   theme: {
   	extend: {
