@@ -58,21 +58,31 @@ export default function ProjectManagement() {
     return null;
   }
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (scopeLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a1628' }}>
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <Loader2 style={{ width: 32, height: 32, animation: "spin 0.8s linear infinite", color: T.amber }} />
       </div>
     );
   }
 
   if (!scope) {
     return (
-      <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 p-4 rounded-lg" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <p className="text-slate-300">Project not found.</p>
+      <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 16, borderRadius: 8, background: "#FFEBEE", border: "0.5px solid #d32f2f" }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f", flexShrink: 0 }} />
+            <p style={{ color: "#c62828", fontStyle: "italic" }}>Project not found.</p>
           </div>
         </div>
       </div>
@@ -84,12 +94,12 @@ export default function ProjectManagement() {
   const canInitiateDispute = isContractor || isCustomer || isAdmin;
 
   return (
-    <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
-      <div className="max-w-7xl mx-auto">
+    <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">{scope.job_title}</h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)' }}>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>{scope.job_title}</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>
             {isContractor ? `Client: ${scope.customer_name}` : `Contractor: ${scope.contractor_name}`}
           </p>
         </div>

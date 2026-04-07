@@ -53,13 +53,23 @@ export default function ContractorJobPipeline() {
     enabled: !!user?.email,
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!isContractor || !user) {
     return (
-      <div className="min-h-screen bg-orange-50 flex items-center justify-center p-4">
-        <div className="text-center max-w-md bg-white rounded-2xl p-10 border-2 border-orange-100 shadow-lg">
-          <AlertCircle className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-extrabold text-gray-900 mb-2">Login Required</h1>
-          <p className="text-gray-500">You must be logged in to view your job pipeline.</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center", maxWidth: 448, background: T.card, borderRadius: 12, padding: 40, border: "0.5px solid " + T.border, boxShadow: T.shadow }}>
+          <AlertCircle style={{ width: 48, height: 48, color: T.amber, margin: "0 auto 16px" }} />
+          <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Login Required</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>You must be logged in to view your job pipeline.</p>
         </div>
       </div>
     );
@@ -67,10 +77,10 @@ export default function ContractorJobPipeline() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-orange-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-500 font-medium">Loading your jobs...</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center" }}>
+          <Loader2 style={{ width: 40, height: 40, animation: "spin 0.8s linear infinite", color: T.amber, margin: "0 auto 16px" }} />
+          <p style={{ color: T.muted, fontWeight: 500, fontStyle: "italic" }}>Loading your jobs...</p>
         </div>
       </div>
     );
@@ -78,13 +88,13 @@ export default function ContractorJobPipeline() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-orange-50 p-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-red-50 border-2 border-red-200 rounded-xl p-5 flex gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 896, margin: "0 auto" }}>
+          <div style={{ background: "#FFEBEE", border: "0.5px solid #d32f2f", borderRadius: 8, padding: 20, display: "flex", gap: 12 }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f", flexShrink: 0, marginTop: 2 }} />
             <div>
-              <h3 className="font-bold text-red-900">Error Loading Jobs</h3>
-              <p className="text-red-600 text-sm mt-1">{error.message}</p>
+              <h3 style={{ fontWeight: 700, color: "#c62828", margin: "0 0 8px 0", fontStyle: "italic" }}>Error Loading Jobs</h3>
+              <p style={{ color: "#c62828", fontSize: 14, margin: 0, fontStyle: "italic" }}>{error.message}</p>
             </div>
           </div>
         </div>
@@ -93,12 +103,12 @@ export default function ContractorJobPipeline() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, padding: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 896, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-1">Job Pipeline</h1>
-          <p className="text-gray-500">Your active work and incoming leads</p>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Job Pipeline</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Your active work and incoming leads</p>
         </div>
 
         <Tabs defaultValue="active">

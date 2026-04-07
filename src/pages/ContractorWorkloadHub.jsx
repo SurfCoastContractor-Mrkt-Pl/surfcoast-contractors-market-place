@@ -49,12 +49,22 @@ export default function ContractorWorkloadHub() {
     }
   }, [contractorProfile]);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-slate-100">
-        <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-          <p className="text-lg text-slate-700">Please log in to access your workload hub.</p>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center" }}>
+          <AlertCircle style={{ width: 48, height: 48, color: T.amber, margin: "0 auto 16px" }} />
+          <p style={{ fontSize: 18, color: T.muted, fontStyle: "italic" }}>Please log in to access your workload hub.</p>
         </div>
       </div>
     );
@@ -62,25 +72,25 @@ export default function ContractorWorkloadHub() {
 
   if (contractorLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-orange-600"></div>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 48, height: 48, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (!contractor) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-slate-100">
-        <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-          <p className="text-lg text-slate-700">Contractor profile not found.</p>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center" }}>
+          <AlertCircle style={{ width: 48, height: 48, color: T.amber, margin: "0 auto 16px" }} />
+          <p style={{ fontSize: 18, color: T.muted, fontStyle: "italic" }}>Contractor profile not found.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-100">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <OfflineStatusBar
         isOnline={isOnline}
         isSyncing={isSyncing}
@@ -89,13 +99,13 @@ export default function ContractorWorkloadHub() {
         lastSyncTime={lastSyncTime}
         onRetrySync={syncPendingChanges}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div style={{ maxWidth: 1280, margin: "0 auto", paddingLeft: 16, paddingRight: 16, paddingTop: 32, paddingBottom: 32 }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>
             {contractor.name}, Your Workload Hub
           </h1>
-          <p className="text-slate-600">Manage your schedule, jobs, and routes all in one place.</p>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Manage your schedule, jobs, and routes all in one place.</p>
         </div>
 
         {/* Status Manager */}

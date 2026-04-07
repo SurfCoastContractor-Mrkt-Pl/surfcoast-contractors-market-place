@@ -81,10 +81,20 @@ export default function ResidentialWaveDashboard() {
     }
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <Loader2 style={{ width: 32, height: 32, animation: "spin 0.8s linear infinite", color: T.amber }} />
       </div>
     );
   }
@@ -92,12 +102,12 @@ export default function ResidentialWaveDashboard() {
   // Access denied for non-construction trades
   if (hasAccess === false && accessError === 'invalid_trade') {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-12">
-        <div className="max-w-2xl w-full bg-white border border-red-200 rounded-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-red-100 bg-red-50">
-            <p className="text-red-900 font-semibold">Access Restricted</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: 16, paddingRight: 16, paddingTop: 48, paddingBottom: 48, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, width: "100%", background: T.card, border: "0.5px solid #d32f2f", borderRadius: 10, overflow: "hidden", boxShadow: "3px 3px 0px #d32f2f" }}>
+          <div style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16, paddingBottom: 16, borderBottom: "0.5px solid #FFEBEE", background: "#FFEBEE" }}>
+            <p style={{ color: "#c62828", fontWeight: 600, margin: 0, fontStyle: "italic" }}>Access Restricted</p>
           </div>
-          <div className="p-6 text-slate-700">
+          <div style={{ padding: 24, color: T.muted, fontStyle: "italic" }}
             <p className="mb-4">Residential Wave is exclusively available for construction trade contractors.</p>
             <p className="mb-3 font-medium text-slate-800">Supported trades:</p>
             <ul className="list-disc list-inside space-y-1 mb-6 text-slate-600">
@@ -119,12 +129,12 @@ export default function ResidentialWaveDashboard() {
   // No subscription
   if (hasAccess === false && accessError === 'no_subscription') {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-12">
-        <div className="max-w-2xl w-full bg-white border border-slate-200 rounded-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-200">
-            <p className="text-slate-800 font-semibold">Residential Wave — Premium Invoice Management</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: 16, paddingRight: 16, paddingTop: 48, paddingBottom: 48, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, width: "100%", background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, overflow: "hidden", boxShadow: T.shadow }}>
+          <div style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16, paddingBottom: 16, borderBottom: "0.5px solid " + T.border }}>
+            <p style={{ color: T.dark, fontWeight: 600, margin: 0, fontStyle: "italic" }}>Residential Wave — Premium Invoice Management</p>
           </div>
-          <div className="p-6">
+          <div style={{ padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}
             <p className="text-slate-500 mb-6">
               Manage invoices, process customer payments, and track your residential projects with our premium system.
             </p>
@@ -153,12 +163,12 @@ export default function ResidentialWaveDashboard() {
   const totalRevenue = invoices?.filter(i => i.status === 'paid').reduce((sum, inv) => sum + (inv.total_amount || 0), 0) || 0;
 
   return (
-    <div className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-800">Residential Wave</h1>
-          <p className="text-slate-500 mt-2">Manage your contracting business</p>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Residential Wave</h1>
+          <p style={{ color: T.muted, marginTop: 8, fontStyle: "italic" }}>Manage your contracting business</p>
           {!subscription?.stripe_subscription_id && (
             <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-yellow-800 text-sm">
