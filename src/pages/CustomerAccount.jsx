@@ -145,12 +145,10 @@ export default function CustomerAccount() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="w-6 h-6 text-slate-900 animate-spin" />
-          </div>
-          <p className="text-slate-600">Loading your account...</p>
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ width: 40, height: 40, border: "3px solid #D0D0D2", borderTop: "3px solid #5C3500", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+          <p style={{ color: "#333", fontStyle: "italic", fontFamily: "monospace", fontWeight: 700 }}>Loading your account...</p>
         </div>
       </div>
     );
@@ -158,30 +156,21 @@ export default function CustomerAccount() {
 
   return (
     <>
-    <div className="customer-profile" style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column", overflowX:"hidden", background:"#0a1628" }}>
-    <div style={{ position:"fixed", inset:0, backgroundImage:`url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b5d136d5baa9e2c5f01224/f64fccdce_generated_image.png)`, backgroundSize:"cover", backgroundPosition:"center top", backgroundRepeat:"no-repeat", zIndex:0 }} />
-    <div style={{ position:"fixed", inset:0, background:"linear-gradient(to bottom, rgba(10,22,40,0.65) 0%, rgba(10,22,40,0.45) 35%, rgba(10,22,40,0.80) 100%)", zIndex:1 }} />
-
-    <div className="relative py-12 text-white overflow-hidden" style={{position:"relative", zIndex:10, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
-      <div style={{ display:"flex", alignItems:"center", padding:"12px 16px", justifyContent:"space-between" }}>
-        <Link to={createPageUrl('Home')} style={{ display:'flex', flexDirection:'column', gap:'2px', textDecoration: 'none' }}>
-          <span style={{ fontSize:'clamp(14px, 4vw, 17px)', fontWeight:'800', color:'#ffffff', letterSpacing:'-0.5px', lineHeight:1, textAlign:'left' }}>SurfCoast</span>
-          <span style={{ fontSize:'clamp(7px, 2vw, 10px)', fontWeight:'700', letterSpacing:'1.5px', color:'rgba(255,255,255,0.6)', textTransform:'uppercase', lineHeight:1, textAlign:'left', marginLeft:'8px' }}>MARKETPLACE</span>
-        </Link>
-        <div style={{ marginLeft:"auto" }}>
-          <AuthTopBar />
-        </div>
-      </div>
-      <div className="absolute inset-0" style={{backgroundColor: 'transparent'}}></div>
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8" style={{position:"relative", zIndex:2}}>
-          <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-3xl flex items-center justify-center" style={{background: 'linear-gradient(135deg, #c97ab4 0%, #d97706 100%)', boxShadow: '0 8px 24px rgba(201, 122, 180, 0.4)'}}>
-              <User className="w-8 h-8 text-white" />
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: "#EBEBEC" }}>
+      {/* Dark header bar */}
+      <div style={{ background: "#1A1A1B", borderBottom: "1px solid #D0D0D2" }}>
+        <AuthTopBar />
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: "20px 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", background: "#5C3500", boxShadow: "3px 3px 0px #F0E0C0", flexShrink: 0 }}>
+              <User style={{ width: 26, height: 26, color: "#F0E0C0" }} />
             </div>
             <div>
-              <h1 className="text-4xl font-serif font-bold text-white">Your Account</h1>
-              <div className="flex items-center gap-3 mt-2">
-                <p className="text-white/60 text-base font-light">Manage projects, quotes & activity</p>
+              <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: "clamp(1.2rem, 3vw, 1.6rem)", color: "#fff", margin: 0 }}>
+                Your Account
+              </h1>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
+                <p style={{ color: "#aaa", margin: 0, fontSize: 13, fontStyle: "italic" }}>Manage projects, quotes & activity</p>
                 {customerProfile && <TrialBadge profile={customerProfile} />}
               </div>
             </div>
@@ -220,7 +209,7 @@ export default function CustomerAccount() {
         onClose={() => setReviewScope(null)}
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" style={{position:"relative", zIndex:2, background:"transparent", minHeight:"100vh"}}>
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px" }} className="space-y-6">
          {/* Issue #6 — Contractor Discovery after signup */}
          {(!scopes || scopes.length === 0) && (!postedJobs || postedJobs.length === 0) && (
            <PostSignupContractorDiscovery />
@@ -505,7 +494,7 @@ export default function CustomerAccount() {
             userType="customer"
             onClose={() => setActiveSidebarChat(null)}
           />
-          )}
-          </> 
-          );
-          }
+        )}
+    </>
+  );
+}

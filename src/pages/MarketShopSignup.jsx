@@ -349,21 +349,21 @@ export default function MarketShopSignup() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/MarketShopSignup')}
-          className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 sm:mb-8 font-medium text-sm"
+          style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#555", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, marginBottom: 20, padding: 0 }}
         >
-          <ChevronLeft className="w-4 h-4" /> Back
+          <ChevronLeft style={{ width: 13, height: 13 }} /> Back
         </button>
 
         {/* Card */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8">
+        <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: "28px 24px" }}>
           {/* Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: theme.bgLight }}>
-              <theme.icon className="w-6 sm:w-7 h-6 sm:h-7" style={{ color: theme.color }} strokeWidth={1.5} />
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid #D0D0D2" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: theme.bgLight }}>
+              <theme.icon style={{ width: 24, height: 24, color: theme.color }} strokeWidth={1.5} />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{theme.title}</h1>
-              <p className="text-xs sm:text-base text-slate-600 mt-1">{theme.subtitle}</p>
+              <h1 style={{ fontSize: "clamp(1.2rem, 3vw, 1.6rem)", fontWeight: 800, color: "#1A1A1B", margin: 0, fontStyle: "italic" }}>{theme.title}</h1>
+              <p style={{ color: "#555", margin: "4px 0 0", fontSize: 13, fontStyle: "italic" }}>{theme.subtitle}</p>
             </div>
           </div>
 
@@ -606,8 +606,8 @@ export default function MarketShopSignup() {
             </div>
 
             {/* Fee Notice */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
-              <strong>5% platform facilitation fee</strong> applies to transactions processed through SurfCoast Marketplace. This covers payment processing and platform maintenance. Example: a $100 sale pays out $95 to you. See <a href="/Terms" style={{color:"#92400e", fontWeight:600}}>Terms of Service</a> for full details.
+            <div style={{ background: "#FBF5EC", border: "0.5px solid #D9B88A", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "#5C3500", fontStyle: "italic" }}>
+              <strong>5% platform facilitation fee</strong> applies to transactions processed through SurfCoast Marketplace. Example: a $100 sale pays out $95 to you. See <a href="/Terms" style={{ color: "#5C3500", fontWeight: 700 }}>Terms of Service</a> for full details.
             </div>
 
             {/* Submit Button */}

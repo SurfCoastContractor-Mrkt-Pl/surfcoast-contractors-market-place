@@ -253,12 +253,10 @@ export default function ContractorBusinessHub() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mx-auto mb-4">
-            <HardHat className="w-6 h-6 text-slate-900 animate-spin" />
-          </div>
-          <p className="text-slate-600">Loading your profile...</p>
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ width: 40, height: 40, border: "3px solid #D0D0D2", borderTop: "3px solid #5C3500", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+          <p style={{ color: "#333", fontStyle: "italic", fontFamily: "monospace", fontWeight: 700 }}>Loading your profile...</p>
         </div>
       </div>
     );
@@ -266,33 +264,32 @@ export default function ContractorBusinessHub() {
 
   return (
     <>
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
+    <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ background: "#1A1A1B", borderBottom: "1px solid #D0D0D2" }}>
         <AuthTopBar />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/ContractorAccount')} className="gap-1.5 text-slate-500 hover:text-slate-900">
-              <ArrowLeft className="w-4 h-4" /> Contractor Portal
-            </Button>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md" style={{background: 'linear-gradient(135deg, #1E5A96 0%, #2d7dd2 100%)'}}>
-              <Briefcase className="w-7 h-7 text-white" />
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 24px" }}>
+          <button onClick={() => navigate('/ContractorAccount')} style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#aaa", background: "none", border: "none", cursor: "pointer", marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+            <ArrowLeft style={{ width: 13, height: 13 }} /> Contractor Portal
+          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", background: "#5C3500", boxShadow: "3px 3px 0px #F0E0C0", flexShrink: 0 }}>
+              <Briefcase style={{ width: 26, height: 26, color: "#F0E0C0" }} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Contractor Business Hub</h1>
-                <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Business Management</span>
-              </div>
-              <p className="text-slate-500 mt-0.5">Manage your business profile, earnings, clients & growth — separate from your field operations</p>
+              <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: "clamp(1.2rem, 3vw, 1.6rem)", color: "#fff", margin: 0 }}>
+                Contractor Business Hub
+              </h1>
+              <p style={{ color: "#aaa", margin: "3px 0 0", fontSize: 13, fontStyle: "italic" }}>
+                Manage your profile, earnings, clients & growth
+              </p>
             </div>
           </div>
 
-          {/* Wave FO callout banner */}
-          <div className="mt-5 flex items-center gap-3 p-3 bg-slate-900 rounded-xl text-white text-sm">
-            <HardHat className="w-5 h-5 text-amber-400 shrink-0" />
-            <span className="text-slate-300">Looking for job scheduling, invoicing, or field tools?</span>
-            <a href="/WaveFo" className="ml-auto shrink-0 inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors">
+          {/* Wave FO callout */}
+          <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", background: "#252525", borderRadius: 8, border: "0.5px solid #404040" }}>
+            <HardHat style={{ width: 18, height: 18, color: "#F0E0C0", flexShrink: 0 }} />
+            <span style={{ color: "#aaa", fontSize: 13, fontStyle: "italic" }}>Looking for job scheduling, invoicing, or field tools?</span>
+            <a href="/WaveFo" style={{ marginLeft: "auto", flexShrink: 0, fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, background: "#F0E0C0", color: "#5C3500", padding: "6px 12px", borderRadius: 5, textDecoration: "none" }}>
               Open Wave FO →
             </a>
           </div>
@@ -301,7 +298,7 @@ export default function ContractorBusinessHub() {
 
       <JobCloseout scope={closeoutScope} role="contractor" open={!!closeoutScope} onClose={() => { setCloseoutScope(null); queryClient.invalidateQueries({ queryKey: ['contractor-scopes', contractor?.id] }); }} />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px" }} className="space-y-6">
          {contractor && !isAdminPreview && (
            <TrialStatusBanner contractor={contractor} />
          )}

@@ -70,18 +70,18 @@ export default function ContractorPublicProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-orange-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 40, height: 40, border: "3px solid #D0D0D2", borderTop: "3px solid #5C3500", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (!contractor) {
     return (
-      <div className="min-h-screen bg-orange-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Contractor not found</h1>
-          <Button onClick={() => navigate('/')} className="mt-4">Back to Home</Button>
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: "#1A1A1B", marginBottom: 16, fontStyle: "italic" }}>Contractor not found</h1>
+          <button onClick={() => navigate('/')} style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", background: "#1A1A1B", color: "#F0E0C0", border: "none", borderRadius: 6, padding: "10px 24px", cursor: "pointer", boxShadow: "3px 3px 0px #5C3500" }}>Back to Home</button>
         </div>
       </div>
     );
@@ -92,23 +92,28 @@ export default function ContractorPublicProfile() {
     : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      {/* Ticker */}
+      <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// CONTRACTOR PROFILE · SURFCOAST MARKETPLACE</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+      <div style={{ background: "#EBEBEC", borderBottom: "1px solid #D0D0D2", padding: "16px 24px" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-orange-50 rounded-lg transition-colors text-gray-600 hover:text-orange-600"
+            style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 6, padding: "7px 12px", cursor: "pointer", fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 12, color: "#1A1A1B", boxShadow: "2px 2px 0px #5C3500" }}
           >
-            <ChevronLeft className="w-5 h-5" />
+            ← Back
           </button>
-          <h1 className="text-xl font-extrabold text-gray-900">Contractor Profile</h1>
+          <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#333", letterSpacing: "0.06em" }}>// ENTREPRENEUR PROFILE</span>
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main style={{ maxWidth: 960, margin: "0 auto", padding: "32px 24px" }}>
         {/* Profile Hero */}
-        <div className="bg-white rounded-2xl p-8 mb-8 border-2 border-orange-100 shadow-lg shadow-orange-50">
+        <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: "32px", marginBottom: 24 }}>
           <div className="flex flex-col md:flex-row gap-8">
             {/* Photo & Basic Info */}
             <div className="flex flex-col items-center md:items-start gap-4 md:w-1/3">

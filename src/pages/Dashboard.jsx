@@ -39,80 +39,71 @@ export default function Dashboard() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: designTokens.colors.background }}>
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: designTokens.colors.gray[300] }} />
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 40, height: 40, border: "3px solid #D0D0D2", borderTop: "3px solid #5C3500", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
    return (
-     <div className="w-full">
+     <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
 
        {activeProfile === 'contractor' && <ContractorDashboard user={user} />}
        {activeProfile === 'client' && <CustomerDashboard user={user} />}
 
        {isAdmin && (
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-             {/* Stripe Accounts Section */}
-             <Card>
-               <CardHeader>
-                 <CardTitle>Stripe Accounts</CardTitle>
-                 <CardDescription>Contractors with Stripe setup</CardDescription>
-               </CardHeader>
-               <CardContent>
-                 {stripeAccounts.length === 0 ? (
-                   <p className="text-slate-500 text-sm">No Stripe accounts configured</p>
-                 ) : (
-                   <div className="space-y-4">
-                     {stripeAccounts.map(contractor => (
-                       <div key={contractor.id} className="border border-slate-200 rounded-lg p-4">
-                         <div className="flex justify-between items-start mb-2">
-                           <div>
-                             <h4 className="font-semibold text-slate-900">{contractor.name}</h4>
-                             <p className="text-sm text-slate-600">{contractor.email}</p>
-                           </div>
-                           <Badge className={contractor.stripe_account_charges_enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
-                             {contractor.stripe_account_charges_enabled ? '✅ Payouts Enabled' : '⛔ Payouts Disabled'}
-                           </Badge>
+         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px" }}>
+           <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#555", letterSpacing: "0.12em", marginBottom: 20 }}>// ADMIN — ACCOUNT OVERVIEW</div>
+           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: 16 }}>
+             <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: 24 }}>
+               <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 10, color: "#555", marginBottom: 12, letterSpacing: "0.06em" }}>// STRIPE ACCOUNTS</div>
+               <p style={{ fontSize: 12, color: "#777", fontStyle: "italic", marginBottom: 16 }}>Contractors with Stripe setup</p>
+               {stripeAccounts.length === 0 ? (
+                 <p style={{ color: "#999", fontSize: 13, fontStyle: "italic" }}>No Stripe accounts configured</p>
+               ) : (
+                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                   {stripeAccounts.map(contractor => (
+                     <div key={contractor.id} style={{ border: "0.5px solid #D0D0D2", borderRadius: 6, padding: "12px 14px" }}>
+                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                         <div>
+                           <div style={{ fontWeight: 700, color: "#1A1A1B", fontSize: 13 }}>{contractor.name}</div>
+                           <div style={{ color: "#777", fontSize: 12 }}>{contractor.email}</div>
                          </div>
-                         <p className="text-xs text-slate-500 mt-2">ID: {contractor.stripe_connected_account_id}</p>
+                         <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 10, padding: "3px 8px", borderRadius: 4, background: contractor.stripe_account_charges_enabled ? "#dcfce7" : "#fee2e2", color: contractor.stripe_account_charges_enabled ? "#166534" : "#991b1b" }}>
+                           {contractor.stripe_account_charges_enabled ? '✅ Enabled' : '⛔ Disabled'}
+                         </span>
                        </div>
-                     ))}
-                   </div>
-                 )}
-               </CardContent>
-             </Card>
+                       <p style={{ fontSize: 11, color: "#999", fontStyle: "italic" }}>ID: {contractor.stripe_connected_account_id}</p>
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </div>
 
-             {/* Locked Accounts Section */}
-             <Card>
-               <CardHeader>
-                 <CardTitle>Locked Accounts</CardTitle>
-                 <CardDescription>Suspended contractor accounts</CardDescription>
-               </CardHeader>
-               <CardContent>
-                 {lockedAccounts.length === 0 ? (
-                   <p className="text-slate-500 text-sm">No locked accounts</p>
-                 ) : (
-                   <div className="space-y-4">
-                     {lockedAccounts.map(contractor => (
-                       <div key={contractor.id} className="border border-slate-200 rounded-lg p-4">
-                         <div className="flex justify-between items-start mb-2">
-                           <div>
-                             <h4 className="font-semibold text-slate-900">{contractor.name}</h4>
-                             <p className="text-sm text-slate-600">{contractor.email}</p>
-                           </div>
-                           <Badge className="bg-red-100 text-red-800">🔒 Locked</Badge>
+             <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: 24 }}>
+               <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 10, color: "#555", marginBottom: 12, letterSpacing: "0.06em" }}>// LOCKED ACCOUNTS</div>
+               <p style={{ fontSize: 12, color: "#777", fontStyle: "italic", marginBottom: 16 }}>Suspended contractor accounts</p>
+               {lockedAccounts.length === 0 ? (
+                 <p style={{ color: "#999", fontSize: 13, fontStyle: "italic" }}>No locked accounts</p>
+               ) : (
+                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                   {lockedAccounts.map(contractor => (
+                     <div key={contractor.id} style={{ border: "0.5px solid #D0D0D2", borderRadius: 6, padding: "12px 14px" }}>
+                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                         <div>
+                           <div style={{ fontWeight: 700, color: "#1A1A1B", fontSize: 13 }}>{contractor.name}</div>
+                           <div style={{ color: "#777", fontSize: 12 }}>{contractor.email}</div>
                          </div>
-                         {contractor.locked_scope_id && (
-                           <p className="text-xs text-slate-500 mt-2">Scope ID: {contractor.locked_scope_id}</p>
-                         )}
+                         <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 10, padding: "3px 8px", borderRadius: 4, background: "#fee2e2", color: "#991b1b" }}>🔒 Locked</span>
                        </div>
-                     ))}
-                   </div>
-                 )}
-               </CardContent>
-             </Card>
+                       {contractor.locked_scope_id && (
+                         <p style={{ fontSize: 11, color: "#999", fontStyle: "italic" }}>Scope ID: {contractor.locked_scope_id}</p>
+                       )}
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </div>
            </div>
          </div>
        )}
