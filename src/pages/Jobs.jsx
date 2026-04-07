@@ -216,7 +216,7 @@ export default function Jobs() {
           
           {userLocation && (
             <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${T.border}` }}>
-              <div style={{ background: T.orangeTint, border: `0.5px solid #FFB366`, borderRadius: 8, padding: 12 }}>
+              <div style={{ padding: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
                   <label style={{ fontSize: 12, fontWeight: 700, color: T.dark, fontStyle: "italic" }}>
                     Search Radius: <span style={{ color: T.orange, fontFamily: "monospace", fontWeight: 700 }}>{searchRadius} mi</span>
@@ -333,7 +333,7 @@ export default function Jobs() {
         <div style={{ marginBottom: 24 }}>
           <button
             onClick={applyFilters}
-            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.orange, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow, transition: "box-shadow 0.2s ease" }}
+            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: "#FFA341", color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: "3px 3px 0px #FFA341", transition: "box-shadow 0.2s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlow; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = T.shadow; }}
           >
