@@ -66,14 +66,24 @@ function AdminControlHubContent() {
     success: 'bg-green-100 text-green-800',
   }[status] || 'bg-slate-100 text-slate-700');
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div style={{ background: T.card, borderBottom: "0.5px solid " + T.border, paddingLeft: 24, paddingRight: 24, paddingTop: 20, paddingBottom: 20 }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Admin Control Hub</h1>
-            <p className="text-slate-500 text-sm mt-0.5">Platform monitoring, operations & management</p>
+            <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 4px 0", fontStyle: "italic" }}>Admin Control Hub</h1>
+            <p style={{ color: T.muted, fontSize: 14, marginTop: 4, fontStyle: "italic" }}>Platform monitoring, operations & management</p>
           </div>
           <div className="flex items-center gap-3">
             <Badge className="bg-green-100 text-green-800 border-0 text-xs px-3 py-1">● OPERATIONAL</Badge>

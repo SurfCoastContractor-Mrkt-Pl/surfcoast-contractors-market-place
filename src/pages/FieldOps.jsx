@@ -99,12 +99,22 @@ export default function WaveOS() {
         return () => clearInterval(interval);
         }, [user?.email]);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-        <div className="text-center text-slate-800">
-          <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-500 text-sm">Loading WAVE OS...</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center", color: T.dark }}>
+          <div style={{ width: 48, height: 48, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+          <p style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Loading WAVE OS...</p>
         </div>
       </div>
     );
@@ -124,7 +134,7 @@ export default function WaveOS() {
 
   if (contractor && !hasWaveOSAccess) {
     return (
-      <div className="min-h-screen bg-slate-100">
+      <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
         <FieldOpsAccessGate contractor={contractor} />
       </div>
     );
@@ -132,18 +142,18 @@ export default function WaveOS() {
 
   if (!user || (!contractor && !isAdmin)) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
-        <div className="text-center text-slate-800 max-w-sm">
-          <Briefcase className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">WAVE OS</h1>
-           <p className="text-slate-500 mb-6">Sign in with a contractor account to access WAVE OS.</p>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: 24, paddingRight: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center", color: T.dark, maxWidth: 448 }}>
+          <Briefcase style={{ width: 64, height: 64, color: T.amber, margin: "0 auto 16px" }} />
+          <h1 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8, fontStyle: "italic" }}>WAVE OS</h1>
+           <p style={{ color: T.muted, marginBottom: 24, fontStyle: "italic" }}>Sign in with a contractor account to access WAVE OS.</p>
            <button
              onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveOS`)}
-             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
+             style={{ width: "100%", background: T.dark, color: "#fff", fontWeight: 600, paddingTop: 16, paddingBottom: 16, borderRadius: 12, fontSize: 16, border: "none", cursor: "pointer" }}
            >
              Sign In to WAVE OS
           </button>
-          <Link to="/" className="block mt-4 text-slate-500 text-sm hover:text-slate-800">← Back to Home</Link>
+          <Link to="/" style={{ display: "block", marginTop: 16, color: T.muted, fontSize: 14, textDecoration: "none" }}>← Back to Home</Link>
         </div>
       </div>
     );
@@ -160,10 +170,10 @@ export default function WaveOS() {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-100 flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ position: "fixed", inset: 0, background: T.bg, display: "flex", flexDirection: "column", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       {/* Admin Test Mode Banner */}
       {isAdmin && (
-        <div className={`${!contractor ? 'bg-amber-600' : 'bg-amber-700'} text-white text-xs font-bold text-center py-1.5 px-4`}>
+        <div style={{ background: !contractor ? T.amber : "#4a2500", color: "#fff", fontSize: 12, fontWeight: 800, textAlign: "center", paddingTop: 6, paddingBottom: 6, paddingLeft: 16, paddingRight: 16 }}>
           {!contractor ? '⚠️ ADMIN TEST MODE — No contractor profile linked to your account' : '🔧 ADMIN TEST MODE — Tier restrictions bypassed'}
         </div>
       )}

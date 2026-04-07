@@ -107,8 +107,8 @@ export default function ResidentialWaveDashboard() {
           <div style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16, paddingBottom: 16, borderBottom: "0.5px solid #FFEBEE", background: "#FFEBEE" }}>
             <p style={{ color: "#c62828", fontWeight: 600, margin: 0, fontStyle: "italic" }}>Access Restricted</p>
           </div>
-          <div style={{ padding: 24, color: T.muted, fontStyle: "italic" }}
-            <p className="mb-4">Residential Wave is exclusively available for construction trade contractors.</p>
+          <div style={{ padding: 24, color: T.muted, fontStyle: "italic" }}>
+            <p style={{ marginBottom: 16, fontStyle: "italic" }}>Residential Wave is exclusively available for construction trade contractors.</p>
             <p className="mb-3 font-medium text-slate-800">Supported trades:</p>
             <ul className="list-disc list-inside space-y-1 mb-6 text-slate-600">
               <li>Plumbing</li>
