@@ -458,7 +458,7 @@ function FAQSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))", gap: 16 }}>
           {FAQ_ITEMS.map(({ q, a }) => (
             <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 10, lineHeight: 1.4, fontStyle: "italic" }}>{q}</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#D94600", marginBottom: 10, lineHeight: 1.4, fontStyle: "normal" }}>{q}</h3>
               <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0, fontWeight: 700, fontStyle: "italic" }}>{a}</p>
             </div>
           ))}
