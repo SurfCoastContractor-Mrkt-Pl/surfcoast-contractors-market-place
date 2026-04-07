@@ -72,11 +72,11 @@ export default function RoleChoice() {
               <div style={{ width: 56, height: 56, borderRadius: 10, background: T.orangeTint, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Hammer style={{ width: 32, height: 32, color: T.orange }} />
               </div>
-              <h2 style={{ fontSize: 22, fontWeight: 800, color: T.dark, fontStyle: "italic" }}>I'm a Contractor</h2>
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: T.dark, fontStyle: "italic" }}>I'm an Entrepreneur</h2>
             </div>
 
             <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.6, marginBottom: 20, fontWeight: 600, fontStyle: "italic" }}>
-              Find work, manage projects, and build your reputation on the SurfCoast marketplace.
+              Offer services, find clients, and build your reputation on the SurfCoast marketplace.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24, flex: 1 }}>
