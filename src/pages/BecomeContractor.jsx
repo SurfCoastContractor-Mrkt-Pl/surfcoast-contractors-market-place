@@ -354,7 +354,7 @@ export default function BecomeContractor() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ fontFamily: designTokens.typography.fontFamily.base }}>
+    <div className="min-h-screen flex flex-col" style={{ fontFamily: "system-ui, -apple-system, sans-serif", background: "#EBEBEC" }}>
 
       {isPreview && (
         <div className="text-white text-sm font-semibold py-2 px-4 text-center" style={{ background: designTokens.colors.primary.DEFAULT }}>
@@ -362,19 +362,25 @@ export default function BecomeContractor() {
         </div>
       )}
 
+      {/* Ticker */}
+      <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// JOIN SURFCOAST · FREE TO START</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
+
       {/* Hero */}
       <div className="px-4 pt-6 pb-6 lg:pt-10 lg:pb-8 max-w-2xl mx-auto w-full">
         <div className="w-12 lg:w-14 h-12 lg:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
           <HardHat className="w-6 lg:w-7 h-6 lg:h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 className="text-2xl lg:text-4xl font-extrabold mb-3 leading-tight tracking-tight text-center" style={{ color: designTokens.colors.gray[900] }}>Join SurfCoast — Free to Start</h1>
-        <p className="text-sm lg:text-base mb-5 leading-relaxed" style={{ color: designTokens.colors.gray[700], lineHeight: 1.75 }}>
+        <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#1A1A1B", marginBottom: 12, lineHeight: 1.1, textAlign: "center" }}>Join SurfCoast — Free to Start</h1>
+        <p className="text-sm lg:text-base mb-5" style={{ color: "#333", lineHeight: 1.75, fontStyle: "italic", fontWeight: 700 }}>
           SurfCoast Contractors Marketplace is free to join — no credit card, no catch. You create your profile, list what you do, and clients start finding you. When you are ready to communicate with someone who might hire you, a session fee of $1.50 per 10 minutes applies — this keeps both sides serious and filters out spam. When a job is booked and completed through the platform a facilitation fee of 18% applies. If you want more tools to run your business — scheduling, invoicing, analytics, client management — WAVE OS starts at $19 per month and unlocks as you complete jobs. If you are not ready for that yet, the free Basic Dashboard handles the essentials on your phone or laptop from day one.
         </p>
 
         {/* WAVE OS Unlock Table */}
-        <div className="mb-5 rounded-xl overflow-hidden" style={{ border: `1px solid ${designTokens.colors.gray[200]}` }}>
-          <div className="px-4 py-2 text-xs font-bold uppercase tracking-widest" style={{ background: designTokens.colors.accent.light, color: designTokens.colors.accent.DEFAULT }}>WAVE OS — Unlock by Jobs Completed</div>
+        <div className="mb-5 rounded-xl overflow-hidden" style={{ border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
+          <div style={{ padding: "8px 16px", background: "#FBF5EC", borderBottom: "0.5px solid #D9B88A", fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#5C3500", letterSpacing: "0.06em" }}>// WAVE OS — Unlock by Jobs Completed</div>
           {[
             { jobs: '5 completed jobs', plan: 'WAVE OS Starter', price: '$19/month' },
             { jobs: '6–49 completed jobs', plan: 'WAVE OS Pro', price: '$39/month' },
@@ -382,22 +388,22 @@ export default function BecomeContractor() {
             { jobs: '100+ jobs + verified license', plan: 'WAVE OS Premium', price: '$100/month' },
             { jobs: 'Premium + unlimited messaging', plan: 'WAVE OS Residential Bundle', price: '$125/month' },
           ].map((row, i) => (
-            <div key={i} className="flex justify-between items-center px-4 py-2.5 text-sm" style={{ borderTop: `1px solid ${designTokens.colors.gray[100]}`, background: i % 2 === 0 ? '#fff' : '#fafafa' }}>
-              <span style={{ color: designTokens.colors.gray[600], fontSize: 12 }}>{row.jobs}</span>
-              <div className="text-right">
-                <div className="font-semibold" style={{ color: designTokens.colors.gray[900], fontSize: 12 }}>{row.plan}</div>
-                <div className="font-bold" style={{ color: designTokens.colors.accent.DEFAULT, fontSize: 12 }}>{row.price}</div>
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 16px", borderTop: "0.5px solid #EBEBEC", background: i % 2 === 0 ? '#fff' : '#FAFAFA' }}>
+              <span style={{ color: "#333", fontSize: 12, fontStyle: "italic" }}>{row.jobs}</span>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontWeight: 700, color: "#1A1A1B", fontSize: 12 }}>{row.plan}</div>
+                <div style={{ fontFamily: "monospace", fontWeight: 700, color: "#5C3500", fontSize: 12 }}>{row.price}</div>
               </div>
             </div>
           ))}
-          <div className="px-4 py-2.5 text-xs" style={{ background: designTokens.colors.accent.light, color: designTokens.colors.accent.DEFAULT, borderTop: `1px solid ${designTokens.colors.gray[200]}` }}>
+          <div style={{ padding: "8px 16px", background: "#FBF5EC", borderTop: "0.5px solid #D9B88A", fontSize: 11, fontStyle: "italic", color: "#5C3500", fontWeight: 700 }}>
             Already licensed when you sign up? Premium unlocks immediately after documentation is verified.
           </div>
         </div>
 
         {/* Comparison Table */}
-        <div className="mb-5 rounded-xl overflow-hidden text-xs" style={{ border: `1px solid ${designTokens.colors.gray[200]}` }}>
-          <div className="px-4 py-2 font-bold uppercase tracking-widest text-xs" style={{ background: '#1A1A1B', color: '#fff' }}>How We Compare</div>
+        <div className="mb-5 rounded-xl overflow-hidden text-xs" style={{ border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
+          <div style={{ padding: "8px 16px", background: "#1A1A1B", fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#F0E0C0", letterSpacing: "0.06em" }}>// HOW WE COMPARE</div>
           <div className="overflow-x-auto">
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
@@ -432,7 +438,7 @@ export default function BecomeContractor() {
 
         {/* FAQ */}
         <div className="mb-5 space-y-3">
-          <div className="text-xs font-bold uppercase tracking-widest" style={{ fontFamily: 'monospace', color: '#888', letterSpacing: '0.1em' }}>// COMMON QUESTIONS</div>
+          <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#333", letterSpacing: "0.06em" }}>// COMMON QUESTIONS</div>
           {[
             { q: 'How much does it cost to list on SurfCoast CMP?', a: 'Your profile is free and stays free. When you are ready to communicate with a potential client a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. The platform takes an 18% facilitation fee only when a job is completed and paid through the platform.' },
             { q: 'Are there lead fees on SurfCoast?', a: 'No lead fees — ever. Angi charges $15 to $120 per lead whether you win or not. SurfCoast does not sell leads at all. Instead a $1.50 per 10-minute communication session fee applies when you are ready to talk to a potential client. This filters out spam and keeps inquiries serious. The 18% facilitation fee only applies when a job actually closes.' },
@@ -440,16 +446,16 @@ export default function BecomeContractor() {
             { q: 'What is the Basic Dashboard?', a: 'The Basic Dashboard is free for every worker on the platform regardless of whether they subscribe to WAVE OS. It handles your essential job management and payments on both laptop and phone. You never have to upgrade — WAVE OS is always optional.' },
             { q: 'Do I need to be licensed to join?', a: 'No. SurfCoast is built for everyone — licensed master tradespeople, people just starting out, freelancers, creatives, and motivated individuals as young as 13 who are ready to start building something. If you have a skill and the drive, you belong here.' },
           ].map(({ q, a }, i) => (
-            <div key={i} className="rounded-xl p-4" style={{ background: '#f9f9f9', border: `1px solid ${designTokens.colors.gray[200]}` }}>
-              <div className="font-bold text-sm mb-1.5" style={{ color: '#1A1A1B' }}>{q}</div>
-              <div className="text-sm leading-relaxed" style={{ color: '#555' }}>{a}</div>
+            <div key={i} style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 8, padding: 16, boxShadow: "2px 2px 0px #D9B88A" }}>
+              <div style={{ fontWeight: 800, fontSize: 13, color: "#1A1A1B", marginBottom: 6, fontStyle: "italic" }}>{q}</div>
+              <div style={{ fontSize: 13, lineHeight: 1.65, color: "#333", fontStyle: "italic", fontWeight: 700 }}>{a}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Form container */}
-      <div className="max-w-2xl mx-auto w-full px-4 pb-12 lg:pb-16">
+      <div className="max-w-2xl mx-auto w-full px-4 pb-12 lg:pb-16" style={{ background: "#EBEBEC" }}>
 
         {/* Progress Indicator */}
         <OnboardingProgressIndicator
@@ -507,8 +513,8 @@ export default function BecomeContractor() {
                 <button
                   type="button"
                   onClick={handlePrevStep}
-                  className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold transition-colors min-h-[44px] lg:min-h-[52px]"
-                  style={{ border: `1px solid ${designTokens.colors.gray[300]}`, background: designTokens.colors.white, color: designTokens.colors.gray[700] }}
+                  className="flex-1 py-3 lg:py-4 text-sm lg:text-base font-bold transition-colors min-h-[44px] lg:min-h-[52px]"
+                  style={{ border: "0.5px solid #D0D0D2", borderRadius: 8, background: "#fff", color: "#1A1A1B", fontFamily: "monospace", fontStyle: "italic", cursor: "pointer" }}
                 >
                   ← Back
                 </button>
@@ -516,8 +522,8 @@ export default function BecomeContractor() {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="flex-1 py-3 lg:py-4 rounded-xl text-sm lg:text-base font-bold text-white transition-all min-h-[44px] lg:min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                style={{ background: `linear-gradient(135deg, ${designTokens.colors.accent.DEFAULT} 0%, ${designTokens.colors.accent.dark} 100%)`, boxShadow: `0 4px 20px ${designTokens.colors.accent.light}55` }}
+                className="flex-1 py-3 lg:py-4 text-sm lg:text-base font-bold transition-all min-h-[44px] lg:min-h-[52px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{ background: "#1A1A1B", color: "#F0E0C0", borderRadius: 8, border: "none", fontFamily: "monospace", fontStyle: "italic", cursor: "pointer", boxShadow: "3px 3px 0px #5C3500" }}
               >
                 {mutation.isPending ? (
                   <>

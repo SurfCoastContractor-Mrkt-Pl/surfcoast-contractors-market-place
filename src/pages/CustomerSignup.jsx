@@ -82,6 +82,11 @@ export default function CustomerSignup() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      {/* Ticker */}
+      <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// CUSTOMER SIGNUP · FREE TO JOIN</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "44px 24px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
           <div style={{ width: 44, height: 44, borderRadius: 10, background: "#FBF5EC", border: "0.5px solid #D9B88A", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "3px 3px 0px #5C3500", flexShrink: 0 }}>

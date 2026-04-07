@@ -129,12 +129,18 @@ export default function FindContractors() {
   const hasActiveFilters = searchQuery || typeFilter || tradeFilter || lineOfWorkFilter || ratingFilter || availabilityFilter;
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-0">
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: "#EBEBEC" }}>
+      {/* Ticker */}
+      <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// FIND ENTREPRENEURS · SEARCH BY TRADE & LOCATION</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-16 border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Find Entrepreneurs</h1>
-          <p className="text-lg text-slate-600 font-light">Discover exceptional talent in your area</p>
+      <div style={{ background: "#ECECED", padding: "44px 24px 32px", borderBottom: "1px solid #D0D0D2" }}>
+        <div className="max-w-7xl mx-auto">
+          <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#333", marginBottom: 10, letterSpacing: "0.06em" }}>// SEARCH THE MARKETPLACE</div>
+          <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#1A1A1B", marginBottom: 8, lineHeight: 1.1 }}>Find Entrepreneurs</h1>
+          <p style={{ fontSize: 15, color: "#333", fontStyle: "italic", fontWeight: 700 }}>Discover exceptional talent in your area</p>
         </div>
       </div>
 
@@ -149,10 +155,10 @@ export default function FindContractors() {
             "acceptedAnswer": { "@type": "Answer", "text": "SurfCoast Marketplace (surfcoastcmp.com) is a nationwide marketplace where everyday people can browse verified workers by trade and location at no cost. Browsing profiles is always free and requires no account. When you are ready to communicate with a specific worker, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Sending a formal request for proposal (RFP) to a specific worker costs $1.75 per proposal request — the worker responds at no charge. Every profile on SurfCoast shows verified credentials, real client reviews, portfolio photos, and availability." }
           }]
         })}} />
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3" style={{ fontFamily: 'monospace', letterSpacing: '0.1em' }}>// FREQUENTLY ASKED</p>
-          <h2 className="text-lg font-bold text-slate-900 mb-3">How do I find a verified worker without using Angi?</h2>
-          <p className="text-sm text-slate-700 leading-relaxed">
+        <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: "20px 24px", marginBottom: 20 }}>
+          <p style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 10, color: "#333", marginBottom: 10, letterSpacing: "0.06em" }}>// FREQUENTLY ASKED</p>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1B", marginBottom: 8 }}>How do I find a verified worker without using Angi?</h2>
+          <p style={{ fontSize: 13, color: "#333", lineHeight: 1.65, fontStyle: "italic", fontWeight: 700 }}>
             SurfCoast Marketplace (surfcoastcmp.com) is a nationwide marketplace where everyday people can browse verified workers by trade and location at no cost. Browsing profiles is always free and requires no account. When you are ready to communicate with a specific worker, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. Sending a formal request for proposal (RFP) to a specific worker costs $1.75 per proposal request — the worker responds at no charge. Every profile on SurfCoast shows verified credentials, real client reviews, portfolio photos, and availability.
           </p>
         </div>
@@ -178,10 +184,10 @@ export default function FindContractors() {
          )}
 
          {/* Location Selector */}
-         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+         <div style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: "20px 24px", marginBottom: 20 }}>
           <div className="flex items-center gap-2 mb-4">
-            <MapPin className="w-5 h-5 text-slate-500" />
-            <span className="font-medium text-slate-700">Your Location</span>
+            <MapPin className="w-5 h-5" style={{ color: "#5C3500" }} />
+            <span style={{ fontWeight: 700, color: "#1A1A1B", fontStyle: "italic" }}>Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
          </div>
@@ -211,8 +217,8 @@ export default function FindContractors() {
         {filteredFeatured.length > 0 && (
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-6">
-              <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-              <h2 className="text-lg font-semibold text-slate-900">Featured Entrepreneurs</h2>
+              <Star className="w-5 h-5" style={{ color: "#5C3500", fill: "#5C3500" }} />
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1B", fontStyle: "italic" }}>Featured Entrepreneurs</h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredFeatured.map(contractor => (
@@ -243,32 +249,30 @@ export default function FindContractors() {
 
         {/* Results Summary */}
         <div id="results-section">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-slate-600">
-                <Users className="w-5 h-5" />
-                <span className="font-medium">
-                  {filteredFeatured.length + filteredRegular.length} {filteredFeatured.length + filteredRegular.length === 1 ? 'contractor' : 'contractors'} found
-                </span>
-              </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Users className="w-5 h-5" style={{ color: "#5C3500" }} />
+              <span style={{ fontWeight: 700, fontStyle: "italic", color: "#1A1A1B" }}>
+                {filteredFeatured.length + filteredRegular.length} {filteredFeatured.length + filteredRegular.length === 1 ? 'contractor' : 'contractors'} found
+              </span>
               {filteredFeatured.length > 0 && (
-                <div className="text-sm text-slate-500">
+                <span style={{ fontSize: 12, color: "#333", fontStyle: "italic" }}>
                   ({filteredFeatured.length} featured, {filteredRegular.length} regular)
-                </div>
+                </span>
               )}
             </div>
           </div>
 
           {error ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-red-200">
-              <div className="w-12 h-12 text-red-400 mx-auto mb-4">⚠️</div>
-              <h3 className="text-lg font-medium text-red-900 mb-2">Unable to load contractors</h3>
-              <p className="text-red-700">Please refresh the page and try again.</p>
+            <div style={{ textAlign: "center", padding: "48px 24px", background: "#fff", borderRadius: 10, border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>Unable to load contractors</h3>
+              <p style={{ color: "#333" }}>Please refresh the page and try again.</p>
             </div>
           ) : isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="h-64 bg-white rounded-xl animate-pulse" />
+                <div key={i} style={{ height: 240, background: "#fff", borderRadius: 10, border: "0.5px solid #D0D0D2", animation: "pulse 1.5s infinite" }} />
               ))}
             </div>
           ) : filteredRegular.length > 0 ? (
@@ -276,7 +280,7 @@ export default function FindContractors() {
               {filteredRegular.map(contractor => (
                 <div key={contractor.id} className="relative">
                   {userLocation && contractorDistances[contractor.id] !== undefined && (
-                    <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
+                    <div className="absolute top-3 right-3 z-10 px-2 py-1 rounded text-xs font-bold" style={{ background: "#F0E0C0", color: "#5C3500", border: "0.5px solid #D9B88A" }}>
                       {contractorDistances[contractor.id].toFixed(1)} mi
                     </div>
                   )}
@@ -287,7 +291,7 @@ export default function FindContractors() {
                       </div>
                     )}
                     {contractor.is_featured && (
-                      <div className="bg-amber-100 text-amber-900 rounded-md px-2 py-1 text-xs font-bold">
+                      <div className="rounded-md px-2 py-1 text-xs font-bold" style={{ background: "#F0E0C0", color: "#5C3500" }}>
                         ⭐ Featured
                       </div>
                     )}
@@ -297,11 +301,11 @@ export default function FindContractors() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-white rounded-2xl">
-              <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No contractors found</h3>
-              <p className="text-slate-600 mb-4">Try adjusting your filters</p>
-              <Button variant="outline" onClick={clearFilters}>Clear Filters</Button>
+            <div style={{ textAlign: "center", padding: "48px 24px", background: "#fff", borderRadius: 10, border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
+              <Users className="w-12 h-12 mx-auto mb-4" style={{ color: "#D0D0D2" }} />
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>No contractors found</h3>
+              <p style={{ color: "#333", marginBottom: 16 }}>Try adjusting your filters</p>
+              <button onClick={clearFilters} style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 12, background: "transparent", border: "1px solid #D0D0D2", borderRadius: 5, padding: "6px 14px", color: "#1A1A1B", cursor: "pointer" }}>Clear Filters</button>
             </div>
           )}
         </div>
