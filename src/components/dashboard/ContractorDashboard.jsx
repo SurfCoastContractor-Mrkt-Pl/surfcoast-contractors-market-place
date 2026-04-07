@@ -198,7 +198,7 @@ export default function ContractorDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen" style={{ background: '#555556', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {pendingRatingScopes.length > 0 && (
         <PendingRatingModal
           scope={pendingRatingScopes[0]}
@@ -229,10 +229,10 @@ export default function ContractorDashboard() {
         )}
 
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-4xl font-bold text-slate-900">My Dashboard</h1>
+         <div className="mb-8">
+           <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
+             <div className="flex items-center gap-3 flex-wrap">
+               <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#fff', margin: 0 }}>My Dashboard</h1>
               {contractorProfile?.stripe_account_charges_enabled && (
                 <div style={{ background: '#dcfce7', color: '#166534', borderRadius: '20px', padding: '5px 12px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   💸 Payouts Active — deposits within 2 business days
@@ -256,14 +256,14 @@ export default function ContractorDashboard() {
               <LogOut className="w-4 h-4" /> Logout
             </button>
           </div>
-          <p className="text-slate-600">Track your active jobs and communications</p>
+          <p style={{ color: '#ccc', marginTop: '8px' }}>Track your active jobs and communications</p>
           {contractorProfile && (
             <div className="mt-2 flex gap-4 text-sm">
-              <span className="text-slate-500">
-                👁️ <strong className="text-slate-800">{(contractorProfile.profile_views || 0).toLocaleString()}</strong> total profile views
+              <span style={{ color: '#aaa' }}>
+                👁️ <strong style={{ color: '#fff' }}>{(contractorProfile.profile_views || 0).toLocaleString()}</strong> total profile views
               </span>
-              <span className="text-slate-500">
-                📅 <strong className="text-slate-800">{contractorProfile.profile_views_this_week || 0}</strong> this week
+              <span style={{ color: '#aaa' }}>
+                📅 <strong style={{ color: '#fff' }}>{contractorProfile.profile_views_this_week || 0}</strong> this week
               </span>
             </div>
           )}
@@ -277,7 +277,7 @@ export default function ContractorDashboard() {
         {/* Analytics Metrics */}
         {contractorProfile && (
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Analytics</h2>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#fff', marginBottom: '16px' }}>Analytics</h2>
             <ContractorAnalyticsMetrics 
               contractorProfile={contractorProfile}
               completedScopes={completedScopes}
@@ -340,17 +340,17 @@ export default function ContractorDashboard() {
           const currentWave = unlockedWaves.length > 0 ? unlockedWaves[unlockedWaves.length - 1] : null;
 
           return (
-            <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div style={{ marginBottom: '24px', borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
               <div className="flex items-center gap-2 mb-4">
-                <Waves className="w-5 h-5 text-blue-500" />
-                <h2 className="text-base font-bold text-slate-800">SurfCoast-Waves Progress</h2>
+                <Waves className="w-5 h-5" style={{ color: '#FF8C00' }} />
+                <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>SurfCoast-Waves Progress</h2>
                 {currentWave && (
                   <span className="ml-auto text-xs font-semibold px-2.5 py-1 rounded-full text-white" style={{ background: currentWave.color }}>
                     {currentWave.emoji} {currentWave.label}
                   </span>
                 )}
                 {!currentWave && (
-                  <span className="ml-auto text-xs text-slate-400 font-medium">No wave yet — complete your first verified job</span>
+                  <span style={{ marginLeft: 'auto', fontSize: '12px', color: '#999', fontWeight: '500' }}>No wave yet — complete your first verified job</span>
                 )}
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -363,8 +363,8 @@ export default function ContractorDashboard() {
                       key={w.id}
                       className="rounded-xl border p-3 transition-all"
                       style={{
-                        borderColor: isCurrent ? w.color : isUnlocked ? '#cbd5e1' : '#e2e8f0',
-                        background: isCurrent ? `${w.color}18` : isUnlocked ? '#f8fafc' : '#f8fafc',
+                        borderColor: isCurrent ? w.color : isUnlocked ? '#505050' : '#505050',
+                        background: isCurrent ? `${w.color}1a` : isUnlocked ? '#303030' : '#303030',
                         opacity: isUnlocked ? 1 : 0.45,
                         boxShadow: isCurrent ? `0 0 0 2px ${w.color}44` : 'none',
                       }}
@@ -373,20 +373,20 @@ export default function ContractorDashboard() {
                         <span className="text-lg">{w.emoji}</span>
                         {isUnlocked
                           ? <CheckCircle className="w-3.5 h-3.5" style={{ color: w.color }} />
-                          : <Lock className="w-3 h-3 text-slate-400" />
+                          : <Lock className="w-3 h-3" style={{ color: '#666' }} />
                         }
                       </div>
-                      <p className="text-xs font-bold text-slate-800 leading-tight mb-0.5">{w.name}</p>
-                      <p className="text-[10px] text-slate-500 leading-tight mb-2">{w.customersRequired} customer{w.customersRequired !== 1 ? 's' : ''}</p>
+                      <p style={{ fontSize: '12px', fontWeight: 800, color: '#fff', lineHeight: '1.2', marginBottom: '4px' }}>{w.name}</p>
+                      <p style={{ fontSize: '10px', color: '#aaa', lineHeight: '1.2', marginBottom: '8px' }}>{w.customersRequired} customer{w.customersRequired !== 1 ? 's' : ''}</p>
                       {w.isFieldOpsUnlock && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">Field Ops</span>
+                        <span style={{ fontSize: '9px', fontWeight: 800, padding: '4px 6px', borderRadius: '4px', background: '#2E5BFF', color: '#fff' }}>Field Ops</span>
                       )}
                       {!isUnlocked && (
-                        <div className="mt-2">
-                          <div className="w-full h-1 bg-slate-200 rounded-full">
-                            <div className="h-1 rounded-full" style={{ width: `${progress}%`, background: w.color }} />
+                        <div style={{ marginTop: '8px' }}>
+                          <div style={{ width: '100%', height: '4px', background: '#505050', borderRadius: '9999px' }}>
+                            <div style={{ height: '4px', borderRadius: '9999px', width: `${progress}%`, background: w.color }} />
                           </div>
-                          <p className="text-[10px] text-slate-400 mt-0.5">{uniqueCustomers}/{w.customersRequired}</p>
+                          <p style={{ fontSize: '10px', color: '#666', marginTop: '4px' }}>{uniqueCustomers}/{w.customersRequired}</p>
                         </div>
                       )}
                     </div>
@@ -400,20 +400,20 @@ export default function ContractorDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
            {/* Active Jobs */}
            <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5" />
-                  Active Jobs
-                </CardTitle>
-                <CardDescription>Projects you're currently working on</CardDescription>
-              </CardHeader>
-              <CardContent>
+             <div style={{ borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
+               <div style={{ borderBottom: '1px solid #505050', paddingBottom: '16px', marginBottom: '16px' }}>
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                   <Briefcase className="w-5 h-5" style={{ color: '#FF8C00' }} />
+                   <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>Active Jobs</h3>
+                 </div>
+                 <p style={{ fontSize: '14px', color: '#aaa', margin: '0' }}>Projects you're currently working on</p>
+               </div>
+              <div>
                 {scopesLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading jobs...</div>
+                  <div style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>Loading jobs...</div>
                 ) : activeScopes.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-slate-600 mb-4">No active jobs yet</p>
+                  <div style={{ textAlign: 'center', padding: '32px 0' }}>
+                    <p style={{ color: '#aaa', marginBottom: '16px' }}>No active jobs yet</p>
                     <Link to="/Jobs">
                       <Button>Browse Jobs</Button>
                     </Link>
@@ -421,11 +421,11 @@ export default function ContractorDashboard() {
                 ) : (
                   <div className="space-y-4">
                     {activeScopes.map((scope) => (
-                      <div key={scope.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                        <div className="flex justify-between items-start mb-3">
+                      <div key={scope.id} style={{ border: '1px solid #505050', borderRadius: '8px', padding: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                           <div>
-                            <h3 className="font-semibold text-slate-900">{scope.job_title}</h3>
-                            <p className="text-sm text-slate-600">Customer: {scope.customer_name}</p>
+                            <h3 style={{ fontWeight: '600', color: '#fff', margin: '0 0 4px 0' }}>{scope.job_title}</h3>
+                            <p style={{ fontSize: '14px', color: '#aaa', margin: 0 }}>Customer: {scope.customer_name}</p>
                           </div>
                           <Badge className={statusColor[scope.status] || 'bg-slate-100 text-slate-800'}>
                             {scope.status.replace(/_/g, ' ')}
@@ -433,17 +433,17 @@ export default function ContractorDashboard() {
                         </div>
                         <div className="grid grid-cols-2 gap-4 text-sm mb-3">
                           <div>
-                            <p className="text-slate-600">Scope:</p>
-                            <p className="font-medium text-slate-900">${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
+                            <p style={{ color: '#aaa', margin: 0 }}>Scope:</p>
+                            <p style={{ fontWeight: '500', color: '#fff', margin: 0 }}>${scope.cost_amount} {scope.cost_type === 'hourly' ? '/hr' : 'fixed'}</p>
                             {scope.platform_fee_percentage && (
-                              <p className="text-xs text-slate-500 mt-1">
+                              <p style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
                                 Payout: ${(scope.contractor_payout_amount || scope.cost_amount - (scope.cost_amount * scope.platform_fee_percentage / 100)).toFixed(2)}
                               </p>
                             )}
                           </div>
                           <div>
-                            <p className="text-slate-600">Work Date:</p>
-                            <p className="font-medium text-slate-900">{scope.agreed_work_date || 'TBD'}</p>
+                            <p style={{ color: '#aaa', margin: 0 }}>Work Date:</p>
+                            <p style={{ fontWeight: '500', color: '#fff', margin: 0 }}>{scope.agreed_work_date || 'TBD'}</p>
                           </div>
                         </div>
                         <Link to={`/ProjectManagement?scopeId=${scope.id}`}>
@@ -453,32 +453,32 @@ export default function ContractorDashboard() {
                     ))}
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+              </div>
           </div>
 
           {/* Recent Messages */}
           <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
-                  Messages
-                </CardTitle>
-                <CardDescription>Recent unread messages</CardDescription>
-              </CardHeader>
-              <CardContent>
+            <div style={{ borderRadius: '12px', border: '1px solid #404040', background: '#404040', padding: '20px' }}>
+              <div style={{ borderBottom: '1px solid #505050', paddingBottom: '16px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <MessageSquare className="w-5 h-5" style={{ color: '#FF8C00' }} />
+                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#fff', margin: 0 }}>Messages</h3>
+                </div>
+                <p style={{ fontSize: '14px', color: '#aaa', margin: '0' }}>Recent unread messages</p>
+              </div>
+              <div>
                 {messagesLoading ? (
-                  <div className="text-center py-8 text-slate-500">Loading...</div>
+                  <div style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>Loading...</div>
                 ) : recentMessages.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No new messages</p>
+                  <p style={{ textAlign: 'center', padding: '32px 0', color: '#999' }}>No new messages</p>
                 ) : (
                   <div className="space-y-3">
                     {recentMessages.map((msg) => (
-                      <div key={msg.id} className="border-l-2 border-blue-500 pl-3 py-2">
-                        <p className="text-xs font-semibold text-slate-900">{msg.sender_name}</p>
-                        <p className="text-xs text-slate-600 line-clamp-2">{msg.body}</p>
-                        <p className="text-xs text-slate-400 mt-1">
+                      <div key={msg.id} style={{ borderLeft: '2px solid #FF8C00', paddingLeft: '12px', paddingTop: '8px', paddingBottom: '8px' }}>
+                        <p style={{ fontSize: '12px', fontWeight: '600', color: '#fff', margin: 0 }}>{msg.sender_name}</p>
+                        <p style={{ fontSize: '12px', color: '#aaa', margin: '4px 0 0 0' }} className="line-clamp-2">{msg.body}</p>
+                        <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
                           {new Date(msg.created_date).toLocaleDateString()}
                         </p>
                       </div>
@@ -488,8 +488,8 @@ export default function ContractorDashboard() {
                 <Link to="/Messaging" className="mt-4 block">
                   <Button variant="outline" size="sm" className="w-full">View All Messages</Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
