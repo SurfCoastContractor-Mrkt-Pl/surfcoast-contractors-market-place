@@ -96,6 +96,7 @@ import TradeLanding from './pages/TradeLanding';
 import ContractorTrialDashboard from './pages/ContractorTrialDashboard';
 import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
 import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
+import UnifiedDashboard from './pages/UnifiedDashboard';
 import BillingHistory from './pages/BillingHistory';
 import SubscriptionSuccess from './pages/SubscriptionSuccess';
 import WAVEOSDetails from './pages/WAVEOSDetails';
@@ -652,6 +653,11 @@ const AuthenticatedApp = () => {
       <Route path="/wave-os-details" element={
         <LayoutWrapper currentPageName="WAVEOSDetails">
           <WAVEOSDetails />
+        </LayoutWrapper>
+      } />
+      <Route path="/dashboard" element={
+        <LayoutWrapper currentPageName="UnifiedDashboard">
+          <UnifiedDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}
