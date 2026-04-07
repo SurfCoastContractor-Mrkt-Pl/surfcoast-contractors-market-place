@@ -62,10 +62,10 @@ export default function LayoutHeader({
 
   return (
     <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 sticky top-0 overflow-visible">
-      <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto">
+      <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto w-full">
 
         {/* Logo */}
-        <Link to="/" className="flex-shrink-0 mr-2 -ml-4">
+        <Link to="/" className="flex-shrink-0 mr-2">
           <div className="flex flex-col gap-[2px]">
             <span className="text-[16px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
             <span className="text-[7px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>

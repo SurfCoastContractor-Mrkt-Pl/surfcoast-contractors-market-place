@@ -77,9 +77,9 @@ function TickerBar() {
     : `founding_100 — limited spots remaining · 1 year all-access free`;
 
   return (
-    <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-      <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>{label}</span>
-      <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+    <div style={{ background: T.dark, padding: "6px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 4, overflow: "hidden" }}>
+      <span style={{ ...mono, fontSize: 11, color: "#e0e0e0", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
+      <span style={{ ...mono, fontSize: 11, color: "#ffffff", flexShrink: 0 }}>California · Nationwide</span>
     </div>
   );
 }
@@ -131,28 +131,26 @@ function HeroSection() {
           SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — connects everyday workers with everyday people across the USA. Your profile and listing are free. Communication sessions start at $1.50 per 10 minutes. A facilitation fee of 18% applies only when work is successfully completed through the platform.
         </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 28 }}>
-            <Link to="/PostJob" style={{ textDecoration: "none" }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Post a Job — Free</button>
-            </Link>
-            <Link to="/wave-os-details" style={{ textDecoration: "none" }}>
-              <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>What is WAVE OS?</button>
-            </Link>
-            <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Join as Contractor</button>
-            </Link>
-            <Link to="/MarketShopSignup" style={{ textDecoration: "none" }}>
-              <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Market Shop</button>
-            </Link>
-          </div>
-          <div style={{ display: "flex", background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             {[
-              { amount: "$0", label: "Profile and listing", amber: true },
-              { amount: "5%", label: "Facilitation fee (vendors)", amber: false },
-              { amount: "18%", label: "Facilitation fee (contractors)", amber: true },
+              { to: "/PostJob", label: "Post a Job — Free", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
+              { to: "/wave-os-details", label: "What is WAVE OS?", bg: T.amberBg, color: T.amber, border: `1px solid #D9B88A` },
+              { to: "/BecomeContractor", label: "Join as Contractor", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
+              { to: "/MarketShopSignup", label: "Market Shop", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
+            ].map(({ to, label, bg, color, border }) => (
+              <Link key={to} to={to} style={{ textDecoration: "none", display: "inline-block", background: bg, color, border, borderRadius: 5, padding: "8px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.2 }}>
+                {label}
+              </Link>
+            ))}
+          </div>
+          <div style={{ display: "flex", background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease", width: "100%" }} {...hoverGlowSm}>
+            {[
+              { amount: "$0", label: "Profile & listing", amber: true },
+              { amount: "5%", label: "Vendors fee", amber: false },
+              { amount: "18%", label: "Contractors fee", amber: true },
             ].map(({ amount, label, amber }, i) => (
-              <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? `1px solid ${T.border}` : "none" }}>
+              <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 4px", borderRight: i < 2 ? `1px solid ${T.border}` : "none", minWidth: 0 }}>
                 <div style={{ ...mono, fontSize: 20, fontWeight: 700, color: amber ? T.amber : T.dark }}>{amount}</div>
-                <div style={{ fontSize: 11, color: T.dark, marginTop: 3 }}>{label}</div>
+                <div style={{ fontSize: 10, color: T.dark, marginTop: 3, lineHeight: 1.3 }}>{label}</div>
               </div>
             ))}
           </div>
@@ -217,9 +215,7 @@ const TAB_DATA = [
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
               <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12, flex: 1, fontWeight: 700, fontStyle: "italic" }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
-              <Link to={r.cta.to} style={{ textDecoration: "none" }}>
-                <button style={{ ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "5px 12px", color: T.dark, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>{r.cta.label} →</button>
-              </Link>
+              <Link to={r.cta.to} style={{ textDecoration: "none", display: "inline-block", ...mono, fontSize: 11, background: "transparent", border: `1px solid ${T.border}`, borderRadius: 5, padding: "6px 12px", color: T.dark }}>{r.cta.label} →</Link>
             </div>
           ))}
         </div>
@@ -293,9 +289,7 @@ const TAB_DATA = [
             </div>
           </div>
           <div style={{ marginTop: 16 }}>
-            <Link to="/PostJob" style={{ textDecoration: "none" }}>
-              <button style={{ ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "8px 16px", cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Post a multi-trade job →</button>
-            </Link>
+            <Link to="/PostJob" style={{ textDecoration: "none", display: "inline-block", ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "9px 16px" }}>Post a multi-trade job →</Link>
           </div>
         </div>
       );
@@ -484,10 +478,7 @@ function CTABar() {
           <p style={{ fontSize: 14, color: "#bbb" }}>Free to start. No lead fees. California-born. Nationwide.</p>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
-            <button style={{ background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "10px 18px", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>Join the Founding 100</button>
-          </Link>
-
+          <Link to="/BecomeContractor" style={{ textDecoration: "none", display: "inline-block", background: "#fff", color: T.dark, border: "none", borderRadius: 6, padding: "11px 18px", fontSize: 14, fontWeight: 700 }}>Join the Founding 100</Link>
         </div>
       </div>
     </section>
