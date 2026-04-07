@@ -48,25 +48,35 @@ export default function ContractorVerificationDashboard() {
     return true;
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 flex items-center justify-center">
-        <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Access Denied</h1>
-          <p className="text-slate-600">You must be an admin to access this dashboard.</p>
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ textAlign: "center" }}>
+          <AlertCircle style={{ width: 48, height: 48, color: "#cc0000", margin: "0 auto 16px" }} />
+          <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Access Denied</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>You must be an admin to access this dashboard.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Contractor Verification</h1>
-          <p className="text-slate-600">Review contractors requesting admin verification</p>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Contractor Verification</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Review contractors requesting admin verification</p>
         </div>
 
         {/* Stats */}

@@ -55,13 +55,23 @@ export default function JobExpenseTracker() {
     enabled: !!scopeId,
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!scopeId) {
     return (
-      <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <p className="text-red-700">No job selected. Please select a scope from your dashboard.</p>
+      <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 16, borderRadius: 8, background: "#FFEBEE", border: "0.5px solid #EF5350" }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f", flexShrink: 0 }} />
+            <p style={{ color: "#c62828", fontStyle: "italic" }}>No job selected. Please select a scope from your dashboard.</p>
           </div>
         </div>
       </div>
@@ -70,19 +80,19 @@ export default function JobExpenseTracker() {
 
   if (scopeLoading || !user || !contractor) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (!scope) {
     return (
-      <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <p className="text-red-700">Job not found.</p>
+      <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 16, borderRadius: 8, background: "#FFEBEE", border: "0.5px solid #EF5350" }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f", flexShrink: 0 }} />
+            <p style={{ color: "#c62828", fontStyle: "italic" }}>Job not found.</p>
           </div>
         </div>
       </div>
@@ -93,11 +103,11 @@ export default function JobExpenseTracker() {
 
   if (!isContractor) {
     return (
-      <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <p className="text-red-700">Only the contractor can track expenses for this job.</p>
+      <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 16, borderRadius: 8, background: "#FFEBEE", border: "0.5px solid #EF5350" }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f", flexShrink: 0 }} />
+            <p style={{ color: "#c62828", fontStyle: "italic" }}>Only the contractor can track expenses for this job.</p>
           </div>
         </div>
       </div>
@@ -105,17 +115,17 @@ export default function JobExpenseTracker() {
   }
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-slate-50 to-white">
+    <div style={{ minHeight: "100vh", padding: 24, background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <LowStockNotifications contractorEmail={user?.email} />
-      <div className="max-w-4xl mx-auto">
+      <div style={{ maxWidth: 896, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <a href="/FieldOps" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4">
-            <ArrowLeft className="w-4 h-4" />
+        <div style={{ marginBottom: 32 }}>
+          <a href="/FieldOps" style={{ display: "inline-flex", alignItems: "center", gap: 8, color: T.amber, textDecoration: "none", marginBottom: 16, fontStyle: "italic" }}>
+            <ArrowLeft style={{ width: 16, height: 16 }} />
             Back to Field Ops
           </a>
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">{scope.job_title}</h1>
-          <p className="text-slate-600">Customer: {scope.customer_name}</p>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>{scope.job_title}</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Customer: {scope.customer_name}</p>
         </div>
 
         {/* Add Expense Button */}

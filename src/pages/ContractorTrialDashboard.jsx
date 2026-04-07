@@ -36,10 +36,20 @@ export default function ContractorTrialDashboard() {
     fetchContractor();
   }, [navigate]);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!contractor) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
@@ -78,14 +88,14 @@ export default function ContractorTrialDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <OnboardingWalkthrough userType="contractor" onDismiss={() => setShowWalkthrough(false)} />
 
-      <div className="max-w-6xl mx-auto px-4 py-12">
+      <div style={{ maxWidth: 1280, margin: "0 auto", paddingLeft: 16, paddingRight: 16, paddingTop: 48, paddingBottom: 48 }}>
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-4xl font-bold text-foreground">Welcome to SurfCoast, {contractor.name}!</h1>
+        <div style={{ marginBottom: 40 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+            <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: 0, fontStyle: "italic" }}>Welcome to SurfCoast, {contractor.name}!</h1>
             <TrialStatusBadge
               trialEndDate={contractor.trial_ends_at}
               isFoundingMember={contractor.is_founding_member}

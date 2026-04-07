@@ -59,18 +59,28 @@ export default function AvailabilityManager() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['availabilitySlots'] })
   });
 
-  if (!user) return <div className="p-6 text-center">Loading...</div>;
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
+  if (!user) return <div style={{ padding: 24, textAlign: "center", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>Loading...</div>;
 
   const upcomingSlots = slots
     .filter(s => s.available && new Date(s.date) > new Date())
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">Availability Schedule</h1>
-          <p className="text-slate-600 mt-2">Smart scheduling prevents double-booking conflicts automatically</p>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 896, margin: "0 auto", padding: 24 }}>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2rem)", fontWeight: 800, color: T.dark, margin: 0, fontStyle: "italic" }}>Availability Schedule</h1>
+          <p style={{ color: T.muted, marginTop: 8, fontStyle: "italic" }}>Smart scheduling prevents double-booking conflicts automatically</p>
         </div>
 
         {conflicts > 0 && (

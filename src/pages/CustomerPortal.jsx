@@ -45,44 +45,54 @@ export default function CustomerPortal() {
     enabled: !!user?.email
   });
 
-  if (loading) return <div className="p-6 text-center">Loading...</div>;
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
+  if (loading) return <div style={{ padding: 24, textAlign: "center", background: T.bg, minHeight: "100vh" }}>Loading...</div>;
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Sign In Required</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-slate-600 mb-4">Please sign in to access your customer portal.</p>
-            <Button onClick={() => base44.auth.redirectToLogin()} className="w-full">
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: "100%", maxWidth: 448, background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, overflow: "hidden" }}>
+          <div style={{ padding: 24, borderBottom: "0.5px solid " + T.border }}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: T.dark, margin: 0, fontStyle: "italic" }}>Sign In Required</h2>
+          </div>
+          <div style={{ padding: 24 }}>
+            <p style={{ color: T.muted, marginBottom: 16, fontStyle: "italic" }}>Please sign in to access your customer portal.</p>
+            <button onClick={() => base44.auth.redirectToLogin()} style={{ width: "100%", padding: "12px 16px", background: T.amber, color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>
               Sign In
-            </Button>
-          </CardContent>
-        </Card>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
   const getStatusColor = (status) => {
     const colors = {
-      pending_approval: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-blue-100 text-blue-800',
-      pending_ratings: 'bg-purple-100 text-purple-800',
-      closed: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800'
+      pending_approval: { bg: "#FBF5EC", text: T.amber },
+      approved: { bg: "#E3F2FD", text: "#1A73E8" },
+      pending_ratings: { bg: "#F3E5F5", text: "#6A1B9A" },
+      closed: { bg: "#E8F5E9", text: "#2E7D32" },
+      rejected: { bg: "#FFEBEE", text: "#C62828" }
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || { bg: "#F5F5F5", text: "#424242" };
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-6xl mx-auto p-6">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: 24 }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">My Work Portal</h1>
-          <p className="text-slate-600 mt-2">Welcome, {user.full_name}. Track your projects and communications here.</p>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>My Work Portal</h1>
+          <p style={{ color: T.muted, marginTop: 8, fontStyle: "italic" }}>Welcome, {user.full_name}. Track your projects and communications here.</p>
         </div>
 
         {/* Quick Stats */}

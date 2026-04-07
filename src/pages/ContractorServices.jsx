@@ -32,37 +32,47 @@ export default function ContractorServices() {
     fetchData();
   }, []);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (!contractor) {
     return (
-      <div className="min-h-screen bg-slate-50 py-8 px-4">
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader>
-            <CardTitle>Contractor Profile Required</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
+      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto", background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, overflow: "hidden" }}>
+          <div style={{ padding: 24, borderBottom: "0.5px solid " + T.border }}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: T.dark, margin: 0, fontStyle: "italic" }}>Contractor Profile Required</h2>
+          </div>
+          <div style={{ padding: 24 }}>
+            <p style={{ color: T.muted, fontStyle: "italic" }}>
               You need to complete your contractor profile to access service templates.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900">Service Management</h1>
-          <p className="text-muted-foreground mt-2">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 896, margin: "0 auto" }}>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: 0, fontStyle: "italic" }}>Service Management</h1>
+          <p style={{ color: T.muted, marginTop: 8, fontStyle: "italic" }}>
             Create and manage reusable service templates for your proposals
           </p>
         </div>

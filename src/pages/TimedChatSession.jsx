@@ -65,18 +65,28 @@ export default function TimedChatSession() {
     setInputMessage('');
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (sessionStatus === 'cancelled') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 text-center">
-            <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Payment Cancelled</h1>
-            <p className="text-slate-600 mb-6">You've cancelled the chat session. No charge was made.</p>
-            <Button onClick={() => window.history.back()} className="bg-slate-900 hover:bg-slate-800">
+      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, padding: 32, textAlign: "center" }}>
+            <XCircle style={{ width: 48, height: 48, color: "#d32f2f", margin: "0 auto 16px" }} />
+            <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Payment Cancelled</h1>
+            <p style={{ color: T.muted, marginBottom: 24, fontStyle: "italic" }}>You've cancelled the chat session. No charge was made.</p>
+            <button onClick={() => window.history.back()} style={{ padding: "8px 16px", background: T.dark, color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600 }}>
               Go Back
-            </Button>
-          </Card>
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -84,41 +94,41 @@ export default function TimedChatSession() {
 
   if (sessionStatus === 'success' && !sessionActive && timeRemaining === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 text-center">
-            <Clock className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Session Expired</h1>
-            <p className="text-slate-600 mb-6">Your 10-minute chat session has ended. Thank you for using SurfCoast!</p>
-            <Button onClick={() => window.history.back()} className="bg-slate-900 hover:bg-slate-800">
+      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, padding: 32, textAlign: "center" }}>
+            <Clock style={{ width: 48, height: 48, color: T.amber, margin: "0 auto 16px" }} />
+            <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Session Expired</h1>
+            <p style={{ color: T.muted, marginBottom: 24, fontStyle: "italic" }}>Your 10-minute chat session has ended. Thank you for using SurfCoast!</p>
+            <button onClick={() => window.history.back()} style={{ padding: "8px 16px", background: T.dark, color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600 }}>
               Go Back
-            </Button>
-          </Card>
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 640, margin: "0 auto" }}>
         {/* Status */}
         {sessionStatus === 'success' && (
-          <Alert className="mb-6 border-green-200 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-900 ml-2">
+          <div style={{ marginBottom: 24, background: "#E8F5E9", border: "0.5px solid #4CAF50", borderRadius: 8, padding: 16, display: "flex", gap: 12 }}>
+            <CheckCircle style={{ width: 16, height: 16, color: "#2E7D32", flexShrink: 0, marginTop: 2 }} />
+            <p style={{ color: "#2E7D32", fontSize: 14, fontStyle: "italic" }}>
               Payment successful! Your 10-minute chat session is now active.
-            </AlertDescription>
-          </Alert>
+            </p>
+          </div>
         )}
 
         {!sessionStatus && (
-          <Alert className="mb-6 border-blue-200 bg-blue-50">
-            <AlertCircle className="h-4 w-4 text-blue-600" />
-            <AlertDescription className="text-blue-900 ml-2">
+          <div style={{ marginBottom: 24, background: "#E3F2FD", border: "0.5px solid #2196F3", borderRadius: 8, padding: 16, display: "flex", gap: 12 }}>
+            <AlertCircle style={{ width: 16, height: 16, color: "#1A73E8", flexShrink: 0, marginTop: 2 }} />
+            <p style={{ color: "#1A73E8", fontSize: 14, fontStyle: "italic" }}>
               Processing your session...
-            </AlertDescription>
-          </Alert>
+            </p>
+          </div>
         )}
 
         <Card className="flex flex-col h-[600px]">

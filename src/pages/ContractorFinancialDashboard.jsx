@@ -140,21 +140,31 @@ export default function ContractorFinancialDashboard() {
   const completedJobs = contractor?.completed_jobs_count || 0;
   const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('financial_dashboard', completedJobs);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (!contractor) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-slate-600">Loading contractor data...</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ color: T.muted, fontStyle: "italic" }}>Loading contractor data...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 16px" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Financial Dashboard</h1>
-          <p className="text-slate-600">Track your earnings, payouts, and job completion metrics</p>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Financial Dashboard</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Track your earnings, payouts, and job completion metrics</p>
         </div>
 
         {/* Summary Cards */}

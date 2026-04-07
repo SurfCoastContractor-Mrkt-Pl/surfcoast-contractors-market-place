@@ -43,52 +43,55 @@ export default function SurfCoastPerformanceDashboard() {
     loadData();
   }, []);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6">
-        <Card className="border-red-200 bg-red-50 max-w-2xl">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-red-900">
-              <AlertCircle className="w-5 h-5" /> Error
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-red-800">{error}</p>
-          </CardContent>
-        </Card>
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ background: T.card, border: "0.5px solid #EF5350", borderRadius: 10, boxShadow: "3px 3px 0px #EF5350", maxWidth: 640, padding: 32 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+            <AlertCircle style={{ width: 20, height: 20, color: "#d32f2f" }} />
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: "#c62828", margin: 0, fontStyle: "italic" }}>Error</h2>
+          </div>
+          <p style={{ color: "#c62828", fontStyle: "italic" }}>{error}</p>
+        </div>
       </div>
     );
   }
 
   if (!contractor) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6">
-        <Card className="border-slate-200 max-w-2xl">
-          <CardHeader>
-            <CardTitle>SurfCoast Performance Dashboard</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-slate-600">No contractor profile found. Please complete your contractor setup.</p>
-          </CardContent>
-        </Card>
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, maxWidth: 640, padding: 32 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: T.dark, margin: "0 0 16px 0", fontStyle: "italic" }}>SurfCoast Performance Dashboard</h2>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>No contractor profile found. Please complete your contractor setup.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900">SurfCoast Performance Dashboard</h1>
-          <p className="text-slate-600 mt-2">Track your earnings, completion rates, and customer satisfaction metrics.</p>
+    <div style={{ minHeight: "100vh", background: T.bg, padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>SurfCoast Performance Dashboard</h1>
+          <p style={{ color: T.muted, marginTop: 8, fontStyle: "italic" }}>Track your earnings, completion rates, and customer satisfaction metrics.</p>
         </div>
 
         <PerformanceAnalyticsDashboard

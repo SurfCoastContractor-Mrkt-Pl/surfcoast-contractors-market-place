@@ -17,24 +17,34 @@ export default function PaymentDemo() {
     name: 'John Smith',
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 896, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Payment Integration Demo</h1>
-          <p className="text-lg text-slate-600">
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Payment Integration Demo</h1>
+          <p style={{ fontSize: 18, color: T.muted, fontStyle: "italic" }}>
             Test all payment flows in a controlled environment
           </p>
         </div>
 
         {/* Info Alert */}
-        <Alert className="mb-8 border-blue-200 bg-blue-50">
-          <AlertCircle className="h-4 w-4 text-blue-600" />
-          <AlertDescription className="text-blue-900 ml-2">
+        <div style={{ marginBottom: 32, background: "#FBF5EC", border: "0.5px solid #D9B88A", borderRadius: 8, padding: 16, display: "flex", gap: 12 }}>
+          <AlertCircle style={{ width: 16, height: 16, color: T.amber, flexShrink: 0, marginTop: 2 }} />
+          <div style={{ color: T.amber, fontSize: 14, fontStyle: "italic" }}>
             <strong>Stripe Test Mode:</strong> Use test card 4242 4242 4242 4242 with any future expiry and CVC to simulate payments.
-          </AlertDescription>
-        </Alert>
+          </div>
+        </div>
 
         {/* Payment Flows */}
         <Tabs defaultValue="quote" className="w-full">
@@ -161,16 +171,16 @@ export default function PaymentDemo() {
         </Tabs>
 
         {/* Testing Notes */}
-        <Card className="mt-8 p-6 bg-amber-50 border-amber-200">
-          <h3 className="font-semibold text-amber-900 mb-3">Testing Notes</h3>
-          <ul className="text-sm text-amber-800 space-y-2">
+        <div style={{ marginTop: 32, background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, padding: 24 }}>
+          <h3 style={{ fontWeight: 700, color: T.dark, marginBottom: 12, fontStyle: "italic" }}>Testing Notes</h3>
+          <ul style={{ fontSize: 14, color: T.muted, display: "flex", flexDirection: "column", gap: 8, fontStyle: "italic" }}>
             <li>• Click any button to initiate a test payment</li>
             <li>• You'll be redirected to Stripe checkout (test mode)</li>
             <li>• After payment, you'll see a success page with payment details</li>
             <li>• Check the database for Payment records created during checkout</li>
             <li>• Idempotency prevents duplicate checkouts if you refresh</li>
           </ul>
-        </Card>
+        </div>
       </div>
     </div>
   );
