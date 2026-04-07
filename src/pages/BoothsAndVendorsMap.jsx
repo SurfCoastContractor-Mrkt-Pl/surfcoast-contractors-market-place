@@ -179,7 +179,7 @@ export default function BoothsAndVendorsMap() {
             <div className="text-slate-600">Loading vendors...</div>
           </div>
         ) : viewMode === 'map' ? (
-          <div className="h-96 md:h-[600px] rounded-lg overflow-hidden shadow-lg">
+          <div className="relative z-0 h-96 md:h-[600px] rounded-lg overflow-hidden shadow-lg">
             <VendorMap
               vendors={filteredVendors}
               selectedFilters={filters}
