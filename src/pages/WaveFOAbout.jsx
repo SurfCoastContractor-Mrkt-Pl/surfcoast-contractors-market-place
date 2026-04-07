@@ -95,12 +95,6 @@ export default function WaveFOAbout() {
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
 
-      {/* Ticker */}
-      <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// WAVE OS ECOSYSTEM · FIELD OPERATIONS SOFTWARE</span>
-        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>For Independent Entrepreneurs</span>
-      </div>
-
       {/* Hero */}
       <section style={{ background: T.bg, padding: "52px 24px 40px", borderBottom: `1px solid ${T.border}` }}>
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
