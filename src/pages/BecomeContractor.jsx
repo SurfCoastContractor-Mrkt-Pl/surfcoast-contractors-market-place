@@ -67,39 +67,39 @@ export default function BecomeContractor() {
   const [uploadingFace, setUploadingFace] = useState(false);
 
   // Initialize react-hook-form
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  const defaultFormData = savedData ? JSON.parse(savedData) : {
+    name: '',
+    email: '',
+    phone: '',
+    date_of_birth: '',
+    photo_url: '',
+    id_document_url: '',
+    face_photo_url: '',
+    contractor_type: '',
+    trade_specialty: '',
+    line_of_work: '',
+    line_of_work_other: '',
+    years_experience: '',
+    rate_type: 'hourly',
+    hourly_rate: '',
+    fixed_rate: '',
+    fixed_rate_details: '',
+    location: '',
+    bio: '',
+    skills: [],
+    certifications: [],
+    available: true,
+    rating: null,
+    reviews_count: 0,
+    credential_documents: [],
+    parental_consent_docs: {},
+  };
+
   const methods = useForm({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
-    defaultValues: () => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : {
-        name: '',
-        email: '',
-        phone: '',
-        date_of_birth: '',
-        photo_url: '',
-        id_document_url: '',
-        face_photo_url: '',
-        contractor_type: '',
-        trade_specialty: '',
-        line_of_work: '',
-        line_of_work_other: '',
-        years_experience: '',
-        rate_type: 'hourly',
-        hourly_rate: '',
-        fixed_rate: '',
-        fixed_rate_details: '',
-        location: '',
-        bio: '',
-        skills: [],
-        certifications: [],
-        available: true,
-        rating: null,
-        reviews_count: 0,
-        credential_documents: [],
-        parental_consent_docs: {},
-      };
-    }
+    defaultValues: defaultFormData
   });
 
   const { watch, getValues } = methods;
