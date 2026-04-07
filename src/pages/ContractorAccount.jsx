@@ -217,53 +217,53 @@ export default function ContractorAccount() {
   if (section) return null; // redirecting
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
+    <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      {/* Header */}
+      <div style={{ background: "#1A1A1B", borderBottom: "1px solid #D0D0D2" }}>
         <AuthTopBar />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md bg-slate-900">
-              <HardHat className="w-7 h-7 text-amber-400" />
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", background: "#5C3500", boxShadow: "3px 3px 0px #F0E0C0", flexShrink: 0 }}>
+              <HardHat style={{ width: 26, height: 26, color: "#F0E0C0" }} />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+              <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: "clamp(1.2rem, 3vw, 1.6rem)", color: "#fff", margin: 0 }}>
                 Contractor Portal
               </h1>
-              {contractorName && (
-                <p className="text-slate-500 mt-0.5">Welcome back, {contractorName}</p>
-              )}
-              {!contractorName && (
-                <p className="text-slate-500 mt-0.5">Your central hub for all contractor tools & pages</p>
-              )}
+              <p style={{ color: "#aaa", margin: "3px 0 0", fontSize: 13, fontStyle: "italic" }}>
+                {contractorName ? `Welcome back, ${contractorName}` : "Your central hub for all contractor tools & pages"}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px" }}>
         {portalSections.map(section => (
-          <div key={section.category}>
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
-              {section.category}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div key={section.category} style={{ marginBottom: 36 }}>
+            <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 10, color: "#555", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 14 }}>
+              // {section.category}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
               {section.items.map(item => {
                 const Icon = item.icon;
                 return (
                   <button
                     key={item.title}
                     onClick={() => navigate(item.path)}
-                    className="group text-left bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-400 hover:shadow-md transition-all duration-200 flex items-start gap-4"
+                    style={{ textAlign: "left", background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, padding: "18px 18px", boxShadow: "3px 3px 0px #5C3500", display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", transition: "box-shadow 0.2s ease", width: "100%" }}
+                    onMouseEnter={e => e.currentTarget.style.boxShadow = "0 0 14px 3px rgba(255,180,0,0.3)"}
+                    onMouseLeave={e => e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500"}
                   >
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${item.color}`}>
-                      <Icon className="w-5 h-5 text-white" />
+                    <div style={{ width: 42, height: 42, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: "#1A1A1B" }}>
+                      <Icon style={{ width: 20, height: 20, color: "#F0E0C0" }} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-slate-900 text-sm">{item.title}</span>
-                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 shrink-0 transition-colors" />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                        <span style={{ fontWeight: 700, color: "#1A1A1B", fontSize: 13 }}>{item.title}</span>
+                        <ChevronRight style={{ width: 14, height: 14, color: "#999", flexShrink: 0 }} />
                       </div>
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">{item.description}</p>
+                      <p style={{ fontSize: 11, color: "#555", marginTop: 4, lineHeight: 1.55, fontStyle: "italic", margin: "4px 0 0" }}>{item.description}</p>
                     </div>
                   </button>
                 );

@@ -81,26 +81,26 @@ export default function CustomerSignup() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-md mx-auto px-4 py-10">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary" />
+    <div style={{ minHeight: "100vh", background: "#EBEBEC", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "44px 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+          <div style={{ width: 44, height: 44, borderRadius: 10, background: "#FBF5EC", border: "0.5px solid #D9B88A", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "3px 3px 0px #5C3500", flexShrink: 0 }}>
+            <Users style={{ width: 20, height: 20, color: "#5C3500" }} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Find a Contractor</h1>
-            <p className="text-sm text-muted-foreground">Create your client account to post jobs and hire</p>
+            <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 22, color: "#1A1A1B", margin: 0 }}>Find a Contractor</h1>
+            <p style={{ fontSize: 13, color: "#555", marginTop: 3, fontStyle: "italic" }}>Create your client account to post jobs and hire</p>
           </div>
         </div>
         <EarlyAdopterBanner />
-        <Card className="p-8">
+        <Card style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 10, boxShadow: "3px 3px 0px #5C3500", padding: 32 }}>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-start gap-3">
-                <span className="text-lg leading-none">⚠</span>
+              <div style={{ padding: "12px 16px", background: "#FBF5EC", border: "0.5px solid #D9B88A", borderRadius: 8, fontSize: 13, color: "#5C3500", display: "flex", alignItems: "flex-start", gap: 10 }}>
+                <span style={{ fontSize: 16, lineHeight: 1 }}>⚠</span>
                 <div>
-                  <p className="font-semibold">Error</p>
-                  <p className="text-red-600 mt-1">{error}</p>
+                  <p style={{ fontWeight: 700, margin: 0, fontFamily: "monospace" }}>Error</p>
+                  <p style={{ margin: "4px 0 0", fontStyle: "italic" }}>{error}</p>
                 </div>
               </div>
             )}
@@ -170,16 +170,18 @@ export default function CustomerSignup() {
 
             <Button
               type="submit"
-              className="w-full text-white font-semibold mt-6 transition-all"
+              className="w-full font-semibold mt-6 transition-all"
               style={{
-                backgroundColor: loading ? '#1a3d5c' : '#1E5A96',
+                background: loading ? "#333" : "#1A1A1B",
+                color: "#fff",
                 opacity: loading ? 0.8 : 1,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                minHeight: '44px'
+                cursor: loading ? "not-allowed" : "pointer",
+                minHeight: 44,
+                borderRadius: 6,
+                boxShadow: "3px 3px 0px #5C3500",
+                border: "none",
               }}
               disabled={loading}
-              onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#153d69')}
-              onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#1E5A96')}
             >
               {loading ? (
                 <>
@@ -187,23 +189,16 @@ export default function CustomerSignup() {
                   Creating Account...
                 </>
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </Button>
 
-            <p className="text-sm text-slate-600 text-center mt-4">
-              Already have an account?{' '}
+            <p style={{ fontSize: 13, color: "#555", textAlign: "center", marginTop: 16 }}>
+              Already have an account?{" "}
               <button
                 type="button"
                 onClick={() => base44.auth.redirectToLogin()}
-                className="font-semibold transition-colors"
-                style={{
-                  color: '#d4a843',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textDecoration: 'underline'
-                }}
+                style={{ fontFamily: "monospace", fontWeight: 700, color: "#5C3500", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontStyle: "italic" }}
               >
                 Login here
               </button>

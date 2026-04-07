@@ -1,5 +1,27 @@
-import { ArrowLeft, CheckCircle2, Zap, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowLeft, ArrowRight, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const T = {
+  bg: "#EBEBEC",
+  card: "#fff",
+  dark: "#1A1A1B",
+  muted: "#333",
+  border: "#D0D0D2",
+  amber: "#5C3500",
+  amberBg: "#F0E0C0",
+  amberTint: "#FBF5EC",
+  shadow: "3px 3px 0px #5C3500",
+};
+
+const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
+const cardStyle = {
+  background: T.card,
+  border: `0.5px solid ${T.border}`,
+  borderRadius: 10,
+  boxShadow: T.shadow,
+};
+
+const goldGlowSm = "0 0 14px 3px rgba(255,180,0,0.3)";
 
 export default function WAVEOSDetails() {
   const tiers = [
@@ -10,74 +32,83 @@ export default function WAVEOSDetails() {
     { name: "Residential Bundle", price: "$125", jobs: "100+", features: ["Everything in Premium", "Unlimited messaging", "Residential Wave tools", "No additional fees"] },
   ];
 
-  return (
-    <div className="w-full bg-background min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-background py-20 lg:py-32 px-4 lg:px-8">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full opacity-10 -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+  const features = [
+    { title: "Job Management", desc: "Post jobs, receive bids, manage scopes of work, and track progress in real time." },
+    { title: "Field Operations", desc: "GPS tracking, photo documentation, digital signatures, and mobile-first interface." },
+    { title: "Financial Tools", desc: "Invoice generation, payment tracking, QuickBooks export, and payout management." },
+    { title: "Client Communication", desc: "Secure messaging, progress updates, and project collaboration tools." },
+    { title: "Scheduling", desc: "Calendar management, availability tracking, and AI-powered scheduling assistant." },
+    { title: "Growth Tools", desc: "Performance analytics, referral tracking, and professional reputation building." },
+  ];
 
-        <div className="relative max-w-6xl mx-auto">
-          <Link to="/" className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-muted hover:bg-border transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-semibold">Back to Home</span>
+  return (
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
+
+      {/* Ticker */}
+      <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// WAVE OS · FIELD OPERATIONS SOFTWARE</span>
+        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>For Independent Contractors</span>
+      </div>
+
+      {/* Hero */}
+      <section style={{ background: T.bg, padding: "52px 24px 40px" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto" }}>
+          <Link to="/" style={{ ...mono, fontSize: 11, color: T.muted, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 24 }}>
+            <ArrowLeft size={13} /> Back to Home
           </Link>
 
-          <div className="mb-16 max-w-3xl">
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-100/20 border border-blue-400/40">
-              <Zap className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-bold text-blue-600 uppercase tracking-wide">Field Operations Software</span>
-            </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 18, padding: "4px 14px", background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6 }}>
+            <Zap size={12} style={{ color: T.amber }} />
+            <span style={{ ...mono, fontSize: 10, color: T.amber, letterSpacing: "0.08em" }}>FIELD OPERATIONS SOFTWARE</span>
+          </div>
 
-            <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight">
-              WAVE OS<br />
-              <span className="text-blue-600">For Independent Contractors</span>
-            </h1>
+          <h1 style={{ fontSize: "clamp(2.4rem, 6vw, 4rem)", fontWeight: 900, color: T.dark, marginBottom: 20, lineHeight: 1.08 }}>
+            WAVE OS<br />
+            <span style={{ color: T.amber }}>For Independent Contractors</span>
+          </h1>
 
-            <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-2xl">
-              Professional field operations software designed for solo entrepreneurs. Manage jobs, track finances, schedule efficiently, and grow your business.
-            </p>
+          <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620, fontStyle: "italic" }}>
+            Professional field operations software designed for solo entrepreneurs. Manage jobs, track finances, schedule efficiently, and grow your business.
+          </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/BecomeContractor"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
-              >
-                Get Started Free <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-lg"
-              >
-                Back to Home
-              </Link>
-            </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <Link to="/BecomeContractor" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 26px", borderRadius: 6, background: T.dark, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: 14, boxShadow: T.shadow }}>
+              Get Started Free <ArrowRight size={15} />
+            </Link>
+            <Link to="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 26px", borderRadius: 6, border: `1px solid ${T.border}`, color: T.dark, fontWeight: 700, textDecoration: "none", fontSize: 14, background: T.card }}>
+              Back to Home
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Pricing Tiers */}
-      <section className="py-20 px-4 lg:px-8 bg-muted border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">WAVE OS Tiers</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+      <section style={{ background: "#F5F5F6", padding: "52px 24px", borderTop: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
+            <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// WAVE OS TIERS</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: T.dark, marginBottom: 12 }}>WAVE OS Tiers</h2>
+            <p style={{ fontSize: 15, color: T.muted, maxWidth: 560, margin: "0 auto", fontStyle: "italic" }}>
               Start free. Unlock tiers as you complete jobs. Licensed professionals get instant access to all tiers.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, marginBottom: 28 }}>
             {tiers.map((tier, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border p-6 text-center hover:shadow-lg hover:border-primary transition-all">
-                <h3 className="font-bold text-foreground text-sm mb-2">{tier.name}</h3>
-                <div className="text-3xl font-extrabold text-primary mb-1">{tier.price}</div>
-                <p className="text-xs text-muted-foreground mb-4">/month</p>
-                <div className="bg-muted rounded px-3 py-2 mb-6 text-xs font-semibold text-foreground">
+              <div key={i} style={{ ...cardStyle, padding: 20, textAlign: "center", display: "flex", flexDirection: "column" }}
+                onMouseEnter={e => e.currentTarget.style.boxShadow = goldGlowSm}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = T.shadow}
+              >
+                <h3 style={{ ...mono, fontSize: 12, color: T.muted, marginBottom: 8 }}>{tier.name}</h3>
+                <div style={{ ...mono, fontSize: 30, fontWeight: 700, color: T.amber, marginBottom: 2 }}>{tier.price}</div>
+                <p style={{ fontSize: 11, color: T.muted, marginBottom: 14 }}>/month</p>
+                <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 5, padding: "5px 10px", marginBottom: 14, fontSize: 11, color: T.amber, ...mono }}>
                   {tier.jobs} jobs to unlock
                 </div>
-                <ul className="space-y-2 mb-6 text-left">
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, flex: 1, textAlign: "left" }}>
                   {tier.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <CheckCircle2 className="w-3 h-3 text-primary flex-shrink-0" />
+                    <li key={j} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 11, color: T.muted, marginBottom: 6 }}>
+                      <CheckCircle2 size={11} style={{ color: T.amber, flexShrink: 0 }} />
                       {f}
                     </li>
                   ))}
@@ -86,39 +117,29 @@ export default function WAVEOSDetails() {
             ))}
           </div>
 
-          <div className="bg-card border-2 border-border rounded-xl p-8 text-center">
-            <p className="text-muted-foreground mb-6 text-lg">
-              <strong className="text-foreground">Licensed Professionals:</strong> Have a C-36, H.I.S. License, or equivalent? Get instant access to all tiers. Choose your subscription level and start immediately.
+          <div style={{ ...cardStyle, padding: 28, textAlign: "center" }}>
+            <p style={{ fontSize: 14, color: T.muted, marginBottom: 20, lineHeight: 1.65, fontStyle: "italic" }}>
+              <strong style={{ color: T.dark }}>Licensed Professionals:</strong> Have a C-36, H.I.S. License, or equivalent? Get instant access to all tiers. Choose your subscription level and start immediately.
             </p>
-            <Link
-              to="/Pricing"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
-            >
-              View Full Pricing Details <ArrowRight className="w-5 h-5" />
+            <Link to="/Pricing" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px", borderRadius: 6, background: T.dark, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: 14, boxShadow: T.shadow }}>
+              View Full Pricing Details <ArrowRight size={14} />
             </Link>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-20 px-4 lg:px-8 bg-background border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-extrabold text-foreground text-center mb-16">What's Included</h2>
+      <section style={{ background: T.bg, padding: "52px 24px", borderTop: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 960, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em", textAlign: "center" }}>// WHAT'S INCLUDED</div>
+          <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: T.dark, textAlign: "center", marginBottom: 40 }}>What's Included</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-            {[
-              { title: "Job Management", desc: "Post jobs, receive bids, manage scopes of work, and track progress in real time." },
-              { title: "Field Operations", desc: "GPS tracking, photo documentation, digital signatures, and mobile-first interface." },
-              { title: "Financial Tools", desc: "Invoice generation, payment tracking, QuickBooks export, and payout management." },
-              { title: "Client Communication", desc: "Secure messaging, progress updates, and project collaboration tools." },
-              { title: "Scheduling", desc: "Calendar management, availability tracking, and AI-powered scheduling assistant." },
-              { title: "Growth Tools", desc: "Performance analytics, referral tracking, and professional reputation building." },
-            ].map((item, i) => (
-              <div key={i} className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24, maxWidth: 860, margin: "0 auto" }}>
+            {features.map((item, i) => (
+              <div key={i} style={{ display: "flex", gap: 14, borderLeft: `3px solid ${T.amber}`, paddingLeft: 18 }}>
                 <div>
-                  <h3 className="font-bold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-muted-foreground">{item.desc}</p>
+                  <h3 style={{ fontWeight: 800, color: T.dark, marginBottom: 6, fontSize: 15 }}>{item.title}</h3>
+                  <p style={{ color: T.muted, margin: 0, fontSize: 13, lineHeight: 1.65, fontStyle: "italic" }}>{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -127,47 +148,23 @@ export default function WAVEOSDetails() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 lg:px-8 bg-muted border-t border-border">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-foreground mb-6">Ready to scale your business?</h2>
-          <p className="text-muted-foreground text-lg mb-10">Start with a free profile. Unlock tiers as you grow. No credit card required.</p>
+      <section style={{ background: T.dark, padding: "64px 24px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amberBg, marginBottom: 10, letterSpacing: "0.1em" }}>// GET STARTED</div>
+          <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#fff", marginBottom: 16 }}>Ready to scale your business?</h2>
+          <p style={{ color: "#ccc", fontSize: 15, marginBottom: 32, fontStyle: "italic" }}>Start with a free profile. Unlock tiers as you grow. No credit card required.</p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/BecomeContractor"
-              className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-all text-lg"
-            >
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link to="/BecomeContractor" style={{ padding: "12px 28px", borderRadius: 6, background: T.amberBg, color: T.amber, fontWeight: 700, textDecoration: "none", fontSize: 14, boxShadow: T.shadow }}>
               Get Started Free
             </Link>
-            <Link
-              to="/"
-              className="px-8 py-4 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-lg"
-            >
+            <Link to="/" style={{ padding: "12px 28px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.25)", color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: 14 }}>
               Back to Home
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-card py-10 px-4 lg:px-8 border-t border-border">
-        <div className="max-w-6xl mx-auto flex flex-col gap-4 lg:flex-row lg:gap-0 lg:items-center lg:justify-between">
-          <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} SurfCoast. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            {[
-              { label: "Home", to: "/" },
-              { label: "About", to: "/About" },
-              { label: "Privacy", to: "/PrivacyPolicy" },
-            ].map(({ label, to }) => (
-              <Link key={label} to={to} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -3,14 +3,24 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
 const T = {
-  dark: '#1A1A1B',
-  amber: '#5C3500',
-  amberBg: '#F0E0C0',
-  amberTint: '#FBF5EC',
-  border: '#D0D0D2',
-  bg: '#EBEBEC',
-  muted: '#555',
-  mono: { fontFamily: 'monospace' },
+  bg: "#EBEBEC",
+  card: "#fff",
+  dark: "#1A1A1B",
+  muted: "#333",
+  border: "#D0D0D2",
+  amber: "#5C3500",
+  amberBg: "#F0E0C0",
+  amberTint: "#FBF5EC",
+  shadow: "3px 3px 0px #5C3500",
+};
+
+const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
+
+const cardStyle = {
+  background: T.card,
+  border: `0.5px solid ${T.border}`,
+  borderRadius: 10,
+  boxShadow: T.shadow,
 };
 
 const FACTS = [
@@ -43,9 +53,7 @@ const AEO_FAQ = [
 
 export default function About() {
   return (
-    <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif', minHeight: '100vh', background: '#fff' }}>
-
-      {/* JSON-LD AEO Schema */}
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -56,26 +64,30 @@ export default function About() {
         })),
       })}} />
 
+      {/* Ticker */}
+      <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// ABOUT · SURFCOAST CONTRACTORS MARKETPLACE</span>
+        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+      </div>
+
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(160deg, #1A1A1B 0%, #2a2a2b 100%)', padding: '60px 24px 48px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Link to="/" style={{ ...T.mono, fontSize: 11, color: '#aaa', textDecoration: 'none', display: 'inline-block', marginBottom: 24, letterSpacing: '0.06em' }}>← Back to Home</Link>
-          <div style={{ ...T.mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: '0.1em' }}>// ABOUT</div>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, color: '#fff', marginBottom: 20, lineHeight: 1.1 }}>
+      <section style={{ background: T.bg, padding: "52px 24px 40px", borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <Link to="/" style={{ ...mono, fontSize: 11, color: T.muted, textDecoration: "none", display: "inline-block", marginBottom: 20, letterSpacing: "0.06em" }}>← Back to Home</Link>
+          <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.1em" }}>// ABOUT</div>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 900, color: T.dark, marginBottom: 20, lineHeight: 1.1 }}>
             SurfCoast Contractors Marketplace
           </h1>
-
-          {/* Opening definition */}
-          <p style={{ fontSize: 16, color: '#ddd', lineHeight: 1.75, maxWidth: 720, marginBottom: 32 }}>
-            SurfCoast CMP — also known as SurfCoast Contractors Marketplace, SurfCoast Contractors Market Place, and SurfCoast Marketplace — is a nationwide two-sided marketplace connecting everyday workers with everyday people across the United States. The platform was founded in 2026 and is headquartered in the Inland Empire, California. SurfCoast exists so that independent workers of all kinds — tradespeople, freelancers, creatives, service workers, and motivated individuals as young as 13 — can build a real business without paying for the privilege of being considered.
+          <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.75, maxWidth: 720, marginBottom: 32, fontWeight: 700, fontStyle: "italic" }}>
+            SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide two-sided marketplace connecting everyday workers with everyday people across the United States. Founded in 2026, headquartered in the Inland Empire, California.
           </p>
 
-          {/* Company Facts Table */}
-          <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, overflow: 'hidden', maxWidth: 560 }}>
+          {/* Company Facts */}
+          <div style={{ ...cardStyle, overflow: "hidden", maxWidth: 520, padding: 0 }}>
             {FACTS.map((f, i) => (
-              <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '13px 20px', borderBottom: i < FACTS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-                <span style={{ ...T.mono, fontSize: 11, color: '#999', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{f.label}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#fff', textAlign: 'right' }}>{f.value}</span>
+              <div key={f.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 20px", borderBottom: i < FACTS.length - 1 ? `1px solid ${T.border}` : "none" }}>
+                <span style={{ ...mono, fontSize: 10, color: T.muted, letterSpacing: "0.05em" }}>{f.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: T.dark }}>{f.value}</span>
               </div>
             ))}
           </div>
@@ -83,25 +95,25 @@ export default function About() {
       </section>
 
       {/* Mission */}
-      <section style={{ background: T.amberTint, padding: '52px 24px', borderBottom: `1px solid ${T.border}` }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div style={{ ...T.mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: '0.1em' }}>// MISSION</div>
+      <section style={{ background: T.amberTint, padding: "52px 24px", borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// MISSION</div>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: T.dark, marginBottom: 16 }}>To end the lead-fee model that exploits independent workers.</h2>
-          <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.75, maxWidth: 680 }}>
+          <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.75, maxWidth: 680, fontWeight: 700, fontStyle: "italic" }}>
             SurfCoast exists so that everyday people with real skills can find real work. Your profile and listing are free. Communication starts at $1.50 per 10-minute session. You only pay a facilitation fee when work actually happens.
           </p>
         </div>
       </section>
 
       {/* What Makes SurfCoast Different */}
-      <section style={{ background: '#fff', padding: '52px 24px', borderBottom: `1px solid ${T.border}` }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div style={{ ...T.mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: '0.1em' }}>// WHAT MAKES SURFCOAST DIFFERENT</div>
+      <section style={{ background: T.bg, padding: "52px 24px", borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em" }}>// WHAT MAKES SURFCOAST DIFFERENT</div>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: T.dark, marginBottom: 24 }}>Six things no other platform does.</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {DIFFERENTIATORS.map((text, i) => (
-              <div key={i} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', background: T.bg, border: `0.5px solid ${T.border}`, borderRadius: 8, padding: '16px 20px' }}>
-                <span style={{ ...T.mono, fontSize: 13, fontWeight: 700, color: T.amber, flexShrink: 0 }}>{i + 1}.</span>
+              <div key={i} style={{ ...cardStyle, display: "flex", gap: 16, alignItems: "flex-start", padding: "16px 20px" }}>
+                <span style={{ ...mono, fontSize: 13, fontWeight: 700, color: T.amber, flexShrink: 0 }}>{i + 1}.</span>
                 <p style={{ fontSize: 14, color: T.dark, lineHeight: 1.7, margin: 0 }}>{text}</p>
               </div>
             ))}
@@ -110,21 +122,21 @@ export default function About() {
       </section>
 
       {/* Founder */}
-      <section style={{ background: 'linear-gradient(160deg, #0d2a4a 0%, #0a1628 100%)', padding: '60px 24px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div style={{ ...T.mono, fontSize: 11, color: '#F97316', marginBottom: 12, letterSpacing: '0.1em' }}>// FOUNDER</div>
-          <h2 style={{ fontSize: 26, fontWeight: 800, color: '#fff', marginBottom: 28 }}>Built by a tradesman, for the tradespeople.</h2>
+      <section style={{ background: T.dark, padding: "60px 24px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amberBg, marginBottom: 12, letterSpacing: "0.1em" }}>// FOUNDER</div>
+          <h2 style={{ fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 28 }}>Built by a tradesman, for the tradespeople.</h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 32, alignItems: 'start' }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 32, alignItems: "start" }}>
             <div>
               <img
                 src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/93f3cfcd7_IMG_3860.jpg"
                 alt="Hector A. Navarrete — Founder of SurfCoast Contractors Marketplace"
-                style={{ borderRadius: 12, width: '100%', maxWidth: 340, boxShadow: '0 24px 64px rgba(0,0,0,0.5)', border: '1px solid rgba(249,115,22,0.2)' }}
+                style={{ borderRadius: 10, width: "100%", maxWidth: 340, boxShadow: `3px 3px 0px ${T.amber}`, border: `1px solid ${T.border}` }}
               />
               <div style={{ marginTop: 16 }}>
-                <p style={{ fontWeight: 800, color: '#fff', fontSize: 15, marginBottom: 4 }}>Hector A. Navarrete</p>
-                <p style={{ ...T.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '0.1em', lineHeight: 1.8, textTransform: 'uppercase' }}>
+                <p style={{ fontWeight: 800, color: "#fff", fontSize: 15, marginBottom: 4 }}>Hector A. Navarrete</p>
+                <p style={{ ...mono, fontSize: 10, color: "#aaa", letterSpacing: "0.08em", lineHeight: 1.8 }}>
                   C36 Licensed Plumber · Owner, SurfCoast Plumbing<br />
                   Founder, SurfCoast Contractors Marketplace<br />
                   Gracie Jiu-Jitsu Purple Belt
@@ -132,32 +144,32 @@ export default function About() {
               </div>
             </div>
 
-            <div style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.85 }}>
+            <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.85 }}>
               <p style={{ marginBottom: 16 }}>Hector A. Navarrete did not build this platform from a board room. At 14 years old he was homeless. He worked his way up — got into the trades, earned his C36 plumbing license in 2022, and built SurfCoast Plumbing out of South San Diego.</p>
               <p style={{ marginBottom: 16 }}>He also holds a purple belt in Gracie Jiu-Jitsu, a discipline he says taught him the same thing the trades did — that you earn every position, nothing is handed to you, and accountability is not optional.</p>
               <p style={{ marginBottom: 24 }}>SurfCoast Contractors Marketplace is what he wished had existed when he was starting out. He built it because he lived the problem.</p>
 
-              <div style={{ background: 'rgba(249,115,22,0.07)', borderLeft: '3px solid #F97316', borderRadius: 4, padding: '18px 22px' }}>
-                <p style={{ fontStyle: 'italic', fontWeight: 800, fontSize: 17, color: '#fff', margin: 0 }}>
+              <div style={{ background: T.amberTint, borderLeft: `3px solid ${T.amber}`, borderRadius: 6, padding: "18px 22px" }}>
+                <p style={{ fontStyle: "italic", fontWeight: 800, fontSize: 17, color: T.dark, margin: 0 }}>
                   "Being a contractor is not a job title. It is a mindset."
                 </p>
-                <p style={{ ...T.mono, fontSize: 10, color: '#F97316', marginTop: 8, letterSpacing: '0.1em' }}>— HECTOR A. NAVARRETE</p>
+                <p style={{ ...mono, fontSize: 10, color: T.amber, marginTop: 8, letterSpacing: "0.1em" }}>— HECTOR A. NAVARRETE</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* AEO FAQ Section */}
-      <section style={{ background: T.bg, padding: '52px 24px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div style={{ ...T.mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: '0.1em' }}>// COMMON QUESTIONS</div>
+      {/* FAQ */}
+      <section style={{ background: T.bg, padding: "52px 24px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em" }}>// COMMON QUESTIONS</div>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: T.dark, marginBottom: 24 }}>About SurfCoast</h2>
-          <div style={{ display: 'grid', gap: 16 }}>
+          <div style={{ display: "grid", gap: 14 }}>
             {AEO_FAQ.map(({ q, a }) => (
-              <div key={q} style={{ background: '#fff', border: `0.5px solid ${T.border}`, borderRadius: 10, padding: 24, boxShadow: '2px 2px 0px #5C3500' }}>
+              <div key={q} style={{ ...cardStyle, padding: 24 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: T.dark, marginBottom: 10 }}>{q}</h3>
-                <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.7, margin: 0 }}>{a}</p>
+                <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.7, margin: 0, fontWeight: 700, fontStyle: "italic" }}>{a}</p>
               </div>
             ))}
           </div>
@@ -165,16 +177,16 @@ export default function About() {
       </section>
 
       {/* Why SurfCoast Link */}
-      <section style={{ background: '#f5f5f6', borderTop: `1px solid ${T.border}`, padding: '48px 24px' }}>
-        <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#888', letterSpacing: '0.1em', marginBottom: 12 }}>// PLATFORM PHILOSOPHY</p>
-          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, color: T.dark, marginBottom: 12 }}>Why SurfCoast?</h2>
-          <p style={{ fontSize: 14, color: '#555', lineHeight: 1.7, marginBottom: 24, maxWidth: 560, margin: '0 auto 24px' }}>
+      <section style={{ background: "#F5F5F6", borderTop: `1px solid ${T.border}`, padding: "48px 24px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, letterSpacing: "0.1em", marginBottom: 12 }}>// PLATFORM PHILOSOPHY</div>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: T.dark, marginBottom: 12 }}>Why SurfCoast?</h2>
+          <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7, marginBottom: 24, maxWidth: 560, margin: "0 auto 24px", fontWeight: 700, fontStyle: "italic" }}>
             Learn how our toll-road model, fee structure, and compliance systems were designed to protect workers — not extract from them.
           </p>
           <Link
             to="/WhySurfCoast"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: T.dark, color: '#fff', textDecoration: 'none', borderRadius: 7, padding: '10px 22px', fontSize: 13, fontWeight: 700 }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, background: T.dark, color: "#fff", textDecoration: "none", borderRadius: 7, padding: "10px 22px", fontSize: 13, fontWeight: 700, boxShadow: T.shadow }}
           >
             Read Why SurfCoast <ChevronRight style={{ width: 15, height: 15 }} />
           </Link>
@@ -182,24 +194,24 @@ export default function About() {
       </section>
 
       {/* Offerings */}
-      <section style={{ background: 'linear-gradient(160deg, #0a1628 0%, #112d52 100%)', padding: '52px 24px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#F97316', marginBottom: 10, letterSpacing: '0.1em' }}>// OUR OFFERINGS</div>
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 24 }}>What We Offer</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
-            <div style={{ background: 'rgba(217,119,6,0.07)', border: '1.5px solid rgba(217,119,6,0.25)', borderRadius: 16, padding: 28, textAlign: 'center' }}>
-              <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', marginBottom: 8 }}>WAVE OS Plans</h3>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginBottom: 16 }}>For contractors and solo professionals</p>
-              <div style={{ fontSize: 34, fontWeight: 900, color: '#d97706', marginBottom: 4 }}>From $19</div>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 20 }}>/month</div>
-              <Link to="/pricing" style={{ display: 'block', background: '#d97706', color: '#fff', textDecoration: 'none', borderRadius: 8, padding: '11px 16px', fontSize: 13, fontWeight: 700 }}>View All Plans →</Link>
+      <section style={{ background: T.bg, padding: "52px 24px", borderTop: `1px solid ${T.border}` }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// OUR OFFERINGS</div>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: T.dark, marginBottom: 24 }}>What We Offer</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+            <div style={{ ...cardStyle, borderTop: `3px solid ${T.amber}`, padding: 28, textAlign: "center" }}>
+              <h3 style={{ fontSize: 17, fontWeight: 700, color: T.dark, marginBottom: 8 }}>WAVE OS Plans</h3>
+              <p style={{ fontSize: 13, color: T.muted, marginBottom: 16, fontStyle: "italic" }}>For contractors and solo professionals</p>
+              <div style={{ ...mono, fontSize: 34, fontWeight: 700, color: T.amber, marginBottom: 4 }}>From $19</div>
+              <div style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>/month</div>
+              <Link to="/pricing" style={{ display: "block", background: T.dark, color: "#fff", textDecoration: "none", borderRadius: 6, padding: "10px 16px", fontSize: 13, fontWeight: 700 }}>View All Plans →</Link>
             </div>
-            <div style={{ background: 'rgba(157,122,84,0.07)', border: '1.5px solid rgba(157,122,84,0.25)', borderRadius: 16, padding: 28, textAlign: 'center' }}>
-              <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', marginBottom: 8 }}>WAVEshop OS</h3>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginBottom: 16 }}>For farmers market &amp; swap meet booths</p>
-              <div style={{ fontSize: 34, fontWeight: 900, color: '#9d7a54', marginBottom: 4 }}>$35</div>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 20 }}>/month</div>
-              <Link to="/pricing" style={{ display: 'block', background: '#9d7a54', color: '#fff', textDecoration: 'none', borderRadius: 8, padding: '11px 16px', fontSize: 13, fontWeight: 700 }}>View All Plans →</Link>
+            <div style={{ ...cardStyle, borderTop: `3px solid ${T.border}`, padding: 28, textAlign: "center" }}>
+              <h3 style={{ fontSize: 17, fontWeight: 700, color: T.dark, marginBottom: 8 }}>WAVEshop OS</h3>
+              <p style={{ fontSize: 13, color: T.muted, marginBottom: 16, fontStyle: "italic" }}>For farmers market &amp; swap meet booths</p>
+              <div style={{ ...mono, fontSize: 34, fontWeight: 700, color: T.dark, marginBottom: 4 }}>$35</div>
+              <div style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>/month</div>
+              <Link to="/pricing" style={{ display: "block", background: T.dark, color: "#fff", textDecoration: "none", borderRadius: 6, padding: "10px 16px", fontSize: 13, fontWeight: 700 }}>View All Plans →</Link>
             </div>
           </div>
         </div>

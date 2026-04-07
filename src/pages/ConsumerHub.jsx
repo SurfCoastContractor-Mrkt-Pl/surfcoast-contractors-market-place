@@ -56,23 +56,23 @@ export default function ConsumerHub() {
 
   if (!isRegistered) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="max-w-md w-full text-center">
-          <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <ShoppingBag className="w-8 h-8 text-blue-600" />
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <div style={{ maxWidth: 420, width: "100%", textAlign: "center" }}>
+          <div style={{ width: 56, height: 56, borderRadius: 10, background: "#FBF5EC", border: "0.5px solid #D9B88A", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", boxShadow: "3px 3px 0px #5C3500" }}>
+            <ShoppingBag style={{ width: 28, height: 28, color: "#5C3500" }} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Consumer Dashboard</h2>
-          <p className="text-slate-500 mb-6">
+          <h2 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 22, color: "#1A1A1B", marginBottom: 10 }}>Consumer Dashboard</h2>
+          <p style={{ color: "#555", marginBottom: 24, lineHeight: 1.65, fontSize: 14, fontStyle: "italic" }}>
             You need a Consumer account to access this dashboard. Sign up to browse local vendors, earn badges, and track your orders.
           </p>
           <Link
             to={createPageUrl('ConsumerSignup')}
-            className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            style={{ display: "inline-block", padding: "11px 24px", background: "#1A1A1B", color: "#fff", fontWeight: 700, borderRadius: 6, textDecoration: "none", fontSize: 13, boxShadow: "3px 3px 0px #5C3500" }}
           >
             Register as a Consumer
           </Link>
-          <p className="text-sm text-slate-400 mt-4">
-            <button onClick={() => navigate(-1)} className="underline hover:text-slate-600">Go back</button>
+          <p style={{ fontSize: 12, color: "#888", marginTop: 16 }}>
+            <button onClick={() => navigate(-1)} style={{ background: "none", border: "none", cursor: "pointer", textDecoration: "underline", color: "#555", fontSize: 12 }}>Go back</button>
           </p>
         </div>
       </div>
@@ -80,21 +80,13 @@ export default function ConsumerHub() {
   }
 
   return (
-    <div 
-      className="min-h-screen"
-      style={{
-        backgroundImage: `
-          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M60 40 L100 20 L140 40 L140 80 L100 100 L60 80 Z" fill="rgba(253,224,71,0.08)"/><path d="M40 100 L60 80 L100 100 L80 120 Z" fill="rgba(253,224,71,0.06)"/></svg>')`,
-        backgroundSize: '400px 400px',
-        backgroundRepeat: 'repeat',
-        backgroundColor: '#fefef0'
-      }}
-    >
+    <div style={{ minHeight: "100vh", background: "#EBEBEC" }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Consumer Dashboard</h1>
-          <p className="text-slate-600">
+          <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#555", letterSpacing: "0.1em", marginBottom: 10 }}>// CONSUMER DASHBOARD</div>
+          <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: "clamp(1.6rem, 4vw, 2.4rem)", color: "#1A1A1B", marginBottom: 8 }}>Consumer Dashboard</h1>
+          <p style={{ color: "#555", fontSize: 14, fontStyle: "italic" }}>
             Shop from local vendors and booths, earn badges with every $150 purchase.
           </p>
         </div>
