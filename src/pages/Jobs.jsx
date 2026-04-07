@@ -229,7 +229,7 @@ export default function Jobs() {
                   step="5"
                   value={searchRadius}
                   onChange={(e) => setSearchRadius(Number(e.target.value))}
-                  style={{ width: "100%", accentColor: T.amber }}
+                  style={{ width: "100%", accentColor: "#6B8ECE" }}
                 />
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: T.muted, marginTop: 8 }}>
                   <span>5 mi</span>
