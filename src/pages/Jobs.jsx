@@ -195,7 +195,7 @@ export default function Jobs() {
             </div>
             {!isContractor && (
               <Link to={createPageUrl('PostJob')} style={{ textDecoration: "none", display: "inline-block" }}>
-                <button style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid #FFB366`, color: T.orange, fontWeight: 700, fontSize: 13, ...mono, cursor: "pointer" }}>
+                <button style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid #FFB366`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
                   <Plus className="w-5 h-5" />
                   Post a Job
                 </button>
