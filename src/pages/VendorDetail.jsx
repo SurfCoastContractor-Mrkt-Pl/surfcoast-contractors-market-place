@@ -55,19 +55,28 @@ export default function VendorDetail() {
     </div>
   );
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+  };
+
   if (vendorLoading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div style={{ position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: T.bg }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (!vendor) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-6">
-        <div className="max-w-4xl mx-auto text-center py-12">
-          <p className="text-slate-600 mb-4">Vendor not found</p>
+      <div style={{ minHeight: "100vh", background: T.bg, padding: 24, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 896, margin: "0 auto", textAlign: "center", paddingTop: 48 }}>
+          <p style={{ color: T.muted, marginBottom: 16, fontStyle: "italic" }}>Vendor not found</p>
           <Link to="/BoothsAndVendorsMap">
             <Button variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -80,7 +89,7 @@ export default function VendorDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <Link to="/BoothsAndVendorsMap" className="mb-6 inline-block">
@@ -91,20 +100,20 @@ export default function VendorDetail() {
         </Link>
 
         {/* Header Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24, marginBottom: 32 }}>
           {/* Main Info */}
-          <div className="md:col-span-2">
+          <div style={{ gridColumn: "span 2" }}>
             {vendor.banner_url && (
               <img
                 src={vendor.banner_url}
                 alt={vendor.shop_name}
-                className="w-full h-64 object-cover rounded-lg mb-6"
+                style={{ width: "100%", height: 256, objectFit: "cover", borderRadius: 8, marginBottom: 24 }}
               />
             )}
 
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">{vendor.shop_name}</h1>
+            <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.8rem)", fontWeight: 800, color: T.dark, margin: "0 0 12px 0", fontStyle: "italic" }}>{vendor.shop_name}</h1>
 
-            <div className="space-y-2 text-slate-600 mb-6">
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, color: T.muted, marginBottom: 24 }}>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 {vendor.city}, {vendor.state}

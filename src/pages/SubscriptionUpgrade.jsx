@@ -133,21 +133,30 @@ export default function SubscriptionUpgrade() {
     }
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+  };
+
   if (!user) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Your Trial Has Expired</h1>
-          <p className="text-xl text-muted-foreground mb-6">
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 16px 0", fontStyle: "italic" }}>Your Trial Has Expired</h1>
+          <p style={{ fontSize: 18, color: T.muted, marginBottom: 24, fontStyle: "italic" }}>
             Subscribe to continue using SurfCoast and unlock all features.
           </p>
 

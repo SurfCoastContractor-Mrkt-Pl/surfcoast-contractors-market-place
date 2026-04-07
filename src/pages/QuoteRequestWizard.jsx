@@ -94,28 +94,39 @@ export default function QuoteRequestWizard() {
     }
   };
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+  const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-8 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 768, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-12">
+        <div style={{ marginBottom: 48 }}>
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 font-medium"
+            style={{ ...mono, fontSize: 12, color: T.muted, background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, marginBottom: 24, padding: 0 }}
           >
-            <ChevronLeft className="w-4 h-4" /> Back
+            <ChevronLeft style={{ width: 16, height: 16 }} /> Back
           </button>
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Get a Quote</h1>
-          <p className="text-lg text-slate-600">Connect with contractors and get detailed quotes for your project</p>
+          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Get a Quote</h1>
+          <p style={{ fontSize: 16, color: T.muted, fontStyle: "italic" }}>Connect with contractors and get detailed quotes for your project</p>
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-12">
-          <div className="flex justify-between gap-4 mb-6">
+        <div style={{ marginBottom: 48 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 16, marginBottom: 24 }}>
             {STEPS.map((step, idx) => (
-              <div key={idx} className="flex-1">
-                <div className={`h-2 rounded-full transition-all ${idx <= currentStep ? 'bg-blue-600' : 'bg-slate-200'}`} />
-                <p className={`text-sm font-medium mt-2 ${idx <= currentStep ? 'text-blue-600' : 'text-slate-500'}`}>
+              <div key={idx} style={{ flex: 1 }}>
+                <div style={{ height: 2, borderRadius: 999, background: idx <= currentStep ? T.amber : T.border }} />
+                <p style={{ ...mono, fontSize: 11, marginTop: 8, color: idx <= currentStep ? T.amber : T.muted }}>
                   {step.title}
                 </p>
               </div>
@@ -125,13 +136,13 @@ export default function QuoteRequestWizard() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
-            <div className="text-red-600 mt-0.5">⚠️</div>
+          <div style={{ background: "#FBF5EC", border: "0.5px solid #D9B88A", borderRadius: 8, padding: 14, marginBottom: 24, display: "flex", alignItems: "flex-start", gap: 12 }}>
+            <div style={{ fontSize: 16, marginTop: 2 }}>⚠️</div>
             <div>
-              <p className="text-red-900 font-semibold text-sm mb-2">{error}</p>
+              <p style={{ color: T.amber, fontWeight: 700, fontSize: 13, marginBottom: 8, fontStyle: "italic" }}>{error}</p>
               <button
                 onClick={() => setError(null)}
-                className="text-red-600 hover:text-red-700 text-sm font-medium"
+                style={{ ...mono, fontSize: 12, color: T.amber, background: "none", border: "none", cursor: "pointer" }}
               >
                 Dismiss
               </button>
@@ -140,9 +151,9 @@ export default function QuoteRequestWizard() {
         )}
 
         {/* Step Content */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">{STEPS[currentStep].title}</h2>
-          <p className="text-slate-600 mb-8">{STEPS[currentStep].description}</p>
+        <div style={{ background: T.card, border: "0.5px solid " + T.border, borderRadius: 10, boxShadow: T.shadow, padding: 32, marginBottom: 32 }}>
+          <h2 style={{ fontSize: "clamp(1.4rem, 4vw, 1.8rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>{STEPS[currentStep].title}</h2>
+          <p style={{ color: T.muted, marginBottom: 32, fontStyle: "italic" }}>{STEPS[currentStep].description}</p>
 
           {currentStep === 0 && (
             <QuoteWizardStep1 formData={formData} setFormData={setFormData} />

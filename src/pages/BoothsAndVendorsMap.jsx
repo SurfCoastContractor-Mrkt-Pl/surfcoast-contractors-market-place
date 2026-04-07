@@ -89,8 +89,18 @@ export default function BoothsAndVendorsMap() {
     return true;
   });
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+    shadow: "3px 3px 0px #5C3500",
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex">
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif", display: "flex" }}>
       {/* Booking Modal */}
       <BookingRequestForm
         market={bookingVendor}
@@ -134,9 +144,9 @@ export default function BoothsAndVendorsMap() {
       <div className="flex-1 min-w-0">
         <div className="max-w-7xl mx-auto w-full px-4 py-8">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-4xl font-bold text-slate-900">Booths & Vendors</h1>
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+              <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: 0, fontStyle: "italic" }}>Booths & Vendors</h1>
               <Button
                 variant="outline"
                 size="icon"
@@ -146,28 +156,20 @@ export default function BoothsAndVendorsMap() {
                 <Sliders className="w-5 h-5" />
               </Button>
             </div>
-            <p className="text-slate-600">Browse farmers markets and swap meets near you</p>
+            <p style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Browse farmers markets and swap meets near you</p>
           </div>
 
         {/* View Toggle */}
-        <div className="flex gap-2 mb-6">
+        <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
           <button
             onClick={() => setViewMode('map')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              viewMode === 'map'
-                ? 'bg-slate-900 text-white'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-            }`}
+            style={{ padding: "8px 16px", borderRadius: 8, fontWeight: 700, border: "none", cursor: "pointer", background: viewMode === 'map' ? T.dark : T.card, color: viewMode === 'map' ? "#fff" : T.muted, borderBottom: viewMode === 'map' ? `3px solid ${T.amber}` : "1px solid " + T.border, fontStyle: "italic", fontSize: 13 }}
           >
             🗺️ Map View
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              viewMode === 'list'
-                ? 'bg-slate-900 text-white'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-            }`}
+            style={{ padding: "8px 16px", borderRadius: 8, fontWeight: 700, border: "none", cursor: "pointer", background: viewMode === 'list' ? T.dark : T.card, color: viewMode === 'list' ? "#fff" : T.muted, borderBottom: viewMode === 'list' ? `3px solid ${T.amber}` : "1px solid " + T.border, fontStyle: "italic", fontSize: 13 }}
           >
             📋 List View
           </button>
@@ -175,8 +177,8 @@ export default function BoothsAndVendorsMap() {
 
         {/* Content */}
         {isLoading ? (
-          <div className="flex items-center justify-center h-96">
-            <div className="text-slate-600">Loading vendors...</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 384 }}>
+            <div style={{ color: T.muted, fontSize: 14, fontStyle: "italic" }}>Loading vendors...</div>
           </div>
         ) : viewMode === 'map' ? (
           <div className="relative z-0 h-96 md:h-[600px] rounded-lg overflow-hidden shadow-lg">
@@ -283,7 +285,7 @@ export default function BoothsAndVendorsMap() {
         )}
 
         {/* Results Count */}
-        <div className="mt-6 text-sm text-slate-600">
+        <div style={{ marginTop: 24, fontSize: 13, color: T.muted, fontStyle: "italic" }}>
           Showing {filteredVendors.length} of {vendors.length} vendors
         </div>
         </div>

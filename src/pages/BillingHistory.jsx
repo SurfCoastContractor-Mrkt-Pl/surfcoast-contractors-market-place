@@ -48,21 +48,30 @@ export default function BillingHistory() {
     fetchData();
   }, [navigate]);
 
+  const T = {
+    bg: "#EBEBEC",
+    card: "#fff",
+    dark: "#1A1A1B",
+    muted: "#555",
+    border: "#D0D0D2",
+    amber: "#5C3500",
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid #D0D0D2", borderTop: "3px solid " + T.dark, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="p-4 bg-destructive/10 border-2 border-destructive rounded-lg flex gap-3">
-            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-            <p className="text-destructive">{error}</p>
+      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ padding: 16, background: "#FBF5EC", border: "0.5px solid #D9B88A", borderRadius: 8, display: "flex", gap: 12 }}>
+            <AlertCircle style={{ width: 20, height: 20, color: T.amber, flexShrink: 0, marginTop: 2 }} />
+            <p style={{ color: T.amber, fontStyle: "italic" }}>{error}</p>
           </div>
         </div>
       </div>
@@ -71,11 +80,11 @@ export default function BillingHistory() {
 
   if (!subscription) {
     return (
-      <div className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground mb-4">Billing History</h1>
-            <p className="text-muted-foreground mb-6">No active subscription found.</p>
+      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ fontSize: "clamp(1.6rem, 5vw, 2rem)", fontWeight: 800, color: T.dark, margin: "0 0 16px 0", fontStyle: "italic" }}>Billing History</h1>
+            <p style={{ color: T.muted, marginBottom: 24, fontStyle: "italic" }}>No active subscription found.</p>
             <a href="/SubscriptionUpgrade" className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:opacity-90">
               Subscribe Now
             </a>
@@ -86,12 +95,12 @@ export default function BillingHistory() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 48, paddingBottom: 48, paddingLeft: 16, paddingRight: 16, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <div style={{ maxWidth: 1024, margin: "0 auto" }}>
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Billing & History</h1>
-          <p className="text-muted-foreground">Manage your subscription and view payment history.</p>
+        <div style={{ marginBottom: 48 }}>
+          <h1 style={{ fontSize: "clamp(1.6rem, 5vw, 2rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Billing & History</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Manage your subscription and view payment history.</p>
         </div>
 
         {/* Current Subscription & Payment Methods */}
