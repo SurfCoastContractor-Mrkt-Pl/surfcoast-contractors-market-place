@@ -62,7 +62,7 @@ export default function LayoutHeader({
 
   return (
     <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 sticky top-0 overflow-visible">
-      <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto w-full">
+      <div className="flex items-center h-12 px-4 sm:px-6 gap-3 w-full">
 
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 mr-2 -ml-2">
