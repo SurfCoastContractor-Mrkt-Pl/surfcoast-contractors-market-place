@@ -115,7 +115,7 @@ export default function LayoutHeader({
         </div>
 
         {/* Right side actions */}
-        <div className="hidden lg:flex items-center gap-3 ml-auto flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-3 ml-auto flex-shrink-0 -mr-2">
           {!isLoggedIn && (
             <>
               <div className="flex items-center gap-3">
