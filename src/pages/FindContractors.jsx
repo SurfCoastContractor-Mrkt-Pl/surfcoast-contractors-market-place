@@ -132,7 +132,7 @@ export default function FindContractors() {
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: "#EBEBEC" }}>
       {/* Ticker */}
       <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// FIND ENTREPRENEURS · SEARCH BY TRADE & LOCATION</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// FIND ENTREPRENEURS · DISCOVER BY TRADE & LOCATION</span>
         <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
       </div>
       {/* Header */}
@@ -140,7 +140,7 @@ export default function FindContractors() {
         <div className="max-w-7xl mx-auto">
           <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#333", marginBottom: 10, letterSpacing: "0.06em" }}>// SEARCH THE MARKETPLACE</div>
           <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#1A1A1B", marginBottom: 8, lineHeight: 1.1 }}>Find Entrepreneurs</h1>
-          <p style={{ fontSize: 15, color: "#333", fontStyle: "italic", fontWeight: 700 }}>Discover exceptional talent in your area</p>
+          <p style={{ fontSize: 15, color: "#333", fontStyle: "italic", fontWeight: 700 }}>Discover exceptional specialists in your area</p>
         </div>
       </div>
 
@@ -218,7 +218,7 @@ export default function FindContractors() {
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-6">
               <Star className="w-5 h-5" style={{ color: "#5C3500", fill: "#5C3500" }} />
-              <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1B", fontStyle: "italic" }}>Featured Entrepreneurs</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1B", fontStyle: "italic" }}>Featured Specialists</h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredFeatured.map(contractor => (
@@ -253,7 +253,7 @@ export default function FindContractors() {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Users className="w-5 h-5" style={{ color: "#5C3500" }} />
               <span style={{ fontWeight: 700, fontStyle: "italic", color: "#1A1A1B" }}>
-                {filteredFeatured.length + filteredRegular.length} {filteredFeatured.length + filteredRegular.length === 1 ? 'contractor' : 'contractors'} found
+                {filteredFeatured.length + filteredRegular.length} {filteredFeatured.length + filteredRegular.length === 1 ? 'entrepreneur' : 'entrepreneurs'} found
               </span>
               {filteredFeatured.length > 0 && (
                 <span style={{ fontSize: 12, color: "#333", fontStyle: "italic" }}>
@@ -266,7 +266,7 @@ export default function FindContractors() {
           {error ? (
             <div style={{ textAlign: "center", padding: "48px 24px", background: "#fff", borderRadius: 10, border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>Unable to load contractors</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>Unable to load entrepreneurs</h3>
               <p style={{ color: "#333" }}>Please refresh the page and try again.</p>
             </div>
           ) : isLoading ? (
@@ -303,7 +303,7 @@ export default function FindContractors() {
           ) : (
             <div style={{ textAlign: "center", padding: "48px 24px", background: "#fff", borderRadius: 10, border: "0.5px solid #D0D0D2", boxShadow: "3px 3px 0px #5C3500" }}>
               <Users className="w-12 h-12 mx-auto mb-4" style={{ color: "#D0D0D2" }} />
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>No contractors found</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1B", marginBottom: 8 }}>No entrepreneurs found</h3>
               <p style={{ color: "#333", marginBottom: 16 }}>Try adjusting your filters</p>
               <button onClick={clearFilters} style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 12, background: "transparent", border: "1px solid #D0D0D2", borderRadius: 5, padding: "6px 14px", color: "#1A1A1B", cursor: "pointer" }}>Clear Filters</button>
             </div>

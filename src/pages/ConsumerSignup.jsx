@@ -65,7 +65,7 @@ export default function ConsumerSignup() {
     setError('');
     setLoading(true);
 
-    base44.analytics.track({ eventName: 'consumer_signup_submitted' });
+    base44.analytics.track({ eventName: 'client_signup_submitted' });
 
     try {
       if (!formData.full_name.trim()) throw new Error('Full name is required');
@@ -92,7 +92,7 @@ export default function ConsumerSignup() {
       });
 
       base44.analytics.track({
-        eventName: 'consumer_signup_success',
+         eventName: 'client_signup_success',
         properties: {
           location: formData.location,
           early_adopter: earlyAdopterRes?.data?.qualified ?? false,
@@ -101,7 +101,7 @@ export default function ConsumerSignup() {
 
       navigate(createPageUrl('ConsumerHub'));
     } catch (err) {
-      base44.analytics.track({ eventName: 'consumer_signup_failed', properties: { reason: err.message } });
+      base44.analytics.track({ eventName: 'client_signup_failed', properties: { reason: err.message } });
       setError(err.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -112,19 +112,19 @@ export default function ConsumerSignup() {
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
       {/* Ticker */}
       <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// CONSUMER SIGNUP · SHOP LOCAL MARKETS</span>
-        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
-      </div>
+        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// CLIENT SIGNUP · DISCOVER LOCAL VENDORS</span>
+          <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
+        </div>
 
       {/* Header */}
       <div style={{ background: T.bg, padding: "32px 16px", borderBottom: `1px solid ${T.border}` }}>
         <div style={{ maxWidth: 520, margin: "0 auto" }}>
           <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// GET STARTED</div>
           <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>
-            Shop at Local Markets
+            Discover Vendors
           </h1>
           <p style={{ fontSize: 14, color: T.dark, lineHeight: 1.65, fontWeight: 700, fontStyle: "italic" }}>
-            Create your account to browse booths and vendors at farmers markets and swap meets near you.
+            Create your account to browse vendors and shops at farmers markets and swap meets near you.
           </p>
         </div>
       </div>
@@ -137,8 +137,8 @@ export default function ConsumerSignup() {
               <ShoppingBag style={{ width: 22, height: 22, color: T.amber }} />
             </div>
             <div>
-              <div style={{ ...mono, fontSize: 12, color: T.amber }}>CONSUMER ACCOUNT</div>
-              <div style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Browse vendors · Earn badges · Track orders</div>
+              <div style={{ ...mono, fontSize: 12, color: T.amber }}>CLIENT ACCOUNT</div>
+              <div style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Browse vendors · Earn badges · Track purchases</div>
             </div>
           </div>
 

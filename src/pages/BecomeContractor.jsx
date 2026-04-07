@@ -364,7 +364,7 @@ export default function BecomeContractor() {
 
       {/* Ticker */}
       <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// JOIN SURFCOAST · FREE TO START</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// START YOUR BUSINESS · FREE PROFILE</span>
         <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
       </div>
 
@@ -373,9 +373,9 @@ export default function BecomeContractor() {
         <div className="w-12 lg:w-14 h-12 lg:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-5" style={{ background: designTokens.colors.accent.light, border: `2px solid ${designTokens.colors.accent.DEFAULT}` }}>
           <HardHat className="w-6 lg:w-7 h-6 lg:h-7" style={{ color: designTokens.colors.accent.DEFAULT }} />
         </div>
-        <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#1A1A1B", marginBottom: 12, lineHeight: 1.1, textAlign: "center" }}>Join SurfCoast — Free to Start</h1>
+        <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: "#1A1A1B", marginBottom: 12, lineHeight: 1.1, textAlign: "center" }}>Build Your Business — Free to Start</h1>
         <p className="text-sm lg:text-base mb-5" style={{ color: "#333", lineHeight: 1.75, fontStyle: "italic", fontWeight: 700 }}>
-          SurfCoast Contractors Marketplace is free to join — no credit card, no catch. You create your profile, list what you do, and clients start finding you. When you are ready to communicate with someone who might hire you, a session fee of $1.50 per 10 minutes applies — this keeps both sides serious and filters out spam. When a job is booked and completed through the platform a facilitation fee of 18% applies. If you want more tools to run your business — scheduling, invoicing, analytics, client management — WAVE OS starts at $19 per month and unlocks as you complete jobs. If you are not ready for that yet, the free Basic Dashboard handles the essentials on your phone or laptop from day one.
+          SurfCoast Marketplace is free to join — no credit card, no catch. You create your profile, list what you do, and clients start finding you. When you are ready to communicate with someone who might hire you, a session fee of $1.50 per 10 minutes applies — this keeps both sides serious and filters out spam. When a job is booked and completed through the platform a facilitation fee of 18% applies. If you want more tools to run your business — scheduling, invoicing, analytics, client management — WAVE OS starts at $19 per month and unlocks as you complete jobs. If you are not ready for that yet, the free Basic Dashboard handles the essentials on your phone or laptop from day one.
         </p>
 
         {/* WAVE OS Unlock Table */}
@@ -440,11 +440,11 @@ export default function BecomeContractor() {
         <div className="mb-5 space-y-3">
           <div style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#333", letterSpacing: "0.06em" }}>// COMMON QUESTIONS</div>
           {[
-            { q: 'How much does it cost to list on SurfCoast CMP?', a: 'Your profile is free and stays free. When you are ready to communicate with a potential client a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. The platform takes an 18% facilitation fee only when a job is completed and paid through the platform.' },
+            { q: 'How much does it cost to list on SurfCoast?', a: 'Your profile is free and stays free. When you are ready to communicate with a potential client a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. The platform takes an 18% facilitation fee only when a job is completed and paid through the platform.' },
             { q: 'Are there lead fees on SurfCoast?', a: 'No lead fees — ever. Angi charges $15 to $120 per lead whether you win or not. SurfCoast does not sell leads at all. Instead a $1.50 per 10-minute communication session fee applies when you are ready to talk to a potential client. This filters out spam and keeps inquiries serious. The 18% facilitation fee only applies when a job actually closes.' },
-            { q: 'How is SurfCoast different from HomeAdvisor?', a: 'HomeAdvisor charges $15 to $120 per lead whether the job is won or not and sends that same lead to multiple other contractors at the same time. The FTC fined HomeAdvisor $7.2 million for misleading contractors about this. On SurfCoast your profile is free, there are no lead fees, and communication is handled through a $1.50 per 10-minute session. The 18% facilitation fee only comes out when a job is successfully completed.' },
-            { q: 'What is the Basic Dashboard?', a: 'The Basic Dashboard is free for every worker on the platform regardless of whether they subscribe to WAVE OS. It handles your essential job management and payments on both laptop and phone. You never have to upgrade — WAVE OS is always optional.' },
-            { q: 'Do I need to be licensed to join?', a: 'No. SurfCoast is built for everyone — licensed master tradespeople, people just starting out, freelancers, creatives, and motivated individuals as young as 13 who are ready to start building something. If you have a skill and the drive, you belong here.' },
+            { q: 'How is SurfCoast different from HomeAdvisor?', a: 'HomeAdvisor charges $15 to $120 per lead whether the job is won or not and sends that same lead to multiple other entrepreneurs at the same time. The FTC fined HomeAdvisor $7.2 million for misleading entrepreneurs about this. On SurfCoast your profile is free, there are no lead fees, and communication is handled through a $1.50 per 10-minute session. The 18% facilitation fee only comes out when a job is successfully completed.' },
+            { q: 'What is the Basic Dashboard?', a: 'The Basic Dashboard is free for every entrepreneur on the platform regardless of whether they subscribe to WAVE OS. It handles your essential job management and payments on both laptop and phone. You never have to upgrade — WAVE OS is always optional.' },
+            { q: 'Do I need to be licensed to join?', a: 'No. SurfCoast is built for everyone — licensed professionals, people just starting out, freelancers, creatives, and motivated individuals as young as 13 who are ready to start building something. If you have a skill and the drive, you belong here.' },
           ].map(({ q, a }, i) => (
             <div key={i} style={{ background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 8, padding: 16, boxShadow: "2px 2px 0px #D9B88A" }}>
               <div style={{ fontWeight: 800, fontSize: 13, color: "#1A1A1B", marginBottom: 6, fontStyle: "italic" }}>{q}</div>
