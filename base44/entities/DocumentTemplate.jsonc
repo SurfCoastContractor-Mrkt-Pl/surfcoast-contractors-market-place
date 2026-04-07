@@ -8,55 +8,115 @@
     },
     "contractor_email": {
       "type": "string",
-      "description": "Email of the contractor"
-    },
-    "template_name": {
-      "type": "string",
-      "description": "Name of the template"
+      "description": "Email of the contractor for RLS queries"
     },
     "template_type": {
       "type": "string",
       "enum": [
-        "proposal",
         "contract",
-        "quote",
-        "scope_of_work",
         "estimate",
-        "agreement"
+        "scope_of_work",
+        "permit_request",
+        "lien_waiver",
+        "inspection_checklist",
+        "compliance_certification",
+        "payment_agreement",
+        "change_order",
+        "warranty"
       ],
-      "description": "Type of document template"
+      "description": "Type of document"
+    },
+    "template_name": {
+      "type": "string",
+      "description": "User-friendly name for the template"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "residential",
+        "commercial",
+        "general",
+        "custom"
+      ],
+      "description": "Category of template"
     },
     "content": {
       "type": "string",
-      "description": "Template content with merge fields"
+      "description": "HTML or markdown content of the template with placeholders"
     },
-    "merge_fields": {
+    "placeholders": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Placeholder key (e.g., {{client_name}})"
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
       },
-      "description": "Available merge fields (e.g., {{customer_name}}, {{job_title}})"
+      "description": "List of template placeholders and their metadata"
+    },
+    "tier_exclusive": {
+      "type": "string",
+      "enum": [
+        "none",
+        "max",
+        "premium",
+        "residential_bundle"
+      ],
+      "default": "none",
+      "description": "Which tier this template is exclusive to (if any)"
     },
     "is_default": {
       "type": "boolean",
       "default": false,
-      "description": "Whether this is the default template"
+      "description": "Whether this is a pre-built default template"
     },
-    "created_at": {
+    "description": {
       "type": "string",
-      "description": "ISO timestamp when template was created"
+      "description": "Description of when/how to use this template"
+    },
+    "preview_url": {
+      "type": "string",
+      "description": "URL of a preview image or PDF"
+    },
+    "created_from_scope_id": {
+      "type": "string",
+      "description": "Optional reference to a scope this was created from"
+    },
+    "usage_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of times this template has been used"
     }
   },
   "required": [
-    "contractor_id",
     "contractor_email",
-    "template_name",
     "template_type",
+    "template_name",
     "content"
   ],
   "rls": {
     "create": {
-      "data.contractor_email": "{{user.email}}"
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
     },
     "read": {
       "$or": [
