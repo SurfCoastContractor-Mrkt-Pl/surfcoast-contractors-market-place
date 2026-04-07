@@ -194,6 +194,14 @@ Deno.serve(async (req) => {
 
     const allowed = US_COUNTRY_CODES.includes(country);
 
+    // Map country code to name for display
+    const countryNames = {
+      GB: 'United Kingdom', CA: 'Canada', AU: 'Australia', DE: 'Germany',
+      FR: 'France', MX: 'Mexico', JP: 'Japan', CN: 'China', IN: 'India',
+      BR: 'Brazil', ZA: 'South Africa', NG: 'Nigeria', KE: 'Kenya',
+    };
+    const countryName = country === 'US' ? 'United States' : (countryNames[country] || country);
+
     if (!allowed) {
       logSecurityAlert('geo_blocked', clientIp, {
         severity: 'low',
@@ -208,14 +216,6 @@ Deno.serve(async (req) => {
     } else {
       console.info(`[GEO-ALLOW] US access from ${country} (IP: ${clientIp})`);
     }
-
-    // Map country code to name for display
-    const countryNames = {
-      GB: 'United Kingdom', CA: 'Canada', AU: 'Australia', DE: 'Germany',
-      FR: 'France', MX: 'Mexico', JP: 'Japan', CN: 'China', IN: 'India',
-      BR: 'Brazil', ZA: 'South Africa', NG: 'Nigeria', KE: 'Kenya',
-    };
-    const countryName = country === 'US' ? 'United States' : (countryNames[country] || country);
 
     return Response.json({ allowed, country, countryName });
   } catch (error) {
