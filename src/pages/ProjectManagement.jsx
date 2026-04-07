@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,6 +12,7 @@ import AdminDisputeReview from '@/components/disputes/AdminDisputeReview';
 export default function ProjectManagement() {
   const [searchParams] = useSearchParams();
   const scopeId = searchParams.get('scopeId');
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedDispute, setSelectedDispute] = useState(null);
@@ -52,16 +53,9 @@ export default function ProjectManagement() {
   });
 
   if (!scopeId) {
-    return (
-      <div className="min-h-screen p-6" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2040 50%, #0a1628 100%)' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 p-4 rounded-lg" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <p className="text-slate-300">No project selected. Please select a scope from your dashboard.</p>
-          </div>
-        </div>
-      </div>
-    );
+    // Redirect to dashboard where users can pick an active scope
+    navigate('/Dashboard', { replace: true });
+    return null;
   }
 
   if (scopeLoading || !user) {
