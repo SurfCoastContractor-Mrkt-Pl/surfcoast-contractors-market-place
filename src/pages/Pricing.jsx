@@ -33,11 +33,11 @@ const FREE_FEATURES = [
 ];
 
 const WAVE_TIERS = [
-  { name: "WAVE Starter", price: 19, tag: null, subtitle: "New contractors getting started", accent: T.amber, features: ["Public contractor profile with photo & bio", "Up to 5 active job postings", "Paid client messaging (per session)", "Quote request management", "Job scheduling calendar", "Mobile app access", "Standard client reviews", "Email notifications", "Basic analytics dashboard", "2-week free trial included"] },
-  { name: "WAVE Pro", price: 39, tag: null, subtitle: "Growing contractors ready to scale", accent: T.amber, features: ["Everything in WAVE Starter", "Unlimited job postings", "Client Relationship Manager (CRM)", "Invoice generation & PDF export", "Scope of Work builder", "After-photo documentation", "Project milestone tracking", "Priority search placement", "Custom service packages", "Performance analytics", "Referral tracking", "Team collaboration tools"] },
-  { name: "WAVE Max", price: 59, tag: "Most Popular", subtitle: "Established contractors", accent: T.amber, features: ["Everything in WAVE Pro", "GPS-based job tracking", "Field operations mobile suite", "Document management hub", "Multi-option client proposals", "Escrow payment support", "Project file sharing with clients", "Progress payment phases", "Contractor compliance tools", "Real-time availability manager", "Advanced scheduling assistant", "QuickBooks CSV export", "Custom invoice branding"] },
-  { name: "WAVE OS Premium", price: 100, tag: null, subtitle: "Licensed sole proprietors (HIS verified)", accent: T.amber, features: ["Everything in WAVE Max", "AI scheduling assistant", "AI bio & proposal generator", "HubSpot CRM sync", "Notion project page integration", "Campaign management tools", "Case study builder", "Contractor leaderboard & trade games", "Full audit trail & activity log", "Advanced job pipeline views", "Residential Wave invoicing suite", "Priority support"] },
-  { name: "WAVE Residential Bundle", price: 125, tag: "All-In", subtitle: "Licensed operators who want everything", accent: T.amber, features: ["Everything in WAVE OS Premium ($100/month value)", "Unlimited client messaging — $50/month add-on included", "No per-session messaging fees", "Residential Wave lead management", "Residential Wave job tracking", "Residential Wave invoice management", "Bundle-exclusive document templates", "Revenue tracking & bundle reports", "White-label invoice option", "Early access to new features", "Full platform access — no add-ons needed"] },
+  { name: "WAVE OS Starter", price: 19, unlock: "5 completed jobs", tag: null, subtitle: "Core tools for workers just getting started", accent: T.amber, features: ["Basic job management", "Essential scheduling", "Free Basic Dashboard access", "Up to 5 active job postings", "Paid communication sessions", "Quote request management", "Standard client reviews", "Mobile app access"] },
+  { name: "WAVE OS Pro", price: 39, unlock: "6–49 completed jobs", tag: null, subtitle: "Advanced tools for growing contractors", accent: T.amber, features: ["Everything in WAVE OS Starter", "Automated invoicing + PDF export", "Analytics dashboard", "Client Relationship Manager (CRM)", "Scope of Work builder", "After-photo documentation", "Project milestone tracking", "Priority search placement", "Custom service packages", "Referral tracking"] },
+  { name: "WAVE OS Max", price: 59, unlock: "50–99 completed jobs", tag: "Most Popular", subtitle: "Full suite for established contractors", accent: T.amber, features: ["Everything in WAVE OS Pro", "GPS-based job tracking", "Field operations mobile suite", "Document management hub", "Multi-option client proposals", "Escrow payment support", "Project file sharing", "Progress payment phases", "QuickBooks CSV export", "Custom invoice branding"] },
+  { name: "WAVE OS Premium", price: 100, unlock: "100 jobs + verified license", tag: null, subtitle: "For licensed sole proprietors (verified)", accent: T.amber, features: ["Everything in WAVE OS Max", "AI scheduling assistant", "AI bio & proposal generator", "HubSpot CRM sync", "Notion project page integration", "Campaign management tools", "Full audit trail & activity log", "Residential invoicing suite", "Priority support"] },
+  { name: "WAVE OS Residential Bundle", price: 125, unlock: "Same as Premium", tag: "All-In", subtitle: "Premium + unlimited messaging — the complete option", accent: T.amber, features: ["Everything in WAVE OS Premium ($100/mo value)", "Unlimited messaging included — no per-session fees", "Residential Wave lead management", "Residential Wave job tracking", "Residential Wave invoice management", "Bundle-exclusive document templates", "Full platform access — no add-ons needed"] },
 ];
 
 const MARKET_BOOTHS_AND_SPACES_FEATURES = [
@@ -158,7 +158,8 @@ export default function Pricing() {
               )}
               <div>
                 <h3 style={{ ...mono, fontSize: 12, color: T.amber, margin: "0 0 4px" }}>{tier.name}</h3>
-                <p style={{ fontSize: 11, color: T.muted, margin: "0 0 8px", lineHeight: 1.4, fontStyle: "italic" }}>{tier.subtitle}</p>
+                <p style={{ fontSize: 11, color: T.muted, margin: "0 0 6px", lineHeight: 1.4, fontStyle: "italic" }}>{tier.subtitle}</p>
+                <div style={{ ...mono, fontSize: 10, color: T.amber, marginBottom: 8, padding: "3px 7px", background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 4, display: "inline-block" }}>Unlocks: {tier.unlock}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
                   <span style={{ ...mono, fontSize: 32, fontWeight: 700, color: T.dark }}>${tier.price}</span>
                   <span style={{ fontSize: 12, color: T.muted }}>/mo</span>
@@ -179,9 +180,12 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p style={{ textAlign: "center", ...mono, fontSize: 11, color: T.muted, marginTop: 18 }}>
-          All plans are month-to-month · No setup fees · No contracts · Cancel anytime
-        </p>
+        <div style={{ marginTop: 18, textAlign: "center" }}>
+          <p style={{ ...mono, fontSize: 11, color: T.muted }}>All plans are month-to-month · No setup fees · No contracts · Cancel anytime</p>
+          <p style={{ fontSize: 13, color: T.muted, marginTop: 10, fontStyle: "italic" }}>
+            Every worker gets the free <strong style={{ color: T.dark }}>Basic Dashboard</strong> — essential job management and payment tracking at no cost, regardless of WAVE OS status. WAVE OS is always optional.
+          </p>
+        </div>
       </section>
 
       {/* COMMUNICATION & PROPOSAL PRICING */}
@@ -290,6 +294,30 @@ export default function Pricing() {
         </div>
       </section>
 
+      {/* ACCOUNT HOLD SYSTEM */}
+      <section style={{ maxWidth: 900, margin: "0 auto 52px", padding: "0 24px" }}>
+        <div style={{ ...cardStyle, borderLeft: `3px solid ${T.amber}`, padding: "28px 24px" }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// PLATFORM INTEGRITY — ACCOUNT HOLD SYSTEM</div>
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: T.dark, marginBottom: 14 }}>Account Holds — Automated Compliance</h2>
+          <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
+            SurfCoast's Account Hold system is fully automated. It exists to ensure every completed job has a verified photographic record and a two-sided honest review. There is no manual review process. Holds trigger instantly and lift automatically the moment the required action is completed.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
+            {[
+              { label: "TRIGGER_01 // 72-HOUR PHOTO RULE", heading: "72-Hour Photo Rule", desc: "After marking a job complete, workers have 72 hours to upload after-photos of the finished work. Missing this window places the account on hold immediately. The hold lifts the moment after-photos are uploaded.", badge: "Worker account only" },
+              { label: "TRIGGER_02 // MUTUAL RATINGS", heading: "Mutual Ratings Requirement", desc: "Both the worker and the client must submit a rating after every completed job. If either party fails to rate, only that party's account is placed on hold — the other is not penalized. The hold lifts instantly when the rating is submitted.", badge: "Non-compliant party only" },
+            ].map((c, i) => (
+              <div key={i} style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 8, padding: 18 }}>
+                <div style={{ ...mono, fontSize: 9, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{c.heading}</h3>
+                <p style={{ fontSize: 12, color: T.muted, lineHeight: 1.65, marginBottom: 10, fontStyle: "italic" }}>{c.desc}</p>
+                <span style={{ ...mono, fontSize: 10, background: T.card, border: `0.5px solid ${T.border}`, color: T.amber, borderRadius: 4, padding: "3px 8px" }}>{c.badge}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section style={{ maxWidth: 720, margin: "0 auto 52px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
@@ -299,6 +327,30 @@ export default function Pricing() {
         </div>
         <div style={{ background: T.card, border: `0.5px solid ${T.border}`, borderRadius: 10, boxShadow: T.shadow, padding: "0 24px" }}>
           {FAQ_ITEMS.map((item, i) => <FAQItem key={i} item={item} />)}
+        </div>
+      </section>
+
+      {/* 5-FOR-1 REFERRAL LOOP */}
+      <section style={{ maxWidth: 900, margin: "0 auto 52px", padding: "0 24px" }}>
+        <div style={{ ...cardStyle, padding: "28px 24px", background: T.dark }}>
+          <div style={{ ...mono, fontSize: 11, color: T.amberBg, marginBottom: 10, letterSpacing: "0.1em" }}>// TRIAL — 5-FOR-1 REFERRAL LOOP</div>
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: "#fff", marginBottom: 14 }}>Extend Your Trial with Referrals</h2>
+          <p style={{ fontSize: 14, color: "#ccc", lineHeight: 1.7, marginBottom: 16, fontStyle: "italic" }}>
+            During your 14-day trial only, you can earn one additional free trial day for every five people you refer who successfully sign up. This is the 5-for-1 referral loop. It only applies during your active trial window — not after the trial has expired, and not for Founding 100 members who already have their full year free.
+          </p>
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+            {[
+              { number: "100", label: "FOUNDING_100", desc: "First 100 signups — 1 full year all-access free. No credit card. No conditions." },
+              { number: "14", label: "STANDARD_TRIAL", desc: "After Founding 100 fills — 14-day free trial with full platform access. No auto-charges." },
+              { number: "5:1", label: "THE_5_FOR_1_LOOP", desc: "During trial only — refer 5 signups, earn 1 extra free day. Stackable. Trial window only." },
+            ].map((c, i) => (
+              <div key={i} style={{ flex: "1 1 180px", background: "rgba(255,255,255,0.06)", border: `0.5px solid rgba(255,255,255,0.15)`, borderRadius: 8, padding: 18 }}>
+                <div style={{ ...mono, fontSize: 32, fontWeight: 700, color: i === 2 ? T.amberBg : "#fff", marginBottom: 6 }}>{c.number}</div>
+                <div style={{ ...mono, fontSize: 10, color: "#aaa", marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>
+                <p style={{ fontSize: 12, color: "#bbb", lineHeight: 1.65, fontStyle: "italic" }}>{c.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
