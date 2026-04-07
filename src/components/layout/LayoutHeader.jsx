@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Info, DollarSign, Zap } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
@@ -225,23 +225,18 @@ export default function LayoutHeader({
 }
 
 function AccountDropdown({ isContractor, hasCustomerProfile, hasMarketShop, onLogout, setAccountMenuOpen, isMobile, unreadCount }) {
-  const navigate = useNavigate();
-
-  const go = (path) => {
-    setAccountMenuOpen(false);
-    navigate(path);
-  };
 
   const Item = ({ path, children, icon: Icon, highlight }) => (
-    <button
-      onMouseDown={(e) => { e.preventDefault(); go(path); }}
-      style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', fontSize: 13, fontWeight: 700, fontStyle: 'italic', fontFamily: 'monospace', color: highlight ? '#5C3500' : '#1A1A1B', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.15s' }}
+    <Link
+      to={path}
+      onClick={() => setAccountMenuOpen(false)}
+      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', fontSize: 13, fontWeight: 700, fontStyle: 'italic', fontFamily: 'monospace', color: highlight ? '#5C3500' : '#1A1A1B', background: 'transparent', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.15s' }}
       onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
     >
       {Icon && <Icon style={{ width: 14, height: 14, color: '#5C3500', flexShrink: 0 }} />}
       {children}
-    </button>
+    </Link>
   );
 
   const SectionLabel = ({ children }) => (
