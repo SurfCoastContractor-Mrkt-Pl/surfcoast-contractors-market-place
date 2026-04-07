@@ -22,6 +22,7 @@ import ContractorPublicProfile from './pages/ContractorPublicProfile';
 import FindContractors from './pages/FindContractors';
 import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
+import RoleChoice from './pages/RoleChoice';
 import SearchAnalytics from './pages/SearchAnalytics';
 import ContractorInquiries from './pages/ContractorInquiries';
 import BecomeContractor from './pages/BecomeContractor';
@@ -511,6 +512,11 @@ const AuthenticatedApp = () => {
       <Route path="/ReferralSignup" element={
         <LayoutWrapper currentPageName="ReferralSignup">
           <ReferralSignup />
+        </LayoutWrapper>
+      } />
+      <Route path="/RoleChoice" element={
+        <LayoutWrapper currentPageName="RoleChoice">
+          <RoleChoice />
         </LayoutWrapper>
       } />
       <Route path="/remediation" element={
