@@ -22,10 +22,10 @@ const T = {
   sub: "#1A1A1B",
   muted: "#333",
   border: "#D0D0D2",
-  amber: "#5C3500",
-  amberBg: "#F0E0C0",
-  amberTint: "#FBF5EC",
-  shadow: "3px 3px 0px #5C3500",
+  orange: "#FF8C00",
+  orangeBg: "#FFF5E6",
+  orangeTint: "#FFE8CC",
+  shadow: "3px 3px 0px #FF8C00",
 };
 
 const cardStyle = {
@@ -36,8 +36,8 @@ const cardStyle = {
   transition: "box-shadow 0.2s ease",
 };
 
-const goldGlow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)";
-const goldGlowSm = "0 0 14px 3px rgba(255, 180, 0, 0.3)";
+const goldGlow = "3px 3px 0px #FF8C00, 0 0 18px 4px rgba(255, 140, 0, 0.35)";
+const goldGlowSm = "0 0 14px 3px rgba(255, 140, 0, 0.3)";
 
 const hoverGlow = {
   onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlow; },
@@ -216,10 +216,10 @@ export default function Jobs() {
           
           {userLocation && (
             <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${T.border}` }}>
-              <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 8, padding: 12 }}>
+              <div style={{ background: T.orangeTint, border: `0.5px solid #FFB366`, borderRadius: 8, padding: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
                   <label style={{ fontSize: 12, fontWeight: 700, color: T.dark, fontStyle: "italic" }}>
-                    Search Radius: <span style={{ color: T.amber, fontFamily: "monospace", fontWeight: 700 }}>{searchRadius} mi</span>
+                    Search Radius: <span style={{ color: T.orange, fontFamily: "monospace", fontWeight: 700 }}>{searchRadius} mi</span>
                   </label>
                 </div>
                 <input
@@ -305,22 +305,22 @@ export default function Jobs() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Active filters:</span>
               {searchQuery && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "4px 8px" }}>
+                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {searchQuery} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setSearchQuery('')}>×</span>
                 </span>
               )}
               {typeFilter && typeFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "4px 8px" }}>
+                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {typeFilter} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setTypeFilter('')}>×</span>
                 </span>
               )}
               {tradeFilter && tradeFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "4px 8px" }}>
+                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {trades.find(t => t.id === tradeFilter)?.name} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setTradeFilter('')}>×</span>
                 </span>
               )}
               {urgencyFilter && urgencyFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.amberTint, border: `0.5px solid #D9B88A`, color: T.amber, borderRadius: 4, padding: "4px 8px" }}>
+                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {urgencyFilter} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setUrgencyFilter('')}>×</span>
                 </span>
               )}
@@ -333,7 +333,7 @@ export default function Jobs() {
         <div style={{ marginBottom: 24 }}>
           <button
             onClick={applyFilters}
-            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.amber, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow, transition: "box-shadow 0.2s ease" }}
+            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.orange, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow, transition: "box-shadow 0.2s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlow; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = T.shadow; }}
           >
@@ -358,7 +358,7 @@ export default function Jobs() {
             {filteredJobs.map(job => (
               <div key={job.id} style={{ position: "relative" }}>
                 {userLocation && jobDistances[job.id] !== undefined && (
-                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 10, background: T.amber, color: "#fff", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700, ...mono }}>
+                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 10, background: T.orange, color: "#fff", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700, ...mono }}>
                     {jobDistances[job.id].toFixed(1)} mi
                   </div>
                 )}

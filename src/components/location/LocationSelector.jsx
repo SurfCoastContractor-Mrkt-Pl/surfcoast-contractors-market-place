@@ -60,8 +60,8 @@ export default function LocationSelector({ onLocationChange }) {
   return (
     <div className="space-y-3">
       {location ? (
-        <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="flex items-center gap-2 text-sm text-green-700">
+        <div style={{ padding: 12, background: "#E8F1FF", border: "1px solid #6BA3E8", borderRadius: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2C5AA0", fontWeight: 600 }}>
             <MapPin className="w-4 h-4" />
             <span>Searching near {locationDisplay || 'your location'}</span>
           </div>
@@ -72,7 +72,9 @@ export default function LocationSelector({ onLocationChange }) {
               setCity('');
               setLocationDisplay('');
             }}
-            className="text-xs text-green-600 hover:text-green-700 mt-1 underline"
+            style={{ fontSize: 11, color: "#2C5AA0", marginTop: 6, background: "none", border: "none", textDecoration: "underline", cursor: "pointer" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#1E3F7F"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#2C5AA0"; }}
           >
             Change location
           </button>
