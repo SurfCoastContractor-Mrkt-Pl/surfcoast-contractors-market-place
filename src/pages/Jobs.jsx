@@ -25,7 +25,12 @@ const T = {
   orange: "#FF8C00",
   orangeBg: "#FFF5E6",
   orangeTint: "#FFE8CC",
+  peachy: "#FFA341",
+  orangeBorder: "#FFB366",
+  amber: "#FF8C00",
   shadow: "3px 3px 0px #FF8C00",
+  goldGlow: "3px 3px 0px #FF8C00, 0 0 18px 4px rgba(255, 140, 0, 0.35)",
+  goldGlowSm: "0 0 14px 3px rgba(255, 140, 0, 0.3)",
 };
 
 const cardStyle = {
@@ -36,16 +41,13 @@ const cardStyle = {
   transition: "box-shadow 0.2s ease",
 };
 
-const goldGlow = "3px 3px 0px #FF8C00, 0 0 18px 4px rgba(255, 140, 0, 0.35)";
-const goldGlowSm = "0 0 14px 3px rgba(255, 140, 0, 0.3)";
-
 const hoverGlow = {
-  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlow; },
+  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = T.goldGlow; },
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = T.shadow; },
 };
 
 const hoverGlowSm = {
-  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlowSm; },
+  onMouseEnter: (e) => { e.currentTarget.style.boxShadow = T.goldGlowSm; },
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = "none"; },
 };
 
@@ -195,7 +197,7 @@ export default function Jobs() {
             </div>
             {!isContractor && (
               <Link to={createPageUrl('PostJob')} style={{ textDecoration: "none", display: "inline-block" }}>
-                <button aria-label="Post a new job" style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid #FFB366`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
+                <button aria-label="Post a new job" style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid ${T.orangeBorder}`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
                   <Plus className="w-5 h-5" aria-hidden="true" />
                   Post a Job
                 </button>
@@ -209,7 +211,7 @@ export default function Jobs() {
         {/* Location Selector */}
         <div style={{ ...cardStyle, padding: 20, marginBottom: 20 }} {...hoverGlow}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
-            <MapPin className="w-5 h-5" style={{ color: T.muted }} />
+            <MapPin className="w-5 h-5" style={{ color: T.muted }} aria-hidden="true" />
             <span style={{ fontWeight: 700, color: T.dark, fontSize: 14, fontStyle: "italic" }}>Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
@@ -243,14 +245,14 @@ export default function Jobs() {
         {/* Filters */}
         <div style={{ ...cardStyle, padding: 20, marginBottom: 20 }} {...hoverGlow}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
-            <Filter className="w-5 h-5" style={{ color: T.muted }} />
+            <Filter className="w-5 h-5" style={{ color: T.muted }} aria-hidden="true" />
             <span style={{ fontWeight: 700, color: T.dark, fontSize: 14, fontStyle: "italic" }}>Filters</span>
           </div>
           
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
             {/* Search input */}
             <div style={{ position: "relative" }}>
-              <Search className="w-4 h-4" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: T.muted }} aria-hidden="true" />
+              <Search className="w-5 h-5" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: T.muted }} aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Search jobs..."
@@ -309,7 +311,7 @@ export default function Jobs() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Active filters:</span>
               {searchQuery && (
-                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {searchQuery}
                   <button
                     aria-label={`Remove search filter: ${searchQuery}`}
@@ -321,7 +323,7 @@ export default function Jobs() {
                 </div>
               )}
               {typeFilter && typeFilter !== 'all' && (
-                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {typeFilter}
                   <button
                     aria-label={`Remove contractor type filter: ${typeFilter}`}
@@ -333,7 +335,7 @@ export default function Jobs() {
                 </div>
               )}
               {tradeFilter && tradeFilter !== 'all' && (
-                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {trades.find(t => t.id === tradeFilter)?.name}
                   <button
                     aria-label={`Remove trade filter: ${trades.find(t => t.id === tradeFilter)?.name}`}
@@ -345,7 +347,7 @@ export default function Jobs() {
                 </div>
               )}
               {urgencyFilter && urgencyFilter !== 'all' && (
-                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
                   {urgencyFilter}
                   <button
                     aria-label={`Remove urgency filter: ${urgencyFilter}`}
@@ -365,8 +367,8 @@ export default function Jobs() {
         <div style={{ marginBottom: 24 }}>
           <button
             onClick={applyFilters}
-            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: "#FFA341", color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: "3px 3px 0px #FFA341", transition: "box-shadow 0.2s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlow; }}
+            style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.peachy, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow, transition: "box-shadow 0.2s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = T.goldGlow; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = T.shadow; }}
           >
             Apply Filters
@@ -375,7 +377,7 @@ export default function Jobs() {
 
         {/* Results Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
-          <Briefcase className="w-5 h-5" style={{ color: T.muted }} />
+          <Briefcase className="w-5 h-5" style={{ color: T.muted }} aria-hidden="true" />
           <span style={{ fontSize: 14, color: T.dark, fontWeight: 700, fontStyle: "italic" }}>{filteredJobs.length} jobs found</span>
         </div>
 
@@ -400,7 +402,7 @@ export default function Jobs() {
           </div>
         ) : (
           <div style={{ textAlign: "center", padding: "40px 20px", background: T.card, border: `0.5px solid ${T.border}`, borderRadius: 10, boxShadow: T.shadow }}>
-            <Briefcase className="w-12 h-12" style={{ color: "#ccc", margin: "0 auto 16px" }} />
+            <Briefcase className="w-12 h-12" style={{ color: "#ccc", margin: "0 auto 16px" }} aria-hidden="true" />
             <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>No jobs found</h3>
             <p style={{ fontSize: 13, color: T.muted, marginBottom: 16, fontStyle: "italic" }}>Try adjusting your filters or check back later</p>
             <button onClick={clearFilters} style={{ ...mono, fontSize: 11, background: "transparent", border: `0.5px solid ${T.border}`, borderRadius: 5, padding: "7px 14px", color: T.dark, cursor: "pointer" }}>Clear Filters →</button>
