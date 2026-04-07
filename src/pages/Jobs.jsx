@@ -144,18 +144,18 @@ export default function Jobs() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-16 border-b border-slate-200/50">
+      <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-6 sm:py-12 lg:py-16 border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex flex-col gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">Job Listings</h1>
-              <p className="text-lg text-slate-600">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">Job Listings</h1>
+              <p className="text-base sm:text-lg text-slate-600">
                {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
               </p>
             </div>
             {!isContractor && (
-              <Link to={createPageUrl('PostJob')}>
-                <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900">
+              <Link to={createPageUrl('PostJob')} className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-900">
                   <Plus className="w-5 h-5 mr-2" />
                   Post a Job
                 </Button>
@@ -165,21 +165,21 @@ export default function Jobs() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Location Selector */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
             <MapPin className="w-5 h-5 text-slate-500" />
-            <span className="font-medium text-slate-700">Your Location</span>
+            <span className="font-medium text-slate-700 text-sm sm:text-base">Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
           
           {userLocation && (
-            <div className="mt-6 space-y-4">
-              <div className="p-4 bg-slate-50 rounded-xl">
+            <div className="mt-4 sm:mt-6 space-y-4">
+              <div className="p-3 sm:p-4 bg-slate-50 rounded-lg sm:rounded-xl">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-medium text-slate-700">
-                    Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
+                  <label className="text-xs sm:text-sm font-medium text-slate-700">
+                    Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} mi</span>
                   </label>
                 </div>
                 <input
@@ -201,13 +201,13 @@ export default function Jobs() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="w-5 h-5 text-slate-500" />
-            <span className="font-medium text-slate-700">Filters</span>
+            <span className="font-medium text-slate-700 text-sm sm:text-base">Filters</span>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
@@ -291,31 +291,31 @@ export default function Jobs() {
         </div>
 
         {/* Apply Filters Button */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <Button 
             onClick={applyFilters}
-            className="w-full h-12 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-lg rounded-lg"
+            className="w-full h-11 sm:h-12 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-base sm:text-lg rounded-lg"
           >
             Apply Filters
           </Button>
         </div>
 
         {/* Results */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 text-slate-600">
             <Briefcase className="w-5 h-5" />
-            <span>{filteredJobs.length} jobs found</span>
+            <span className="text-sm sm:text-base">{filteredJobs.length} jobs found</span>
           </div>
         </div>
 
         {isLoading ? (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-48 bg-white rounded-xl animate-pulse" />
+              <div key={i} className="h-48 bg-white rounded-lg sm:rounded-xl animate-pulse" />
             ))}
           </div>
         ) : filteredJobs.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {filteredJobs.map(job => (
               <div key={job.id} className="relative">
                 {userLocation && jobDistances[job.id] !== undefined && (
@@ -328,11 +328,11 @@ export default function Jobs() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white rounded-2xl">
-            <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No jobs found</h3>
-            <p className="text-slate-600 mb-4">Try adjusting your filters or check back later</p>
-            <Button variant="outline" onClick={clearFilters}>Clear Filters</Button>
+          <div className="text-center py-12 sm:py-16 bg-white rounded-lg sm:rounded-2xl">
+            <Briefcase className="w-10 sm:w-12 h-10 sm:h-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-slate-900 mb-2">No jobs found</h3>
+            <p className="text-sm sm:text-base text-slate-600 mb-4">Try adjusting your filters or check back later</p>
+            <Button variant="outline" onClick={clearFilters} size="sm">Clear Filters</Button>
           </div>
         )}
       </div>
