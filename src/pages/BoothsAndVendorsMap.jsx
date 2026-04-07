@@ -117,7 +117,7 @@ export default function BoothsAndVendorsMap() {
       {/* Overlay for mobile filter panel */}
       {filterPanelOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
           onClick={() => setFilterPanelOpen(false)}
         />
       )}

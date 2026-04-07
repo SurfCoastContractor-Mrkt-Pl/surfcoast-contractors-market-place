@@ -35,7 +35,7 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
 
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-40 w-80 bg-white border-r border-slate-200 shadow-lg transform transition-transform duration-200 ease-in-out overflow-y-auto ${
+      className={`fixed inset-y-0 left-0 z-30 w-80 bg-white border-r border-slate-200 shadow-lg transform transition-transform duration-200 ease-in-out overflow-y-auto ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:static lg:translate-x-0 lg:h-auto lg:shadow-none`}
     >
