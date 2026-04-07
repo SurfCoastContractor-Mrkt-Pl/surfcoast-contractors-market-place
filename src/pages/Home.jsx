@@ -120,27 +120,27 @@ function HeroPlatformCard() {
 
 function HeroSection() {
    return (
-     <section style={{ background: "#ECECED", padding: "56px 24px 44px" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap", alignItems: "flex-start" }}>
+     <section style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
-        <h1 style={{ fontSize: 44, fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
+        <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.75rem)", fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
           Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
         </h1>
         <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26, fontWeight: 700, fontStyle: "italic" }}>
           SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — connects everyday workers with everyday people across the USA. Your profile and listing are free. Communication sessions start at $1.50 per 10 minutes. A facilitation fee of 18% applies only when work is successfully completed through the platform.
         </p>
-          <div style={{ display: "flex", gap: 6, flexWrap: "nowrap", marginBottom: 28, overflowX: "auto" }}>
-            <Link to="/PostJob" style={{ textDecoration: "none", flexShrink: 0 }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 28 }}>
+            <Link to="/PostJob" style={{ textDecoration: "none" }}>
               <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Post a Job — Free</button>
             </Link>
-            <Link to="/wave-os-details" style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link to="/wave-os-details" style={{ textDecoration: "none" }}>
               <button style={{ background: T.amberBg, color: T.amber, border: `1px solid #D9B88A`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>What is WAVE OS?</button>
             </Link>
-            <Link to="/BecomeContractor" style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link to="/BecomeContractor" style={{ textDecoration: "none" }}>
               <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Join as Contractor</button>
             </Link>
-            <Link to="/MarketShopSignup" style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link to="/MarketShopSignup" style={{ textDecoration: "none" }}>
               <button style={{ background: "#fff", color: T.dark, border: `1px solid ${T.border}`, borderRadius: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "box-shadow 0.2s ease" }} onMouseEnter={e => e.currentTarget.style.boxShadow = purpleBlueGlow} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>Market Shop</button>
             </Link>
           </div>
@@ -308,12 +308,12 @@ function TabbedSection() {
   const current = TAB_DATA.find((t) => t.id === active);
 
   return (
-    <section style={{ background: T.bg, padding: "52px 24px" }}>
+    <section style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
 
-        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", width: "fit-content" }}>
+        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "auto", width: "100%", maxWidth: "fit-content" }}>
           {TAB_DATA.map((t) => (
             <button
               key={t.id}
@@ -347,7 +347,7 @@ function TabbedSection() {
 // ── Integrity Section ──────────────────────────────────────────
 function IntegritySection() {
   return (
-    <section style={{ background: "#F5F5F6", padding: "52px 24px" }}>
+    <section style={{ background: "#F5F5F6", padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>100% compliance. Automated.</h2>
@@ -385,7 +385,7 @@ function LaunchEngineSection() {
   ];
 
   return (
-    <section style={{ background: T.bg, padding: "52px 24px" }}>
+    <section style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// LAUNCH ENGINE</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Three mechanics. One flywheel.</h2>
@@ -448,7 +448,7 @@ const FAQ_ITEMS = [
 
 function FAQSection() {
    return (
-     <section style={{ background: "#ECECED", padding: "52px 24px" }}>
+     <section style={{ background: "#ECECED", padding: "40px 16px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -461,7 +461,7 @@ function FAQSection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// FREQUENTLY ASKED QUESTIONS</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 28, fontStyle: "italic" }}>Common questions.</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))", gap: 16 }}>
           {FAQ_ITEMS.map(({ q, a }) => (
             <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 10, lineHeight: 1.4, fontStyle: "italic" }}>{q}</h3>
