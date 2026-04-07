@@ -29,11 +29,11 @@ const trades = [
 ];
 
 const T = {
-  bg: "#1A1A1B",
-  card: "#252525",
+  bg: "#EBEBEC",
+  card: "#fff",
   dark: "#1A1A1B",
-  muted: "#999",
-  border: "#404040",
+  muted: "#333",
+  border: "#D0D0D2",
   amber: "#5C3500",
   amberBg: "#F0E0C0",
   amberTint: "#FBF5EC",
