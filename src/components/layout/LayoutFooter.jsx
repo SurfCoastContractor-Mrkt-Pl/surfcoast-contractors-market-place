@@ -48,7 +48,7 @@ export default function LayoutFooter({
           <div>
             <h4 className="font-bold mb-3 text-sm uppercase tracking-wide" style={{color: ORANGE}}>For Clients</h4>
             <ul className="space-y-2">
-              <li><Link to="/FindContractors" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Find Contractors</Link></li>
+              <li><Link to="/SearchContractors" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Find Entrepreneurs</Link></li>
                <li><Link to="/PostJob" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Post a Job</Link></li>
                <li><Link to="/MyJobs" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>My Job Postings</Link></li>
                <li><Link to="/Blog" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>

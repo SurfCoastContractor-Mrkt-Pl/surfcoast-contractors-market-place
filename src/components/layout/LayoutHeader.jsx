@@ -290,7 +290,7 @@ function AccountDropdown({
         <SectionLabel>Navigate</SectionLabel>
         <Item path="/" icon={Home}>Home</Item>
         {isContractor
-          ? <Item path="/JobsBoard" icon={Briefcase}>Browse Jobs</Item>
+          ? <Item path="/Jobs" icon={Briefcase}>Browse Jobs</Item>
           : <Item path="/SearchContractors" icon={Users}>Find Entrepreneurs</Item>
         }
         <Item path="/ProjectManagement" icon={MessageCircle}>
