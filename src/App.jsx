@@ -83,6 +83,7 @@ import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
 import ContractorJobPipeline from './pages/ContractorJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
+import PostJob from './pages/PostJob';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
 import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
@@ -465,6 +466,11 @@ const AuthenticatedApp = () => {
       <Route path="/platform-activity" element={
         <LayoutWrapper currentPageName="PlatformActivityDashboard">
           <PlatformActivityDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/PostJob" element={
+        <LayoutWrapper currentPageName="PostJob">
+          <PostJob />
         </LayoutWrapper>
       } />
       <Route path="/Pricing" element={
