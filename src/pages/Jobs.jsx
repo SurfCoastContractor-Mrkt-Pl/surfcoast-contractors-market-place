@@ -195,8 +195,8 @@ export default function Jobs() {
             </div>
             {!isContractor && (
               <Link to={createPageUrl('PostJob')} style={{ textDecoration: "none", display: "inline-block" }}>
-                <button style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid #FFB366`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
-                  <Plus className="w-5 h-5" />
+                <button aria-label="Post a new job" style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid #FFB366`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
+                  <Plus className="w-5 h-5" aria-hidden="true" />
                   Post a Job
                 </button>
               </Link>
@@ -250,10 +250,11 @@ export default function Jobs() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
             {/* Search input */}
             <div style={{ position: "relative" }}>
-              <Search className="w-4 h-4" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: T.muted }} />
+              <Search className="w-4 h-4" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: T.muted }} aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Search jobs..."
+                aria-label="Search jobs by title, location, or description"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{ width: "100%", paddingLeft: 32, paddingRight: 10, paddingTop: 8, paddingBottom: 8, border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa" }}
@@ -262,6 +263,7 @@ export default function Jobs() {
             
             {/* Type Filter */}
             <select
+              aria-label="Filter by contractor type"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
@@ -275,6 +277,7 @@ export default function Jobs() {
             
             {/* Trade Filter */}
             <select
+              aria-label="Filter by trade specialty"
               value={tradeFilter}
               onChange={(e) => setTradeFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
@@ -288,6 +291,7 @@ export default function Jobs() {
             
             {/* Urgency Filter */}
             <select
+              aria-label="Filter by job urgency"
               value={urgencyFilter}
               onChange={(e) => setUrgencyFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
@@ -305,24 +309,52 @@ export default function Jobs() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Active filters:</span>
               {searchQuery && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {searchQuery} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setSearchQuery('')}>×</span>
-                </span>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                  {searchQuery}
+                  <button
+                    aria-label={`Remove search filter: ${searchQuery}`}
+                    onClick={() => setSearchQuery('')}
+                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
+                  >
+                    ×
+                  </button>
+                </div>
               )}
               {typeFilter && typeFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {typeFilter} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setTypeFilter('')}>×</span>
-                </span>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                  {typeFilter}
+                  <button
+                    aria-label={`Remove contractor type filter: ${typeFilter}`}
+                    onClick={() => setTypeFilter('')}
+                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
+                  >
+                    ×
+                  </button>
+                </div>
               )}
               {tradeFilter && tradeFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {trades.find(t => t.id === tradeFilter)?.name} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setTradeFilter('')}>×</span>
-                </span>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                  {trades.find(t => t.id === tradeFilter)?.name}
+                  <button
+                    aria-label={`Remove trade filter: ${trades.find(t => t.id === tradeFilter)?.name}`}
+                    onClick={() => setTradeFilter('')}
+                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
+                  >
+                    ×
+                  </button>
+                </div>
               )}
               {urgencyFilter && urgencyFilter !== 'all' && (
-                <span style={{ display: "inline-block", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {urgencyFilter} <span style={{ cursor: "pointer", marginLeft: 4 }} onClick={() => setUrgencyFilter('')}>×</span>
-                </span>
+                <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid #FFB366`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
+                  {urgencyFilter}
+                  <button
+                    aria-label={`Remove urgency filter: ${urgencyFilter}`}
+                    onClick={() => setUrgencyFilter('')}
+                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
+                  >
+                    ×
+                  </button>
+                </div>
               )}
               <button onClick={clearFilters} style={{ ...mono, fontSize: 11, background: "transparent", border: "none", color: T.amber, cursor: "pointer", marginLeft: 4 }}>Clear all →</button>
             </div>
@@ -358,7 +390,7 @@ export default function Jobs() {
             {filteredJobs.map(job => (
               <div key={job.id} style={{ position: "relative" }}>
                 {userLocation && jobDistances[job.id] !== undefined && (
-                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 10, background: T.orange, color: "#fff", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700, ...mono }}>
+                  <div aria-label={`Distance: ${jobDistances[job.id].toFixed(1)} miles`} style={{ position: "absolute", top: 12, right: 12, zIndex: 10, background: T.orange, color: "#fff", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700, ...mono }}>
                     {jobDistances[job.id].toFixed(1)} mi
                   </div>
                 )}
