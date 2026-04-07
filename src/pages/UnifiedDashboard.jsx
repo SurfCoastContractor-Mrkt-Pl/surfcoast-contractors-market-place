@@ -182,7 +182,7 @@ export default function UnifiedDashboard() {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Quick Stats */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em" }}>// QUICK STATS</div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// QUICK STATS</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
             {userType === 'entrepreneur' && (
               <>
@@ -229,7 +229,7 @@ export default function UnifiedDashboard() {
 
         {/* Action Cards */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em" }}>// QUICK ACTIONS</div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// QUICK ACTIONS</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
             {userType === 'entrepreneur' && (
               <>
@@ -302,7 +302,7 @@ export default function UnifiedDashboard() {
 
         {/* Recent Activity */}
         <div>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em" }}>// RECENT ACTIVITY</div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 16, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// RECENT ACTIVITY</div>
           <div style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
             {jobsData && jobsData.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
