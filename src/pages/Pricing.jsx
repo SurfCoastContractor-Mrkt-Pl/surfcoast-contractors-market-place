@@ -46,7 +46,7 @@ const MARKET_BOOTHS_AND_SPACES_FEATURES = [
   "Analytics dashboard", "Inquiry inbox", "Mobile-optimized dashboard", "Dashboard/profile settings for booth or space",
 ];
 
-const WAVESHOP_FO_FEATURES = [
+const WAVESHOP_OS_FEATURES = [
   "Everything in Market Booths & Spaces", "Advanced product management tools", "Enhanced analytics & reporting",
   "Priority support", "Specialized marketing toolkit", "Social media integration suite",
   "Custom booth branding options", "Streamlined, user-friendly dashboard", "Advanced inventory tracking",

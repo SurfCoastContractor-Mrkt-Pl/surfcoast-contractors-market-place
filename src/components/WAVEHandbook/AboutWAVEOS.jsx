@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShieldCheck, DollarSign, Lightbulb, Gem } from 'lucide-react';
 
-export default function AboutWAVEFO() {
+export default function AboutWAVEOS() {
   return (
     <div className="space-y-8 p-4 md:p-8">
       <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">About WAVE OS</h2>

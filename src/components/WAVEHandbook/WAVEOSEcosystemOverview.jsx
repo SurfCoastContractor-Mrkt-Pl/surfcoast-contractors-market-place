@@ -1,16 +1,16 @@
 import React from 'react';
 
-export default function WAVEFOEcosystemOverview() {
+export default function WAVEOSEcosystemOverview() {
   return (
     <div className="space-y-8">
       <div>
         <h3 className="text-2xl font-bold text-slate-900 mb-4">WAVE OS Ecosystem Overview</h3>
         <p className="text-slate-700 leading-relaxed mb-4">
-          The WAVE OS ecosystem is designed to support independent professionals on the SurfCoast platform. It comprises two main systems: <strong>WAVE OS</strong> for contractors managing client projects, and <strong>WAVEshop FO</strong> for vendors handling in-person sales.
+          The WAVE OS ecosystem is designed to support independent professionals on the SurfCoast platform. It comprises two main systems: <strong>WAVE OS</strong> for contractors managing client projects, and <strong>WAVEshop OS</strong> for vendors handling in-person sales.
         </p>
       </div>
 
-      {/* WAVE FO Section */}
+      {/* WAVE OS Section */}
       <div>
         <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE OS (Contractor System)</h4>
         <p className="text-slate-700 mb-4">
@@ -70,9 +70,9 @@ export default function WAVEFOEcosystemOverview() {
         </div>
       </div>
 
-      {/* WAVEshop FO Section */}
+      {/* WAVEshop OS Section */}
       <div>
-        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVEshop FO (Vendor System)</h4>
+        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVEshop OS (Vendor System)</h4>
         <p className="text-slate-700 mb-4">
           This system is tailored for market shop vendors to optimize their operations during physical, in-person sales events.
         </p>
@@ -90,7 +90,7 @@ export default function WAVEFOEcosystemOverview() {
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 px-4 py-2 font-semibold">WAVEshop FO</td>
+                <td className="border border-slate-300 px-4 py-2 font-semibold">WAVEshop OS</td>
                 <td className="border border-slate-300 px-4 py-2">$35/month</td>
                 <td className="border border-slate-300 px-4 py-2">Manual inventory management, sales tracking, location updates, optional sync to MarketShop</td>
                 <td className="border border-slate-300 px-4 py-2 font-semibold text-green-600">0%</td>
@@ -101,9 +101,9 @@ export default function WAVEFOEcosystemOverview() {
         </div>
 
         <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-          <h5 className="font-semibold text-slate-900 mb-2">WAVEshop FO Summary</h5>
+          <h5 className="font-semibold text-slate-900 mb-2">WAVEshop OS Summary</h5>
           <p className="text-slate-700 text-sm">
-            This system is tailored for market shop vendors to optimize their operations during physical, in-person sales events. It allows vendors to manage a distinct in-person inventory, record sales, and broadcast their current market location. Sales made directly through WAVEshop FO at physical venues are <strong>exempt from facilitation fees</strong>; vendors only pay a $35/month subscription. An optional feature enables automatic synchronization of in-person sales data with their online MarketShop inventory. The <strong>5% facilitation fee</strong> for vendors only applies to sales conducted through their online MarketShop profile, not to in-person transactions.
+            This system is tailored for market shop vendors to optimize their operations during physical, in-person sales events. It allows vendors to manage a distinct in-person inventory, record sales, and broadcast their current market location. Sales made directly through WAVEshop OS at physical venues are <strong>exempt from facilitation fees</strong>; vendors only pay a $35/month subscription. An optional feature enables automatic synchronization of in-person sales data with their online MarketShop inventory. The <strong>5% facilitation fee</strong> for vendors only applies to sales conducted through their online MarketShop profile, not to in-person transactions.
           </p>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function WAVEFOEcosystemOverview() {
             </ul>
           </div>
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h5 className="font-semibold text-slate-900 mb-2">WAVEshop FO</h5>
+            <h5 className="font-semibold text-slate-900 mb-2">WAVEshop OS</h5>
             <ul className="text-slate-700 text-sm space-y-2 list-disc list-inside">
               <li>Vendor-focused platform</li>
               <li>Manages physical market/venue sales</li>

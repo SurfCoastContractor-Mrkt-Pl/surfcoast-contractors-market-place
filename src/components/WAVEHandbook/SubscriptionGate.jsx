@@ -24,7 +24,7 @@ export default function SubscriptionGate({ onSubscribe }) {
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Choose Your Path</h2>
           
           <div className="grid md:grid-cols-2 gap-6 text-left">
-            {/* WAVE FO */}
+            {/* WAVE OS */}
             <div className="border-2 border-blue-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
               <h3 className="text-xl font-bold text-blue-600 mb-2">WAVE OS</h3>
               <p className="text-slate-600 text-sm mb-4">For independent contractors managing client projects</p>
@@ -44,9 +44,9 @@ export default function SubscriptionGate({ onSubscribe }) {
               </ul>
             </div>
 
-            {/* WAVEshop FO */}
+            {/* WAVEshop OS */}
             <div className="border-2 border-green-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-bold text-green-600 mb-2">WAVEshop FO</h3>
+              <h3 className="text-xl font-bold text-green-600 mb-2">WAVEshop OS</h3>
               <p className="text-slate-600 text-sm mb-4">For vendors managing in-person market sales</p>
               <ul className="text-sm text-slate-700 space-y-2 mb-6">
                 <li className="flex items-center gap-2">

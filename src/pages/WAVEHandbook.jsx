@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import AboutWAVEFO from '@/components/WAVEHandbook/AboutWAVEFO';
-import WAVEFOEcosystemOverview from '@/components/WAVEHandbook/WAVEFOEcosystemOverview';
+import AboutWAVEOS from '@/components/WAVEHandbook/AboutWAVEOS';
+import WAVEOSEcosystemOverview from '@/components/WAVEHandbook/WAVEOSEcosystemOverview';
 import SubscriptionGate from '@/components/WAVEHandbook/SubscriptionGate';
 
 export default function WAVEHandbook() {
@@ -50,7 +50,7 @@ export default function WAVEHandbook() {
         {
           id: '0.1',
           title: 'Our Mission & Values',
-          content: <AboutWAVEFO />,
+          content: <AboutWAVEOS />,
         },
       ],
     },
@@ -61,7 +61,7 @@ export default function WAVEHandbook() {
         {
           id: '6.1',
           title: 'Complete Tier & Pricing Breakdown',
-          content: <WAVEFOEcosystemOverview />,
+          content: <WAVEOSEcosystemOverview />,
         },
       ],
     },
