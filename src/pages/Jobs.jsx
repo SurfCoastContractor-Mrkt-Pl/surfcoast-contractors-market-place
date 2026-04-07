@@ -28,36 +28,22 @@ const trades = [
   { id: 'other', name: 'Other' },
 ];
 
-const T = {
-  bg: "#EBEBEC",
-  card: "#fff",
-  dark: "#1A1A1B",
-  muted: "#333",
-  border: "#D0D0D2",
-  amber: "#5C3500",
-  amberBg: "#F0E0C0",
-  amberTint: "#FBF5EC",
-  shadow: "3px 3px 0px #5C3500",
-};
-
-const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
-
 export default function Jobs() {
-   const navigate = useNavigate();
-   const { user } = useUserData();
-   const userEmail = user?.email || null;
-   const { isContractor } = useUserProfiles(userEmail);
-   const [searchQuery, setSearchQuery] = useState('');
-   const [typeFilter, setTypeFilter] = useState('');
-   const [tradeFilter, setTradeFilter] = useState('');
-   const [urgencyFilter, setUrgencyFilter] = useState('');
-   const [userLocation, setUserLocation] = useState(null);
-   const [jobDistances, setJobDistances] = useState({});
-   const [searchRadius, setSearchRadius] = useState(35);
-   const [activeSearchQuery, setActiveSearchQuery] = useState('');
-   const [activeTypeFilter, setActiveTypeFilter] = useState('');
-   const [activeTradeFilter, setActiveTradeFilter] = useState('');
-   const [activeUrgencyFilter, setActiveUrgencyFilter] = useState('');
+  const navigate = useNavigate();
+  const { user } = useUserData();
+  const userEmail = user?.email || null;
+  const { isContractor } = useUserProfiles(userEmail);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [tradeFilter, setTradeFilter] = useState('');
+  const [urgencyFilter, setUrgencyFilter] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [jobDistances, setJobDistances] = useState({});
+  const [searchRadius, setSearchRadius] = useState(35);
+  const [activeSearchQuery, setActiveSearchQuery] = useState('');
+  const [activeTypeFilter, setActiveTypeFilter] = useState('');
+  const [activeTradeFilter, setActiveTradeFilter] = useState('');
+  const [activeUrgencyFilter, setActiveUrgencyFilter] = useState('');
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs', 'open'],
@@ -156,43 +142,44 @@ export default function Jobs() {
   const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeUrgencyFilter;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh" }}>
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div style={{ background: T.dark, borderBottom: `1px solid ${T.border}`, padding: "32px 16px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em" }}>// BROWSE JOBS</div>
-          <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.75rem)", fontWeight: 800, color: "#fff", lineHeight: 1.12, marginBottom: 8 }}>
-            Job Listings
-          </h1>
-          <p style={{ fontSize: 15, color: T.muted, marginBottom: 24, fontWeight: 700, fontStyle: "italic" }}>
-            {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
-          </p>
-          {!isContractor && (
-            <Link to={createPageUrl('PostJob')} style={{ textDecoration: "none" }}>
-              <Button size="lg" style={{ background: "#5C3500", color: "#fff", borderRadius: 6, padding: "11px 26px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 8 }}>
-                <Plus className="w-5 h-5" />
-                Post a Job
-              </Button>
-            </Link>
-          )}
+      <div className="bg-gradient-to-br from-slate-100 to-blue-50 text-slate-900 py-6 sm:py-12 lg:py-16 border-b border-slate-200/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">Job Listings</h1>
+              <p className="text-base sm:text-lg text-slate-600">
+               {isContractor ? 'Find your next construction project' : 'Post a job or browse listings'}
+              </p>
+            </div>
+            {!isContractor && (
+              <Link to={createPageUrl('PostJob')} className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-900">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Post a Job
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 16px" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Location Selector */}
-        <div style={{ background: T.card, borderRadius: 10, border: `0.5px solid ${T.border}`, boxShadow: T.shadow, padding: "24px", marginBottom: 32 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-            <MapPin className="w-5 h-5" style={{ color: T.muted }} />
-            <span style={{ ...mono, fontSize: 10, color: T.muted, letterSpacing: "0.06em" }}>YOUR LOCATION</span>
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4 sm:mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-5 h-5 text-slate-500" />
+            <span className="font-medium text-slate-700 text-sm sm:text-base">Your Location</span>
           </div>
           <LocationSelector onLocationChange={handleLocationChange} />
           
           {userLocation && (
-            <div style={{ marginTop: 24 }}>
-              <div style={{ background: "rgba(92, 53, 0, 0.15)", border: `0.5px solid ${T.border}`, borderRadius: 8, padding: "16px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                  <label style={{ fontSize: 13, fontWeight: 700, color: "#f0f0f0" }}>
-                    Search Radius: <span style={{ color: "#F0A040" }}>{searchRadius} mi</span>
+            <div className="mt-4 sm:mt-6 space-y-4">
+              <div className="p-3 sm:p-4 bg-slate-50 rounded-lg sm:rounded-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-xs sm:text-sm font-medium text-slate-700">
+                    Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} mi</span>
                   </label>
                 </div>
                 <input
@@ -202,9 +189,9 @@ export default function Jobs() {
                   step="5"
                   value={searchRadius}
                   onChange={(e) => setSearchRadius(Number(e.target.value))}
-                  style={{ width: "100%", accentColor: "#F0A040" }}
+                  className="w-full accent-amber-500"
                 />
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: T.muted, marginTop: 8 }}>
+                <div className="flex justify-between text-xs text-slate-500 mt-2">
                   <span>5 mi</span>
                   <span>100 mi</span>
                 </div>
@@ -214,28 +201,28 @@ export default function Jobs() {
         </div>
 
         {/* Filters */}
-        <div style={{ background: T.card, borderRadius: 10, border: `0.5px solid ${T.border}`, boxShadow: T.shadow, padding: "24px", marginBottom: 32 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-            <Filter className="w-5 h-5" style={{ color: T.muted }} />
-            <span style={{ ...mono, fontSize: 10, color: T.muted, letterSpacing: "0.06em" }}>FILTERS</span>
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4 sm:mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Filter className="w-5 h-5 text-slate-500" />
+            <span className="font-medium text-slate-700 text-sm sm:text-base">Filters</span>
           </div>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 16 }}>
-            <div style={{ position: "relative" }}>
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: T.muted }} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 placeholder="Search jobs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ background: "rgba(0,0,0,0.3)", border: `0.5px solid ${T.border}`, color: "#fff", paddingLeft: 40, borderRadius: 6, fontSize: 14 }}
+                className="pl-10"
               />
             </div>
             
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger style={{ background: "rgba(0,0,0,0.3)", border: `0.5px solid ${T.border}`, color: "#fff", borderRadius: 6 }}>
+              <SelectTrigger>
                 <SelectValue placeholder="Contractor Type" />
               </SelectTrigger>
-              <SelectContent style={{ background: T.card, border: `0.5px solid ${T.border}` }}>
+              <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="trade_specific">Trade Specific</SelectItem>
                 <SelectItem value="general">General Contractor</SelectItem>
@@ -244,10 +231,10 @@ export default function Jobs() {
             </Select>
             
             <Select value={tradeFilter} onValueChange={setTradeFilter}>
-              <SelectTrigger style={{ background: "rgba(0,0,0,0.3)", border: `0.5px solid ${T.border}`, color: "#fff", borderRadius: 6 }}>
+              <SelectTrigger>
                 <SelectValue placeholder="Trade Specialty" />
               </SelectTrigger>
-              <SelectContent style={{ background: T.card, border: `0.5px solid ${T.border}` }}>
+              <SelectContent>
                 <SelectItem value="all">All Trades</SelectItem>
                 {trades.map(trade => (
                   <SelectItem key={trade.id} value={trade.id}>{trade.name}</SelectItem>
@@ -256,10 +243,10 @@ export default function Jobs() {
             </Select>
             
             <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
-              <SelectTrigger style={{ background: "rgba(0,0,0,0.3)", border: `0.5px solid ${T.border}`, color: "#fff", borderRadius: 6 }}>
+              <SelectTrigger>
                 <SelectValue placeholder="Urgency" />
               </SelectTrigger>
-              <SelectContent style={{ background: T.card, border: `0.5px solid ${T.border}` }}>
+              <SelectContent>
                 <SelectItem value="all">All Urgencies</SelectItem>
                 <SelectItem value="urgent">🔥 Urgent</SelectItem>
                 <SelectItem value="high">High</SelectItem>
@@ -270,67 +257,69 @@ export default function Jobs() {
           </div>
           
           {hasActiveFilters && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, paddingTop: 16, borderTop: `0.5px solid ${T.border}`, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 12, color: T.muted }}>Active filters:</span>
+            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 flex-wrap">
+              <span className="text-sm text-slate-500">Active filters:</span>
               {searchQuery && (
-                <div style={{ ...mono, fontSize: 10, background: "rgba(92, 53, 0, 0.15)", border: `0.5px solid ${T.border}`, color: "#F0A040", borderRadius: 4, padding: "3px 8px", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Badge variant="secondary" className="gap-1">
                   Search: {searchQuery}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setSearchQuery('')} />
-                </div>
+                </Badge>
               )}
               {typeFilter && typeFilter !== 'all' && (
-                <div style={{ ...mono, fontSize: 10, background: "rgba(92, 53, 0, 0.15)", border: `0.5px solid ${T.border}`, color: "#F0A040", borderRadius: 4, padding: "3px 8px", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Badge variant="secondary" className="gap-1">
                   {typeFilter}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setTypeFilter('')} />
-                </div>
+                </Badge>
               )}
               {tradeFilter && tradeFilter !== 'all' && (
-                <div style={{ ...mono, fontSize: 10, background: "rgba(92, 53, 0, 0.15)", border: `0.5px solid ${T.border}`, color: "#F0A040", borderRadius: 4, padding: "3px 8px", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Badge variant="secondary" className="gap-1">
                   {trades.find(t => t.id === tradeFilter)?.name}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setTradeFilter('')} />
-                </div>
+                </Badge>
               )}
               {urgencyFilter && urgencyFilter !== 'all' && (
-                <div style={{ ...mono, fontSize: 10, background: "rgba(92, 53, 0, 0.15)", border: `0.5px solid ${T.border}`, color: "#F0A040", borderRadius: 4, padding: "3px 8px", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Badge variant="secondary" className="gap-1">
                   {urgencyFilter}
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setUrgencyFilter('')} />
-                </div>
+                </Badge>
               )}
-              <button onClick={clearFilters} style={{ background: "transparent", border: "none", color: "#F0A040", cursor: "pointer", ...mono, fontSize: 10 }}>
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-amber-600">
                 Clear all
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
         {/* Apply Filters Button */}
-        <div style={{ marginBottom: 32 }}>
+        <div className="mb-6 sm:mb-8">
           <Button 
             onClick={applyFilters}
-            style={{ width: "100%", height: 48, background: "#5C3500", color: "#fff", fontWeight: 700, fontSize: 16, borderRadius: 6, border: "none", cursor: "pointer", ...mono }}
+            className="w-full h-11 sm:h-12 bg-orange-600 hover:bg-orange-700 text-white font-semibold text-base sm:text-lg rounded-lg"
           >
             Apply Filters
           </Button>
         </div>
 
         {/* Results */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
-          <Briefcase className="w-5 h-5" style={{ color: T.muted }} />
-          <span style={{ fontSize: 14, color: T.muted }}>{filteredJobs.length} jobs found</span>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 text-slate-600">
+            <Briefcase className="w-5 h-5" />
+            <span className="text-sm sm:text-base">{filteredJobs.length} jobs found</span>
+          </div>
         </div>
 
         {isLoading ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} style={{ height: 200, background: T.card, borderRadius: 10, border: `0.5px solid ${T.border}`, animation: "pulse 2s" }} />
+              <div key={i} className="h-48 bg-white rounded-lg sm:rounded-xl animate-pulse" />
             ))}
           </div>
         ) : filteredJobs.length > 0 ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {filteredJobs.map(job => (
-              <div key={job.id} style={{ position: "relative" }}>
+              <div key={job.id} className="relative">
                 {userLocation && jobDistances[job.id] !== undefined && (
-                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 10, background: "#F0A040", color: "#1A1A1B", padding: "6px 12px", borderRadius: 6, fontSize: 11, fontWeight: 700, ...mono }}>
+                  <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-semibold">
                     {jobDistances[job.id].toFixed(1)} mi
                   </div>
                 )}
@@ -339,11 +328,11 @@ export default function Jobs() {
             ))}
           </div>
         ) : (
-          <div style={{ textAlign: "center", padding: "48px 24px", background: T.card, borderRadius: 10, border: `0.5px solid ${T.border}` }}>
-            <Briefcase className="w-12 h-12" style={{ color: T.muted, margin: "0 auto 16px" }} />
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 8 }}>No jobs found</h3>
-            <p style={{ fontSize: 14, color: T.muted, marginBottom: 16 }}>Try adjusting your filters or check back later</p>
-            <Button variant="outline" onClick={clearFilters} size="sm" style={{ borderColor: T.border, color: "#fff" }}>Clear Filters</Button>
+          <div className="text-center py-12 sm:py-16 bg-white rounded-lg sm:rounded-2xl">
+            <Briefcase className="w-10 sm:w-12 h-10 sm:h-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-slate-900 mb-2">No jobs found</h3>
+            <p className="text-sm sm:text-base text-slate-600 mb-4">Try adjusting your filters or check back later</p>
+            <Button variant="outline" onClick={clearFilters} size="sm">Clear Filters</Button>
           </div>
         )}
       </div>
