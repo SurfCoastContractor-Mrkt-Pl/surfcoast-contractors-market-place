@@ -138,7 +138,7 @@ export default function UnifiedDashboard() {
           </p>
           <button
             onClick={() => navigate(userType === 'entrepreneur' ? '/ContractorAccount' : '/CustomerSignup')}
-            style={{ width: '100%', padding: '11px 18px', borderRadius: 8, background: T.peachy, color: '#fff', border: 'none', fontWeight: 700, fontSize: 14, cursor: 'pointer', ...mono, boxShadow: T.shadow }}
+            style={{ width: '100%', padding: '11px 18px', borderRadius: 8, background: T.amber, color: '#fff', border: 'none', fontWeight: 700, fontSize: 14, cursor: 'pointer', ...mono, boxShadow: T.shadow }}
             {...hoverGlow}
           >
             Complete Setup
