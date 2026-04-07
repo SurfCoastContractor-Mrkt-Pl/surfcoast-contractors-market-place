@@ -1,10 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Info, DollarSign, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Menu, X, UserCircle, ChevronDown, Briefcase, Users, Home, MessageCircle, ShoppingBag, Store, BarChart2, Settings, Info, DollarSign, Zap } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
+import AboutNavLinks from './AboutNavLinks';
 import NotificationBell from '@/components/notifications/NotificationBell';
 
+// Grouped "Explore" mega-menu items for logged-out visitors
 const exploreGroups = [
   {
     label: 'For Entrepreneurs',
@@ -27,11 +30,10 @@ const exploreGroups = [
       { name: 'Market Directory', path: '/MarketDirectory', icon: Store },
       { name: 'Booths & Vendors Map', path: '/BoothsAndVendorsMap', icon: Store },
       { name: 'Swap Meet Ratings', path: '/swap-meet-ratings', icon: BarChart2 },
+      { name: 'Farmers Market Ratings', path: '/farmers-market-ratings', icon: BarChart2 },
     ],
   },
 ];
-
-const mono = { fontFamily: 'monospace', fontWeight: 700, fontStyle: 'italic' };
 
 export default function LayoutHeader({
   mobileMenuOpen,
@@ -59,44 +61,45 @@ export default function LayoutHeader({
   };
 
   return (
-    <nav style={{ background: '#1A1A1B', borderBottom: '1px solid #333', position: 'sticky', top: 0, zIndex: 50 }}>
+    <nav className="z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 sticky top-0 overflow-visible">
       <div className="flex items-center h-12 px-4 sm:px-6 lg:px-8 gap-3 max-w-7xl mx-auto w-full">
 
         {/* Logo */}
-        <Link to="/" className="flex-shrink-0 mr-2" style={{ textDecoration: 'none' }}>
+        <Link to="/" className="flex-shrink-0 mr-2">
           <div className="flex flex-col gap-[2px]">
-            <span style={{ ...mono, fontSize: 16, color: '#F0E0C0', lineHeight: 1 }}>SurfCoast</span>
-            <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: 7, color: '#5C3500', letterSpacing: '2px', textTransform: 'uppercase', lineHeight: 1, background: '#F0E0C0', padding: '1px 4px', borderRadius: 2 }}>MARKETPLACE</span>
+            <span className="text-[16px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
+            <span className="text-[7px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
           </div>
         </Link>
 
-        {/* Desktop: Explore dropdown (logged-out) */}
+        {/* Desktop Nav Pills — logged-out only shows Explore dropdown */}
         <div className="hidden lg:flex items-center gap-1 flex-1">
           {!isLoggedIn && (
             <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
-              <button style={{ ...mono, fontSize: 12, color: exploreOpen ? '#F0E0C0' : '#ccc', background: exploreOpen ? 'rgba(240,224,192,0.1)' : 'transparent', border: 'none', padding: '6px 12px', borderRadius: 5, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, transition: 'color 0.15s' }}>
+              <button className={cn(
+                "flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-150",
+                exploreOpen ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:text-blue-700 hover:bg-blue-50"
+              )}>
                 Explore
-                <ChevronDown style={{ width: 12, height: 12, transform: exploreOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
+                <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-150", exploreOpen && "rotate-180")} />
               </button>
 
               {exploreOpen && (
-                <div style={{ position: 'absolute', top: '100%', left: 0, marginTop: 4, width: 500, background: '#EBEBEC', border: '0.5px solid #D0D0D2', borderRadius: 10, boxShadow: '3px 3px 0px #5C3500', zIndex: 60, padding: 20 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+                <div className="absolute top-full left-0 mt-1 w-[540px] bg-white border border-blue-100 rounded-2xl shadow-xl z-50 p-5">
+                  <div className="grid grid-cols-3 gap-6">
                     {exploreGroups.map(group => (
                       <div key={group.label}>
-                        <p style={{ ...mono, fontSize: 10, color: '#5C3500', letterSpacing: '0.06em', marginBottom: 10, textTransform: 'uppercase' }}>{group.label}</p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <p className="text-xs font-semibold text-blue-500 uppercase tracking-wider mb-3">{group.label}</p>
+                        <div className="space-y-1">
                           {group.items.map(item => (
                             <Link
                               key={item.path}
                               to={item.path}
                               onClick={() => setExploreOpen(false)}
-                              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', borderRadius: 6, fontSize: 12, color: '#1A1A1B', textDecoration: 'none', fontWeight: 700, fontStyle: 'italic', transition: 'background 0.15s', background: 'transparent' }}
-                              onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
-                              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                              className="flex items-center gap-2 px-2 py-2 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150"
                             >
-                              <span style={{ width: 18, height: 18, background: '#FBF5EC', border: '0.5px solid #D9B88A', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                <item.icon style={{ width: 10, height: 10, color: '#5C3500' }} />
+                              <span className="w-5 h-5 rounded-md bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <item.icon className="w-3 h-3 text-blue-600" />
                               </span>
                               {item.name}
                             </Link>
@@ -111,50 +114,53 @@ export default function LayoutHeader({
           )}
         </div>
 
-        {/* Desktop right actions */}
+        {/* Right side actions */}
         <div className="hidden lg:flex items-center gap-3 ml-auto flex-shrink-0">
           {!isLoggedIn && (
             <>
               <div className="flex items-center gap-3">
-                <Link to="/BecomeContractor" style={{ ...mono, fontSize: 12, color: '#ccc', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={e => e.currentTarget.style.color = '#F0E0C0'} onMouseLeave={e => e.currentTarget.style.color = '#ccc'}>For Entrepreneurs</Link>
-                <span style={{ color: '#444' }}>/</span>
-                <Link to="/CustomerSignup" style={{ ...mono, fontSize: 12, color: '#ccc', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={e => e.currentTarget.style.color = '#F0E0C0'} onMouseLeave={e => e.currentTarget.style.color = '#ccc'}>For Clients</Link>
-                <span style={{ color: '#444' }}>/</span>
-                <Link to="/pricing" style={{ ...mono, fontSize: 12, color: '#ccc', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={e => e.currentTarget.style.color = '#F0E0C0'} onMouseLeave={e => e.currentTarget.style.color = '#ccc'}>Pricing</Link>
+                <Link to="/BecomeContractor" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Entrepreneurs</Link>
+                <span className="text-slate-300">/</span>
+                <Link to="/CustomerSignup" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">For Clients</Link>
+                <span className="text-slate-300">/</span>
+                <Link to="/pricing" className="text-sm font-medium text-slate-700 hover:text-blue-700 transition-colors duration-150">Pricing</Link>
               </div>
-              <div style={{ width: 1, height: 20, background: '#333' }} />
+              <div className="w-px h-5 bg-slate-200 mx-1"></div>
               <button
                 onClick={() => base44.auth.redirectToLogin()}
-                style={{ ...mono, fontSize: 12, color: '#F0E0C0', background: 'transparent', border: '0.5px solid #555', borderRadius: 5, padding: '6px 14px', cursor: 'pointer', transition: 'border-color 0.15s' }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = '#D9B88A'}
-                onMouseLeave={e => e.currentTarget.style.borderColor = '#555'}
+                className="text-sm font-semibold text-slate-800 hover:text-blue-700 px-4 py-2 rounded-full border border-slate-300 hover:border-blue-300 transition-colors duration-150"
               >
                 Log in
               </button>
               <button
                 onClick={() => base44.auth.redirectToLogin()}
-                style={{ ...mono, fontSize: 12, color: '#5C3500', background: '#F0E0C0', border: '0.5px solid #D9B88A', borderRadius: 5, padding: '6px 14px', cursor: 'pointer', transition: 'box-shadow 0.15s' }}
-                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 10px 2px rgba(255,180,0,0.3)'}
-                onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+                className="text-sm font-semibold text-white px-4 py-2 rounded-full gradient-brand hover:opacity-90 transition-opacity duration-150 shadow-sm"
               >
                 Get Started
               </button>
             </>
           )}
 
-          {isLoggedIn && <NotificationBell />}
+          {isLoggedIn && (
+            <NotificationBell />
+          )}
 
           {isLoggedIn && (
             <div className="relative" ref={accountMenuRef}>
               <button
                 onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-                style={{ ...mono, fontSize: 12, color: accountMenuOpen ? '#F0E0C0' : '#ccc', background: accountMenuOpen ? 'rgba(240,224,192,0.1)' : 'transparent', border: `0.5px solid ${accountMenuOpen ? '#D9B88A' : '#555'}`, borderRadius: 5, padding: '6px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.15s' }}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-full text-sm font-medium border transition-colors duration-150",
+                  accountMenuOpen
+                    ? "bg-blue-50 border-blue-200 text-blue-700"
+                    : "border-slate-300 text-slate-800 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                )}
                 aria-haspopup="menu"
                 aria-expanded={accountMenuOpen}
               >
-                <UserCircle style={{ width: 14, height: 14 }} />
+                <UserCircle className="w-4 h-4" />
                 Account
-                <ChevronDown style={{ width: 12, height: 12, transform: accountMenuOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
+                <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-150", accountMenuOpen && "rotate-180")} />
               </button>
               {accountMenuOpen && (
                 <AccountDropdown
@@ -168,20 +174,22 @@ export default function LayoutHeader({
               )}
             </div>
           )}
+
+
         </div>
 
         {/* Mobile: account icon */}
         {isLoggedIn && (
           <div className="lg:hidden ml-auto" ref={accountMenuRef}>
             <button
-              style={{ padding: 8, borderRadius: 5, border: 'none', background: accountMenuOpen ? 'rgba(240,224,192,0.15)' : 'transparent', cursor: 'pointer' }}
+              className="p-2 rounded-full hover:bg-blue-50 transition-colors"
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
               aria-label="Account menu"
             >
-              <UserCircle style={{ width: 22, height: 22, color: '#F0E0C0' }} />
+              <UserCircle className="w-6 h-6 text-blue-700" />
             </button>
             {accountMenuOpen && (
-              <div style={{ position: 'fixed', left: 0, right: 0, top: 48, zIndex: 50, padding: '0 16px' }}>
+              <div className="fixed left-0 right-0 top-16 z-50 px-4">
                 <AccountDropdown
                   isContractor={isContractor}
                   hasCustomerProfile={hasCustomerProfile}
@@ -196,27 +204,30 @@ export default function LayoutHeader({
           </div>
         )}
 
-        {/* Mobile: Get Started (logged-out) */}
+        {/* Mobile: Get Started button (logged-out only) */}
         {!isLoggedIn && (
           <button
             onClick={() => base44.auth.redirectToLogin()}
-            style={{ ...mono, fontSize: 11, color: '#5C3500', background: '#F0E0C0', border: '0.5px solid #D9B88A', borderRadius: 5, padding: '5px 12px', cursor: 'pointer', flexShrink: 0, marginLeft: 'auto', marginRight: 8 }}
-            className="lg:hidden"
+            className="lg:hidden ml-auto mr-2 text-xs font-semibold text-white px-3 py-1.5 rounded-full gradient-brand hover:opacity-90 transition-opacity flex-shrink-0"
           >
             Get Started
           </button>
         )}
 
-        {/* Hamburger */}
+        {/* Mobile: hamburger (existing nav) */}
         <button
-          style={{ padding: 8, borderRadius: 5, border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0 }}
-          className="lg:hidden"
+          className={cn(
+            "lg:hidden p-2 rounded-full hover:bg-blue-50 transition-colors flex-shrink-0",
+            isLoggedIn ? "" : ""
+          )}
           onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setAccountMenuOpen(false); }}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-controls="mobile-menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen
-            ? <X style={{ width: 20, height: 20, color: '#F0E0C0' }} />
-            : <Menu style={{ width: 20, height: 20, color: '#ccc' }} />
+            ? <X className="w-5 h-5 text-blue-700" />
+            : <Menu className="w-5 h-5 text-slate-800" />
           }
         </button>
       </div>
@@ -224,7 +235,15 @@ export default function LayoutHeader({
   );
 }
 
-function AccountDropdown({ isContractor, hasCustomerProfile, hasMarketShop, onLogout, setAccountMenuOpen, isMobile, unreadCount }) {
+function AccountDropdown({
+  isContractor,
+  hasCustomerProfile,
+  hasMarketShop,
+  onLogout,
+  setAccountMenuOpen,
+  isMobile,
+  unreadCount,
+}) {
   const navigate = useNavigate();
 
   const go = (path) => {
@@ -232,32 +251,42 @@ function AccountDropdown({ isContractor, hasCustomerProfile, hasMarketShop, onLo
     navigate(path);
   };
 
-  const Item = ({ path, children, icon: Icon, highlight }) => (
+  const Item = ({ path, children, className, icon: Icon, highlight }) => (
     <button
       onMouseDown={(e) => { e.preventDefault(); go(path); }}
-      style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', fontSize: 13, fontWeight: 700, fontStyle: 'italic', fontFamily: 'monospace', color: highlight ? '#5C3500' : '#1A1A1B', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.15s' }}
-      onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
-      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+      className={cn(
+        "w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors duration-150",
+        highlight
+          ? "text-blue-600 font-semibold hover:bg-blue-50"
+          : "text-slate-700 hover:bg-blue-50 hover:text-blue-700",
+        className
+      )}
     >
-      {Icon && <Icon style={{ width: 14, height: 14, color: '#5C3500', flexShrink: 0 }} />}
+      {Icon && <Icon className="w-4 h-4 text-blue-400 flex-shrink-0" />}
       {children}
     </button>
   );
 
   const SectionLabel = ({ children }) => (
-    <div style={{ padding: '10px 16px 4px', fontFamily: 'monospace', fontWeight: 700, fontStyle: 'italic', fontSize: 10, color: '#999', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{children}</div>
+    <div className="px-4 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{children}</div>
   );
 
-  const Divider = () => <div style={{ height: 1, background: '#D0D0D2', margin: '4px 0' }} />;
+  const Divider = () => <div className="border-t border-slate-100 my-1" />;
 
   return (
-    <div style={{ background: '#EBEBEC', border: '0.5px solid #D0D0D2', borderRadius: 10, boxShadow: '3px 3px 0px #5C3500', zIndex: 60, display: 'flex', flexDirection: 'column', ...(isMobile ? { width: '100%', maxHeight: '80vh' } : { position: 'absolute', right: 0, top: '100%', marginTop: 6, width: 240, maxHeight: '80vh' }) }}>
-
-      <div style={{ padding: '10px 16px', borderBottom: '0.5px solid #D9B88A', background: '#FBF5EC', borderRadius: '10px 10px 0 0', flexShrink: 0 }}>
-        <p style={{ fontFamily: 'monospace', fontWeight: 700, fontStyle: 'italic', fontSize: 11, color: '#5C3500' }}>// SIGNED IN</p>
+    <div className={cn(
+      "bg-white border border-blue-100 rounded-2xl shadow-xl z-[60] flex flex-col",
+      isMobile ? "w-full max-h-[80vh]" : "absolute right-0 top-full mt-2 w-64 max-h-[80vh]"
+    )}>
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-blue-50 bg-gradient-to-r from-blue-50 to-sky-50 flex-shrink-0 rounded-t-2xl">
+        <p className="text-xs text-blue-600 font-semibold">Signed in</p>
       </div>
 
-      <div style={{ overflowY: 'auto', flex: 1 }}>
+      {/* Scrollable body */}
+      <div className="overflow-y-auto flex-1">
+
+        {/* Navigate */}
         <SectionLabel>Navigate</SectionLabel>
         <Item path="/" icon={Home}>Home</Item>
         {isContractor
@@ -265,39 +294,57 @@ function AccountDropdown({ isContractor, hasCustomerProfile, hasMarketShop, onLo
           : <Item path="/SearchContractors" icon={Users}>Find Entrepreneurs</Item>
         }
         <Item path={isContractor ? "/ContractorInquiries" : "/Messaging"} icon={MessageCircle}>
-          Messages{unreadCount > 0 && <span style={{ marginLeft: 'auto', background: '#5C3500', color: '#F0E0C0', fontSize: 10, fontWeight: 700, borderRadius: 9999, padding: '1px 6px' }}>{unreadCount > 99 ? '99+' : unreadCount}</span>}
+         Messages{unreadCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{unreadCount > 99 ? '99+' : unreadCount}</span>}
         </Item>
         <Item path="/BoothsAndVendorsMap" icon={Store}>Markets</Item>
 
         <Divider />
+
+        {/* My Accounts */}
         <SectionLabel>My Accounts</SectionLabel>
         <Item path="/Dashboard" icon={UserCircle}>Dashboard</Item>
-        {isContractor && <Item path="/ContractorAccount" icon={Briefcase}>Entrepreneur Portal</Item>}
-        {hasCustomerProfile && <Item path="/ConsumerHub" icon={ShoppingBag}>Consumer</Item>}
-        {hasMarketShop && <Item path="/MarketShopDashboard" icon={Store}>Market Booth</Item>}
+         {isContractor && (
+           <Item path="/ContractorAccount" icon={Briefcase}>Entrepreneur Portal</Item>
+         )}
+         {hasCustomerProfile && (
+           <Item path="/ConsumerHub" icon={ShoppingBag}>Consumer</Item>
+         )}
+         {hasMarketShop && (
+           <Item path="/MarketShopDashboard" icon={Store}>Market Booth</Item>
+         )}
 
         <Divider />
+
+        {/* Join As */}
         <SectionLabel>Join As</SectionLabel>
-        {!isContractor && <Item path="/BecomeContractor" icon={Briefcase} highlight>+ Entrepreneur</Item>}
-        <Item path="/CustomerSignup" icon={Users} highlight>+ Client</Item>
-        {!hasCustomerProfile && <Item path="/ConsumerSignup" icon={ShoppingBag} highlight>+ Consumer</Item>}
-        {!hasMarketShop && <Item path="/MarketShopSignup" icon={Store} highlight>+ Market Booth</Item>}
+        {!isContractor && (
+           <Item path="/BecomeContractor" icon={Briefcase} highlight>+ Entrepreneur</Item>
+         )}
+         <Item path="/CustomerSignup" icon={Users} highlight>+ Client</Item>
+         {!hasCustomerProfile && (
+           <Item path="/ConsumerSignup" icon={ShoppingBag} highlight>+ Consumer</Item>
+         )}
+         {!hasMarketShop && (
+           <Item path="/MarketShopSignup" icon={Store} highlight>+ Market Booth / Vendor Space</Item>
+         )}
 
         <Divider />
+
+        {/* Info */}
         <SectionLabel>Info</SectionLabel>
         <Item path="/About" icon={Info}>About</Item>
         <Item path="/WhySurfCoast" icon={BarChart2}>Why SurfCoast</Item>
         <Item path="/pricing" icon={DollarSign}>Pricing</Item>
         <Item path="/wave-os-details" icon={Zap}>WAVE OS</Item>
+
         <Divider />
       </div>
 
-      <div style={{ flexShrink: 0, borderTop: '0.5px solid #D0D0D2' }}>
+      {/* Logout — always visible at bottom */}
+      <div className="flex-shrink-0 border-t border-blue-100 rounded-b-2xl">
         <button
           onMouseDown={(e) => { e.preventDefault(); onLogout(); }}
-          style={{ width: '100%', textAlign: 'left', padding: '10px 16px', fontSize: 13, fontFamily: 'monospace', fontWeight: 700, fontStyle: 'italic', color: '#b91c1c', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '0 0 10px 10px', transition: 'background 0.15s' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors duration-150 font-semibold rounded-b-2xl"
         >
           Log out
         </button>

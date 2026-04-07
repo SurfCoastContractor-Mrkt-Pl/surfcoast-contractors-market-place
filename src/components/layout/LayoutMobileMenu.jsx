@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, Briefcase, Users, Store, BarChart2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
-
-const mono = { fontFamily: 'monospace', fontWeight: 700, fontStyle: 'italic' };
 
 const exploreGroups = [
   {
@@ -28,6 +27,7 @@ const exploreGroups = [
       { name: 'Market Directory', path: '/MarketDirectory' },
       { name: 'Booths & Vendors Map', path: '/BoothsAndVendorsMap' },
       { name: 'Swap Meet Ratings', path: '/swap-meet-ratings' },
+      { name: 'Farmers Market Ratings', path: '/farmers-market-ratings' },
     ],
   },
 ];
@@ -60,17 +60,15 @@ export default function LayoutMobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className="lg:hidden fixed inset-0 z-40"
-        style={{ background: 'rgba(26,26,27,0.6)' }}
+        className="lg:hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40"
         onClick={() => setMobileMenuOpen(false)}
       />
       {/* Drawer */}
       <div
-        className="lg:hidden fixed top-12 left-0 right-0 bottom-0 z-50 overflow-y-auto"
-        style={{ background: '#EBEBEC' }}
+        className="lg:hidden fixed top-16 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto"
         id="mobile-menu"
       >
-        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div className="px-4 py-5 space-y-1">
 
           {/* Core nav links */}
           {getNavLinks(isContractor).map(link => {
@@ -81,16 +79,17 @@ export default function LayoutMobileMenu({
                 key={link.page}
                 to={link.page === '/' ? '/' : createPageUrl(link.page)}
                 onClick={handleNavClick}
-                style={{ textDecoration: 'none' }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, fontSize: 13, background: isActive ? '#FBF5EC' : 'transparent', border: isActive ? '0.5px solid #D9B88A' : '0.5px solid transparent', color: isActive ? '#5C3500' : '#1A1A1B', ...mono, transition: 'background 0.15s', cursor: 'pointer' }}
-                  onMouseEnter={e => !isActive && (e.currentTarget.style.background = '#FBF5EC')}
-                  onMouseLeave={e => !isActive && (e.currentTarget.style.background = 'transparent')}
-                >
-                  {Icon && <Icon style={{ width: 14, height: 14, color: isActive ? '#5C3500' : '#555' }} />}
+                <div className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors relative",
+                  isActive
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+                )}>
+                  {Icon && <Icon className="w-4 h-4" />}
                   {link.name}
                   {link.badge && (
-                    <span style={{ marginLeft: 'auto', background: '#5C3500', color: '#F0E0C0', fontSize: 10, fontWeight: 700, borderRadius: 9999, padding: '1px 6px' }}>
+                    <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                       {link.badge > 99 ? '99+' : link.badge}
                     </span>
                   )}
@@ -99,51 +98,42 @@ export default function LayoutMobileMenu({
             );
           })}
 
-          {/* Divider */}
-          <div style={{ height: 1, background: '#D0D0D2', margin: '8px 0' }} />
-
-          {/* About accordion */}
-          <button
-            onClick={() => setAboutOpen(!aboutOpen)}
-            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', ...mono, fontSize: 13, color: '#1A1A1B' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <span>About SurfCoast</span>
-            <ChevronDown style={{ width: 14, height: 14, color: '#5C3500', transform: aboutOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-          </button>
-          {aboutOpen && (
-            <div style={{ paddingLeft: 8 }}>
-              <AboutNavLinks onLinkClick={handleNavClick} isMobile />
-            </div>
-          )}
+          {/* About SurfCoast accordion — always visible */}
+          <div className="pt-2 border-t border-slate-100">
+            <button
+              onClick={() => setAboutOpen(!aboutOpen)}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+            >
+              <span className="font-semibold">About SurfCoast</span>
+              <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", aboutOpen && "rotate-180")} />
+            </button>
+            {aboutOpen && (
+              <div className="mt-1 pb-1">
+                <AboutNavLinks onLinkClick={handleNavClick} isMobile />
+              </div>
+            )}
+          </div>
 
           {/* Explore accordion (logged-out only) */}
           {!isLoggedIn && (
-            <>
-              <div style={{ height: 1, background: '#D0D0D2', margin: '8px 0' }} />
+            <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={() => setExploreOpen(!exploreOpen)}
-                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', ...mono, fontSize: 13, color: '#1A1A1B' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               >
                 <span>Explore</span>
-                <ChevronDown style={{ width: 14, height: 14, color: '#5C3500', transform: exploreOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", exploreOpen && "rotate-180")} />
               </button>
 
               {exploreOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: '8px 8px 4px' }}>
+                <div className="mt-1 space-y-4 px-2 pb-2">
                   {exploreGroups.map(group => (
                     <div key={group.label}>
-                      <p style={{ ...mono, fontSize: 10, color: '#5C3500', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6, padding: '0 6px' }}>{group.label}</p>
+                      <p className="px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-500">{group.label}</p>
                       {group.items.map(item => (
-                        <Link key={item.path} to={item.path} onClick={handleNavClick} style={{ textDecoration: 'none' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, fontSize: 13, color: '#1A1A1B', ...mono, transition: 'background 0.15s', cursor: 'pointer' }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#FBF5EC'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                          >
-                            <ChevronRight style={{ width: 12, height: 12, color: '#5C3500' }} />
+                        <Link key={item.path} to={item.path} onClick={handleNavClick}>
+                          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                           <ChevronRight className="w-3.5 h-3.5 text-blue-300" />
                             {item.name}
                           </div>
                         </Link>
@@ -153,35 +143,33 @@ export default function LayoutMobileMenu({
                 </div>
               )}
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '12px 0 4px' }}>
+              {/* CTA buttons */}
+              <div className="mt-4 flex flex-col gap-2 px-2">
                 <button
                   onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
-                  style={{ width: '100%', padding: '11px', borderRadius: 8, border: '0.5px solid #D0D0D2', background: '#fff', color: '#1A1A1B', cursor: 'pointer', ...mono, fontSize: 13 }}
+                  className="w-full py-3 rounded-xl border border-blue-200 text-blue-700 font-semibold text-sm hover:bg-blue-50 transition-colors"
                 >
                   Log in
                 </button>
                 <button
                   onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
-                  style={{ width: '100%', padding: '11px', borderRadius: 8, border: '0.5px solid #D9B88A', background: '#F0E0C0', color: '#5C3500', cursor: 'pointer', ...mono, fontSize: 13, boxShadow: '3px 3px 0px #5C3500' }}
+                  className="w-full py-3 rounded-xl gradient-brand text-white font-semibold text-sm hover:opacity-90 transition-opacity"
                 >
                   Get Started
                 </button>
               </div>
-            </>
+            </div>
           )}
 
           {isLoggedIn && (
-            <>
-              <div style={{ height: 1, background: '#D0D0D2', margin: '8px 0' }} />
+            <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={handleLogout}
-                style={{ width: '100%', textAlign: 'left', padding: '10px 14px', borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', ...mono, fontSize: 13, color: '#b91c1c' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
               >
                 Log out
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>
