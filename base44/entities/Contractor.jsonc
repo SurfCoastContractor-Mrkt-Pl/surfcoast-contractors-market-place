@@ -40,7 +40,7 @@
     },
     "minor_hours_lock_until": {
       "type": "string",
-      "description": "ISO date when the minor's account will be automatically unlocked (1 week after last job completed)"
+      "description": "ISO date when the minor's account will be automatically unlocked"
     },
     "parental_consent_docs": {
       "type": "object",
@@ -231,14 +231,14 @@
       "items": {
         "type": "string"
       },
-      "description": "List of skills and types of work the contractor can do"
+      "description": "List of skills"
     },
     "certifications": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of certifications (text labels)"
+      "description": "List of certifications"
     },
     "portfolio_images": {
       "type": "array",
@@ -260,7 +260,7 @@
     "is_featured": {
       "type": "boolean",
       "default": false,
-      "description": "Whether contractor is featured (appears at top of searches)"
+      "description": "Whether contractor is featured"
     },
     "available": {
       "type": "boolean",
@@ -283,7 +283,7 @@
     "unique_customers_count": {
       "type": "number",
       "default": 0,
-      "description": "Number of unique individual customers the contractor has worked with (used for badge tiers)"
+      "description": "Number of unique individual customers"
     },
     "account_locked": {
       "type": "boolean",
@@ -293,6 +293,34 @@
     "locked_scope_id": {
       "type": "string",
       "description": "ID of the ScopeOfWork record that triggered the lock"
+    },
+    "account_locked_for_overdue_job": {
+      "type": "boolean",
+      "default": false,
+      "description": "Account locked because a job passed its expected completion date without closing out"
+    },
+    "is_on_active_job": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the contractor is currently on an active approved job \u2014 blocks new job acceptance"
+    },
+    "billing_deletion_pending": {
+      "type": "boolean",
+      "default": false,
+      "description": "Billing cycle has ended on a locked overdue account \u2014 card removal and deletion initiated"
+    },
+    "billing_cycle_end_date": {
+      "type": "string",
+      "description": "ISO timestamp of when the contractor's current billing cycle ends"
+    },
+    "account_deletion_initiated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Account is queued for permanent deletion after billing cycle ended with overdue job"
+    },
+    "account_deletion_initiated_at": {
+      "type": "string",
+      "description": "ISO timestamp when account deletion was triggered"
     },
     "credential_documents": {
       "type": "array",
@@ -347,7 +375,7 @@
     },
     "demo_expires_at": {
       "type": "string",
-      "description": "ISO timestamp when demo profile expires and will be deleted"
+      "description": "ISO timestamp when demo profile expires"
     },
     "trial_started_at": {
       "type": "string",
@@ -410,7 +438,7 @@
     "admin_review_requested": {
       "type": "boolean",
       "default": false,
-      "description": "Whether an admin review has been requested for this contractor"
+      "description": "Whether an admin review has been requested"
     },
     "admin_review_reason": {
       "type": "string",
@@ -604,7 +632,7 @@
     },
     "document_visibility": {
       "type": "object",
-      "description": "Visibility settings for each document category (public or private)",
+      "description": "Visibility settings for each document category",
       "properties": {
         "his_license": {
           "type": "string",
@@ -646,15 +674,15 @@
     "payment_compliant": {
       "type": "boolean",
       "default": true,
-      "description": "Whether the contractor is compliant with platform payment policies (no off-platform payments)"
+      "description": "Whether the contractor is compliant with platform payment policies"
     },
     "last_external_payment_detected": {
       "type": "string",
-      "description": "ISO timestamp when an off-platform payment keyword was last detected in messages"
+      "description": "ISO timestamp when an off-platform payment keyword was last detected"
     },
     "payment_lock_grace_until": {
       "type": "string",
-      "description": "ISO timestamp of the 14-day grace period deadline to process payment through SurfCoast before account is restricted"
+      "description": "ISO timestamp of the 14-day grace period deadline to process payment through SurfCoast"
     }
   },
   "required": [

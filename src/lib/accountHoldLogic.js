@@ -2,6 +2,8 @@
  * Account Hold Enforcement Logic
  * - 72-hour after-photo deadline enforcement
  * - Mutual rating requirement enforcement
+ * - Overdue job completion enforcement (expected_completion_date exceeded)
+ * - Deletion-pending status (billing cycle ended, card removed, account queued for deletion)
  */
 
 /**

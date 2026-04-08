@@ -62,6 +62,16 @@
       "format": "date",
       "description": "The date agreed between client and contractor for work to take place"
     },
+    "expected_start_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Expected date and time for the job to begin"
+    },
+    "expected_completion_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Expected date and time for the job to be fully completed \u2014 used for overdue monitoring"
+    },
     "after_photo_urls": {
       "type": "array",
       "items": {
@@ -71,7 +81,7 @@
     },
     "job_together_photo_url": {
       "type": "string",
-      "description": "Photo of contractor and client together at the completed job site \u2014 used as the job thumbnail on both profiles"
+      "description": "Photo of contractor and client together at the completed job site"
     },
     "status": {
       "type": "string",

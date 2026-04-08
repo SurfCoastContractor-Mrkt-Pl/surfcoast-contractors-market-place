@@ -107,7 +107,7 @@
     },
     "demo_expires_at": {
       "type": "string",
-      "description": "ISO timestamp when demo profile expires and will be deleted"
+      "description": "ISO timestamp when demo profile expires"
     },
     "trial_started_at": {
       "type": "string",
@@ -149,6 +149,15 @@
     "rating_block_since": {
       "type": "string",
       "description": "ISO timestamp when the rating block was activated"
+    },
+    "account_locked_for_overdue_job": {
+      "type": "boolean",
+      "default": false,
+      "description": "Account locked because a job passed its expected completion date without closing out"
+    },
+    "locked_scope_id": {
+      "type": "string",
+      "description": "ID of the ScopeOfWork record that triggered the overdue lock"
     }
   },
   "required": [
