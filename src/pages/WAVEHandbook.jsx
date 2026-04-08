@@ -465,6 +465,94 @@ export default function WAVEHandbook() {
       ],
     },
     {
+      id: 8,
+      title: 'Suggest a Tool – Shape the Platform',
+      sections: [
+        {
+          id: '8.1',
+          title: 'Your Voice Builds the Platform',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Added April 8, 2026 — New feature live during entrepreneur signup.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">When you sign up as an entrepreneur, you'll see a suggestion box on the Professional Details step of onboarding. After you select your line of work, a field appears asking if there's a specific online tool, software, or service that would help you work better in your field.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why It Exists</h4>
+                <p className="text-slate-600">SurfCoast is built by people who've worked in the trades and know what the industry actually needs. The tool suggestion system lets the platform grow based on real input from real professionals — not guesswork. Every suggestion is read by AI and contributes to a running count of what the entrepreneur community is actually asking for.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What to Write</h4>
+                <p className="text-slate-600">You'll get the best results by describing the tool in full sentences — what it's called, what it does, how it changes the way you work, and why others in your field would benefit from it. The more specific and honest you are, the more weight your suggestion carries in the system.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Is It Required?</h4>
+                <p className="text-slate-600">No. The suggestion box is entirely optional. If nothing comes to mind during signup, skip it — you can always reach out to the platform through the feedback channel later.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '8.2',
+          title: 'How AI Evaluates Your Suggestion',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What the AI Extracts</h4>
+                <p className="text-slate-600 mb-3">Every suggestion is automatically processed by AI, which looks for the following information in your response:</p>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>Tool Name:</strong> The specific name of the product, software, or service you're describing.</li>
+                  <li><strong>Field of Work:</strong> Which line of work or profession this tool is most relevant to.</li>
+                  <li><strong>Skill Level:</strong> Whether this applies to apprentices, novices, experienced professionals, experts, or all levels.</li>
+                  <li><strong>Function:</strong> What the tool actually does — its core purpose in plain terms.</li>
+                  <li><strong>Impact:</strong> How this tool enhances or fundamentally changes the way work is done.</li>
+                  <li><strong>Adoption Likelihood:</strong> How likely others in the field are to actually use it (Low / Medium / High / Very High).</li>
+                  <li><strong>Alternatives:</strong> Similar tools or competing products that were also mentioned.</li>
+                  <li><strong>Perceived Value:</strong> A rating of the tool's importance — Fair, Good, Great, or Amazing.</li>
+                  <li><strong>Legitimacy Score:</strong> A 1–10 score evaluating whether this appears to be a genuine professional tool request vs. a personal want.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Note:</strong> The legitimacy score is not a judgment against you — it's a quality filter that helps the platform distinguish between widely-needed professional tools and one-off personal preferences. A score of 8–10 means your suggestion is clearly a real industry need. Even low scores are stored and tracked — multiple low-score mentions of the same tool still count.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '8.3',
+          title: 'The 100-Mention Threshold',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How Counts Work</h4>
+                <p className="text-slate-600">Every unique tool is tracked by name and by field. Each time a new entrepreneur mentions the same tool for the same line of work, the mention count increases by one — regardless of whether it's an identical suggestion or worded completely differently. The AI normalizes tool names so "Jobber," "Jobber App," and "jobber.com" all count toward the same total.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Happens at 100</h4>
+                <p className="text-slate-600">When a tool reaches 100 unique mentions for a specific field, an automated notification is sent to the platform administrator. The notification includes:</p>
+                <ul className="list-disc list-inside text-slate-600 space-y-2 mt-2">
+                  <li>The tool name and the field it belongs to.</li>
+                  <li>A summary of what the tool does and how it changes work.</li>
+                  <li>The full breakdown of skill levels, perceived value ratings, and adoption likelihood across all 100 mentions.</li>
+                  <li>A list of alternative/competing tools mentioned alongside it.</li>
+                  <li>The average legitimacy score across all submissions.</li>
+                  <li>Up to 5 real sample quotes from actual entrepreneur submissions.</li>
+                  <li>Five platform-level questions the admin should consider — such as whether to integrate it natively, partner with the company, or recommend it externally.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Happens Next</h4>
+                <p className="text-slate-600">At that point, it becomes the platform's responsibility to evaluate the tool and determine whether to integrate it, build a native equivalent, create a partner referral, or simply recommend it to users in the relevant field. The entrepreneur community drives this — you are directly shaping what this platform becomes.</p>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
       id: 5,
       title: 'Tools for Growth – Expand Your Potential',
       sections: [
