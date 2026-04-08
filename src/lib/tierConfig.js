@@ -76,32 +76,32 @@ export const canAccessFeature = (profileTier, feature, currentValue) => {
 };
 
 /**
- * WAVE OS Tier Unlock Requirements
- * Starter: 15 completed jobs
- * Pro: 35 completed jobs
- * Max: 70 completed jobs
- * Premium: 100 completed jobs OR Licensed Sole Prop with H.I.S. License (priority)
- * Residential Bundle: Licensed Sole Prop with H.I.S. License
+ * WAVE OS Tier Unlock Requirements — Updated April 8, 2026
+ * Starter: 5 completed jobs
+ * Pro: 6–49 completed jobs
+ * Max: 50–99 completed jobs — free messaging with past clients only
+ * Premium: 100 jobs + verified license — free messaging with ALL clients + residential features
+ * Residential Bundle: DISCONTINUED — features rolled into Premium
  */
 export const WAVE_OS_TIER_REQUIREMENTS = {
   starter: {
     price: 19,
     unlockType: 'performance',
-    requiredCompletedJobs: 15,
+    requiredCompletedJobs: 5,
     requiresLicense: false,
     requiresHISLicense: false,
   },
   pro: {
     price: 39,
     unlockType: 'performance',
-    requiredCompletedJobs: 35,
+    requiredCompletedJobs: 6,
     requiresLicense: false,
     requiresHISLicense: false,
   },
   max: {
     price: 59,
     unlockType: 'performance',
-    requiredCompletedJobs: 70,
+    requiredCompletedJobs: 50,
     requiresLicense: false,
     requiresHISLicense: false,
   },
@@ -112,19 +112,12 @@ export const WAVE_OS_TIER_REQUIREMENTS = {
     requiresLicense: true,
     requiresHISLicense: true,
   },
-  residential_bundle: {
-    price: 125,
-    unlockType: 'license',
-    requiredCompletedJobs: 0,
-    requiresLicense: true,
-    requiresHISLicense: true,
-  },
 };
 
 /**
  * Check if contractor can unlock a WAVE OS tier
  * @param {Object} contractor - Contractor data object
- * @param {string} tierName - Tier name (starter, pro, max, premium, residential_bundle)
+ * @param {string} tierName - Tier name (starter, pro, max, premium)
  * @returns {Object} { canUnlock: boolean, reason: string, progress: number, required: number }
  */
 export const canUnlockWaveOSTier = (contractor, tierName) => {

@@ -25,11 +25,10 @@ const goldGlowSm = "0 0 14px 3px rgba(255,180,0,0.3)";
 
 export default function WAVEOSDetails() {
   const tiers = [
-    { name: "Starter", price: "$19", jobs: "5+", features: ["5 active jobs", "Basic messaging", "Job scheduling", "Mobile app access"] },
-    { name: "Pro", price: "$39", jobs: "6+", features: ["Unlimited jobs", "CRM tools", "Invoice generation", "Priority placement"] },
-    { name: "Max", price: "$59", jobs: "50+", features: ["Everything in Pro", "GPS tracking", "Field ops suite", "Document hub"] },
-    { name: "Premium", price: "$100", jobs: "100+", features: ["Everything in Max", "AI scheduling", "HubSpot sync", "Advanced tools"] },
-    { name: "Residential Bundle", price: "$125", jobs: "100+", features: ["Everything in Premium", "Unlimited messaging", "Residential Wave tools", "No additional fees"] },
+    { name: "Starter", price: "$19", jobs: "5+", features: ["5 active jobs", "Job scheduling & mobile access", "Messaging: $1.50/session or $50/mo"] },
+    { name: "Pro", price: "$39", jobs: "6+", features: ["Everything in Starter", "CRM, invoicing & analytics", "Price book options"] },
+    { name: "Max", price: "$59", jobs: "50+", features: ["Everything in Pro", "GPS tracking & field ops suite", "Free messaging — past clients only"] },
+    { name: "Premium", price: "$100", jobs: "100+ & verified license", features: ["Everything in Max", "Free messaging with ALL clients", "AI scheduling, HubSpot, Notion", "Residential invoicing & document templates"] },
   ];
 
   const features = [
@@ -119,7 +118,7 @@ export default function WAVEOSDetails() {
 
           <div style={{ ...cardStyle, padding: 28, textAlign: "center" }}>
             <p style={{ fontSize: 14, color: T.muted, marginBottom: 20, lineHeight: 1.65, fontStyle: "italic" }}>
-              <strong style={{ color: T.dark }}>Licensed Professionals:</strong> Have a C-36, H.I.S. License, or equivalent? Get instant access to all tiers. Choose your subscription level and start immediately.
+              <strong style={{ color: T.dark }}>Licensed Professionals:</strong> Have a verified contractor license? Get access to Premium immediately once you hit 100 jobs — or combine your license verification to qualify. <strong style={{ color: T.dark }}>WAVE OS Max</strong> includes free messaging with past clients. <strong style={{ color: T.dark }}>WAVE OS Premium</strong> includes free messaging with <em>all</em> clients and full residential tools.
             </p>
             <Link to="/Pricing" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px", borderRadius: 6, background: T.dark, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: 14, boxShadow: T.shadow }}>
               View Full Pricing Details <ArrowRight size={14} />
