@@ -11,6 +11,7 @@ import LayoutFooter from '@/components/layout/LayoutFooter';
 import useGeoCheck from './components/security/useGeoCheck';
 import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import { useUserData, useUserProfiles, useUnreadCount } from '@/hooks/useUserData';
+import AccountStatusGate from '@/components/contractor/AccountStatusGate';
 
 const customerLinks = [
   { name: 'My Account', page: 'CustomerAccount' },
@@ -130,7 +131,12 @@ export default function Layout({ children, currentPageName }) {
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
       <main className="flex-1 w-full">
-        {children}
+        <AccountStatusGate
+          userEmail={user?.email}
+          userType={isContractor ? 'contractor' : 'client'}
+        >
+          {children}
+        </AccountStatusGate>
       </main>
 
       <LayoutFooter

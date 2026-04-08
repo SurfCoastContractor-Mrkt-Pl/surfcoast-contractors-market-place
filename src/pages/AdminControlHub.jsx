@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, Activity, Database, BarChart3, Heart, Zap, Settings, Clock, Users, Shield, RefreshCw } from 'lucide-react';
+import OverdueJobsPanel from '@/components/admin/OverdueJobsPanel';
 import { Link } from 'react-router-dom';
 import AdminGuard from '@/components/auth/AdminGuard';
 
@@ -131,6 +132,19 @@ function AdminControlHubContent() {
             </div>
           );
         })}
+
+        {/* Overdue Jobs Compliance Panel */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500" />
+              Overdue Jobs & Locked Accounts
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <OverdueJobsPanel />
+          </CardContent>
+        </Card>
 
         {/* Live Feed */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

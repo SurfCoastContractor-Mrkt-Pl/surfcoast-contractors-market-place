@@ -21,6 +21,7 @@ export default function ScopeOfWorkForm({ open, onClose, contractor, paymentReco
     cost_amount: '',
     estimated_hours: '',
     agreed_work_date: '',
+    expected_completion_date: '',
   });
   const [afterPhotos, setAfterPhotos] = useState([]);
 
@@ -115,6 +116,9 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
       cost_amount: Number(formData.cost_amount),
       estimated_hours: formData.estimated_hours ? Number(formData.estimated_hours) : null,
       agreed_work_date: formData.agreed_work_date || null,
+      expected_completion_date: formData.expected_completion_date || null,
+      client_name: formData.customer_name,
+      client_email: formData.customer_email,
       after_photo_urls: afterPhotos,
       status: 'pending_approval',
     });
@@ -122,7 +126,7 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
 
   const handleClose = () => {
     setSubmitted(false);
-    setFormData({ customer_name: '', customer_email: '', job_title: '', scope_summary: '', cost_amount: '', estimated_hours: '', agreed_work_date: '' });
+    setFormData({ customer_name: '', customer_email: '', job_title: '', scope_summary: '', cost_amount: '', estimated_hours: '', agreed_work_date: '', expected_completion_date: '' });
     setAfterPhotos([]);
     setCostType('fixed');
     onClose();
@@ -322,19 +326,35 @@ This is an official copy of the agreement submitted through SurfCoast Contractor
               )}
             </div>
 
-            {/* Agreed Work Date */}
-            <div>
-              <Label htmlFor="agreed_work_date">Agreed Work Date</Label>
-              <Input
-                id="agreed_work_date"
-                type="date"
-                value={formData.agreed_work_date}
-                onChange={(e) => handleChange('agreed_work_date', e.target.value)}
-                className="mt-1.5"
-              />
-              <p className="text-xs text-slate-500 mt-1">
-                The date you've agreed on for the work. After photos help document completion.
-              </p>
+            {/* Agreed Work Date + Expected Completion Date */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="agreed_work_date">Agreed Work Date</Label>
+                <Input
+                  id="agreed_work_date"
+                  type="date"
+                  value={formData.agreed_work_date}
+                  onChange={(e) => handleChange('agreed_work_date', e.target.value)}
+                  className="mt-1.5"
+                />
+                <p className="text-xs text-slate-500 mt-1">The date agreed for work to begin.</p>
+              </div>
+              <div>
+                <Label htmlFor="expected_completion_date">
+                  Expected Completion Date & Time <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="expected_completion_date"
+                  type="datetime-local"
+                  value={formData.expected_completion_date}
+                  onChange={(e) => handleChange('expected_completion_date', e.target.value)}
+                  required
+                  className="mt-1.5"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Deadline for full job closeout. Accounts lock if exceeded.
+                </p>
+              </div>
             </div>
 
             {/* After Photos */}
