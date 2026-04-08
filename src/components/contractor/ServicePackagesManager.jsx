@@ -6,38 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Package, Plus, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
 
 export default function ServicePackagesManager({ contractorId }) {
-  const [packages, setPackages] = useState([
-    {
-      id: 1,
-      name: 'Basic Consultation',
-      description: 'Initial site visit and project assessment',
-      price: 50,
-      duration: '1 hour',
-      type: 'hourly',
-      features: ['Site inspection', 'Cost estimate', 'Timeline discussion'],
-      active: true
-    },
-    {
-      id: 2,
-      name: 'Standard Project',
-      description: 'Full project execution with materials included',
-      price: 1500,
-      duration: 'Fixed price',
-      type: 'fixed',
-      features: ['Materials included', 'Professional installation', 'Warranty coverage'],
-      active: true
-    },
-    {
-      id: 3,
-      name: 'Premium Package',
-      description: 'Complete solution with premium materials and extended warranty',
-      price: 2500,
-      duration: 'Fixed price',
-      type: 'fixed',
-      features: ['Premium materials', 'Extended warranty', '30-day follow-up', 'Free maintenance call'],
-      active: false
-    }
-  ]);
+  const [packages, setPackages] = useState([]);
 
   const [showForm, setShowForm] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
@@ -98,12 +67,12 @@ export default function ServicePackagesManager({ contractorId }) {
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">Service Packages</h2>
-          <p className="text-sm text-slate-600 mt-1">Create standardized offerings to simplify customer bookings</p>
+          <h2 className="text-2xl font-bold text-slate-900">Price Book</h2>
+          <p className="text-sm text-slate-600 mt-1">Pre-set your service options and rates — clients pick from your menu</p>
         </div>
-        <Button onClick={openCreate} gap="2">
+        <Button onClick={openCreate}>
           <Plus className="w-4 h-4" />
-          New Package
+          Add Price Option
         </Button>
       </div>
 
@@ -112,15 +81,15 @@ export default function ServicePackagesManager({ contractorId }) {
         <Card className="p-6 bg-blue-50 border-blue-200">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-900">
-              {editingPackage ? 'Edit Package' : 'Create Service Package'}
+              {editingPackage ? 'Edit Price Option' : 'Add Price Book Option'}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Package Name</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Service Name</label>
               <input
                 type="text"
-                placeholder="e.g., Basic Consultation"
+                placeholder="e.g., Outlet Installation, Panel Inspection"
                 value={formValues.name}
                 onChange={e => setFormValues({ ...formValues, name: e.target.value })}
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
@@ -188,7 +157,7 @@ export default function ServicePackagesManager({ contractorId }) {
             <Button variant="outline" onClick={() => { setShowForm(false); setEditingPackage(null); }}>
               Cancel
             </Button>
-            <Button className="bg-blue-600" onClick={savePackage}>Save Package</Button>
+            <Button className="bg-blue-600" onClick={savePackage}>Save to Price Book</Button>
             </div>
           </div>
         </Card>
@@ -263,8 +232,9 @@ export default function ServicePackagesManager({ contractorId }) {
       ) : (
         <Card className="p-12 text-center">
           <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-600 mb-4">No service packages created yet</p>
-          <Button onClick={openCreate}>Create Your First Package</Button>
+          <p className="text-slate-600 font-semibold mb-1">Your price book is empty</p>
+          <p className="text-sm text-slate-500 mb-4">Add your services and rates so clients know exactly what you offer and what it costs.</p>
+          <Button onClick={openCreate}>Add Your First Price Option</Button>
         </Card>
       )}
 
@@ -273,7 +243,7 @@ export default function ServicePackagesManager({ contractorId }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="text-center">
             <p className="text-2xl font-bold text-slate-900">{packages.length}</p>
-            <p className="text-xs text-slate-600">Total Packages</p>
+            <p className="text-xs text-slate-600">Price Options</p>
           </div>
           <div className="text-center">
             <p className="text-2xl font-bold text-green-600">{packages.filter(p => p.active).length}</p>
