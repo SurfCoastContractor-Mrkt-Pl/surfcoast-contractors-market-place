@@ -158,8 +158,9 @@ function HeroSection() {
         <div style={{ flex: "1 1 300px", minWidth: 0, display: "flex", flexDirection: "column", gap: 16 }}>
           <HeroPlatformCard />
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: 20, flex: 1 }}>
-            <div style={{ fontSize: 48, fontWeight: 900, color: T.dark, opacity: 0.08, letterSpacing: "2px", textAlign: "center", fontStyle: "italic" }}>
-              SURFCOAST
+            <div style={{ textAlign: "center", opacity: 0.12 }}>
+              <div style={{ fontSize: 32, fontWeight: 900, color: T.amber, letterSpacing: "1px" }}>SURFCOAST</div>
+              <div style={{ fontSize: 24, fontWeight: 700, color: T.amber, letterSpacing: "0.5px", marginTop: 2 }}>MARKETPLACE</div>
             </div>
           </div>
         </div>
