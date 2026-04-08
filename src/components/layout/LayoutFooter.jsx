@@ -109,7 +109,7 @@ export default function LayoutFooter({
              <span style={{color:'#94a3b8'}}>•</span>
              <Link to="/PrivacyPolicy" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Privacy</Link>
              <span style={{color:'#94a3b8'}}>•</span>
-             <a href="mailto:privacy@surfcoastmarketplace.com?subject=Do Not Sell or Share My Personal Information" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Do Not Sell My Info</a>
+             <a href="mailto:privacy@surfcoastcmp.com?subject=Do Not Sell or Share My Personal Information" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Do Not Sell My Info</a>
             <button
               onClick={() => setSuggestionOpen(true)}
               className="flex items-center gap-1 text-sm font-bold hover:text-amber-400 transition-colors min-h-[44px] px-2 py-1 active:bg-slate-700 rounded sm:min-h-auto sm:py-0"

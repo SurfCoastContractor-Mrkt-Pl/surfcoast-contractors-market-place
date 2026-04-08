@@ -33,10 +33,10 @@ export default function PrivacyPolicy() {
             Under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA), you have specific rights regarding your personal information. We <strong>do not sell or share your personal information</strong> for cross-context behavioral advertising.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="mailto:privacy@surfcoastmarketplace.com?subject=CCPA Data Request" className="inline-flex items-center gap-1 bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <a href="mailto:privacy@surfcoastcmp.com?subject=CCPA Data Request" className="inline-flex items-center gap-1 bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
               Submit a Privacy Request
             </a>
-            <a href="mailto:privacy@surfcoastmarketplace.com?subject=Do Not Sell or Share My Personal Information" className="inline-flex items-center gap-1 border border-blue-600 text-blue-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <a href="mailto:privacy@surfcoastcmp.com?subject=Do Not Sell or Share My Personal Information" className="inline-flex items-center gap-1 border border-blue-600 text-blue-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors">
               Do Not Sell or Share My Personal Info
             </a>
           </div>
@@ -194,7 +194,7 @@ export default function PrivacyPolicy() {
             <li>Lodge a complaint with a data protection authority (where applicable)</li>
           </ul>
           <p className="text-slate-700 leading-relaxed">
-            To exercise any of these rights, email us at <a href="mailto:privacy@surfcoastmarketplace.com" className="text-blue-600 underline font-semibold">privacy@surfcoastmarketplace.com</a>.
+            To exercise any of these rights, email us at <a href="mailto:privacy@surfcoastcmp.com" className="text-blue-600 underline font-semibold">privacy@surfcoastcmp.com</a>.
           </p>
         </div>
 
@@ -234,8 +234,8 @@ export default function PrivacyPolicy() {
 
           <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-blue-900 font-semibold text-sm mb-2">How to Submit a California Privacy Request:</p>
-            <p className="text-blue-800 text-sm mb-3">Email us at <a href="mailto:privacy@surfcoastmarketplace.com" className="underline font-bold">privacy@surfcoastmarketplace.com</a> with the subject line "California Privacy Request" and specify which right you are exercising. We will respond within <strong>45 days</strong> as required by law.</p>
-            <a href="mailto:privacy@surfcoastmarketplace.com?subject=California Privacy Request" className="inline-flex items-center gap-1 bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <p className="text-blue-800 text-sm mb-3">Email us at <a href="mailto:privacy@surfcoastcmp.com" className="underline font-bold">privacy@surfcoastcmp.com</a> with the subject line "California Privacy Request" and specify which right you are exercising. We will respond within <strong>45 days</strong> as required by law.</p>
+            <a href="mailto:privacy@surfcoastcmp.com?subject=California Privacy Request" className="inline-flex items-center gap-1 bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
               Submit a California Privacy Request
             </a>
           </div>
@@ -281,7 +281,7 @@ export default function PrivacyPolicy() {
           </p>
           <div className="bg-slate-50 rounded-lg p-4">
             <p className="text-slate-800 font-semibold">SurfCoast Marketplace — Privacy Team</p>
-            <p className="text-slate-700 mt-1">Email: <a href="mailto:privacy@surfcoastmarketplace.com" className="text-blue-600 underline font-semibold">privacy@surfcoastmarketplace.com</a></p>
+            <p className="text-slate-700 mt-1">Email: <a href="mailto:privacy@surfcoastcmp.com" className="text-blue-600 underline font-semibold">privacy@surfcoastcmp.com</a></p>
             <p className="text-slate-600 text-sm mt-2">We respond to all privacy requests within 45 days as required by CCPA/CPRA.</p>
           </div>
         </div>

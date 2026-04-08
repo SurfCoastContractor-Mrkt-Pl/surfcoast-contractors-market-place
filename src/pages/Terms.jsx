@@ -465,7 +465,7 @@ export default function Terms() {
           </p>
           <div className="bg-slate-50 rounded-lg p-4">
             <p className="text-slate-800 font-semibold">SurfCoast Marketplace — Legal</p>
-            <p className="text-slate-700 mt-1">Email: <a href="mailto:privacy@surfcoastmarketplace.com" className="text-blue-600 underline font-semibold">privacy@surfcoastmarketplace.com</a></p>
+            <p className="text-slate-700 mt-1">Email: <a href="mailto:privacy@surfcoastcmp.com" className="text-blue-600 underline font-semibold">privacy@surfcoastcmp.com</a></p>
           </div>
         </div>
 
