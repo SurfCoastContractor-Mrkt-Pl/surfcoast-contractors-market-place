@@ -10,11 +10,11 @@ const WAVE_TIERS = [
     price: 1900,
     priceId: process.env.REACT_APP_STRIPE_STARTER_PRICE_ID || 'price_starter',
     features: [
-      'Browse job listings',
-      'Submit proposals',
-      'Basic messaging',
-      'Profile management',
-      'Up to 5 active jobs/month',
+      'Profile management & job discovery',
+      'Submit proposals & quotes',
+      'Up to 5 active job postings',
+      'Messaging: $1.50/session or $50/mo unlimited',
+      'Basic reviews & ratings',
     ],
   },
   {
@@ -23,10 +23,10 @@ const WAVE_TIERS = [
     priceId: process.env.REACT_APP_STRIPE_PRO_PRICE_ID || 'price_pro',
     features: [
       'Everything in Starter',
-      'Unlimited job proposals',
-      'Priority job listings',
-      'Advanced analytics',
-      'Up to 15 active jobs/month',
+      'Automated invoicing + PDF export',
+      'Analytics dashboard',
+      'CRM & scope of work builder',
+      'Price book options & referral tracking',
     ],
   },
   {
@@ -35,10 +35,10 @@ const WAVE_TIERS = [
     priceId: process.env.REACT_APP_STRIPE_MAX_PRICE_ID || 'price_max',
     features: [
       'Everything in Pro',
-      'Unlimited active jobs',
-      'Marketing tools',
-      'Team management',
-      'Custom branding',
+      'GPS-based job tracking & field ops',
+      'Multi-option proposals & escrow',
+      'QuickBooks CSV export',
+      'Free messaging with past clients only',
     ],
   },
   {
@@ -47,22 +47,10 @@ const WAVE_TIERS = [
     priceId: process.env.REACT_APP_STRIPE_PREMIUM_PRICE_ID || 'price_premium',
     features: [
       'Everything in Max',
-      'Dedicated support',
-      'API access',
-      'Advanced scheduling',
-      'Payment processing tools',
-    ],
-  },
-  {
-    tier: 'residential',
-    price: 12500,
-    priceId: process.env.REACT_APP_STRIPE_RESIDENTIAL_PRICE_ID || 'price_residential',
-    features: [
-      'Everything in Premium',
-      'White-label options',
-      'Custom integrations',
-      'Priority onboarding',
-      'Quarterly business review',
+      'Free messaging with ALL clients',
+      'AI scheduling assistant & bio generator',
+      'Residential invoicing, leads & document templates',
+      'HubSpot sync, Notion integration, campaign tools',
     ],
   },
 ];
@@ -188,7 +176,7 @@ export default function SubscriptionUpgrade() {
         )}
 
         {/* Pricing Tiers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {WAVE_TIERS.map((tierData) => (
             <PricingTierCard
               key={tierData.tier}

@@ -35,10 +35,10 @@ Deno.serve(async (req) => {
       next_tier_requirement,
       tier_features: {
         free: ['Basic profile', 'Receive job requests', 'Basic reviews'],
-        starter: ['Everything in Free', '5 active postings', 'Job dashboard', 'Quote management'],
-        pro: ['Everything in Starter', 'Automated invoicing', 'Analytics', 'CRM'],
-        max: ['Everything in Pro', 'GPS tracking', 'File sharing', 'Progress payments'],
-        premium: ['Everything in Max', 'AI scheduling', 'HubSpot sync', 'Priority support', 'Unlimited messaging']
+        starter: ['Everything in Free', '5 active postings', 'Job dashboard', 'Quote management', 'Messaging: $1.50/session or $50/mo unlimited'],
+        pro: ['Everything in Starter', 'Automated invoicing', 'Analytics', 'CRM', 'Price book options'],
+        max: ['Everything in Pro', 'GPS tracking', 'Multi-option proposals', 'Escrow support', 'Free messaging with past clients only'],
+        premium: ['Everything in Max', 'Free messaging with ALL clients', 'AI scheduling assistant', 'Residential invoicing & document templates', 'HubSpot sync, Notion integration, campaign tools']
       }
     }, { status: 200 });
   } catch (error) {
