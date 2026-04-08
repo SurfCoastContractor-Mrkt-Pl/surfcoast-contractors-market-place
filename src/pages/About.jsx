@@ -85,9 +85,9 @@ export default function About() {
           {/* Company Facts */}
           <div style={{ ...cardStyle, overflow: "hidden", maxWidth: 520, padding: 0 }}>
             {FACTS.map((f, i) => (
-              <div key={f.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 20px", borderBottom: i < FACTS.length - 1 ? `1px solid ${T.border}` : "none" }}>
-                <span style={{ ...mono, fontSize: 10, color: T.muted, letterSpacing: "0.05em" }}>{f.label}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: T.dark }}>{f.value}</span>
+              <div key={f.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: i < FACTS.length - 1 ? `1px solid ${T.border}` : "none" }}>
+                <span style={{ ...mono, fontSize: 13, color: T.muted, letterSpacing: "0.05em", fontWeight: 800 }}>{f.label}</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: T.dark }}>{f.value}</span>
               </div>
             ))}
           </div>
