@@ -7,6 +7,14 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require authenticated user — prevents public abuse of service-role data access
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Scope searches: non-admins can only search scopes they own
     const { search_type, query, filters, limit = 50 } = await req.json();
 
     const results = {

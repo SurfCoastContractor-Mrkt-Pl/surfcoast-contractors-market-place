@@ -3,6 +3,13 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require authenticated user — must be a contractor or admin to create Notion pages
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { action, scopeId, title, description, status } = await req.json();
 
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('notion');

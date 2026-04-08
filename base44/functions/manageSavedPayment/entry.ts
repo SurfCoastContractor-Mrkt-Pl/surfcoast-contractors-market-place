@@ -5,7 +5,22 @@ const stripe = await import('npm:stripe@17.0.0').then(m => new m.default(Deno.en
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require authenticated user — enforce ownership of payment methods
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { action, userEmail, paymentMethodId } = await req.json();
+
+    // Prevent acting on another user's payment methods
+    if (userEmail && userEmail !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Cannot manage another user\'s payment methods' }, { status: 403 });
+    }
+
+    // Always use the authenticated user's email (ignore any supplied userEmail for non-admins)
+    const resolvedEmail = user.role === 'admin' && userEmail ? userEmail : user.email;
 
     if (action === 'list') {
       // List saved payment methods for user

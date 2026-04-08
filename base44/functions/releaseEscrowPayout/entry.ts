@@ -4,6 +4,13 @@ import Stripe from 'npm:stripe@16.0.0';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require authenticated admin user
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { escrow_id } = await req.json();
 
     if (!escrow_id) {

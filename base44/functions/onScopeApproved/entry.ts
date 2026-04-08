@@ -5,8 +5,17 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
  * Sets is_on_active_job = true on the contractor, locking them from accepting new scopes.
  * Also records the locked_scope_id on the contractor for reference.
  */
+const INTERNAL_SERVICE_KEY = Deno.env.get('INTERNAL_SERVICE_KEY');
+
 Deno.serve(async (req) => {
   try {
+    // Verify internal service key — this function is automation-only, not user-callable
+    const serviceKey = req.headers.get('x-internal-service-key');
+    if (!serviceKey || serviceKey !== INTERNAL_SERVICE_KEY) {
+      console.warn('[ON_SCOPE_APPROVED] Rejected: missing or invalid service key');
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
     const body = await req.json();
     const { data, event } = body;
