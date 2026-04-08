@@ -47,7 +47,7 @@ export default function MultiOptionProposals() {
     return <div className="p-8 text-center text-muted-foreground">Contractor profile not found</div>;
   }
 
-  const hasAccess = contractor.data.profile_tier === 'licensed' && (contractor.data.completed_jobs_count || 0) >= 2;
+  const hasAccess = contractor.profile_tier === 'licensed' || (contractor.completed_jobs_count || 0) >= 50;
 
   if (!hasAccess) {
     return (
@@ -60,7 +60,7 @@ export default function MultiOptionProposals() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-amber-800">
-            Multi-option proposals require licensed tier and 2+ completed jobs.
+            Multi-option proposals are available on WAVE OS Max (50+ jobs) or Licensed tier.
           </CardContent>
         </Card>
       </div>

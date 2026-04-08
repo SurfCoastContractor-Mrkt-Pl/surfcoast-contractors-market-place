@@ -22,16 +22,16 @@ Deno.serve(async (req) => {
     const contractor = contractors[0];
     const subscriptionTier = contractor.profile_tier || 'standard';
 
-    // Residential Bundle: unlimited access
-    if (subscriptionTier === 'premium_residential') {
+    // Premium: free messaging with ALL clients
+    if (subscriptionTier === 'premium') {
       return Response.json({
         allowed: true,
-        reason: 'Residential Bundle includes unlimited messaging'
+        reason: 'WAVE OS Premium includes free messaging with all clients'
       });
     }
 
-    // Premium: only with past clients
-    if (subscriptionTier === 'premium') {
+    // Max: free messaging with past clients only
+    if (subscriptionTier === 'max') {
       const completedScopes = await base44.entities.ScopeOfWork.filter({
         contractor_email: contractorEmail,
         client_email: clientEmail,
@@ -43,8 +43,8 @@ Deno.serve(async (req) => {
       return Response.json({
         allowed: isPastClient,
         reason: isPastClient
-          ? 'Past client eligible for free messaging'
-          : 'Premium messaging restricted to past clients only'
+          ? 'Past client — free messaging included with WAVE OS Max'
+          : 'Free messaging is available with past clients only on WAVE OS Max. Upgrade to Premium for all clients.'
       });
     }
 

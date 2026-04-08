@@ -76,7 +76,7 @@ export default function DocumentTemplateManager({ contractorId, contractorEmail,
       template_type: baseTemplate.type,
       template_name: baseTemplate.name,
       category: 'residential',
-      tier_exclusive: 'residential_bundle',
+      tier_exclusive: 'max',
       is_default: false,
       description: baseTemplate.description,
       content: customContent || `<!-- ${baseTemplate.name} -->\nCustomize this template with your business details.`,
@@ -89,14 +89,14 @@ export default function DocumentTemplateManager({ contractorId, contractorEmail,
     });
   };
 
-  const isResidentialBundle = subscriptionTier === 'premium_residential';
+  const hasAccess = subscriptionTier === 'premium';
 
-  if (!isResidentialBundle) {
+  if (!hasAccess) {
     return (
       <Card className="border-amber-200 bg-amber-50">
         <CardContent className="pt-6">
           <p className="text-sm text-amber-900">
-            Document Templates are exclusive to the <strong>WAVE OS Residential Bundle</strong>.
+            Residential Document Templates are exclusive to <strong>WAVE OS Premium</strong>.
           </p>
         </CardContent>
       </Card>

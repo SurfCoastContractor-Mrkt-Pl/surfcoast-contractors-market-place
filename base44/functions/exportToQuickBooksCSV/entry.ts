@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     const csvRows = scopes.map((scope, idx) => [
       `INV-${scope.id.substring(0, 8).toUpperCase()}-${idx + 1}`,
       scope.closed_date || new Date().toISOString().split('T')[0],
-      scope.customer_name,
+      scope.client_name,
       scope.cost_amount,
       scope.job_title,
       scope.cost_type === 'hourly' ? 'Labor' : 'Service'

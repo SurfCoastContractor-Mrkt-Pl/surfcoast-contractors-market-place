@@ -3,73 +3,98 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { contractorEmail, schedulingData } = await req.json();
-
     const user = await base44.auth.me();
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get contractor's scheduled jobs
+    const body = await req.json();
+    const contractorEmail = body.contractor_email || user.email;
+
+    // Fetch approved/active scopes with work dates
     const scopes = await base44.entities.ScopeOfWork.filter({
       contractor_email: contractorEmail,
       status: 'approved'
     });
 
-    // Get availability
+    // Fetch availability slots
     const slots = await base44.entities.AvailabilitySlot.filter({
-      contractor_email: contractorEmail
+      contractor_id: body.contractor_id || ''
     });
 
-    // Generate AI recommendations
-    const recommendations = {
-      optimal_schedule: generateOptimalSchedule(scopes, slots),
-      conflicts: findConflicts(scopes, slots),
-      buffer_time_recommended: 30, // minutes
-      efficiency_score: calculateEfficiency(scopes),
-      travel_time_optimization: optimizeRouting(scopes)
-    };
+    // Build context for AI
+    const jobSummaries = scopes.map(s => ({
+      id: s.id,
+      title: s.job_title,
+      client: s.client_name,
+      date: s.agreed_work_date,
+      cost_type: s.cost_type,
+      estimated_hours: s.estimated_hours || null,
+      location_hint: s.client_email // anonymized reference
+    }));
 
-    return Response.json(recommendations);
+    const availabilitySummary = slots.map(sl => ({
+      date: sl.date,
+      start: sl.start_time,
+      end: sl.end_time,
+      available: sl.available
+    }));
+
+    const prompt = `You are an AI scheduling assistant for a contractor. Analyze the following jobs and availability, then provide smart scheduling recommendations.
+
+ACTIVE JOBS (approved, needing scheduling):
+${JSON.stringify(jobSummaries, null, 2)}
+
+AVAILABILITY SLOTS:
+${availabilitySummary.length > 0 ? JSON.stringify(availabilitySummary, null, 2) : 'No availability slots set yet.'}
+
+TODAY'S DATE: ${new Date().toISOString().split('T')[0]}
+
+Provide:
+1. A prioritized schedule recommendation for the next 7 days
+2. Any scheduling conflicts or warnings
+3. Tips to optimize the workweek (e.g. cluster nearby jobs, buffer time)
+4. An overall efficiency score (0-100)
+
+Be concise and practical. Focus on actionable advice.`;
+
+    const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
+      prompt,
+      response_json_schema: {
+        type: 'object',
+        properties: {
+          recommendations: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                date: { type: 'string' },
+                startTime: { type: 'string' },
+                endTime: { type: 'string' },
+                jobTitle: { type: 'string' },
+                clientName: { type: 'string' },
+                reason: { type: 'string' }
+              }
+            }
+          },
+          conflicts: {
+            type: 'array',
+            items: { type: 'string' }
+          },
+          tips: {
+            type: 'array',
+            items: { type: 'string' }
+          },
+          efficiencyScore: { type: 'number' },
+          travelWarning: { type: 'string' },
+          summary: { type: 'string' }
+        }
+      }
+    });
+
+    return Response.json(result);
   } catch (error) {
     console.error('AI Scheduling error:', error);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
-
-function generateOptimalSchedule(scopes, slots) {
-  // Sort by date, cluster nearby locations
-  return scopes
-    .sort((a, b) => new Date(a.agreed_work_date) - new Date(b.agreed_work_date))
-    .map(scope => ({
-      scope_id: scope.id,
-      date: scope.agreed_work_date,
-      recommended_start: calculateStartTime(scope),
-      notes: 'AI-optimized time slot'
-    }));
-}
-
-function findConflicts(scopes, slots) {
-  return scopes.filter(scope => {
-    return !slots.some(slot =>
-      new Date(slot.date).toDateString() === new Date(scope.agreed_work_date).toDateString()
-    );
-  });
-}
-
-function calculateEfficiency(scopes) {
-  // Score 0-100 based on job density and scheduling
-  return Math.min(100, scopes.length * 10);
-}
-
-function optimizeRouting(scopes) {
-  // Group jobs by geographic proximity
-  return {
-    clusters: 'AI analyzing geographic clustering',
-    estimated_travel_reduction: '15-20%'
-  };
-}
-
-function calculateStartTime(scope) {
-  return '09:00 AM';
-}
