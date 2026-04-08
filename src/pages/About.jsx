@@ -132,8 +132,16 @@ export default function About() {
               <img
                 src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/93f3cfcd7_IMG_3860.jpg"
                 alt="Hector A. Navarrete — Founder of SurfCoast Contractors Marketplace"
-                style={{ borderRadius: 10, width: "100%", maxWidth: 340, boxShadow: `3px 3px 0px ${T.amber}`, border: `1px solid ${T.border}` }}
+                style={{ borderRadius: 10, width: "100%", maxWidth: 340, boxShadow: `3px 3px 0px ${T.amber}`, border: `1px solid ${T.border}`, display: "block", objectFit: "cover" }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextSibling && (e.currentTarget.nextSibling.style.display = 'flex');
+                }}
               />
+              <div style={{ display: "none", borderRadius: 10, width: "100%", maxWidth: 340, height: 340, background: "#2a2a2b", border: `1px solid ${T.border}`, boxShadow: `3px 3px 0px ${T.amber}`, alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 48 }}>👷</span>
+                <span style={{ ...mono, fontSize: 11, color: "#aaa" }}>Hector A. Navarrete</span>
+              </div>
               <div style={{ marginTop: 16 }}>
                 <p style={{ fontWeight: 800, color: "#fff", fontSize: 15, marginBottom: 4 }}>Hector A. Navarrete</p>
                 <p style={{ ...mono, fontSize: 10, color: "#aaa", letterSpacing: "0.08em", lineHeight: 1.8 }}>
