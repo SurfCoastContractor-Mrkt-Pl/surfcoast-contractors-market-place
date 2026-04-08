@@ -333,6 +333,138 @@ export default function WAVEHandbook() {
       ],
     },
     {
+      id: 7,
+      title: 'Job Completion & Account Compliance',
+      sections: [
+        {
+          id: '7.1',
+          title: 'Expected Completion Date – Your Job Deadline',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Added April 8, 2026 — New compliance system now active on all approved jobs.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">When a Scope of Work is created and approved, an <strong>Expected Completion Date</strong> is set. This is the agreed deadline by which the job must be fully closed out — meaning both the contractor and client have confirmed the job is done, after-photos are uploaded, and payment has been processed through the platform.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why It Exists</h4>
+                <p className="text-slate-600">The platform monitors every active approved job. If a job passes its expected completion date without a proper closeout, the system automatically locks both the contractor's and client's accounts until the situation is resolved. This ensures every dollar flows through SurfCoast and no job goes undocumented.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Happens When a Job Is Overdue</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>Both the <strong>contractor</strong> and the <strong>client</strong> have their accounts locked for non-platform activities.</li>
+                  <li>Locked accounts can still access <strong>direct messaging</strong> with each other to resolve the situation.</li>
+                  <li>All other platform features — posting jobs, accepting new work, making payments — are blocked until the overdue job is closed out.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How to Resolve It</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>Complete the job closeout: both parties confirm, after-photos are uploaded, and payment is processed.</li>
+                  <li>The moment the scope status changes to <strong>Closed</strong>, both accounts are automatically and instantly unlocked — no manual review needed.</li>
+                  <li>You'll receive a confirmation email when your account is unlocked.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '7.2',
+          title: 'Account Lock System – What It Means & How It Works',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Types of Account Locks</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>After-Photo Lock:</strong> Triggered 72 hours after the agreed work date if after-photos are missing. Lifts immediately when photos are uploaded.</li>
+                  <li><strong>Rating Block:</strong> Triggered when a completed job has not received a mutual rating from both parties. Only the non-compliant party is blocked.</li>
+                  <li><strong>Overdue Job Lock:</strong> Triggered when a job passes its expected completion date without being closed out. Locks both contractor and client accounts.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What You Can Still Do While Locked</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>Message the other party directly to coordinate resolution.</li>
+                  <li>Access your existing job documentation and scope details.</li>
+                  <li>Upload after-photos or submit ratings to lift the relevant lock.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Is Blocked</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>Accepting new jobs or posting new job listings.</li>
+                  <li>Making new payments or processing new transactions.</li>
+                  <li>Accessing non-essential platform features.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Important:</strong> All account locks are fully automated. There is no manual review process — locks trigger instantly when conditions are met and lift instantly when resolved.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '7.3',
+          title: 'Billing Cycle & Account Deletion – What Happens If Unresolved',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-800 font-medium">
+                ⚠️ This only applies to accounts that remain locked through the end of a billing cycle without resolution.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Happens</h4>
+                <p className="text-slate-600">If a contractor's account remains locked for an overdue job and their billing cycle ends without the job being closed out, the platform initiates an automated account offboarding sequence:</p>
+                <ul className="list-disc list-inside text-slate-600 space-y-2 mt-2">
+                  <li>Payment card details are removed from the account.</li>
+                  <li>The account is queued for permanent deletion.</li>
+                  <li>Both the contractor and the platform admin are notified by email.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why This Policy Exists</h4>
+                <p className="text-slate-600">SurfCoast cannot allow jobs to be completed off-platform. Every transaction must flow through the system to protect both the client and the contractor — as well as to maintain the integrity of the platform's insurance, dispute, and compliance systems.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How to Avoid This</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>Always close out jobs on time through the platform.</li>
+                  <li>If you need more time, communicate with your client and update the scope's expected completion date <strong>before</strong> the deadline passes.</li>
+                  <li>Never accept or request payment outside of SurfCoast.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '7.4',
+          title: 'One Active Job at a Time – How Job Locking Works',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Feature</h4>
+                <p className="text-slate-600">Once a Scope of Work is approved, the contractor is marked as <strong>On Active Job</strong>. This prevents them from accepting additional scopes of work until the current job is closed out.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why This Exists</h4>
+                <p className="text-slate-600">This ensures full commitment to each client, maintains quality, prevents double-booking, and keeps the platform's compliance systems accurate and enforceable.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Changes When the Job Closes</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li>The <strong>On Active Job</strong> flag is automatically cleared.</li>
+                  <li>Availability status resets to <strong>Available</strong>.</li>
+                  <li>You can immediately begin accepting new scopes of work.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
       id: 5,
       title: 'Tools for Growth – Expand Your Potential',
       sections: [
