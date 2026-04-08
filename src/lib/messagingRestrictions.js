@@ -1,25 +1,20 @@
 /**
  * Messaging Restrictions for WAVE OS Tiers
  * 
- * Premium: FREE with past clients only (no add-on)
- * Residential Bundle: FREE with ALL clients (existing + new)
+ * Max: FREE with past clients only
+ * Premium: FREE with past clients only
  * Others: $1.50 per 10-min or $50/mo subscription
  */
 
 export async function checkMessagingAccess(contractorEmail, clientEmail, subscriptionTier) {
-  // Residential Bundle: unlimited access
-  if (subscriptionTier === 'premium_residential') {
-    return { allowed: true, reason: 'Residential Bundle includes unlimited messaging' };
-  }
-
-  // Premium: only with past clients
-  if (subscriptionTier === 'premium') {
+  // Max & Premium: free messaging with past clients only
+  if (subscriptionTier === 'max' || subscriptionTier === 'premium') {
     const isPastClient = await isPastClientOfContractor(contractorEmail, clientEmail);
     return {
       allowed: isPastClient,
       reason: isPastClient
         ? 'Past client eligible for free messaging'
-        : 'Premium messaging restricted to past clients. Upgrade to Residential Bundle for all clients, or pay-per-session.'
+        : 'Free messaging is available with past clients only. Pay-per-session ($1.50) or $50/mo unlimited for new clients.'
     };
   }
 
