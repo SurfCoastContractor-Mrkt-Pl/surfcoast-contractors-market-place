@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Plus, X, AlertTriangle } from 'lucide-react';
 import LineOfWorkSelector from '@/components/contractor/LineOfWorkSelector';
+import ToolSuggestionBox from '@/components/contractor/ToolSuggestionBox';
 
 export default function OnboardingStep2Professional({
   formData,
@@ -207,6 +208,12 @@ export default function OnboardingStep2Professional({
             onCheckedChange={(v) => setValue('available', v)}
           />
         </div>
+
+        <ToolSuggestionBox
+          lineOfWork={formData.line_of_work === 'other' ? formData.line_of_work_other : formData.line_of_work}
+          submitterEmail={formData.email}
+          submitterName={formData.name}
+        />
       </div>
     </div>
   );

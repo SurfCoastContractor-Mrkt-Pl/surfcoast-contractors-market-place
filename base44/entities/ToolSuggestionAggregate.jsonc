@@ -1,0 +1,95 @@
+{
+  "name": "ToolSuggestionAggregate",
+  "type": "object",
+  "properties": {
+    "tool_name": {
+      "type": "string",
+      "description": "Normalized name of the tool/product/item"
+    },
+    "line_of_work": {
+      "type": "string",
+      "description": "The field of work this tool belongs to"
+    },
+    "mention_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of times this tool has been suggested"
+    },
+    "admin_notified_at_100": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether admin has been notified at the 100-mention threshold"
+    },
+    "status_levels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "All status levels mentioned across suggestions (Apprentice, Novice, etc.)"
+    },
+    "functions_summary": {
+      "type": "string",
+      "description": "AI-consolidated summary of what this tool does"
+    },
+    "impact_summary": {
+      "type": "string",
+      "description": "AI-consolidated summary of how this tool changes work"
+    },
+    "adoption_likelihood": {
+      "type": "string",
+      "description": "Most common adoption likelihood rating"
+    },
+    "alternatives_mentioned": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "All alternative/similar tools mentioned"
+    },
+    "perceived_value_distribution": {
+      "type": "object",
+      "description": "Breakdown of perceived value ratings across all mentions"
+    },
+    "avg_legitimacy_score": {
+      "type": "number",
+      "description": "Average AI legitimacy score across all suggestions (1-10)"
+    },
+    "sample_raw_suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Up to 5 representative raw suggestions for admin review"
+    },
+    "last_suggested_at": {
+      "type": "string",
+      "description": "ISO timestamp of the most recent suggestion for this tool"
+    }
+  },
+  "required": [
+    "tool_name",
+    "line_of_work"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

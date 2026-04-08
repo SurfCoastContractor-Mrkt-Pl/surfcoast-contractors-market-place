@@ -1,0 +1,97 @@
+{
+  "name": "ToolSuggestion",
+  "type": "object",
+  "properties": {
+    "submitter_email": {
+      "type": "string",
+      "description": "Email of the entrepreneur who submitted the suggestion"
+    },
+    "submitter_name": {
+      "type": "string",
+      "description": "Name of the entrepreneur"
+    },
+    "line_of_work": {
+      "type": "string",
+      "description": "The entrepreneur's line of work"
+    },
+    "raw_suggestion": {
+      "type": "string",
+      "description": "The raw free-text suggestion from the user"
+    },
+    "ai_processed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether AI has processed this suggestion"
+    },
+    "ai_tool_name": {
+      "type": "string",
+      "description": "AI-extracted: name of the tool/product/item"
+    },
+    "ai_line_of_work": {
+      "type": "string",
+      "description": "AI-extracted: which field of work this applies to"
+    },
+    "ai_status_level": {
+      "type": "string",
+      "description": "AI-extracted: skill level this applies to (e.g. Apprentice, Novice, Experienced, Expert)"
+    },
+    "ai_function": {
+      "type": "string",
+      "description": "AI-extracted: what the tool does / its function"
+    },
+    "ai_impact": {
+      "type": "string",
+      "description": "AI-extracted: how it enhances or changes the way work is done"
+    },
+    "ai_adoption_likelihood": {
+      "type": "string",
+      "description": "AI-extracted: how likely others in the field are to use this (Low/Medium/High)"
+    },
+    "ai_alternatives": {
+      "type": "string",
+      "description": "AI-extracted: other versions or similar tools"
+    },
+    "ai_perceived_value": {
+      "type": "string",
+      "description": "AI-extracted: value rating (Fair / Good / Great / Amazing)"
+    },
+    "ai_legitimacy_score": {
+      "type": "number",
+      "description": "AI-extracted: 1-10 score for how likely this is a genuine field tool vs personal want"
+    },
+    "ai_legitimacy_reasoning": {
+      "type": "string",
+      "description": "AI-extracted: explanation of legitimacy assessment"
+    },
+    "ai_processed_at": {
+      "type": "string",
+      "description": "ISO timestamp when AI processed this suggestion"
+    }
+  },
+  "required": [
+    "line_of_work",
+    "raw_suggestion"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
