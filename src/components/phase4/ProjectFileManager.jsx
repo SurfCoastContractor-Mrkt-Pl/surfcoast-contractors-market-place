@@ -100,42 +100,57 @@ export default function ProjectFileManager({ scopeId, userEmail }) {
         ) : files.length === 0 ? (
           <p className="text-sm text-slate-500 text-center py-8">No files yet</p>
         ) : (
-          files.map((file) => (
-           <div
-             key={file.id}
-             className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 rounded-lg hover:bg-slate-50 border border-slate-100 gap-2 sm:gap-0"
-           >
-             <div className="flex items-center gap-3 flex-1 min-w-0">
-               <File className="w-5 h-5 text-slate-400 flex-shrink-0" />
-               <div className="min-w-0">
-                 <p className="text-sm font-medium text-slate-900 truncate">
-                   {file.file_name}
-                 </p>
-                 <p className="text-xs text-slate-500">
-                   {file.uploaded_by === userEmail ? 'You' : 'Other party'}
-                 </p>
-               </div>
-             </div>
-             <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
-               <a
-                 href={file.file_url}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="flex-1 sm:flex-none p-2 hover:bg-slate-200 rounded text-center sm:text-left"
-               >
-                 <Download className="w-4 h-4 text-blue-600 mx-auto sm:mx-0" />
-               </a>
-               {file.uploaded_by === userEmail && (
-                 <button
-                   onClick={() => deleteMutation.mutate(file.id)}
-                   className="flex-1 sm:flex-none p-2 hover:bg-slate-200 rounded text-center sm:text-left"
-                 >
-                   <Trash2 className="w-4 h-4 text-red-600 mx-auto sm:mx-0" />
-                 </button>
-               )}
-             </div>
-           </div>
-          ))
+          files.map((file) => {
+            const isImage = file.file_type === 'photo' || /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?|$)/i.test(file.file_url || '');
+            return (
+              <div key={file.id} className="border border-slate-100 rounded-lg overflow-hidden">
+                {isImage ? (
+                  <div className="relative group">
+                    <a href={file.file_url} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={file.file_url}
+                        alt={file.file_name}
+                        className="w-full max-h-64 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      />
+                    </a>
+                    <div className="flex items-center justify-between px-3 py-2 bg-slate-50">
+                      <p className="text-xs text-slate-500 truncate">{file.file_name}</p>
+                      <div className="flex items-center gap-1 shrink-0 ml-2">
+                        <a href={file.file_url} target="_blank" rel="noopener noreferrer" className="p-1 hover:bg-slate-200 rounded">
+                          <Download className="w-3 h-3 text-blue-600" />
+                        </a>
+                        {file.uploaded_by === userEmail && (
+                          <button onClick={() => deleteMutation.mutate(file.id)} className="p-1 hover:bg-slate-200 rounded">
+                            <Trash2 className="w-3 h-3 text-red-500" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 hover:bg-slate-50 gap-2 sm:gap-0">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <File className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-slate-900 truncate">{file.file_name}</p>
+                        <p className="text-xs text-slate-500">{file.uploaded_by === userEmail ? 'You' : 'Other party'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
+                      <a href={file.file_url} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none p-2 hover:bg-slate-200 rounded text-center sm:text-left">
+                        <Download className="w-4 h-4 text-blue-600 mx-auto sm:mx-0" />
+                      </a>
+                      {file.uploaded_by === userEmail && (
+                        <button onClick={() => deleteMutation.mutate(file.id)} className="flex-1 sm:flex-none p-2 hover:bg-slate-200 rounded text-center sm:text-left">
+                          <Trash2 className="w-4 h-4 text-red-600 mx-auto sm:mx-0" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
     </div>
