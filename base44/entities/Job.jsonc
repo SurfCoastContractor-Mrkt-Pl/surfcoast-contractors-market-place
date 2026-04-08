@@ -123,7 +123,21 @@
   ],
   "rls": {
     "create": {
-      "data.poster_email": "{{user.email}}"
+      "$or": [
+        {
+          "data.poster_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
     },
     "read": {
       "$or": [

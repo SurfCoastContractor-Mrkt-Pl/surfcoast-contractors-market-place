@@ -166,7 +166,21 @@
   ],
   "rls": {
     "create": {
-      "data.reviewer_email": "{{user.email}}"
+      "$or": [
+        {
+          "data.reviewer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
     },
     "read": {
       "$or": [
