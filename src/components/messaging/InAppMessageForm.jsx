@@ -178,7 +178,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
           recipient_name: recipientName,
           recipient_email: recipientEmail,
           subject: formData.subject,
-          body,
+          body: body || (attachments.length > 0 ? '' : ''),
           file_urls: attachments,
           payment_id: paymentId,
           read: false,
@@ -467,7 +467,7 @@ export default function InAppMessageForm({ open, onClose, paymentRecord, senderT
                    <Button
                      onClick={() => sendMutation.mutate()}
                      className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-                     disabled={sendMutation.isPending || !body.trim() || !formData.name || !formData.email || uploading || isSessionExpired}
+                     disabled={sendMutation.isPending || (!body.trim() && attachments.length === 0) || !formData.name || !formData.email || uploading || isSessionExpired}
                    >
                      {sendMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
                      Send
