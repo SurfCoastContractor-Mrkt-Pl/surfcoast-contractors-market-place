@@ -60,6 +60,12 @@ Deno.serve(async (req) => {
         if (contractors && contractors.length > 0) {
           const contractor = contractors[0];
 
+          // Idempotency: skip if already locked for this scope
+          if (contractor.account_locked && contractor.locked_scope_id === scope.id) {
+            console.log(`[AFTER_PHOTO_LOCK] Contractor ${contractor.id} already locked for scope ${scope.id}, skipping.`);
+            continue;
+          }
+
           await base44.asServiceRole.entities.Contractor.update(contractor.id, {
             account_locked: true,
             locked_scope_id: scope.id,

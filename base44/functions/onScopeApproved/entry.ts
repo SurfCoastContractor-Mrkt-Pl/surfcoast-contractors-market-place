@@ -32,6 +32,13 @@ Deno.serve(async (req) => {
     }
 
     const contractor = contractors[0];
+
+    // Idempotency: skip if already marked on active job for this scope
+    if (contractor.is_on_active_job && contractor.locked_scope_id === scopeId) {
+      console.log(`[ON_SCOPE_APPROVED] Contractor ${contractorEmail} already on active job for scope ${scopeId}, skipping.`);
+      return Response.json({ skipped: true, reason: 'Already on active job for this scope' });
+    }
+
     await base44.asServiceRole.entities.Contractor.update(contractor.id, {
       is_on_active_job: true,
       locked_scope_id: scopeId,

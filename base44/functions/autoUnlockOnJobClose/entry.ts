@@ -30,9 +30,11 @@ Deno.serve(async (req) => {
         const c = contractors[0];
         // Only unlock if this scope is the one that caused the lock
         if (c.locked_scope_id === scopeId || c.account_locked_for_overdue_job) {
+          // Only clear account_locked (after-photo lock) if this scope is the one that caused it
+          const clearAfterPhotoLock = c.account_locked && c.locked_scope_id === scopeId;
           await base44.asServiceRole.entities.Contractor.update(c.id, {
             account_locked_for_overdue_job: false,
-            account_locked: false,
+            ...(clearAfterPhotoLock ? { account_locked: false } : {}),
             locked_scope_id: null,
             is_on_active_job: false,
             billing_deletion_pending: false,
