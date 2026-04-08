@@ -155,8 +155,15 @@ function HeroSection() {
             ))}
           </div>
         </div>
-        <div style={{ flex: "1 1 300px", minWidth: 0 }}>
+        <div style={{ flex: "1 1 300px", minWidth: 0, display: "flex", flexDirection: "column", gap: 16 }}>
           <HeroPlatformCard />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: 20 }}>
+            <img 
+              src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/fe24173fd_01_SurfCoast_Marketplace_Logo.png" 
+              alt="SurfCoast Marketplace" 
+              style={{ maxWidth: 180, opacity: 0.12, filter: "grayscale(30%)" }}
+            />
+          </div>
         </div>
       </div>
     </section>
