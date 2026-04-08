@@ -19,6 +19,8 @@ export default function Terms() {
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
           <h1 className="text-4xl font-serif font-bold text-slate-900 mb-2">Terms of Service</h1>
           <p className="text-slate-600">SurfCoast Marketplace</p>
+          <p className="text-slate-500 text-sm mt-3">Last Updated: April 8, 2026</p>
+          <p className="text-slate-500 text-sm mt-1">Effective Date: April 8, 2026</p>
         </div>
 
         {/* Section 1 */}
@@ -402,31 +404,48 @@ export default function Terms() {
           </div>
         </div>
 
-        {/* Section 11 - Platform Facilitation Fees */}
+        {/* Section 11 - Platform Technology Fee */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Platform Facilitation Fees</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Platform Technology & Facilitation Fee</h2>
+
+          {/* CSLB-critical framing notice */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <p className="text-blue-900 text-sm font-semibold mb-1">Important — Nature of This Fee</p>
+            <p className="text-blue-800 text-sm leading-relaxed">
+              The fee described below is a <strong>technology and platform services fee</strong> charged by SurfCoast Marketplace for providing its software infrastructure, payment processing, identity verification, dispute tools, and marketplace access. It is <strong>not</strong> a commission on construction work, a contractor's license fee, or a payment for labor or materials. SurfCoast Marketplace does not perform, direct, supervise, or subcontract any work. All contracts for services are entered into directly between the client and the independent service provider.
+            </p>
+          </div>
+
+          <h3 className="font-semibold text-slate-900 mb-3">Contractor Platform Technology Fee — 18% (Flat Rate)</h3>
           <p className="text-slate-700 leading-relaxed mb-4">
-            SurfCoast Marketplace charges facilitation fees to cover payment processing and platform maintenance. Fees are calculated based on a contractor's annual earnings tier and deducted from completed transactions as follows:
+            When a job is completed and payment is processed through SurfCoast Marketplace, an <strong>18% platform technology and facilitation fee</strong> is deducted from the total job amount prior to payout. This fee is consistent for all contractors and covers:
           </p>
-          
-          <h3 className="font-semibold text-slate-900 mb-3">Contractor Sliding Scale Fees (Based on Annual Earnings)</h3>
           <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
-            <li><strong>Bronze Tier ($0 - $15,000 annual):</strong> 2% facilitation fee. Example: a $1,000 job pays out $980 to the contractor.</li>
-            <li><strong>Silver Tier ($15,000 - $50,000 annual):</strong> 10% facilitation fee. Example: a $1,000 job pays out $900 to the contractor.</li>
-            <li><strong>Gold Tier ($50,000+ annual):</strong> 15% facilitation fee. Example: a $1,000 job pays out $850 to the contractor.</li>
+            <li>Stripe payment processing and secure transaction infrastructure</li>
+            <li>Identity verification and license document storage</li>
+            <li>Dispute resolution tooling and case management</li>
+            <li>Review verification and fraud prevention</li>
+            <li>Marketplace platform access and software services</li>
           </ul>
-          <p className="text-slate-700 text-sm mb-4 italic">
-            Tier is automatically determined based on cumulative annual earnings and updates automatically. Tiers reset annually, with lifetime earnings tracked separately. Tier changes apply to future payouts.
-          </p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
+            <p className="text-slate-800 text-sm font-semibold mb-2">Fee Example:</p>
+            <ul className="space-y-1 text-sm text-slate-700">
+              <li>Job Total agreed between client and contractor: <strong>$1,000.00</strong></li>
+              <li>Platform Technology Fee (18%): <strong>-$180.00</strong></li>
+              <li>Contractor Payout: <strong>$820.00</strong></li>
+            </ul>
+            <p className="text-xs text-slate-500 mt-3 italic">The contractor sets their own rate. The 18% fee is disclosed to both parties before the Scope of Work is approved.</p>
+          </div>
 
           <h3 className="font-semibold text-slate-900 mb-3">Farmers Market & Swap Meet Vendors (WAVEShop)</h3>
           <ul className="list-disc list-inside space-y-2 text-slate-700 mb-4">
-            <li><strong>Subscription Model:</strong> $35/month flat fee — zero commission on all sales processed.</li>
-            <li><strong>Facilitation Fee Model:</strong> 5% facilitation fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
+            <li><strong>Subscription Model:</strong> $35/month flat fee — zero commission on any sales processed.</li>
+            <li><strong>Facilitation Fee Model:</strong> 5% platform technology fee on transactions processed through the platform. Example: a $100 sale results in a $95 payout to the vendor.</li>
           </ul>
 
-          <p className="text-slate-700 leading-relaxed">
-            SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages arising from transactions. All users engage entirely at their own risk and are solely liable for their agreements.
+          <p className="text-slate-700 leading-relaxed text-sm italic">
+            SurfCoast Marketplace and all associates hold no responsibility for any outcomes, disputes, or damages arising from transactions between users. All users engage entirely at their own risk and are solely liable for their agreements with one another.
           </p>
         </div>
 
@@ -441,9 +460,13 @@ export default function Terms() {
         {/* Section 13 */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Contact</h2>
-          <p className="text-slate-700 leading-relaxed">
-            For questions regarding these Terms, contact us through the platform's support channel.
+          <p className="text-slate-700 leading-relaxed mb-3">
+            For questions regarding these Terms of Service, contact us at:
           </p>
+          <div className="bg-slate-50 rounded-lg p-4">
+            <p className="text-slate-800 font-semibold">SurfCoast Marketplace — Legal</p>
+            <p className="text-slate-700 mt-1">Email: <a href="mailto:privacy@surfcoastmarketplace.com" className="text-blue-600 underline font-semibold">privacy@surfcoastmarketplace.com</a></p>
+          </div>
         </div>
 
         {/* Final Acknowledgment */}
