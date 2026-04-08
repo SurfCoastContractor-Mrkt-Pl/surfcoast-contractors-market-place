@@ -252,6 +252,26 @@ export default function PostJob() {
       </div>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 16px" }}>
+
+        {/* CSLB Client Disclaimer */}
+        <div style={{ background: "#FFF8E7", border: "1.5px solid #FFB366", borderRadius: 10, padding: "20px 24px", marginBottom: 24, borderLeft: "5px solid #FF8C00" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+            <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>⚖️</span>
+            <div>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: "#1A1A1B", marginBottom: 8, fontStyle: "italic" }}>Important Legal Notice for Clients</h3>
+              <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, fontWeight: 600, marginBottom: 8 }}>
+                <strong>SurfCoast Marketplace is a referral service — not a licensed contractor.</strong> We connect clients with independent service providers. You will contract directly with the service provider you choose. SurfCoast does not perform work, negotiate contracts, or guarantee any service outcome.
+              </p>
+              <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, fontWeight: 600, marginBottom: 8 }}>
+                <strong>California Law:</strong> For projects exceeding $500 (combined labor and materials), California law requires that the service provider hold a valid CSLB (Contractors State License Board) license. It is your responsibility to independently verify the license, insurance, and bonding status of any contractor you hire. You can verify licenses at <a href="https://www.cslb.ca.gov" target="_blank" rel="noopener noreferrer" style={{ color: "#2563EB", textDecoration: "underline" }}>cslb.ca.gov</a>.
+              </p>
+              <p style={{ fontSize: 12, color: "#666", fontStyle: "italic", fontWeight: 600 }}>
+                By posting a job, you acknowledge that SurfCoast is acting solely as a referral platform and that your contract is directly with the service provider.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
            <div style={{ ...cardStyle, padding: 24, marginBottom: 24 }} {...hoverGlow}>
               <h2 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>Job Details</h2>

@@ -435,6 +435,14 @@
       "type": "string",
       "description": "Version of the compliance terms acknowledged"
     },
+    "contractor_agreement_version": {
+      "type": "string",
+      "description": "Version of the contractor independent contractor agreement acknowledged (e.g. v1.0-2026-04-08)"
+    },
+    "contractor_agreement_acknowledged_at": {
+      "type": "string",
+      "description": "ISO timestamp when the contractor agreement was acknowledged"
+    },
     "admin_review_requested": {
       "type": "boolean",
       "default": false,
@@ -715,6 +723,9 @@
           "user_condition": {
             "role": "admin"
           }
+        },
+        {
+          "data.available": true
         }
       ]
     },

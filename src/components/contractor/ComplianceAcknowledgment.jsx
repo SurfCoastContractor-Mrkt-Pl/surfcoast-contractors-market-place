@@ -8,22 +8,22 @@ const CHECKBOXES = [
   {
     id: 'federal',
     label: 'I understand my federal compliance obligations',
-    subtext: 'FLSA, OSHA, EEOC, and IRS 1099 contractor rules apply to my work.',
+    subtext: 'FLSA, OSHA, EEOC, and IRS 1099 independent contractor rules apply to my work. I am responsible for my own taxes.',
   },
   {
     id: 'state',
     label: 'I understand my state licensing and registration requirements',
-    subtext: 'I am responsible for all required licenses, permits, insurance, and registrations in [STATE].',
+    subtext: 'I am solely responsible for verifying and maintaining all required licenses, permits, insurance, and registrations (including CSLB requirements for licensed trades in California) in [STATE]. SurfCoast does not guarantee that I hold or maintain any specific license.',
   },
   {
     id: 'platform',
-    label: "I agree to SurfCoast's platform terms",
-    subtext: '3% fee on completed, paid jobs. No monthly fees. I am an independent contractor, not a SurfCoast employee.',
+    label: "I agree to SurfCoast's platform terms and independent contractor status",
+    subtext: 'I acknowledge my status as an independent contractor — not an employee, partner, or agent of SurfCoast. SurfCoast does not control the manner or means of my work. I agree to the platform facilitation fee structure on completed, paid jobs.',
   },
   {
     id: 'pricing',
-    label: 'I understand I set my own rates',
-    subtext: 'SurfCoast does not set, cap, or suggest my pricing. I am solely responsible for what I charge.',
+    label: 'I understand I set my own rates independently',
+    subtext: 'SurfCoast does not set, cap, direct, or suggest my pricing. I am solely responsible for what I charge clients. All contracts for services are between me and the client directly.',
   },
 ];
 
