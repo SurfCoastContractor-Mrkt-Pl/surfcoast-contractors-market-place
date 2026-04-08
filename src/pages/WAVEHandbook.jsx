@@ -202,6 +202,9 @@ export default function WAVEHandbook() {
           title: 'Two-Way Client Messaging – Clear & Consistent Communication',
           content: (
             <div className="space-y-4">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                📅 Updated April 8, 2026 — Messaging policy updated. Residential Bundle removed.
+              </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Feature</h4>
                 <p className="text-slate-600">Integrated messaging system that allows you to chat directly with clients via in-app messages or SMS.</p>
@@ -211,10 +214,19 @@ export default function WAVEHandbook() {
                 <p className="text-slate-600">Build strong client relationships, provide instant updates, and keep all communication organized in one place.</p>
               </div>
               <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Messaging by Tier</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>Starter / Pro:</strong> $1.50 per 10-minute session, or $50/month for unlimited messaging.</li>
+                  <li><strong>WAVE Max:</strong> Free messaging with <em>past clients only</em> — clients from previously closed jobs. New clients require a session fee or the $50/mo plan.</li>
+                  <li><strong>WAVE Premium:</strong> Free messaging with <em>all clients</em> — no per-session fees, ever.</li>
+                </ul>
+              </div>
+              <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Tools</h4>
                 <ul className="list-disc list-inside text-slate-600 space-y-1">
                   <li><strong>Unified Inbox:</strong> See all messages from a client in one conversation thread.</li>
                   <li><strong>SMS Integration:</strong> Send and receive text messages directly from the app.</li>
+                  <li><strong>Timed Sessions:</strong> Pay-per-session access for Starter/Pro subscribers.</li>
                 </ul>
               </div>
             </div>
