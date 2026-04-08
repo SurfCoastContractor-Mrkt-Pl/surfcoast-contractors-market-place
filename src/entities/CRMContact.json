@@ -1,0 +1,105 @@
+{
+  "name": "CRMContact",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who owns this contact"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "client_email": {
+      "type": "string",
+      "description": "Email of the client/lead"
+    },
+    "client_name": {
+      "type": "string",
+      "description": "Full name of the client/lead"
+    },
+    "client_phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["lead", "prospect", "active_client", "past_client", "lost"],
+      "default": "lead",
+      "description": "Pipeline status"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["platform_job", "referral", "direct_contact", "website", "social_media", "repeat_client", "other"],
+      "description": "How this contact was acquired"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Custom tags for segmentation"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form notes about this contact"
+    },
+    "total_jobs": {
+      "type": "number",
+      "default": 0,
+      "description": "Total jobs completed for this client"
+    },
+    "total_revenue": {
+      "type": "number",
+      "default": 0,
+      "description": "Total revenue from this client"
+    },
+    "last_job_date": {
+      "type": "string",
+      "description": "Date of last completed job"
+    },
+    "next_follow_up": {
+      "type": "string",
+      "format": "date",
+      "description": "Scheduled date for next follow-up"
+    },
+    "preferred_service": {
+      "type": "string",
+      "description": "Primary service this client needs"
+    },
+    "property_address": {
+      "type": "string",
+      "description": "Client's property address"
+    },
+    "rating_given": {
+      "type": "number",
+      "description": "Rating the client gave the contractor"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "medium",
+      "description": "Contact priority level"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "client_name"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        { "data.contractor_email": "{{user.email}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.contractor_email": "{{user.email}}"
+    }
+  }
+}

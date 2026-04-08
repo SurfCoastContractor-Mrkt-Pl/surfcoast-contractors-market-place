@@ -1,0 +1,66 @@
+{
+  "name": "MessageTranslation",
+  "type": "object",
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "description": "ID of the original message"
+    },
+    "original_language": {
+      "type": "string",
+      "description": "Detected language code of the original message (e.g. es, fr, zh)"
+    },
+    "target_language": {
+      "type": "string",
+      "description": "Language code the message was translated to"
+    },
+    "original_text": {
+      "type": "string",
+      "description": "The original untranslated text"
+    },
+    "translated_text": {
+      "type": "string",
+      "description": "The AI-translated text"
+    },
+    "sender_email": {
+      "type": "string",
+      "description": "Email of the original sender"
+    },
+    "recipient_email": {
+      "type": "string",
+      "description": "Email of the recipient"
+    },
+    "confidence_score": {
+      "type": "number",
+      "description": "AI confidence in the translation (0-1)"
+    }
+  },
+  "required": [
+    "message_id",
+    "original_language",
+    "target_language",
+    "original_text",
+    "translated_text"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        { "user_condition": { "role": "service_role" } },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "read": {
+      "$or": [
+        { "data.sender_email": "{{user.email}}" },
+        { "data.recipient_email": "{{user.email}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": {
+      "user_condition": { "role": "admin" }
+    },
+    "delete": {
+      "user_condition": { "role": "admin" }
+    }
+  }
+}

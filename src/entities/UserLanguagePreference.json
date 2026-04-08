@@ -1,0 +1,61 @@
+{
+  "name": "UserLanguagePreference",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": ["contractor", "customer", "public"],
+      "description": "Type of user"
+    },
+    "preferred_language": {
+      "type": "string",
+      "default": "en",
+      "description": "Language code (en, es, fr, de, zh, ja, pt, etc.)"
+    },
+    "auto_translate_messages": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether incoming messages should be auto-translated"
+    },
+    "detected_language": {
+      "type": "string",
+      "description": "Last detected language from user's input"
+    },
+    "region": {
+      "type": "string",
+      "description": "User's region/locale for localization"
+    }
+  },
+  "required": [
+    "user_email",
+    "preferred_language"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        { "data.user_email": "{{user.email}}" },
+        { "user_condition": { "role": "admin" } },
+        { "user_condition": { "role": "service_role" } }
+      ]
+    },
+    "read": {
+      "$or": [
+        { "data.user_email": "{{user.email}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": {
+      "$or": [
+        { "data.user_email": "{{user.email}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "delete": {
+      "user_condition": { "role": "admin" }
+    }
+  }
+}

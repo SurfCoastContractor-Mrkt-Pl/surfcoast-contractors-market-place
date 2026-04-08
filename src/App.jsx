@@ -47,6 +47,8 @@ import SurfCoastPerformanceDashboard from './pages/SurfCoastPerformanceDashboard
 import SurfCoastReviewRequestsManager from './pages/SurfCoastReviewRequestsManager';
 import ActivityConsolidationDashboard from './pages/ActivityConsolidationDashboard';
 import SubmitConsumerOrderReview from './pages/SubmitConsumerOrderReview';
+import ClientPortal from './pages/ClientPortal';
+import PublicFAQ from './pages/PublicFAQ';
 import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
 import MarketShopInventory from './pages/MarketShopInventory';
 import ContractorServices from './pages/ContractorServices';
@@ -211,6 +213,16 @@ const AuthenticatedApp = () => {
           <AdminGuard>
             <AdminErrorLogs />
           </AdminGuard>
+        </LayoutWrapper>
+      } />
+      <Route path="/client-portal/:token" element={
+        <LayoutWrapper currentPageName="ClientPortal">
+          <ClientPortal />
+        </LayoutWrapper>
+      } />
+      <Route path="/faq" element={
+        <LayoutWrapper currentPageName="PublicFAQ">
+          <PublicFAQ />
         </LayoutWrapper>
       } />
       <Route path="/platform-tests" element={
