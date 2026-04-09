@@ -21,8 +21,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Get HubSpot access token for this user
-    const accessToken = await base44.asServiceRole.connectors.getCurrentAppUserAccessToken(connectorId);
+    // Get HubSpot access token from shared connector
+    const { accessToken } = await base44.asServiceRole.connectors.getConnection('hubspot');
     if (!accessToken) {
       return Response.json({ error: 'HubSpot not connected' }, { status: 400 });
     }

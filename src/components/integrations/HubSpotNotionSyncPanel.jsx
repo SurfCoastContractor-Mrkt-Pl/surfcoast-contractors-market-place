@@ -5,37 +5,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { AlertCircle, CheckCircle2, Link2, Unlink2 } from 'lucide-react';
 
 export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
-  const [hubspotConnected, setHubspotConnected] = useState(false);
-  const [notionConnected, setNotionConnected] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncStatus, setSyncStatus] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    checkConnections();
-  }, []);
-
-  const checkConnections = async () => {
-    try {
-      const user = await base44.auth.me();
-      // Check if user has connected these integrations via app user connectors
-      // For now, we check if the backend functions are available
-      setHubspotConnected(true);
-      setNotionConnected(true);
-    } catch (error) {
-      console.error('Error checking connections:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const syncToHubSpot = async () => {
     setSyncing(true);
     setSyncStatus('Syncing to HubSpot...');
     try {
       const result = await base44.functions.invoke('syncJobToHubSpot', {
-        scope_id: scopeId,
-        connectorId: 'hubspot-app-user' // This would be set up when user connects
+        scope_id: scopeId
       });
       if (result.data.success) {
         setSyncStatus('✓ Synced to HubSpot');
@@ -85,10 +63,6 @@ export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
     );
   }
 
-  if (loading) {
-    return <div className="text-sm text-slate-500">Checking integrations...</div>;
-  }
-
   return (
     <div className="space-y-4">
       <Card>
@@ -100,11 +74,10 @@ export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
           <CardDescription>Sync project to your CRM</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {hubspotConnected ? (
-            <>
+          <>
               <div className="flex items-center gap-2 text-sm text-green-700">
                 <CheckCircle2 className="w-4 h-4" />
-                Connected to HubSpot
+                Auto-syncing to HubSpot
               </div>
               <Button 
                 size="sm" 
@@ -112,15 +85,9 @@ export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
                 disabled={syncing}
                 className="w-full"
               >
-                {syncing ? 'Syncing...' : 'Sync to HubSpot'}
+                {syncing ? 'Syncing...' : 'Manual Sync'}
               </Button>
             </>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-amber-700">
-              <AlertCircle className="w-4 h-4" />
-              HubSpot not connected
-            </div>
-          )}
           {syncStatus && (
             <p className="text-xs text-slate-600 mt-2">{syncStatus}</p>
           )}
@@ -136,11 +103,10 @@ export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
           <CardDescription>Create project page in Notion</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {notionConnected ? (
-            <>
+          <>
               <div className="flex items-center gap-2 text-sm text-green-700">
                 <CheckCircle2 className="w-4 h-4" />
-                Connected to Notion
+                Ready to create pages
               </div>
               <Button 
                 size="sm" 
@@ -148,15 +114,9 @@ export default function HubSpotNotionSyncPanel({ scopeId, isPremium }) {
                 disabled={syncing}
                 className="w-full"
               >
-                {syncing ? 'Creating...' : 'Create in Notion'}
+                {syncing ? 'Creating...' : 'Create Project Page'}
               </Button>
             </>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-amber-700">
-              <AlertCircle className="w-4 h-4" />
-              Notion not connected
-            </div>
-          )}
           {syncStatus && (
             <p className="text-xs text-slate-600 mt-2">{syncStatus}</p>
           )}
