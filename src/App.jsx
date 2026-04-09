@@ -16,7 +16,6 @@ import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
-import EntrepreneurPublicProfile from './pages/EntrepreneurPublicProfile';
 import FindContractors from './pages/FindContractors';
 import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
@@ -318,11 +317,7 @@ const AuthenticatedApp = () => {
           <EntrepreneurBillingHistory />
         </LayoutWrapper>
       } />
-      <Route path="/EntrepreneurBusinessHub" element={
-        <LayoutWrapper currentPageName="EntrepreneurBusinessHub">
-          <EntrepreneurBusinessHub />
-        </LayoutWrapper>
-      } />
+
 
       <Route path="/EntrepreneurInquiries" element={
         <LayoutWrapper currentPageName="EntrepreneurInquiries">
@@ -339,11 +334,7 @@ const AuthenticatedApp = () => {
           <EntrepreneurVerificationDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/entrepreneur/:entrepreneurId" element={
-        <LayoutWrapper currentPageName="EntrepreneurPublicProfile">
-          <EntrepreneurPublicProfile />
-        </LayoutWrapper>
-      } />
+
       <Route path="/SearchContractors" element={
         <LayoutWrapper currentPageName="FindContractors">
           <FindContractors />
