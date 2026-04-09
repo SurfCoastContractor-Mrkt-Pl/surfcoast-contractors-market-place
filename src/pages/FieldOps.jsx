@@ -115,6 +115,21 @@ export default function WaveOS() {
         return () => clearInterval(interval);
         }, [user?.email]);
 
+  // Check WAVE OS access — requires SurfCoast WAVE OS (55 completed jobs)
+  // Admins bypass all tier/contractor requirements for testing
+  const completedJobsCount = contractor?.completed_jobs_count || 0;
+  const BREAKER_JOBS_REQUIRED = 55;
+  const showWaveOSAssistant = !isAdmin && completedJobsCount >= 15 && completedJobsCount < BREAKER_JOBS_REQUIRED;
+  const hasWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const hasSurfCoastWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
+  const NAV_TABS = hasSurfCoastWaveOSAccess
+    ? [...BASE_NAV_TABS, BREAKER_TAB]
+    : BASE_NAV_TABS;
+
+  // Hooks must be called unconditionally — before any early returns
+  const swipeTabIds = useMemo(() => NAV_TABS.map(t => t.id), [NAV_TABS]);
+  useSwipeNav(swipeEnabled, swipeTabIds, activeTab, setActiveTab);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center">
@@ -125,21 +140,6 @@ export default function WaveOS() {
       </div>
     );
   }
-
-  // Check WAVE OS access — requires SurfCoast WAVE OS (55 completed jobs)
-  // Admins bypass all tier/contractor requirements for testing
-  const completedJobsCount = contractor?.completed_jobs_count || 0;
-  const BREAKER_JOBS_REQUIRED = 55;
-  // Show AI assistant only for Ripple (15-34 jobs) and Swell (35-54 jobs) tiers
-  const showWaveOSAssistant = !isAdmin && completedJobsCount >= 15 && completedJobsCount < BREAKER_JOBS_REQUIRED;
-  const hasWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const hasSurfCoastWaveOSAccess = isAdmin || completedJobsCount >= BREAKER_JOBS_REQUIRED;
-  const NAV_TABS = hasSurfCoastWaveOSAccess
-    ? [...BASE_NAV_TABS, BREAKER_TAB]
-    : BASE_NAV_TABS;
-
-  const swipeTabIds = useMemo(() => NAV_TABS.map(t => t.id), [NAV_TABS]);
-  useSwipeNav(swipeEnabled, swipeTabIds, activeTab, setActiveTab);
 
   if (contractor && !hasWaveOSAccess) {
     return (
