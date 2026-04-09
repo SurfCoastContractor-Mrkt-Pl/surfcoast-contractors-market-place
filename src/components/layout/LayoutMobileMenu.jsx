@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, Briefcase, Users, Store, BarChart2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Briefcase, Users, Store, BarChart2, Zap } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
+import { useWaveOSEligibility } from '@/hooks/useWaveOSEligibility';
 
 const exploreGroups = [
   {
@@ -40,9 +41,11 @@ export default function LayoutMobileMenu({
   currentPageName,
   getNavLinks,
   createPageUrl,
+  userEmail,
 }) {
   const [exploreOpen, setExploreOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const { data: waveOSInfo } = useWaveOSEligibility(userEmail);
 
   if (!mobileMenuOpen) return null;
 
@@ -69,6 +72,24 @@ export default function LayoutMobileMenu({
         id="mobile-menu"
       >
         <div className="px-4 py-5 space-y-1">
+
+          {/* WAVE OS Button — Hamburger Menu */}
+          {isLoggedIn && waveOSInfo?.eligible && (
+            <>
+              <Link to="/FieldOps" onClick={handleNavClick}>
+                <div className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors",
+                  waveOSInfo.color === 'amber'
+                    ? "bg-amber-50 text-amber-600"
+                    : "bg-blue-50 text-blue-700"
+                )}>
+                  <Zap className="w-4 h-4" />
+                  {waveOSInfo.label}
+                </div>
+              </Link>
+              <div className="border-t border-slate-100 my-2" />
+            </>
+          )}
 
           {/* Core nav links */}
           {getNavLinks(isContractor).map(link => {

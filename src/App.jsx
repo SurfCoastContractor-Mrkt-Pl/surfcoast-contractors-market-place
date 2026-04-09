@@ -309,10 +309,30 @@ const AuthenticatedApp = () => {
       <Route path="/entrepreneurAccount" element={
       <Route path="/EntrepreneurBillingHistory" element={
       <Route path="/EntrepreneurBusinessHub" element={
+        <LayoutWrapper currentPageName="EntrepreneurBusinessHub">
+          <EntrepreneurBusinessHub />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurFinancialDashboard" element={
+        <LayoutWrapper currentPageName="EntrepreneurFinancialDashboard">
+          <EntrepreneurFinancialDashboard />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurInquiries" element={
+        <LayoutWrapper currentPageName="EntrepreneurInquiries">
+          <EntrepreneurInquiries />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurQuotesManagement" element={
+        <LayoutWrapper currentPageName="EntrepreneurQuotesManagement">
+          <EntrepreneurQuotesManagement />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurVerificationDashboard" element={
+        <LayoutWrapper currentPageName="EntrepreneurVerificationDashboard">
+          <EntrepreneurVerificationDashboard />
+        </LayoutWrapper>
+      } />
       <Route path="/entrepreneur/:entrepreneurId" element={
         <LayoutWrapper currentPageName="EntrepreneurPublicProfile">
           <EntrepreneurPublicProfile />

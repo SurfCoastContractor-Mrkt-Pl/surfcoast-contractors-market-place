@@ -6,6 +6,7 @@ import { base44 } from '@/api/base44Client';
 import { cn } from '@/lib/utils';
 import AboutNavLinks from './AboutNavLinks';
 import NotificationBell from '@/components/notifications/NotificationBell';
+import { useWaveOSEligibility } from '@/hooks/useWaveOSEligibility';
 
 // Grouped "Explore" mega-menu items for logged-out visitors
 const exploreGroups = [
@@ -50,10 +51,12 @@ export default function LayoutHeader({
   hasMarketShop,
   hasCustomerProfile,
   unreadCount,
+  userEmail,
 }) {
   const navigate = useNavigate();
   const [exploreOpen, setExploreOpen] = useState(false);
   const navLinks = useMemo(() => getNavLinks(isContractor), [isContractor, getNavLinks]);
+  const { data: waveOSInfo } = useWaveOSEligibility(userEmail);
 
   const handleLogout = () => {
     setAccountMenuOpen(false);
@@ -170,6 +173,7 @@ export default function LayoutHeader({
                   onLogout={handleLogout}
                   setAccountMenuOpen={setAccountMenuOpen}
                   unreadCount={unreadCount}
+                  waveOSInfo={waveOSInfo}
                 />
               )}
             </div>
@@ -198,6 +202,7 @@ export default function LayoutHeader({
                   setAccountMenuOpen={setAccountMenuOpen}
                   unreadCount={unreadCount}
                   isMobile
+                  waveOSInfo={waveOSInfo}
                 />
               </div>
             )}
@@ -243,6 +248,7 @@ function AccountDropdown({
   setAccountMenuOpen,
   isMobile,
   unreadCount,
+  waveOSInfo,
 }) {
   const navigate = useNavigate();
 
@@ -285,6 +291,25 @@ function AccountDropdown({
 
       {/* Scrollable body */}
       <div className="overflow-y-auto flex-1">
+
+        {/* WAVE OS Button — Mobile Only */}
+        {waveOSInfo?.eligible && (
+          <>
+            <Item
+              path="/FieldOps"
+              icon={Zap}
+              className={cn(
+                "font-semibold",
+                waveOSInfo.color === 'amber'
+                  ? "text-amber-600 hover:bg-amber-50"
+                  : "text-blue-600 hover:bg-blue-50"
+              )}
+            >
+              {waveOSInfo.label}
+            </Item>
+            <Divider />
+          </>
+        )}
 
         {/* Navigate */}
         <SectionLabel>Navigate</SectionLabel>

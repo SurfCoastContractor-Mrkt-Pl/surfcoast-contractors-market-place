@@ -11,6 +11,7 @@ import LayoutFooter from '@/components/layout/LayoutFooter';
 import useGeoCheck from './components/security/useGeoCheck';
 import { useConsumerMode } from '@/lib/ConsumerModeContext';
 import { useUserData, useUserProfiles, useUnreadCount } from '@/hooks/useUserData';
+import { useWaveOSEligibility } from '@/hooks/useWaveOSEligibility';
 import AccountStatusGate from '@/components/contractor/AccountStatusGate';
 
 const customerLinks = [
@@ -111,6 +112,7 @@ export default function Layout({ children, currentPageName }) {
         hasCustomerProfile={hasCustomerProfile}
         createPageUrl={createPageUrl}
         unreadCount={unreadCount}
+        userEmail={user?.email}
       />
 
       <LayoutMobileMenu
@@ -125,6 +127,7 @@ export default function Layout({ children, currentPageName }) {
         hasMarketShop={hasMarketShop}
         hasCustomerProfile={hasCustomerProfile}
         createPageUrl={createPageUrl}
+        userEmail={user?.email}
       />
 
       <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
