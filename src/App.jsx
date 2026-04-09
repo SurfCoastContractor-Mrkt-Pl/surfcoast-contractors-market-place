@@ -11,32 +11,32 @@ import ErrorBoundary from '@/lib/ErrorBoundary';
 import { getPageGradient } from '@/lib/pageGradient';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
-import ContractorFinancialDashboard from './pages/ContractorFinancialDashboard';
-import ContractorAccount from './pages/ContractorAccount';
-import ContractorBusinessHub from './pages/ContractorBusinessHub';
+import EntrepreneurFinancialDashboard from './pages/EntrepreneurFinancialDashboard';
+import EntrepreneurAccount from './pages/EntrepreneurAccount';
+import EntrepreneurBusinessHub from './pages/EntrepreneurBusinessHub';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
-import ContractorPublicProfile from './pages/ContractorPublicProfile';
+import EntrepreneurPublicProfile from './pages/EntrepreneurPublicProfile';
 import FindContractors from './pages/FindContractors';
 import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
 import RoleChoice from './pages/RoleChoice';
 import SearchAnalytics from './pages/SearchAnalytics';
-import ContractorInquiries from './pages/ContractorInquiries';
+import EntrepreneurInquiries from './pages/EntrepreneurInquiries';
 import BecomeContractor from './pages/BecomeContractor';
 import MarketShopSignup from './pages/MarketShopSignup';
 import CustomerSignup from './pages/CustomerSignup';
 import ProjectManagement from './pages/ProjectManagement';
 import QuoteRequestWizard from './pages/QuoteRequestWizard';
 import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
-import ContractorQuotesManagement from './pages/ContractorQuotesManagement';
+import EntrepreneurQuotesManagement from './pages/EntrepreneurQuotesManagement';
 import WaveFo from './pages/FieldOps';
 import AdminWaveFo from './pages/AdminFieldOps';
-import ContractorBillingHistory from './pages/ContractorBillingHistory';
+import EntrepreneurBillingHistory from './pages/EntrepreneurBillingHistory';
 import WaveFoReporting from './pages/FieldOpsReporting';
-import ContractorVerificationDashboard from './pages/ContractorVerificationDashboard';
+import EntrepreneurVerificationDashboard from './pages/EntrepreneurVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
 import ComplianceGuide from './pages/ComplianceGuide';
 import PaymentDemo from './pages/PaymentDemo';
@@ -51,12 +51,12 @@ import ClientPortal from './pages/ClientPortal';
 import PublicFAQ from './pages/PublicFAQ';
 import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
 import MarketShopInventory from './pages/MarketShopInventory';
-import ContractorServices from './pages/ContractorServices';
+import EntrepreneurServices from './pages/EntrepreneurServices';
 import JobExpenseTracker from './pages/JobExpenseTracker';
-import ContractorInventoryDashboard from './pages/ContractorInventoryDashboard';
+import EntrepreneurInventoryDashboard from './pages/EntrepreneurInventoryDashboard';
 import MultiOptionProposals from './pages/MultiOptionProposals';
 import CustomerPortal from './pages/CustomerPortal';
-import ContractorInventory from './pages/ContractorInventory';
+import EntrepreneurInventory from './pages/EntrepreneurInventory';
 import AvailabilityManager from './pages/AvailabilityManager';
 import QuickBooksExport from './pages/QuickBooksExport';
 import AISchedulingAssistant from './pages/AISchedulingAssistant';
@@ -83,19 +83,19 @@ import AlertManagementDashboard from './pages/AlertManagementDashboard';
 import RemediationDashboard from './pages/RemediationDashboard';
 import Admin from './pages/Admin';
 import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
-import ContractorJobPipeline from './pages/ContractorJobPipeline';
+import EntrepreneurJobPipeline from './pages/EntrepreneurJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import PostJob from './pages/PostJob';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
-import ContractorWorkloadHub from './pages/ContractorWorkloadHub';
+import EntrepreneurWorkloadHub from './pages/EntrepreneurWorkloadHub';
 import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
-import ContractorMyDay from './pages/ContractorMyDay';
+import EntrepreneurMyDay from './pages/EntrepreneurMyDay';
 import TradeLanding from './pages/TradeLanding';
-import ContractorTrialDashboard from './pages/ContractorTrialDashboard';
+import EntrepreneurTrialDashboard from './pages/EntrepreneurTrialDashboard';
 import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
 import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
 import UnifiedDashboard from './pages/UnifiedDashboard';
@@ -305,47 +305,17 @@ const AuthenticatedApp = () => {
           <ConsumerSignup />
         </LayoutWrapper>
       } />
-      <Route path="/ContractorAccount" element={
-        <LayoutWrapper currentPageName="ContractorAccount">
-          <ContractorAccount />
-        </LayoutWrapper>
-      } />
-      <Route path="/contractorAccount" element={
-        <Navigate to="/ContractorAccount" replace />
-      } />
-      <Route path="/ContractorBillingHistory" element={
-        <LayoutWrapper currentPageName="ContractorBillingHistory">
-          <ContractorBillingHistory />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorBusinessHub" element={
-        <LayoutWrapper currentPageName="ContractorBusinessHub">
-          <ContractorBusinessHub />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorFinancialDashboard" element={
-        <LayoutWrapper currentPageName="ContractorFinancialDashboard">
-          <ContractorFinancialDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorInquiries" element={
-        <LayoutWrapper currentPageName="ContractorInquiries">
-          <ContractorInquiries />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorQuotesManagement" element={
-        <LayoutWrapper currentPageName="ContractorQuotesManagement">
-          <ContractorQuotesManagement />
-        </LayoutWrapper>
-      } />
-      <Route path="/ContractorVerificationDashboard" element={
-        <LayoutWrapper currentPageName="ContractorVerificationDashboard">
-          <ContractorVerificationDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/contractor/:contractorId" element={
-        <LayoutWrapper currentPageName="ContractorPublicProfile">
-          <ContractorPublicProfile />
+      <Route path="/EntrepreneurAccount" element={
+      <Route path="/entrepreneurAccount" element={
+      <Route path="/EntrepreneurBillingHistory" element={
+      <Route path="/EntrepreneurBusinessHub" element={
+      <Route path="/EntrepreneurFinancialDashboard" element={
+      <Route path="/EntrepreneurInquiries" element={
+      <Route path="/EntrepreneurQuotesManagement" element={
+      <Route path="/EntrepreneurVerificationDashboard" element={
+      <Route path="/entrepreneur/:entrepreneurId" element={
+        <LayoutWrapper currentPageName="EntrepreneurPublicProfile">
+          <EntrepreneurPublicProfile />
         </LayoutWrapper>
       } />
       <Route path="/SearchContractors" element={
@@ -356,19 +326,19 @@ const AuthenticatedApp = () => {
       <Route path="/searchcontractors" element={
         <Navigate to="/SearchContractors" replace />
       } />
-      <Route path="/contractor-inventory" element={
-        <LayoutWrapper currentPageName="ContractorInventoryDashboard">
-          <ContractorInventoryDashboard />
+      <Route path="/entrepreneur-inventory" element={
+        <LayoutWrapper currentPageName="EntrepreneurInventoryDashboard">
+          <EntrepreneurInventoryDashboard />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-inventory-management" element={
-        <LayoutWrapper currentPageName="ContractorInventory">
-          <ContractorInventory />
+      <Route path="/entrepreneur-inventory-management" element={
+        <LayoutWrapper currentPageName="EntrepreneurInventory">
+          <EntrepreneurInventory />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-services" element={
-        <LayoutWrapper currentPageName="ContractorServices">
-          <ContractorServices />
+      <Route path="/entrepreneur-services" element={
+        <LayoutWrapper currentPageName="EntrepreneurServices">
+          <EntrepreneurServices />
         </LayoutWrapper>
       } />
       <Route path="/CustomerSignup" element={
@@ -428,8 +398,8 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/job-pipeline" element={
-        <LayoutWrapper currentPageName="ContractorJobPipeline">
-          <ContractorJobPipeline />
+        <LayoutWrapper currentPageName="EntrepreneurJobPipeline">
+          <EntrepreneurJobPipeline />
         </LayoutWrapper>
       } />
       <Route path="/leaderboard" element={
@@ -608,8 +578,8 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/workload-hub" element={
-        <LayoutWrapper currentPageName="ContractorWorkloadHub">
-          <ContractorWorkloadHub />
+        <LayoutWrapper currentPageName="EntrepreneurWorkloadHub">
+          <EntrepreneurWorkloadHub />
         </LayoutWrapper>
       } />
       <Route path="/sms-hub" element={
@@ -628,8 +598,8 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/my-day" element={
-        <LayoutWrapper currentPageName="ContractorMyDay">
-          <ContractorMyDay />
+        <LayoutWrapper currentPageName="EntrepreneurMyDay">
+          <EntrepreneurMyDay />
         </LayoutWrapper>
       } />
       <Route path="/contractors/:slug" element={
@@ -637,9 +607,9 @@ const AuthenticatedApp = () => {
           <TradeLanding />
         </LayoutWrapper>
       } />
-      <Route path="/contractor-trial" element={
-        <LayoutWrapper currentPageName="ContractorTrialDashboard">
-          <ContractorTrialDashboard />
+      <Route path="/entrepreneur-trial" element={
+        <LayoutWrapper currentPageName="EntrepreneurTrialDashboard">
+          <EntrepreneurTrialDashboard />
         </LayoutWrapper>
       } />
       <Route path="/customer-trial" element={
