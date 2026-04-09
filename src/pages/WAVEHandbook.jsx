@@ -553,6 +553,141 @@ export default function WAVEHandbook() {
       ],
     },
     {
+      id: 12,
+      title: 'Platform Enhancements – April 9, 2026',
+      sections: [
+        {
+          id: '12.1',
+          title: 'Sun Glare & Thumbs Interface – Field-First UI',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Deployed April 9, 2026 — Field operations action buttons redesigned for one-handed outdoor use.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Changed</h4>
+                <p className="text-slate-600">The job action buttons inside WAVE OS (Add Photos, Capture Location, Job Notes, Get Signature, Mark Complete, Share/Message) have been redesigned with larger touch targets — minimum 80px tall — and bolder text. Active state is now visually distinct with a white border highlight so you always know what's selected, even in direct sunlight.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why It Matters</h4>
+                <p className="text-slate-600">Contractors work with one hand, sometimes with gloves, and often under direct sunlight. Small buttons and thin text fail in these conditions. This update prioritizes the physical reality of field work — your app should be as easy to use on a roof as it is at a desk.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '12.2',
+          title: 'Offline Status Bar – Real-Time Connectivity Feedback',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Deployed April 9, 2026 — Live connectivity indicator now active in WAVE OS.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">A persistent status bar appears at the top of WAVE OS whenever your connection drops. It shows a clear red banner reading "Offline — job data cached locally" so you always know your current connectivity state.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">When You Reconnect</h4>
+                <p className="text-slate-600">The moment your phone reconnects, the bar turns green and shows "Back online" with a "Sync Now" button if there are pending items queued from offline work. This auto-dismisses after a few seconds once sync is confirmed.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why It Matters</h4>
+                <p className="text-slate-600">Dead zones are a reality — concrete basements, remote properties, and rural job sites all have connectivity gaps. You should never wonder whether the app is working or your network is down. This bar eliminates that uncertainty.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '12.3',
+          title: 'AI Business Insights – Personalized Recommendations',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-violet-50 border border-violet-200 rounded-lg text-xs text-violet-800 font-medium">
+                🆕 Deployed April 9, 2026 — AI-powered business insights now live on the Contractor Business Hub dashboard.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">A new "AI Business Insights" panel sits at the top of your Business Hub dashboard. Click "Generate" and the system analyzes your actual data — completed jobs, rating, earnings, active scopes, availability status, location, and trade — and returns 3 specific, actionable recommendations.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Kind of Insights</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Pricing Strategy:</strong> Based on your completed job count and earnings, the AI may suggest adjusting your rate.</li>
+                  <li><strong>Lead Generation Timing:</strong> Based on your availability and active scopes, suggestions on when to push for new work.</li>
+                  <li><strong>Profile Optimization:</strong> Specific improvements to your public profile that could increase booking rates.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How to Use It</h4>
+                <p className="text-slate-600">Navigate to Contractor Business Hub → Dashboard tab. Click "Generate" on the AI Business Insights card. Results appear in seconds. Click "Refresh" any time to regenerate based on your latest data.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '12.4',
+          title: 'Real-Time Project Messaging – Live Inside Active Scopes',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Deployed April 9, 2026 — Real-time messaging now embedded directly in the Scopes tab for all approved jobs.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">Every approved scope of work now has a live project message thread embedded directly below the milestones section. Messages appear instantly — no page refresh needed. A green "Live" indicator confirms the connection is active.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How It Works</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Messages are scoped to the specific job — only contractor and client see them.</li>
+                  <li>New messages from the other party appear automatically via real-time subscription.</li>
+                  <li>Unread messages are marked as read the moment you view the thread.</li>
+                  <li>Press Enter to send — or use the send button.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Where to Find It</h4>
+                <p className="text-slate-600">Business Hub → Jobs & Projects → Scopes tab → expand any approved scope → scroll below milestones.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '12.5',
+          title: 'Compliance Expiry Monitor – Proactive Document Alerts',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                🆕 Deployed April 9, 2026 — Automated expiry alerts now active in the Documents tab.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">A Compliance Expiry Monitor now sits at the top of your Documents tab. It automatically reads your insurance expiry, contractor license expiry, bond expiry, and any additional certification expiry dates — and color-codes them based on urgency.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Color-Coded Alert System</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong className="text-red-600">Red — Expired:</strong> Document has already passed its expiration date. Action required immediately.</li>
+                  <li><strong className="text-amber-600">Amber — Urgent (within 30 days):</strong> Expiring very soon. Renew now.</li>
+                  <li><strong className="text-yellow-600">Yellow — Warning (31–60 days):</strong> Approaching expiration. Plan your renewal.</li>
+                  <li><strong className="text-green-600">Green — Current:</strong> Document is valid with plenty of time remaining.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Why It Matters</h4>
+                <p className="text-slate-600">An expired insurance policy or contractor license can disqualify you from accepting jobs on the platform — and in some states, expose you to legal liability. This monitor ensures you're never caught off guard by a lapsed document.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Where to Find It</h4>
+                <p className="text-slate-600">Business Hub → Profile & Credentials → Documents tab → top of page.</p>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
       id: 9,
       title: 'Platform Updates – April 9, 2026',
       sections: [

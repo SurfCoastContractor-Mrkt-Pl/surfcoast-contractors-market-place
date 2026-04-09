@@ -6,7 +6,7 @@ export default function WAVEOSEcosystemOverview() {
 
       {/* Last Updated Banner */}
       <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
-        📅 Last Updated: April 8, 2026 — Residential Bundle removed. Messaging policy updated for Max &amp; Premium tiers.
+        📅 Last Updated: April 9, 2026 — Platform enhancements deployed: Sun Glare UI, Offline Status Bar, AI Business Insights, Real-time Project Messaging, and Compliance Expiry Monitor.
       </div>
 
       <div>
