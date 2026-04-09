@@ -67,7 +67,7 @@ export default function WAVEHandbook() {
     },
     {
       id: 1,
-      title: 'Getting Started with WAVE OS',
+      title: 'Getting Started as an Entrepreneur',
       sections: [
         {
           id: '1.1',
@@ -76,18 +76,22 @@ export default function WAVEHandbook() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Feature</h4>
-                <p className="text-slate-600">Comprehensive profile where you showcase your skills, certifications, and portfolio.</p>
+                <p className="text-slate-600">Comprehensive profile where you showcase your skills, certifications, and portfolio. Every entrepreneur gets a free Basic Profile — no credit card, no expiration, no trial.</p>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Benefit</h4>
-                <p className="text-slate-600">Attract the right clients and jobs by highlighting your expertise. Builds trust and establishes your professional brand.</p>
+                <p className="text-slate-600">Attract the right clients and jobs by highlighting your expertise. Builds trust and establishes your professional brand. Your profile stays live and searchable for as long as you want it.</p>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Tools</h4>
                 <ul className="list-disc list-inside text-slate-600 space-y-1">
-                  <li><strong>Profile Editor:</strong> Update your bio, add photos, list services.</li>
-                  <li><strong>Credential Manager:</strong> Upload licenses, certifications, and insurance documents for verification.</li>
+                  <li><strong>Profile Editor:</strong> Update your bio, add photos, list services, and select your line of work.</li>
+                  <li><strong>Credential Manager:</strong> Upload licenses, certifications, insurance documents, and bond documents for verification.</li>
+                  <li><strong>Identity Verification:</strong> Upload a government-issued ID and face photo to establish trust with clients.</li>
                 </ul>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                <strong>Always Free:</strong> Your public listing, job request reception, basic inquiry responses, reviews & ratings, and mobile access are free forever. No credit card required.
               </div>
             </div>
           ),
@@ -119,7 +123,7 @@ export default function WAVEHandbook() {
     },
     {
       id: 2,
-      title: 'Managing Your Work – Efficiency in Your Pocket',
+      title: 'Managing Your Work in the Field',
       sections: [
         {
           id: '2.1',
@@ -268,7 +272,7 @@ export default function WAVEHandbook() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Feature</h4>
-                <p className="text-slate-600">Create and send professional invoices directly from your device.</p>
+                <p className="text-slate-600">Create and send professional invoices directly from your device. Automated invoice generation is available on WAVE OS Pro and above.</p>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Benefit</h4>
@@ -278,7 +282,9 @@ export default function WAVEHandbook() {
                 <h4 className="font-semibold text-slate-900 mb-2">Tools</h4>
                 <ul className="list-disc list-inside text-slate-600 space-y-1">
                   <li><strong>Invoice Builder:</strong> Generate detailed invoices for completed work.</li>
-                  <li><strong>PDF Export:</strong> Provide clients with a professional PDF invoice.</li>
+                  <li><strong>PDF Export:</strong> Provide clients with a professional PDF invoice. (WAVE OS Pro+)</li>
+                  <li><strong>Custom Invoice Branding:</strong> Add your logo and contact info. (WAVE OS Max+)</li>
+                  <li><strong>Residential Invoicing Suite:</strong> Full residential invoice management and tracking. (WAVE OS Premium only)</li>
                 </ul>
               </div>
             </div>
@@ -286,23 +292,35 @@ export default function WAVEHandbook() {
         },
         {
           id: '4.2',
-          title: 'Payment Processing – Secure & Convenient',
+          title: 'Platform Fee & Payment Processing',
           content: (
             <div className="space-y-4">
-              <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Feature</h4>
-                <p className="text-slate-600">Securely accept payments from clients via various methods.</p>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 font-semibold">
+                ⚠️ All jobs completed through SurfCoast are subject to an <strong>18% facilitation fee</strong>. This is automatically collected via Stripe. You receive <strong>82%</strong> directly to your connected bank account.
               </div>
               <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Benefit</h4>
-                <p className="text-slate-600">Offer flexible payment options, reduce payment delays, and ensure you get paid for your hard work.</p>
+                <h4 className="font-semibold text-slate-900 mb-2">How It Works</h4>
+                <p className="text-slate-600">When a client pays for a completed job through the platform, SurfCoast automatically collects the 18% facilitation fee via Stripe. The remaining 82% is sent directly to your Stripe Connect account and deposited to your bank.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What the Fee Covers</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Payment processing infrastructure (Stripe)</li>
+                  <li>Dispute protection and resolution support</li>
+                  <li>Platform compliance and insurance framework</li>
+                  <li>Documentation and audit trail for every job</li>
+                </ul>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Tools</h4>
                 <ul className="list-disc list-inside text-slate-600 space-y-1">
-                  <li><strong>Stripe Integration:</strong> Process credit card and ACH payments.</li>
-                  <li><strong>Payment Tracking:</strong> Monitor the status of your invoices and payments.</li>
+                  <li><strong>Stripe Connect:</strong> Securely link your bank account to receive payouts.</li>
+                  <li><strong>Payment Tracking:</strong> Monitor invoice and payment status in real time.</li>
+                  <li><strong>Escrow Support:</strong> Milestone-based payment hold and release. (WAVE OS Max+)</li>
                 </ul>
+              </div>
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+                <strong>Important:</strong> Accepting or requesting payment outside of SurfCoast violates platform policy and can result in immediate account suspension. All transactions must flow through the platform.
               </div>
             </div>
           ),
@@ -323,8 +341,10 @@ export default function WAVEHandbook() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Tools</h4>
                 <ul className="list-disc list-inside text-slate-600 space-y-1">
-                  <li><strong>Earnings Reports:</strong> Summarize your income over various periods.</li>
-                  <li><strong>QuickBooks Export:</strong> Easily transfer your financial data for accounting.</li>
+                  <li><strong>Earnings Reports:</strong> Summarize your income over various periods. (WAVE OS Pro+)</li>
+                  <li><strong>Analytics Dashboard:</strong> Performance stats across jobs, ratings, and earnings. (WAVE OS Pro+)</li>
+                  <li><strong>QuickBooks CSV Export:</strong> Transfer your financial data for accounting. (WAVE OS Max+)</li>
+                  <li><strong>Payout Breakdown:</strong> See the 18% fee and your 82% net payout per job.</li>
                 </ul>
               </div>
             </div>
@@ -976,7 +996,7 @@ export default function WAVEHandbook() {
             <h1 className="text-4xl font-bold text-slate-900">WAVE Handbook</h1>
           </div>
           <p className="text-lg text-slate-600">Master Your Trade, On Your Terms.</p>
-          <p className="text-slate-500 mt-2">Your comprehensive guide to running a successful contracting business with WAVE OS.</p>
+          <p className="text-slate-500 mt-2">Your comprehensive guide to running a successful independent business with WAVE OS.</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">

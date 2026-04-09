@@ -6,7 +6,7 @@ export default function WAVEOSEcosystemOverview() {
 
       {/* Last Updated Banner */}
       <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
-        📅 Last Updated: April 9, 2026 — Platform enhancements deployed: Sun Glare UI, Offline Status Bar, AI Business Insights, Real-time Project Messaging, and Compliance Expiry Monitor.
+        📅 Last Updated: April 9, 2026 — Platform enhancements deployed: Sun Glare UI, Offline Status Bar, AI Business Insights, Real-time Project Messaging, and Compliance Expiry Monitor. Pricing verified against live Pricing page.
       </div>
 
       <div>
@@ -18,9 +18,9 @@ export default function WAVEOSEcosystemOverview() {
 
       {/* WAVE OS Section */}
       <div>
-        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE OS (Contractor System)</h4>
+        <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE OS (For Independent Entrepreneurs)</h4>
         <p className="text-slate-700 mb-4">
-          This system is exclusively for contractors who source projects from <code className="bg-slate-100 px-2 py-1 rounded">SurfCoastcmp.com</code> client postings.
+          This system is for independent entrepreneurs and tradespeople who source projects from <code className="bg-slate-100 px-2 py-1 rounded">SurfCoastcmp.com</code> client postings. All jobs are subject to an <strong>18% facilitation fee</strong> — you receive 82% to your connected bank account.
         </p>
 
         <div className="overflow-x-auto">

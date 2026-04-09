@@ -7,7 +7,7 @@ export default function AboutWAVEOS() {
       <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">About WAVE OS</h2>
       
       <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-        At SurfCoast, we understand the challenges independent contractors face. You're not just a skilled professional; you're a business owner, a project manager, a client liaison, and often, your own accountant. Many tools on the market address one or two aspects of your work, leaving you juggling multiple apps, drowning in paperwork, and struggling to prove your professionalism.
+        At SurfCoast, we understand the challenges independent entrepreneurs face. You're not just a skilled professional; you're a business owner, a project manager, a client liaison, and often, your own accountant. Many tools on the market address one or two aspects of your work, leaving you juggling multiple apps, drowning in paperwork, and struggling to prove your professionalism.
       </p>
 
       <div className="grid md:grid-cols-2 gap-8">
@@ -50,7 +50,7 @@ export default function AboutWAVEOS() {
       </div>
 
       <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed pt-4">
-        WAVE OS is more than just software—it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace.
+        WAVE OS is more than just software — it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace. Every job processed through the platform is subject to an <strong>18% facilitation fee</strong>, collected automatically via Stripe. You receive 82% directly to your connected bank account.
       </p>
     </div>
   );
