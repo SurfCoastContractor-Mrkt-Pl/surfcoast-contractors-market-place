@@ -53,7 +53,7 @@ export default function WaveFOProfile({ contractor, user, onUpdate }) {
           <div className="flex-1 min-w-0">
             <h2 className="text-slate-800 text-xl font-bold">{contractor.name}</h2>
             <p className="text-slate-500 text-sm capitalize mt-0.5">
-              {contractor.line_of_work?.replace(/_/g, ' ') || contractor.trade_specialty || 'Contractor'}
+              {contractor.line_of_work?.replace(/_/g, ' ') || contractor.trade_specialty || 'Entrepreneur'}
             </p>
             {contractor.location && (
               <div className="flex items-center gap-1 mt-1">
