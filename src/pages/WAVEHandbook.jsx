@@ -617,6 +617,35 @@ export default function WAVEHandbook() {
           ),
         },
         {
+          id: '5.0',
+          title: 'Free Basic Profile – Always Free, No Card Required',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">Every professional on SurfCoast gets a free public profile — no credit card, no expiration, no trial. Your profile stays live and searchable for as long as you want it.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What's Included (Free Forever)</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Public listing and discovery</li>
+                  <li>Receive job requests from clients</li>
+                  <li>Basic inquiry responses</li>
+                  <li>Reviews and ratings</li>
+                  <li>Mobile access</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                <strong>Note:</strong> Communication sessions still cost $1.50 per 10-minute session (or $50/month for unlimited) when you're ready to connect with a potential client. The profile itself is always free.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">WAVE OS is Optional</h4>
+                <p className="text-slate-600">WAVE OS subscriptions (Starter, Pro, Max, Premium) are optional upgrades that unlock additional tools, but you are never required to subscribe to maintain a live profile on the platform.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
           id: '5.2',
           title: 'Inventory Management – Keep Track of Your Assets',
           content: (
@@ -635,6 +664,114 @@ export default function WAVEHandbook() {
                   <li><strong>Equipment List:</strong> Keep a digital inventory of your tools.</li>
                   <li><strong>Usage Tracker:</strong> Log which materials are used for each job.</li>
                 </ul>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 10,
+      title: 'Trial, Founding Members & Referrals',
+      sections: [
+        {
+          id: '10.1',
+          title: 'Founding 100 – One Full Year Free',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🌟 First 100 signups only — no credit card, no conditions.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">The first 100 contractors and vendors to sign up on SurfCoast receive one full year of all-access platform use at no cost. No credit card required. No auto-charge at the end. No conditions.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Who Qualifies</h4>
+                <p className="text-slate-600">The Founding 100 spots are filled on a first-come, first-served basis across all user types — contractors, market shop vendors, and consumers combined.</p>
+              </div>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Important:</strong> Founding 100 members do NOT participate in the 5-for-1 referral loop — they already have their full year free and cannot extend it further through referrals.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '10.2',
+          title: 'Standard 14-Day Free Trial',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Is</h4>
+                <p className="text-slate-600">After the Founding 100 spots are filled, every new signup receives a <strong>14-day free trial</strong> with full platform access. No auto-charges at the end of the trial — you choose whether to subscribe.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What's Included</h4>
+                <p className="text-slate-600">Full access to all platform features during the trial window — the same access as a paid subscriber. No restricted features, no paywalls during your trial.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">After the Trial</h4>
+                <p className="text-slate-600">At the end of your 14-day trial, your account remains active on the free Basic Profile tier unless you choose to subscribe to a WAVE OS plan.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '10.3',
+          title: 'The 5-for-1 Referral Loop – Extend Your Trial',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                ⚡ Only active during your 14-day trial window. Does not apply after trial expiry or for Founding 100 members.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How It Works</h4>
+                <p className="text-slate-600">During your active 14-day trial, you can earn <strong>1 additional free trial day</strong> for every 5 people you refer who successfully sign up on the platform. This loop is stackable — refer 10, earn 2 extra days; refer 50, earn 10 extra days.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Rules</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Referrals must be new, successful signups (not existing users).</li>
+                  <li>The loop only operates while your trial is still active.</li>
+                  <li>Once the trial expires, referrals no longer extend access.</li>
+                  <li>Founding 100 members are not eligible — they already have a full year free.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700">
+                <strong>Example:</strong> You sign up, get 14 days free. You refer 15 people during that window. That earns you 3 extra days (15 ÷ 5 = 3), extending your trial to 17 days total.
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 11,
+      title: 'Client Pricing – What Clients Pay',
+      sections: [
+        {
+          id: '11.1',
+          title: 'How Clients Connect with Contractors',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Browsing is Always Free</h4>
+                <p className="text-slate-600">Clients can browse all contractor profiles, view portfolios, read reviews, and compare options at no cost. No account required to browse.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging — $1.50 per 10-minute session</h4>
+                <p className="text-slate-600">To initiate a direct conversation with a contractor, clients pay $1.50 for a 10-minute timed session. Alternatively, clients can subscribe to the $50/month unlimited messaging plan to communicate with multiple contractors without per-session fees.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Proposal Requests — $1.75 (one-time per contractor)</h4>
+                <p className="text-slate-600">Clients can send a detailed project proposal request to a specific contractor for $1.75. This delivers the client's project details, budget, and timeline directly to the contractor's inbox. The contractor responds with their estimate — no additional charge to the client.</p>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                <strong>For Contractors:</strong> Responding to a client's proposal request is always free. Contractors are never charged to reply to inbound RFPs.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Unlimited Messaging Plan — $50/month</h4>
+                <p className="text-slate-600">Clients who need to communicate with multiple contractors regularly can subscribe to the $50/month unlimited messaging plan — full conversation threads with any contractor, no per-session fees.</p>
               </div>
             </div>
           ),
