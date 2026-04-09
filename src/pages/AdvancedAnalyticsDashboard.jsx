@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, TrendingUp, Activity, CheckCircle, AlertTriangle } from 'lucide-react';
+import { AlertCircle, TrendingUp, Activity, CheckCircle, AlertTriangle, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SEVERITY_COLORS = {
   critical: 'bg-red-100 text-red-900 border-red-300',
@@ -18,6 +19,16 @@ const SEVERITY_ICONS = {
 };
 
 export default function AdvancedAnalyticsDashboard() {
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    base44.auth.me().then(user => {
+      setIsAdmin(user?.role === 'admin');
+      setAuthChecked(true);
+    }).catch(() => setAuthChecked(true));
+  }, []);
+
   const { data: insights = [], isLoading } = useQuery({
     queryKey: ['analyticsInsights'],
     queryFn: async () => {
@@ -53,6 +64,29 @@ export default function AdvancedAnalyticsDashboard() {
   const criticalInsights = insights.filter(i => i.severity === 'critical');
   const warningInsights = insights.filter(i => i.severity === 'warning');
   const infoInsights = insights.filter(i => i.severity === 'info');
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
+        <div className="text-center max-w-sm w-full">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-8 h-8 text-red-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">Admin Access Only</h1>
+          <p className="text-slate-500 text-sm mb-6">Advanced Analytics is restricted to platform administrators.</p>
+          <Link to="/" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">← Back to Home</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
