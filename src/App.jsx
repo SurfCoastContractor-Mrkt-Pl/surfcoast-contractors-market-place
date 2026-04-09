@@ -11,7 +11,6 @@ import ErrorBoundary from '@/lib/ErrorBoundary';
 import { getPageGradient } from '@/lib/pageGradient';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
-import EntrepreneurAccount from './pages/EntrepreneurAccount';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -31,7 +30,6 @@ import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
 import EntrepreneurQuotesManagement from './pages/EntrepreneurQuotesManagement';
 import WaveFo from './pages/FieldOps';
 import AdminWaveFo from './pages/AdminFieldOps';
-import EntrepreneurBillingHistory from './pages/EntrepreneurBillingHistory';
 import WaveFoReporting from './pages/FieldOpsReporting';
 import EntrepreneurVerificationDashboard from './pages/EntrepreneurVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
@@ -302,21 +300,8 @@ const AuthenticatedApp = () => {
           <ConsumerSignup />
         </LayoutWrapper>
       } />
-      <Route path="/EntrepreneurAccount" element={
-        <LayoutWrapper currentPageName="EntrepreneurAccount">
-          <EntrepreneurAccount />
-        </LayoutWrapper>
-      } />
-      <Route path="/entrepreneurAccount" element={
-        <LayoutWrapper currentPageName="EntrepreneurAccount">
-          <EntrepreneurAccount />
-        </LayoutWrapper>
-      } />
-      <Route path="/EntrepreneurBillingHistory" element={
-        <LayoutWrapper currentPageName="EntrepreneurBillingHistory">
-          <EntrepreneurBillingHistory />
-        </LayoutWrapper>
-      } />
+
+
 
 
       <Route path="/EntrepreneurInquiries" element={
