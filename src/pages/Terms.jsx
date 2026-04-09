@@ -57,6 +57,12 @@ export default function Terms() {
           <p className="text-slate-700 leading-relaxed">
             Service providers are solely responsible for their legal status and all associated obligations.
           </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
+            <p className="text-amber-900 text-sm font-semibold mb-1">AB 5 Compliance Notice — Control of Work</p>
+            <p className="text-amber-800 text-sm leading-relaxed">
+              SurfCoast Marketplace does not control, direct, or supervise the manner or means by which any service provider performs their work. Service providers independently determine their own schedules, methods, tools, and processes. SurfCoast Marketplace does not set hours of work, require specific work attire, provide equipment, or dictate how services are delivered. The platform provides only a technology marketplace to connect independent service providers with potential clients. This relationship is consistent with independent contractor status under California Labor Code and AB 5.
+            </p>
+          </div>
         </div>
 
         {/* Section 3 */}

@@ -587,6 +587,39 @@ export default function WAVEHandbook() {
             </div>
           ),
         },
+        {
+          id: '9.2',
+          title: 'AB 5 Independent Contractor Clarification (April 9, 2026)',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                🆕 Updated April 9, 2026 — Terms of Service Section 2 strengthened for California AB 5 compliance.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Changed</h4>
+                <p className="text-slate-600">Section 2 of the Terms of Service has been updated to include an explicit AB 5 compliance notice addressing California's strict worker classification law. The new language makes clear that SurfCoast Marketplace does not control, direct, or supervise the manner or means by which any service provider performs their work.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What This Means for You</h4>
+                <p className="text-slate-600">As an independent contractor on SurfCoast, California law requires that the platform not exercise "control" over how you do your work. This update formally documents that:</p>
+                <ul className="list-disc list-inside text-slate-600 space-y-1 mt-2">
+                  <li>You set your own schedule, methods, tools, and process.</li>
+                  <li>SurfCoast does not require specific work attire or hours.</li>
+                  <li>SurfCoast does not provide your equipment.</li>
+                  <li>SurfCoast does not dictate how your services are delivered.</li>
+                  <li>You are operating as a genuinely independent service provider.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <strong>Why It Matters:</strong> The California Contractors State License Board (CSLB) and the EDD look for explicit language confirming platforms do not control work performance. This update protects both you and SurfCoast from misclassification risk under AB 5.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">No Action Required from You</h4>
+                <p className="text-slate-600">This is a platform-side legal update. Continued use of SurfCoast Marketplace constitutes acceptance of the updated Terms. You can review the full updated Terms of Service at any time via the footer link.</p>
+              </div>
+            </div>
+          ),
+        },
       ],
     },
     {
