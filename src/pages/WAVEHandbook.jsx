@@ -925,6 +925,476 @@ export default function WAVEHandbook() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Unlimited Messaging Plan — $50/month</h4>
                 <p className="text-slate-600">Clients who need to communicate with multiple contractors regularly can subscribe to the $50/month unlimited messaging plan — full conversation threads with any contractor, no per-session fees.</p>
+                </div>
+              </div>
+            ),
+          },
+        ],
+      },
+    {
+      id: 13,
+      title: 'Entrepreneur Portal – Your Navigation Hub',
+      sections: [
+        {
+          id: '13.1',
+          title: 'What the Entrepreneur Portal Is',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The Entrepreneur Portal (<code className="bg-slate-100 px-1 rounded">/ContractorAccount</code>) is your central navigation dashboard. It does not contain tools itself — it is a launch pad that links to every area of the platform. When you log in, this is your home base.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Core Tools</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>WAVE OS:</strong> Field operations — job scheduling, invoicing, GPS tracking, on-site tools.</li>
+                  <li><strong>Contractor Business Hub:</strong> Business management — leads, earnings, analytics, CRM, marketing, growth.</li>
+                  <li><strong>Financial Dashboard:</strong> Earnings summaries, platform fees, payout history, revenue charts.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Profile & Credentials</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>My Profile:</strong> Edit public profile, bio, skills, certifications, availability.</li>
+                  <li><strong>Portfolio & Gallery:</strong> Before/after photos, case studies, project galleries.</li>
+                  <li><strong>Badges & Achievements:</strong> Earned badges, tier progress, platform recognition.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Jobs & Projects</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>My Jobs:</strong> Browse open jobs, active postings, apply to opportunities.</li>
+                  <li><strong>Scopes of Work:</strong> Review, manage, and close out active scope agreements.</li>
+                  <li><strong>Proposals & Quotes:</strong> Manage incoming quote requests, send proposals to clients.</li>
+                  <li><strong>Scheduling:</strong> Set availability, manage bookings, plan your work calendar.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Growth & Engagement</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Analytics & Performance:</strong> Deep metrics on job performance, ratings, business trends.</li>
+                  <li><strong>Reviews & Testimonials:</strong> Manage customer reviews, respond, pin testimonials.</li>
+                  <li><strong>Referrals:</strong> Earn credits by referring new entrepreneurs and clients.</li>
+                  <li><strong>CRM & Clients:</strong> Track client relationships, contact history, follow-ups.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Account</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Inventory & Equipment:</strong> Track tools and equipment, get low-stock alerts.</li>
+                  <li><strong>Documents & Compliance:</strong> Upload licenses, bonds, insurance, compliance certificates.</li>
+                  <li><strong>Platform Fees & Payouts:</strong> View fees, download invoices, manage Stripe payout setup.</li>
+                  <li><strong>Account Settings:</strong> Security, contact info, payment methods, preferences.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 14,
+      title: 'Contractor Business Hub – All Tabs Explained',
+      sections: [
+        {
+          id: '14.1',
+          title: 'Business Overview Category',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The Business Hub (<code className="bg-slate-100 px-1 rounded">/ContractorBusinessHub</code>) is organized into 4 top-level categories. The <strong>Business Overview</strong> category contains the following tabs:</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>Dashboard:</strong> Real-time availability status, proactive AI insights, job dashboard, and analytics overview. This is your operational command center.</li>
+                <li><strong>Leads:</strong> Lead management dashboard showing all inbound inquiries from clients browsing your profile.</li>
+                <li><strong>Earnings:</strong> Earnings reports dashboard — income summaries by period, job-level breakdown.</li>
+                <li><strong>Analytics:</strong> Advanced analytics — deeper metrics on job performance, customer patterns, and business trends.</li>
+                <li><strong>Payouts:</strong> Payout management — view payout history, total paid out, average payout, Stripe Connect status.</li>
+                <li><strong>Fees:</strong> Platform fee status — download invoices for each confirmed payment. Invoice downloads are required before new scopes can be accepted.</li>
+                <li><strong>Referrals:</strong> Referral tracking — your unique referral link, successful referrals count, earned days/credits.</li>
+                <li><strong>Marketing:</strong> Marketing toolkit — share your profile, generate QR codes, social sharing tools.</li>
+                <li><strong>Automation:</strong> Automation & smart tools — workflow automation builder for repeat tasks.</li>
+                <li><strong>CRM:</strong> Client Relationship Manager — full contact history, notes, follow-up tracking for all past and current clients.</li>
+                <li><strong>Team:</strong> Team management hub — add team members, assign roles, manage multi-person operations.</li>
+                <li><strong>Challenges:</strong> Game challenges dashboard — track skill challenges you have sent to clients, view completion status, browse Trade Games.</li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: '14.2',
+          title: 'Jobs & Projects Category',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The <strong>Jobs & Projects</strong> category contains all active work management tools:</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>My Jobs:</strong> Browse all available open jobs on the platform. Apply, view details, and track which jobs you have been awarded.</li>
+                <li><strong>Scopes:</strong> All your Scope of Work agreements. Active scopes show a badge count. Approved scopes display:
+                  <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
+                    <li>Project progress bar (if progress payments are set up)</li>
+                    <li>Project Milestones manager</li>
+                    <li>Real-time project message thread (live, no page refresh needed)</li>
+                    <li>Sidebar Chat button</li>
+                    <li>Close Out button (requires invoices downloaded first)</li>
+                  </ul>
+                </li>
+                <li><strong>Proposals:</strong> Incoming quote requests from clients (RFPs). Responding to these is always free. Shows a red badge count for unread/pending requests.</li>
+                <li><strong>Past Work:</strong> Completed job history — engagements marked as "Work Scheduled" (payment confirmed, job completed).</li>
+                <li><strong>Live Sessions:</strong> Active timed messaging sessions. Shows a green badge if sessions are currently open.</li>
+                <li><strong>Scheduling:</strong> Advanced scheduling manager — availability calendar, booking management, scheduling preferences.</li>
+                <li><strong>Chats:</strong> Chat archive dashboard — full history of all past messaging sessions and conversations.</li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: '14.3',
+          title: 'Profile & Credentials Category',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The <strong>Profile & Credentials</strong> category manages your public-facing identity:</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>Profile:</strong> Full profile editor — photo, bio, availability badge, identity verification, licensed professional documents, credential documents manager, service packages, portfolio, and equipment list. Also includes Minor Hours Tracker and Minor Compliance Checklist if applicable.</li>
+                <li><strong>Portfolio:</strong> Dedicated portfolio gallery manager — upload before/after photos organized by project.</li>
+                <li><strong>Packages:</strong> Service packages manager — create fixed-price or hourly service bundles that clients can browse.</li>
+                <li><strong>Testimonials:</strong> Customer testimonials manager — pin testimonials from past clients to appear prominently on your profile.</li>
+                <li><strong>Documents:</strong> Document management hub with Compliance Expiry Monitor at top — color-coded alerts for expiring insurance, licenses, bonds, and certifications.</li>
+                <li><strong>Case Studies:</strong> Case studies builder — write detailed project case studies showing problem, approach, and result for past jobs.</li>
+                <li><strong>License:</strong> License verification dashboard — manage your contractor license, HIS license, insurance, bond documents. Submit for admin verification.</li>
+                <li><strong>Badges:</strong> Contractor badge display — shows earned achievement badges based on completed jobs count and unique customers count.</li>
+                <li><strong>Analytics:</strong> Performance analytics dashboard — detailed stats on profile views, inquiry conversion, and job completion rates.</li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: '14.4',
+          title: 'Account Settings Category',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The <strong>Account Settings</strong> category manages your account configuration:</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>Document Visibility Manager:</strong> Control which credential documents (HIS license, bond, insurance, contracts, certifications) are shown publicly vs. kept private.</li>
+                <li><strong>Saved Payment Methods:</strong> Manage your saved cards for platform fee payments and messaging session charges.</li>
+                <li><strong>Security Info Panel:</strong> View current session security, login history, and security recommendations.</li>
+                <li><strong>Account Security:</strong> Change password (via SurfCoast authentication). Your login is managed by SurfCoast's secure auth system.</li>
+                <li><strong>Contact Email:</strong> View your registered contact email. Email update is coming soon.</li>
+                <li><strong>Delete Account:</strong> Permanently delete your account (cascading deletion of all profile data).</li>
+                <li><strong>Consumer Mode Toggle:</strong> Switch between your entrepreneur view and consumer/client browsing mode without logging out.</li>
+              </ul>
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+                <strong>Fee Invoice Requirement:</strong> You must download all platform fee invoices from the Fees tab before you can accept new Scopes of Work. This is enforced automatically.
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 15,
+      title: 'WAVE OS – Field Operations Platform',
+      sections: [
+        {
+          id: '15.1',
+          title: 'WAVE OS Overview & Access Requirements',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">WAVE OS (<code className="bg-slate-100 px-1 rounded">/FieldOps</code> or <code className="bg-slate-100 px-1 rounded">/WaveOS</code>) is the dedicated field operations platform. It is a full-screen, fixed-layout mobile-first application designed for use on job sites.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Access Requirements</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>You must be a registered entrepreneur with an active Contractor profile.</li>
+                  <li>WAVE OS requires a minimum number of completed jobs to access field operations features.</li>
+                  <li>Admins bypass all tier restrictions for testing purposes.</li>
+                  <li>The <strong>AI Assistant</strong> appears for entrepreneurs with 15–54 completed jobs to guide them toward full access.</li>
+                  <li>The <strong>SurfCoast WAVE OS (Breaker)</strong> tab unlocks at 55 completed jobs — this is an advanced consolidated view.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Offline Mode:</strong> WAVE OS caches job data locally on your device. If you lose connectivity on a job site, you can still access job details, take notes, and update statuses. Data syncs automatically when you reconnect. The Offline Status Bar (red banner at top) alerts you when you are offline and shows a Sync Now button when reconnected.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '15.2',
+          title: 'WAVE OS Navigation Tabs',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">WAVE OS has a sidebar (desktop) and bottom mobile navigation. Available tabs:</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>WAVE OS Jobs:</strong> Your active job list — filtered views, job cards with client contact, status updates, and action buttons. Includes job alert banners for new nearby opportunities.</li>
+                <li><strong>WAVE OS Map:</strong> GPS-based job map — see all your scheduled jobs on a map, get directions, and view job locations relative to your current position.</li>
+                <li><strong>WAVE OS Schedule:</strong> Schedule view — monthly calendar with job density chart, 7-day week strip navigation, daily job list, and availability slot management.</li>
+                <li><strong>WAVE OS Invoices:</strong> Invoice and escrow payment management — view all escrow payments, request releases, generate and email PDF invoices.</li>
+                <li><strong>WAVE OS Reports:</strong> Field operations reporting — generate reports on job activity, performance, and earnings.</li>
+                <li><strong>WAVE OS Profile:</strong> Quick profile view within WAVE OS — availability status toggle, contact info, job stats, and verification status. Links back to full Business Hub.</li>
+                <li><strong>Supply Houses:</strong> Find nearby supply houses — search for building supply, hardware, electrical, plumbing, and HVAC suppliers near your current or job location.</li>
+                <li><strong>SurfCoast WAVE OS (Breaker):</strong> [55+ jobs only] Advanced consolidated field view — an elite operator dashboard for top-tier entrepreneurs.</li>
+              </ul>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <strong>Swipe Navigation:</strong> On mobile, you can swipe left/right between tabs. The swipe toggle can be enabled or disabled from the mobile navigation menu.
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 16,
+      title: 'MarketShop Dashboard – Vendor Track',
+      sections: [
+        {
+          id: '16.1',
+          title: 'MarketShop Dashboard Overview',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The MarketShop Dashboard is for market booth operators, farmers market sellers, flea market vendors, and swap meet space holders. It is a separate dashboard from the Contractor Business Hub and is accessed via <code className="bg-slate-100 px-1 rounded">/MarketShopDashboard</code>.</p>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Dual Profiles:</strong> A user can have both a Contractor profile and a MarketShop profile simultaneously. The Profile Switcher at the top of the dashboard lets you toggle between your active profiles.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '16.2',
+          title: 'MarketShop Dashboard Tabs',
+          content: (
+            <div className="space-y-4">
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>My Listings:</strong> Manage all your product listings — add products with photos, prices, descriptions, inventory counts.</li>
+                <li><strong>Analytics:</strong> Vendor analytics dashboard — sales trends, product performance, traffic sources, revenue breakdown.</li>
+                <li><strong>Campaigns:</strong> Vendor campaign manager — create and track promotional campaigns for your booth or products.</li>
+                <li><strong>Messages:</strong> Vendor messaging inbox — receive and reply to inquiries from customers browsing your shop profile.</li>
+                <li><strong>My Markets:</strong> Manage the market locations where you sell — add, update, or remove market venues from your profile.</li>
+                <li><strong>Schedule:</strong> Market schedule manager — set which days you are present at which markets, manage your public-facing appearance calendar.</li>
+                <li><strong>Gallery:</strong> Photo gallery manager — upload up to 50 images (WAVEshop OS) showcasing your booth, products, and setup.</li>
+                <li><strong>Reviews:</strong> Customer reviews display — [Active subscription required] View and respond to customer reviews of your shop. Only available with active WAVEshop subscription.</li>
+                <li><strong>Location Ratings:</strong> Rate your market venues — submit ratings for swap meets and farmers markets to help other vendors find quality locations.</li>
+                <li><strong>Subscription:</strong> Subscription management — manage your payment model (5% per sale or $20/month flat), Stripe Connect payout setup, CRM integration, and listing share tools.</li>
+                <li><strong>Settings:</strong> Shop settings — update shop name, description, contact info, categories, and social links.</li>
+              </ul>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Shop Status States</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong className="text-green-700">Active:</strong> Stripe Connect enabled or WAVEshop subscription active.</li>
+                  <li><strong className="text-amber-600">Pending Setup:</strong> Profile created but Stripe Connect or subscription not yet configured.</li>
+                  <li><strong className="text-slate-500">No Active Plan:</strong> Subscription was cancelled.</li>
+                  <li><strong className="text-red-600">Suspended by Admin:</strong> Account administratively suspended.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 17,
+      title: 'Client Portal & Customer Account',
+      sections: [
+        {
+          id: '17.1',
+          title: 'Customer Portal Overview',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">Clients (customers who post jobs and hire entrepreneurs) have their own portal at <code className="bg-slate-100 px-1 rounded">/customer-portal</code>. This is the client's view of their active projects and payment history.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Quick Stats (top of page)</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Active Projects:</strong> Total number of scopes of work currently active.</li>
+                  <li><strong>Total Spent:</strong> Cumulative amount paid across all payment records.</li>
+                  <li><strong>Completed:</strong> Number of scopes with status "closed".</li>
+                  <li><strong>Unread Messages:</strong> Count of unread messages from contractors.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Tabs</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>Projects:</strong> All scope of work agreements linked to this client's email. Shows job title, contractor name, scope summary, cost, agreed work date, and current status. Pending approval scopes have a Review & Approve button.</li>
+                  <li><strong>Payments:</strong> Full payment history — every payment record, amount, purpose, date, and status.</li>
+                  <li><strong>Messages:</strong> All messages received from contractors — unread messages highlighted in blue. Messages are threaded by sender.</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <strong>Client Portal Link (Token-based):</strong> There is also a <code className="bg-white px-1 rounded">/client-portal/:token</code> route — a secure, token-based link that can be sent to clients who are not registered on the platform, allowing them to view and approve their specific scope of work without creating an account.
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 18,
+      title: 'Unified Dashboard – Your Personal Command Center',
+      sections: [
+        {
+          id: '18.1',
+          title: 'What Is the Unified Dashboard',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The Unified Dashboard (<code className="bg-slate-100 px-1 rounded">/dashboard</code>) is a personalized home screen that adapts based on your account type — entrepreneur or customer. It is the smart landing page after login for users who want a quick overview.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Quick Stats (Entrepreneurs)</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Active Jobs:</strong> Scopes with status pending_approval or approved.</li>
+                  <li><strong>Total Earnings:</strong> Sum of all closed scopes' contractor_payout_amount.</li>
+                  <li><strong>Messages:</strong> Unread message count.</li>
+                  <li><strong>In Progress:</strong> Total scope/job records in recent activity.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Quick Actions</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Entrepreneurs:</strong> Browse Jobs (→ Search Contractors page) and Business Hub (→ Contractor Business Hub).</li>
+                  <li><strong>Customers:</strong> Post a Job (→ Post Job page).</li>
+                  <li><strong>Both:</strong> Messages (→ Messaging inbox with unread count).</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Recent Activity</h4>
+                <p className="text-slate-600">Shows the 3 most recent jobs or scopes with their current status and last updated date.</p>
+              </div>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700">
+                If your account has no profile set up yet, the dashboard redirects you to complete your setup — entrepreneurs go to Contractor Account, customers go to Customer Signup.
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 19,
+      title: 'Admin Tools & Control Hub',
+      sections: [
+        {
+          id: '19.1',
+          title: 'Admin Control Hub Overview',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800 font-medium">
+                🔒 Admin-only. All pages in this section are protected by AdminGuard and require role="admin".
+              </div>
+              <p className="text-slate-600">The Admin Control Hub (<code className="bg-slate-100 px-1 rounded">/admin-control-hub</code>) is the central monitoring and operations center for platform administrators. It shows real-time system status and links to every administrative sub-system.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">System Monitoring</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>System Health</strong> (<code className="bg-slate-100 px-1 rounded">/system-health</code>): Service status and uptime monitoring.</li>
+                  <li><strong>Performance Analytics</strong> (<code className="bg-slate-100 px-1 rounded">/performance-analytics</code>): Response times and throughput metrics.</li>
+                  <li><strong>Error Monitoring</strong> (<code className="bg-slate-100 px-1 rounded">/error-monitoring</code>): All platform errors, warnings, and alerts with severity levels.</li>
+                  <li><strong>Activity Audit Log</strong> (<code className="bg-slate-100 px-1 rounded">/activity-audit</code>): Full user and system audit trail — every action logged.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Data & Analytics</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Database Management</strong> (<code className="bg-slate-100 px-1 rounded">/database-management</code>): Entity data inspection and migrations.</li>
+                  <li><strong>API Usage Analytics</strong> (<code className="bg-slate-100 px-1 rounded">/api-usage-analytics</code>): API call volume and usage trends.</li>
+                  <li><strong>Advanced Analytics</strong> (<code className="bg-slate-100 px-1 rounded">/advanced-analytics</code>): Predictive insights and deep platform analytics.</li>
+                  <li><strong>Platform Activity</strong> (<code className="bg-slate-100 px-1 rounded">/platform-activity</code>): Real-time platform event feed.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Platform Operations</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Admin Dashboard</strong> (<code className="bg-slate-100 px-1 rounded">/admin</code>): Vendors, entrepreneurs, and review management.</li>
+                  <li><strong>Compliance Dashboard</strong> (<code className="bg-slate-100 px-1 rounded">/ComplianceDashboard</code>): License and compliance document review queue.</li>
+                  <li><strong>Entrepreneur Verification</strong> (<code className="bg-slate-100 px-1 rounded">/ContractorVerificationDashboard</code>): ID and credential verification workflow.</li>
+                  <li><strong>Alert Management</strong> (<code className="bg-slate-100 px-1 rounded">/alert-management</code>): Platform alerts and incident tracking.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '19.2',
+          title: 'Overdue Jobs & Admin Enforcement',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">The Admin Control Hub includes a live <strong>Overdue Jobs & Locked Accounts</strong> panel. This shows all jobs that have passed their expected completion date without closeout, and all contractor/client accounts currently locked as a result.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Admin Can</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>View all overdue scope records with client and contractor details.</li>
+                  <li>See which accounts are locked and for what reason.</li>
+                  <li>Manually trigger the overdue enforcement function if needed.</li>
+                  <li>Preview any contractor's Business Hub via admin preview mode (<code className="bg-slate-100 px-1 rounded">?admin=true&id=email</code>).</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Live Feeds</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Recent Errors:</strong> Last 5 error log entries with severity badge and category.</li>
+                  <li><strong>Recent Activity:</strong> Last 5 activity log entries with action type and user email.</li>
+                </ul>
+              </div>
+              <p className="text-slate-600 text-sm">The Control Hub auto-refreshes every 60 seconds. Manual refresh is available via the Refresh button in the header.</p>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 20,
+      title: 'Trade Games & Skill Challenges',
+      sections: [
+        {
+          id: '20.1',
+          title: 'What Are Trade Games',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">Trade Games (<code className="bg-slate-100 px-1 rounded">/trade-games</code>) is a gamified skills platform built into SurfCoast for entrepreneurs. It lets you sharpen your trade knowledge, compete with other professionals, and earn discounts on platform fees by winning challenges.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">How It Works</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>Trade Game Viewer:</strong> Interactive job scenario simulations — plumbing mockups, electrical layouts, and other trade-specific puzzles where you identify problems and select correct solutions.</li>
+                  <li><strong>Game Challenges:</strong> Send a challenge to a specific client via a unique link. If the client completes the challenge game, a discount is unlocked and applied to your next scope of work with them.</li>
+                  <li><strong>Leaderboard</strong> (<code className="bg-slate-100 px-1 rounded">/leaderboard</code>): Platform-wide ranking of top-scoring entrepreneurs by trade category.</li>
+                  <li><strong>Competitive Matches:</strong> Head-to-head timed game sessions against other entrepreneurs.</li>
+                  <li><strong>Seasonal Tournaments:</strong> Platform-run tournaments with prize tiers and recognition for top finishers.</li>
+                  <li><strong>AI Tutoring Panel:</strong> AI-powered tutoring that explains correct answers, teaches trade concepts, and tracks your learning progress.</li>
+                  <li><strong>Game Achievements:</strong> Unlockable achievement badges tied to game milestones (first win, 10 games played, etc.).</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                <strong>Discount Mechanic:</strong> When a client completes a game challenge you send them, the earned discount percentage (up to a configured maximum) is automatically applied to the cost of the scope of work created with that client. The original cost is saved before the discount is applied.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '20.2',
+          title: 'My Challenges Dashboard',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">Access your active and past challenges from the <strong>Challenges tab</strong> inside the Contractor Business Hub (Business Overview category).</p>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li>View all challenges you have sent to clients.</li>
+                <li>See completion status (pending, completed, expired).</li>
+                <li>Check which discount was earned on each challenge.</li>
+                <li>Link to Browse Games to send new challenges.</li>
+              </ul>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      id: 21,
+      title: 'Consumer Mode & Dual Profiles',
+      sections: [
+        {
+          id: '21.1',
+          title: 'Consumer Mode Toggle',
+          content: (
+            <div className="space-y-4">
+              <p className="text-slate-600">If you are an entrepreneur, you can also browse the platform as a consumer (client) without logging out. The <strong>Consumer Mode Toggle</strong> appears at the top of the Contractor Business Hub dashboard.</p>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What It Does</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Switches your browsing view to client mode — you see the platform as a client would see it.</li>
+                  <li>Allows entrepreneurs to also post jobs, hire other entrepreneurs, and use client-facing features.</li>
+                  <li>Does not affect your entrepreneur profile or any active scopes.</li>
+                  <li>Toggle back at any time to return to entrepreneur view.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Dual Profile Users</h4>
+                <p className="text-slate-600">A single SurfCoast account can hold all three profile types simultaneously: a Contractor profile, a CustomerProfile, and a MarketShop profile. The Profile Switcher widget (visible in the MarketShop Dashboard) allows navigation between these. Each profile type has its own separate data and dashboard.</p>
               </div>
             </div>
           ),

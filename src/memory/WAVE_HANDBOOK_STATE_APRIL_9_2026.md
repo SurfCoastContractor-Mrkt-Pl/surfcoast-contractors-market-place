@@ -115,7 +115,7 @@ Last verified: April 9, 2026 — synchronized against live Pricing page, WAVEOSD
    - 3.2 Automated Notifications
 4. Money Matters – Getting Paid
    - 4.1 Invoice Generation
-   - 4.2 Platform Fee & Payment Processing (18% facilitation fee — critical section)
+   - 4.2 Platform Fee & Payment Processing (18% facilitation fee)
    - 4.3 Financial Overviews
 7. Job Completion & Account Compliance
    - 7.1 Expected Completion Date
@@ -145,6 +145,31 @@ Last verified: April 9, 2026 — synchronized against live Pricing page, WAVEOSD
     - 5.0 Free Basic Profile
     - 5.1 Offline Mode
     - 5.2 Inventory Management
+13. Entrepreneur Portal – Your Navigation Hub
+    - 13.1 What the Entrepreneur Portal Is (all portal sections: Core Tools, Profile & Credentials, Jobs & Projects, Growth & Engagement, Account)
+14. Contractor Business Hub – All Tabs Explained
+    - 14.1 Business Overview Category (Dashboard, Leads, Earnings, Analytics, Payouts, Fees, Referrals, Marketing, Automation, CRM, Team, Challenges)
+    - 14.2 Jobs & Projects Category (My Jobs, Scopes, Proposals, Past Work, Live Sessions, Scheduling, Chats)
+    - 14.3 Profile & Credentials Category (Profile, Portfolio, Packages, Testimonials, Documents, Case Studies, License, Badges, Analytics)
+    - 14.4 Account Settings Category (Document Visibility, Saved Payment Methods, Security, Delete Account, Consumer Mode Toggle)
+15. WAVE OS – Field Operations Platform
+    - 15.1 WAVE OS Overview & Access Requirements (offline mode, AI assistant, Breaker tab at 55 jobs)
+    - 15.2 WAVE OS Navigation Tabs (Jobs, Map, Schedule, Invoices, Reports, Profile, Supply Houses, Breaker)
+16. MarketShop Dashboard – Vendor Track
+    - 16.1 MarketShop Dashboard Overview (dual profiles, Profile Switcher)
+    - 16.2 MarketShop Dashboard Tabs (Listings, Analytics, Campaigns, Messages, My Markets, Schedule, Gallery, Reviews, Location Ratings, Subscription, Settings)
+17. Client Portal & Customer Account
+    - 17.1 Customer Portal Overview (Quick Stats, Projects tab, Payments tab, Messages tab, token-based Client Portal link)
+18. Unified Dashboard – Your Personal Command Center
+    - 18.1 What Is the Unified Dashboard (Quick Stats, Quick Actions, Recent Activity, profile type detection)
+19. Admin Tools & Control Hub
+    - 19.1 Admin Control Hub Overview (System Monitoring, Data & Analytics, Platform Operations sections)
+    - 19.2 Overdue Jobs & Admin Enforcement (live feeds, manual enforcement, admin preview mode)
+20. Trade Games & Skill Challenges
+    - 20.1 What Are Trade Games (scenarios, challenges, leaderboard, competitive matches, seasonal tournaments, AI tutoring, achievements)
+    - 20.2 My Challenges Dashboard
+21. Consumer Mode & Dual Profiles
+    - 21.1 Consumer Mode Toggle (entrepreneur browsing as client, dual/triple profile users)
 
 ---
 
