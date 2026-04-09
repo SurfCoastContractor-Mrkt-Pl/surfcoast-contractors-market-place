@@ -11,7 +11,6 @@ import ErrorBoundary from '@/lib/ErrorBoundary';
 import { getPageGradient } from '@/lib/pageGradient';
 import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
-import EntrepreneurFinancialDashboard from './pages/EntrepreneurFinancialDashboard';
 import EntrepreneurAccount from './pages/EntrepreneurAccount';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
@@ -324,11 +323,7 @@ const AuthenticatedApp = () => {
           <EntrepreneurBusinessHub />
         </LayoutWrapper>
       } />
-      <Route path="/EntrepreneurFinancialDashboard" element={
-        <LayoutWrapper currentPageName="EntrepreneurFinancialDashboard">
-          <EntrepreneurFinancialDashboard />
-        </LayoutWrapper>
-      } />
+
       <Route path="/EntrepreneurInquiries" element={
         <LayoutWrapper currentPageName="EntrepreneurInquiries">
           <EntrepreneurInquiries />

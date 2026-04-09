@@ -17,7 +17,14 @@ export default function AccountStatusGate({ userEmail, userType = 'contractor', 
   const [lockedScope, setLockedScope] = useState(null);
 
   const loadStatus = async () => {
+    // Skip checks if no userEmail (public pages, logged-out users)
     if (!userEmail) {
+      setStatus('ok');
+      return;
+    }
+    
+    // Skip if userType cannot be determined
+    if (userType !== 'contractor' && userType !== 'client') {
       setStatus('ok');
       return;
     }
