@@ -38,9 +38,9 @@ const DASHBOARD_SECTIONS = [
     icon: Settings,
     color: 'text-orange-600',
     items: [
-      { label: 'Admin Dashboard', path: '/admin', icon: Shield, color: 'text-amber-600', desc: 'Vendors, contractors & reviews' },
+      { label: 'Admin Dashboard', path: '/admin', icon: Shield, color: 'text-amber-600', desc: 'Vendors, entrepreneurs & reviews' },
       { label: 'Compliance Dashboard', path: '/ComplianceDashboard', icon: Shield, color: 'text-green-700', desc: 'License & compliance review' },
-      { label: 'Contractor Verification', path: '/ContractorVerificationDashboard', icon: Users, color: 'text-blue-700', desc: 'ID & credential verification' },
+      { label: 'Entrepreneur Verification', path: '/ContractorVerificationDashboard', icon: Users, color: 'text-blue-700', desc: 'ID & credential verification' },
       { label: 'Alert Management', path: '/alert-management', icon: AlertCircle, color: 'text-red-500', desc: 'Alerts & incident tracking' },
     ]
   }

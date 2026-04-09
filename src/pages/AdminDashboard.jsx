@@ -199,7 +199,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-foreground">Admin Dashboard</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Vendors · Contractors · Reviews · Licenses</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Vendors · Entrepreneurs · Reviews · Licenses</p>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors flex items-center gap-1">
@@ -211,6 +211,7 @@ export default function AdminDashboard() {
             <Link to="/adminfieldops" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
               Admin WAVE OS →
             </Link>
+
           </div>
         </div>
       </div>
@@ -222,10 +223,10 @@ export default function AdminDashboard() {
             {[
               { key: 'overview', label: 'Overview', icon: BarChart2 },
               { key: 'vendors', label: 'Vendors', icon: Store },
-              { key: 'contractors', label: 'Contractors', icon: HardHat },
+              { key: 'contractors', label: 'Entrepreneurs', icon: HardHat },
               { key: 'reviews', label: 'Reviews', icon: Star },
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
-              { key: 'field_ops', label: 'Wave FO', icon: Briefcase },
+              { key: 'field_ops', label: 'WAVE OS', icon: Briefcase },
               { key: 'notion', label: 'Notion', icon: BookOpen },
             ].map(({ key, label, icon: Icon }) => (
               <button
@@ -435,7 +436,7 @@ export default function AdminDashboard() {
                   <option value="locked">Locked</option>
                 </select>
               </div>
-              <p className="text-xs text-muted-foreground mt-2">{filteredContractors.length} of {contractors.length} contractors</p>
+              <p className="text-xs text-muted-foreground mt-2">{filteredContractors.length} of {contractors.length} entrepreneurs</p>
             </div>
 
             <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
@@ -477,9 +478,9 @@ export default function AdminDashboard() {
             <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-5">
               <Briefcase className="w-8 h-8 text-blue-600" />
             </div>
-            <h2 className="text-xl font-bold text-foreground mb-2">Admin Wave FO</h2>
+            <h2 className="text-xl font-bold text-foreground mb-2">Admin WAVE OS</h2>
             <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-              Impersonate any contractor to view their Wave FO dashboard — jobs, schedule, invoices, and profile — without affecting their data.
+              Impersonate any entrepreneur to view their WAVE OS dashboard — jobs, schedule, invoices, and profile — without affecting their data.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
@@ -487,20 +488,20 @@ export default function AdminDashboard() {
                 className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-colors flex items-center gap-2 justify-center"
               >
                 <Briefcase className="w-4 h-4" />
-                Open Admin Wave FO
+                Open Admin WAVE OS
               </Link>
               <Link
                 to="/FieldOps"
                 className="px-6 py-3 border border-border hover:bg-muted text-foreground rounded-xl font-semibold transition-colors flex items-center gap-2 justify-center"
               >
                 <ExternalLink className="w-4 h-4" />
-                Go to My Wave FO
+                Go to My WAVE OS
               </Link>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               <div className="bg-card border border-border rounded-xl p-4">
                 <p className="text-2xl font-bold text-foreground">{contractors.length}</p>
-                <p className="text-xs text-muted-foreground mt-1">Total Contractors</p>
+                <p className="text-xs text-muted-foreground mt-1">Total Entrepreneurs</p>
               </div>
               <div className="bg-card border border-border rounded-xl p-4">
                 <p className="text-2xl font-bold text-green-600">{contractors.filter(c => c.stripe_account_setup_complete).length}</p>

@@ -57,7 +57,7 @@ export default function OverdueJobsPanel() {
       <div className="grid grid-cols-3 gap-4">
         {[
           { label: 'Overdue Active Jobs', value: overdueScopes.length, color: 'bg-red-100 text-red-700', icon: AlertTriangle },
-          { label: 'Locked Contractors', value: lockedContractors.length, color: 'bg-orange-100 text-orange-700', icon: User },
+          { label: 'Locked Entrepreneurs', value: lockedContractors.length, color: 'bg-orange-100 text-orange-700', icon: User },
           { label: 'Locked Clients', value: lockedClients.length, color: 'bg-yellow-100 text-yellow-700', icon: User },
         ].map(({ label, value, color, icon: Icon }) => (
           <div key={label} className={`rounded-xl p-4 ${color} flex items-center gap-3`}>
@@ -118,7 +118,7 @@ export default function OverdueJobsPanel() {
         <div>
           <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
             <User className="w-4 h-4 text-orange-500" />
-            Locked Contractors ({lockedContractors.length})
+            Locked Entrepreneurs ({lockedContractors.length})
           </h3>
           <div className="space-y-2">
             {lockedContractors.map(c => (
