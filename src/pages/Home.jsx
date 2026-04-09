@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-
 import { useEffect, useState } from "react";
+import HomeNavBar from "@/components/home/HomeNavBar";
 
 const T = {
   bg: "#EBEBEC",
@@ -127,8 +127,8 @@ function HeroSection() {
         <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.75rem)", fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
           Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
         </h1>
-        <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, marginBottom: 26, fontWeight: 700, fontStyle: "italic" }}>
-          SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — connects everyday workers with everyday people across the USA. Your profile and listing are free. Communication sessions start at $1.50 per 10 minutes. A facilitation fee of 18% applies only when work is successfully completed through the platform.
+        <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.6, marginBottom: 26, fontWeight: 400 }}>
+          <strong>Free profile.</strong> Respond to leads at $0. Pay 18% only when work closes. <strong>No lead fees. No shared leads. No spam.</strong>
         </p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 28 }}>
             {[
@@ -440,9 +440,11 @@ const FAQ_ITEMS = [
   },
 ];
 
-function FAQSection() {
-   return (
-     <section style={{ background: "#ECECED", padding: "40px 16px" }}>
+function FAQAccordion() {
+  const [openId, setOpenId] = useState(null);
+
+  return (
+    <section style={{ background: "#ECECED", padding: "40px 16px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -455,20 +457,43 @@ function FAQSection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// FREQUENTLY ASKED QUESTIONS</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 28, fontStyle: "italic" }}>Common questions.</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))", gap: 16 }}>
-          {FAQ_ITEMS.map(({ q, a }) => (
-            <div key={q} style={{ ...cardStyle, padding: 24 }} {...hoverGlow}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#A83300", marginBottom: 10, lineHeight: 1.4, fontStyle: "normal" }}>{q}</h3>
-              <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0, fontWeight: 700, fontStyle: "italic" }}>{a}</p>
-            </div>
-          ))}
+         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {FAQ_ITEMS.map(({ q, a }, i) => {
+            const isOpen = openId === i;
+            return (
+              <div key={q} style={{ ...cardStyle, overflow: "hidden" }} {...hoverGlow}>
+                <button
+                  onClick={() => setOpenId(isOpen ? null : i)}
+                  style={{
+                    width: "100%",
+                    background: "transparent",
+                    border: "none",
+                    padding: "20px",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 16
+                  }}
+                >
+                  <h3 style={{ fontSize: 15, fontWeight: 700, color: "#A83300", margin: 0, lineHeight: 1.4 }}>{q}</h3>
+                  <span style={{ fontSize: 18, color: T.muted, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
+                </button>
+                {isOpen && (
+                  <div style={{ padding: "0 20px 20px", borderTop: `1px solid ${T.border}` }}>
+                    <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.65, margin: 0, fontWeight: 400 }}>{a}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-// ── CTA Bar ────────────────────────────────────────────────────
 function CTABar() {
   return (
     <section style={{ background: T.dark, padding: "44px 24px" }}>
@@ -489,12 +514,13 @@ function CTABar() {
 export default function Home() {
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }}>
+      <HomeNavBar />
       <TickerBar />
       <HeroSection />
       <TabbedSection />
       <IntegritySection />
       <LaunchEngineSection />
-      <FAQSection />
+      <FAQAccordion />
       <CTABar />
     </div>
   );
