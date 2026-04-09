@@ -152,17 +152,22 @@ export default function WaveOS() {
   if (!user || (!contractor && !isAdmin)) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
-        <div className="text-center text-slate-800 max-w-sm">
-          <Briefcase className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">WAVE OS</h1>
-           <p className="text-slate-500 mb-6">Sign in with an entrepreneur account to access WAVE OS.</p>
-           <button
-             onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveOS`)}
-             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
-           >
-             Sign In to WAVE OS
+        <div className="text-center max-w-sm w-full">
+          <div className="text-5xl mb-4">🌊</div>
+          <h1 className="text-2xl font-bold text-slate-800 mb-1">WAVE OS</h1>
+          <p className="text-blue-600 font-semibold text-sm mb-4">Field Operations Platform</p>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-5 shadow-sm">
+            <p className="text-slate-700 font-medium mb-1">Entrepreneur account required</p>
+            <p className="text-slate-500 text-sm">WAVE OS is exclusively for verified entrepreneurs on the SurfCoast platform. Sign in to access your field dashboard.</p>
+          </div>
+          <button
+            onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveOS`)}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base transition-colors shadow-md"
+          >
+            Sign In to WAVE OS
           </button>
-          <Link to="/" className="block mt-4 text-slate-500 text-sm hover:text-slate-800">← Back to Home</Link>
+          <Link to="/BecomeContractor" className="block mt-3 text-blue-600 text-sm hover:underline">Not an entrepreneur yet? Join here →</Link>
+          <Link to="/" className="block mt-2 text-slate-400 text-sm hover:text-slate-600">← Back to Home</Link>
         </div>
       </div>
     );
