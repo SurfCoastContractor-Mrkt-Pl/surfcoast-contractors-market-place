@@ -46,7 +46,7 @@ export default function WAVEOSDetails() {
       {/* Ticker */}
       <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
         <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// WAVE OS · FIELD OPERATIONS SOFTWARE</span>
-        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>For Independent Contractors</span>
+        <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>For Independent Entrepreneurs</span>
       </div>
 
       {/* Hero */}
@@ -63,7 +63,7 @@ export default function WAVEOSDetails() {
 
           <h1 style={{ fontSize: "clamp(2.4rem, 6vw, 4rem)", fontWeight: 900, color: T.dark, marginBottom: 20, lineHeight: 1.08 }}>
             WAVE OS<br />
-            <span style={{ color: T.amber }}>For Independent Contractors</span>
+            <span style={{ color: T.amber }}>For Independent Entrepreneurs</span>
           </h1>
 
           <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620, fontStyle: "italic" }}>

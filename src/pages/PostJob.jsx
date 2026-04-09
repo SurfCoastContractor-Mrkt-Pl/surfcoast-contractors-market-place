@@ -136,9 +136,9 @@ export default function PostJob() {
             <Users style={{ width: 32, height: 32, color: T.orange }} />
           </div>
           <h2 style={{ fontSize: 24, fontWeight: 700, color: T.dark, marginBottom: 8 }}>Customers Only</h2>
-          <p style={{ color: T.muted, marginBottom: 24, fontSize: 14, lineHeight: 1.6 }}>Only customers can post jobs. If you're a contractor, you can browse and respond to job postings instead.</p>
+          <p style={{ color: T.muted, marginBottom: 24, fontSize: 14, lineHeight: 1.6 }}>Only clients can post jobs. If you're an entrepreneur, you can browse and respond to job postings instead.</p>
           <button onClick={() => navigate(createPageUrl('Jobs'))} style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.peachy, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow }} {...hoverGlow}>
-            Browse Jobs for Contractors
+            Browse Jobs for Entrepreneurs
           </button>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function PostJob() {
             </div>
             <h2 style={{ fontSize: 24, fontWeight: 700, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Job Posted Successfully! ✓</h2>
             <p style={{ fontSize: 14, color: T.dark, marginBottom: 4, fontStyle: "italic" }}>Your job has been successfully posted.</p>
-            <p style={{ fontSize: 14, color: T.muted, marginBottom: 24, fontStyle: "italic" }}>Contractors can now see and respond to your job posting.</p>
+            <p style={{ fontSize: 14, color: T.muted, marginBottom: 24, fontStyle: "italic" }}>Entrepreneurs can now see and respond to your job posting.</p>
             <button
               onClick={() => navigate(createPageUrl('MyJobs'))}
               style={{ width: "100%", padding: "11px 18px", borderRadius: 8, background: T.peachy, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer", fontStyle: "italic", ...mono, boxShadow: T.shadow, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
@@ -231,7 +231,7 @@ export default function PostJob() {
               Post a <span style={{ color: T.amber }}>Job</span>
             </h1>
             <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.65, fontWeight: 700, fontStyle: "italic" }}>
-              Find the right contractor for your project. Free to post, only pay when you close a job.
+              Find the right entrepreneur for your project. Free to post, only pay when you close a job.
             </p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 24, marginTop: 20, paddingTop: 20, borderTop: `1px solid ${T.border}` }}>
@@ -241,7 +241,7 @@ export default function PostJob() {
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: T.dark, fontWeight: 600 }}>
               <CheckCircle style={{ width: 16, height: 16, color: T.orange }} aria-hidden="true" />
-              Contractors reach out to you
+              Entrepreneurs reach out to you
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: T.dark, fontWeight: 600 }}>
               <CheckCircle style={{ width: 16, height: 16, color: T.orange }} aria-hidden="true" />
@@ -300,16 +300,16 @@ export default function PostJob() {
                   rows={6}
                   style={{ width: "100%", padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", fontFamily: "inherit", resize: "vertical" }}
                 />
-                <p style={{ fontSize: 12, color: T.muted, marginTop: 8, fontStyle: "italic" }}>The more detail you provide, the better contractors can assess the job and provide accurate quotes.</p>
+                <p style={{ fontSize: 12, color: T.muted, marginTop: 8, fontStyle: "italic" }}>The more detail you provide, the better entrepreneurs can assess the job and provide accurate quotes.</p>
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
                 <div>
-                  <label style={{ fontSize: 14, fontWeight: 700, color: T.dark, display: "block", marginBottom: 8, fontStyle: "italic" }}>Contractor Type Needed</label>
+                  <label style={{ fontSize: 14, fontWeight: 700, color: T.dark, display: "block", marginBottom: 8, fontStyle: "italic" }}>Entrepreneur Type Needed</label>
                   <select value={formData.contractor_type_needed} onChange={(e) => handleChange('contractor_type_needed', e.target.value)} style={{ width: "100%", padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}>
                     <option value="">Select type</option>
                     <option value="trade_specific">Trade Specific</option>
-                    <option value="general">General Contractor</option>
+                    <option value="general">General</option>
                     <option value="either">Either</option>
                   </select>
                 </div>
@@ -450,14 +450,14 @@ export default function PostJob() {
 
           <div style={{ ...cardStyle, padding: 24, marginBottom: 24, border: `2px solid ${T.orangeBorder}`, background: T.orangeTint }} {...hoverGlow}>
             <h2 style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4, fontStyle: "italic" }}>Before Photos <span style={{ color: "#d32f2f" }}>*</span></h2>
-            <p style={{ fontSize: 13, color: T.dark, marginBottom: 16, fontWeight: 600, fontStyle: "italic" }}>Show contractors exactly what they're working with</p>
+            <p style={{ fontSize: 13, color: T.dark, marginBottom: 16, fontWeight: 600, fontStyle: "italic" }}>Show entrepreneurs exactly what they're working with</p>
             <p style={{ fontSize: 13, color: T.dark, marginBottom: 16, lineHeight: 1.6, fontStyle: "italic" }}>
               Upload at least 5 photos showing different angles and areas of the work space. Include:
               <ul style={{ marginTop: 8, marginLeft: 16, display: "flex", flexDirection: "column", gap: 4, color: T.dark }}>
                 <li>• Overview shots of the entire area</li>
                 <li>• Close-ups of problem areas or damage</li>
                 <li>• Different angles and lighting conditions</li>
-                <li>• Any specific issues you want contractors to see</li>
+                <li>• Any specific issues you want entrepreneurs to see</li>
               </ul>
             </p>
             <BeforePhotosUpload photos={beforePhotos} onChange={setBeforePhotos} />
