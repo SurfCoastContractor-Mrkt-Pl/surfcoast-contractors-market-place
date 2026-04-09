@@ -926,12 +926,12 @@ export default function WAVEHandbook() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Unlimited Messaging Plan — $50/month</h4>
                 <p className="text-slate-600">Clients who need to communicate with multiple contractors regularly can subscribe to the $50/month unlimited messaging plan — full conversation threads with any contractor, no per-session fees.</p>
-                </div>
               </div>
-            ),
-          },
-        ],
-      },
+            </div>
+          ),
+        },
+      ],
+    },
     {
       id: 13,
       title: 'Entrepreneur Portal – Your Navigation Hub',
