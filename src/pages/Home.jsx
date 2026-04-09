@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import HomeNavBar from "@/components/home/HomeNavBar";
+import useScrollTracking from "@/hooks/useScrollTracking";
 
 const T = {
   bg: "#EBEBEC",
@@ -119,8 +120,9 @@ function HeroPlatformCard() {
 }
 
 function HeroSection() {
-   return (
-     <section style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
+  const ref = useScrollTracking('hero');
+  return (
+    <section ref={ref} style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
@@ -298,11 +300,12 @@ const TAB_DATA = [
 ];
 
 function TabbedSection() {
+  const ref = useScrollTracking('platform_overview');
   const [active, setActive] = useState("roles");
   const current = TAB_DATA.find((t) => t.id === active);
 
   return (
-    <section style={{ background: T.bg, padding: "40px 16px" }}>
+    <section ref={ref} style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
@@ -340,8 +343,9 @@ function TabbedSection() {
 
 // ── Integrity Section ──────────────────────────────────────────
 function IntegritySection() {
+  const ref = useScrollTracking('integrity');
   return (
-    <section style={{ background: "#F5F5F6", padding: "40px 16px" }}>
+    <section ref={ref} style={{ background: "#F5F5F6", padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>100% compliance. Automated.</h2>
@@ -378,9 +382,10 @@ function LaunchEngineSection() {
     { topBorder: T.amber, number: "5:1", numberColor: T.amber, label: "THE_5_FOR_1_LOOP", desc: "During your trial, refer 5 signups to earn 1 extra free day. Stackable. Trial window only.", tag: "trial window only", amber: true },
   ];
 
+  const ref = useScrollTracking('launch_engine');
   return (
     <section style={{ background: T.bg, padding: "40px 16px" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      <div ref={ref} style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// LAUNCH ENGINE</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Three mechanics. One flywheel.</h2>
         <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Each mechanic feeds the next. Early movers win.</p>
@@ -441,10 +446,11 @@ const FAQ_ITEMS = [
 ];
 
 function FAQAccordion() {
+  const ref = useScrollTracking('faq');
   const [openId, setOpenId] = useState(null);
 
   return (
-    <section style={{ background: "#ECECED", padding: "40px 16px" }}>
+    <section ref={ref} style={{ background: "#ECECED", padding: "40px 16px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -495,8 +501,9 @@ function FAQAccordion() {
 }
 
 function CTABar() {
+  const ref = useScrollTracking('cta_bar');
   return (
-    <section style={{ background: T.dark, padding: "44px 24px" }}>
+    <section ref={ref} style={{ background: T.dark, padding: "44px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
         <div>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 6 }}>Ready to run your business on WAVE OS?</h2>
