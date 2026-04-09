@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { Briefcase, Bell, ArrowLeft } from 'lucide-react';
@@ -19,6 +19,7 @@ import FieldOpsHamburgerMenu from '@/components/fieldops/FieldOpsHamburgerMenu';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
 import OfflineStatusBar from '@/components/fieldops/OfflineStatusBar';
+import useSwipeNav from '@/hooks/useSwipeNav';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'WAVE OS Jobs' },
@@ -40,8 +41,22 @@ export default function WaveOS() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [notifCount, setNotifCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [swipeEnabled, setSwipeEnabled] = useState(() => {
+    try { return localStorage.getItem('waveOS_swipe') !== 'false'; } catch { return true; }
+  });
+
+  const handleSwipeToggle = () => {
+    setSwipeEnabled(prev => {
+      const next = !prev;
+      try { localStorage.setItem('waveOS_swipe', String(next)); } catch {}
+      return next;
+    });
+  };
 
   const { newJobs, dismissJob } = useJobAlerts(contractor, isOnline);
+
+  // Swipe tab IDs computed below after NAV_TABS is built (placeholder here for hook ordering)
+  // The actual hook call is placed after NAV_TABS is computed — see below.
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -122,6 +137,9 @@ export default function WaveOS() {
   const NAV_TABS = hasSurfCoastWaveOSAccess
     ? [...BASE_NAV_TABS, BREAKER_TAB]
     : BASE_NAV_TABS;
+
+  const swipeTabIds = useMemo(() => NAV_TABS.map(t => t.id), [NAV_TABS]);
+  useSwipeNav(swipeEnabled, swipeTabIds, activeTab, setActiveTab);
 
   if (contractor && !hasWaveOSAccess) {
     return (
@@ -242,6 +260,8 @@ export default function WaveOS() {
           hasBreakerAccess={hasSurfCoastWaveOSAccess}
           isOnline={isOnline}
           notifCount={notifCount}
+          swipeEnabled={swipeEnabled}
+          onSwipeToggle={handleSwipeToggle}
         />
 
         {/* Mobile Back Button */}

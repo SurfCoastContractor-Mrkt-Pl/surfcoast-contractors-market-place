@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap } from 'lucide-react';
+import { Bell, Briefcase, Map, Calendar, DollarSign, BarChart2, ShoppingBag, User, Zap, Smartphone } from 'lucide-react';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'Jobs', icon: Briefcase },
@@ -20,6 +20,8 @@ export default function FieldOpsMobileNav({
   hasBreakerAccess,
   isOnline,
   notifCount,
+  swipeEnabled,
+  onSwipeToggle,
 }) {
   const NAV_TABS = hasBreakerAccess ? [...BASE_NAV_TABS, BREAKER_TAB] : BASE_NAV_TABS;
 
@@ -32,10 +34,20 @@ export default function FieldOpsMobileNav({
           <span className="text-xs text-slate-500">{isOnline ? 'Online' : 'Offline'}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-800">SURFCOAST WAVES FO</span>
+          <span className="text-xs font-bold text-slate-800">SURFCOAST WAVE OS</span>
           <span className="text-xs text-blue-600 font-semibold ml-1">PRO</span>
         </div>
-        <button className="relative p-2 rounded-lg hover:bg-slate-100">
+        <div className="flex items-center gap-1">
+          {/* Swipe toggle button */}
+          <button
+            onClick={onSwipeToggle}
+            title={swipeEnabled ? 'Swipe navigation ON — tap to disable' : 'Swipe navigation OFF — tap to enable'}
+            className={`relative p-2 rounded-lg transition-colors ${swipeEnabled ? 'bg-blue-100 text-blue-600' : 'text-slate-400 hover:bg-slate-100'}`}
+          >
+            <Smartphone className="w-4 h-4" />
+            {swipeEnabled && <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-blue-500 rounded-full" />}
+          </button>
+          <button className="relative p-2 rounded-lg hover:bg-slate-100">
            <Bell className="w-5 h-5 text-slate-500" />
            {notifCount > 0 && (
              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
@@ -43,6 +55,7 @@ export default function FieldOpsMobileNav({
              </span>
            )}
          </button>
+        </div>
       </div>
 
       {/* Mobile Contractor Info */}
@@ -58,7 +71,7 @@ export default function FieldOpsMobileNav({
           <div className="flex-1 min-w-0">
             <p className="text-slate-800 font-semibold text-sm truncate">{contractor?.name}</p>
             <p className="text-slate-500 text-xs truncate capitalize">
-              {contractor?.line_of_work?.replace(/_/g, ' ') || contractor?.trade_specialty || 'Contractor'}
+              {contractor?.line_of_work?.replace(/_/g, ' ') || contractor?.trade_specialty || 'Entrepreneur'}
             </p>
           </div>
           <div

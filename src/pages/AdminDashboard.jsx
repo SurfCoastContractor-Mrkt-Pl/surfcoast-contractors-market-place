@@ -202,11 +202,14 @@ export default function AdminDashboard() {
             <p className="text-xs text-muted-foreground mt-0.5">Vendors · Contractors · Reviews · Licenses</p>
           </div>
           <div className="flex items-center gap-2">
+            <Link to="/" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors flex items-center gap-1">
+              ← Home
+            </Link>
             <Link to="/admin-control-hub" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
               Control Hub →
             </Link>
             <Link to="/adminfieldops" className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
-              Wave FO →
+              Admin WAVE OS →
             </Link>
           </div>
         </div>

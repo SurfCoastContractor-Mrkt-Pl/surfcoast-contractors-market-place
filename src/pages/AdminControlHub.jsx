@@ -8,6 +8,7 @@ import { AlertCircle, Activity, Database, BarChart3, Heart, Zap, Settings, Clock
 import OverdueJobsPanel from '@/components/admin/OverdueJobsPanel';
 import { Link } from 'react-router-dom';
 import AdminGuard from '@/components/auth/AdminGuard';
+import AdminBackButton from '@/components/admin/AdminBackButton';
 
 const DASHBOARD_SECTIONS = [
   {
@@ -82,9 +83,12 @@ function AdminControlHubContent() {
       {/* Header */}
       <div style={{ background: T.card, borderBottom: "0.5px solid " + T.border, paddingLeft: 24, paddingRight: 24, paddingTop: 20, paddingBottom: 20 }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 4px 0", fontStyle: "italic" }}>Admin Control Hub</h1>
-            <p style={{ color: T.muted, fontSize: 14, marginTop: 4, fontStyle: "italic" }}>Platform monitoring, operations & management</p>
+          <div className="flex items-center gap-3">
+            <AdminBackButton to="/admin" label="Admin Dashboard" />
+            <div>
+              <h1 style={{ fontSize: 20, fontWeight: 800, color: T.dark, margin: "0 0 4px 0", fontStyle: "italic" }}>Admin Control Hub</h1>
+              <p style={{ color: T.muted, fontSize: 14, marginTop: 4, fontStyle: "italic" }}>Platform monitoring, operations & management</p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <Badge className="bg-green-100 text-green-800 border-0 text-xs px-3 py-1">● OPERATIONAL</Badge>

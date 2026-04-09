@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, Activity, Zap } from 'lucide-react';
+import AdminBackButton from '@/components/admin/AdminBackButton';
 import {
   Select,
   SelectContent,
@@ -100,6 +101,7 @@ export default function PerformanceAnalyticsDashboard() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-4"><AdminBackButton to="/admin-control-hub" label="Control Hub" /></div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Performance Analytics</h1>
           <p className="text-slate-600">Monitor system performance and user experience</p>
         </div>

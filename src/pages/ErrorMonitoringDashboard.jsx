@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, Filter, Download, TrendingUp } from 'lucide-react';
+import AdminBackButton from '@/components/admin/AdminBackButton';
 import {
   Select,
   SelectContent,
@@ -99,6 +100,7 @@ function ErrorMonitoringDashboardContent() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-4"><AdminBackButton to="/admin-control-hub" label="Control Hub" /></div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Error Monitoring</h1>
           <p className="text-slate-600">Track and manage platform errors</p>
         </div>

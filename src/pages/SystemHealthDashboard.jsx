@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import AdminBackButton from '@/components/admin/AdminBackButton';
+import AdminGuard from '@/components/auth/AdminGuard';
 
 const STATUS_COLORS = {
   healthy: 'bg-green-100 text-green-900 border-green-300',
@@ -57,6 +59,9 @@ function SystemHealthDashboardContent() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-4">
+            <AdminBackButton to="/admin-control-hub" label="Control Hub" />
+          </div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">System Health & Uptime</h1>
           <p className="text-slate-600">Monitor system status and service availability</p>
         </div>
