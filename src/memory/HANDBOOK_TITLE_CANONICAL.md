@@ -1,23 +1,20 @@
-# Handbook Title — Canonical Reference
+# SCMP Handbook — Canonical Title Reference
 
-## Official Title
-**The SurfCoast Contractors Marketplace Platform Handbook**
+**Official Full Title:** The SurfCoast Contractors Marketplace Handbook
+**Official Abbreviated Brand Label:** SCMP HANDBOOK
+**Route:** `/wave-handbook`
+**Source File:** `pages/WAVEHandbook.jsx`
+**Last Updated:** April 9, 2026
 
-## Official Subtitle / Brand Label
-**SCMP HANDBOOK**
-
-## Location
-- Page: `pages/WAVEHandbook.jsx`
-- Route: `/wave-handbook`
-
-## Current Header Rendering (as of April 9, 2026)
+## Standard JSX Header (use exactly this)
 ```jsx
-<h1>The SurfCoast Contractors Marketplace Platform Handbook</h1>
-<p className="text-lg font-semibold text-blue-600 tracking-wide">SCMP HANDBOOK</p>
-<p className="text-slate-500 mt-2">Your comprehensive guide to running a successful independent business with WAVE OS.</p>
+<h1 className="text-4xl font-bold text-slate-900">SCMP Handbook</h1>
+<p className="text-lg font-semibold text-blue-600 tracking-wide">SurfCoast Contractors Marketplace Platform</p>
 ```
 
-## Notes
-- Do NOT revert title to "WAVE Handbook" — that was the old name
-- "SCMP HANDBOOK" is the abbreviated brand label displayed beneath the full title
-- The handbook is subscription-gated (requires active Contractor or MarketShop profile)
+## Rules
+- ❌ DO NOT use "WAVE Handbook" — legacy name, discontinued
+- ❌ DO NOT use "WAVE OS Handbook"
+- ✅ USE "SCMP Handbook" in UI short form
+- ✅ USE "The SurfCoast Contractors Marketplace Handbook" in full/legal form
+- Access: **Admin only** — subscription gate removed as of April 9, 2026

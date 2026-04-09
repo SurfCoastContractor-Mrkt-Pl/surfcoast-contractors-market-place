@@ -1,6 +1,13 @@
-# WAVE Handbook — Canonical State (April 9, 2026)
+# The SurfCoast Contractors Marketplace Handbook (SCMP HANDBOOK) — Canonical State (April 9, 2026)
+
+**Official Full Title:** The SurfCoast Contractors Marketplace Handbook
+**Official Abbreviated Brand Label:** SCMP HANDBOOK
+**Route:** `/wave-handbook`
+**Source File:** `pages/WAVEHandbook.jsx`
 
 Last verified: April 9, 2026 — synchronized against live Pricing page, WAVEOSDetails page, and platform behavior.
+
+> ⚠️ DO NOT revert to "WAVE Handbook" — the official title is "SCMP Handbook" / "The SurfCoast Contractors Marketplace Handbook."
 
 ---
 
@@ -146,9 +153,9 @@ Last verified: April 9, 2026 — synchronized against live Pricing page, WAVEOSD
 - `/wave-os-details` — WAVE OS tier summary
 - `/BecomeContractor` — signup entry point for entrepreneurs
 - `/MarketShopSignup` — signup entry point for vendors
-- `/wave-handbook` — the handbook itself (gated: must have Contractor or MarketShop profile)
+- `/wave-handbook` — the handbook itself (admin-only access, no subscription gate)
 
 ---
 
-## Subscription Gate
-The handbook is gated — users must have a Contractor OR MarketShop profile linked to their email to access. Non-subscribers are shown the SubscriptionGate component with a redirect to /pricing.
+## Access Control
+The handbook is accessible to **admin users only**. The subscription gate has been removed. Non-admin users are redirected without access.
