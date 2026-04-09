@@ -993,9 +993,9 @@ export default function WAVEHandbook() {
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <BookOpen className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-slate-900">WAVE Handbook</h1>
+            <h1 className="text-4xl font-bold text-slate-900">The SurfCoast Contractors Marketplace Platform Handbook</h1>
           </div>
-          <p className="text-lg text-slate-600">Master Your Trade, On Your Terms.</p>
+          <p className="text-lg font-semibold text-blue-600 tracking-wide">SCMP HANDBOOK</p>
           <p className="text-slate-500 mt-2">Your comprehensive guide to running a successful independent business with WAVE OS.</p>
         </div>
 
