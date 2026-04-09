@@ -41,7 +41,7 @@ export default function LaunchEngineSection() {
   ];
 
   return (
-    <section style={{ background: T.bg, padding: "40px 16px" }}>
+    <section data-section="launch_engine" style={{ background: T.bg, padding: "40px 16px" }}>
       <div ref={ref} style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// LAUNCH ENGINE</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Three mechanics. One flywheel.</h2>

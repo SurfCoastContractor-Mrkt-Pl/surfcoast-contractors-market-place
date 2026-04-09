@@ -86,7 +86,7 @@ function HeroPlatformCard() {
 export default function HeroSection() {
   const ref = useScrollTracking('hero');
   return (
-    <section ref={ref} style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
+    <section ref={ref} data-section="hero" style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
           <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>

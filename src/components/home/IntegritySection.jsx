@@ -28,7 +28,7 @@ const hoverGlow = {
 export default function IntegritySection() {
   const ref = useScrollTracking('integrity');
   return (
-    <section ref={ref} style={{ background: T.bg, padding: "40px 16px" }}>
+    <section ref={ref} data-section="integrity" style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>100% compliance. Automated.</h2>

@@ -65,7 +65,7 @@ export default function FAQAccordion() {
   const [openId, setOpenId] = useState(null);
 
   return (
-    <section ref={ref} style={{ background: "#ECECED", padding: "40px 16px" }}>
+    <section ref={ref} data-section="faq" style={{ background: "#ECECED", padding: "40px 16px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",

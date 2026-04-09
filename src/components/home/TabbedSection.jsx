@@ -157,7 +157,7 @@ export default function TabbedSection() {
   const current = TAB_DATA.find((t) => t.id === active);
 
   return (
-    <section ref={ref} style={{ background: T.bg, padding: "40px 16px" }}>
+    <section ref={ref} data-section="platform_overview" style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
