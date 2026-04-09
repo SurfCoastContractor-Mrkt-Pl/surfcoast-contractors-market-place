@@ -20,7 +20,6 @@ import ConsumerSignup from './pages/ConsumerSignup';
 import ReferralSignup from './pages/ReferralSignup';
 import RoleChoice from './pages/RoleChoice';
 import SearchAnalytics from './pages/SearchAnalytics';
-import EntrepreneurInquiries from './pages/EntrepreneurInquiries';
 import BecomeContractor from './pages/BecomeContractor';
 import MarketShopSignup from './pages/MarketShopSignup';
 import CustomerSignup from './pages/CustomerSignup';
@@ -84,7 +83,6 @@ import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import PostJob from './pages/PostJob';
 import Pricing from './pages/Pricing';
 import WhySurfCoast from './pages/WhySurfCoast';
-import EntrepreneurWorkloadHub from './pages/EntrepreneurWorkloadHub';
 import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
@@ -304,11 +302,7 @@ const AuthenticatedApp = () => {
 
 
 
-      <Route path="/EntrepreneurInquiries" element={
-        <LayoutWrapper currentPageName="EntrepreneurInquiries">
-          <EntrepreneurInquiries />
-        </LayoutWrapper>
-      } />
+
       <Route path="/EntrepreneurQuotesManagement" element={
         <LayoutWrapper currentPageName="EntrepreneurQuotesManagement">
           <EntrepreneurQuotesManagement />
@@ -579,11 +573,7 @@ const AuthenticatedApp = () => {
           <WhySurfCoast />
         </LayoutWrapper>
       } />
-      <Route path="/workload-hub" element={
-        <LayoutWrapper currentPageName="EntrepreneurWorkloadHub">
-          <EntrepreneurWorkloadHub />
-        </LayoutWrapper>
-      } />
+
       <Route path="/sms-hub" element={
         <LayoutWrapper currentPageName="SMSHub">
           <SMSHub />
