@@ -40,7 +40,7 @@ export default function LayoutFooter({
               <li><Link to="/BecomeContractor" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Create Profile</Link></li>
                <li><Link to="/Jobs" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Browse Jobs</Link></li>
                <li><Link to="/Blog" className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Blog & Resources</Link></li>
-              {handbookLink && <li><Link to={handbookLink} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>WAVE Handbook</Link></li>}
+              {handbookLink && <li><Link to={handbookLink} className="text-sm font-semibold hover:text-amber-400 transition-colors" style={{color: WHITE}}>SCMP Handbook</Link></li>}
             </ul>
           </div>
 

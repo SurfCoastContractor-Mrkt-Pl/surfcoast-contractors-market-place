@@ -17,7 +17,7 @@ export default function SubscriptionGate({ onSubscribe }) {
         </h1>
         
         <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-          The complete WAVE Handbook, including detailed ecosystem pricing, features, and tier comparisons, is exclusively available to active WAVE OS ecosystem subscribers.
+          The complete SCMP Handbook, including detailed ecosystem pricing, features, and tier comparisons, is exclusively available to active WAVE OS ecosystem subscribers.
         </p>
 
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
