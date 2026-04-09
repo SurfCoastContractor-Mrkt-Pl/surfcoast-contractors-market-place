@@ -18,6 +18,7 @@ import WaveFOAssistant from '@/components/fieldops/WaveFOAssistant';
 import FieldOpsHamburgerMenu from '@/components/fieldops/FieldOpsHamburgerMenu';
 import { useJobAlerts } from '@/hooks/useJobAlerts';
 import { useOfflineCache } from '@/hooks/useOfflineCache';
+import OfflineStatusBar from '@/components/fieldops/OfflineStatusBar';
 
 const BASE_NAV_TABS = [
   { id: 'jobs', label: 'WAVE OS Jobs' },
@@ -217,6 +218,9 @@ export default function WaveOS() {
             )}
           </button>
         </div>
+
+        {/* Offline Status Bar */}
+        <OfflineStatusBar isOnline={isOnline} />
 
         {/* Job Alert Banner */}
         {newJobs.length > 0 && (

@@ -71,6 +71,9 @@ import AdvancedSchedulingManager from '@/components/contractor/AdvancedSchedulin
 import AutomationAndSmartTools from '@/components/contractor/AutomationAndSmartTools';
 import TeamManagementHub from '@/components/contractor/TeamManagementHub';
 import MyChallengesDashboard from '@/components/tradegames/MyChallengesDashboard';
+import ProactiveInsightsPanel from '@/components/contractor/ProactiveInsightsPanel';
+import ComplianceExpiryMonitor from '@/components/contractor/ComplianceExpiryMonitor';
+import RealtimeProjectMessages from '@/components/projects/RealtimeProjectMessages';
 
 export default function ContractorBusinessHub() {
    const urlParams = new URLSearchParams(window.location.search);
@@ -420,6 +423,7 @@ export default function ContractorBusinessHub() {
               <TabsContent value="dashboard">
                 <div className="space-y-4">
                   <RealTimeAvailabilityManager contractor={contractor} />
+                  <ProactiveInsightsPanel contractor={contractor} scopes={contractorScopes || []} payments={payments || []} />
                   <ContractorJobDashboard contractorId={contractor?.id} contractorEmail={userEmail} />
                   <ContractorAnalyticsDashboard contractor={contractor} />
                 </div>
@@ -474,7 +478,10 @@ export default function ContractorBusinessHub() {
               </TabsContent>
 
               <TabsContent value="documents">
-                <DocumentManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+                <div className="space-y-4">
+                  <ComplianceExpiryMonitor contractor={contractor} />
+                  <DocumentManagementHub contractorId={contractor?.id} contractorEmail={userEmail} />
+                </div>
               </TabsContent>
 
               <TabsContent value="case-studies">
@@ -659,9 +666,19 @@ export default function ContractorBusinessHub() {
                                 </div>
                               </div>
                               {s.status === 'approved' && (
-                                <div className="border-t border-slate-100 p-4 bg-white">
-                                  <h4 className="font-medium text-slate-900 mb-4">Project Milestones</h4>
-                                  <ProjectMilestoneManager scopeId={s.id} scopeStatus={s.status} />
+                                <div className="border-t border-slate-100 p-4 bg-white space-y-6">
+                                  <div>
+                                    <h4 className="font-medium text-slate-900 mb-4">Project Milestones</h4>
+                                    <ProjectMilestoneManager scopeId={s.id} scopeStatus={s.status} />
+                                  </div>
+                                  <div>
+                                    <RealtimeProjectMessages
+                                      scopeId={s.id}
+                                      userEmail={userEmail}
+                                      userName={contractor?.name}
+                                      userType="contractor"
+                                    />
+                                  </div>
                                 </div>
                               )}
                             </div>

@@ -271,22 +271,24 @@ export default function FieldJobDetail({ scope, user, onBack, onUpdate }) {
           </div>
         )}
 
-        {/* Quick Action Buttons */}
+        {/* Quick Action Buttons — large high-contrast touch targets for field use */}
         {scope.status !== 'closed' && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             {ACTION_BUTTONS.filter(a => {
               if (a.id === 'complete' && scope.status === 'pending_ratings') return false;
               return true;
             }).map(action => {
               const Icon = action.icon;
+              const isActive = activeAction === action.id;
               return (
                 <button
                    key={action.id}
-                   onClick={() => setActiveAction(activeAction === action.id ? null : action.id)}
-                   className={`${action.color} text-white rounded-2xl p-4 flex flex-col items-center gap-2 active:scale-95 transition-transform min-h-[56px]`}
+                   onClick={() => setActiveAction(isActive ? null : action.id)}
+                   className={`${action.color} text-white rounded-2xl flex flex-col items-center justify-center gap-2 active:scale-95 transition-all shadow-lg border-2 ${isActive ? 'border-white/60 scale-95' : 'border-transparent'}`}
+                   style={{ minHeight: 80, padding: '16px 8px' }}
                  >
-                  <Icon className="w-6 h-6" />
-                  <span className="text-sm font-semibold">{action.label}</span>
+                  <Icon className="w-7 h-7" />
+                  <span className="text-sm font-bold tracking-wide">{action.label}</span>
                 </button>
               );
             })}
