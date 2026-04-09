@@ -34,7 +34,8 @@ export default function AdvancedAnalyticsDashboard() {
     queryFn: async () => {
       try {
         const result = await base44.functions.invoke('generateAnalyticsInsights', {});
-        return result.data || [];
+        const data = result.data;
+        return Array.isArray(data) ? data : (data?.insights ?? data?.data ?? []);
       } catch (err) {
         console.error('Failed to generate insights:', err);
         return [];
