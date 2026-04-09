@@ -553,6 +553,43 @@ export default function WAVEHandbook() {
       ],
     },
     {
+      id: 9,
+      title: 'Platform Updates – April 9, 2026',
+      sections: [
+        {
+          id: '9.1',
+          title: 'Privacy Contact Email Updated',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🆕 Updated April 9, 2026 — Official privacy contact email updated across the platform.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What Changed</h4>
+                <p className="text-slate-600">The platform's official privacy contact email has been updated from <code className="bg-slate-100 px-1 rounded text-sm">privacy@surfcoastmarketplace.com</code> to <strong>privacy@surfcoastcmp.com</strong>. This new address is hosted through Google Workspace on the officially owned domain <code className="bg-slate-100 px-1 rounded text-sm">surfcoastcmp.com</code>.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Where This Applies</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li><strong>Privacy Policy page</strong> — all CCPA/CPRA request links and contact references.</li>
+                  <li><strong>Terms of Service page</strong> — legal contact references.</li>
+                  <li><strong>Footer</strong> — the "Do Not Sell My Info" link.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">For Users</h4>
+                <p className="text-slate-600">If you need to submit a privacy request, exercise your CCPA/CPRA rights, or contact the platform's privacy team, use:</p>
+                <div className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                  <a href="mailto:privacy@surfcoastcmp.com" className="text-blue-600 font-semibold underline">privacy@surfcoastcmp.com</a>
+                  <p className="text-slate-500 text-sm mt-1">Responses provided within 45 days as required by CCPA/CPRA.</p>
+                </div>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
       id: 5,
       title: 'Tools for Growth – Expand Your Potential',
       sections: [
