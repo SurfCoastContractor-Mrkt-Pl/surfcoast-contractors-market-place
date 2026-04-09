@@ -12,7 +12,7 @@ const BASE_NAV_TABS = [
   { id: 'profile', label: 'Profile', icon: User },
 ];
 
-const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast Wave', icon: Zap };
+const BREAKER_TAB = { id: 'breaker', label: 'SurfCoast WAVE OS', icon: Zap };
 
 export default function FieldOpsSidebar({
   contractor,
@@ -27,7 +27,7 @@ export default function FieldOpsSidebar({
     <div className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 flex-shrink-0">
       {/* Header */}
       <div className="px-4 py-4 border-b border-slate-200">
-        <h2 className="text-slate-800 font-bold text-sm">SURFCOAST WAVES FO</h2>
+        <h2 className="text-slate-800 font-bold text-sm">SURFCOAST WAVE OS</h2>
         <p className="text-blue-600 text-xs font-semibold mt-0.5">PRO</p>
       </div>
 
@@ -44,7 +44,7 @@ export default function FieldOpsSidebar({
           <div className="flex-1 min-w-0">
             <p className="text-slate-800 font-semibold text-sm truncate">{contractor?.name}</p>
             <p className="text-slate-500 text-xs truncate capitalize">
-              {contractor?.line_of_work?.replace(/_/g, ' ') || contractor?.trade_specialty || 'Contractor'}
+              {contractor?.line_of_work?.replace(/_/g, ' ') || contractor?.trade_specialty || 'Entrepreneur'}
             </p>
           </div>
         </div>

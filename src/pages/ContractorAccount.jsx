@@ -17,7 +17,7 @@ const portalSections = [
     category: 'Core Tools',
     items: [
       {
-        title: 'Wave FO',
+        title: 'WAVE OS',
         description: 'Field operations: job scheduling, invoicing, GPS tracking, and on-site tools.',
         icon: HardHat,
         color: 'bg-amber-500',
@@ -129,7 +129,7 @@ const portalSections = [
       },
       {
         title: 'Referrals',
-        description: 'Earn credits by referring new contractors and customers to the platform.',
+        description: 'Earn credits by referring new entrepreneurs and clients to the platform.',
         icon: Gift,
         color: 'bg-lime-600',
         path: '/ContractorAccount?section=referrals',
@@ -228,10 +228,10 @@ export default function ContractorAccount() {
             </div>
             <div>
               <h1 style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: "clamp(1.2rem, 3vw, 1.6rem)", color: "#fff", margin: 0 }}>
-                Contractor Portal
+                Entrepreneur Portal
               </h1>
               <p style={{ color: "#aaa", margin: "3px 0 0", fontSize: 13, fontStyle: "italic" }}>
-                {contractorName ? `Welcome back, ${contractorName}` : "Your central hub for all contractor tools & pages"}
+                {contractorName ? `Welcome back, ${contractorName}` : "Your central hub for all entrepreneur tools & pages"}
               </p>
             </div>
           </div>

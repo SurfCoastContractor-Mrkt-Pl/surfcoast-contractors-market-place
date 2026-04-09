@@ -94,13 +94,13 @@ export default function AdminWaveOS() {
               className="w-full bg-slate-50 text-slate-800 placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 text-sm border border-slate-300 focus:outline-none focus:border-blue-500"
             />
           </div>
-          <p className="text-slate-400 text-xs mt-2">{filtered.length} of {contractors.length} contractors</p>
+          <p className="text-slate-400 text-xs mt-2">{filtered.length} of {contractors.length} entrepreneurs</p>
         </div>
 
         {/* Contractor List */}
         <div className="flex-1">
           {filtered.length === 0 ? (
-            <div className="text-center text-slate-500 py-16 text-sm">No contractors found</div>
+            <div className="text-center text-slate-500 py-16 text-sm">No entrepreneurs found</div>
           ) : (
             filtered.map(c => (
               <button
@@ -150,7 +150,7 @@ export default function AdminWaveOS() {
             onClick={() => setSelectedContractor(null)}
             className="text-amber-100 text-xs hover:text-white underline"
           >
-            Change Contractor
+            Change Entrepreneur
           </button>
         </div>
 
@@ -166,7 +166,7 @@ export default function AdminWaveOS() {
           <div className="flex-1 min-w-0">
             <p className="text-slate-800 font-semibold text-sm truncate">{selectedContractor.name}</p>
             <p className="text-slate-500 text-xs truncate capitalize">
-              {selectedContractor.line_of_work?.replace(/_/g, ' ') || selectedContractor.trade_specialty || 'Contractor'}
+              {selectedContractor.line_of_work?.replace(/_/g, ' ') || selectedContractor.trade_specialty || 'Entrepreneur'}
             </p>
           </div>
           <div className="px-2 py-1 rounded-full text-xs font-semibold bg-amber-900 text-amber-400">

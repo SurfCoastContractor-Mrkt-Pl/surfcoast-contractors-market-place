@@ -137,7 +137,7 @@ export default function WaveOS() {
         <div className="text-center text-slate-800 max-w-sm">
           <Briefcase className="w-16 h-16 text-blue-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">WAVE OS</h1>
-           <p className="text-slate-500 mb-6">Sign in with a contractor account to access WAVE OS.</p>
+           <p className="text-slate-500 mb-6">Sign in with an entrepreneur account to access WAVE OS.</p>
            <button
              onClick={() => base44.auth.redirectToLogin(`${window.location.origin}/WaveOS`)}
              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl text-lg transition-colors"
