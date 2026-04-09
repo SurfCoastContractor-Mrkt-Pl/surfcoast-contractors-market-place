@@ -386,7 +386,6 @@ export default function BecomeContractor() {
             { jobs: '6–49 completed jobs', plan: 'WAVE OS Pro', price: '$39/month' },
             { jobs: '50–99 completed jobs', plan: 'WAVE OS Max', price: '$59/month' },
             { jobs: '100+ jobs + verified license', plan: 'WAVE OS Premium', price: '$100/month' },
-            { jobs: 'Premium + unlimited messaging', plan: 'WAVE OS Residential Bundle', price: '$125/month' },
           ].map((row, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 16px", borderTop: "0.5px solid #EBEBEC", background: i % 2 === 0 ? '#fff' : '#FAFAFA' }}>
               <span style={{ color: "#333", fontSize: 12, fontStyle: "italic" }}>{row.jobs}</span>

@@ -24,7 +24,7 @@ const cardStyle = {
 
 const WHO_TABS = [
   {
-    label: "Contractors & Trades",
+    label: "Entrepreneurs & Trades",
     types: [
       "Plumbers", "Electricians", "HVAC Technicians", "Roofers", "Painters",
       "Carpenters", "Landscapers", "Pool Service", "Pest Control", "Concrete",
@@ -110,7 +110,7 @@ export default function WhySurfCoast() {
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {[
             "SurfCoast Marketplace is a two-sided platform connecting people who need work done with the people who do it. Whether you're a homeowner looking for a licensed plumber or a booth operator setting up at the local farmers market — SurfCoast is where that connection happens.",
-            "There are two tracks: the Entrepreneur Marketplace for trades and residential services, and WAVEshop OS for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
+            "There are two tracks: SurfCoast Marketplace for entrepreneurs and independent service workers, and WAVEshop OS for market booth operators. Both run on the same platform, built around the same belief — that independent workers deserve better tools.",
             "Every profile on SurfCoast is free. You never pay to be found. You only upgrade when you need more."
           ].map((p, i) => (
             <p key={i} style={{ fontSize: 16, lineHeight: 1.8, color: T.dark, fontWeight: i === 2 ? 700 : 400, fontStyle: i === 2 ? "italic" : "normal", margin: 0, borderLeft: i === 2 ? `3px solid ${T.amber}` : "none", paddingLeft: i === 2 ? 20 : 0 }}>{p}</p>

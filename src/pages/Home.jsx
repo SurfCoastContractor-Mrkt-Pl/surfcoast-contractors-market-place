@@ -104,7 +104,7 @@ function HeroPlatformCard() {
         <span style={{ ...mono, fontSize: 11, color: T.amber }}>● live</span>
       </div>
       {block(T.border, T.muted, "SURFCOAST MARKETPLACE — THE VENUE", [
-        { text: "Service Side — Clients · Contractors", tinted: false },
+        { text: "Service Side — Clients · Entrepreneurs", tinted: false },
         { text: "Market Shop — Vendors · Consumers", tinted: false },
       ])}
       {block(T.amber, T.amber, "WAVE OS — STANDALONE SOFTWARE BRAND", [
@@ -134,7 +134,7 @@ function HeroSection() {
             {[
               { to: "/PostJob", label: "Post a Job — Free", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
               { to: "/wave-os-details", label: "What is WAVE OS?", bg: T.amberBg, color: T.amber, border: `1px solid #D9B88A` },
-              { to: "/BecomeContractor", label: "Join as Contractor", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
+              { to: "/BecomeContractor", label: "Join as Entrepreneur", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
               { to: "/MarketShopSignup", label: "Market Shop", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
             ].map(({ to, label, bg, color, border }) => (
               <Link key={to} to={to} style={{ textDecoration: "none", display: "inline-block", background: bg, color, border, borderRadius: 5, padding: "8px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.2 }}>
@@ -146,7 +146,7 @@ function HeroSection() {
             {[
               { amount: "$0", label: "Profile & listing", amber: true },
               { amount: "5%", label: "Vendors fee", amber: false },
-              { amount: "18%", label: "Contractors fee", amber: true },
+              { amount: "18%", label: "Entrepreneurs fee", amber: true },
             ].map(({ amount, label, amber }, i) => (
               <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 4px", borderRight: i < 2 ? `1px solid ${T.border}` : "none", minWidth: 0 }}>
                 <div style={{ ...mono, fontSize: 20, fontWeight: 700, color: amber ? T.amber : T.dark }}>{amount}</div>
@@ -182,11 +182,11 @@ const TAB_DATA = [
         {
           topBorder: T.amber,
           labelColor: T.amber,
-          label: "SERVICE SIDE · CONTRACTOR",
+          label: "SERVICE SIDE · ENTREPRENEUR",
           heading: "The Worker",
           desc: "Respond to every lead for free. Pay 18% only when a job closes through the platform. WAVE OS is optional.",
           tags: [["RESPOND · $0", false], ["18% ON CLOSE", false], ["WAVE OS OPTIONAL", true]],
-          cta: { label: "Join as Contractor", to: "/BecomeContractor" },
+          cta: { label: "Join as Entrepreneur", to: "/BecomeContractor" },
         },
         {
           topBorder: T.border,
@@ -237,10 +237,10 @@ const TAB_DATA = [
       );
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We never charge a contractor to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We never charge an entrepreneur to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             <div style={{ flex: "1 1 240px", paddingRight: 28 }}>
-              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CONTRACTORS</div>
+              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR ENTREPRENEURS</div>
               {row("Facilitation fee", "on job close", "18%", false)}
               {row("Respond to RFP", "no upfront cost", "$0", true)}
               {row("Timed session", "60-min window", "$1.50", false)}
@@ -251,7 +251,7 @@ const TAB_DATA = [
             <div style={{ flex: "1 1 240px", paddingLeft: 28 }}>
               <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CLIENTS</div>
               {row("Job posting", "no account needed", "$0", true)}
-              {row("Request for Proposal", "direct to contractor", "$1.75", false)}
+              {row("Request for Proposal", "direct to entrepreneur", "$1.75", false)}
               {row("Timed session", "60-min window", "$1.50", false)}
               {row("Unlimited messaging", "monthly add-on", "$50/mo", false)}
             </div>
@@ -272,7 +272,7 @@ const TAB_DATA = [
       ];
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Post one project and hire multiple trade specialists independently. Slots close as contractors are hired — no double-booking, no confusion.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Post one project and hire multiple trade specialists independently. Slots close as entrepreneurs are hired — no double-booking, no confusion.</p>
           <div style={{ background: T.bg, borderRadius: 10, padding: 20, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4, fontStyle: "italic" }}>Kitchen Renovation — Full Project</div>
@@ -349,7 +349,7 @@ function IntegritySection() {
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
           {[
-            { label: "TRIGGER_01 // 72HR_PHOTO_RULE", heading: "72-Hour Photo Rule", desc: "Contractors must upload after-photos within 72 hours of the agreed work date. Failure triggers an immediate account hold blocking all platform activity.", badge: "immediate account hold" },
+            { label: "TRIGGER_01 // 72HR_PHOTO_RULE", heading: "72-Hour Photo Rule", desc: "Entrepreneurs must upload after-photos within 72 hours of the agreed work date. Failure triggers an immediate account hold blocking all platform activity.", badge: "immediate account hold" },
             { label: "TRIGGER_02 // MUTUAL_RATINGS", heading: "Mandatory Mutual Ratings", desc: "Both parties must submit ratings at closeout. Non-compliant accounts are held until the rating is submitted.", badge: "hold: non-compliant party only" },
           ].map((c) => (
             <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
@@ -373,8 +373,8 @@ function IntegritySection() {
 // ── Launch Engine ──────────────────────────────────────────────
 function LaunchEngineSection() {
   const cards = [
-    { topBorder: T.dark, number: "100", numberColor: T.dark, label: "FOUNDING_100", desc: "The first 100 contractors receive 1 full year of all-access free. No credit card. No catch.", tag: "1 year all-access free", amber: true },
-    { topBorder: "transparent", number: "14", numberColor: "#AAA", label: "STANDARD_TRIAL", desc: "After Founding 100 fills, new contractors start with a 14-day free trial to explore the platform.", tag: "standard onboarding", amber: false },
+    { topBorder: T.dark, number: "100", numberColor: T.dark, label: "FOUNDING_100", desc: "The first 100 entrepreneurs receive 1 full year of all-access free. No credit card. No catch.", tag: "1 year all-access free", amber: true },
+    { topBorder: "transparent", number: "14", numberColor: "#AAA", label: "STANDARD_TRIAL", desc: "After Founding 100 fills, new entrepreneurs start with a 14-day free trial to explore the platform.", tag: "standard onboarding", amber: false },
     { topBorder: T.amber, number: "5:1", numberColor: T.amber, label: "THE_5_FOR_1_LOOP", desc: "During your trial, refer 5 signups to earn 1 extra free day. Stackable. Trial window only.", tag: "trial window only", amber: true },
   ];
 

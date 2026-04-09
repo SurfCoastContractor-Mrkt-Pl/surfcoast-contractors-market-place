@@ -248,7 +248,7 @@ export default function Pricing() {
       <section style={{ maxWidth: 900, margin: "0 auto 52px", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.1em" }}>// BOOTH & SPACE OPERATOR TRACK</div>
-          <h2 style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 900, margin: "0 0 10px", color: T.dark }}>MarketShop Plans</h2>
+          <h2 style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 900, margin: "0 0 10px", color: T.dark }}>Market Shop Plans</h2>
           <p style={{ fontSize: 14, color: T.muted, maxWidth: 560, margin: "0 auto", fontStyle: "italic" }}>For farmers market sellers, flea market booth holders, and swap meet space operators. Choose your payment model.</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
