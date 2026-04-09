@@ -2,21 +2,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-const sections = [
-  { name: "Hero", id: "hero" },
-  { name: "Platform Overview", id: "platform_overview" },
-  { name: "Integrity", id: "integrity" },
-  { name: "Launch Engine", id: "launch_engine" },
-  { name: "FAQ", id: "faq" },
-];
-
-const scrollToSection = (id) => {
-  const elem = document.querySelector(`[data-section="${id}"]`);
-  if (elem) {
-    elem.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
 export default function HomeNavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -36,15 +21,6 @@ export default function HomeNavBar() {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <Link to="/" style={{ textDecoration: "none", fontSize: 16, fontWeight: 700, color: "#fff" }}>SCMP</Link>
-      </div>
-      
-      {/* Desktop nav — hidden on mobile */}
-      <div className="hidden md:flex gap-1 flex-wrap items-center">
-        {sections.map((s) => (
-          <button key={s.id} onClick={() => scrollToSection(s.id)} style={{ background: "transparent", border: "none", color: "#aaa", fontSize: 12, fontWeight: 500, cursor: "pointer", padding: "4px 8px", transition: "color 0.2s", fontStyle: "italic" }} onMouseEnter={(e) => e.target.style.color = "#fff"} onMouseLeave={(e) => e.target.style.color = "#aaa"}>
-            {s.name}
-          </button>
-        ))}
       </div>
 
       {/* Mobile hamburger */}
