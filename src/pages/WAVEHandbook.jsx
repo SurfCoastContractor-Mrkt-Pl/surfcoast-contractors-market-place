@@ -27,12 +27,18 @@ export default function WAVEHandbook() {
         return;
       }
 
+      // Admins always have access
+      if (user.role === 'admin') {
+        setIsSubscribed(true);
+        setIsLoading(false);
+        return;
+      }
+
       // Check if user has a contractor profile with active subscription
       const contractors = await base44.entities.Contractor.filter({ email: user.email });
       // Check if user has a market shop
       const marketShops = await base44.entities.MarketShop.filter({ email: user.email });
 
-      // If either exists, assume active subscription (in real implementation, check subscription status)
       setIsSubscribed((contractors && contractors.length > 0) || (marketShops && marketShops.length > 0));
     } catch (error) {
       console.error('Error checking subscription:', error);
