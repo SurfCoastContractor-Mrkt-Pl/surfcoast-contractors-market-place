@@ -132,17 +132,13 @@ function HeroSection() {
         <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.6, marginBottom: 26, fontWeight: 400 }}>
           <strong>Free profile.</strong> Respond to leads at $0. Pay 18% only when work closes. <strong>No lead fees. No shared leads. No spam.</strong>
         </p>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 28 }}>
-            {[
-              { to: "/PostJob", label: "Post a Job — Free", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
-              { to: "/wave-os-details", label: "What is WAVE OS?", bg: T.amberBg, color: T.amber, border: `1px solid #D9B88A` },
-              { to: "/BecomeContractor", label: "Join as Entrepreneur", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
-              { to: "/MarketShopSignup", label: "Market Shop", bg: "#fff", color: T.dark, border: `1px solid ${T.border}` },
-            ].map(({ to, label, bg, color, border }) => (
-              <Link key={to} to={to} style={{ textDecoration: "none", display: "inline-block", background: bg, color, border, borderRadius: 5, padding: "8px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.2 }}>
-                {label}
-              </Link>
-            ))}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28, flexDirection: "column", alignItems: "flex-start" }}>
+            <Link to="/PostJob" style={{ textDecoration: "none", display: "block", width: "100%", maxWidth: 320, background: "#fff", color: T.dark, border: `2px solid ${T.border}`, borderRadius: 8, padding: "14px 18px", fontSize: 14, fontWeight: 700, textAlign: "center", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.3 }}>
+              Post a Job — Free
+            </Link>
+            <Link to="/BecomeContractor" style={{ textDecoration: "none", display: "block", width: "100%", maxWidth: 320, background: T.amberBg, color: T.amber, border: `2px solid #D9B88A`, borderRadius: 8, padding: "14px 18px", fontSize: 14, fontWeight: 700, textAlign: "center", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.3 }}>
+              Join as Entrepreneur
+            </Link>
           </div>
           <div style={{ display: "flex", background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease", width: "100%" }} {...hoverGlowSm}>
             {[
