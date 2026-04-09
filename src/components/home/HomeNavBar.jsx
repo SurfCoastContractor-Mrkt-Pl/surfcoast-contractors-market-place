@@ -39,7 +39,7 @@ export default function HomeNavBar() {
       </div>
       
       {/* Desktop nav — hidden on mobile */}
-      <div style={{ display: "none", gap: 4, flexWrap: "wrap", alignItems: "center", "@media (min-width: 768px)": { display: "flex" } }}>
+      <div className="hidden md:flex gap-1 flex-wrap items-center">
         {sections.map((s) => (
           <button key={s.id} onClick={() => scrollToSection(s.id)} style={{ background: "transparent", border: "none", color: "#aaa", fontSize: 12, fontWeight: 500, cursor: "pointer", padding: "4px 8px", transition: "color 0.2s", fontStyle: "italic" }} onMouseEnter={(e) => e.target.style.color = "#fff"} onMouseLeave={(e) => e.target.style.color = "#aaa"}>
             {s.name}
