@@ -13,7 +13,6 @@ import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
 import VendorDetail from './pages/VendorDetail';
 import EntrepreneurFinancialDashboard from './pages/EntrepreneurFinancialDashboard';
 import EntrepreneurAccount from './pages/EntrepreneurAccount';
-import EntrepreneurBusinessHub from './pages/EntrepreneurBusinessHub';
 import ConsumerHub from './pages/ConsumerHub';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -306,8 +305,20 @@ const AuthenticatedApp = () => {
         </LayoutWrapper>
       } />
       <Route path="/EntrepreneurAccount" element={
+        <LayoutWrapper currentPageName="EntrepreneurAccount">
+          <EntrepreneurAccount />
+        </LayoutWrapper>
+      } />
       <Route path="/entrepreneurAccount" element={
+        <LayoutWrapper currentPageName="EntrepreneurAccount">
+          <EntrepreneurAccount />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurBillingHistory" element={
+        <LayoutWrapper currentPageName="EntrepreneurBillingHistory">
+          <EntrepreneurBillingHistory />
+        </LayoutWrapper>
+      } />
       <Route path="/EntrepreneurBusinessHub" element={
         <LayoutWrapper currentPageName="EntrepreneurBusinessHub">
           <EntrepreneurBusinessHub />
