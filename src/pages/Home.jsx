@@ -40,22 +40,64 @@ const hoverGlowSm = {
 
 const mono = { fontFamily: "monospace", fontWeight: 700, fontStyle: "italic" };
 
+// Memoized style objects
+const buttonStyle = (bg, color, border) => ({
+  textDecoration: "none",
+  display: "block",
+  width: "100%",
+  maxWidth: 320,
+  background: bg,
+  color,
+  border,
+  borderRadius: 8,
+  padding: "14px 18px",
+  fontSize: 14,
+  fontWeight: 700,
+  textAlign: "center",
+  fontFamily: "system-ui, -apple-system, sans-serif",
+  lineHeight: 1.3,
+});
+
+const tabButtonBase = {
+  fontFamily: "monospace",
+  fontSize: 12,
+  padding: "9px 20px",
+  border: "none",
+  fontWeight: 700,
+  cursor: "pointer",
+  transition: "background 0.15s, box-shadow 0.2s ease",
+};
+
+const tagStyle = (amber) => ({
+  display: "inline-block",
+  fontFamily: "monospace",
+  fontWeight: 700,
+  fontStyle: "italic",
+  fontSize: 10,
+  padding: "3px 8px",
+  borderRadius: 4,
+  border: `0.5px solid ${amber ? "#D9B88A" : T.border}`,
+  background: amber ? T.amberTint : T.bg,
+  color: amber ? T.amber : T.muted,
+  marginRight: 4,
+  marginTop: 4,
+});
+
+const faqButtonStyle = {
+  width: "100%",
+  background: "transparent",
+  border: "none",
+  padding: "20px",
+  textAlign: "left",
+  cursor: "pointer",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: 16,
+};
+
 const tag = (text, amber) => (
-  <span
-    key={text}
-    style={{
-      display: "inline-block",
-      ...mono,
-      fontSize: 10,
-      padding: "3px 8px",
-      borderRadius: 4,
-      border: `0.5px solid ${amber ? "#D9B88A" : T.border}`,
-      background: amber ? T.amberTint : T.bg,
-      color: amber ? T.amber : T.muted,
-      marginRight: 4,
-      marginTop: 4,
-    }}
-  >
+  <span key={text} style={{ ...tagStyle(amber), ...mono }}>
     {text}
   </span>
 );
@@ -133,10 +175,10 @@ function HeroSection() {
           <strong>Free profile.</strong> Respond to leads at $0. Pay 18% only when work closes. <strong>No lead fees. No shared leads. No spam.</strong>
         </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28, flexDirection: "column", alignItems: "flex-start" }}>
-            <Link to="/PostJob" style={{ textDecoration: "none", display: "block", width: "100%", maxWidth: 320, background: "#fff", color: T.dark, border: `2px solid ${T.border}`, borderRadius: 8, padding: "14px 18px", fontSize: 14, fontWeight: 700, textAlign: "center", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.3 }}>
+            <Link to="/PostJob" style={buttonStyle("#fff", T.dark, `2px solid ${T.border}`)}>
               Post a Job — Free
             </Link>
-            <Link to="/BecomeContractor" style={{ textDecoration: "none", display: "block", width: "100%", maxWidth: 320, background: T.amberBg, color: T.amber, border: `2px solid #D9B88A`, borderRadius: 8, padding: "14px 18px", fontSize: 14, fontWeight: 700, textAlign: "center", fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: 1.3 }}>
+            <Link to="/BecomeContractor" style={buttonStyle(T.amberBg, T.amber, `2px solid #D9B88A`)}>
               Join as Entrepreneur
             </Link>
           </div>
@@ -314,16 +356,12 @@ function TabbedSection() {
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
               style={{
+                ...tabButtonBase,
                 ...mono,
-                fontSize: 12,
-                padding: "9px 20px",
-                border: "none",
                 borderRight: `1px solid ${T.border}`,
                 background: active === t.id ? T.amberTint : "transparent",
                 color: active === t.id ? T.amber : T.muted,
                 fontWeight: active === t.id ? 700 : 400,
-                cursor: "pointer",
-                transition: "background 0.15s, box-shadow 0.2s ease",
               }}
             >
               {t.label}
@@ -466,18 +504,7 @@ function FAQAccordion() {
               <div key={q} style={{ ...cardStyle, overflow: "hidden" }} {...hoverGlow}>
                 <button
                   onClick={() => setOpenId(isOpen ? null : i)}
-                  style={{
-                    width: "100%",
-                    background: "transparent",
-                    border: "none",
-                    padding: "20px",
-                    textAlign: "left",
-                    cursor: "pointer",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: 16
-                  }}
+                  style={faqButtonStyle}
                 >
                   <h3 style={{ fontSize: 15, fontWeight: 700, color: "#A83300", margin: 0, lineHeight: 1.4 }}>{q}</h3>
                   <span style={{ fontSize: 18, color: T.muted, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
