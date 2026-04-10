@@ -297,11 +297,11 @@ export default function WAVEHandbook() {
           content: (
             <div className="space-y-4">
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 font-semibold">
-                ⚠️ All jobs completed through SurfCoast are subject to an <strong>18% facilitation fee</strong>. This is automatically collected via Stripe. You receive <strong>82%</strong> directly to your connected bank account.
+                 ⚠️ All jobs completed through SurfCoast are subject to an <strong>18% Project Completion Fee</strong>. This is automatically collected via Stripe. You receive <strong>82%</strong> directly to your connected bank account.
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">How It Works</h4>
-                <p className="text-slate-600">When a client pays for a completed job through the platform, SurfCoast automatically collects the 18% facilitation fee via Stripe. The remaining 82% is sent directly to your Stripe Connect account and deposited to your bank.</p>
+                <p className="text-slate-600">When a client pays for a completed job through the platform, SurfCoast automatically collects the 18% Project Completion Fee via Stripe. The remaining 82% is sent directly to your Stripe Connect account and deposited to your bank.</p>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">What the Fee Covers</h4>
@@ -829,7 +829,7 @@ export default function WAVEHandbook() {
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">WAVE OS is Optional</h4>
-                <p className="text-slate-600">WAVE OS subscriptions (Starter, Pro, Max, Premium) are optional upgrades that unlock additional tools, but you are never required to subscribe to maintain a live profile on the platform.</p>
+                <p className="text-slate-600">WAVE OS subscriptions (Starter, Pro, Max, Premium) are optional plans that make additional tools available when you need them. You are never required to subscribe to maintain a live profile on the platform.</p>
               </div>
             </div>
           ),
