@@ -26,7 +26,7 @@ export default function FieldOpsSidebar({
   return (
     <div className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 flex-shrink-0">
       {/* Header */}
-      <div className="px-4 py-4 border-b border-slate-200">
+      <div className="px-4 pt-6 pb-4 border-b border-slate-200">
         <h2 className="text-slate-800 font-bold text-sm">SURFCOAST WAVE OS</h2>
         <p className="text-blue-600 text-xs font-semibold mt-0.5">PRO</p>
       </div>
