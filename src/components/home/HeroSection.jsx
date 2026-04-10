@@ -94,7 +94,7 @@ export default function HeroSection() {
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
           <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.6, marginBottom: 26, fontWeight: 400 }}>
-            <strong>Free profile.</strong> Respond to leads at $0. Pay 18% only when work closes. <strong>No lead fees. No shared leads. No spam.</strong>
+            <strong>Free profile.</strong> Respond to project opportunities at $0. Pay an 18% <strong>Project Completion Fee</strong> only when work closes through the platform. <strong>No lead fees. No shared leads. No spam.</strong>
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28, flexDirection: "column", alignItems: "flex-start" }}>
             <Link to="/PostJob" style={buttonStyle("#fff", T.dark, `2px solid ${T.border}`)}>

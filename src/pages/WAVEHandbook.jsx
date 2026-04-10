@@ -18,6 +18,41 @@ export default function WAVEHandbook() {
           title: 'Our Mission & Values',
           content: <AboutWAVEOS />,
         },
+        {
+          id: '0.2',
+          title: 'Platform Independence — Legal Notice',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                📅 Updated April 10, 2026 — Reflects accurate platform role and legal scope.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What SurfCoast Is</h4>
+                <p className="text-slate-600">SurfCoast Contractors Marketplace (SurfCoast CMP) is a neutral technology platform. Its role is limited to providing tools that help independent entrepreneurs and clients find each other, communicate, manage projects, and process payments.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">What SurfCoast Is Not</h4>
+                <p className="text-slate-600">SurfCoast does not employ, supervise, direct, or control the manner or means by which any entrepreneur performs their work. SurfCoast does not guarantee the quality, safety, legality, or timeliness of any services arranged through the platform.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Your Responsibility as an Independent Entrepreneur</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>You set your own schedule, methods, tools, and process.</li>
+                  <li>You are solely responsible for your own licensing, permits, and any required verifications in your jurisdiction.</li>
+                  <li>You are responsible for any agreements, contracts, or warranties made directly with a client.</li>
+                  <li>You operate as a genuinely independent service provider, not as an employee of SurfCoast.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Platform's Limited Role</h4>
+                <p className="text-slate-600">SurfCoast provides the connection, the infrastructure for secure payments, and optional business tools. The actual service relationship exists between you and your client — not between you and SurfCoast. We simply connect the people who need help with the people who do the work.</p>
+              </div>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <strong>AB 5 Notice (California):</strong> SurfCoast does not exercise control over how any entrepreneur performs their services, in compliance with California's AB 5 worker classification law. Continued use of the platform constitutes acceptance of the full Terms of Service, available via the footer link.
+              </div>
+            </div>
+          ),
+        },
       ],
     },
     {
@@ -905,27 +940,38 @@ export default function WAVEHandbook() {
       sections: [
         {
           id: '11.1',
-          title: 'How Clients Connect with Contractors',
+          title: 'How Clients Connect with Entrepreneurs',
           content: (
             <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                🔄 Updated April 10, 2026 — Communication policy clarified. Contact information is never visible between parties.
+              </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Browsing is Always Free</h4>
-                <p className="text-slate-600">Clients can browse all contractor profiles, view portfolios, read reviews, and compare options at no cost. No account required to browse.</p>
+                <p className="text-slate-600">Clients can browse all entrepreneur profiles, view portfolios, read reviews, and compare options at no cost. No account is required to browse.</p>
               </div>
               <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging — $1.50 per 10-minute session</h4>
-                <p className="text-slate-600">To initiate a direct conversation with a contractor, clients pay $1.50 for a 10-minute timed session. Alternatively, clients can subscribe to the $50/month unlimited messaging plan to communicate with multiple contractors without per-session fees.</p>
+                <h4 className="font-semibold text-slate-900 mb-2">Request for Proposal — $1.75</h4>
+                <p className="text-slate-600">Clients can send a formal Request for Proposal (RFP) to a specific entrepreneur for $1.75. This delivers the client's project details, budget, and timeline directly to the entrepreneur's inbox. The entrepreneur responds with their estimate at no charge. <strong>This action does not initiate direct conversation and does not share any contact information.</strong></p>
               </div>
               <div>
-                <h4 className="font-semibold text-slate-900 mb-2">Proposal Requests — $1.75 (one-time per contractor)</h4>
-                <p className="text-slate-600">Clients can send a detailed project proposal request to a specific contractor for $1.75. This delivers the client's project details, budget, and timeline directly to the contractor's inbox. The contractor responds with their estimate — no additional charge to the client.</p>
+                <h4 className="font-semibold text-slate-900 mb-2">Contact Information is Never Shared</h4>
+                <p className="text-slate-600">At no point in time is either party's email address, phone number, or personal contact information visible to the other side — not during browsing, not during proposal requests, not during messaging sessions. All communication happens exclusively through SurfCoast's secure platform messaging system.</p>
               </div>
-              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
-                <strong>For Contractors:</strong> Responding to a client's proposal request is always free. Contractors are never charged to reply to inbound RFPs.
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging — When Both Parties Agree</h4>
+                <p className="text-slate-600">Secure platform messaging becomes available <strong>only after both the client and entrepreneur formally agree to work together</strong> — reaching an "Agreed" status on a project. Once in an agreed status, messaging remains open for the full duration of the project until it is officially closed out. No messaging is possible before mutual agreement unless a session fee is paid.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging Before Agreement — $1.50 per 10-Minute Session</h4>
+                <p className="text-slate-600">If a client wants to initiate a direct conversation with an entrepreneur before a formal agreement is reached, they can pay $1.50 for a 10-minute timed session window. This opens a secure messaging channel for that session only.</p>
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 mb-2">Unlimited Messaging Plan — $50/month</h4>
-                <p className="text-slate-600">Clients who need to communicate with multiple contractors regularly can subscribe to the $50/month unlimited messaging plan — full conversation threads with any contractor, no per-session fees.</p>
+                <p className="text-slate-600">Clients who need to communicate with multiple entrepreneurs regularly can subscribe to the $50/month unlimited messaging plan — full conversation threads with any entrepreneur, no per-session fees, all through the platform's secure system.</p>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                <strong>For Entrepreneurs:</strong> Responding to a client's Request for Proposal is always free. Entrepreneurs are never charged to reply to inbound requests.
               </div>
             </div>
           ),

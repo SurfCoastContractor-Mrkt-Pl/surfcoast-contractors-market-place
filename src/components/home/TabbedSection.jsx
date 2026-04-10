@@ -46,10 +46,10 @@ const TAB_DATA = [
     label: "Who It's For",
     content: () => {
       const roles = [
-        { topBorder: T.dark, labelColor: T.muted, label: "SERVICE SIDE · CLIENT", heading: "The Hirer", desc: "Post jobs free. Send an RFP for $1.75 directly to any contractor. A $1.50 session opens a 60-minute communication window.", tags: [["POST JOB · FREE", false], ["RFP · $1.75", true], ["SESSION · $1.50", false]], cta: { label: "Post a Job", to: "/PostJob" } },
-        { topBorder: T.amber, labelColor: T.amber, label: "SERVICE SIDE · ENTREPRENEUR", heading: "The Worker", desc: "Respond to every lead for free. Pay 18% only when a job closes through the platform. WAVE OS is optional.", tags: [["RESPOND · $0", false], ["18% ON CLOSE", false], ["WAVE OS OPTIONAL", true]], cta: { label: "Join as Entrepreneur", to: "/BecomeContractor" } },
-        { topBorder: T.border, labelColor: "#444", label: "MARKET SHOP · VENDOR", heading: "The Seller", desc: "Claim a booth or space at a farmers market or swap meet. Upgrade to WAVEshop OS for live inventory management.", tags: [["BOOTH", false], ["SPACE", false], ["WAVEshop OS · $35/mo", false]], cta: { label: "Open a Shop", to: "/MarketShopSignup" } },
-        { topBorder: T.border, labelColor: "#444", label: "MARKET SHOP · CONSUMER", heading: "The Shopper", desc: "Browse and shop from local vendors. Consumer accounts are scoped to Market Shop only — no service side access.", tags: [["MARKET SHOP ONLY", false], ["NO SERVICE SIDE", true]], cta: { label: "Browse Markets", to: "/MarketDirectory" } },
+        { topBorder: T.dark, labelColor: T.muted, label: "FOR PEOPLE WHO NEED HELP", heading: "The Client", desc: "Post your project free. Send a Request for Proposal for $1.75 to invite an Entrepreneur to respond. No contact information is ever shared between parties. Direct messaging only opens after both parties formally agree to work together — once in an agreed status, secure platform messaging remains open for the full duration of the project.", tags: [["POST PROJECT · FREE", false], ["REQUEST FOR PROPOSAL · $1.75", true], ["MESSAGING · AGREED STATUS ONLY", false]], cta: { label: "Post a Project", to: "/PostJob" } },
+        { topBorder: T.amber, labelColor: T.amber, label: "FOR ENTREPRENEURS & WORKERS", heading: "The Entrepreneur", desc: "Respond to every Request for Proposal for free. We only ask for an 18% Project Completion Fee when you successfully close a project through the platform. The WAVE OS system has tools to help you grow when you need it — but it is not required to complete your journey. It just helps make things easier.", tags: [["RESPOND · $0", false], ["18% PROJECT COMPLETION FEE", false], ["WAVE OS · WHEN YOU'RE READY", true]], cta: { label: "Join as Entrepreneur", to: "/BecomeContractor" } },
+        { topBorder: T.border, labelColor: "#444", label: "MARKET SHOP · VENDOR", heading: "The Seller", desc: "Claim a booth or space at a farmers market or swap meet. WAVEshop OS gives you live inventory management, scheduling, and analytics — all designed for in-person sellers.", tags: [["BOOTH", false], ["SPACE", false], ["WAVEshop OS · $35/mo", false]], cta: { label: "Open a Shop", to: "/MarketShopSignup" } },
+        { topBorder: T.border, labelColor: "#444", label: "MARKET SHOP · CONSUMER", heading: "The Shopper", desc: "Browse and shop from local vendors. Consumer accounts are built for shopping only — no service side access.", tags: [["MARKET SHOP ONLY", false], ["NO SERVICE SIDE", true]], cta: { label: "Browse Markets", to: "/MarketDirectory" } },
       ];
       return (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
@@ -81,22 +81,22 @@ const TAB_DATA = [
       );
       return (
         <div>
-          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We never charge an entrepreneur to respond to a lead. Every fee is a filter that keeps the platform signal high.</p>
+          <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We believe in transparency. We don't believe in lead fees. Every fee helps keep the community thriving and connections genuine.</p>
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             <div style={{ flex: "1 1 240px", paddingRight: 28 }}>
               <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR ENTREPRENEURS</div>
-              {row("Facilitation fee", "on job close", "18%", false)}
-              {row("Respond to RFP", "no upfront cost", "$0", true)}
-              {row("Timed session", "60-min window", "$1.50", false)}
+              {row("Project Completion Fee", "on job close through platform", "18%", false)}
+              {row("Respond to Project Opportunity", "no upfront cost, ever", "$0", true)}
+              {row("Direct Messaging Session", "10-min window", "$1.50", false)}
               {row("Unlimited messaging", "monthly add-on", "$50/mo", false)}
               {row("Basic Dashboard", "always included", "Free", true)}
             </div>
             <div style={{ width: 1, background: T.border, flexShrink: 0 }} />
             <div style={{ flex: "1 1 240px", paddingLeft: 28 }}>
               <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CLIENTS</div>
-              {row("Job posting", "no account needed", "$0", true)}
-              {row("Request for Proposal", "direct to entrepreneur", "$1.75", false)}
-              {row("Timed session", "60-min window", "$1.50", false)}
+              {row("Post a project", "no account needed", "$0", true)}
+              {row("Request for Proposal", "invite an entrepreneur to respond", "$1.75", false)}
+              {row("Direct Messaging Session", "10-min window", "$1.50", false)}
               {row("Unlimited messaging", "monthly add-on", "$50/mo", false)}
             </div>
           </div>
@@ -133,7 +133,7 @@ const TAB_DATA = [
             </div>
           </div>
           <div style={{ marginTop: 16 }}>
-            <Link to="/PostJob" style={{ textDecoration: "none", display: "inline-block", ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "9px 16px" }}>Post a multi-trade job →</Link>
+            <Link to="/PostJob" style={{ textDecoration: "none", display: "inline-block", ...mono, fontSize: 11, background: T.dark, color: "#fff", border: "none", borderRadius: 6, padding: "9px 16px" }}>Post a multi-trade project →</Link>
           </div>
         </div>
       );

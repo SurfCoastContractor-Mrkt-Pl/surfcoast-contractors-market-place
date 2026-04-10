@@ -9,6 +9,7 @@ import CTABar from "@/components/home/CTABar";
 
 function TickerBar() {
   const [spotsRemaining, setSpotsRemaining] = useState(null);
+  const [tooltip, setTooltip] = useState(null);
 
   useEffect(() => {
     import('@/api/base44Client').then(({ base44 }) => {
@@ -23,10 +24,47 @@ function TickerBar() {
     ? `founding_100 — ${spotsRemaining} spot${spotsRemaining !== 1 ? 's' : ''} remaining · 1 year all-access free`
     : `founding_100 — limited spots remaining · 1 year all-access free`;
 
+  const BUTTONS = [
+    {
+      label: 'Founding Entrepreneurs',
+      to: '/BecomeContractor',
+      tip: 'For independent workers building their own business — from tradespeople to freelancers. The first 100 to sign up get one full year of all-access free, no credit card required.',
+    },
+    {
+      label: 'Post a Project',
+      to: '/PostJob',
+      tip: 'For clients who need work done. Post your project for free and invite Entrepreneurs to submit a proposal. Your contact information is never shared until both parties agree to work together.',
+    },
+    {
+      label: 'Market Shop Vendors',
+      to: '/MarketShopSignup',
+      tip: 'For booth operators, farmers market sellers, and swap meet vendors. Set up your shop, manage listings, and connect with local buyers.',
+    },
+  ];
+
   return (
-    <div style={{ background: "#1A1A1B", padding: "6px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 4, overflow: "hidden" }}>
-      <span style={{ fontFamily: "monospace", fontSize: 11, color: "#e0e0e0", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 700, fontStyle: "italic" }}>{label}</span>
-      <span style={{ fontFamily: "monospace", fontSize: 11, color: "#ffffff", flexShrink: 0, fontWeight: 700, fontStyle: "italic" }}>California · Nationwide</span>
+    <div style={{ background: '#1A1A1B', padding: '6px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+      <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#e0e0e0', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 700, fontStyle: 'italic' }}>{label}</span>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', flexShrink: 0 }}>
+        {BUTTONS.map((btn) => (
+          <div key={btn.label} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <a href={btn.to} style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: '#fff', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 5, padding: '4px 10px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              {btn.label}
+            </a>
+            <span
+              onMouseEnter={() => setTooltip(btn.label)}
+              onMouseLeave={() => setTooltip(null)}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 15, height: 15, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', color: '#ccc', fontSize: 10, fontWeight: 700, cursor: 'default', flexShrink: 0 }}
+            >?
+            </span>
+            {tooltip === btn.label && (
+              <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: '#fff', border: '1px solid #D0D0D2', borderRadius: 8, padding: '10px 14px', width: 240, fontSize: 12, color: '#1A1A1B', lineHeight: 1.55, boxShadow: '0 4px 16px rgba(0,0,0,0.18)', zIndex: 100 }}>
+                {btn.tip}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

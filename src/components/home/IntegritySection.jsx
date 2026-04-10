@@ -30,14 +30,14 @@ export default function IntegritySection() {
   return (
     <section ref={ref} data-section="integrity" style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// INTEGRITY & ACCOUNT HOLD ENFORCEMENT</div>
-        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>100% compliance. Automated.</h2>
-        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Non-compliance triggers immediate account holds with no manual review required.</p>
+        <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// BUILDING TRUST TOGETHER</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Building Trust Together.</h2>
+        <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We believe in a level playing field. Our system helps ensure everyone stays honest — so the people who work hard never get cheated.</p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
           {[
-            { label: "TRIGGER_01 // 72HR_PHOTO_RULE", heading: "72-Hour Photo Rule", desc: "Entrepreneurs must upload after-photos within 72 hours of the agreed work date. Failure triggers an immediate account hold blocking all platform activity.", badge: "immediate account hold" },
-            { label: "TRIGGER_02 // MUTUAL_RATINGS", heading: "Mandatory Mutual Ratings", desc: "Both parties must submit ratings at closeout. Non-compliant accounts are held until the rating is submitted.", badge: "hold: non-compliant party only" },
+            { label: "TRIGGER_01 // 72HR_PHOTO_RULE", heading: "72-Hour After-Photo Rule", desc: "Entrepreneurs must upload after-photos within 72 hours of the agreed work date. Missing this window means account activity is paused automatically — keeping every project on record and every client protected.", badge: "auto-pause · lifts on upload" },
+            { label: "TRIGGER_02 // MUTUAL_RATINGS", heading: "Mutual Ratings Required", desc: "Both parties must submit honest ratings at closeout. If either party hasn't submitted, only their account is paused — ensuring fairness without punishing the other side.", badge: "paused · non-rating party only" },
           ].map((c) => (
             <div key={c.label} style={{ ...cardStyle, flex: "1 1 240px", padding: 20 }} {...hoverGlow}>
               <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>{c.label}</div>
@@ -49,8 +49,8 @@ export default function IntegritySection() {
         </div>
 
         <div style={{ ...cardStyle, padding: 18 }} {...hoverGlow}>
-          <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>HOLD STATUS — FULL PLATFORM BLOCK</div>
-          <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6 }}>A hold blocks all platform activity — job applications, messaging, payments, and RFP access — until the required action is completed. Holds lift automatically once compliance is confirmed.</p>
+          <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>ACCOUNT PAUSE — WHAT IT MEANS</div>
+          <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6 }}>When an account is paused, activities like project requests, messaging sessions, and payments are temporarily on hold. There is no manual review — pauses happen instantly when the trigger condition is met and lift the moment the required action is completed. This keeps our community fair and transparent for everyone.</p>
         </div>
       </div>
     </section>
