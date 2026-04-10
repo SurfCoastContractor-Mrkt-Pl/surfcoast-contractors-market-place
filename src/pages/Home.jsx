@@ -71,7 +71,7 @@ function TickerBar() {
 
 export default function Home() {
   return (
-    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }} data-version="apr10">
       <HomeNavBar />
       <TickerBar />
       <HeroSection />
