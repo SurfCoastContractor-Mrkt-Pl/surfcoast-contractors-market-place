@@ -27,11 +27,8 @@ export default function FieldOpsSidebar({
     <div className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 flex-shrink-0">
       {/* Header */}
       <div className="px-4 pt-8 pb-4 border-b border-slate-200">
-        <img
-          src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/fb4b0f74a_04_WAVE_OS_Logo.png"
-          alt="WAVE OS"
-          className="h-10 w-auto object-contain"
-        />
+        <h2 className="text-slate-800 font-bold text-sm">SURFCOAST WAVE OS</h2>
+        <p className="text-blue-600 text-xs font-semibold mt-0.5">PRO</p>
       </div>
 
       {/* Contractor Info */}
