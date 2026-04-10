@@ -68,7 +68,7 @@ function HeroPlatformCard() {
         <span style={{ ...mono, fontSize: 11, color: T.muted }}>surfcoast / platform_map</span>
         <span style={{ ...mono, fontSize: 11, color: T.amber }}>● live</span>
       </div>
-      {block(T.border, T.muted, "SURFCOAST MARKETPLACE — THE VENUE", [
+      {block(T.border, T.muted, "SURFCOAST MARKETPLACE", [
         { text: "Service Side — Clients · Entrepreneurs", tinted: false },
         { text: "Market Shop — Vendors · Consumers", tinted: false },
       ])}
