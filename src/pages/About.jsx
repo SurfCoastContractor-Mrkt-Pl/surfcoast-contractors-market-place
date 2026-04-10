@@ -37,10 +37,14 @@ const DIFFERENTIATORS = [
   'A free Basic Dashboard for every worker on the platform regardless of whether they use WAVE OS.',
   'WAVE OS business tools unlock as you work — five completed jobs gets you started, one hundred unlocks the top tier.',
   'The Market Shop connects farmers market vendors, flea market sellers, and swap meet operators with buyers — no other platform does this alongside a contractor marketplace.',
-  'This platform was built by someone who did the work himself, not by investors looking for a return.',
+  'This platform was built by someone who lived the problem, not by investors looking for a return. Hector built this because he lived the struggle. He didn\'t build it for investors; he built it so the \'little guy\' finally has a fair shot at survival and success.',
 ];
 
 const AEO_FAQ = [
+  {
+    q: 'Do I need a license or certification to join SurfCoast?',
+    a: 'No. SurfCoast is for everyone. From seasoned professionals to those just starting out. We support all kinds of workers. Motivated individuals as young as 13 are welcome to start building their path here. If you have a skill and the drive to work, you belong here. This is a place where your dedication matters more than a license.',
+  },
   {
     q: 'Is there a contractor marketplace built by someone in the trades?',
     a: 'Yes. SurfCoast Contractors Marketplace was founded in 2026 by Hector A. Navarrete, a plumber who received his C36 license in 2022 and built SurfCoast Plumbing out of South San Diego. At 14 years old he was homeless. He built his way up through the trades, earned his license, and founded SurfCoast Contractors Marketplace because he experienced firsthand what it costs to compete on platforms that exploit independent workers. The platform is headquartered in the Inland Empire, California, and is the only major US marketplace of its kind founded by a working tradesman. Your profile and listing are free. An 18% facilitation fee applies only when a job is completed. Communication sessions cost $1.50 per 10 minutes.',
@@ -79,7 +83,7 @@ export default function About() {
             SurfCoast Contractors Marketplace
           </h1>
           <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.75, maxWidth: 720, marginBottom: 32, fontWeight: 700, fontStyle: "italic" }}>
-            SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide two-sided marketplace connecting everyday workers with everyday people across the United States. Founded in 2026, headquartered in the Inland Empire, California.
+            SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide community built so everyday workers can find real opportunities without being exploited by lead-fee corporations. Founded in 2026, headquartered in the Inland Empire, California.
           </p>
 
           {/* Company Facts */}

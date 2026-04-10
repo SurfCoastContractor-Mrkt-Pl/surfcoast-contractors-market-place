@@ -59,8 +59,8 @@ const FAQ_ITEMS = [
   { q: "Is there a setup fee?", a: "No. Never. You pay the monthly rate and nothing else." },
   { q: "What's the difference between WAVE OS and WAVEshop OS?", a: "WAVE OS is the field operations system for contractors and independent service workers — it includes scheduling, invoicing, CRM, and compliance tools across multiple tiers. WAVEshop OS is an optional advanced program within the MarketShop offering for farmers market sellers, flea market vendors, and swap meet space operators. MarketShop vendors have a free basic profile and can choose between a 5% facilitation fee or a $20/month subscription to waive the fee. WAVEshop OS is a premium $35/month add-on for vendors who want advanced booth management features." },
   { q: "What's the facilitation fee structure for MarketShop vendors?", a: "MarketShop vendors can choose between two payment models: pay a 5% facilitation fee per sale, or subscribe to the $20/month plan to waive the fee entirely and keep 100% of your sales. WAVEshop OS is an optional premium program at $35/month that includes advanced tools." },
-  { q: "Do I need a license to join?", a: "No. Unlicensed workers can join on a Basic Profile. Motivated individuals as young as 13 are welcome. Licensed contractors unlock additional compliance and document features in higher tiers." },
-  { q: "What is the 18% facilitation fee?", a: "When a client pays for a job through the platform, SurfCoast collects an 18% facilitation fee automatically via Stripe. This covers payment processing, platform infrastructure, and dispute protection. Contractors receive 82% directly to their connected bank account." },
+  { q: "Do I need a license to join?", a: "No. SurfCoast is for everyone. From seasoned professionals to those just starting out. We support all kinds of workers. Motivated individuals as young as 13 are welcome to start building their path here. If you have a skill and the drive to work, you belong here. This is a place where your dedication matters more than a license." },
+  { q: "What is the 18% Project Completion Fee?", a: "When an Entrepreneur collects payment from the client for a project through the platform, SurfCoast collects an 18% Project Completion Fee automatically via Stripe. This covers payment processing, platform resources, and support. Workers receive 82% directly to their connected bank account." },
   { q: "Is messaging free?", a: "It depends on your tier. Basic/Starter/Pro subscribers pay $1.50 per 10-minute session or $50/month for unlimited messaging. WAVE OS Max subscribers get free messaging with past clients only (people they have already completed a job with through the platform). WAVE OS Premium subscribers get free messaging with all clients — no per-session fees ever." },
   { q: "Can I upgrade or downgrade my plan?", a: "Yes. You can change plans at any time. Changes take effect on your next billing cycle." },
 ];
@@ -84,7 +84,7 @@ export default function Pricing() {
 
       {/* Ticker */}
       <div style={{ background: T.dark, padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// PRICING · SIMPLE. HONEST. NO SURPRISES.</span>
+        <span style={{ ...mono, fontSize: 11, color: "#e0e0e0" }}>// PRICING · SIMPLE. HONEST. FOR YOUR JOURNEY.</span>
         <span style={{ ...mono, fontSize: 11, color: "#ffffff" }}>Month-to-month · Cancel anytime</span>
       </div>
 
@@ -95,10 +95,10 @@ export default function Pricing() {
           <span style={{ ...mono, fontSize: 10, color: T.amber, letterSpacing: "0.08em" }}>SIMPLE, HONEST PRICING</span>
         </div>
         <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 3.5rem)", fontWeight: 900, margin: "0 0 16px", lineHeight: 1.08, color: T.dark }}>
-          Simple, Honest Pricing.<br />No Surprises.
+          Simple, Honest Pricing.<br />Built For You.
         </h1>
         <p style={{ fontSize: 16, color: T.muted, margin: "0 0 10px", lineHeight: 1.65, fontStyle: "italic" }}>
-          Month-to-month. No setup fees. No annual contracts. Cancel anytime.
+          Start free. Choose to add powerful tools only when you're ready. We offer two clear paths: <strong style={{ color: T.dark }}>WAVE OS</strong> for independent workers and <strong style={{ color: T.dark }}>WAVEshop OS</strong> for market sellers.
         </p>
         <p style={{ fontSize: 13, color: T.muted, margin: "0 0 32px", fontStyle: "italic" }}>
           Start free — upgrade when you're ready. Two tracks: <strong style={{ color: T.dark }}>WAVE OS</strong> for contractors · <strong style={{ color: T.dark }}>WAVEshop OS</strong> for market booth operators
@@ -119,7 +119,7 @@ export default function Pricing() {
               <span style={{ fontSize: 14, color: T.muted }}>forever</span>
             </div>
             <p style={{ fontSize: 13, color: T.muted, margin: "0 0 24px", lineHeight: 1.7, fontStyle: "italic" }}>
-              Every professional gets a free public profile — no credit card, no expiration. Build your reputation from day one.
+              Every professional gets a free public profile — no credit card, no expiration. Build your reputation and connect with clients from day one.
             </p>
             <Link to="/BecomeContractor" style={{ display: "inline-block", background: "#16a34a", color: "#fff", padding: "11px 24px", borderRadius: 6, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
               Create Free Profile — No Card Required
@@ -141,7 +141,7 @@ export default function Pricing() {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// CONTRACTOR TRACK</div>
           <h2 style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 900, margin: "0 0 10px", color: T.dark }}>WAVE OS Plans</h2>
-          <p style={{ fontSize: 14, color: T.muted, maxWidth: 500, margin: "0 auto", fontStyle: "italic" }}>For entrepreneurs, tradespeople &amp; solo professionals. Every plan includes a 2-week free trial.</p>
+          <p style={{ fontSize: 14, color: T.muted, maxWidth: 600, margin: "0 auto", fontStyle: "italic" }}>For independent workers, tradespeople &amp; solo professionals. During your trial, you'll have full access to explore any WAVE OS system that fits your ambition. Once the trial concludes, your access will adjust to the features of your chosen account tier, and any data unique to trial-only features will be removed. This ensures you only pay for what you truly need as you build your business.</p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14 }}>
@@ -158,7 +158,7 @@ export default function Pricing() {
               <div>
                 <h3 style={{ ...mono, fontSize: 12, color: T.amber, margin: "0 0 4px" }}>{tier.name}</h3>
                 <p style={{ fontSize: 11, color: T.muted, margin: "0 0 6px", lineHeight: 1.4, fontStyle: "italic" }}>{tier.subtitle}</p>
-                <div style={{ ...mono, fontSize: 10, color: T.amber, marginBottom: 8, padding: "3px 7px", background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 4, display: "inline-block" }}>Unlocks: {tier.unlock}</div>
+                <div style={{ ...mono, fontSize: 10, color: T.amber, marginBottom: 8, padding: "3px 7px", background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 4, display: "inline-block" }}>Available at: {tier.unlock}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
                   <span style={{ ...mono, fontSize: 32, fontWeight: 700, color: T.dark }}>${tier.price}</span>
                   <span style={{ fontSize: 12, color: T.muted }}>/mo</span>
@@ -222,9 +222,9 @@ export default function Pricing() {
           {/* Contractor Communication Card */}
           <div style={{ ...cardStyle, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 20 }}>
             <div>
-              <div style={{ ...mono, fontSize: 10, color: T.amber, marginBottom: 6, letterSpacing: "0.06em" }}>FOR CONTRACTORS</div>
-              <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 6px", color: T.dark }}>Contractor Communication</h3>
-              <p style={{ fontSize: 12, color: T.muted, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>For contractors connecting with clients</p>
+              <div style={{ ...mono, fontSize: 10, color: T.amber, marginBottom: 6, letterSpacing: "0.06em" }}>FOR ENTREPRENEURS</div>
+              <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 6px", color: T.dark }}>Entrepreneur Communication</h3>
+              <p style={{ fontSize: 12, color: T.muted, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>For entrepreneurs responding to project opportunities</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 8, padding: 16 }}>
@@ -235,7 +235,7 @@ export default function Pricing() {
                 <p style={{ fontSize: 11, color: T.muted, margin: 0, fontStyle: "italic" }}>Unlimited messaging. Max: free with past clients. Premium: free with all clients.</p>
               </div>
               <div style={{ background: T.bg, border: `0.5px solid ${T.border}`, borderRadius: 8, padding: 16 }}>
-                <p style={{ ...mono, fontSize: 11, color: T.muted, margin: "0 0 10px" }}>RESPONDING TO PROPOSAL REQUESTS</p>
+                <p style={{ ...mono, fontSize: 11, color: T.muted, margin: "0 0 10px" }}>RESPONDING TO PROJECT OPPORTUNITIES</p>
                 <p style={{ ...mono, fontSize: 18, fontWeight: 700, color: "#16a34a", margin: "0 0 3px" }}>Free</p>
                 <p style={{ fontSize: 11, color: T.muted, margin: 0, fontStyle: "italic" }}>No charge to respond to client-initiated proposal requests.</p>
               </div>
@@ -297,14 +297,14 @@ export default function Pricing() {
       <section style={{ maxWidth: 900, margin: "0 auto 52px", padding: "0 24px" }}>
         <div style={{ ...cardStyle, borderLeft: `3px solid ${T.amber}`, padding: "28px 24px" }}>
           <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 10, letterSpacing: "0.1em" }}>// PLATFORM INTEGRITY — ACCOUNT HOLD SYSTEM</div>
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: T.dark, marginBottom: 14 }}>Account Holds — Automated Compliance</h2>
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: T.dark, marginBottom: 14 }}>Keeping Things Fair for Everyone.</h2>
           <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
-            SurfCoast's Account Hold system is fully automated. It exists to ensure every completed job has a verified photographic record and a two-sided honest review. There is no manual review process. Holds trigger instantly and lift automatically the moment the required action is completed.
+            Our automated system ensures every completed project has a clear record and honest feedback from both sides. There is no manual review — pauses happen instantly when the trigger condition is met and lift the moment the required action is completed. This keeps our community fair and transparent for everyone.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
             {[
-              { label: "TRIGGER_01 // 72-HOUR PHOTO RULE", heading: "72-Hour Photo Rule", desc: "After marking a job complete, workers have 72 hours to upload after-photos of the finished work. Missing this window places the account on hold immediately. The hold lifts the moment after-photos are uploaded.", badge: "Worker account only" },
-              { label: "TRIGGER_02 // MUTUAL RATINGS", heading: "Mutual Ratings Requirement", desc: "Both the worker and the client must submit a rating after every completed job. If either party fails to rate, only that party's account is placed on hold — the other is not penalized. The hold lifts instantly when the rating is submitted.", badge: "Non-compliant party only" },
+              { label: "TRIGGER_01 // 72-HOUR PHOTO RULE", heading: "72-Hour Photo Rule", desc: "Entrepreneurs must upload after-photos within 72 hours of the agreed work date. Missing this window means account activity is paused automatically — keeping every project on record and every client protected. The pause lifts the moment after-photos are uploaded.", badge: "Entrepreneur account only" },
+              { label: "TRIGGER_02 // MUTUAL RATINGS", heading: "Mutual Ratings Required", desc: "Both the entrepreneur and the client must submit honest ratings at closeout. If either party has not submitted, only their account is paused — ensuring fairness without penalizing the other side. The pause lifts instantly when the rating is submitted.", badge: "Non-rating party only" },
             ].map((c, i) => (
               <div key={i} style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 8, padding: 18 }}>
                 <div style={{ ...mono, fontSize: 9, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>{c.label}</div>

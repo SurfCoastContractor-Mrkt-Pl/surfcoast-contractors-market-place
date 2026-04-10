@@ -94,7 +94,7 @@ export default function HeroSection() {
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
           <p style={{ fontSize: 15, color: T.dark, lineHeight: 1.6, marginBottom: 26, fontWeight: 400 }}>
-            <strong>Free profile.</strong> Respond to project opportunities at $0. Pay an 18% <strong>Project Completion Fee</strong> only when work closes through the platform. <strong>No lead fees. No shared leads. No spam.</strong>
+            This platform is for you. The entrepreneur waking up early, the craftsperson perfecting their skill, the solo business owner building something from the ground up. We know your journey, because we've lived it too. Here, your profile is always free. Connect with clients, respond to project opportunities, and only pay a small <strong>Project Completion Fee</strong> when you successfully finish work. <strong>No lead fees, no noise, just a community where hard work gets noticed.</strong>
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28, flexDirection: "column", alignItems: "flex-start" }}>
             <Link to="/PostJob" style={buttonStyle("#fff", T.dark, `2px solid ${T.border}`)}>

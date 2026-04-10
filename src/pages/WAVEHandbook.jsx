@@ -1448,6 +1448,118 @@ export default function WAVEHandbook() {
         },
       ],
     },
+    {
+      id: 30,
+      title: 'Platform Language & Communication Policy — April 10, 2026',
+      sections: [
+        {
+          id: '30.1',
+          title: 'Terminology Updates — Official Platform Language',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                📅 Updated April 10, 2026 — Official platform terminology standardized across all public pages.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Official Terminology</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-2">
+                  <li><strong>Project Completion Fee</strong> — The 18% fee collected when a project closes through the platform. Never called a "facilitation fee" in public-facing content.</li>
+                  <li><strong>Request for Proposal (RFP)</strong> — Always spelled out in full. Never abbreviated as "RFP" alone without explanation. $1.75 per request sent by a client to an entrepreneur.</li>
+                  <li><strong>Responding to Project Opportunities</strong> — Replaces "Job Applications." Entrepreneurs respond to opportunities, they do not apply for jobs.</li>
+                  <li><strong>Building Trust Together</strong> — Replaces "Compliance" and "Enforcement" in public-facing sections. The account hold system is framed as fairness, not punishment.</li>
+                  <li><strong>Your Path to Growth</strong> — Replaces "Three mechanics, one flywheel" and similar internal language.</li>
+                  <li><strong>Entrepreneur</strong> — The preferred term for independent workers on the platform. Not "contractor" in public-facing copy (though contractor is used internally and in the handbook).</li>
+                  <li><strong>Available at / Becomes available</strong> — Replaces "Unlocks" when describing tier features. Tools are there when you need them, not locked behind gates.</li>
+                </ul>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '30.2',
+          title: 'Communication Flow — Precise Policy',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 font-medium">
+                📅 April 10, 2026 — Communication policy language locked. All pages must reflect this exactly.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Request for Proposal — $1.75</h4>
+                <p className="text-slate-600">When a client sends a Request for Proposal for $1.75, it is an invitation for an Entrepreneur to review their project and submit a proposal. <strong>This action does not initiate direct conversation and does not share any contact information.</strong> No communication between parties is possible until both formally agree to work together.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Contact Information Is Never Visible</h4>
+                <p className="text-slate-600">At no point is either party's email address, phone number, or personal contact information visible to the other side — not during browsing, not during proposal requests, not during messaging sessions. All communication happens exclusively through SurfCoast's secure platform messaging system.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging — Agreed Status</h4>
+                <p className="text-slate-600">Secure platform messaging becomes available only after both the client and entrepreneur formally agree to work together — reaching an "Agreed" status on a project. Once in agreed status, messaging remains open for the full duration of the project until it is officially closed out.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Direct Messaging Before Agreement — $1.50 per 10-Minute Session</h4>
+                <p className="text-slate-600">If a client wants to initiate a direct conversation with an entrepreneur before a formal agreement is reached, they can pay $1.50 for a 10-minute timed session window. This opens a secure messaging channel for that session only. No contact information is exchanged through this.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Unlimited Messaging — $50/month</h4>
+                <p className="text-slate-600">Both clients and entrepreneurs can subscribe to the $50/month unlimited messaging plan for full conversation threads through the platform's secure system — no per-session fees.</p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '30.3',
+          title: 'No License Required — Platform Inclusivity Statement',
+          content: (
+            <div className="space-y-4">
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800 font-semibold">
+                🌟 This is one of SurfCoast's most important differentiators. It must be visible and prominent on all public pages.
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">The Message</h4>
+                <p className="text-slate-600 text-base font-medium">"You don't need a corporate title or a master's degree to start here. From master tradespeople to a 13-year-old with a lawnmower and a dream — if you have a skill and the drive to work, you have a home on SurfCoast."</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Who This Covers</h4>
+                <ul className="list-disc list-inside text-slate-600 space-y-1">
+                  <li>Licensed master tradespeople</li>
+                  <li>Unlicensed but skilled independent workers</li>
+                  <li>Freelancers, creatives, virtual assistants, and coaches</li>
+                  <li>Motivated individuals as young as 13 (with parental consent documentation)</li>
+                  <li>Anyone with a skill and the drive to use it</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700">
+                <strong>Note:</strong> Licensed contractors unlock additional credential verification features and higher WAVE OS tiers. But a license is never required to have a profile, respond to project opportunities, or earn money through the platform.
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: '30.4',
+          title: 'Account Pause System — Fairness Language',
+          content: (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Approved Language</h4>
+                <p className="text-slate-600">The account hold system is always communicated as a <strong>fairness mechanism</strong>, not a punishment or compliance enforcement. Use "paused" not "locked" in public-facing copy. Use "keeping projects on track" not "non-compliant."</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">72-Hour Photo Rule — Public Language</h4>
+                <p className="text-slate-600">"Entrepreneurs must upload after-photos within 72 hours of the agreed work date. Missing this window means account activity is paused automatically — keeping every project on record and every client protected."</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Mutual Ratings — Public Language</h4>
+                <p className="text-slate-600">"Both parties must submit honest ratings at closeout. If either party hasn't submitted, only their account is paused — ensuring fairness without punishing the other side."</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-2">Account Pause Explanation — Public Language</h4>
+                <p className="text-slate-600">"When an account is paused, activities like project requests, messaging sessions, and payments are temporarily on hold. There is no manual review — pauses happen instantly when the trigger condition is met and lift the moment the required action is completed."</p>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
     ...chapters22to29,
   ];
 

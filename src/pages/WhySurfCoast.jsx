@@ -58,7 +58,7 @@ const STAND_APART = [
   { title: "Pricing built for solo operators", body: "No enterprise minimums, no per-seat fees. WAVE OS Starter is just $19/month — every tier is priced for the independent worker, not a 10-person office." },
   { title: "Works for every worker type", body: "Trades, booth operators, creatives — all in one place. SurfCoast is built for the full spectrum of independent workers, not a narrow niche." },
   { title: "WAVEshop OS has no commissions when subscribed", body: "Choose your model: pay 5% per sale OR subscribe to $20/month to keep 100% of earnings. No commissions with subscription." },
-  { title: "Platform independence — legally clear", body: "SurfCoast Marketplace is a neutral technology platform that facilitates connections between independent entrepreneurs and clients. SurfCoast does not employ, supervise, direct, or control the work of any entrepreneur, nor does it guarantee the quality, safety, legality, or timeliness of any services arranged through the platform. Each entrepreneur operates as an independent service provider responsible for their own licensing, agreements, and verifications. SurfCoast's role is limited to providing the tools to connect." },
+  { title: "Platform independence — legally clear", body: "SurfCoast Marketplace is a neutral technology platform that facilitates connections between independent entrepreneurs and clients. SurfCoast does not employ, supervise, direct, or control the work of any entrepreneur, nor does it guarantee the quality, safety, legality, or timeliness of any services arranged through the platform. Each entrepreneur operates as an independent service provider solely responsible for their own licensing, agreements, insurance, and any required verifications. SurfCoast's role is limited to providing connection tools — the service relationship exists exclusively between the entrepreneur and the client." },
 ];
 
 const COMPARISON_ROWS = [
@@ -154,7 +154,7 @@ export default function WhySurfCoast() {
         <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2.5rem)", fontWeight: 800, marginBottom: 24, color: T.dark }}>What Is WAVE OS?</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {[
-            "WAVE OS is a set of tools built specifically for independent workers and entrepreneurs. It starts free and grows with you. Each level makes things easier — better scheduling, simpler invoicing, clear project insights — without tying you into a contract. WAVE OS tools become available as you complete projects on the platform.",
+            "WAVE OS is a set of tools built specifically for workers and entrepreneurs. It starts free and grows with you. Each level provides more — better ways to schedule, simpler invoicing, clear project insights, and helpful features — without tying you into contracts. WAVE OS tools become available as you complete projects on the platform.",
             "WAVEshop OS is the same ecosystem applied to market booth operators — farmers market sellers, flea market booth holders, and swap meet space operators. It gives in-person sellers professional tools: inventory, scheduling, client management, and analytics, all under a flat $35 per month.",
             "You start with a free Basic Profile. The free Basic Dashboard handles the essentials for everyone. When your business is ready for more, you upgrade. Month to month, no commitment, cancel anytime."
           ].map((p, i) => (
