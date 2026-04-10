@@ -26,11 +26,9 @@ import CustomerSignup from './pages/CustomerSignup';
 import ProjectManagement from './pages/ProjectManagement';
 import QuoteRequestWizard from './pages/QuoteRequestWizard';
 import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
-import EntrepreneurQuotesManagement from './pages/EntrepreneurQuotesManagement';
 import WaveFo from './pages/FieldOps';
 import AdminWaveFo from './pages/AdminFieldOps';
 import WaveFoReporting from './pages/FieldOpsReporting';
-import EntrepreneurVerificationDashboard from './pages/EntrepreneurVerificationDashboard';
 import ComplianceDashboard from './components/admin/ComplianceDashboard';
 import ComplianceGuide from './pages/ComplianceGuide';
 import PaymentDemo from './pages/PaymentDemo';
@@ -45,12 +43,9 @@ import ClientPortal from './pages/ClientPortal';
 import PublicFAQ from './pages/PublicFAQ';
 import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
 import MarketShopInventory from './pages/MarketShopInventory';
-import EntrepreneurServices from './pages/EntrepreneurServices';
 import JobExpenseTracker from './pages/JobExpenseTracker';
-import EntrepreneurInventoryDashboard from './pages/EntrepreneurInventoryDashboard';
 import MultiOptionProposals from './pages/MultiOptionProposals';
 import CustomerPortal from './pages/CustomerPortal';
-import EntrepreneurInventory from './pages/EntrepreneurInventory';
 import AvailabilityManager from './pages/AvailabilityManager';
 import QuickBooksExport from './pages/QuickBooksExport';
 import AISchedulingAssistant from './pages/AISchedulingAssistant';
@@ -77,7 +72,6 @@ import AlertManagementDashboard from './pages/AlertManagementDashboard';
 import RemediationDashboard from './pages/RemediationDashboard';
 import Admin from './pages/Admin';
 import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
-import EntrepreneurJobPipeline from './pages/EntrepreneurJobPipeline';
 import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
 import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
 import PostJob from './pages/PostJob';
@@ -86,9 +80,7 @@ import WhySurfCoast from './pages/WhySurfCoast';
 import SMSHub from './pages/SMSHub';
 import WAVEHandbook from './pages/WAVEHandbook';
 import WaveFOAbout from './pages/WaveFOAbout';
-import EntrepreneurMyDay from './pages/EntrepreneurMyDay';
 import TradeLanding from './pages/TradeLanding';
-import EntrepreneurTrialDashboard from './pages/EntrepreneurTrialDashboard';
 import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
 import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
 import UnifiedDashboard from './pages/UnifiedDashboard';
@@ -303,16 +295,7 @@ const AuthenticatedApp = () => {
 
 
 
-      <Route path="/EntrepreneurQuotesManagement" element={
-        <LayoutWrapper currentPageName="EntrepreneurQuotesManagement">
-          <EntrepreneurQuotesManagement />
-        </LayoutWrapper>
-      } />
-      <Route path="/EntrepreneurVerificationDashboard" element={
-        <LayoutWrapper currentPageName="EntrepreneurVerificationDashboard">
-          <EntrepreneurVerificationDashboard />
-        </LayoutWrapper>
-      } />
+
 
       <Route path="/SearchContractors" element={
         <LayoutWrapper currentPageName="FindContractors">
@@ -322,21 +305,7 @@ const AuthenticatedApp = () => {
       <Route path="/searchcontractors" element={
         <Navigate to="/SearchContractors" replace />
       } />
-      <Route path="/entrepreneur-inventory" element={
-        <LayoutWrapper currentPageName="EntrepreneurInventoryDashboard">
-          <EntrepreneurInventoryDashboard />
-        </LayoutWrapper>
-      } />
-      <Route path="/entrepreneur-inventory-management" element={
-        <LayoutWrapper currentPageName="EntrepreneurInventory">
-          <EntrepreneurInventory />
-        </LayoutWrapper>
-      } />
-      <Route path="/entrepreneur-services" element={
-        <LayoutWrapper currentPageName="EntrepreneurServices">
-          <EntrepreneurServices />
-        </LayoutWrapper>
-      } />
+
       <Route path="/CustomerSignup" element={
         <LayoutWrapper currentPageName="CustomerSignup">
           <CustomerSignup />
@@ -393,11 +362,7 @@ const AuthenticatedApp = () => {
           <JobExpenseTracker />
         </LayoutWrapper>
       } />
-      <Route path="/job-pipeline" element={
-        <LayoutWrapper currentPageName="EntrepreneurJobPipeline">
-          <EntrepreneurJobPipeline />
-        </LayoutWrapper>
-      } />
+
       <Route path="/leaderboard" element={
         <LayoutWrapper currentPageName="GameLeaderboard">
           <GameLeaderboard />
@@ -589,21 +554,13 @@ const AuthenticatedApp = () => {
           <WaveFOAbout />
         </LayoutWrapper>
       } />
-      <Route path="/my-day" element={
-        <LayoutWrapper currentPageName="EntrepreneurMyDay">
-          <EntrepreneurMyDay />
-        </LayoutWrapper>
-      } />
+
       <Route path="/contractors/:slug" element={
         <LayoutWrapper currentPageName="TradeLanding">
           <TradeLanding />
         </LayoutWrapper>
       } />
-      <Route path="/entrepreneur-trial" element={
-        <LayoutWrapper currentPageName="EntrepreneurTrialDashboard">
-          <EntrepreneurTrialDashboard />
-        </LayoutWrapper>
-      } />
+
       <Route path="/customer-trial" element={
         <LayoutWrapper currentPageName="CustomerTrialDashboard">
           <CustomerTrialDashboard />
