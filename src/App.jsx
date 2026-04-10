@@ -87,6 +87,13 @@ import UnifiedDashboard from './pages/UnifiedDashboard';
 import BillingHistory from './pages/BillingHistory';
 import SubscriptionSuccess from './pages/SubscriptionSuccess';
 import WAVEOSDetails from './pages/WAVEOSDetails';
+import EntrepreneurVerificationDashboard from './pages/EntrepreneurVerificationDashboard';
+import EntrepreneurServices from './pages/EntrepreneurServices';
+import EntrepreneurInventoryDashboard from './pages/EntrepreneurInventoryDashboard';
+import EntrepreneurInventory from './pages/EntrepreneurInventory';
+import EntrepreneurJobPipeline from './pages/EntrepreneurJobPipeline';
+import EntrepreneurMyDay from './pages/EntrepreneurMyDay';
+import EntrepreneurTrialDashboard from './pages/EntrepreneurTrialDashboard';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
@@ -584,6 +591,41 @@ const AuthenticatedApp = () => {
       <Route path="/wave-os-details" element={
         <LayoutWrapper currentPageName="WAVEOSDetails">
           <WAVEOSDetails />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurVerificationDashboard" element={
+        <LayoutWrapper currentPageName="EntrepreneurVerificationDashboard">
+          <EntrepreneurVerificationDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurServices" element={
+        <LayoutWrapper currentPageName="EntrepreneurServices">
+          <EntrepreneurServices />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurInventoryDashboard" element={
+        <LayoutWrapper currentPageName="EntrepreneurInventoryDashboard">
+          <EntrepreneurInventoryDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurInventory" element={
+        <LayoutWrapper currentPageName="EntrepreneurInventory">
+          <EntrepreneurInventory />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurJobPipeline" element={
+        <LayoutWrapper currentPageName="EntrepreneurJobPipeline">
+          <EntrepreneurJobPipeline />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurMyDay" element={
+        <LayoutWrapper currentPageName="EntrepreneurMyDay">
+          <EntrepreneurMyDay />
+        </LayoutWrapper>
+      } />
+      <Route path="/EntrepreneurTrialDashboard" element={
+        <LayoutWrapper currentPageName="EntrepreneurTrialDashboard">
+          <EntrepreneurTrialDashboard />
         </LayoutWrapper>
       } />
       <Route path="/dashboard" element={
