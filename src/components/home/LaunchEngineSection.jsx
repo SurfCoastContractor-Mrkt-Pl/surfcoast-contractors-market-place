@@ -39,8 +39,8 @@ export default function LaunchEngineSection() {
   ];
 
   return (
-    <section data-section="launch_engine" style={{ background: T.bg, padding: "40px 16px" }}>
-      <div ref={ref} style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <section ref={ref} data-section="launch_engine" style={{ background: T.bg, padding: "40px 16px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// YOUR PATH TO GROWTH</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Your Path to Growth. Together.</h2>
         <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Every step we've built supports your journey. Early action can make a big difference.</p>
