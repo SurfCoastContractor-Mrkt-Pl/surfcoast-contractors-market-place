@@ -20,7 +20,6 @@ const hoverGlowSm = {
   onMouseEnter: (e) => { e.currentTarget.style.boxShadow = goldGlowSm; },
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = "none"; },
 };
-
 const cardStyle = {
   background: T.card,
   border: `0.5px solid ${T.border}`,
@@ -28,7 +27,6 @@ const cardStyle = {
   boxShadow: T.shadow,
   transition: "box-shadow 0.2s ease",
 };
-
 const hoverGlow = {
   onMouseEnter: (e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)"; },
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = T.shadow; },
@@ -55,7 +53,7 @@ const TAB_DATA = [
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
           {roles.map((r) => (
             <div key={r.label} style={{ ...cardStyle, borderTop: `3px solid ${r.topBorder}`, padding: 20, display: "flex", flexDirection: "column" }} {...hoverGlow}>
-              <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>{r.label}</div>
+              <div style={{ ...mono, fontSize: 10, color: r.labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{r.label}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: T.dark, marginBottom: 8 }}>{r.heading}</h3>
               <p style={{ fontSize: 13, color: T.dark, lineHeight: 1.6, marginBottom: 12, flex: 1, fontWeight: 700, fontStyle: "italic" }}>{r.desc}</p>
               <div style={{ marginBottom: 14 }}>{r.tags.map(([t, a]) => tag(t, a))}</div>
@@ -84,19 +82,19 @@ const TAB_DATA = [
           <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>We believe in transparency. We don't believe in lead fees. Every fee helps keep the community thriving and connections genuine.</p>
           <div style={{ display: "flex", gap: 0, flexWrap: "wrap" }}>
             <div style={{ flex: "1 1 240px", paddingRight: 28 }}>
-              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR ENTREPRENEURS</div>
+              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em" }}>FOR ENTREPRENEURS</div>
               {row("Project Completion Fee", "on job close through platform", "18%", false)}
-              {row("Respond to Project Opportunity", "no upfront cost, ever", "$0", true)}
+              {row("Respond to Proposal", "no upfront cost, ever", "$0", true)}
               {row("Direct Messaging Session", "10-min window", "$1.50", false)}
               {row("Unlimited messaging", "monthly add-on", "$50/mo", false)}
               {row("Basic Dashboard", "always included", "Free", true)}
             </div>
             <div style={{ width: 1, background: T.border, flexShrink: 0 }} />
             <div style={{ flex: "1 1 240px", paddingLeft: 28 }}>
-              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>FOR CLIENTS</div>
+              <div style={{ ...mono, fontSize: 11, color: T.amber, marginBottom: 12, letterSpacing: "0.06em" }}>FOR CLIENTS</div>
               {row("Post a project", "no account needed", "$0", true)}
               {row("Request for Proposal", "invite an entrepreneur to respond", "$1.75", false)}
-              {row("Direct Messaging Session", "10-min window", "$1.50", false)}
+              {row("Direct Connection (10-min)", "before agreement", "$1.50", false)}
               {row("Unlimited messaging", "monthly add-on", "$50/mo", false)}
             </div>
           </div>
@@ -117,17 +115,17 @@ const TAB_DATA = [
       return (
         <div>
           <p style={{ fontSize: 14, color: T.dark, marginBottom: 24, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Post one project and hire multiple trade specialists independently. Slots close as entrepreneurs are hired — no double-booking, no confusion.</p>
-          <div style={{ background: T.bg, borderRadius: 10, padding: 20, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
+          <div style={{ background: T.bg, borderRadius: 10, padding: 20 }} {...hoverGlowSm}>
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: T.dark, marginBottom: 4, fontStyle: "italic" }}>Kitchen Renovation — Full Project</div>
-              <div style={{ ...mono, fontSize: 11, color: "#444", fontWeight: 700, fontStyle: "italic" }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
+              <div style={{ ...mono, fontSize: 11, color: "#444" }}>Posted by: Client · Budget: $18,000 · Timeline: 6 weeks</div>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {slots.map((s) => (
-                <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center", transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
+                <div key={s.trade} style={{ flex: "1 1 110px", background: s.filled ? T.amberTint : "#fff", border: `0.5px solid ${s.filled ? "#D9B88A" : T.border}`, borderRadius: 8, padding: "14px 12px", textAlign: "center" }}>
                   <div style={{ fontSize: 18, color: s.filled ? T.amber : "#777", marginBottom: 5 }}>{s.icon}</div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: s.filled ? T.dark : "#555", marginBottom: 4, fontStyle: "italic" }}>{s.trade}</div>
-                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#666", fontWeight: 700, fontStyle: "italic" }}>{s.status}</div>
+                  <div style={{ ...mono, fontSize: 10, color: s.filled ? T.amber : "#666" }}>{s.status}</div>
                 </div>
               ))}
             </div>
@@ -141,16 +139,6 @@ const TAB_DATA = [
   },
 ];
 
-const tabButtonBase = {
-  fontFamily: "monospace",
-  fontSize: 12,
-  padding: "9px 20px",
-  border: "none",
-  fontWeight: 700,
-  cursor: "pointer",
-  transition: "background 0.15s, box-shadow 0.2s ease",
-};
-
 export default function TabbedSection() {
   const ref = useScrollTracking('platform_overview');
   const [active, setActive] = useState("roles");
@@ -159,23 +147,19 @@ export default function TabbedSection() {
   return (
     <section ref={ref} data-section="platform_overview" style={{ background: T.bg, padding: "40px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// PLATFORM OVERVIEW</div>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
-
         <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "auto", width: "100%", maxWidth: "fit-content" }}>
           {TAB_DATA.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActive(t.id)}
+            <button key={t.id} onClick={() => setActive(t.id)}
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
-              style={{ ...tabButtonBase, ...mono, borderRight: `1px solid ${T.border}`, background: active === t.id ? T.amberTint : "transparent", color: active === t.id ? T.amber : T.muted, fontWeight: active === t.id ? 700 : 400 }}
+              style={{ ...mono, fontFamily: "monospace", fontSize: 12, padding: "9px 20px", border: "none", fontWeight: active === t.id ? 700 : 400, cursor: "pointer", transition: "background 0.15s, box-shadow 0.2s ease", borderRight: `1px solid ${T.border}`, background: active === t.id ? T.amberTint : "transparent", color: active === t.id ? T.amber : T.muted }}
             >
               {t.label}
             </button>
           ))}
         </div>
-
         <div>{current && current.content()}</div>
       </div>
     </section>

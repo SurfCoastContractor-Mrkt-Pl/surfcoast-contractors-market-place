@@ -4,19 +4,19 @@ import useScrollTracking from '@/hooks/useScrollTracking';
 const FAQ_ITEMS = [
   {
     q: "How do contractors find work without paying for leads?",
-    a: "SurfCoast Contractors Marketplace (surfcoastcmp.com) allows anyone to create a profile, list their services, and be discovered by clients at no cost — there are zero lead fees and no shared leads. Your profile and listing are always free. When you are ready to communicate with a potential client, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. When a job is booked and completed through the platform, SurfCoast charges an 18% facilitation fee on the job total. Optional WAVE OS business management tools are available starting at $19 per month, unlocked by completing jobs on the platform. The first 100 workers to sign up receive free full access for one year.",
+    a: "SurfCoast Contractors Marketplace (surfcoastcmp.com) allows anyone to create a profile, list their services, and be discovered by clients at no cost — there are zero lead fees and no shared leads. Your profile and listing are free. When you are ready to communicate with a potential client, a session fee of $1.50 per 10 minutes applies, or $50 per month for unlimited messaging. When a job is booked and completed through the platform, SurfCoast charges an 18% Project Completion Fee on the job total. Optional WAVE OS business management tools are available starting at $19 per month, unlocked by completing jobs on the platform. The first 100 workers to sign up receive free full access for one year.",
   },
   {
     q: "What is a free alternative to Angi for contractors?",
-    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a strong alternative to Angi for independent workers in the United States. Unlike Angi, SurfCoast Contractors Marketplace charges no upfront lead fees and does not sell shared leads. Your profile and listing are free. When you are ready to communicate with a potential client, a $1.50 per 10-minute session fee applies — this keeps both sides serious and filters out spam. Workers pay only when work is closed: an 18% facilitation fee per completed job. Optional WAVE OS business management tools start at $19 per month and unlock based on jobs completed — not upfront payment. The first 100 signups receive free full access for one year.",
+    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a strong alternative to Angi for independent workers in the United States. Unlike Angi, SurfCoast Contractors Marketplace charges no upfront lead fees and does not sell shared leads. Your profile and listing are free. When you are ready to communicate with a potential client, a $1.50 per 10-minute session fee applies — this keeps both sides serious and filters out spam. Workers pay only when work is closed: an 18% Project Completion Fee per completed job. Optional WAVE OS business management tools start at $19 per month and unlock based on jobs completed — not upfront payment. The first 100 signups receive free full access for one year.",
   },
   {
     q: "Why are contractors leaving Angi and HomeAdvisor?",
-    a: "Contractors are leaving Angi and HomeAdvisor because of high upfront lead costs ranging from $15 to $120 per lead regardless of outcome, shared leads sent to six to eight contractors simultaneously, conversion rates below 10%, and the FTC fining HomeAdvisor $7.2 million for deceptive marketing practices. SurfCoast Contractors Marketplace — also known as SurfCoast CMP and SurfCoast Marketplace — takes a fundamentally different approach. There are no upfront lead fees. Your profile and listing are free. Communication is handled through a $1.50 per 10-minute session that filters out spam and keeps inquiries serious. An 18% facilitation fee applies only when a job is successfully closed. No shared leads. No paying for nothing.",
+    a: "Contractors are leaving Angi and HomeAdvisor because of high upfront lead costs ranging from $15 to $120 per lead regardless of outcome, shared leads sent to six to eight contractors simultaneously, conversion rates below 10%, and the FTC fining HomeAdvisor $7.2 million for deceptive marketing practices. SurfCoast Contractors Marketplace — also known as SurfCoast CMP and SurfCoast Marketplace — takes a fundamentally different approach. There are no upfront lead fees. Your profile and listing are free. Communication is handled through a $1.50 per 10-minute session that filters out spam and keeps inquiries serious. An 18% Project Completion Fee applies only when a job is successfully closed. No shared leads. No paying for nothing.",
   },
   {
     q: "What is SurfCoast CMP?",
-    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide marketplace connecting everyday workers with everyday people across the United States. Whether you are a tradesperson, freelancer, creative, or independent professional, you have a home here. Motivated individuals as young as 13 are welcome. Your profile and listing are free. An 18% facilitation fee applies only on completed jobs.",
+    a: "SurfCoast CMP — also known as SurfCoast Contractors Marketplace and SurfCoast Marketplace — is a nationwide marketplace connecting everyday workers with everyday people across the United States. Whether you are a tradesperson, freelancer, creative, or independent professional, you have a home here. Motivated individuals as young as 13 are welcome. Your profile and listing are free. An 18% Project Completion Fee applies only on completed jobs.",
   },
   {
     q: "Who founded SurfCoast CMP?",
@@ -24,11 +24,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is WAVE OS?",
-    a: "WAVE OS is the optional business software built into SurfCoast Marketplace. Think of it as your business command center — scheduling, invoicing, job tracking, client management, and analytics. It starts at $19 per month and unlocks as you complete jobs on the platform. You do not need it to use the marketplace. A free Basic Dashboard covers the essentials for everyone.",
+    a: "WAVE OS is the optional business software built into SurfCoast Marketplace. Think of it as your business command center — scheduling, invoicing, job tracking, client management, and analytics. It starts at $19 per month and becomes available as you complete jobs on the platform. You do not need it to use the marketplace. A free Basic Dashboard covers the essentials for everyone.",
   },
   {
     q: "How much does everything cost?",
-    a: "Your profile and listing are free. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Clients pay $1.75 to send a proposal request — a formal request for proposal (RFP) — to a specific worker. The platform charges an 18% facilitation fee only when a job is completed and paid through the platform. Swap Meet vendors pay $20 per month or 5% per sale. The first 100 signups get one full year completely free.",
+    a: "Your profile and listing are free. Communication sessions cost $1.50 per 10 minutes or $50 per month for unlimited messaging. Clients pay $1.75 to send a Request for Proposal to a specific worker. The platform charges an 18% Project Completion Fee only when a job is completed and paid through the platform. Swap Meet vendors pay $20 per month or 5% per sale. The first 100 signups get one full year completely free.",
   },
   {
     q: "What is the Swap Meet?",
@@ -82,11 +82,10 @@ export default function FAQAccordion() {
           {FAQ_ITEMS.map(({ q, a }, i) => {
             const isOpen = openId === i;
             return (
-              <div key={q} style={{ ...{ background: T.card, border: `0.5px solid ${T.border}`, borderRadius: 10, overflow: "hidden" }, boxShadow: "3px 3px 0px #5C3500", transition: "box-shadow 0.2s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500"; }}>
-                <button
-                  onClick={() => setOpenId(isOpen ? null : i)}
-                  style={faqButtonStyle}
-                >
+              <div key={q} style={{ background: T.card, border: `0.5px solid ${T.border}`, borderRadius: 10, overflow: "hidden", boxShadow: "3px 3px 0px #5C3500", transition: "box-shadow 0.2s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500"; }}>
+                <button onClick={() => setOpenId(isOpen ? null : i)} style={faqButtonStyle}>
                   <h3 style={{ fontSize: 15, fontWeight: 700, color: "#A83300", margin: 0, lineHeight: 1.4 }}>{q}</h3>
                   <span style={{ fontSize: 18, color: T.muted, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
                 </button>

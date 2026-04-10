@@ -89,7 +89,7 @@ export default function HeroSection() {
     <section ref={ref} data-section="hero" style={{ background: "#ECECED", padding: "32px 16px 32px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
+          <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 14, letterSpacing: "0.06em" }}>// SERVICE · COMMUNITY · NATIONWIDE</div>
           <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.75rem)", fontWeight: 800, color: T.dark, lineHeight: 1.12, marginBottom: 16 }}>
             Built for the worker.<br />Not the <span style={{ color: T.amber }}>algorithm.</span>
           </h1>
@@ -97,12 +97,8 @@ export default function HeroSection() {
             This platform is for you. The entrepreneur waking up early, the craftsperson perfecting their skill, the solo business owner building something from the ground up. We know your journey, because we've lived it too. Here, your profile is always free. Connect with clients, respond to project opportunities, and only pay a small <strong>Project Completion Fee</strong> when you successfully finish work. <strong>No lead fees, no noise, just a community where hard work gets noticed.</strong>
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28, flexDirection: "column", alignItems: "flex-start" }}>
-            <Link to="/PostJob" style={buttonStyle("#fff", T.dark, `2px solid ${T.border}`)}>
-              Post a Job — Free
-            </Link>
-            <Link to="/BecomeContractor" style={buttonStyle(T.amberBg, T.amber, `2px solid #D9B88A`)}>
-              Join as Entrepreneur
-            </Link>
+            <Link to="/PostJob" style={buttonStyle("#fff", T.dark, `2px solid ${T.border}`)}>Post a Job — Free</Link>
+            <Link to="/BecomeContractor" style={buttonStyle(T.amberBg, T.amber, `2px solid #D9B88A`)}>Join as Entrepreneur</Link>
           </div>
           <div style={{ display: "flex", background: "#fff", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "hidden", transition: "box-shadow 0.2s ease", width: "100%" }} {...hoverGlowSm}>
             {[

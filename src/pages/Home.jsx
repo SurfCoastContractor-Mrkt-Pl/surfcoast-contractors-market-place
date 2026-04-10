@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import HomeNavBar from "@/components/home/HomeNavBar";
-import HeroSection from "@/components/home/HeroSection";
-import TabbedSection from "@/components/home/TabbedSection";
-import IntegritySection from "@/components/home/IntegritySection";
-import LaunchEngineSection from "@/components/home/LaunchEngineSection";
-import FAQAccordion from "@/components/home/FAQAccordion";
-import CTABar from "@/components/home/CTABar";
+import HomeNavBar from "@/components/home/HomeNavBar.jsx";
+import HeroSection from "@/components/home/HeroSection.jsx";
+import TabbedSection from "@/components/home/TabbedSection.jsx";
+import IntegritySection from "@/components/home/IntegritySection.jsx";
+import LaunchEngineSection from "@/components/home/LaunchEngineSection.jsx";
+import FAQAccordion from "@/components/home/FAQAccordion.jsx";
+import CTABar from "@/components/home/CTABar.jsx";
 
 function TickerBar() {
   const [spotsRemaining, setSpotsRemaining] = useState(null);

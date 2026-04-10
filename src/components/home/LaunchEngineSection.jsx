@@ -8,7 +8,6 @@ const T = {
   border: "#D0D0D2",
   amber: "#5C3500",
   amberTint: "#FBF5EC",
-  amberBg: "#F0E0C0",
   shadow: "3px 3px 0px #5C3500",
 };
 
@@ -20,7 +19,6 @@ const cardStyle = {
   boxShadow: T.shadow,
   transition: "box-shadow 0.2s ease",
 };
-
 const hoverGlow = {
   onMouseEnter: (e) => { e.currentTarget.style.boxShadow = "3px 3px 0px #5C3500, 0 0 18px 4px rgba(255, 180, 0, 0.35)"; },
   onMouseLeave: (e) => { e.currentTarget.style.boxShadow = T.shadow; },
@@ -43,10 +41,9 @@ export default function LaunchEngineSection() {
   return (
     <section data-section="launch_engine" style={{ background: T.bg, padding: "40px 16px" }}>
       <div ref={ref} style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em", fontWeight: 700, fontStyle: "italic" }}>// YOUR PATH TO GROWTH</div>
+        <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// YOUR PATH TO GROWTH</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 8, fontStyle: "italic" }}>Your Path to Growth. Together.</h2>
         <p style={{ fontSize: 14, color: T.dark, marginBottom: 28, lineHeight: 1.6, fontWeight: 700, fontStyle: "italic" }}>Every step we've built supports your journey. Early action can make a big difference.</p>
-
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           {cards.map((c) => (
             <div key={c.label} style={{ ...cardStyle, borderTop: `3px solid ${c.topBorder}`, padding: 20, flex: "1 1 200px" }} {...hoverGlow}>
