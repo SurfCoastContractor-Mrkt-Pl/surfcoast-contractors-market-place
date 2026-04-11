@@ -6,7 +6,8 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
 
     // Scheduled automation path: reconciliation report using internal data only
-    const isScheduled = !body.qb_customer_id && !body.qb_realm_id;
+    // Detect automation context by presence of 'automation' key OR absence of QB credentials
+    const isScheduled = !!body.automation || (!body.qb_customer_id && !body.qb_realm_id);
 
     if (isScheduled) {
       // Run a daily reconciliation check: identify closed scopes that haven't been exported to QB
