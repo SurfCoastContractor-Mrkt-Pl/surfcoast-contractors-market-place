@@ -3,28 +3,36 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const body = await req.json();
 
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    // Support both direct calls ({ activity_type, related_email, ... })
+    // and automation entity event calls ({ event, data })
+    let activity_type, related_email, activity_body, contractor_email;
+
+    if (body.event && body.data) {
+      // Called from entity automation (e.g. Review create/update)
+      const { event, data } = body;
+      activity_type = `review_${event.type}`;
+      related_email = data.reviewer_email || data.contractor_email || data.client_email;
+      contractor_email = data.contractor_email;
+      activity_body = `Review ${event.type}: ${data.comment || ''} (Rating: ${data.overall_rating || 'N/A'}) — Contractor: ${data.contractor_name || contractor_email || 'N/A'}`;
+    } else {
+      ({ activity_type, related_email, activity_body, contractor_email } = body);
     }
-
-    const { activity_type, entity_id, related_email, activity_body, contractor_email } = await req.json();
 
     if (!activity_type || !related_email) {
       return Response.json({ error: 'Missing activity_type or related_email' }, { status: 400 });
     }
 
-    // Check if contractor has access to Activity Logging (gold tier only)
-    const tierRecords = await base44.asServiceRole.entities.ContractorTier.filter({
-      contractor_email: contractor_email || user.email,
-    });
-
-    const tierLevel = tierRecords?.[0]?.current_tier || 'bronze';
-    const hasActivityLogAccess = tierLevel === 'gold';
-
-    if (!hasActivityLogAccess) {
-      return Response.json({ error: 'Activity logging requires gold tier' }, { status: 403 });
+    // Tier check only applies for direct (non-automation) calls
+    if (!body.event) {
+      const tierRecords = await base44.asServiceRole.entities.ContractorTier.filter({
+        contractor_email: contractor_email,
+      });
+      const tierLevel = tierRecords?.[0]?.current_tier || 'bronze';
+      if (tierLevel !== 'gold') {
+        return Response.json({ error: 'Activity logging requires gold tier' }, { status: 403 });
+      }
     }
 
     // Get HubSpot access token
