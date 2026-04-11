@@ -9,13 +9,32 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Require authenticated user — prevents log spam and spoofed audit events
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const body = await req.json();
 
-    const activityData = await req.json();
+    let activityData;
+
+    // Support automation entity event payloads ({ event, data })
+    if (body.event && body.data) {
+      const { event, data } = body;
+      activityData = {
+        action_type: `${event.entity_name}_${event.type}`,
+        entity_type: event.entity_name,
+        entity_id: event.entity_id,
+        entity_name: data.job_title || data.contractor_name || event.entity_name,
+        user_email: data.reviewer_email || data.contractor_email || data.created_by || '',
+        description: `${event.entity_name} ${event.type}: ${data.comment || data.job_title || event.entity_id}`,
+        severity: 'low',
+        status: 'success',
+        metadata: JSON.stringify({ entity: event.entity_name, id: event.entity_id })
+      };
+    } else {
+      // Direct call — require auth
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      activityData = body;
+    }
 
     // Validate required fields
     if (!activityData.action_type || !activityData.entity_type) {
