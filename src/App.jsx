@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, Fragment } from 'react';
+import React, { useRef, useEffect, Fragment, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClientInstance } from '@/lib/query-client';
@@ -9,93 +9,94 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/lib/ErrorBoundary';
 import { getPageGradient } from '@/lib/pageGradient';
-import BoothsAndVendorsMap from './pages/BoothsAndVendorsMap';
-import VendorDetail from './pages/VendorDetail';
-import ConsumerHub from './pages/ConsumerHub';
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import About from './pages/About';
-import FindContractors from './pages/FindContractors';
-import ConsumerSignup from './pages/ConsumerSignup';
-import ReferralSignup from './pages/ReferralSignup';
-import RoleChoice from './pages/RoleChoice';
-import SearchAnalytics from './pages/SearchAnalytics';
-import BecomeContractor from './pages/BecomeContractor';
-import MarketShopSignup from './pages/MarketShopSignup';
-import CustomerSignup from './pages/CustomerSignup';
-import ProjectManagement from './pages/ProjectManagement';
-import QuoteRequestWizard from './pages/QuoteRequestWizard';
-import ResidentialWaveDashboard from './pages/ResidentialWaveDashboard';
-import WaveFo from './pages/FieldOps';
-import AdminWaveFo from './pages/AdminFieldOps';
-import WaveFoReporting from './pages/FieldOpsReporting';
-import ComplianceDashboard from './components/admin/ComplianceDashboard';
-import ComplianceGuide from './pages/ComplianceGuide';
-import PaymentDemo from './pages/PaymentDemo';
-import TimedChatSession from './pages/TimedChatSession';
-import QuoteRequestSuccess from './pages/QuoteRequestSuccess';
-import NotionHub from './pages/NotionHub';
-import SurfCoastPerformanceDashboard from './pages/SurfCoastPerformanceDashboard';
-import SurfCoastReviewRequestsManager from './pages/SurfCoastReviewRequestsManager';
-import ActivityConsolidationDashboard from './pages/ActivityConsolidationDashboard';
-import SubmitConsumerOrderReview from './pages/SubmitConsumerOrderReview';
-import ClientPortal from './pages/ClientPortal';
-import PublicFAQ from './pages/PublicFAQ';
-import MarketShopAnalyticsDashboard from './pages/MarketShopAnalyticsDashboard';
-import MarketShopInventory from './pages/MarketShopInventory';
-import JobExpenseTracker from './pages/JobExpenseTracker';
-import MultiOptionProposals from './pages/MultiOptionProposals';
-import CustomerPortal from './pages/CustomerPortal';
-import AvailabilityManager from './pages/AvailabilityManager';
-import QuickBooksExport from './pages/QuickBooksExport';
-import AISchedulingAssistant from './pages/AISchedulingAssistant';
-import QBSyncDashboard from './pages/QBSyncDashboard';
-import TradeGames from './pages/TradeGames';
-import GameChallenge from './pages/GameChallenge';
-import GameLeaderboard from './pages/GameLeaderboard';
-import SwapMeetRatings from './pages/SwapMeetRatings';
-import GitHubDashboard from './pages/GitHubDashboard';
-import FarmersMarketRatings from './pages/FarmersMarketRatings';
-import LocationRatingAdmin from './pages/LocationRatingAdmin';
-import GameAnalyticsDashboard from './pages/GameAnalyticsDashboard';
-import ErrorMonitoringDashboard from './pages/ErrorMonitoringDashboard';
-import DatabaseManagementDashboard from './pages/DatabaseManagementDashboard';
-import ActivityAuditDashboard from './pages/ActivityAuditDashboard';
-import PerformanceAnalyticsDashboard from './pages/PerformanceAnalyticsDashboard';
-import SystemHealthDashboard from './pages/SystemHealthDashboard';
-import AdminControlHub from './pages/AdminControlHub';
-import AdminErrorLogs from './pages/AdminErrorLogs';
-import PlatformTests from './pages/PlatformTests';
-import APIUsageAnalyticsDashboard from './pages/APIUsageAnalyticsDashboard';
-import AdvancedAnalyticsDashboard from './pages/AdvancedAnalyticsDashboard';
-import AlertManagementDashboard from './pages/AlertManagementDashboard';
-import RemediationDashboard from './pages/RemediationDashboard';
-import Admin from './pages/Admin';
-import PlatformActivityDashboard from './pages/PlatformActivityDashboard';
-import Phase4CollaborationPanel from '@/components/fieldops/Phase4CollaborationPanel';
-import Phase4CollaborationHub from './pages/Phase4CollaborationHub';
-import PostJob from './pages/PostJob';
-import Pricing from './pages/Pricing';
-import WhySurfCoast from './pages/WhySurfCoast';
-import SMSHub from './pages/SMSHub';
-import WAVEHandbook from './pages/WAVEHandbook';
-import WaveFOAbout from './pages/WaveFOAbout';
-import TradeLanding from './pages/TradeLanding';
-import CustomerTrialDashboard from './pages/CustomerTrialDashboard';
-import SubscriptionUpgrade from './pages/SubscriptionUpgrade';
-import UnifiedDashboard from './pages/UnifiedDashboard';
-import BillingHistory from './pages/BillingHistory';
-import SubscriptionSuccess from './pages/SubscriptionSuccess';
-import WAVEOSDetails from './pages/WAVEOSDetails';
-import EntrepreneurVerificationDashboard from './pages/EntrepreneurVerificationDashboard';
-import EntrepreneurServices from './pages/EntrepreneurServices';
-import EntrepreneurInventoryDashboard from './pages/EntrepreneurInventoryDashboard';
-import EntrepreneurInventory from './pages/EntrepreneurInventory';
-import EntrepreneurJobPipeline from './pages/EntrepreneurJobPipeline';
-import EntrepreneurMyDay from './pages/EntrepreneurMyDay';
-import EntrepreneurTrialDashboard from './pages/EntrepreneurTrialDashboard';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
+
+const BoothsAndVendorsMap = lazy(() => import('./pages/BoothsAndVendorsMap'));
+const VendorDetail = lazy(() => import('./pages/VendorDetail'));
+const ConsumerHub = lazy(() => import('./pages/ConsumerHub'));
+const Home = lazy(() => import('./pages/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const About = lazy(() => import('./pages/About'));
+const FindContractors = lazy(() => import('./pages/FindContractors'));
+const ConsumerSignup = lazy(() => import('./pages/ConsumerSignup'));
+const ReferralSignup = lazy(() => import('./pages/ReferralSignup'));
+const RoleChoice = lazy(() => import('./pages/RoleChoice'));
+const SearchAnalytics = lazy(() => import('./pages/SearchAnalytics'));
+const BecomeContractor = lazy(() => import('./pages/BecomeContractor'));
+const MarketShopSignup = lazy(() => import('./pages/MarketShopSignup'));
+const CustomerSignup = lazy(() => import('./pages/CustomerSignup'));
+const ProjectManagement = lazy(() => import('./pages/ProjectManagement'));
+const QuoteRequestWizard = lazy(() => import('./pages/QuoteRequestWizard'));
+const ResidentialWaveDashboard = lazy(() => import('./pages/ResidentialWaveDashboard'));
+const WaveFo = lazy(() => import('./pages/FieldOps'));
+const AdminWaveFo = lazy(() => import('./pages/AdminFieldOps'));
+const WaveFoReporting = lazy(() => import('./pages/FieldOpsReporting'));
+const ComplianceDashboard = lazy(() => import('./components/admin/ComplianceDashboard'));
+const ComplianceGuide = lazy(() => import('./pages/ComplianceGuide'));
+const PaymentDemo = lazy(() => import('./pages/PaymentDemo'));
+const TimedChatSession = lazy(() => import('./pages/TimedChatSession'));
+const QuoteRequestSuccess = lazy(() => import('./pages/QuoteRequestSuccess'));
+const NotionHub = lazy(() => import('./pages/NotionHub'));
+const SurfCoastPerformanceDashboard = lazy(() => import('./pages/SurfCoastPerformanceDashboard'));
+const SurfCoastReviewRequestsManager = lazy(() => import('./pages/SurfCoastReviewRequestsManager'));
+const ActivityConsolidationDashboard = lazy(() => import('./pages/ActivityConsolidationDashboard'));
+const SubmitConsumerOrderReview = lazy(() => import('./pages/SubmitConsumerOrderReview'));
+const ClientPortal = lazy(() => import('./pages/ClientPortal'));
+const PublicFAQ = lazy(() => import('./pages/PublicFAQ'));
+const MarketShopAnalyticsDashboard = lazy(() => import('./pages/MarketShopAnalyticsDashboard'));
+const MarketShopInventory = lazy(() => import('./pages/MarketShopInventory'));
+const JobExpenseTracker = lazy(() => import('./pages/JobExpenseTracker'));
+const MultiOptionProposals = lazy(() => import('./pages/MultiOptionProposals'));
+const CustomerPortal = lazy(() => import('./pages/CustomerPortal'));
+const AvailabilityManager = lazy(() => import('./pages/AvailabilityManager'));
+const QuickBooksExport = lazy(() => import('./pages/QuickBooksExport'));
+const AISchedulingAssistant = lazy(() => import('./pages/AISchedulingAssistant'));
+const QBSyncDashboard = lazy(() => import('./pages/QBSyncDashboard'));
+const TradeGames = lazy(() => import('./pages/TradeGames'));
+const GameChallenge = lazy(() => import('./pages/GameChallenge'));
+const GameLeaderboard = lazy(() => import('./pages/GameLeaderboard'));
+const SwapMeetRatings = lazy(() => import('./pages/SwapMeetRatings'));
+const GitHubDashboard = lazy(() => import('./pages/GitHubDashboard'));
+const FarmersMarketRatings = lazy(() => import('./pages/FarmersMarketRatings'));
+const LocationRatingAdmin = lazy(() => import('./pages/LocationRatingAdmin'));
+const GameAnalyticsDashboard = lazy(() => import('./pages/GameAnalyticsDashboard'));
+const ErrorMonitoringDashboard = lazy(() => import('./pages/ErrorMonitoringDashboard'));
+const DatabaseManagementDashboard = lazy(() => import('./pages/DatabaseManagementDashboard'));
+const ActivityAuditDashboard = lazy(() => import('./pages/ActivityAuditDashboard'));
+const PerformanceAnalyticsDashboard = lazy(() => import('./pages/PerformanceAnalyticsDashboard'));
+const SystemHealthDashboard = lazy(() => import('./pages/SystemHealthDashboard'));
+const AdminControlHub = lazy(() => import('./pages/AdminControlHub'));
+const AdminErrorLogs = lazy(() => import('./pages/AdminErrorLogs'));
+const PlatformTests = lazy(() => import('./pages/PlatformTests'));
+const APIUsageAnalyticsDashboard = lazy(() => import('./pages/APIUsageAnalyticsDashboard'));
+const AdvancedAnalyticsDashboard = lazy(() => import('./pages/AdvancedAnalyticsDashboard'));
+const AlertManagementDashboard = lazy(() => import('./pages/AlertManagementDashboard'));
+const RemediationDashboard = lazy(() => import('./pages/RemediationDashboard'));
+const Admin = lazy(() => import('./pages/Admin'));
+const PlatformActivityDashboard = lazy(() => import('./pages/PlatformActivityDashboard'));
+const Phase4CollaborationPanel = lazy(() => import('@/components/fieldops/Phase4CollaborationPanel'));
+const Phase4CollaborationHub = lazy(() => import('./pages/Phase4CollaborationHub'));
+const PostJob = lazy(() => import('./pages/PostJob'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const WhySurfCoast = lazy(() => import('./pages/WhySurfCoast'));
+const SMSHub = lazy(() => import('./pages/SMSHub'));
+const WAVEHandbook = lazy(() => import('./pages/WAVEHandbook'));
+const WaveFOAbout = lazy(() => import('./pages/WaveFOAbout'));
+const TradeLanding = lazy(() => import('./pages/TradeLanding'));
+const CustomerTrialDashboard = lazy(() => import('./pages/CustomerTrialDashboard'));
+const SubscriptionUpgrade = lazy(() => import('./pages/SubscriptionUpgrade'));
+const UnifiedDashboard = lazy(() => import('./pages/UnifiedDashboard'));
+const BillingHistory = lazy(() => import('./pages/BillingHistory'));
+const SubscriptionSuccess = lazy(() => import('./pages/SubscriptionSuccess'));
+const WAVEOSDetails = lazy(() => import('./pages/WAVEOSDetails'));
+const EntrepreneurVerificationDashboard = lazy(() => import('./pages/EntrepreneurVerificationDashboard'));
+const EntrepreneurServices = lazy(() => import('./pages/EntrepreneurServices'));
+const EntrepreneurInventoryDashboard = lazy(() => import('./pages/EntrepreneurInventoryDashboard'));
+const EntrepreneurInventory = lazy(() => import('./pages/EntrepreneurInventory'));
+const EntrepreneurJobPipeline = lazy(() => import('./pages/EntrepreneurJobPipeline'));
+const EntrepreneurMyDay = lazy(() => import('./pages/EntrepreneurMyDay'));
+const EntrepreneurTrialDashboard = lazy(() => import('./pages/EntrepreneurTrialDashboard'));
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -162,9 +163,16 @@ const AuthenticatedApp = () => {
   }
 
   // Render the main app
+  const pageFallback = (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+    </div>
+  );
+
   return (
     <>
     <PageGradientApplier />
+    <Suspense fallback={pageFallback}>
     <Routes>
       <Route path="/" element={
         <LayoutWrapper currentPageName="Home">
@@ -647,6 +655,7 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </Suspense>
     </>
   );
 };
