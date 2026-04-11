@@ -4,13 +4,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    const user = await base44.auth.me();
-    if (!user) {
+    const authUser = await base44.auth.me();
+    if (!authUser) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
     const { sessionData, gameData, userData } = body;
+
+    // Validate that the userData email matches the authenticated user
+    if (!userData?.email || userData.email !== authUser.email) {
+      return Response.json({ error: 'Forbidden: Cannot sync data for a different user' }, { status: 403 });
+    }
 
     if (!sessionData || !gameData || !userData) {
       return Response.json({ error: 'Missing required data' }, { status: 400 });

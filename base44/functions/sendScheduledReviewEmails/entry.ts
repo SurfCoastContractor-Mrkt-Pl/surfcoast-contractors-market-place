@@ -3,6 +3,14 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!validServiceKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: Admin or internal service access required' }, { status: 403 });
+      }
+    }
 
     // Fetch all pending review requests that are due to be sent
     const now = new Date().toISOString();

@@ -9,6 +9,21 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
 
+    // Twilio signature verification
+    // NOTE: Add TWILIO_AUTH_TOKEN to secrets and uncomment to enable full verification:
+    // const twilioSignature = req.headers.get('x-twilio-signature') || '';
+    // const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+    // if (!authToken || !twilioSignature) {
+    //   return Response.json({ error: 'Forbidden: Missing Twilio signature' }, { status: 403 });
+    // }
+
+    // Basic validation: reject requests missing required Twilio fields
+    const twilioSig = req.headers.get('x-twilio-signature');
+    if (!twilioSig) {
+      console.warn('[SECURITY] Received SMS webhook without Twilio signature header');
+      return Response.json({ error: 'Forbidden: Missing Twilio signature' }, { status: 403 });
+    }
+
     // Parse incoming Twilio SMS webhook
     const formData = await req.formData();
     const from = formData.get('From'); // Sender's phone number

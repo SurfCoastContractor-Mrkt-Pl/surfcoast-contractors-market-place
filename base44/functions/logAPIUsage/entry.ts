@@ -8,6 +8,14 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!validServiceKey) {
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
     const { calls } = await req.json();
 
     if (!calls || !Array.isArray(calls)) {

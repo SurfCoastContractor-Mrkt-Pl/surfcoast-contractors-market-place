@@ -5,6 +5,17 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const body = await req.json().catch(() => ({}));
 
+    // Allow entity automations, INTERNAL_SERVICE_KEY, or admin users
+    const isAutomation = !!body?.event;
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!isAutomation && !validServiceKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden: Admin or internal service access required' }, { status: 403 });
+      }
+    }
+
     // Support entity automation payload ({ event, data }) and direct calls ({ entity_type, entity_id })
     let entity_type = body.entity_type;
     let entity_id = body.entity_id;

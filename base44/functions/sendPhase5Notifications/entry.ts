@@ -48,9 +48,18 @@ async function createNotification(base44, scopeId, userEmail, type, data) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    
+
     if (req.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
+    }
+
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!validServiceKey) {
+      const authUser = await base44.auth.me();
+      if (!authUser) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+      }
     }
 
     const { scope_id, user_email, notification_type, data } = await req.json();
