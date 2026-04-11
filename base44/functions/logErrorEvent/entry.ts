@@ -14,12 +14,18 @@ Deno.serve(async (req) => {
 
     // Support both direct calls ({ message, level, category })
     // and entity automation payloads ({ event, data: { message, level, category } })
+    const isAutomation = !!body.event;
     const errorData = body.data ?? body;
 
-    // Validate required fields
-    if (!errorData.message || !errorData.level || !errorData.category) {
+    // For direct calls, validate required fields. For automation, use defaults.
+    if (!isAutomation && (!errorData.message || !errorData.level || !errorData.category)) {
       return Response.json({ error: 'Missing required error fields' }, { status: 400 });
     }
+
+    // Apply defaults for missing fields (handles automation-triggered calls)
+    if (!errorData.message) errorData.message = 'Unknown error';
+    if (!errorData.level) errorData.level = 'error';
+    if (!errorData.category) errorData.category = 'uncategorized';
 
     // Create error log entry
     const logEntry = {
