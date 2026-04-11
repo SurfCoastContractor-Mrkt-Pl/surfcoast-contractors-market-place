@@ -25,11 +25,8 @@ export default function LayoutFooter({
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex flex-col gap-1 mb-3">
-              <img
-                src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/3e30f0a81_enhancedsurfcoastlogo-1.png"
-                alt="SurfCoast Marketplace"
-                className="h-16 w-auto object-contain brightness-0 invert"
-              />
+              <span className="text-xl font-black tracking-tight leading-none gradient-text">SurfCoast</span>
+              <span className="text-[8px] font-bold tracking-[3px] uppercase leading-none" style={{color:'#93c5fd'}}>MARKETPLACE</span>
             </div>
             <p className="max-w-sm text-sm leading-relaxed font-semibold" style={{color: LIGHT}}>
               Premium marketplace connecting exceptional professionals with discerning clients.
