@@ -54,7 +54,8 @@ function TickerBar() {
             <span
               onMouseEnter={() => setTooltip(btn.label)}
               onMouseLeave={() => setTooltip(null)}
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 15, height: 15, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', color: '#ccc', fontSize: 10, fontWeight: 700, cursor: 'default', flexShrink: 0 }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 28, minHeight: 28, width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', color: '#ccc', fontSize: 10, fontWeight: 700, cursor: 'default', flexShrink: 0 }}
+              aria-label="More info"
             >?
             </span>
             {tooltip === btn.label && (

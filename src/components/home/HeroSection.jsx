@@ -63,10 +63,10 @@ function HeroPlatformCard() {
   );
 
   return (
-    <div style={{ ...cardStyle, padding: 20, minWidth: 0 }} {...hoverGlow}>
+    <div style={{ ...cardStyle, padding: 20, minWidth: 0, overflowX: "hidden" }} {...hoverGlow}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14, paddingBottom: 10, borderBottom: `1px solid ${T.border}` }}>
-        <span style={{ ...mono, fontSize: 11, color: T.muted }}>surfcoast / platform_map</span>
-        <span style={{ ...mono, fontSize: 11, color: T.amber }}>● live</span>
+        <span style={{ ...mono, fontSize: 11, color: T.muted, wordBreak: "break-all" }}>surfcoast / platform_map</span>
+        <span style={{ ...mono, fontSize: 11, color: T.amber, flexShrink: 0, marginLeft: 8 }}>● live</span>
       </div>
       {block(T.border, T.muted, "SURFCOAST MARKETPLACE", [
         { text: "Service Side — Clients · Entrepreneurs", tinted: false },
@@ -76,7 +76,7 @@ function HeroPlatformCard() {
         { text: "WAVE TIERS, WAVEshop OS", tinted: true },
         { text: "What is WAVE OS?", tinted: true },
       ])}
-      <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono, transition: "box-shadow 0.2s ease" }} {...hoverGlowSm}>
+      <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono, transition: "box-shadow 0.2s ease", wordBreak: "break-word" }} {...hoverGlowSm}>
         Logic gate: consumers cannot access service side
       </div>
     </div>

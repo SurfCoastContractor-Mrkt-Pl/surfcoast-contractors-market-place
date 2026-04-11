@@ -149,12 +149,12 @@ export default function TabbedSection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 11, color: T.muted, marginBottom: 10, letterSpacing: "0.06em" }}>// PLATFORM OVERVIEW</div>
         <h2 style={{ fontSize: 30, fontWeight: 800, color: T.dark, marginBottom: 24, fontStyle: "italic" }}>How the platform works.</h2>
-        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflow: "auto", width: "100%", maxWidth: "fit-content" }}>
+        <div style={{ display: "flex", gap: 0, marginBottom: 28, background: "#ECECED", border: `0.5px solid ${T.border}`, borderRadius: 8, overflowX: "auto", width: "100%" }}>
           {TAB_DATA.map((t) => (
             <button key={t.id} onClick={() => setActive(t.id)}
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = goldGlowSm; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
-              style={{ ...mono, fontFamily: "monospace", fontSize: 12, padding: "9px 20px", border: "none", fontWeight: active === t.id ? 700 : 400, cursor: "pointer", transition: "background 0.15s, box-shadow 0.2s ease", borderRight: `1px solid ${T.border}`, background: active === t.id ? T.amberTint : "transparent", color: active === t.id ? T.amber : T.muted }}
+              style={{ ...mono, fontFamily: "monospace", fontSize: 12, padding: "9px 20px", border: "none", fontWeight: active === t.id ? 700 : 400, cursor: "pointer", transition: "background 0.15s, box-shadow 0.2s ease", borderRight: `1px solid ${T.border}`, background: active === t.id ? T.amberTint : "transparent", color: active === t.id ? T.amber : T.muted, whiteSpace: "nowrap" }}
             >
               {t.label}
             </button>
