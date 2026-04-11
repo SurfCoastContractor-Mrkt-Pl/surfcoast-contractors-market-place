@@ -453,6 +453,16 @@ export default function BecomeContractor() {
         </div>
       </div>
 
+      {/* Platform Disclaimer */}
+      <div className="max-w-2xl mx-auto w-full px-4 pb-3">
+        <div style={{ background: "#1A1A1B", borderRadius: 8, padding: "12px 16px", display: "flex", gap: 10 }}>
+          <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#5C3500", fontSize: 13, flexShrink: 0 }}>!</span>
+          <p style={{ fontFamily: "monospace", fontSize: 11, color: "#888", margin: 0, fontStyle: "italic", lineHeight: 1.7 }}>
+            Connection platform only. SurfCoast does not employ, endorse, or guarantee any entrepreneur or service. You are a fully independent individual solely responsible for your own work, licensing, taxes, and legal compliance. Solo operators only — no companies or multi-person operations permitted.
+          </p>
+        </div>
+      </div>
+
       {/* Form container */}
       <div className="max-w-2xl mx-auto w-full px-4 pb-12 lg:pb-16" style={{ background: "#EBEBEC" }}>
 

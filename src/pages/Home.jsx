@@ -80,6 +80,11 @@ export default function Home() {
       <IntegritySection />
       <LaunchEngineSection />
       <FAQAccordion />
+      <div style={{ background: "#1A1A1B", borderTop: "1px solid #2a2a2b", padding: "12px 24px", textAlign: "center" }}>
+        <p style={{ fontFamily: "monospace", fontSize: 11, color: "#888", margin: 0, fontStyle: "italic" }}>
+          Connection platform only. SurfCoast does not employ, endorse, or guarantee any entrepreneur, vendor, or service. Every user on this platform is a fully independent individual solely responsible for their own work, taxes, licensing, and legal compliance. All users participate at their own risk.
+        </p>
+      </div>
       <CTABar />
     </div>
   );

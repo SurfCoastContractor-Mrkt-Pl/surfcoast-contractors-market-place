@@ -188,6 +188,16 @@ export default function About() {
         </div>
       </section>
 
+      {/* Platform Disclaimer */}
+      <section style={{ background: "#1A1A1B", padding: "20px 24px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#5C3500", fontSize: 13, flexShrink: 0 }}>!</span>
+          <p style={{ fontFamily: "monospace", fontSize: 11, color: "#888", margin: 0, fontStyle: "italic", lineHeight: 1.7 }}>
+            Connection platform only. SurfCoast does not employ, endorse, or guarantee any entrepreneur, vendor, or service. Every user on this platform is a fully independent individual solely responsible for their own work, taxes, licensing, and legal compliance. No companies or multi-person operations are permitted. All users participate at their own risk.
+          </p>
+        </div>
+      </section>
+
       {/* Why SurfCoast Link */}
       <section style={{ background: "#F5F5F6", borderTop: `1px solid ${T.border}`, padding: "48px 24px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
