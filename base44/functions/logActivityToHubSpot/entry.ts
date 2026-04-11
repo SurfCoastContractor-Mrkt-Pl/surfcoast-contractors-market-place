@@ -9,13 +9,14 @@ Deno.serve(async (req) => {
     // and automation entity event calls ({ event, data })
     let activity_type, related_email, activity_body, contractor_email;
 
-    if (body.event && body.data) {
+    if (body.event) {
       // Called from entity automation (e.g. Review create/update)
+      // body.data may be null if payload_too_large
       const { event, data } = body;
-      activity_type = `review_${event.type}`;
-      related_email = data.reviewer_email || data.contractor_email || data.client_email;
-      contractor_email = data.contractor_email;
-      activity_body = `Review ${event.type}: ${data.comment || ''} (Rating: ${data.overall_rating || 'N/A'}) — Contractor: ${data.contractor_name || contractor_email || 'N/A'}`;
+      activity_type = `review_${event.type || 'event'}`;
+      related_email = data?.reviewer_email || data?.contractor_email || data?.client_email || '';
+      contractor_email = data?.contractor_email || '';
+      activity_body = `Review ${event.type || 'event'}: ${data?.comment || ''} (Rating: ${data?.overall_rating || 'N/A'}) — Contractor: ${data?.contractor_name || contractor_email || 'N/A'}`;
     } else {
       ({ activity_type, related_email, activity_body, contractor_email } = body);
     }
