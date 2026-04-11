@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import HomeNavBar from "@/components/home/HomeNavBar.jsx";
 import HeroSection from "@/components/home/HeroSection.jsx";
 import TabbedSection from "@/components/home/TabbedSection.jsx";
 import IntegritySection from "@/components/home/IntegritySection.jsx";
@@ -73,7 +72,6 @@ function TickerBar() {
 export default function Home() {
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }}>
-      <HomeNavBar />
       <TickerBar />
       <HeroSection />
       <TabbedSection />
