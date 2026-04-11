@@ -16,36 +16,14 @@ export default function ClientPortal() {
   useEffect(() => {
     const verifyAccess = async () => {
       try {
-        // Verify the token
-        const portalAccess = await base44.entities.ClientPortalAccess.filter({
-          access_token: token,
-          is_active: true
-        });
-
-        if (!portalAccess || portalAccess.length === 0) {
-          setError('Invalid or expired portal access');
-          setLoading(false);
-          return;
-        }
-
-        const access = portalAccess[0];
+        const result = await base44.functions.invoke('verifyClientPortalToken', { token });
+        const { access, scopes: fetchedScopes } = result.data;
         setAccessData(access);
-
-        // Update last accessed
-        await base44.entities.ClientPortalAccess.update(access.id, {
-          last_accessed_at: new Date().toISOString()
-        });
-
-        // Fetch all scopes for this client from any contractor
-        const clientScopes = await base44.entities.ScopeOfWork.filter({
-          client_email: access.client_email
-        });
-
-        setScopes(clientScopes || []);
+        setScopes(fetchedScopes || []);
         setLoading(false);
       } catch (err) {
         console.error('Error verifying access:', err);
-        setError('Unable to access portal');
+        setError('Invalid or expired portal access');
         setLoading(false);
       }
     };
