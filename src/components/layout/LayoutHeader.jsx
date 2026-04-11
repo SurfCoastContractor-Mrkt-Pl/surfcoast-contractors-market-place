@@ -69,7 +69,16 @@ export default function LayoutHeader({
 
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 mr-2 -ml-2">
-          <div className="flex flex-col gap-[2px]">
+          <img
+            src="https://media.base44.com/files/public/69a61a047827463e7cdbc1eb/1cc8ee1a4_surfcoastlogoDesktopWallpaper.pdf"
+            alt="SurfCoast Marketplace"
+            className="h-8 w-auto object-contain"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div className="flex-col gap-[2px]" style={{ display: 'none' }}>
             <span className="text-[16px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
             <span className="text-[7px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
           </div>
