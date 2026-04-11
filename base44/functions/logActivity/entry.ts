@@ -14,15 +14,16 @@ Deno.serve(async (req) => {
     let activityData;
 
     // Support automation entity event payloads ({ event, data })
-    if (body.event && body.data) {
+    // Check for body.event alone — body.data may be null if payload_too_large
+    if (body.event) {
       const { event, data } = body;
       activityData = {
-        action_type: `${event.entity_name}_${event.type}`,
-        entity_type: event.entity_name,
+        action_type: `${event.entity_name || 'entity'}_${event.type || 'event'}`,
+        entity_type: event.entity_name || 'unknown',
         entity_id: event.entity_id,
-        entity_name: data.job_title || data.contractor_name || event.entity_name,
-        user_email: data.reviewer_email || data.contractor_email || data.created_by || '',
-        description: `${event.entity_name} ${event.type}: ${data.comment || data.job_title || event.entity_id}`,
+        entity_name: data?.job_title || data?.contractor_name || event.entity_name || '',
+        user_email: data?.reviewer_email || data?.contractor_email || data?.created_by || '',
+        description: `${event.entity_name || 'entity'} ${event.type || 'event'}: ${data?.comment || data?.job_title || event.entity_id || ''}`,
         severity: 'low',
         status: 'success',
         metadata: JSON.stringify({ entity: event.entity_name, id: event.entity_id })
