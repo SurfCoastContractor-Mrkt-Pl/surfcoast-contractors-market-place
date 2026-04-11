@@ -70,18 +70,10 @@ export default function LayoutHeader({
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 mr-2 -ml-2">
           <img
-            src="https://media.base44.com/files/public/69a61a047827463e7cdbc1eb/1cc8ee1a4_surfcoastlogoDesktopWallpaper.pdf"
+            src="https://media.base44.com/images/public/69a61a047827463e7cdbc1eb/3e30f0a81_enhancedsurfcoastlogo-1.png"
             alt="SurfCoast Marketplace"
-            className="h-8 w-auto object-contain"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
+            className="h-9 w-auto object-contain"
           />
-          <div className="flex-col gap-[2px]" style={{ display: 'none' }}>
-            <span className="text-[16px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
-            <span className="text-[7px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
-          </div>
         </Link>
 
         {/* Desktop Nav Pills — logged-out only shows Explore dropdown */}
