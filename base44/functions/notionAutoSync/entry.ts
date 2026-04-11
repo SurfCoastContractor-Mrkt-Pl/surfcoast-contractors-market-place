@@ -36,10 +36,18 @@ Deno.serve(async (req) => {
       'Notion-Version': '2022-06-28',
     };
 
-    const PARENT_PAGE_ID = Deno.env.get('NOTION_PROJECT_PARENT_PAGE_ID');
-    if (!PARENT_PAGE_ID) {
+    const rawParentPageId = Deno.env.get('NOTION_PROJECT_PARENT_PAGE_ID');
+    if (!rawParentPageId) {
       return Response.json({ error: 'NOTION_PROJECT_PARENT_PAGE_ID environment variable not set' }, { status: 500 });
     }
+
+    // Normalize to UUID format — strips any non-hex prefix (e.g. "Finalized-Docs-")
+    const hexOnly = rawParentPageId.replace(/-/g, '').match(/[0-9a-f]{32}$/i)?.[0];
+    if (!hexOnly) {
+      return Response.json({ error: `NOTION_PROJECT_PARENT_PAGE_ID is not a valid Notion page ID: ${rawParentPageId}` }, { status: 500 });
+    }
+    const PARENT_PAGE_ID = `${hexOnly.slice(0,8)}-${hexOnly.slice(8,12)}-${hexOnly.slice(12,16)}-${hexOnly.slice(16,20)}-${hexOnly.slice(20)}`;
+    console.log(`[notionAutoSync] Using parent page ID: ${PARENT_PAGE_ID}`);
 
     // Handle ScopeOfWork events
     if (event.entity_name === 'ScopeOfWork') {
