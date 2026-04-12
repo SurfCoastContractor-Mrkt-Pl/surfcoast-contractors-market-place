@@ -45,10 +45,10 @@ export default function FloatingFeedbackWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+    <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-2">
       {/* Panel */}
       {open && (
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl w-72 overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl w-[calc(100vw-24px)] max-w-[288px] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500">
             <span className="text-white font-semibold text-sm">How's your experience?</span>
