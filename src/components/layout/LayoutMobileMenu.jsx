@@ -73,6 +73,26 @@ export default function LayoutMobileMenu({
       >
         <div className="px-4 py-5 space-y-1">
 
+          {/* Logo */}
+          <div className="flex justify-center pb-3 mb-2 border-b border-slate-100">
+            <Link to="/" onClick={handleNavClick}>
+              <img
+                src="https://media.base44.com/files/public/69a61a047827463e7cdbc1eb/1cc8ee1a4_surfcoastlogoDesktopWallpaper.pdf"
+                alt="SurfCoast Marketplace"
+                className="h-10 w-auto object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div className="flex-col gap-[2px]" style={{ display: 'none' }}>
+                <span className="text-[18px] font-black tracking-tight leading-none gradient-text">SurfCoast</span>
+                <span className="text-[8px] font-bold tracking-[2px] text-blue-500 uppercase leading-none">MARKETPLACE</span>
+              </div>
+            </Link>
+          </div>
+
+
           {/* WAVE OS Button — Hamburger Menu */}
           {isLoggedIn && waveOSInfo?.eligible && (
             <>
