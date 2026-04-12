@@ -1,0 +1,52 @@
+{
+  "name": "WebsiteFeedback",
+  "type": "object",
+  "properties": {
+    "feedback_type": {
+      "type": "string",
+      "enum": [
+        "thumbs_up",
+        "thumbs_down"
+      ],
+      "description": "Whether the visitor rated the site positively or negatively"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Optional comment from the visitor"
+    },
+    "page_url": {
+      "type": "string",
+      "description": "The page URL where feedback was submitted"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Anonymous session ID for the visitor"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "Browser and OS info"
+    }
+  },
+  "required": [
+    "feedback_type",
+    "page_url"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

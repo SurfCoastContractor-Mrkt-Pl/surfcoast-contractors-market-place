@@ -4,6 +4,7 @@ import { createPageUrl } from '@/utils';
 import { Briefcase, Users, Home, MessageCircle } from 'lucide-react';
 
 import SuggestionForm from './components/suggestions/SuggestionForm';
+import FloatingFeedbackWidget from '@/components/feedback/FloatingFeedbackWidget';
 import FloatingAgentWidget from './components/agent/FloatingAgentWidget';
 import LayoutHeader from '@/components/layout/LayoutHeader';
 import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu';
@@ -131,6 +132,7 @@ export default function Layout({ children, currentPageName }) {
       />
 
       <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
+      <FloatingFeedbackWidget />
       <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
 
       <main className="flex-1 w-full">
