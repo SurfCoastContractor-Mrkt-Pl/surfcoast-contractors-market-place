@@ -183,9 +183,6 @@ export default function PricingGuide() {
 
           {/* Tier Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-          {/* Tier Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Bronze */}
             <Card className="border-2 border-amber-200 bg-amber-50">
               <CardHeader>

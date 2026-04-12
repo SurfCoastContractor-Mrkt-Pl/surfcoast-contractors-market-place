@@ -28,7 +28,7 @@ export default function FindContractors() {
 
   const { data: contractorData, isLoading, error } = useQuery({
     queryKey: ['all-contractors'],
-    queryFn: () => base44.entities.Contractor.filter({ account_locked: false, minor_hours_locked: false }),
+    queryFn: () => base44.entities.Contractor.filter({ account_locked: false, minor_hours_locked: false, is_demo: false }),
     staleTime: 5 * 60 * 1000, // 5 min — contractor list doesn't change by the second
   });
 

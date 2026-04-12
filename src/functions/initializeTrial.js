@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
+/* eslint-disable no-undef */
 /**
  * Initialize trial for new user signup
  * Checks if they're a founding member (<= 100) or standard trial user

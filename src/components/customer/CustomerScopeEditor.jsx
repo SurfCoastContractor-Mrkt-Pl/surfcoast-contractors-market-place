@@ -17,10 +17,6 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
 
   const isOwner = job?.poster_email === userEmail;
 
-  if (!isOwner) {
-    return null;
-  }
-
   const uploadMutation = useMutation({
     mutationFn: async (files) => {
       const urls = [];
@@ -40,6 +36,10 @@ export default function CustomerScopeEditor({ job, userEmail, userName }) {
       setUploading(false);
     },
   });
+
+  if (!isOwner) {
+    return null;
+  }
 
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files || []);

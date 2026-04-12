@@ -59,6 +59,9 @@ export default function ContractorInventoryDashboard() {
     shadow: "3px 3px 0px #5C3500",
   };
 
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inventory', completedJobs);
+
   if (!user || !contractor) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: T.bg, fontFamily: "system-ui, -apple-system, sans-serif" }}>
@@ -66,9 +69,6 @@ export default function ContractorInventoryDashboard() {
       </div>
     );
   }
-
-  const completedJobs = contractor?.completed_jobs_count || 0;
-  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inventory', completedJobs);
 
   const lowStockItems = inventory.filter((item) => item.current_quantity <= item.low_stock_threshold);
   const totalValue = inventory.reduce((sum, item) => sum + (item.current_quantity * (item.unit_cost || 0)), 0);

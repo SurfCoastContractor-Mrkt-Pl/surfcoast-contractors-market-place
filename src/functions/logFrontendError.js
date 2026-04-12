@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
+/* eslint-disable no-undef */
 // Categorize error severity based on keywords and error type
 function categorizeSeverity(errorMessage, errorType, pageOrFeature) {
   const criticalKeywords = ['payment', 'stripe', 'login', 'auth', 'data loss', 'crash', '500', 'security'];

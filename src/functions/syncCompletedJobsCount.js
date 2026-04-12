@@ -3,6 +3,7 @@
  * Hourly cron job to sync contractor.completed_jobs_count with actual closed scopes
  * Fixes data integrity issue where counts get out of sync
  */
+/* eslint-disable no-undef */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {

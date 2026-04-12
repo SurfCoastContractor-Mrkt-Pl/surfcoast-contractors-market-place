@@ -3,6 +3,7 @@
  * Validates tier eligibility before creating session
  */
 
+/* eslint-disable no-undef */
 import Stripe from 'npm:stripe@13.10.0';
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 

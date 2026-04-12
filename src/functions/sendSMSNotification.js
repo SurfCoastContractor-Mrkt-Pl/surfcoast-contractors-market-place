@@ -3,6 +3,7 @@
  * Time-sensitive alerts to contractors/clients
  * Requires TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER secrets
  */
+/* eslint-disable no-undef */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {

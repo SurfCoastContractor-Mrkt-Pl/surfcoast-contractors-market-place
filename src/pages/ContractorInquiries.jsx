@@ -40,6 +40,9 @@ export default function ContractorInquiries() {
     );
   }
 
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inquiries', completedJobs);
+
   if (!contractor) {
     return (
       <div style={{ padding: "40px 20px", textAlign: "center", background: "#0a1628", minHeight: "100vh" }}>
@@ -47,9 +50,6 @@ export default function ContractorInquiries() {
       </div>
     );
   }
-
-  const completedJobs = contractor?.completed_jobs_count || 0;
-  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inquiries', completedJobs);
 
   return (
     <div style={{ background: "#0a1628", minHeight: "100vh", padding: "20px" }}>

@@ -9,15 +9,15 @@ export default function PaymentErrorDisplay({
   autoClose = false,
   autoCloseDuration = 5000,
 }) {
-  if (!error) return null;
-
-  // Auto-close if enabled
   useEffect(() => {
+    if (!error) return;
     if (autoClose && autoCloseDuration > 0 && onDismiss) {
       const timer = setTimeout(onDismiss, autoCloseDuration);
       return () => clearTimeout(timer);
     }
-  }, [autoClose, autoCloseDuration, onDismiss]);
+  }, [error, autoClose, autoCloseDuration, onDismiss]);
+
+  if (!error) return null;
 
   const isRetryable = [
     PAYMENT_ERROR_TYPES.NETWORK,

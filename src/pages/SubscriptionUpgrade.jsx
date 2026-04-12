@@ -8,7 +8,7 @@ const WAVE_TIERS = [
   {
     tier: 'starter',
     price: 1900,
-    priceId: process.env.REACT_APP_STRIPE_STARTER_PRICE_ID || 'price_starter',
+    priceId: 'price_starter',
     features: [
       'Profile management & job discovery',
       'Submit proposals & quotes',
@@ -20,7 +20,7 @@ const WAVE_TIERS = [
   {
     tier: 'pro',
     price: 3900,
-    priceId: process.env.REACT_APP_STRIPE_PRO_PRICE_ID || 'price_pro',
+    priceId: 'price_pro',
     features: [
       'Everything in Starter',
       'Automated invoicing + PDF export',
@@ -32,7 +32,7 @@ const WAVE_TIERS = [
   {
     tier: 'max',
     price: 5900,
-    priceId: process.env.REACT_APP_STRIPE_MAX_PRICE_ID || 'price_max',
+    priceId: 'price_max',
     features: [
       'Everything in Pro',
       'GPS-based job tracking & field ops',
@@ -44,7 +44,7 @@ const WAVE_TIERS = [
   {
     tier: 'premium',
     price: 10000,
-    priceId: process.env.REACT_APP_STRIPE_PREMIUM_PRICE_ID || 'price_premium',
+    priceId: 'price_premium',
     features: [
       'Everything in Max',
       'Free messaging with ALL clients',

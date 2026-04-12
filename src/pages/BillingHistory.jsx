@@ -109,7 +109,7 @@ export default function BillingHistory() {
             subscription={subscription}
             onChangePlan={() => window.location.href = '/SubscriptionUpgrade'}
           />
-          <PaymentMethodManager userEmail={user?.email} />
+          <PaymentMethodManager userEmail={subscription?.user_email} />
         </div>
 
         {/* Invoice History */}

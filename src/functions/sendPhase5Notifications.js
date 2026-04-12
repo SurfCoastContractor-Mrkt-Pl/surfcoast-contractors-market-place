@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
+/* eslint-disable no-undef */
 Deno.serve(async (req) => {
   let base44 = null;
   let user = null;

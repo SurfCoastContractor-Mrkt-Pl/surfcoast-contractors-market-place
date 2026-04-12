@@ -55,6 +55,7 @@ const sendNotification = async (notification) => {
   }
 };
 
+/* eslint-disable no-undef */
 Deno.serve(async (req) => {
   try {
     if (req.method !== 'POST') {

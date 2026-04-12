@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 import PaymentErrorDisplay from './PaymentErrorDisplay';
 import { checkCheckoutEnvironment } from '@/lib/paymentErrorHandler';
 

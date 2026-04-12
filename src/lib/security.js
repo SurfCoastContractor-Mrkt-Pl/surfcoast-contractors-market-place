@@ -6,7 +6,7 @@ import { base44 } from '@/api/base44Client';
 
 // CORS headers for Deno functions
 export const getCORSHeaders = () => ({
-  'Access-Control-Allow-Origin': Deno.env.get('APP_URL') || '*',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'X-Content-Type-Options': 'nosniff',

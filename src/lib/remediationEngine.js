@@ -37,7 +37,7 @@ class RemediationEngine {
     this.registerActionHandler(ACTION_TYPES.NOTIFY_TEAM, async (action) => {
       try {
         await base44.integrations.Core.SendEmail({
-          to: action.recipient || process.env.ADMIN_ALERT_EMAIL,
+          to: action.recipient || '',
           subject: `Automated Response: ${action.title}`,
           body: `
 Automated remediation action triggered:

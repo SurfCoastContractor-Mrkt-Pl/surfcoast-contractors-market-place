@@ -115,6 +115,7 @@ const SAMPLE_RATINGS = [
   }
 ];
 
+/* eslint-disable no-undef */
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);

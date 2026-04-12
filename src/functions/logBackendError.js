@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
+/* eslint-disable no-undef */
 function categorizeSeverity(errorMessage, functionName) {
   const criticalKeywords = ['payment', 'stripe', 'authentication', 'data loss', 'database', 'critical'];
   const highKeywords = ['failed', 'error', 'invalid', 'unauthorized', '400', '401', '403', '404', '500'];

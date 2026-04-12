@@ -3,6 +3,7 @@
  * Pushes new messages to client in real-time instead of polling
  * Frontend: new RealTimeMessenger(userEmail).connect()
  */
+/* eslint-disable no-undef */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 // Store active SSE connections

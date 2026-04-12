@@ -9,6 +9,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const PHOTO_DEADLINE_HOURS = 72;
 
+/* eslint-disable no-undef */
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);

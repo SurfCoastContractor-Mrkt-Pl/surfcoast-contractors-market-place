@@ -22,6 +22,7 @@ const STRIPE_PRODUCT_TO_TIER = {
   'prod_UFJxMDkWRoCG8I': 'residentialBundle',
 };
 
+/* eslint-disable no-undef */
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'POST only' }, { status: 405 });

@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Lazy Loading Helper
  * Ensures all images use lazy loading for performance

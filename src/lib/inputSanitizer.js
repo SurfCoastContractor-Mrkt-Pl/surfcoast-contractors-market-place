@@ -51,7 +51,7 @@ export const sanitizeLocation = (location) => {
   if (!location) return '';
   return location
     .trim()
-    .replace(/[^\p{L}\p{N}\s\,\-]/gu, '')
+    .replace(/[^\p{L}\p{N}\s,\-]/gu, '')
     .substring(0, 100);
 };
 

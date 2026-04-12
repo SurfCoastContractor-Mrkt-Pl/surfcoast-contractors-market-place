@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
+/* eslint-disable no-undef */
 /**
  * Process successful referral completion
  * When a referred user completes signup, increment referrer's successful_referral_count

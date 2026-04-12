@@ -47,7 +47,7 @@ export default function RecommendedJobs({ contractor, user }) {
     if (!hasCommAccess) {
       // Redirect to payment gate for limited communication
       const sessionId = `limited_comm_${job.id}_${Date.now()}`;
-      const priceId = process.env.REACT_APP_STRIPE_LIMITED_COMM_PRICE_ID || '';
+      const priceId = '';
       
       // Show pricing modal or redirect to checkout
       alert(`Express interest requires communication access. Pay $1.50 for 10-minute conversation or subscribe.`);

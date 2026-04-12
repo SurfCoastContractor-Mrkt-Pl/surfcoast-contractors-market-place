@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function PortfolioGalleryViewer({ images = [] }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  if (images.length === 0) return null;
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
@@ -16,18 +13,18 @@ export default function PortfolioGalleryViewer({ images = [] }) {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowLeft') goToPrevious();
-    if (e.key === 'ArrowRight') goToNext();
-    if (e.key === 'Escape') setLightboxOpen(false);
-  };
-
   useEffect(() => {
-    if (lightboxOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => window.removeEventListener('keydown', handleKeyDown);
-    }
+    if (!lightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') goToPrevious();
+      if (e.key === 'ArrowRight') goToNext();
+      if (e.key === 'Escape') setLightboxOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, currentIndex, images.length]);
+
+  if (images.length === 0) return null;
 
   return (
     <div className="space-y-4">
@@ -57,14 +54,12 @@ export default function PortfolioGalleryViewer({ images = [] }) {
         ))}
       </div>
 
-      {/* Lightbox Modal */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
           onClick={() => setLightboxOpen(false)}
         >
           <div className="relative w-full h-full max-w-4xl flex flex-col items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            {/* Close Button */}
             <button
               onClick={() => setLightboxOpen(false)}
               className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
@@ -72,61 +67,46 @@ export default function PortfolioGalleryViewer({ images = [] }) {
               <X className="w-6 h-6 text-white" />
             </button>
 
-            {/* Main Image */}
             <img
               src={images[currentIndex]}
               alt={`Portfolio ${currentIndex + 1}`}
               className="max-w-full max-h-[70vh] object-contain rounded-lg"
             />
 
-            {/* Navigation */}
             {images.length > 1 && (
               <>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    goToPrevious();
-                  }}
+                  onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
                   className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
                 >
                   <ChevronLeft className="w-6 h-6 text-white" />
                 </button>
 
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    goToNext();
-                  }}
+                  onClick={(e) => { e.stopPropagation(); goToNext(); }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
                 >
                   <ChevronRight className="w-6 h-6 text-white" />
                 </button>
 
-                {/* Image Counter */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 rounded-full text-white text-sm">
                   {currentIndex + 1} / {images.length}
                 </div>
-              </>
-            )}
 
-            {/* Thumbnail Strip */}
-            {images.length > 1 && (
-              <div className="absolute bottom-16 flex gap-2 overflow-x-auto max-w-full px-4 py-2">
-                {images.map((url, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentIndex(idx);
-                    }}
-                    className={`flex-shrink-0 w-12 h-12 rounded overflow-hidden transition-all ${
-                      idx === currentIndex ? 'ring-2 ring-white scale-110' : 'opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <img src={url} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
+                <div className="absolute bottom-16 flex gap-2 overflow-x-auto max-w-full px-4 py-2">
+                  {images.map((url, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
+                      className={`flex-shrink-0 w-12 h-12 rounded overflow-hidden transition-all ${
+                        idx === currentIndex ? 'ring-2 ring-white scale-110' : 'opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={url} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>

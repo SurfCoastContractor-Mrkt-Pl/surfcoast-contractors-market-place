@@ -6,18 +6,19 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Clock, AlertTriangle } from 'lucide-react';
 
 export default function MinorHoursTracker({ contractor }) {
-  if (!contractor?.is_minor) return null;
-
   const { data: hoursStatus } = useQuery({
-    queryKey: ['minor-hours', contractor.id],
+    queryKey: ['minor-hours', contractor?.id],
     queryFn: async () => {
       const resp = await base44.functions.invoke('checkMinorHoursLimit', {
         contractorId: contractor.id
       });
       return resp?.data || resp;
     },
+    enabled: !!contractor?.is_minor,
     refetchInterval: 60000, // Check every minute
   });
+
+  if (!contractor?.is_minor) return null;
 
   const hoursUsed = hoursStatus?.hours_used || 0;
   const hoursRemaining = hoursStatus?.hours_remaining ?? 20;

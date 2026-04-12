@@ -10,6 +10,8 @@ export default function MarketShopAnalyticsDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [exampleCount, setExampleCount] = useState(0);
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('market_analytics', exampleCount);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -66,8 +68,7 @@ export default function MarketShopAnalyticsDashboard() {
   }
 
   const { shop, summary, chartData } = data;
-
-  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('market_analytics', summary?.totalOrders || 0);
+  const totalOrders = summary?.totalOrders || 0;
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
