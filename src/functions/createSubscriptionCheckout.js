@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const stripe = await import('npm:stripe@14.0.0').then((mod) => new mod.default(Deno.env.get('STRIPE_SECRET_KEY')));

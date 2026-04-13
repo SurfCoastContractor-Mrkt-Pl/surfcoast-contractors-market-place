@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 import SendVendorEmailModal from '@/components/admin/SendVendorEmailModal';
 
@@ -17,6 +17,7 @@ export default function AdminDashboard() {
   const [contractors, setContractors] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [emailModalVendor, setEmailModalVendor] = useState(null);
+  const [feedback, setFeedback] = useState([]);
   
   // Filter states
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
@@ -32,12 +33,14 @@ export default function AdminDashboard() {
     if (!user || user.role !== 'admin') return;
     const loadData = async () => {
       try {
-        const [v, c, r] = await Promise.all([
+        const [v, c, r, fb] = await Promise.all([
           base44.entities.MarketShop.list('-created_date', 1000),
           base44.entities.Contractor.list('-created_date', 1000),
           base44.entities.VendorReview.list('-created_date', 1000),
+          base44.entities.WebsiteFeedback.list('-created_date', 500),
         ]);
         setVendors(v || []);
+        setFeedback(fb || []);
         setContractors(c || []);
         setReviews(r || []);
       } catch (err) {
@@ -228,6 +231,7 @@ export default function AdminDashboard() {
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
               { key: 'field_ops', label: 'WAVE OS', icon: Briefcase },
               { key: 'notion', label: 'Notion', icon: BookOpen },
+              { key: 'feedback', label: 'Feedback', icon: MessageSquare },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -543,7 +547,6 @@ export default function AdminDashboard() {
           />
         )}
 
-        {/* REVIEWS */}
         {activeTab === 'reviews' && (
           <div>
             <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
@@ -623,6 +626,56 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'feedback' && (
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <ThumbsUp className="w-3 h-3" />
+                {feedback.filter(f => f.feedback_type === 'thumbs_up').length} Positive
+              </div>
+              <div className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <ThumbsDown className="w-3 h-3" />
+                {feedback.filter(f => f.feedback_type === 'thumbs_down').length} Negative
+              </div>
+              <span className="text-xs text-muted-foreground">{feedback.length} total submissions</span>
+            </div>
+            {feedback.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                <MessageSquare className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                <p>No feedback submitted yet.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
+                <table className="w-full text-sm">
+                  <thead className="border-b border-border bg-secondary">
+                    <tr>
+                      <th className="px-4 py-3 text-left font-semibold text-foreground">Type</th>
+                      <th className="px-4 py-3 text-left font-semibold text-foreground">Comment</th>
+                      <th className="px-4 py-3 text-left font-semibold text-foreground">Page URL</th>
+                      <th className="px-4 py-3 text-left font-semibold text-foreground">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {feedback.map(f => (
+                      <tr key={f.id} className="hover:bg-secondary/60 transition-colors">
+                        <td className="px-4 py-3">
+                          {f.feedback_type === 'thumbs_up'
+                            ? <span className="flex items-center gap-1 text-green-500"><ThumbsUp className="w-4 h-4" /> Positive</span>
+                            : <span className="flex items-center gap-1 text-red-500"><ThumbsDown className="w-4 h-4" /> Negative</span>
+                          }
+                        </td>
+                        <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{f.comment || <span className="opacity-40 italic">No comment</span>}</td>
+                        <td className="px-4 py-3 text-muted-foreground text-xs truncate max-w-xs">{f.page_url}</td>
+                        <td className="px-4 py-3 text-muted-foreground text-xs">{new Date(f.created_date).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@
  * Queues notifications instead of blocking main thread
  * Useful for emails, SMS, push notifications
  */
+/* eslint-disable no-undef */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 // In-memory queue (in production, use Redis or RabbitMQ)

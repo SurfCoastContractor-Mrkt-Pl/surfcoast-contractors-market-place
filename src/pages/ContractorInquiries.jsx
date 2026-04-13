@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageSquare, Zap } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import InquiryPipelineView from "@/components/contractor/InquiryPipelineView";
 import ExampleBanner from "@/components/examples/ExampleBanner";
 import useExampleVisibility from "@/hooks/useExampleVisibility";
@@ -17,7 +17,6 @@ export default function ContractorInquiries() {
           window.location.href = '/';
           return;
         }
-
         const contractors = await base44.entities.Contractor.filter({ email: user.email });
         if (contractors && contractors.length > 0) {
           setContractor(contractors[0]);
@@ -28,9 +27,12 @@ export default function ContractorInquiries() {
         setIsLoading(false);
       }
     };
-
     loadContractor();
   }, []);
+
+  // Hooks must be called unconditionally before any early returns
+  const completedJobs = contractor?.completed_jobs_count || 0;
+  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inquiries', completedJobs);
 
   if (isLoading) {
     return (
@@ -39,9 +41,6 @@ export default function ContractorInquiries() {
       </div>
     );
   }
-
-  const completedJobs = contractor?.completed_jobs_count || 0;
-  const { showExamples, toggleExamples, autoHidden } = useExampleVisibility('inquiries', completedJobs);
 
   if (!contractor) {
     return (
@@ -54,7 +53,6 @@ export default function ContractorInquiries() {
   return (
     <div style={{ background: "#0a1628", minHeight: "100vh", padding: "20px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Header */}
         <div style={{ marginBottom: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
             <MessageSquare size={28} style={{ color: "#1d6fa4" }} />
@@ -67,7 +65,6 @@ export default function ContractorInquiries() {
           </p>
         </div>
 
-        {/* Example Entry */}
         <ExampleBanner showExamples={showExamples} onToggle={toggleExamples} autoHidden={autoHidden}>
           <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "16px" }}>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Example Inquiry</p>
@@ -82,19 +79,15 @@ export default function ContractorInquiries() {
           </div>
         </ExampleBanner>
 
-        {/* Info Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "32px" }}>
           <div style={{ padding: "16px", background: "rgba(29, 111, 164, 0.1)", border: "1px solid rgba(29, 111, 164, 0.2)", borderRadius: "8px" }}>
-            <p style={{ margin: "0 0 8px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)", fontWeight: "600" }}>
-              💡 TIP
-            </p>
+            <p style={{ margin: "0 0 8px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)", fontWeight: "600" }}>💡 TIP</p>
             <p style={{ margin: "0", fontSize: "13px", color: "rgba(255, 255, 255, 0.8)" }}>
               Review and respond to inquiries promptly to increase your chances of winning jobs.
             </p>
           </div>
         </div>
 
-        {/* Pipeline */}
         <InquiryPipelineView contractorEmail={contractor.email} />
       </div>
 

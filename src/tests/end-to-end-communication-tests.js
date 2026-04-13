@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * End-to-End User Communication Tests
  * Simulates complete contractor-to-client job flow
