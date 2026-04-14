@@ -71,6 +71,7 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
 
   const [photoPreview, setPhotoPreview] = useState(null);
   const [photoError, setPhotoError] = useState('');
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -81,8 +82,10 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
     }
     setPhotoError('');
     setPhotoPreview(URL.createObjectURL(file));
+    setPhotoUploading(true);
     const response = await base44.integrations.Core.UploadFile({ file });
     setEditData(prev => ({ ...prev, photo_url: response.file_url }));
+    setPhotoUploading(false);
   };
 
   const handleSave = () => {
@@ -118,7 +121,7 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
        </div>
 
       {isEditing ? (
-        <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+        <div className="space-y-4">
           {/* Profile Photo */}
           <div>
             <Label className="text-sm font-medium mb-2 block">Profile Photo</Label>
@@ -152,15 +155,25 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
                 </div>
               )}
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-colors flex-1">
-                <Upload className="w-5 h-5 text-slate-400 mb-1.5" />
-                <span className="text-sm font-medium text-slate-700">{editData.photo_url ? 'Change' : 'Upload'} Photo</span>
-                <span className="text-xs text-slate-500">JPG, PNG, WEBP — max 8MB</span>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={handlePhotoUpload}
-                  className="hidden"
-                />
+               {photoUploading ? (
+                 <>
+                   <div className="w-5 h-5 border-2 border-slate-300 border-t-amber-500 rounded-full animate-spin mb-1.5" />
+                   <span className="text-sm font-medium text-slate-700">Uploading...</span>
+                 </>
+               ) : (
+                 <>
+                   <Upload className="w-5 h-5 text-slate-400 mb-1.5" />
+                   <span className="text-sm font-medium text-slate-700">{editData.photo_url ? 'Change' : 'Upload'} Photo</span>
+                   <span className="text-xs text-slate-500">JPG, PNG, WEBP — max 8MB</span>
+                 </>
+               )}
+               <input
+                 type="file"
+                 accept="image/jpeg,image/png,image/webp"
+                 onChange={handlePhotoUpload}
+                 className="hidden"
+                 disabled={photoUploading}
+               />
               </label>
             </div>
             {photoError && <p className="text-xs text-red-500 mt-1">{photoError}</p>}
@@ -281,9 +294,9 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
               onClick={handleSave}
               className="text-white"
               style={{backgroundColor: '#1E5A96'}}
-              disabled={updateMutation.isPending}
+              disabled={updateMutation.isPending || photoUploading}
             >
-              {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+              {updateMutation.isPending ? 'Saving...' : photoUploading ? 'Uploading photo...' : 'Save Changes'}
             </Button>
             <Button
               variant="outline"
