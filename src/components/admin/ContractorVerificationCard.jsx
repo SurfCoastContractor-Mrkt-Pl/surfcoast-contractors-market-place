@@ -21,6 +21,10 @@ export default function ContractorVerificationCard({ contractor }) {
     }
   };
 
+  // Use signed URL if available (for private:// URIs), else fall back to original
+  const idDocUrl = contractor.id_document_url_signed || (contractor.id_document_url?.startsWith('private://') ? null : contractor.id_document_url) || null;
+  const facePhotoUrl = contractor.face_photo_url_signed || (contractor.face_photo_url?.startsWith('private://') ? null : contractor.face_photo_url) || null;
+
   return (
     <div className="border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow bg-white">
       {/* Header */}
@@ -64,8 +68,8 @@ export default function ContractorVerificationCard({ contractor }) {
           Identity Documents
         </h4>
         <div className="space-y-2 text-sm">
-          <DocRow label="Government ID" url={contractor.id_document_url} onPreview={setPreviewUrl} />
-          <DocRow label="Face Photo" url={contractor.face_photo_url} onPreview={setPreviewUrl} />
+          <DocRow label="Government ID / Driver's License" url={idDocUrl} onPreview={setPreviewUrl} />
+          <DocRow label="Face Photo" url={facePhotoUrl} onPreview={setPreviewUrl} />
         </div>
       </div>
 

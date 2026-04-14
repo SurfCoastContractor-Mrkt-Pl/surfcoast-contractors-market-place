@@ -82,14 +82,14 @@ export default function ContractorVerificationDashboard() {
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: 32 }}>
-          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Contractor Verification</h1>
-          <p style={{ color: T.muted, fontStyle: "italic" }}>Review contractors requesting admin verification</p>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 2.4rem)", fontWeight: 800, color: T.dark, margin: "0 0 8px 0", fontStyle: "italic" }}>Entrepreneur Verification</h1>
+          <p style={{ color: T.muted, fontStyle: "italic" }}>Review entrepreneurs requesting admin identity verification</p>
         </div>
 
         {/* Stats */}
         <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-lg border border-slate-200 p-4">
-            <p className="text-sm text-slate-600 mb-1">Total w/ Documents</p>
+            <p className="text-sm text-slate-600 mb-1">Total Entrepreneurs</p>
             <p className="text-3xl font-bold text-slate-900">{contractors.length}</p>
           </div>
           <div className="bg-white rounded-lg border border-slate-200 p-4">
@@ -136,7 +136,7 @@ export default function ContractorVerificationDashboard() {
         {isLoading ? (
           <div className="text-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-slate-400 mx-auto mb-4" />
-            <p className="text-slate-600">Loading contractors...</p>
+            <p className="text-slate-600">Loading entrepreneurs...</p>
           </div>
         ) : error ? (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -145,7 +145,7 @@ export default function ContractorVerificationDashboard() {
           </div>
         ) : filteredContractors.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg border border-slate-200">
-            <p className="text-slate-600">No contractors match the selected filter.</p>
+            <p className="text-slate-600">No entrepreneurs match the selected filter.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
