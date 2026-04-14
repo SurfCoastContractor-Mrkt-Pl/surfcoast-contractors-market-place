@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     }
 
     // Verify user owns this contractor record or is admin
-    const contractor = await base44.entities.Contractor.filter({ id: contractor_id });
+    const contractor = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
     if (!contractor || contractor.length === 0) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
     }
