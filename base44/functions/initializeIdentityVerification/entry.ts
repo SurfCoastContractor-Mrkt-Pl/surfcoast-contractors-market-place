@@ -35,32 +35,37 @@ Deno.serve(async (req) => {
 
     // Create Stripe Identity verification session (document type = hosted URL flow)
     const appUrl = Deno.env.get('APP_URL') || 'https://surfcoastcmp.com';
+    const returnUrl = `${appUrl}/ContractorBusinessHub?tab=profile&verified=1`;
+
     const verificationSession = await stripe.identity.verificationSessions.create({
       type: 'document',
       options: {
         document: {
           allowed_types: ['driving_license', 'passport', 'id_card'],
-          require_id_number: false,
           require_live_capture: true,
           require_matching_selfie: true,
         }
       },
-      return_url: `${appUrl}/ContractorBusinessHub?tab=profile&verified=1`,
       metadata: {
         contractor_id: contractor.id,
         contractor_email: user.email,
-        app_id: Deno.env.get('BASE44_APP_ID')
+        app_id: Deno.env.get('BASE44_APP_ID'),
+        return_url: returnUrl,
       }
     });
 
+    // The hosted verification URL — user is redirected here to complete verification
+    const verificationUrl = verificationSession.url || 
+      `https://verify.stripe.com/start#${verificationSession.client_secret}`;
+
     return Response.json({
-      verification_url: verificationSession.url,
+      verification_url: verificationUrl,
       session_id: verificationSession.id
     });
     } catch (error) {
-    console.error('Identity verification initialization error');
+    console.error('Identity verification initialization error:', error?.message || error);
     return Response.json(
-      { error: 'Failed to initialize verification' },
+      { error: error?.message || 'Failed to initialize verification' },
       { status: 500 }
     );
     }
