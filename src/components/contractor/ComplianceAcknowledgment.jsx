@@ -115,6 +115,12 @@ export default function ComplianceAcknowledgment({ contractorId, contractorLocat
             </div>
           )}
 
+          {/* Section Label */}
+          <div className="mb-6 pb-4 border-b border-slate-200">
+            <h2 className="text-lg font-semibold text-slate-900">Compliance Acknowledgment</h2>
+            <p className="text-sm text-slate-600 mt-1">Review and confirm your understanding of these key compliance areas.</p>
+          </div>
+
           {/* Checkboxes */}
           <div className="space-y-3 mb-8">
             {CHECKBOXES.map(checkbox => {
