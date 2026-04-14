@@ -20,17 +20,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
     }
 
-    // Verify user owns this contractor record or is admin
-    const contractor = await base44.asServiceRole.entities.Contractor.filter({ id: contractor_id });
-    if (!contractor || contractor.length === 0) {
-      return Response.json({ error: 'Contractor not found' }, { status: 404 });
-    }
-
-    if (contractor[0].email !== user.email && user.role !== 'admin') {
-      return Response.json({ error: 'Permission denied' }, { status: 403 });
-    }
-
-    // Update contractor with compliance acknowledgment
+    // Update contractor with compliance acknowledgment (RLS will enforce ownership)
     await base44.entities.Contractor.update(contractor_id, {
       compliance_acknowledged: true,
       compliance_acknowledged_at: new Date().toISOString(),
