@@ -36,7 +36,11 @@ export default function ContractorVerificationDashboard() {
     queryFn: async () => {
       try {
         const all = await base44.asServiceRole.entities.Contractor.list();
-        return (all || []).filter(c => c.admin_review_requested === true);
+        return (all || []).filter(c =>
+          c.admin_review_requested === true ||
+          c.id_document_url ||
+          c.face_photo_url
+        );
       } catch (error) {
         console.error('Failed to fetch contractors:', error);
         return [];
@@ -93,7 +97,7 @@ export default function ContractorVerificationDashboard() {
         {/* Stats */}
         <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-lg border border-slate-200 p-4">
-            <p className="text-sm text-slate-600 mb-1">Pending Review</p>
+            <p className="text-sm text-slate-600 mb-1">Total w/ Documents</p>
             <p className="text-3xl font-bold text-slate-900">{contractors.length}</p>
           </div>
           <div className="bg-white rounded-lg border border-slate-200 p-4">
