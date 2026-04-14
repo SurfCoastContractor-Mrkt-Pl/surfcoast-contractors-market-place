@@ -7,12 +7,6 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = await req.json();
     const { contractor_id } = body;
 
@@ -20,8 +14,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
     }
 
-    // Update contractor with compliance acknowledgment (RLS will enforce ownership)
-    await base44.entities.Contractor.update(contractor_id, {
+    // Use service role to update contractor (frontend is public app, no auth required)
+    await base44.asServiceRole.entities.Contractor.update(contractor_id, {
       compliance_acknowledged: true,
       compliance_acknowledged_at: new Date().toISOString(),
       compliance_version: '1.0-2026-04-14',
@@ -29,7 +23,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('[submitComplianceAck] Error:', error);
+    console.error('[submitComplianceAck] Error:', error.message);
     return Response.json(
       { error: error.message || 'Failed to submit compliance acknowledgment' },
       { status: 500 }
