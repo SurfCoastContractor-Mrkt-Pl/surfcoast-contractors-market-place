@@ -91,6 +91,7 @@ const BillingHistory = lazy(() => import('./pages/BillingHistory'));
 const SubscriptionSuccess = lazy(() => import('./pages/SubscriptionSuccess'));
 const WAVEOSDetails = lazy(() => import('./pages/WAVEOSDetails'));
 const EntrepreneurVerificationDashboard = lazy(() => import('./pages/EntrepreneurVerificationDashboard'));
+const ContractorVerificationDashboard = lazy(() => import('./pages/ContractorVerificationDashboard'));
 const EntrepreneurServices = lazy(() => import('./pages/EntrepreneurServices'));
 const EntrepreneurInventoryDashboard = lazy(() => import('./pages/EntrepreneurInventoryDashboard'));
 const EntrepreneurInventory = lazy(() => import('./pages/EntrepreneurInventory'));
@@ -606,6 +607,11 @@ const AuthenticatedApp = () => {
       <Route path="/EntrepreneurVerificationDashboard" element={
         <LayoutWrapper currentPageName="EntrepreneurVerificationDashboard">
           <EntrepreneurVerificationDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ContractorVerificationDashboard" element={
+        <LayoutWrapper currentPageName="ContractorVerificationDashboard">
+          <ContractorVerificationDashboard />
         </LayoutWrapper>
       } />
       <Route path="/EntrepreneurServices" element={
