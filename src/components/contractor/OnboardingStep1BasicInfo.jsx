@@ -1,9 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Loader2, MapPin } from 'lucide-react';
+
+const MONTHS = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December'
+];
+
+function DOBPicker({ value, onChange, error }) {
+  const parsed = value ? value.split('-') : ['', '', ''];
+  const [year, setYear] = useState(parsed[0] || '');
+  const [month, setMonth] = useState(parsed[1] || '');
+  const [day, setDay] = useState(parsed[2] || '');
+
+  useEffect(() => {
+    if (year && month && day) {
+      onChange(`${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`);
+    }
+  }, [year, month, day]);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+  const daysInMonth = month && year ? new Date(year, parseInt(month), 0).getDate() : 31;
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+  const selectStyle = {
+    background: "rgba(255,255,255,0.12)",
+    border: `1.5px solid ${error ? '#ef4444' : 'rgba(255,255,255,0.55)'}`,
+    borderRadius: "8px",
+    color: "#ffffff",
+    padding: "10px 8px",
+    fontSize: "14px",
+    outline: "none",
+    width: "100%",
+    colorScheme: "dark",
+  };
+
+  return (
+    <div className="grid grid-cols-3 gap-2">
+      <select value={month} onChange={e => setMonth(e.target.value)} style={selectStyle}>
+        <option value="">Month</option>
+        {MONTHS.map((m, i) => (
+          <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>
+        ))}
+      </select>
+      <select value={day} onChange={e => setDay(e.target.value)} style={selectStyle}>
+        <option value="">Day</option>
+        {days.map(d => (
+          <option key={d} value={String(d).padStart(2, '0')}>{d}</option>
+        ))}
+      </select>
+      <select value={year} onChange={e => setYear(e.target.value)} style={selectStyle}>
+        <option value="">Year</option>
+        {years.map(y => (
+          <option key={y} value={y}>{y}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 export default function OnboardingStep1BasicInfo({
   formData,
@@ -12,7 +70,7 @@ export default function OnboardingStep1BasicInfo({
   age,
   isMinor,
 }) {
-  const { register, formState: { errors }, watch } = useFormContext();
+  const { register, formState: { errors }, watch, setValue } = useFormContext();
   const inputStyle = {
     background: "rgba(255,255,255,0.12)",
     border: "1.5px solid rgba(255,255,255,0.55)",
@@ -49,14 +107,13 @@ export default function OnboardingStep1BasicInfo({
         </div>
 
         <div>
-          <label htmlFor="dob" style={labelStyle}>
+          <label style={labelStyle}>
             Date of Birth * <span style={{ fontWeight:"400", color:"#94a3b8" }}>(must be 13+)</span>
           </label>
-          <input
-            id="dob"
-            type="date"
-            {...register('date_of_birth')}
-            style={{ ...inputStyle, colorScheme: "dark", borderColor: errors.date_of_birth ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
+          <DOBPicker
+            value={watch('date_of_birth')}
+            onChange={(val) => setValue('date_of_birth', val)}
+            error={errors.date_of_birth}
           />
           {errors.date_of_birth && <p className="text-xs text-red-400 mt-1">{errors.date_of_birth.message}</p>}
           {isMinor && (
