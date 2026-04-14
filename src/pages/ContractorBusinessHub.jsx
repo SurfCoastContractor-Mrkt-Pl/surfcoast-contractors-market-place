@@ -43,6 +43,7 @@ import LiveSessions from '@/components/contractor/LiveSessions';
 import TrialStatusBanner from '@/components/contractor/TrialStatusBanner';
 import ProfileCompletionWidget from '@/components/contractor/ProfileCompletionWidget';
 import LicensedProfessionalDocuments from '@/components/contractor/LicensedProfessionalDocuments';
+import ComplianceAcknowledgment from '@/components/contractor/ComplianceAcknowledgment';
 import DocumentVisibilityManager from '@/components/contractor/DocumentVisibilityManager';
 import ContractorQuotesTab from '@/components/contractor/ContractorQuotesTab';
 import ContractorMyJobs from '@/components/contractor/ContractorMyJobs';
@@ -621,6 +622,13 @@ export default function ContractorBusinessHub() {
                       )}
                     </Card>
 
+                    {!contractor.compliance_acknowledged && (
+                      <ComplianceAcknowledgment
+                        contractorId={contractor.id}
+                        contractorLocation={contractor.location}
+                        onComplete={() => queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] })}
+                      />
+                    )}
                     <ServicePackageManager contractorId={contractor?.id} services={contractorServices || []} onRefresh={refetchServices} />
                     <PortfolioDisplay contractorId={contractor?.id} isOwner={true} />
                     <EquipmentDisplay contractorId={contractor?.id} isOwner={true} />
