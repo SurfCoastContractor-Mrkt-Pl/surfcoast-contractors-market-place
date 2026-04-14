@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, TrendingUp, Activity, CheckCircle, AlertTriangle, Lock } from 'lucide-react';
+import { AlertCircle, TrendingUp, Activity, CheckCircle, AlertTriangle, Lock, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const SEVERITY_COLORS = {
@@ -17,6 +17,51 @@ const SEVERITY_ICONS = {
   warning: <AlertTriangle className="w-5 h-5 text-yellow-600" />,
   info: <Activity className="w-5 h-5 text-blue-600" />
 };
+
+function InsightCard({ insight }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <Card
+      className="cursor-pointer hover:shadow-md transition-shadow"
+      onClick={() => setExpanded(e => !e)}
+    >
+      <CardContent className="pt-4">
+        <div className="flex items-start gap-3">
+          {SEVERITY_ICONS[insight.severity]}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-semibold text-slate-900">{insight.title}</h3>
+                <Badge variant="outline" className={SEVERITY_COLORS[insight.severity]}>
+                  {insight.severity}
+                </Badge>
+              </div>
+              {expanded
+                ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+              }
+            </div>
+            <p className="text-sm text-slate-600 mt-1">{insight.description}</p>
+            {expanded && (
+              <div className="mt-3 space-y-2">
+                {insight.details && typeof insight.details === 'object' && !Array.isArray(insight.details) && (
+                  <div className="grid grid-cols-2 gap-2 bg-slate-50 rounded-lg p-3 text-xs text-slate-600">
+                    {Object.entries(insight.details).map(([key, val]) => (
+                      <p key={key}><strong className="text-slate-800">{key}:</strong> {String(val)}</p>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-slate-400">
+                  {insight.timestamp ? new Date(insight.timestamp).toLocaleString() : ''}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function AdvancedAnalyticsDashboard() {
   const [authChecked, setAuthChecked] = useState(false);
@@ -224,36 +269,7 @@ export default function AdvancedAnalyticsDashboard() {
               </Card>
             ) : (
               insights.map((insight, idx) => (
-                <Card key={idx}>
-                  <CardContent className="pt-4">
-                    <div className="flex items-start gap-3">
-                      {SEVERITY_ICONS[insight.severity]}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-slate-900">{insight.title}</h3>
-                          <Badge variant="outline" className={SEVERITY_COLORS[insight.severity]}>
-                            {insight.severity}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-slate-600 mt-1">{insight.description}</p>
-                        {insight.details && (
-                          <div className="text-xs text-slate-500 mt-2">
-                            {typeof insight.details === 'object' && !Array.isArray(insight.details) && (
-                              <div className="grid grid-cols-2 gap-2">
-                                {Object.entries(insight.details).map(([key, val]) => (
-                                  <p key={key}><strong>{key}:</strong> {val}</p>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        <p className="text-xs text-slate-400 mt-2">
-                          {new Date(insight.timestamp).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <InsightCard key={idx} insight={insight} />
               ))
             )}
           </div>
