@@ -34,19 +34,15 @@ export default function ContractorVerificationDashboard() {
   const { data: contractors = [], isLoading, error } = useQuery({
     queryKey: ['all-verification-contractors'],
     queryFn: async () => {
-      try {
-        const all = await base44.asServiceRole.entities.Contractor.list();
-        return (all || []).filter(c =>
-          c.admin_review_requested === true ||
-          c.id_document_url ||
-          c.face_photo_url
-        );
-      } catch (error) {
-        console.error('Failed to fetch contractors:', error);
-        return [];
-      }
+      const all = await base44.asServiceRole.entities.Contractor.list('-created_date', 500);
+      return (all || []).filter(c =>
+        c.admin_review_requested === true ||
+        (c.id_document_url && c.id_document_url.trim() !== '') ||
+        (c.face_photo_url && c.face_photo_url.trim() !== '')
+      );
     },
     enabled: isAdmin,
+    retry: 2,
   });
 
   const filteredContractors = contractors.filter(c => {
