@@ -17,7 +17,7 @@ export default function IdentityVerification({ contractor, onVerified }) {
     },
     onSuccess: (data) => {
       if (data?.verification_url) {
-        window.location.href = data.verification_url;
+        window.open(data.verification_url, '_blank');
       }
     },
     onError: (error) => {
