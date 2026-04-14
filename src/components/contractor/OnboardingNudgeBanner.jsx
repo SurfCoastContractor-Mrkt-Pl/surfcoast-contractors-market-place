@@ -48,7 +48,7 @@ export default function OnboardingNudgeBanner({ contractor }) {
           </div>
         </div>
         <Link
-          to="/ContractorBusinessHub"
+          to="/ContractorAccount"
           className="flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-900 transition-colors flex-shrink-0 mt-0.5"
         >
           Complete Now <ChevronRight className="w-3.5 h-3.5" />
