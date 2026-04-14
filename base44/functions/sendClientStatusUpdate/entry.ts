@@ -3,6 +3,12 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const { scope_id, new_status, notes } = await req.json();
 
     if (!scope_id || !new_status) {
@@ -14,6 +20,11 @@ Deno.serve(async (req) => {
 
     if (!scope) {
       return Response.json({ error: 'Scope not found' }, { status: 404 });
+    }
+
+    // Only the contractor on the scope or an admin can send status updates
+    if (user.email !== scope.contractor_email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Define status update messages

@@ -3,6 +3,12 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const { scope_id, folder_name, customer_email, access_level = 'view' } = await req.json();
 
     if (!scope_id) {

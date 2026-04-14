@@ -3,10 +3,20 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const { scope_id, contractor_email, invoice_type = 'field_job' } = await req.json();
 
     if (!scope_id || !contractor_email) {
       return Response.json({ error: 'scope_id and contractor_email required' }, { status: 400 });
+    }
+
+    if (user.email !== contractor_email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Generate mock invoice data

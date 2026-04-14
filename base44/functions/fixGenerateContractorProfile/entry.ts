@@ -3,10 +3,20 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const { contractor_email, contractor_name, years_experience = 5, trade = 'General Contracting', location = 'Your Area' } = await req.json();
 
     if (!contractor_email || !contractor_name) {
       return Response.json({ error: 'contractor_email and contractor_name required' }, { status: 400 });
+    }
+
+    if (user.email !== contractor_email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const bio = `With ${years_experience}+ years of experience in ${trade}, I specialize in delivering high-quality craftsmanship and reliable service tailored to meet the unique needs of each client. My commitment to excellence and attention to detail has earned me a reputation for transforming spaces on time and within budget. I am based in ${location} and am ready to bring your vision to life with competitive pricing that reflects the quality of my work.`;

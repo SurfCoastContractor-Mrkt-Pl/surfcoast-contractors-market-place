@@ -3,6 +3,17 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Allow internal service key OR admin user
+    const internalKey = req.headers.get('x-internal-key');
+    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!internalKey || internalKey !== validInternalKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Admin access required' }, { status: 403 });
+      }
+    }
+
     const { userEmail, title, body, icon, badge, tag } = await req.json();
 
     if (!userEmail || !title || !body) {

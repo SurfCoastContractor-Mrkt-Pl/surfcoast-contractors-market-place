@@ -3,8 +3,11 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { token } = await req.json();
+    const body = await req.json();
+    const { token } = body;
 
+    // This endpoint uses a token-based auth pattern (public review link)
+    // Validate the token exists before proceeding — no user session required
     if (!token) {
       return Response.json({ error: 'Review token is required' }, { status: 400 });
     }

@@ -8,6 +8,16 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Scheduled function — allow internal service key or admin only
+    const internalKey = req.headers.get('x-internal-key');
+    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!internalKey || internalKey !== validInternalKey) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Admin access required' }, { status: 403 });
+      }
+    }
+
     // Get all approved scopes that have a past agreed_work_date
     const scopes = await base44.asServiceRole.entities.ScopeOfWork.list().catch(() => []);
     const now = new Date();

@@ -3,7 +3,18 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const { sender_email, recipient_email, duration_minutes = 10, payment_id } = await req.json();
+
+    // Ensure the authenticated user matches the sender
+    if (user.email !== sender_email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
     if (!sender_email || !recipient_email) {
       return Response.json({ error: 'sender_email and recipient_email required' }, { status: 400 });
