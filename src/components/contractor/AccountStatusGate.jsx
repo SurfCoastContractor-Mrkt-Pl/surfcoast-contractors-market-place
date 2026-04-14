@@ -84,8 +84,8 @@ export default function AccountStatusGate({ userEmail, userType = 'contractor', 
     return () => unsubscribe?.();
   }, [userEmail, userType]);
 
-  // Loading state — render children while resolving
-  if (status === null || status === 'ok') return children;
+  // Loading state or OK — render children normally without any blocking wrapper
+  if (status === null || status === 'ok') return <>{children}</>;
 
   // ── Build overlay content by status ────────────────────────────────────────
   const configs = {
@@ -156,7 +156,7 @@ export default function AccountStatusGate({ userEmail, userType = 'contractor', 
   return (
     <>
       {/* Background app still renders — but is blocked behind overlay */}
-      <div className="pointer-events-none opacity-20 select-none" aria-hidden="true">
+      <div className="pointer-events-none opacity-10 select-none" aria-hidden="true">
         {children}
       </div>
 
