@@ -12,7 +12,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell, MessageCircle, InboxIcon, BarChart3, Briefcase, User, Wrench, ArrowLeft } from 'lucide-react';
+import { HardHat, CheckCircle2, Clock, CalendarCheck, FileText, LogOut, Settings, Lock, Mail, Edit2, X, Download, AlertTriangle, AlertCircle, Bell, MessageCircle, InboxIcon, BarChart3, Briefcase, User, Wrench, ArrowLeft, Camera } from 'lucide-react';
 import QuoteReplyDialog from '@/components/quote/QuoteReplyDialog';
 import { useNavigate } from 'react-router-dom';
 import SecurityInfoPanel from '@/components/security/SecurityInfoPanel';
@@ -102,6 +102,18 @@ export default function ContractorBusinessHub() {
    const [activeSidebarChat, setActiveSidebarChat] = useState(null);
    const [activeCategory, setActiveCategory] = useState(initialCategory);
    const [activeTab, setActiveTab] = useState(initialTab);
+   const [photoUploading, setPhotoUploading] = useState(false);
+
+   const handleProfilePhotoUpload = async (e) => {
+     const file = e.target.files?.[0];
+     if (!file) return;
+     if (file.size > 8 * 1024 * 1024) return;
+     setPhotoUploading(true);
+     const response = await base44.integrations.Core.UploadFile({ file });
+     await base44.entities.Contractor.update(contractor.id, { photo_url: response.file_url });
+     queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] });
+     setPhotoUploading(false);
+   };
 
    useEffect(() => {
      const checkAuth = async () => {
@@ -541,13 +553,22 @@ export default function ContractorBusinessHub() {
                     <Card className="p-6">
                       <h2 className="text-lg font-semibold text-slate-900 mb-4">Your Profile</h2>
                       <div className="flex items-center gap-4">
-                        {contractor.photo_url ? (
-                          <img src={contractor.photo_url} alt={contractor.name} className="w-16 h-16 rounded-xl object-cover" />
-                        ) : (
-                          <div className="w-16 h-16 rounded-xl bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-500">
-                            {contractor.name?.charAt(0)}
+                        <label className="relative cursor-pointer group">
+                          {contractor.photo_url ? (
+                            <img src={contractor.photo_url} alt={contractor.name} className="w-16 h-16 rounded-xl object-cover" />
+                          ) : (
+                            <div className="w-16 h-16 rounded-xl bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-500">
+                              {contractor.name?.charAt(0)}
+                            </div>
+                          )}
+                          <div className="absolute inset-0 rounded-xl bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            {photoUploading
+                              ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              : <Camera className="w-5 h-5 text-white" />
+                            }
                           </div>
-                        )}
+                          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleProfilePhotoUpload} className="hidden" disabled={photoUploading} />
+                        </label>
                         <div>
                           <div className="font-bold text-slate-900 text-lg">{contractor.name}</div>
                           <div className="text-slate-500 text-sm">{contractor.email}</div>
