@@ -56,7 +56,6 @@ export default function OnboardingStep1BasicInfo({
             id="dob"
             type="date"
             {...register('date_of_birth')}
-            max={new Date(Date.now() - 13 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
             style={{ ...inputStyle, colorScheme: "dark", borderColor: errors.date_of_birth ? '#ef4444' : 'rgba(255,255,255,0.55)' }}
           />
           {errors.date_of_birth && <p className="text-xs text-red-400 mt-1">{errors.date_of_birth.message}</p>}
