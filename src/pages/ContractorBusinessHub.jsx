@@ -292,7 +292,7 @@ export default function ContractorBusinessHub() {
           <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", background: "#252525", borderRadius: 8, border: "0.5px solid #404040" }}>
             <HardHat style={{ width: 18, height: 18, color: "#F0E0C0", flexShrink: 0 }} />
             <span style={{ color: "#aaa", fontSize: 13, fontStyle: "italic" }}>Looking for job scheduling, invoicing, or field tools?</span>
-            <a href="/WaveFo" style={{ marginLeft: "auto", flexShrink: 0, fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, background: "#F0E0C0", color: "#5C3500", padding: "6px 12px", borderRadius: 5, textDecoration: "none" }}>
+            <a href="/FieldOps" style={{ marginLeft: "auto", flexShrink: 0, fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, background: "#F0E0C0", color: "#5C3500", padding: "6px 12px", borderRadius: 5, textDecoration: "none" }}>
               Open Wave FO →
             </a>
           </div>

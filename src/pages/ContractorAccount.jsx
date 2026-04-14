@@ -29,7 +29,7 @@ const portalSections = [
         description: 'Manage your business: leads, earnings, analytics, CRM, marketing, and growth tools.',
         icon: Building2,
         color: 'bg-blue-600',
-        path: '/ContractorAccount',
+        path: '/ContractorBusinessHub',
         badge: 'Business'
       },
       {
@@ -203,7 +203,7 @@ export default function ContractorAccount() {
   // Redirect section params to Business Hub
   useEffect(() => {
     if (section) {
-      navigate('/ContractorAccount', { replace: true });
+      navigate('/ContractorBusinessHub?tab=' + section, { replace: true });
     }
   }, [section, navigate]);
 
