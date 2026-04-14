@@ -33,9 +33,19 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create Stripe Identity verification session
+    // Create Stripe Identity verification session (document type = hosted URL flow)
+    const appUrl = Deno.env.get('APP_URL') || 'https://surfcoastcmp.com';
     const verificationSession = await stripe.identity.verificationSessions.create({
-      type: 'id_number',
+      type: 'document',
+      options: {
+        document: {
+          allowed_types: ['driving_license', 'passport', 'id_card'],
+          require_id_number: false,
+          require_live_capture: true,
+          require_matching_selfie: true,
+        }
+      },
+      return_url: `${appUrl}/ContractorBusinessHub?tab=profile&verified=1`,
       metadata: {
         contractor_id: contractor.id,
         contractor_email: user.email,
@@ -44,7 +54,7 @@ Deno.serve(async (req) => {
     });
 
     return Response.json({
-      client_secret: verificationSession.client_secret,
+      verification_url: verificationSession.url,
       session_id: verificationSession.id
     });
     } catch (error) {

@@ -16,10 +16,8 @@ export default function IdentityVerification({ contractor, onVerified }) {
       return resp?.data || resp;
     },
     onSuccess: (data) => {
-      if (data?.client_secret) {
-        // Redirect to Stripe Identity verification page
-        // In production, you would use Stripe.js IdentityVerificationModal
-        window.location.href = `https://verify.stripe.com/start/${data.client_secret}`;
+      if (data?.verification_url) {
+        window.location.href = data.verification_url;
       }
     },
     onError: (error) => {
