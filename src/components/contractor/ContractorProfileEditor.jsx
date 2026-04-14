@@ -53,7 +53,9 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
       return base44.entities.Contractor.update(contractor.id, data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
+      // Invalidate all variants of the contractor query key
+      queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === 'my-contractor' });
+      queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === 'contractor-own' });
       setIsEditing(false);
     },
     onError: (error) => {

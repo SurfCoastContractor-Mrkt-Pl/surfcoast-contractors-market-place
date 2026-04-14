@@ -204,7 +204,7 @@ export default function ContractorBusinessHub() {
       return base44.entities.Contractor.update(contractor.id, bioData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['my-contractor', userEmail] });
+      queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === 'my-contractor' });
       setEditingBio(false);
     },
   });
