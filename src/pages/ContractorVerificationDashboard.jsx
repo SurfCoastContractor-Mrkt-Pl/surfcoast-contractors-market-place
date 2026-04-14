@@ -8,6 +8,7 @@ import ContractorVerificationCard from '@/components/admin/ContractorVerificatio
 export default function ContractorVerificationDashboard() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [filterVerified, setFilterVerified] = useState('all');
 
   useEffect(() => {
@@ -23,6 +24,8 @@ export default function ContractorVerificationDashboard() {
       } catch (error) {
         console.error('Auth check failed:', error);
         setIsAdmin(false);
+      } finally {
+        setAuthLoading(false);
       }
     };
     checkAuth();
@@ -57,6 +60,14 @@ export default function ContractorVerificationDashboard() {
     amber: "#5C3500",
     shadow: "3px 3px 0px #5C3500",
   };
+
+  if (authLoading) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#EBEBEC", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Loader2 style={{ width: 40, height: 40, color: "#555" }} className="animate-spin" />
+      </div>
+    );
+  }
 
   if (!isAdmin) {
     return (
