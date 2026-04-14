@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -54,6 +54,8 @@ export default function FilterPanel({
   setSearchRadius,
   userLocation,
 }) {
+  const [pendingRadius, setPendingRadius] = useState(searchRadius);
+
   const handleRemoveFilter = (filterType) => {
     const setters = {
       search: () => setSearchQuery(''),
@@ -75,16 +77,24 @@ export default function FilterPanel({
             <div className="p-4 bg-slate-50 rounded-xl">
               <div className="flex items-center justify-between mb-3">
                 <label className="text-sm font-medium text-slate-700">
-                  Search Radius: <span className="text-amber-600 font-semibold">{searchRadius} miles</span>
+                  Search Radius: <span className="text-amber-600 font-semibold">{pendingRadius} miles</span>
                 </label>
+                <Button
+                  size="sm"
+                  onClick={() => setSearchRadius(pendingRadius)}
+                  disabled={pendingRadius === searchRadius}
+                  className="text-xs h-7 px-3 bg-amber-500 hover:bg-amber-600 text-white disabled:opacity-40"
+                >
+                  Apply
+                </Button>
               </div>
               <input
                 type="range"
                 min="5"
                 max="100"
                 step="5"
-                value={searchRadius}
-                onChange={(e) => setSearchRadius(Number(e.target.value))}
+                value={pendingRadius}
+                onChange={(e) => setPendingRadius(Number(e.target.value))}
                 className="w-full accent-amber-500"
               />
               <div className="flex justify-between text-xs text-slate-500 mt-2">
