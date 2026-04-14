@@ -108,18 +108,18 @@ export default function ComplianceAcknowledgment({ contractorId, contractorLocat
             <p className="text-slate-600">Before activating your profile, confirm your understanding of platform compliance.</p>
           </div>
 
+          {/* Section Label - Always visible */}
+          <div className="mb-6 pb-4 border-b-2 border-blue-200 bg-blue-50 p-4 rounded-lg">
+            <h2 className="text-xl font-bold text-blue-900">Compliance Acknowledgment</h2>
+            <p className="text-sm text-blue-700 mt-2">Review and confirm your understanding of these key compliance areas before activating your profile.</p>
+          </div>
+
           {error && (
             <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <p className="text-sm text-red-700">{error}</p>
             </div>
           )}
-
-          {/* Section Label */}
-          <div className="mb-6 pb-4 border-b border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-900">Compliance Acknowledgment</h2>
-            <p className="text-sm text-slate-600 mt-1">Review and confirm your understanding of these key compliance areas.</p>
-          </div>
 
           {/* Checkboxes */}
           <div className="space-y-3 mb-8">
