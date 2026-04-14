@@ -29,6 +29,9 @@ export default function SurfCoastPerformanceDashboard() {
 
         if (contractors && contractors.length > 0) {
           setContractor(contractors[0]);
+        } else if (currentUser.role === 'admin') {
+          // Admin without contractor profile — allow access with null contractor
+          setContractor({ email: currentUser.email, name: currentUser.full_name, _isAdminView: true });
         } else {
           setError('Contractor profile not found');
         }
