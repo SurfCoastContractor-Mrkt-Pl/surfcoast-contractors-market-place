@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, Clock, User, Briefcase, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Clock, User, Briefcase, RefreshCw, Unlock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatDistanceToNow, isPast, parseISO } from 'date-fns';
 
@@ -41,6 +41,22 @@ export default function OverdueJobsPanel() {
   const runEnforcement = async () => {
     await base44.functions.invoke('checkOverdueJobs', {});
     load();
+  };
+
+  const unlockClient = async (client) => {
+    await base44.asServiceRole.entities.CustomerProfile.update(client.id, {
+      account_locked_for_overdue_job: false,
+      locked_scope_id: null,
+    });
+    setLockedClients(prev => prev.filter(c => c.id !== client.id));
+  };
+
+  const unlockContractor = async (contractor) => {
+    await base44.asServiceRole.entities.Contractor.update(contractor.id, {
+      account_locked_for_overdue_job: false,
+      locked_scope_id: null,
+    });
+    setLockedContractors(prev => prev.filter(c => c.id !== contractor.id));
   };
 
   if (loading) {
@@ -122,16 +138,19 @@ export default function OverdueJobsPanel() {
           </h3>
           <div className="space-y-2">
             {lockedContractors.map(c => (
-              <div key={c.id} className="flex items-center justify-between border border-orange-200 bg-orange-50 rounded-lg px-4 py-3">
+              <div key={c.id} className="flex items-center justify-between border border-orange-200 bg-orange-50 rounded-lg px-4 py-3 gap-3">
                 <div>
                   <p className="text-sm font-medium text-slate-900">{c.name}</p>
                   <p className="text-xs text-slate-500">{c.email}</p>
-                </div>
-                <div className="text-right">
-                  <Badge className="bg-orange-600 text-white text-xs">Account Locked</Badge>
                   {c.billing_deletion_pending && (
                     <p className="text-xs text-red-600 mt-1 font-semibold">⚠ Deletion Pending</p>
                   )}
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge className="bg-orange-600 text-white text-xs">Account Locked</Badge>
+                  <Button size="sm" variant="outline" onClick={() => unlockContractor(c)} className="text-green-700 border-green-300 hover:bg-green-50 gap-1 text-xs h-7 px-2">
+                    <Unlock className="w-3 h-3" /> Unlock
+                  </Button>
                 </div>
               </div>
             ))}
@@ -148,12 +167,17 @@ export default function OverdueJobsPanel() {
           </h3>
           <div className="space-y-2">
             {lockedClients.map(c => (
-              <div key={c.id} className="flex items-center justify-between border border-yellow-200 bg-yellow-50 rounded-lg px-4 py-3">
+              <div key={c.id} className="flex items-center justify-between border border-yellow-200 bg-yellow-50 rounded-lg px-4 py-3 gap-3">
                 <div>
                   <p className="text-sm font-medium text-slate-900">{c.full_name}</p>
                   <p className="text-xs text-slate-500">{c.email}</p>
                 </div>
-                <Badge className="bg-yellow-600 text-white text-xs">Account Locked</Badge>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge className="bg-yellow-600 text-white text-xs">Account Locked</Badge>
+                  <Button size="sm" variant="outline" onClick={() => unlockClient(c)} className="text-green-700 border-green-300 hover:bg-green-50 gap-1 text-xs h-7 px-2">
+                    <Unlock className="w-3 h-3" /> Unlock
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
