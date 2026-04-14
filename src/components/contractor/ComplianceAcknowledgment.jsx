@@ -72,20 +72,22 @@ export default function ComplianceAcknowledgment({ contractorId, contractorLocat
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch(getComplianceUrl(), {
+      const complianceUrl = getComplianceUrl();
+      console.log('Submitting to:', complianceUrl, 'with contractor_id:', contractorId);
+      
+      const res = await fetch(complianceUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contractor_id: contractorId,
-          federal_acknowledged: true,
-          state_acknowledged: true,
-          platform_terms_acknowledged: true,
-          pricing_autonomy_acknowledged: true,
         }),
       });
+      
       const data = await res.json();
+      console.log('Response status:', res.status, 'data:', data);
+      
       if (!res.ok) {
-        throw new Error(data?.error || 'Failed to submit compliance acknowledgment');
+        throw new Error(data?.error || `HTTP ${res.status}: Failed to submit compliance acknowledgment`);
       }
       onComplete();
     } catch (err) {
