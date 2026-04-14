@@ -32,7 +32,7 @@ export default function ContractorVerificationDashboard() {
   }, []);
 
   const { data: contractors = [], isLoading, error } = useQuery({
-    queryKey: ['pending-verification-contractors'],
+    queryKey: ['all-verification-contractors'],
     queryFn: async () => {
       try {
         const all = await base44.asServiceRole.entities.Contractor.list();
