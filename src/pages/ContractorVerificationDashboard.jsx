@@ -34,12 +34,8 @@ export default function ContractorVerificationDashboard() {
   const { data: contractors = [], isLoading, error } = useQuery({
     queryKey: ['all-verification-contractors'],
     queryFn: async () => {
-      const all = await base44.asServiceRole.entities.Contractor.list('-created_date', 500);
-      return (all || []).filter(c =>
-        c.admin_review_requested === true ||
-        (c.id_document_url && c.id_document_url.trim() !== '') ||
-        (c.face_photo_url && c.face_photo_url.trim() !== '')
-      );
+      const res = await base44.functions.invoke('adminGetAllContractors', {});
+      return res.data?.contractors || [];
     },
     enabled: isAdmin,
     retry: 2,
