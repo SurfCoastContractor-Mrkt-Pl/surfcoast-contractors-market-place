@@ -7,11 +7,27 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { contractor_id } = body;
 
     if (!contractor_id) {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
+    }
+
+    // Verify user owns this contractor record or is admin
+    const contractor = await base44.entities.Contractor.filter({ id: contractor_id });
+    if (!contractor || contractor.length === 0) {
+      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+
+    if (contractor[0].email !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Permission denied' }, { status: 403 });
     }
 
     // Update contractor with compliance acknowledgment
