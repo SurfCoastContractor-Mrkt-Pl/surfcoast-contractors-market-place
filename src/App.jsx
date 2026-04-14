@@ -97,6 +97,7 @@ const EntrepreneurInventory = lazy(() => import('./pages/EntrepreneurInventory')
 const EntrepreneurJobPipeline = lazy(() => import('./pages/EntrepreneurJobPipeline'));
 const EntrepreneurMyDay = lazy(() => import('./pages/EntrepreneurMyDay'));
 const EntrepreneurTrialDashboard = lazy(() => import('./pages/EntrepreneurTrialDashboard'));
+const ContractorFinancialDashboard = lazy(() => import('./pages/ContractorFinancialDashboard'));
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -639,6 +640,11 @@ const AuthenticatedApp = () => {
       <Route path="/dashboard" element={
         <LayoutWrapper currentPageName="UnifiedDashboard">
           <UnifiedDashboard />
+        </LayoutWrapper>
+      } />
+      <Route path="/ContractorFinancialDashboard" element={
+        <LayoutWrapper currentPageName="ContractorFinancialDashboard">
+          <ContractorFinancialDashboard />
         </LayoutWrapper>
       } />
       {/* Auto-generated routes from pagesConfig - check for duplicates with explicit routes above */}

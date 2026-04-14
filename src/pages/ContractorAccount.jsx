@@ -21,7 +21,7 @@ const portalSections = [
         description: 'Field operations: job scheduling, invoicing, GPS tracking, and on-site tools.',
         icon: HardHat,
         color: 'bg-amber-500',
-        path: '/WaveFo',
+        path: '/FieldOps',
         badge: 'Field Ops'
       },
       {
@@ -29,7 +29,7 @@ const portalSections = [
         description: 'Manage your business: leads, earnings, analytics, CRM, marketing, and growth tools.',
         icon: Building2,
         color: 'bg-blue-600',
-        path: '/ContractorBusinessHub',
+        path: '/ContractorAccount',
         badge: 'Business'
       },
       {
@@ -203,7 +203,7 @@ export default function ContractorAccount() {
   // Redirect section params to Business Hub
   useEffect(() => {
     if (section) {
-      navigate('/ContractorBusinessHub?tab=' + section, { replace: true });
+      navigate('/ContractorAccount', { replace: true });
     }
   }, [section, navigate]);
 
