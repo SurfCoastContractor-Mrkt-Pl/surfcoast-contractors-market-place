@@ -14,16 +14,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
     }
 
-    // Use service role to update contractor (frontend is public app, no auth required)
-    await base44.asServiceRole.entities.Contractor.update(contractor_id, {
+    // For public apps, use asServiceRole which doesn't require authentication
+    const result = await base44.asServiceRole.entities.Contractor.update(contractor_id, {
       compliance_acknowledged: true,
       compliance_acknowledged_at: new Date().toISOString(),
       compliance_version: '1.0-2026-04-14',
     });
 
-    return Response.json({ success: true });
+    console.log('[submitComplianceAck] Updated contractor:', contractor_id);
+    return Response.json({ success: true, data: result });
   } catch (error) {
-    console.error('[submitComplianceAck] Error:', error.message);
+    console.error('[submitComplianceAck] Error:', error);
     return Response.json(
       { error: error.message || 'Failed to submit compliance acknowledgment' },
       { status: 500 }
