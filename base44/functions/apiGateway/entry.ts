@@ -1,4 +1,14 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+
+// Recompute HMAC-SHA256(key, salt) and return as hex string
+async function hashApiKey(keySecret, salt) {
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', enc.encode(keySecret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(salt));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 Deno.serve(async (req) => {
   try {
@@ -11,13 +21,10 @@ Deno.serve(async (req) => {
     const apiKey = authHeader.substring(7);
     const base44 = createClientFromRequest(req);
 
-    // Verify API key exists and is active
-    const keyHash = btoa(String.fromCharCode(...new Uint8Array(
-      await crypto.subtle.digest('SHA-256', new TextEncoder().encode(apiKey))
-    )));
-
+    // Look up by key_secret (the plaintext is stored for legacy lookup),
+    // then verify the salted HMAC matches to prevent rainbow table attacks.
     const keys = await base44.entities.APIKey.filter({
-      key_hash: keyHash,
+      key_secret: apiKey,
       is_active: true,
     });
 
@@ -25,7 +32,25 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid API key' }, { status: 401 });
     }
 
-    const apiKeyRecord = keys[0];
+    const record = keys[0];
+
+    // Verify HMAC — key_hash is stored as "salt:hmac"
+    let verified = false;
+    if (record.key_hash?.includes(':')) {
+      const [salt, storedHash] = record.key_hash.split(':');
+      const computedHash = await hashApiKey(apiKey, salt);
+      verified = computedHash === storedHash;
+    } else {
+      // Legacy unsalted hash — reject and prompt re-issue
+      console.warn(`[apiGateway] Legacy unsalted key detected for key ID ${record.id} — rejecting`);
+      return Response.json({ error: 'API key must be re-issued for security upgrade. Please generate a new key.' }, { status: 401 });
+    }
+
+    if (!verified) {
+      return Response.json({ error: 'Invalid API key' }, { status: 401 });
+    }
+
+    const apiKeyRecord = record;
 
     // Route request based on path
     const url = new URL(req.url);

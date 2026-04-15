@@ -12,11 +12,11 @@
     },
     "key_secret": {
       "type": "string",
-      "description": "Encrypted API key"
+      "description": "The raw API key secret (shown once at creation)"
     },
     "key_hash": {
       "type": "string",
-      "description": "Hash of API key for verification"
+      "description": "Salted HMAC-SHA256 of the key, stored as 'salt:hmac_hex' to prevent rainbow table attacks"
     },
     "scopes": {
       "type": "array",

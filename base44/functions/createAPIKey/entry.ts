@@ -1,4 +1,22 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+
+// Compute HMAC-SHA256(key, salt) and return as hex string
+async function hashApiKey(keySecret, salt) {
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', enc.encode(keySecret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(salt));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Generate a cryptographically secure random hex string
+function generateSecureKey(prefix = 'sk_live_') {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  return `${prefix}${hex}`;
+}
 
 Deno.serve(async (req) => {
   try {
@@ -13,18 +31,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Key name and scopes required' }, { status: 400 });
     }
 
-    // Generate API key
-    const keySecret = `sk_live_${Math.random().toString(36).substr(2)}${Date.now()}`;
-    const keyHash = await crypto.subtle.digest(
-      'SHA-256',
-      new TextEncoder().encode(keySecret)
-    );
+    // Generate cryptographically secure API key + per-key salt
+    const keySecret = generateSecureKey();
+    const salt = generateSecureKey('salt_');
+    const keyHash = await hashApiKey(keySecret, salt);
 
     const apiKey = await base44.entities.APIKey.create({
       user_email: user.email,
       key_name: keyName,
       key_secret: keySecret,
-      key_hash: btoa(String.fromCharCode(...new Uint8Array(keyHash))),
+      key_hash: `${salt}:${keyHash}`,  // store salt:hash together
       scopes,
       is_active: true,
       created_at: new Date().toISOString(),
