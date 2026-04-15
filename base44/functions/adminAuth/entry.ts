@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 /**
  * SECURITY: Password verification using PBKDF2 hashing
@@ -13,11 +13,13 @@ async function verifyPasswordHash(providedPassword, storedHash) {
     const salt = new Uint8Array(saltString.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
 
     const passwordBuffer = new TextEncoder().encode(providedPassword);
+    // Enforce minimum iteration count (OWASP recommends 600,000 for PBKDF2-SHA256)
+    const safeIterations = Math.max(iterations, 600000);
     const derivedKey = await crypto.subtle.deriveBits(
       {
         name: 'PBKDF2',
         salt: salt,
-        iterations: iterations,
+        iterations: safeIterations,
         hash: 'SHA-256',
       },
       await crypto.subtle.importKey(
