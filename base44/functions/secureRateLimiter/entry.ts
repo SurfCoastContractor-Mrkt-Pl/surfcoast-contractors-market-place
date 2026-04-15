@@ -13,8 +13,8 @@ Deno.serve(async (req) => {
     
     // SECURITY: Only admins can access rate limiting utility
     const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to access secureRateLimiter`);
+    if (!user || user.role !== 'admin') {
+      console.warn(`[AUTH_VIOLATION] Unauthorized access attempt on secureRateLimiter — user: ${user?.email ?? 'anonymous'}`);
       return Response.json(
         { error: 'Forbidden: Only admins can access rate limiting controls' },
         { status: 403 }

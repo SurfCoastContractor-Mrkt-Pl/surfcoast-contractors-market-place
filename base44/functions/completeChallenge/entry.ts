@@ -28,9 +28,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Challenge has expired' }, { status: 400 });
     }
 
-    // Get user email from game session
+    // Require authenticated user — anonymous challenge completion is not permitted
     const user = await base44.auth.me();
-    const userEmail = user?.email;
+    if (!user?.email) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    const userEmail = user.email;
 
     // Update challenge
     await base44.asServiceRole.entities.GameChallenge.update(challenge.id, {

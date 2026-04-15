@@ -8,6 +8,12 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Require authenticated user — anonymous submissions are not permitted
+    const user = await base44.auth.me();
+    if (!user?.email) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     // IP-based rate limiting — max 5 suggestions per hour per IP
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                      req.headers.get('cf-connecting-ip') || 'unknown';

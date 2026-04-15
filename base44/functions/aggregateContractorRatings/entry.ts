@@ -8,14 +8,19 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
-    // SECURITY: Only admins or automated systems can aggregate ratings
-    const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger aggregateContractorRatings`);
-      return Response.json(
-        { error: 'Forbidden: Only admins or scheduled automations can aggregate ratings' },
-        { status: 403 }
-      );
+    // SECURITY: Only admins or internal service role can aggregate ratings
+    const internalKey = req.headers.get('x-internal-key');
+    const isInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isInternalCall) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        console.warn(`[AUTH_VIOLATION] Unauthorized attempt to trigger aggregateContractorRatings — user: ${user?.email ?? 'anonymous'}`);
+        return Response.json(
+          { error: 'Forbidden: Only admins or scheduled automations can aggregate ratings' },
+          { status: 403 }
+        );
+      }
     }
 
     // Batch aggregate all contractor ratings (daily scheduled task)

@@ -9,27 +9,51 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
 
-    // Twilio signature verification
-    // NOTE: Add TWILIO_AUTH_TOKEN to secrets and uncomment to enable full verification:
-    // const twilioSignature = req.headers.get('x-twilio-signature') || '';
-    // const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
-    // if (!authToken || !twilioSignature) {
-    //   return Response.json({ error: 'Forbidden: Missing Twilio signature' }, { status: 403 });
-    // }
+    // Twilio signature cryptographic verification
+    const twilioSig = req.headers.get('x-twilio-signature') || '';
+    const authToken = Deno.env.get('TWILIO_AUTH_TOKEN') || '';
 
-    // Basic validation: reject requests missing required Twilio fields
-    const twilioSig = req.headers.get('x-twilio-signature');
-    if (!twilioSig) {
-      console.warn('[SECURITY] Received SMS webhook without Twilio signature header');
+    if (!twilioSig || !authToken) {
+      console.warn('[SECURITY] Received SMS webhook without Twilio signature or auth token not configured');
       return Response.json({ error: 'Forbidden: Missing Twilio signature' }, { status: 403 });
     }
 
-    // Parse incoming Twilio SMS webhook
-    const formData = await req.formData();
-    const from = formData.get('From'); // Sender's phone number
-    const body = formData.get('Body'); // Message content
-    const messageSid = formData.get('MessageSid'); // Twilio message ID
-    const to = formData.get('To'); // Our Twilio number
+    // Reconstruct the full URL for HMAC validation
+    const url = req.url;
+    const rawBody = await req.text();
+    const params = new URLSearchParams(rawBody);
+
+    // Build the string Twilio signs: URL + sorted params
+    const sortedParams = [...params.entries()].sort(([a], [b]) => a.localeCompare(b));
+    let signingString = url;
+    for (const [k, v] of sortedParams) {
+      signingString += k + v;
+    }
+
+    // HMAC-SHA1 verification using Web Crypto API
+    const enc = new TextEncoder();
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw', enc.encode(authToken), { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']
+    );
+    const sigBytes = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(signingString));
+    const expectedSig = 'sha1=' + Array.from(new Uint8Array(sigBytes))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+
+    // Twilio sends Base64-encoded HMAC, convert for comparison
+    const expectedBase64 = btoa(String.fromCharCode(...new Uint8Array(sigBytes)));
+    if (twilioSig !== expectedBase64) {
+      console.warn('[SECURITY] Twilio signature mismatch — possible spoofing attempt');
+      return Response.json({ error: 'Forbidden: Invalid Twilio signature' }, { status: 403 });
+    }
+
+    // Re-parse since we consumed the body above
+    const formData = new URLSearchParams(rawBody);
+
+    // Parse verified Twilio SMS webhook fields
+    const from = formData.get('From');
+    const body = formData.get('Body');
+    const messageSid = formData.get('MessageSid');
+    const to = formData.get('To');
 
     if (!from || !body) {
       return Response.json({ error: 'Missing From or Body' }, { status: 400 });

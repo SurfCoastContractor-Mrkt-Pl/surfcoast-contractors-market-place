@@ -9,14 +9,19 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
     
-    // SECURITY: Only admins or automated systems can reset minor hours
-    const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to trigger resetMinorWeeklyHours`);
-      return Response.json(
-        { error: 'Forbidden: Only admins or scheduled automations can reset minor hours' },
-        { status: 403 }
-      );
+    // SECURITY: Only admins or internal service role can reset minor hours
+    const internalKey = req.headers.get('x-internal-key');
+    const isInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+
+    if (!isInternalCall) {
+      const user = await base44.auth.me();
+      if (!user || user.role !== 'admin') {
+        console.warn(`[AUTH_VIOLATION] Unauthorized attempt to trigger resetMinorWeeklyHours — user: ${user?.email ?? 'anonymous'}`);
+        return Response.json(
+          { error: 'Forbidden: Only admins or scheduled automations can reset minor hours' },
+          { status: 403 }
+        );
+      }
     }
 
     // Fetch all minors currently locked due to hours

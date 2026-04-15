@@ -13,8 +13,8 @@ Deno.serve(async (req) => {
     
     // SECURITY: Only admins can access payment validation utility
     const user = await base44.auth.me();
-    if (user && user.role !== 'admin') {
-      console.warn(`[AUTH_VIOLATION] Non-admin user ${user.email} attempted to access securePaymentValidator`);
+    if (!user || user.role !== 'admin') {
+      console.warn(`[AUTH_VIOLATION] Unauthorized access attempt on securePaymentValidator — user: ${user?.email ?? 'anonymous'}`);
       return Response.json(
         { error: 'Forbidden: Only admins can access payment validation' },
         { status: 403 }
