@@ -36,11 +36,15 @@ Deno.serve(async (req) => {
     const salt = generateSecureKey('salt_');
     const keyHash = await hashApiKey(keySecret, salt);
 
+    // Store only the first 8 chars as a lookup prefix — never store the plaintext key
+    const keyPrefix = keySecret.substring(0, 8);
+
     const apiKey = await base44.entities.APIKey.create({
       user_email: user.email,
       key_name: keyName,
-      key_secret: keySecret,
-      key_hash: `${salt}:${keyHash}`,  // store salt:hash together
+      key_prefix: keyPrefix,           // for efficient lookup only
+      key_hash: `${salt}:${keyHash}`,  // salted HMAC for verification
+      // key_secret intentionally NOT stored
       scopes,
       is_active: true,
       created_at: new Date().toISOString(),

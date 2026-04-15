@@ -10,13 +10,13 @@
       "type": "string",
       "description": "Friendly name for the key"
     },
-    "key_secret": {
+    "key_prefix": {
       "type": "string",
-      "description": "The raw API key secret (shown once at creation)"
+      "description": "First 8 characters of the key, used for efficient lookup only. Never the full key."
     },
     "key_hash": {
       "type": "string",
-      "description": "Salted HMAC-SHA256 of the key, stored as 'salt:hmac_hex' to prevent rainbow table attacks"
+      "description": "Salted HMAC-SHA256 of the key, stored as 'salt:hmac_hex' to prevent rainbow table attacks. Plaintext key is never stored."
     },
     "scopes": {
       "type": "array",
@@ -55,7 +55,8 @@
   "required": [
     "user_email",
     "key_name",
-    "key_secret",
+    "key_prefix",
+    "key_hash",
     "scopes"
   ],
   "rls": {

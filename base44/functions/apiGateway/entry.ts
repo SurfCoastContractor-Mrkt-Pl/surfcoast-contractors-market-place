@@ -21,61 +21,59 @@ Deno.serve(async (req) => {
     const apiKey = authHeader.substring(7);
     const base44 = createClientFromRequest(req);
 
-    // Look up by key_secret (the plaintext is stored for legacy lookup),
-    // then verify the salted HMAC matches to prevent rainbow table attacks.
-    const keys = await base44.entities.APIKey.filter({
-      key_secret: apiKey,
+    // Lookup candidates by key_prefix (first 8 chars) — no plaintext stored in DB
+    const keyPrefix = apiKey.substring(0, 8);
+    const keys = await base44.asServiceRole.entities.APIKey.filter({
+      key_prefix: keyPrefix,
       is_active: true,
     });
 
-    if (!keys?.[0]) {
+    if (!keys?.length) {
       return Response.json({ error: 'Invalid API key' }, { status: 401 });
     }
 
-    const record = keys[0];
-
-    // Verify HMAC — key_hash is stored as "salt:hmac"
-    let verified = false;
-    if (record.key_hash?.includes(':')) {
-      const [salt, storedHash] = record.key_hash.split(':');
+    // Among prefix-matched candidates, verify HMAC — key_hash stored as "salt:hmac"
+    let record = null;
+    for (const candidate of keys) {
+      if (!candidate.key_hash?.includes(':')) {
+        console.warn(`[apiGateway] Key ID ${candidate.id} has no salted hash — skipping (re-issue required)`);
+        continue;
+      }
+      const [salt, storedHash] = candidate.key_hash.split(':');
       const computedHash = await hashApiKey(apiKey, salt);
-      verified = computedHash === storedHash;
-    } else {
-      // Legacy unsalted hash — reject and prompt re-issue
-      console.warn(`[apiGateway] Legacy unsalted key detected for key ID ${record.id} — rejecting`);
-      return Response.json({ error: 'API key must be re-issued for security upgrade. Please generate a new key.' }, { status: 401 });
+      if (computedHash === storedHash) {
+        record = candidate;
+        break;
+      }
     }
 
-    if (!verified) {
+    if (!record) {
       return Response.json({ error: 'Invalid API key' }, { status: 401 });
     }
-
-    const apiKeyRecord = record;
 
     // Route request based on path
     const url = new URL(req.url);
     const path = url.pathname;
 
     if (path === '/api/v1/jobs' && req.method === 'GET') {
-      if (!apiKeyRecord.scopes.includes('read:jobs')) {
+      if (!record.scopes.includes('read:jobs')) {
         return Response.json({ error: 'Insufficient permissions' }, { status: 403 });
       }
-      const jobs = await base44.entities.Job.list();
+      const jobs = await base44.asServiceRole.entities.Job.list();
+      // Update last used (fire-and-forget)
+      base44.asServiceRole.entities.APIKey.update(record.id, { last_used: new Date().toISOString() });
       return Response.json({ jobs });
     }
 
     if (path === '/api/v1/contractors' && req.method === 'GET') {
-      if (!apiKeyRecord.scopes.includes('read:contractors')) {
+      if (!record.scopes.includes('read:contractors')) {
         return Response.json({ error: 'Insufficient permissions' }, { status: 403 });
       }
-      const contractors = await base44.entities.Contractor.list();
+      const contractors = await base44.asServiceRole.entities.Contractor.list();
+      // Update last used (fire-and-forget)
+      base44.asServiceRole.entities.APIKey.update(record.id, { last_used: new Date().toISOString() });
       return Response.json({ contractors });
     }
-
-    // Update last used
-    await base44.entities.APIKey.update(apiKeyRecord.id, {
-      last_used: new Date().toISOString(),
-    });
 
     return Response.json({ error: 'Endpoint not found' }, { status: 404 });
   } catch (error) {
