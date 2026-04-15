@@ -1,4 +1,19 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+
+// In-memory IP rate limit: max 5 signup attempts per IP per hour
+const signupRateMap = new Map();
+
+function checkSignupRateLimit(ip) {
+  const now = Date.now();
+  const windowMs = 3600000; // 1 hour
+  const maxAttempts = 5;
+  const record = signupRateMap.get(ip) || { attempts: [] };
+  record.attempts = record.attempts.filter(t => now - t < windowMs);
+  if (record.attempts.length >= maxAttempts) return false;
+  record.attempts.push(now);
+  signupRateMap.set(ip, record);
+  return true;
+}
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
@@ -6,6 +21,14 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // IP-based rate limiting — max 5 contractor signups per hour per IP
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     req.headers.get('cf-connecting-ip') || 'unknown';
+    if (!checkSignupRateLimit(clientIp)) {
+      console.warn(`[contractorSignup] Rate limit exceeded for IP: ${clientIp}`);
+      return Response.json({ error: 'Too many signup attempts. Please try again later.' }, { status: 429 });
+    }
+
     const body = await req.json();
     const { full_name, email, password, phone, trade_specialty, location } = body;
 
