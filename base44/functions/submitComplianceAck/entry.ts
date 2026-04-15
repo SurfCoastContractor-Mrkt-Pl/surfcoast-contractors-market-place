@@ -7,6 +7,13 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require authenticated user
+    const user = await base44.auth.me();
+    if (!user?.email) {
+      return Response.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { contractor_id } = body;
 
@@ -14,14 +21,22 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
     }
 
-    // For public apps, use asServiceRole which doesn't require authentication
+    // Verify the authenticated user owns this contractor record
+    const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
+    if (!contractor) {
+      return Response.json({ error: 'Contractor not found' }, { status: 404 });
+    }
+    if (contractor.email !== user.email && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: you can only acknowledge compliance for your own account' }, { status: 403 });
+    }
+
     const result = await base44.asServiceRole.entities.Contractor.update(contractor_id, {
       compliance_acknowledged: true,
       compliance_acknowledged_at: new Date().toISOString(),
       compliance_version: '1.0-2026-04-14',
     });
 
-    console.log('[submitComplianceAck] Updated contractor:', contractor_id);
+    console.log('[submitComplianceAck] Updated contractor:', contractor_id, 'by', user.email);
     return Response.json({ success: true, data: result });
   } catch (error) {
     console.error('[submitComplianceAck] Error:', error);

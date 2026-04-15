@@ -7,6 +7,12 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Restrict to internal service calls only — this endpoint exposes rate limit state
+    const serviceKey = req.headers.get('x-internal-key');
+    if (!serviceKey || serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const base44 = createClientFromRequest(req);
     const { endpoint, userId } = await req.json();
 

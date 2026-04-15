@@ -14,6 +14,31 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'contractor_id is required' }, { status: 400 });
     }
 
+    // Deduplicate: one view per IP per contractor per 24 hours
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     req.headers.get('cf-connecting-ip') || 'unknown';
+    const dedupKey = `${contractor_id}:${clientIp}`;
+    const windowStart = new Date(Date.now() - 86400000).toISOString(); // 24h ago
+
+    const recentViews = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: dedupKey,
+      limit_type: 'profile_view',
+    });
+    const alreadyViewed = recentViews.some(r => r.window_start >= windowStart);
+    if (alreadyViewed) {
+      // Silently succeed — don't reveal dedup to caller
+      return Response.json({ success: true, deduplicated: true });
+    }
+
+    // Record this view for dedup tracking
+    await base44.asServiceRole.entities.RateLimitTracker.create({
+      key: dedupKey,
+      limit_type: 'profile_view',
+      request_count: 1,
+      window_start: new Date().toISOString(),
+      window_duration_seconds: 86400,
+    });
+
     const contractor = await base44.asServiceRole.entities.Contractor.get(contractor_id);
     if (!contractor) {
       return Response.json({ error: 'Contractor not found' }, { status: 404 });
