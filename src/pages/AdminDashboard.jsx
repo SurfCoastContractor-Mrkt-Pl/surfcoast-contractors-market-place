@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
-import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
+import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw, ThumbsUp, ThumbsDown, MessageSquare, Bot } from 'lucide-react';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 import SendVendorEmailModal from '@/components/admin/SendVendorEmailModal';
 import AdminUserDetailModal from '@/components/admin/AdminUserDetailModal';
@@ -22,6 +22,8 @@ export default function AdminDashboard() {
   const [allUsers, setAllUsers] = useState([]);
   const [userSearch, setUserSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
+  const [checkInLoading, setCheckInLoading] = useState(false);
+  const [checkInResult, setCheckInResult] = useState(null);
   
   // Filter states
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
@@ -647,6 +649,45 @@ export default function AdminDashboard() {
 
         {activeTab === 'users' && (
           <div>
+            {/* AI Check-In Panel */}
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Bot className="w-5 h-5 text-blue-500" />
+                    <h3 className="font-semibold text-foreground text-sm">AI Check-In — Incomplete Accounts</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground max-w-lg">
+                    Sends a friendly check-in email to users who haven't completed their profile, with a link to the AI Assistant for guided help. Also targets users who signed up but never chose a role.
+                  </p>
+                  {checkInResult && (
+                    <div className="mt-3 text-xs bg-green-50 border border-green-200 text-green-800 rounded-lg px-3 py-2 flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 shrink-0" />
+                      {checkInResult.emailsSent} check-in emails sent ({checkInResult.incompleteContractors} incomplete profiles, {checkInResult.noProfileUsers} no-profile users)
+                      {checkInResult.errors?.length > 0 && <span className="text-orange-600"> · {checkInResult.errors.length} failed</span>}
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={async () => {
+                    setCheckInLoading(true);
+                    setCheckInResult(null);
+                    try {
+                      const res = await base44.functions.invoke('checkInIncompleteUsers', {});
+                      setCheckInResult(res.data);
+                    } finally {
+                      setCheckInLoading(false);
+                    }
+                  }}
+                  disabled={checkInLoading}
+                  className="shrink-0 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg text-xs font-semibold transition-colors"
+                >
+                  {checkInLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Bot className="w-3.5 h-3.5" />}
+                  {checkInLoading ? 'Sending...' : 'Run Check-In Now'}
+                </button>
+              </div>
+            </div>
+
             <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
               <div className="relative max-w-sm">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
