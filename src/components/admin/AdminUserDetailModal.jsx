@@ -119,7 +119,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                   value={emailSubject}
                   onChange={e => setEmailSubject(e.target.value)}
                   placeholder="Email subject..."
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-slate-900"
                 />
               </div>
               <div>
@@ -129,7 +129,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                   onChange={e => setEmailBody(e.target.value)}
                   placeholder="Write your message..."
                   rows={7}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white resize-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-slate-900 resize-none"
                 />
               </div>
               <button
