@@ -40,13 +40,13 @@ export default function AdminDashboard() {
           base44.entities.Contractor.list('-created_date', 1000),
           base44.entities.VendorReview.list('-created_date', 1000),
           base44.entities.WebsiteFeedback.list('-created_date', 500),
-          base44.entities.User.list('-created_date', 1000),
+          base44.functions.invoke('adminGetAllUsers', {}),
         ]);
         setVendors(v || []);
         setFeedback(fb || []);
         setContractors(c || []);
         setReviews(r || []);
-        setAllUsers(u || []);
+        setAllUsers(u?.data?.users || []);
       } catch (err) {
         console.error('AdminDashboard: data load error:', err);
       }
