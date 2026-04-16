@@ -51,9 +51,9 @@ function AdminControlHubContent() {
     queryKey: ['adminStats'],
     queryFn: async () => {
       const [errors, health, activity] = await Promise.all([
-        base44.asServiceRole.entities.ErrorLog.list('-created_date', 5).catch(() => []),
-        base44.asServiceRole.entities.HealthCheck.list('-created_date', 1).catch(() => []),
-        base44.asServiceRole.entities.ActivityLog.list('-created_date', 5).catch(() => []),
+        base44.entities.ErrorLog.list('-created_date', 5).catch(() => []),
+        base44.entities.HealthCheck.list('-created_date', 1).catch(() => []),
+        base44.entities.ActivityLog.list('-created_date', 5).catch(() => []),
       ]);
       return { errors, recentHealth: health[0], activities: activity };
     },

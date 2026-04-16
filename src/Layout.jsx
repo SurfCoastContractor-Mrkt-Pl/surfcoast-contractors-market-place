@@ -69,6 +69,9 @@ export default function Layout({ children, currentPageName }) {
     } else {
       isBackNav.current = false;
     }
+    // Close all menus on every page navigation
+    setAccountMenuOpen(false);
+    setMobileMenuOpen(false);
   }, [currentPageName]);
 
 
