@@ -5,6 +5,7 @@ import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { Loader2, ShieldOff, BarChart2, Store, HardHat, Star, Clock, Leaf, Tag, DollarSign, AlertTriangle, Eye, EyeOff, CheckCircle, Ban, ExternalLink, Wrench, MapPin, CreditCard, Shield, Link as LinkIcon, User, Waves, Briefcase, BookOpen, Mail, Search, RefreshCw, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 import HISLicenseReview from '@/components/admin/HISLicenseReview';
 import SendVendorEmailModal from '@/components/admin/SendVendorEmailModal';
+import AdminUserDetailModal from '@/components/admin/AdminUserDetailModal';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function AdminDashboard() {
   const [feedback, setFeedback] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [userSearch, setUserSearch] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   
   // Filter states
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
@@ -135,6 +137,15 @@ export default function AdminDashboard() {
             vendor={emailModalVendor}
             onClose={() => setEmailModalVendor(null)}
             onSuccess={() => setEmailModalVendor(null)}
+          />
+        )}
+
+        {/* User Detail Modal */}
+        {selectedUser && (
+          <AdminUserDetailModal
+            user={selectedUser}
+            contractors={contractors}
+            onClose={() => setSelectedUser(null)}
           />
         )}
         </div>
@@ -658,6 +669,7 @@ export default function AdminDashboard() {
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Role</th>
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Has Contractor Profile</th>
                     <th className="px-6 py-3 text-left font-semibold text-foreground">Signed Up</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -666,12 +678,13 @@ export default function AdminDashboard() {
                     .map(u => {
                       const hasContractor = contractors.some(c => c.email === u.email);
                       return (
-                        <tr key={u.id} className="hover:bg-secondary/60 transition-colors">
+                        <tr key={u.id} className="hover:bg-secondary/60 transition-colors cursor-pointer" onClick={() => setSelectedUser(u)}>
                           <td className="px-6 py-4 text-foreground font-medium">{u.full_name || <span className="italic text-muted-foreground">No name</span>}</td>
                           <td className="px-6 py-4 text-muted-foreground text-xs">{u.email}</td>
                           <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-medium ${u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-700'}`}>{u.role || 'user'}</span></td>
                           <td className="px-6 py-4">{hasContractor ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Ban className="w-4 h-4 text-slate-300" />}</td>
                           <td className="px-6 py-4 text-muted-foreground text-xs">{new Date(u.created_date).toLocaleDateString()}</td>
+                          <td className="px-6 py-4"><span className="text-xs text-blue-600 hover:underline">View →</span></td>
                         </tr>
                       );
                     })}
