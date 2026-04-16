@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { X, Mail, User, CheckCircle, Ban, Send, Loader2, Inbox } from 'lucide-react';
 
-const ADMIN_EMAIL = 'admin@surfcoastwave.com';
+const ADMIN_EMAILS = ['adminnavarreteh@surfcoastcmp.com', 'hexthegreat25@gmail.com'];
 
 export default function AdminUserDetailModal({ user, contractors, onClose }) {
   const [emailSubject, setEmailSubject] = useState('');
@@ -35,12 +35,14 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
       body: emailBody,
     });
 
-    // BCC admin
-    await base44.integrations.Core.SendEmail({
-      to: ADMIN_EMAIL,
-      subject: `[BCC] ${emailSubject}`,
-      body: `This is a BCC copy of an email sent to ${user.full_name || user.email} (${user.email}).\n\n---\n\n${emailBody}`,
-    });
+    // BCC admins
+    await Promise.all(ADMIN_EMAILS.map(adminEmail =>
+      base44.integrations.Core.SendEmail({
+        to: adminEmail,
+        subject: `[BCC] ${emailSubject}`,
+        body: `This is a BCC copy of an email sent to ${user.full_name || user.email} (${user.email}).\n\n---\n\n${emailBody}`,
+      })
+    ));
 
     // Log to database
     await base44.entities.SentEmail.create({
@@ -170,7 +172,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-slate-900 resize-none"
                 />
               </div>
-              <p className="text-xs text-slate-400">A BCC copy will be sent to {ADMIN_EMAIL} and logged in Sent Emails.</p>
+              <p className="text-xs text-slate-400">A BCC copy will be sent to {ADMIN_EMAILS.join(' and ')} and logged in Sent Emails.</p>
               <button
                 onClick={handleSendEmail}
                 disabled={sending || !emailSubject.trim() || !emailBody.trim()}
