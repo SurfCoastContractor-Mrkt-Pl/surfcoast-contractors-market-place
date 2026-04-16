@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { X, Mail, User, Shield, Calendar, CheckCircle, Ban, Send, Loader2 } from 'lucide-react';
+import { X, Mail, User, CheckCircle, Ban, Send, Loader2, Inbox } from 'lucide-react';
+
+const ADMIN_EMAIL = 'admin@surfcoastwave.com';
 
 export default function AdminUserDetailModal({ user, contractors, onClose }) {
   const [emailSubject, setEmailSubject] = useState('');
@@ -8,17 +10,47 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [tab, setTab] = useState('info');
+  const [sentEmails, setSentEmails] = useState([]);
+  const [loadingEmails, setLoadingEmails] = useState(false);
 
   const contractorProfile = contractors.find(c => c.email === user.email);
+
+  useEffect(() => {
+    if (tab === 'sent') {
+      setLoadingEmails(true);
+      base44.entities.SentEmail.filter({ to_email: user.email }, '-sent_at', 50)
+        .then(data => setSentEmails(data || []))
+        .finally(() => setLoadingEmails(false));
+    }
+  }, [tab, user.email]);
 
   const handleSendEmail = async () => {
     if (!emailSubject.trim() || !emailBody.trim()) return;
     setSending(true);
+
+    // Send to recipient
     await base44.integrations.Core.SendEmail({
       to: user.email,
       subject: emailSubject,
       body: emailBody,
     });
+
+    // BCC admin
+    await base44.integrations.Core.SendEmail({
+      to: ADMIN_EMAIL,
+      subject: `[BCC] ${emailSubject}`,
+      body: `This is a BCC copy of an email sent to ${user.full_name || user.email} (${user.email}).\n\n---\n\n${emailBody}`,
+    });
+
+    // Log to database
+    await base44.entities.SentEmail.create({
+      to_email: user.email,
+      to_name: user.full_name || '',
+      subject: emailSubject,
+      body: emailBody,
+      sent_at: new Date().toISOString(),
+    });
+
     setSending(false);
     setSent(true);
     setTimeout(() => setSent(false), 3000);
@@ -32,6 +64,12 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
       <span className="text-xs text-slate-800 text-right break-all">{value ?? <span className="italic text-slate-400">—</span>}</span>
     </div>
   );
+
+  const tabs = [
+    { key: 'info', label: 'Account Info' },
+    { key: 'email', label: 'Send Email' },
+    { key: 'sent', label: 'Sent Emails' },
+  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
@@ -57,7 +95,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
 
         {/* Tabs */}
         <div className="flex border-b border-slate-200">
-          {[{ key: 'info', label: 'Account Info' }, { key: 'email', label: 'Send Email' }].map(t => (
+          {tabs.map(t => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
@@ -132,6 +170,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-slate-900 resize-none"
                 />
               </div>
+              <p className="text-xs text-slate-400">A BCC copy will be sent to {ADMIN_EMAIL} and logged in Sent Emails.</p>
               <button
                 onClick={handleSendEmail}
                 disabled={sending || !emailSubject.trim() || !emailBody.trim()}
@@ -140,6 +179,35 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                 {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : sent ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                 {sending ? 'Sending...' : sent ? 'Sent!' : 'Send Email'}
               </button>
+            </div>
+          )}
+
+          {tab === 'sent' && (
+            <div>
+              {loadingEmails ? (
+                <div className="flex justify-center py-10">
+                  <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+                </div>
+              ) : sentEmails.length === 0 ? (
+                <div className="text-center py-12">
+                  <Inbox className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                  <p className="text-sm text-slate-400">No emails sent to this user yet.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {sentEmails.map(e => (
+                    <div key={e.id} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                      <div className="flex items-start justify-between mb-1">
+                        <p className="text-sm font-semibold text-slate-800">{e.subject}</p>
+                        <span className="text-xs text-slate-400 shrink-0 ml-2">
+                          {new Date(e.sent_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 whitespace-pre-wrap">{e.body}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

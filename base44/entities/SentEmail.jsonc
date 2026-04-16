@@ -1,0 +1,57 @@
+{
+  "name": "SentEmail",
+  "type": "object",
+  "properties": {
+    "to_email": {
+      "type": "string",
+      "description": "Recipient email address"
+    },
+    "to_name": {
+      "type": "string",
+      "description": "Recipient full name"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject"
+    },
+    "body": {
+      "type": "string",
+      "description": "Email body content"
+    },
+    "sent_by": {
+      "type": "string",
+      "description": "Admin email who sent the message"
+    },
+    "sent_at": {
+      "type": "string",
+      "description": "ISO timestamp when sent"
+    }
+  },
+  "required": [
+    "to_email",
+    "subject",
+    "body"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
