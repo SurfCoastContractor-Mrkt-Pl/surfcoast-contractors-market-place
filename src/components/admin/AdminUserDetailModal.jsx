@@ -83,7 +83,6 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
                     user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-700'
                   }`}>{user.role || 'user'}</span>
                 } />
-                <InfoRow label="Verified" value={user.is_verified ? '✓ Yes' : '✗ No'} />
                 <InfoRow label="Signed Up" value={new Date(user.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} />
               </div>
 
