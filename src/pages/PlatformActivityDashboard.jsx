@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 export default function PlatformActivityDashboard() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -16,6 +17,8 @@ export default function PlatformActivityDashboard() {
         setIsAdmin(me?.role === 'admin');
       } catch {
         setIsAdmin(false);
+      } finally {
+        setAuthChecked(true);
       }
     };
     checkAuth();
@@ -30,6 +33,14 @@ export default function PlatformActivityDashboard() {
     enabled: isAdmin,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (!isAdmin) {
     return (
