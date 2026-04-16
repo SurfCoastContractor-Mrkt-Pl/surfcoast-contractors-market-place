@@ -8,6 +8,12 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Validate internal service key — this endpoint is for scheduled automation only
+    const serviceKey = req.headers.get('x-internal-service-key');
+    if (serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     // Scheduled automation — runs without user context. Uses asServiceRole for all DB ops.
 
     // Get all listings with stock at or below threshold

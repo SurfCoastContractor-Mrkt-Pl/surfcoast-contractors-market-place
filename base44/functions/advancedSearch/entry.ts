@@ -128,9 +128,15 @@ Deno.serve(async (req) => {
       results.total_count = filtered.length;
     }
 
-    // Search scopes
+    // Search scopes — non-admins can only see their own scopes
     if (search_type === 'scopes') {
-      const scopes = await base44.asServiceRole.entities.ScopeOfWork.list('-updated_date', 1000);
+      let scopes;
+      if (user.role === 'admin') {
+        scopes = await base44.asServiceRole.entities.ScopeOfWork.list('-updated_date', 1000);
+      } else {
+        // Restrict to scopes the user is party to
+        scopes = await base44.entities.ScopeOfWork.list('-updated_date', 1000);
+      }
 
       let filtered = scopes || [];
 
@@ -147,10 +153,11 @@ Deno.serve(async (req) => {
         if (filters.status) {
           filtered = filtered.filter(s => s.status === filters.status);
         }
-        if (filters.contractor_email) {
+        // Non-admins: ignore any attempt to filter by another user's email
+        if (user.role === 'admin' && filters.contractor_email) {
           filtered = filtered.filter(s => s.contractor_email === filters.contractor_email);
         }
-        if (filters.client_email) {
+        if (user.role === 'admin' && filters.client_email) {
           filtered = filtered.filter(s => s.client_email === filters.client_email);
         }
       }
@@ -163,6 +170,7 @@ Deno.serve(async (req) => {
         cost: s.cost_amount,
         status: s.status,
         created_date: s.created_date,
+        // contractor_email intentionally omitted — sensitive PII
       }));
       results.total_count = filtered.length;
     }
