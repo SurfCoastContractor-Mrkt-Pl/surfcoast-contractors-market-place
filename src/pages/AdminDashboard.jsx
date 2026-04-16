@@ -18,6 +18,8 @@ export default function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
   const [emailModalVendor, setEmailModalVendor] = useState(null);
   const [feedback, setFeedback] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [userSearch, setUserSearch] = useState('');
   
   // Filter states
   const [vendorStatusFilter, setVendorStatusFilter] = useState('all');
@@ -33,16 +35,18 @@ export default function AdminDashboard() {
     if (!user || user.role !== 'admin') return;
     const loadData = async () => {
       try {
-        const [v, c, r, fb] = await Promise.all([
+        const [v, c, r, fb, u] = await Promise.all([
           base44.entities.MarketShop.list('-created_date', 1000),
           base44.entities.Contractor.list('-created_date', 1000),
           base44.entities.VendorReview.list('-created_date', 1000),
           base44.entities.WebsiteFeedback.list('-created_date', 500),
+          base44.entities.User.list('-created_date', 1000),
         ]);
         setVendors(v || []);
         setFeedback(fb || []);
         setContractors(c || []);
         setReviews(r || []);
+        setAllUsers(u || []);
       } catch (err) {
         console.error('AdminDashboard: data load error:', err);
       }
@@ -231,6 +235,7 @@ export default function AdminDashboard() {
               { key: 'his_licenses', label: 'HIS Licenses', icon: Waves },
               { key: 'field_ops', label: 'WAVE OS', icon: Briefcase },
               { key: 'notion', label: 'Notion', icon: BookOpen },
+              { key: 'users', label: 'Users', icon: User },
               { key: 'feedback', label: 'Feedback', icon: MessageSquare },
             ].map(({ key, label, icon: Icon }) => (
               <button
@@ -623,6 +628,53 @@ export default function AdminDashboard() {
                       </td>
                     </tr>
                   ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'users' && (
+          <div>
+            <div className="bg-card border border-border rounded-lg sm:rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
+              <div className="relative max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search by name or email..."
+                  value={userSearch}
+                  onChange={e => setUserSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground placeholder:text-muted-foreground"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">{allUsers.filter(u => !userSearch || u.email?.toLowerCase().includes(userSearch.toLowerCase()) || u.full_name?.toLowerCase().includes(userSearch.toLowerCase())).length} of {allUsers.length} users</p>
+            </div>
+            <div className="overflow-x-auto bg-card border border-border rounded-xl shadow-sm">
+              <table className="w-full text-sm">
+                <thead className="border-b border-border bg-secondary">
+                  <tr>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Name</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Role</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Has Contractor Profile</th>
+                    <th className="px-6 py-3 text-left font-semibold text-foreground">Signed Up</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {allUsers
+                    .filter(u => !userSearch || u.email?.toLowerCase().includes(userSearch.toLowerCase()) || u.full_name?.toLowerCase().includes(userSearch.toLowerCase()))
+                    .map(u => {
+                      const hasContractor = contractors.some(c => c.email === u.email);
+                      return (
+                        <tr key={u.id} className="hover:bg-secondary/60 transition-colors">
+                          <td className="px-6 py-4 text-foreground font-medium">{u.full_name || <span className="italic text-muted-foreground">No name</span>}</td>
+                          <td className="px-6 py-4 text-muted-foreground text-xs">{u.email}</td>
+                          <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-medium ${u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-700'}`}>{u.role || 'user'}</span></td>
+                          <td className="px-6 py-4">{hasContractor ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Ban className="w-4 h-4 text-slate-300" />}</td>
+                          <td className="px-6 py-4 text-muted-foreground text-xs">{new Date(u.created_date).toLocaleDateString()}</td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
