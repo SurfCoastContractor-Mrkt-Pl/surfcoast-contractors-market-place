@@ -744,6 +744,15 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* User Detail Modal */}
+      {selectedUser && (
+        <AdminUserDetailModal
+          user={selectedUser}
+          contractors={contractors}
+          onClose={() => setSelectedUser(null)}
+        />
+      )}
     </div>
   );
 }
