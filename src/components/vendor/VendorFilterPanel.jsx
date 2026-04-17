@@ -1,12 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { X, Sliders, Search } from 'lucide-react';
+import { X, Sliders, Search, MapPin } from 'lucide-react';
 
 export default function VendorFilterPanel({ filters, onFiltersChange, onClose, isOpen }) {
-  // Local draft state — only applies on Submit
   const [draft, setDraft] = useState({ ...filters });
 
   const handleSubmit = () => {
@@ -20,7 +19,9 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
       location: '',
       category: 'all',
       minRating: 0,
-      availability: []
+      availability: [],
+      thisWeekendOnly: false,
+      radiusMiles: 15,
     };
     setDraft(empty);
     onFiltersChange(empty);
@@ -95,7 +96,7 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
 
   const categoryOptions = draft.marketType === 'farmers_market'
     ? farmerMarketCategories
-    : draft.marketType === 'swap_meet'
+    : draft.marketType === 'swap_meet' || draft.marketType === 'flea_market'
     ? swapMeetCategories
     : allCategories;
 
@@ -120,6 +121,26 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
           </button>
         </div>
 
+        {/* This Weekend Near Me */}
+        <div className={sectionClass}>
+          <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg cursor-pointer"
+            onClick={() => setDraft({ ...draft, thisWeekendOnly: !draft.thisWeekendOnly })}
+          >
+            <Checkbox
+              id="thisWeekend"
+              checked={!!draft.thisWeekendOnly}
+              onCheckedChange={(v) => setDraft({ ...draft, thisWeekendOnly: !!v })}
+              className="border-amber-400"
+            />
+            <label htmlFor="thisWeekend" className="text-sm font-semibold text-amber-800 cursor-pointer">
+              📅 This Weekend Only
+            </label>
+          </div>
+          {draft.thisWeekendOnly && (
+            <p className="text-xs text-amber-600 mt-1.5 ml-1">Shows vendors with events Sat–Sun within radius below</p>
+          )}
+        </div>
+
         {/* Market Type */}
         <div className={sectionClass}>
           <label className={labelClass}>Market Type</label>
@@ -132,23 +153,45 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
             </SelectTrigger>
             <SelectContent className="bg-white">
               <SelectItem value="all" className="text-slate-900">All Types</SelectItem>
-              <SelectItem value="farmers_market" className="text-slate-900">Farmers Market</SelectItem>
-              <SelectItem value="swap_meet" className="text-slate-900">Swap Meet</SelectItem>
+              <SelectItem value="farmers_market" className="text-slate-900">🌱 Farmers Market</SelectItem>
+              <SelectItem value="swap_meet" className="text-slate-900">🔄 Swap Meet</SelectItem>
+              <SelectItem value="flea_market" className="text-slate-900">🛍️ Flea Market</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         {/* Location */}
         <div className={sectionClass}>
-          <label className={labelClass}>Location</label>
+          <label className={labelClass}>
+            <MapPin className="w-3.5 h-3.5 inline mr-1" />
+            Location (City, State or ZIP)
+          </label>
           <input
             type="text"
-            placeholder="City, State"
+            placeholder="e.g. Hemet, CA or 92543"
             value={draft.location || ''}
             onChange={(e) => setDraft({ ...draft, location: e.target.value })}
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
             className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 bg-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
           />
+        </div>
+
+        {/* Radius */}
+        <div className={sectionClass}>
+          <label className={labelClass}>
+            Radius: <span className="text-slate-700 font-bold">{draft.radiusMiles || 15} miles</span>
+          </label>
+          <Slider
+            value={[draft.radiusMiles || 15]}
+            onValueChange={(val) => setDraft({ ...draft, radiusMiles: val[0] })}
+            min={5}
+            max={50}
+            step={5}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-slate-500 mt-1">
+            <span>5 mi</span><span>50 mi</span>
+          </div>
         </div>
 
         {/* Category */}

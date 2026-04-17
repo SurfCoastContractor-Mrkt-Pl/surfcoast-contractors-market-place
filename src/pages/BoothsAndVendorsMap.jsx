@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
@@ -45,8 +45,51 @@ export default function BoothsAndVendorsMap() {
     location: '',
     category: 'all',
     minRating: 0,
-    availability: []
+    availability: [],
+    thisWeekendOnly: false,
+    radiusMiles: 15,
   });
+  const [locationCoords, setLocationCoords] = useState(null);
+
+  // Geocode location when filters change
+  useEffect(() => {
+    if (!filters.location) {
+      setLocationCoords(null);
+      return;
+    }
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(filters.location)}&key=${apiKey}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.results && data.results[0]) {
+          const { lat, lng } = data.results[0].geometry.location;
+          setLocationCoords({ lat, lng });
+        } else {
+          setLocationCoords(null);
+        }
+      })
+      .catch(() => setLocationCoords(null));
+  }, [filters.location]);
+
+  // Haversine distance in miles
+  const getDistanceMiles = (lat1, lng1, lat2, lng2) => {
+    const R = 3958.8;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  };
+
+  // Get this weekend's Sat+Sun date strings (YYYY-MM-DD)
+  const getThisWeekendDates = () => {
+    const today = new Date();
+    const day = today.getDay(); // 0=Sun,6=Sat
+    const daysUntilSat = (6 - day + 7) % 7 || 7;
+    const sat = new Date(today); sat.setDate(today.getDate() + (day === 6 ? 0 : daysUntilSat));
+    const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
+    const fmt = (d) => d.toISOString().split('T')[0];
+    return [fmt(sat), fmt(sun)];
+  };
 
   const { data: vendors = [], isLoading } = useQuery({
     queryKey: ['activeMarketShops'],
@@ -59,31 +102,58 @@ export default function BoothsAndVendorsMap() {
     }
   });
 
+  const weekendDates = getThisWeekendDates();
+
   const filteredVendors = vendors.filter(vendor => {
+    // Market type filter — includes flea_market and multiple
     if (filters.marketType !== 'all') {
-      const marketMatch = filters.marketType === 'farmers_market'
-        ? vendor.shop_type === 'farmers_market' || vendor.shop_type === 'both'
-        : vendor.shop_type === 'swap_meet' || vendor.shop_type === 'both';
-      if (!marketMatch) return false;
+      const t = vendor.shop_type;
+      const active = vendor.market_types_active || [];
+      const match =
+        t === filters.marketType ||
+        t === 'multiple' ||
+        active.includes(filters.marketType);
+      if (!match) return false;
     }
 
-    if (filters.location) {
-      const locationMatch = `${vendor.city}, ${vendor.state}`.toLowerCase()
+    // Distance filter — if we have geocoded coords, filter by radius
+    if (locationCoords && vendor.latitude && vendor.longitude) {
+      const dist = getDistanceMiles(locationCoords.lat, locationCoords.lng, vendor.latitude, vendor.longitude);
+      if (dist > (filters.radiusMiles || 15)) return false;
+    } else if (filters.location && !locationCoords) {
+      // Fallback to text match while geocoding
+      const locationMatch = `${vendor.city}, ${vendor.state} ${vendor.zip}`.toLowerCase()
         .includes(filters.location.toLowerCase());
       if (!locationMatch) return false;
     }
 
+    // Category filter
     if (filters.category !== 'all') {
       if (!vendor.categories || !vendor.categories.includes(filters.category)) return false;
     }
 
+    // Rating filter
     if (filters.minRating > 0) {
       if ((vendor.average_rating || 0) < filters.minRating) return false;
     }
 
+    // Availability filter
     if (filters.availability && filters.availability.length > 0) {
       const status = vendor.availability_status || 'available';
       if (!filters.availability.includes(status)) return false;
+    }
+
+    // This weekend filter — vendor must have a market_event on Sat or Sun
+    if (filters.thisWeekendOnly) {
+      const events = vendor.market_events || [];
+      const hasWeekendEvent = events.some(e => {
+        if (!e.date) return false;
+        return weekendDates.some(wd => e.date.includes(wd));
+      });
+      // Also check swap_meet_next_weekend
+      const swapWeekend = vendor.swap_meet_next_weekend;
+      const swapHasWeekend = swapWeekend?.date && weekendDates.some(wd => swapWeekend.date.includes(wd));
+      if (!hasWeekendEvent && !swapHasWeekend) return false;
     }
 
     return true;
@@ -287,6 +357,12 @@ export default function BoothsAndVendorsMap() {
         {/* Results Count */}
         <div style={{ marginTop: 24, fontSize: 13, color: T.muted, fontStyle: "italic" }}>
           Showing {filteredVendors.length} of {vendors.length} vendors
+          {filters.thisWeekendOnly && (
+            <span className="ml-2 text-amber-700 font-medium">📅 This weekend ({weekendDates[0]} – {weekendDates[1]})</span>
+          )}
+          {filters.location && locationCoords && (
+            <span className="ml-2 text-blue-600">📍 within {filters.radiusMiles || 15} mi of {filters.location}</span>
+          )}
         </div>
         </div>
       </div>
