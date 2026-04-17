@@ -13,13 +13,13 @@ async function verifyPasswordHash(providedPassword, storedHash) {
     const salt = new Uint8Array(saltString.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
 
     const passwordBuffer = new TextEncoder().encode(providedPassword);
-    // Enforce minimum iteration count (OWASP recommends 600,000 for PBKDF2-SHA256)
-    const safeIterations = Math.max(iterations, 600000);
+    // Use the exact iteration count from the stored hash for correct verification.
+    // The minimum-iterations policy is enforced at hash creation time, not here.
     const derivedKey = await crypto.subtle.deriveBits(
       {
         name: 'PBKDF2',
         salt: salt,
-        iterations: safeIterations,
+        iterations: iterations,
         hash: 'SHA-256',
       },
       await crypto.subtle.importKey(
