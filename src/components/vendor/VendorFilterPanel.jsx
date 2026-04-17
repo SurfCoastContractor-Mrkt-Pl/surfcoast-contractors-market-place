@@ -36,12 +36,18 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
 
   const farmerMarketCategories = [
     { value: 'all', label: 'All Categories' },
+    { value: 'fresh_produce', label: 'Fresh Produce' },
+    { value: 'baked_goods', label: 'Baked Goods' },
+    { value: 'dairy_eggs', label: 'Dairy & Eggs' },
+    { value: 'meat_poultry_seafood', label: 'Meat, Poultry & Seafood' },
+    { value: 'plants_flowers', label: 'Plants & Flowers' },
+    { value: 'honey_preserves', label: 'Honey & Preserves' },
+    { value: 'prepared_foods', label: 'Prepared Foods' },
+    { value: 'beverages', label: 'Beverages' },
     { value: 'handmade_crafts', label: 'Handmade Crafts' },
-    { value: 'home_decor', label: 'Home Decor' },
+    { value: 'art', label: 'Art' },
+    { value: 'health_wellness', label: 'Health & Wellness' },
     { value: 'jewelry', label: 'Jewelry' },
-    { value: 'clothing_accessories', label: 'Clothing & Accessories' },
-    { value: 'books_media', label: 'Books & Media' },
-    { value: 'vintage_antiques', label: 'Vintage & Antiques' },
   ];
 
   const swapMeetCategories = [
@@ -56,10 +62,21 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
     { value: 'handmade_crafts', label: 'Handmade Crafts' },
     { value: 'vintage_antiques', label: 'Vintage & Antiques' },
     { value: 'jewelry', label: 'Jewelry' },
+    { value: 'toys_games', label: 'Toys & Games' },
+    { value: 'art', label: 'Art' },
+    { value: 'misc', label: 'Miscellaneous' },
   ];
 
   const allCategories = [
     { value: 'all', label: 'All Categories' },
+    { value: 'fresh_produce', label: 'Fresh Produce' },
+    { value: 'baked_goods', label: 'Baked Goods' },
+    { value: 'dairy_eggs', label: 'Dairy & Eggs' },
+    { value: 'meat_poultry_seafood', label: 'Meat, Poultry & Seafood' },
+    { value: 'plants_flowers', label: 'Plants & Flowers' },
+    { value: 'honey_preserves', label: 'Honey & Preserves' },
+    { value: 'prepared_foods', label: 'Prepared Foods' },
+    { value: 'beverages', label: 'Beverages' },
     { value: 'electronics', label: 'Electronics' },
     { value: 'tools', label: 'Tools' },
     { value: 'sports_equipment', label: 'Sports Equipment' },
@@ -70,6 +87,10 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
     { value: 'handmade_crafts', label: 'Handmade Crafts' },
     { value: 'vintage_antiques', label: 'Vintage & Antiques' },
     { value: 'jewelry', label: 'Jewelry' },
+    { value: 'art', label: 'Art' },
+    { value: 'toys_games', label: 'Toys & Games' },
+    { value: 'health_wellness', label: 'Health & Wellness' },
+    { value: 'misc', label: 'Miscellaneous' },
   ];
 
   const categoryOptions = draft.marketType === 'farmers_market'
