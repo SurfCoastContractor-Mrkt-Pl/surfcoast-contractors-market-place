@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { X, Sliders } from 'lucide-react';
+import { X, Sliders, Search } from 'lucide-react';
 
 
 
@@ -71,12 +71,23 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
         {/* Location */}
         <div className="mb-6">
           <label className="text-sm font-semibold text-slate-900 block mb-3">Location</label>
-          <Input
-            placeholder="City, State"
-            value={filters.location || ''}
-            onChange={(e) => onFiltersChange({ ...filters, location: e.target.value })}
-            className="w-full bg-white text-slate-900 placeholder:text-slate-400 border-slate-200"
-          />
+          <div className="flex gap-2">
+            <Input
+              placeholder="City, State"
+              value={filters.location || ''}
+              onChange={(e) => onFiltersChange({ ...filters, location: e.target.value })}
+              onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+              className="flex-1 bg-white text-slate-900 placeholder:text-slate-400 border-slate-200"
+            />
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {/* already reactive */}}
+              className="shrink-0 border-slate-200 text-slate-700"
+            >
+              <Search className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Category */}
