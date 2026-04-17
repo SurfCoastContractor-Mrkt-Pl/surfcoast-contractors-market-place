@@ -12,7 +12,7 @@ import { getPageGradient } from '@/lib/pageGradient';
 import AdminGuard from '@/components/auth/AdminGuard';
 import { ConsumerModeProvider } from '@/lib/ConsumerModeContext';
 
-const BoothsAndVendorsMap = lazy(() => import('./pages/BoothsAndVendorsMap.jsx'));
+const BoothsAndVendorsMap = lazy(() => import('./pages/BoothsAndVendorsMap'));
 const VendorDetail = lazy(() => import('./pages/VendorDetail'));
 const ConsumerHub = lazy(() => import('./pages/ConsumerHub'));
 const Home = lazy(() => import('./pages/Home'));
