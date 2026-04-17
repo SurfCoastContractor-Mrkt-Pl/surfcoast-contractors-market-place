@@ -79,11 +79,6 @@ export default function ClientProfilesPanel() {
         <div className="space-y-2">
           {displayList.map(p => {
             const complete = isComplete(p);
-            const missing = [];
-            if (!p.phone) missing.push('phone');
-            if (!p.location) missing.push('location');
-            if (!p.property_address) missing.push('address');
-            if (!p.date_of_birth) missing.push('DOB');
 
             return (
               <div key={p.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
@@ -99,9 +94,7 @@ export default function ClientProfilesPanel() {
                     }
                   </div>
                   <p className="text-xs text-slate-500 truncate">{p.email}</p>
-                  {!complete && missing.length > 0 && (
-                    <p className="text-[10px] text-orange-500 mt-0.5">Missing: {missing.join(', ')}</p>
-                  )}
+
                 </div>
                 <div className="text-right flex-shrink-0">
                   {p.location && (
