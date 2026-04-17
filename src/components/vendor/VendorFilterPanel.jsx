@@ -75,7 +75,7 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
             placeholder="City, State"
             value={filters.location || ''}
             onChange={(e) => onFiltersChange({ ...filters, location: e.target.value })}
-            className="w-full"
+            className="w-full bg-white text-slate-900 placeholder:text-slate-400 border-slate-200"
           />
         </div>
 
