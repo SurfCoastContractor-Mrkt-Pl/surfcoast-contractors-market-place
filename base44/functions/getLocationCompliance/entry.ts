@@ -6,6 +6,12 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Get user's location from geolocation headers or request
     // For now, return null to let frontend handle location detection
     // In production, you'd integrate with IP geolocation service
