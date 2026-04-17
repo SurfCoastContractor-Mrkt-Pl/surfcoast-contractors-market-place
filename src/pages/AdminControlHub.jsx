@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, Activity, Database, BarChart3, Heart, Zap, Settings, Clock, Users, Shield, RefreshCw } from 'lucide-react';
 import OverdueJobsPanel from '@/components/admin/OverdueJobsPanel';
+import ClientProfilesPanel from '@/components/admin/ClientProfilesPanel';
 import { Link } from 'react-router-dom';
 import AdminGuard from '@/components/auth/AdminGuard';
 import AdminBackButton from '@/components/admin/AdminBackButton';
@@ -136,6 +137,19 @@ function AdminControlHubContent() {
             </div>
           );
         })}
+
+        {/* Client Profiles Panel */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Users className="w-4 h-4 text-blue-500" />
+              Client Profiles
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ClientProfilesPanel />
+          </CardContent>
+        </Card>
 
         {/* Overdue Jobs Compliance Panel */}
         <Card>
