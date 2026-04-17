@@ -61,6 +61,7 @@ export default function BoothsAndVendorsMap() {
   const [searchError, setSearchError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [searchCenter, setSearchCenter] = useState(null);
+  const [quickLocation, setQuickLocation] = useState('');
 
   const { data: dbVendors = [] } = useQuery({
     queryKey: ['activeMarketShops'],
@@ -68,6 +69,13 @@ export default function BoothsAndVendorsMap() {
   });
 
   const weekendDates = getThisWeekendDates();
+
+  const handleQuickSearch = () => {
+    if (!quickLocation.trim()) return;
+    const newFilters = { ...filters, location: quickLocation.trim() };
+    setFilters(newFilters);
+    searchGooglePlaces(newFilters);
+  };
 
   const searchGooglePlaces = useCallback(async (currentFilters) => {
     if (!currentFilters.location) {
@@ -158,14 +166,24 @@ export default function BoothsAndVendorsMap() {
             </p>
           </div>
 
-          {!filters.location && (
+          {!filters.location && !hasSearched && (
             <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6 text-center shadow-sm">
               <Search className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <p className="text-slate-700 font-semibold mb-1">Enter your city or ZIP in the filter panel to find nearby markets</p>
-              <p className="text-sm text-slate-400">We search Google for real farmers markets, swap meets & flea markets near you</p>
-              <Button className="mt-4" onClick={() => setFilterPanelOpen(true)}>
-                <MapPin className="w-4 h-4 mr-2" /> Open Filters
-              </Button>
+              <p className="text-slate-700 font-semibold mb-1">Search for real markets near you</p>
+              <p className="text-sm text-slate-400 mb-4">Enter your city, state or ZIP and click Search to find farmers markets, swap meets & flea markets</p>
+              <div className="flex gap-2 max-w-sm mx-auto">
+                <input
+                  type="text"
+                  placeholder="e.g. Hemet, CA or 92543"
+                  value={quickLocation}
+                  onChange={e => setQuickLocation(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleQuickSearch()}
+                  className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-slate-900 bg-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                />
+                <Button onClick={handleQuickSearch} disabled={!quickLocation.trim()}>
+                  <Search className="w-4 h-4 mr-1" /> Search
+                </Button>
+              </div>
             </div>
           )}
 
