@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -34,6 +34,50 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
     setDraft({ ...draft, availability: updated });
   };
 
+  const farmerMarketCategories = [
+    { value: 'all', label: 'All Categories' },
+    { value: 'handmade_crafts', label: 'Handmade Crafts' },
+    { value: 'home_decor', label: 'Home Decor' },
+    { value: 'jewelry', label: 'Jewelry' },
+    { value: 'clothing_accessories', label: 'Clothing & Accessories' },
+    { value: 'books_media', label: 'Books & Media' },
+    { value: 'vintage_antiques', label: 'Vintage & Antiques' },
+  ];
+
+  const swapMeetCategories = [
+    { value: 'all', label: 'All Categories' },
+    { value: 'electronics', label: 'Electronics' },
+    { value: 'tools', label: 'Tools' },
+    { value: 'sports_equipment', label: 'Sports Equipment' },
+    { value: 'books_media', label: 'Books & Media' },
+    { value: 'home_decor', label: 'Home Decor' },
+    { value: 'clothing_accessories', label: 'Clothing & Accessories' },
+    { value: 'collectibles', label: 'Collectibles' },
+    { value: 'handmade_crafts', label: 'Handmade Crafts' },
+    { value: 'vintage_antiques', label: 'Vintage & Antiques' },
+    { value: 'jewelry', label: 'Jewelry' },
+  ];
+
+  const allCategories = [
+    { value: 'all', label: 'All Categories' },
+    { value: 'electronics', label: 'Electronics' },
+    { value: 'tools', label: 'Tools' },
+    { value: 'sports_equipment', label: 'Sports Equipment' },
+    { value: 'books_media', label: 'Books & Media' },
+    { value: 'home_decor', label: 'Home Decor' },
+    { value: 'clothing_accessories', label: 'Clothing & Accessories' },
+    { value: 'collectibles', label: 'Collectibles' },
+    { value: 'handmade_crafts', label: 'Handmade Crafts' },
+    { value: 'vintage_antiques', label: 'Vintage & Antiques' },
+    { value: 'jewelry', label: 'Jewelry' },
+  ];
+
+  const categoryOptions = draft.marketType === 'farmers_market'
+    ? farmerMarketCategories
+    : draft.marketType === 'swap_meet'
+    ? swapMeetCategories
+    : allCategories;
+
   const labelClass = "text-sm font-semibold text-slate-900 block mb-2";
   const sectionClass = "mb-5";
 
@@ -60,7 +104,7 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
           <label className={labelClass}>Market Type</label>
           <Select
             value={draft.marketType || 'all'}
-            onValueChange={(value) => setDraft({ ...draft, marketType: value })}
+            onValueChange={(value) => setDraft({ ...draft, marketType: value, category: 'all' })}
           >
             <SelectTrigger className="w-full bg-white text-slate-900 border-slate-300">
               <SelectValue />
@@ -90,24 +134,16 @@ export default function VendorFilterPanel({ filters, onFiltersChange, onClose, i
         <div className={sectionClass}>
           <label className={labelClass}>Category</label>
           <Select
-            value={draft.category || 'all'}
+            value={categoryOptions.find(c => c.value === draft.category) ? draft.category : 'all'}
             onValueChange={(value) => setDraft({ ...draft, category: value })}
           >
             <SelectTrigger className="w-full bg-white text-slate-900 border-slate-300">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              <SelectItem value="all" className="text-slate-900">All Categories</SelectItem>
-              <SelectItem value="electronics" className="text-slate-900">Electronics</SelectItem>
-              <SelectItem value="tools" className="text-slate-900">Tools</SelectItem>
-              <SelectItem value="sports_equipment" className="text-slate-900">Sports Equipment</SelectItem>
-              <SelectItem value="books_media" className="text-slate-900">Books & Media</SelectItem>
-              <SelectItem value="home_decor" className="text-slate-900">Home Decor</SelectItem>
-              <SelectItem value="clothing_accessories" className="text-slate-900">Clothing & Accessories</SelectItem>
-              <SelectItem value="collectibles" className="text-slate-900">Collectibles</SelectItem>
-              <SelectItem value="handmade_crafts" className="text-slate-900">Handmade Crafts</SelectItem>
-              <SelectItem value="vintage_antiques" className="text-slate-900">Vintage & Antiques</SelectItem>
-              <SelectItem value="jewelry" className="text-slate-900">Jewelry</SelectItem>
+              {categoryOptions.map(({ value, label }) => (
+                <SelectItem key={value} value={value} className="text-slate-900">{label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
