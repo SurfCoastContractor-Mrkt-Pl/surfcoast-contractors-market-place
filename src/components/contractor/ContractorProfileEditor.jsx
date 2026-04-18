@@ -476,6 +476,30 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
               <div className="text-sm text-slate-900 whitespace-pre-wrap">{contractor.bio}</div>
             </div>
           )}
+          <div>
+            <div className="text-xs text-slate-500 font-medium">DATE OF BIRTH</div>
+            <div className="text-sm text-slate-900">{contractor.date_of_birth || <span className="text-amber-600 font-medium">⚠ Not set</span>}</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">SKILLS</div>
+            {contractor.skills?.length > 0 ? (
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {contractor.skills.map(s => (
+                  <span key={s} className="px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-full text-xs text-blue-800 font-medium">{s}</span>
+                ))}
+              </div>
+            ) : (
+              <div className="text-sm text-amber-600 font-medium">⚠ No skills added</div>
+            )}
+          </div>
+          <div>
+            <div className="text-xs text-slate-500 font-medium">IDENTITY FACE PHOTO</div>
+            {contractor.face_photo_url ? (
+              <img src={contractor.face_photo_url} alt="Face" className="w-16 h-16 rounded-lg object-cover mt-1 border border-slate-200" />
+            ) : (
+              <div className="text-sm text-amber-600 font-medium">⚠ Not uploaded</div>
+            )}
+          </div>
         </div>
       )}
     </Card>
