@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
-import { getVerifyLicenseUrl } from '@/lib/env';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -127,19 +127,18 @@ export default function LicensedProfessionalDocuments({ contractor }) {
     setVerifying(true);
     setVerifyResult(null);
     try {
-      const res = await fetch(getVerifyLicenseUrl(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contractor_id: contractor.id,
-          license_number: fields.license_number,
-          license_state: fields.license_state,
-          contractor_name: contractor.name,
-          license_company_name: fields.license_company_name,
-        }),
+      const res = await base44.functions.invoke('verifyLicenseAndInsurance', {
+        contractorId: contractor.id,
+        licenseNumber: fields.license_number,
+        state: fields.license_state,
       });
-      const data = await res.json();
-      setVerifyResult(data);
+      const data = res.data;
+      if (data.success) {
+        setVerifyResult({ message: `License ${data.license?.status === 'verified' ? 'verified successfully ✓' : 'not found in state database — please upload documents for manual review.'}` });
+        queryClient.invalidateQueries({ queryKey: ['my-contractor'] });
+      } else {
+        setVerifyResult({ error: true, message: data.error || 'Verification failed. Please try again.' });
+      }
     } catch (err) {
       setVerifyResult({ error: true, message: 'Verification request failed. Please try again.' });
     }
