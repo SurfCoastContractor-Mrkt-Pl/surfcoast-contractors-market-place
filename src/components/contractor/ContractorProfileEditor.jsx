@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Edit2, X, Upload } from 'lucide-react';
+import { Edit2, X, Upload, CheckCircle2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { logError } from '@/components/utils/logError';
 
@@ -14,6 +14,7 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
   const [authError, setAuthError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -50,13 +51,19 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
       if (data.bio && data.bio.length > 1000) {
         throw new Error('Bio must be 1000 characters or less');
       }
-      return base44.entities.Contractor.update(contractor.id, data);
+      // Clean up empty string number fields so they don't fail DB validation
+      const cleanData = { ...data };
+      if (cleanData.hourly_rate === '' || cleanData.hourly_rate === null) cleanData.hourly_rate = null;
+      if (cleanData.fixed_rate === '' || cleanData.fixed_rate === null) cleanData.fixed_rate = null;
+      return base44.entities.Contractor.update(contractor.id, cleanData);
     },
     onSuccess: () => {
       // Invalidate all variants of the contractor query key
       queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === 'my-contractor' });
       queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === 'contractor-own' });
       setIsEditing(false);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 4000);
     },
     onError: (error) => {
       logError({
@@ -312,6 +319,12 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
         </div>
       ) : (
         <div className="space-y-3">
+          {saveSuccess && (
+            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm font-medium">
+              <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
+              Profile saved successfully!
+            </div>
+          )}
           {contractor.photo_url && (
             <div>
               <img src={contractor.photo_url} alt={contractor.name} className="w-20 h-20 rounded-lg object-cover" />
