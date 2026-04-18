@@ -153,7 +153,7 @@ export default function InquiryPipelineView({ contractorEmail }) {
                             From: {inquiry.customer_name}
                           </p>
                           <p style={{ margin: "0", fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
-                            {inquiry.work_description.substring(0, 60)}...
+                            {(inquiry.work_description || '').substring(0, 60)}{inquiry.work_description?.length > 60 ? '...' : ''}
                           </p>
                         </div>
                         <InquiryStatusBadge status={inquiry.status} />
