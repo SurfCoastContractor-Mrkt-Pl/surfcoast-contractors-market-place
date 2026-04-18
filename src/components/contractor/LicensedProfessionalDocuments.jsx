@@ -101,7 +101,7 @@ export default function LicensedProfessionalDocuments({ contractor }) {
   const [addingCert, setAddingCert] = useState(false);
   const [newCert, setNewCert] = useState({ name: '', issuer: '', expiry: '', document_url: '' });
 
-  if (!contractor?.is_licensed_sole_proprietor) return null;
+  // Show for all contractors — license/insurance/bond are optional for non-licensed sole proprietors
 
   const save = async (extra = {}) => {
     setSaving(true);

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Edit2, X, Upload, CheckCircle2 } from 'lucide-react';
+import { Edit2, X, Upload, CheckCircle2, Plus } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { logError } from '@/components/utils/logError';
 
@@ -29,6 +29,9 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
         fixed_rate: contractor.fixed_rate || '',
         fixed_rate_details: contractor.fixed_rate_details || '',
         photo_url: contractor.photo_url || '',
+        face_photo_url: contractor.face_photo_url || '',
+        date_of_birth: contractor.date_of_birth || '',
+        skills: contractor.skills || [],
       });
     }
   }, [contractor]);
@@ -81,6 +84,9 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
   const [photoPreview, setPhotoPreview] = useState(null);
   const [photoError, setPhotoError] = useState('');
   const [photoUploading, setPhotoUploading] = useState(false);
+  const [facePhotoPreview, setFacePhotoPreview] = useState(null);
+  const [facePhotoUploading, setFacePhotoUploading] = useState(false);
+  const [newSkill, setNewSkill] = useState('');
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -95,6 +101,27 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
     const response = await base44.integrations.Core.UploadFile({ file });
     setEditData(prev => ({ ...prev, photo_url: response.file_url }));
     setPhotoUploading(false);
+  };
+
+  const handleFacePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFacePhotoPreview(URL.createObjectURL(file));
+    setFacePhotoUploading(true);
+    const response = await base44.integrations.Core.UploadFile({ file });
+    setEditData(prev => ({ ...prev, face_photo_url: response.file_url }));
+    setFacePhotoUploading(false);
+  };
+
+  const handleAddSkill = () => {
+    const trimmed = newSkill.trim();
+    if (!trimmed || (editData.skills || []).includes(trimmed)) return;
+    setEditData(prev => ({ ...prev, skills: [...(prev.skills || []), trimmed] }));
+    setNewSkill('');
+  };
+
+  const handleRemoveSkill = (skill) => {
+    setEditData(prev => ({ ...prev, skills: (prev.skills || []).filter(s => s !== skill) }));
   };
 
   const handleSave = () => {
@@ -297,15 +324,99 @@ export default function ContractorProfileEditor({ contractor, currentUser }) {
             />
           </div>
 
+          {/* Date of Birth */}
+          <div>
+            <Label className="text-sm font-medium">Date of Birth</Label>
+            <input
+              type="date"
+              value={editData.date_of_birth || ''}
+              onChange={(e) => setEditData({ ...editData, date_of_birth: e.target.value })}
+              className="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Skills */}
+          <div>
+            <Label className="text-sm font-medium">Skills</Label>
+            <div className="mt-1 flex flex-wrap gap-1.5 mb-2">
+              {(editData.skills || []).map(skill => (
+                <span key={skill} className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-full text-xs text-blue-800 font-medium">
+                  {skill}
+                  <button type="button" onClick={() => handleRemoveSkill(skill)} className="text-blue-400 hover:text-red-500 ml-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill())}
+                placeholder="e.g. Pipe Installation, Water Heaters..."
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button type="button" onClick={handleAddSkill} className="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-md text-sm text-slate-700 font-medium flex items-center gap-1">
+                <Plus className="w-3.5 h-3.5" /> Add
+              </button>
+            </div>
+          </div>
+
+          {/* Face Photo */}
+          <div>
+            <Label className="text-sm font-medium">Identity Face Photo</Label>
+            <p className="text-xs text-slate-500 mb-2">Clear, unobstructed photo of your face for identity verification.</p>
+            <div className="flex items-center gap-3">
+              {(facePhotoPreview || editData.face_photo_url) && (
+                <div className="relative shrink-0">
+                  <img
+                    src={facePhotoPreview || editData.face_photo_url}
+                    alt="Face photo preview"
+                    className="w-20 h-20 rounded-lg object-cover border border-slate-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => { setEditData(prev => ({ ...prev, face_photo_url: '' })); setFacePhotoPreview(null); }}
+                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+              <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg p-4 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors flex-1">
+                {facePhotoUploading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-slate-300 border-t-blue-500 rounded-full animate-spin mb-1.5" />
+                    <span className="text-sm font-medium text-slate-700">Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5 text-slate-400 mb-1.5" />
+                    <span className="text-sm font-medium text-slate-700">{editData.face_photo_url ? 'Change' : 'Upload'} Face Photo</span>
+                    <span className="text-xs text-slate-500">JPG, PNG — max 8MB</span>
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleFacePhotoUpload}
+                  className="hidden"
+                  disabled={facePhotoUploading}
+                />
+              </label>
+            </div>
+          </div>
+
           {/* Buttons */}
           <div className="flex gap-2 pt-2">
             <Button
               onClick={handleSave}
               className="text-white"
               style={{backgroundColor: '#1E5A96'}}
-              disabled={updateMutation.isPending || photoUploading}
+              disabled={updateMutation.isPending || photoUploading || facePhotoUploading}
             >
-              {updateMutation.isPending ? 'Saving...' : photoUploading ? 'Uploading photo...' : 'Save Changes'}
+              {updateMutation.isPending ? 'Saving...' : photoUploading || facePhotoUploading ? 'Uploading photo...' : 'Save Changes'}
             </Button>
             <Button
               variant="outline"
