@@ -3,10 +3,21 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { contractor_email, completed_jobs = 0, has_verified_license = false } = await req.json();
 
     if (!contractor_email) {
       return Response.json({ error: 'contractor_email required' }, { status: 400 });
+    }
+
+    // Users can only check their own eligibility unless they are admin
+    if (user.role !== 'admin' && user.email !== contractor_email) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // WAVE OS Tier Eligibility Logic
