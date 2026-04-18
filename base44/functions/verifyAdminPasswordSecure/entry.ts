@@ -123,11 +123,17 @@ Deno.serve(async (req) => {
 
   try {
     const payload = await req.json();
-    const { password, ip } = payload;
+    const { password } = payload;
 
-    if (!password || !ip) {
+    if (!password) {
       return Response.json({ error: 'Missing credentials' }, { status: 400 });
     }
+
+    // Extract IP server-side — never trust client-provided IP
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim()
+      || req.headers.get('x-real-ip')
+      || req.headers.get('cf-connecting-ip')
+      || 'unknown';
 
     const base44 = createClientFromRequest(req);
 
