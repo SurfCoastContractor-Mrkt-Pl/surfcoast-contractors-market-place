@@ -70,13 +70,6 @@ export default function BoothsAndVendorsMap() {
 
   const weekendDates = getThisWeekendDates();
 
-  const handleQuickSearch = () => {
-    if (!quickLocation.trim()) return;
-    const newFilters = { ...filters, location: quickLocation.trim() };
-    setFilters(newFilters);
-    searchGooglePlaces(newFilters);
-  };
-
   const searchGooglePlaces = useCallback(async (currentFilters) => {
     if (!currentFilters.location) {
       setSearchError('Please enter a location to search.');
@@ -102,6 +95,13 @@ export default function BoothsAndVendorsMap() {
       setIsSearching(false);
     }
   }, []);
+
+  const handleQuickSearch = () => {
+    if (!quickLocation.trim()) return;
+    const newFilters = { ...filters, location: quickLocation.trim() };
+    setFilters(newFilters);
+    searchGooglePlaces(newFilters);
+  };
 
   const filteredDbVendors = dbVendors.filter(vendor => {
     if (filters.marketType !== 'all') {
@@ -141,9 +141,10 @@ export default function BoothsAndVendorsMap() {
       {filterPanelOpen && <div className="fixed inset-0 bg-black/50 z-20 lg:hidden" onClick={() => setFilterPanelOpen(false)} />}
 
       <VendorFilterPanel
-        filters={filters}
+        filters={{ ...filters, location: filters.location || quickLocation }}
         onFiltersChange={(newFilters) => {
           setFilters(newFilters);
+          if (newFilters.location) setQuickLocation(newFilters.location);
           searchGooglePlaces(newFilters);
         }}
         onClose={() => setFilterPanelOpen(false)}
