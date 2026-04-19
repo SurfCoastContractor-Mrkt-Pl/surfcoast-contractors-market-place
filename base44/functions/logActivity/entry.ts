@@ -37,10 +37,14 @@ Deno.serve(async (req) => {
       activityData = body;
     }
 
-    // Validate required fields
-    if (!activityData.action_type || !activityData.entity_type) {
+    // Validate required fields — only for direct (non-automation) calls
+    if (!body.event && (!activityData.action_type || !activityData.entity_type)) {
       return Response.json({ error: 'Missing required activity fields' }, { status: 400 });
     }
+
+    // Ensure defaults for automation-derived data
+    if (!activityData.action_type) activityData.action_type = 'entity_event';
+    if (!activityData.entity_type) activityData.entity_type = 'unknown';
 
     // Get client IP from headers
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || 
