@@ -4,6 +4,7 @@ import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 const PLAYLIST = [
   { id: 'UqXIA3Mymp4', title: 'SurfCoast Overview' },
   { id: 'ZFHHOBiUrkg', title: 'SurfCoast Video 2' },
+  { id: 'I-kuZgh5lMQ', title: 'SurfCoast Video 3' },
 ];
 
 export default function HomeVideoSection() {
