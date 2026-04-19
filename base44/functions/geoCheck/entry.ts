@@ -5,11 +5,11 @@ const RATE_LIMIT_THRESHOLD = 10;
 const RATE_LIMIT_WINDOW_SECONDS = 60;
 
 async function isRateLimited(base44, ip) {
-  const key = `geo:${ip}`;
+  const endpoint = `geo:${ip}`;
   const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
   try {
     const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
-      key,
+      endpoint,
       window_start: { $gte: windowStart },
     });
     if (records?.length > 0) {
@@ -22,11 +22,12 @@ async function isRateLimited(base44, ip) {
       });
     } else {
       await base44.asServiceRole.entities.RateLimitTracker.create({
-        key,
-        limit_type: 'geo_check',
+        endpoint,
+        ip_address: ip,
         request_count: 1,
         window_start: new Date().toISOString(),
-        window_duration_seconds: RATE_LIMIT_WINDOW_SECONDS,
+        window_end: new Date(Date.now() + RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString(),
+        window_type: 'minute',
       });
     }
     return false;
