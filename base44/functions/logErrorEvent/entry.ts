@@ -10,14 +10,6 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
-    const serviceKey = req.headers.get('x-internal-key');
-    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
-    if (!validServiceKey) {
-      const user = await base44.auth.me();
-      if (!user) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-    }
     const body = await req.json();
 
     // Support both direct calls ({ message, level, category })
@@ -35,7 +27,7 @@ Deno.serve(async (req) => {
     // Apply defaults for any missing fields
     if (!errorData.message) errorData.message = body.event ? `ErrorLog ${body.event.type}: entity_id=${body.event.entity_id}` : 'Unknown error';
     if (!errorData.level) errorData.level = 'error';
-    if (!errorData.category) errorData.category = 'uncategorized';
+    if (!errorData.category) errorData.category = 'unknown';
 
     // Create error log entry
     const logEntry = {
