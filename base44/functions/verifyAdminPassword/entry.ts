@@ -57,6 +57,14 @@ Deno.serve(async (req) => {
   const requestId = crypto.randomUUID();
   try {
     const base44 = createClientFromRequest(req);
+
+    // Require internal service key before proceeding
+    const serviceKey = req.headers.get('x-internal-service-key');
+    const validServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!serviceKey || !validServiceKey || serviceKey !== validServiceKey) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const { password } = await req.json();
     const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
 

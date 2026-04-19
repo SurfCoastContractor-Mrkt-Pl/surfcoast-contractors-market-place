@@ -9,6 +9,18 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    // Require admin role or internal service key
+    const serviceKey = req.headers.get('x-internal-service-key');
+    const validServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isServiceKeyValid = serviceKey && validServiceKey && serviceKey === validServiceKey;
+
+    if (!isServiceKeyValid) {
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
     // Perform basic health checks
     const checks = {
       api: true,
