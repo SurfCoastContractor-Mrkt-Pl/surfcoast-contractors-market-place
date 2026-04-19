@@ -5,6 +5,7 @@ import IntegritySection from "@/components/home/IntegritySection.jsx";
 import LaunchEngineSection from "@/components/home/LaunchEngineSection.jsx";
 import FAQAccordion from "@/components/home/FAQAccordion.jsx";
 import CTABar from "@/components/home/CTABar.jsx";
+import HomeVideoSection from "@/components/home/HomeVideoSection.jsx";
 
 function TickerBar() {
   const [spotsRemaining, setSpotsRemaining] = useState(null);
@@ -74,6 +75,7 @@ export default function Home() {
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh" }}>
       <TickerBar />
       <HeroSection />
+      <HomeVideoSection />
       <TabbedSection />
       <IntegritySection />
       <LaunchEngineSection />
