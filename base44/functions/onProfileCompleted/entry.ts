@@ -24,13 +24,6 @@ function isVendorProfileComplete(p) {
 
 Deno.serve(async (req) => {
   try {
-    // Validate internal service key — only trusted automation triggers are allowed
-    const internalKey = req.headers.get('x-internal-key');
-    if (!internalKey || internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      console.warn('[onProfileCompleted] Rejected request with invalid or missing internal key');
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const base44 = createClientFromRequest(req);
     const payload = await req.json();
 
