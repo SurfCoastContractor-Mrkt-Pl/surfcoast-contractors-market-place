@@ -6,12 +6,9 @@ export default function HomeVideoSection() {
 
   return (
     <div style={{ background: '#111112', padding: '48px 24px', textAlign: 'center' }}>
-      <p style={{ fontFamily: 'monospace', fontSize: 12, color: '#FF8C00', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 8 }}>
-        SEE HOW IT WORKS
+      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, color: '#aaa', fontStyle: 'italic', marginBottom: 16 }}>
+        For your entertainment
       </p>
-      <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: 700, color: '#F2F2F2', margin: '0 auto 24px', maxWidth: 480 }}>
-        Watch a quick overview of the SurfCoast platform
-      </h2>
 
       <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid #2a2a2b', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
         {!playing ? (
