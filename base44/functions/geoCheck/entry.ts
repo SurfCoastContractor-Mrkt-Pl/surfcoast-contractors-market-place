@@ -1,43 +1,42 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 const US_COUNTRY_CODES = ['US'];
-const RATE_LIMIT_THRESHOLD = 10; // max 10 checks per minute per IP
-const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
+const RATE_LIMIT_THRESHOLD = 10;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
 
-// Simple in-memory rate limiter (no database dependency)
-const rateLimitCache = new Map();
-
-function isRateLimited(ip) {
-  const now = Date.now();
+async function isRateLimited(base44, ip) {
   const key = `geo:${ip}`;
-  const limit = rateLimitCache.get(key);
-
-  if (limit && now < limit.resetTime) {
-    if (limit.count >= RATE_LIMIT_THRESHOLD) {
-      console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${limit.count} requests)`);
-      return true;
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
+  try {
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key,
+      window_start: { $gte: windowStart },
+    });
+    if (records?.length > 0) {
+      if (records[0].request_count >= RATE_LIMIT_THRESHOLD) {
+        console.warn(`[GEO-RATELIMIT] IP ${ip} exceeded rate limit (${records[0].request_count} requests)`);
+        return true;
+      }
+      await base44.asServiceRole.entities.RateLimitTracker.update(records[0].id, {
+        request_count: records[0].request_count + 1,
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key,
+        limit_type: 'geo_check',
+        request_count: 1,
+        window_start: new Date().toISOString(),
+        window_duration_seconds: RATE_LIMIT_WINDOW_SECONDS,
+      });
     }
-    limit.count++;
-  } else {
-    rateLimitCache.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  } catch {
+    return false;
   }
-
-  // Cleanup old entries every 100 requests
-  if (Math.random() < 0.01) {
-    for (const [k, v] of rateLimitCache.entries()) {
-      if (now > v.resetTime) rateLimitCache.delete(k);
-    }
-  }
-
-  return false;
 }
 
-async function logSecurityAlert(eventType, clientIp, details) {
+async function logSecurityAlert(base44, eventType, clientIp, details) {
   try {
-    const { createClientFromRequest } = await import('npm:@base44/sdk@0.8.23');
-    // Create a minimal request object for SDK initialization
-    const base44 = createClientFromRequest(new Request('http://localhost', { method: 'POST' }));
-    
     await base44.asServiceRole.entities.SecurityAlert.create({
       event_type: eventType,
       client_ip: clientIp,
@@ -57,12 +56,12 @@ async function logSecurityAlert(eventType, clientIp, details) {
 }
 
 Deno.serve(async (req) => {
-  const clientIp = req.headers.get('cf-connecting-ip') || 
-                   req.headers.get('x-forwarded-for') || 
+  const clientIp = req.headers.get('cf-connecting-ip') ||
+                   req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
                    'unknown';
   const userAgent = req.headers.get('user-agent') || 'unknown';
   const path = new URL(req.url).pathname;
-  
+
   try {
     // Allow GET and POST requests (some clients may use POST)
     if (req.method !== 'GET' && req.method !== 'POST') {
@@ -70,9 +69,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
-    // SECURITY: Rate limit to prevent brute-force/probing (in-memory)
-    if (isRateLimited(clientIp)) {
-      logSecurityAlert('rate_limited', clientIp, {
+    const base44 = createClientFromRequest(req);
+
+    // SECURITY: Rate limit to prevent brute-force/probing (DB-backed, persistent)
+    if (await isRateLimited(base44, clientIp)) {
+      logSecurityAlert(base44, 'rate_limited', clientIp, {
         severity: 'high',
         method: req.method,
         userAgent,
@@ -94,7 +95,7 @@ Deno.serve(async (req) => {
 
     // SECURITY: Fail closed — block if country header is missing
     if (!cfCountry) {
-      logSecurityAlert('missing_headers', clientIp, {
+      logSecurityAlert(base44, 'missing_headers', clientIp, {
         severity: 'medium',
         method: req.method,
         userAgent,
@@ -161,7 +162,7 @@ Deno.serve(async (req) => {
             });
           }
           if (ipinfoData.privacy?.vpn === true || ipinfoData.privacy?.proxy === true) {
-            logSecurityAlert('vpn_detected', clientIp, {
+            logSecurityAlert(base44, 'vpn_detected', clientIp, {
               severity: 'high',
               countryCode: 'XX',
               countryName: 'VPN/Proxy',
@@ -203,7 +204,7 @@ Deno.serve(async (req) => {
     const countryName = country === 'US' ? 'United States' : (countryNames[country] || country);
 
     if (!allowed) {
-      logSecurityAlert('geo_blocked', clientIp, {
+      logSecurityAlert(base44, 'geo_blocked', clientIp, {
         severity: 'low',
         countryCode: country,
         countryName,
@@ -219,7 +220,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ allowed, country, countryName });
   } catch (error) {
-  logSecurityAlert('suspicious_activity', clientIp, {
+  logSecurityAlert(base44, 'suspicious_activity', clientIp, {
     severity: 'high',
     method: req.method,
     userAgent,

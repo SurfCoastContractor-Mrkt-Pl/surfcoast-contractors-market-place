@@ -4,30 +4,47 @@
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-// In-memory rate limit: max 30 requests per IP per minute
-const statsRateMap = new Map();
+const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
 
-function checkStatsRateLimit(ip) {
-  const now = Date.now();
-  const windowMs = 60000; // 1 minute
-  const maxRequests = 30;
-  const record = statsRateMap.get(ip) || { attempts: [] };
-  record.attempts = record.attempts.filter(t => now - t < windowMs);
-  if (record.attempts.length >= maxRequests) return false;
-  record.attempts.push(now);
-  statsRateMap.set(ip, record);
-  return true;
+async function isRateLimited(base44, ip) {
+  const key = `platform_stats:${ip}`;
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
+  try {
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key,
+      window_start: { $gte: windowStart },
+    });
+    if (records?.length > 0) {
+      if (records[0].request_count >= RATE_LIMIT_MAX) return true;
+      await base44.asServiceRole.entities.RateLimitTracker.update(records[0].id, {
+        request_count: records[0].request_count + 1,
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key,
+        limit_type: 'platform_stats',
+        request_count: 1,
+        window_start: new Date().toISOString(),
+        window_duration_seconds: RATE_LIMIT_WINDOW_SECONDS,
+      });
+    }
+    return false;
+  } catch {
+    return false;
+  }
 }
 
 Deno.serve(async (req) => {
   try {
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                      req.headers.get('cf-connecting-ip') || 'unknown';
-    if (!checkStatsRateLimit(clientIp)) {
-      return Response.json({ error: 'Too many requests' }, { status: 429 });
-    }
 
     const base44 = createClientFromRequest(req);
+
+    if (await isRateLimited(base44, clientIp)) {
+      return Response.json({ error: 'Too many requests' }, { status: 429 });
+    }
 
     const [contractors, scopes, reviews] = await Promise.all([
       base44.asServiceRole.entities.Contractor.list().catch(() => []),

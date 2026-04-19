@@ -193,9 +193,9 @@ Deno.serve(async (req) => {
       entries.push(urlEntry(`${BASE_URL}${route.path}`, route.changefreq, route.priority));
     }
 
-    // Dynamic: contractor public profiles
+    // Dynamic: contractor public profiles — only complete, unlocked, non-demo profiles
     for (const contractor of contractors) {
-      if (contractor.id && !contractor.is_demo) {
+      if (contractor.id && !contractor.is_demo && contractor.profile_complete && !contractor.account_locked) {
         entries.push(urlEntry(
           `${BASE_URL}/contractor/${contractor.id}`,
           'weekly',

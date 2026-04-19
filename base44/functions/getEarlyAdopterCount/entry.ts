@@ -1,48 +1,48 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
-const RATE_LIMIT_THRESHOLD = 20; // max 20 checks per IP per minute
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_THRESHOLD = 20;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
 
-// Simple in-memory rate limiter (no database dependency)
-const rateLimitCache = new Map();
-
-function isRateLimited(ip) {
-  const now = Date.now();
+async function isRateLimited(base44, ip) {
   const key = `early_adopter:${ip}`;
-  const limit = rateLimitCache.get(key);
-
-  if (limit && now < limit.resetTime) {
-    if (limit.count >= RATE_LIMIT_THRESHOLD) {
-      return true;
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
+  try {
+    const records = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key,
+      window_start: { $gte: windowStart },
+    });
+    if (records?.length > 0) {
+      if (records[0].request_count >= RATE_LIMIT_THRESHOLD) return true;
+      await base44.asServiceRole.entities.RateLimitTracker.update(records[0].id, {
+        request_count: records[0].request_count + 1,
+      });
+    } else {
+      await base44.asServiceRole.entities.RateLimitTracker.create({
+        key,
+        limit_type: 'early_adopter_count',
+        request_count: 1,
+        window_start: new Date().toISOString(),
+        window_duration_seconds: RATE_LIMIT_WINDOW_SECONDS,
+      });
     }
-    limit.count++;
-  } else {
-    rateLimitCache.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  } catch {
+    return false; // fail open for non-critical public endpoint
   }
-
-  // Cleanup old entries every 100 requests
-  if (Math.random() < 0.01) {
-    for (const [k, v] of rateLimitCache.entries()) {
-      if (now > v.resetTime) rateLimitCache.delete(k);
-    }
-  }
-
-  return false;
 }
 
 // Public endpoint — returns cached count of approved early adopter waivers (non-sensitive metric)
 Deno.serve(async (req) => {
-  const clientIp = req.headers.get('cf-connecting-ip') || 
-                   req.headers.get('x-forwarded-for') || 
+  const clientIp = req.headers.get('cf-connecting-ip') ||
+                   req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
                    'unknown';
-
-  // Check rate limit (in-memory, no DB calls)
-  if (isRateLimited(clientIp)) {
-    return Response.json({ error: 'Rate limited' }, { status: 429 });
-  }
 
   try {
     const base44 = createClientFromRequest(req);
+
+    if (await isRateLimited(base44, clientIp)) {
+      return Response.json({ error: 'Rate limited' }, { status: 429 });
+    }
     const waivers = await base44.asServiceRole.entities.EarlyAdopterWaiver.filter({ is_eligible: true });
     const count = waivers ? waivers.length : 0;
     // Return only count, never expose individual data

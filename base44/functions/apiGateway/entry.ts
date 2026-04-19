@@ -32,9 +32,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid API key' }, { status: 401 });
     }
 
+    // Filter out expired keys
+    const now = new Date().toISOString();
+    const validKeys = keys.filter(k => !k.expires_at || k.expires_at > now);
+    if (!validKeys.length) {
+      return Response.json({ error: 'API key has expired' }, { status: 401 });
+    }
+
     // Among prefix-matched candidates, verify HMAC — key_hash stored as "salt:hmac"
     let record = null;
-    for (const candidate of keys) {
+    for (const candidate of validKeys) {
       if (!candidate.key_hash?.includes(':')) {
         console.warn(`[apiGateway] Key ID ${candidate.id} has no salted hash — skipping (re-issue required)`);
         continue;
