@@ -63,14 +63,15 @@ Deno.serve(async (req) => {
   const userAgent = req.headers.get('user-agent') || 'unknown';
   const path = new URL(req.url).pathname;
 
+  // Initialize base44 outside try/catch so it's always in scope
+  const base44 = createClientFromRequest(req);
+
   try {
     // Allow GET and POST requests (some clients may use POST)
     if (req.method !== 'GET' && req.method !== 'POST') {
       console.warn(`[GEO] Invalid method: ${req.method} from IP: ${clientIp}`);
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
-
-    const base44 = createClientFromRequest(req);
 
     // SECURITY: Rate limit to prevent brute-force/probing (DB-backed, persistent)
     if (await isRateLimited(base44, clientIp)) {
