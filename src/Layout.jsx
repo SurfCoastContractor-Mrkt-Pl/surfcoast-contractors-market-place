@@ -36,11 +36,12 @@ export default function Layout({ children, currentPageName }) {
   useConsumerMode();
 
   // Use custom hooks for user data fetching with caching
-  const { user } = useUserData();
+  const { user, isLoading: userLoading } = useUserData();
   const { isContractor, hasMarketShop, hasCustomerProfile } = useUserProfiles(user?.email);
   const { unreadCount } = useUnreadCount(user?.email);
 
   const isLoggedIn = !!user;
+  const authReady = !userLoading;
 
   useGeoCheck();
 
@@ -100,7 +101,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <LayoutHeader
+      {authReady && <LayoutHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         accountMenuOpen={accountMenuOpen}
@@ -117,9 +118,9 @@ export default function Layout({ children, currentPageName }) {
         createPageUrl={createPageUrl}
         unreadCount={unreadCount}
         userEmail={user?.email}
-      />
+      />}
 
-      <LayoutMobileMenu
+      {authReady && <LayoutMobileMenu
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         isLoggedIn={isLoggedIn}
@@ -132,11 +133,11 @@ export default function Layout({ children, currentPageName }) {
         hasCustomerProfile={hasCustomerProfile}
         createPageUrl={createPageUrl}
         userEmail={user?.email}
-      />
+      />}
 
-      <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />
-      <FloatingFeedbackWidget />
-      <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />
+      {authReady && <SuggestionForm open={suggestionOpen} onClose={() => setSuggestionOpen(false)} />}
+      {authReady && <FloatingFeedbackWidget />}
+      {authReady && <FloatingAgentWidget open={agentOpen} onClose={() => setAgentOpen(false)} onOpen={() => setAgentOpen(true)} />}
 
       <main className="flex-1 w-full">
         <AccountStatusGate
