@@ -53,15 +53,20 @@ SurfCoast Contractors Marketplace`,
     setError(null);
 
     try {
-      const result = await base44.functions.invoke('sendFounderWelcomeEmail', formData);
+      const result = await Promise.race([
+        base44.functions.invoke('sendFounderWelcomeEmail', formData),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Request timeout')), 10000)
+        )
+      ]);
+      
       setSuccess(true);
       setTimeout(() => {
         onSuccess?.(result);
         onClose();
-      }, 2000);
+      }, 1500);
     } catch (err) {
       setError(err.message || 'Failed to send email');
-    } finally {
       setLoading(false);
     }
   };

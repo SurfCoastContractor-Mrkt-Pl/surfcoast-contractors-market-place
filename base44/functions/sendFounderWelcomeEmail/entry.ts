@@ -30,58 +30,82 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid recipient email' }, { status: 400 });
     }
 
-    // Send main email
-    const emailResult = await base44.integrations.Core.SendEmail({
-      to,
-      subject,
-      body
-    });
+    // Return immediately with queued status, send emails in background
+    const requestId = crypto.randomUUID();
+    
+    // Fire and forget with timeout protection
+    (async () => {
+      try {
+        console.log(`[${requestId}] Starting email send for ${to}`);
 
-    if (!emailResult) {
-      return Response.json(
-        { error: 'Failed to send email' },
-        { status: 500 }
-      );
-    }
+        // Send main email with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
 
-    // Send BCC copies to admin emails
-    const bccPromises = (bcc_emails || [])
-      .filter(email => emailRegex.test(email))
-      .map(email =>
-        base44.integrations.Core.SendEmail({
-          to: email,
-          subject: `[BCC] ${subject}`,
-          body: `[BCC Copy - Original recipient: ${to}]\n\n${body}`
+        let emailResult;
+        try {
+          emailResult = await Promise.race([
+            base44.integrations.Core.SendEmail({ to, subject, body }),
+            new Promise((_, reject) => 
+              controller.signal.addEventListener('abort', () => reject(new Error('Email send timeout')))
+            )
+          ]);
+          clearTimeout(timeoutId);
+        } catch (timeoutErr) {
+          clearTimeout(timeoutId);
+          console.error(`[${requestId}] Email send timeout for ${to}:`, timeoutErr.message);
+          throw timeoutErr;
+        }
+
+        if (!emailResult) {
+          console.error(`[${requestId}] Email send failed for ${to}`);
+          return;
+        }
+
+        console.log(`[${requestId}] Email sent successfully to ${to}`);
+
+        // Send BCC copies in parallel
+        const bccPromises = (bcc_emails || [])
+          .filter(email => emailRegex.test(email))
+          .map(email =>
+            base44.integrations.Core.SendEmail({
+              to: email,
+              subject: `[BCC] ${subject}`,
+              body: `[BCC Copy - Original recipient: ${to}]\n\n${body}`
+            }).catch(err => {
+              console.error(`[${requestId}] BCC failed for ${email}:`, err.message);
+              return null;
+            })
+          );
+
+        const bccResults = await Promise.all(bccPromises);
+        const bccSent = bccResults.filter(r => r).length;
+        console.log(`[${requestId}] BCC sent to ${bccSent}/${bcc_emails.length} admins`);
+
+        // Log the sent email
+        await base44.asServiceRole.entities.SentEmail.create({
+          to_email: to,
+          subject,
+          body,
+          sent_by: user.email,
+          sent_at: new Date().toISOString()
         }).catch(err => {
-          console.error(`Failed to send BCC to ${email}:`, err.message);
-          return null;
-        })
-      );
+          console.error(`[${requestId}] Failed to log sent email:`, err.message);
+        });
 
-    const bccResults = await Promise.all(bccPromises);
-    const bccSent = bccResults.filter(r => r).length;
+        console.log(`[${requestId}] Email sequence completed for ${to}`);
+      } catch (bgErr) {
+        console.error(`[${requestId}] Background email process error:`, bgErr.message);
+      }
+    })();
 
-    // Log the sent email
-    const logEntry = await base44.asServiceRole.entities.SentEmail.create({
-      to_email: to,
-      subject,
-      body,
-      sent_by: user.email,
-      sent_at: new Date().toISOString()
-    }).catch(err => {
-      console.error('Failed to log sent email:', err.message);
-      return null;
-    });
-
-    console.log(`Email sent to ${to}. BCC sent to ${bccSent}/${bcc_emails.length} admins. Logged: ${!!logEntry}`);
-
+    // Return success immediately
     return Response.json({
       success: true,
       recipient: to,
       subject,
-      bcc_sent: bccSent,
-      bcc_total: bcc_emails.length,
-      logged: !!logEntry,
+      message: 'Email queued for sending',
+      request_id: requestId,
       timestamp: new Date().toISOString()
     });
 
