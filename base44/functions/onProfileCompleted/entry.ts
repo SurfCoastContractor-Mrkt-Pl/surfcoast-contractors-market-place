@@ -61,13 +61,27 @@ Deno.serve(async (req) => {
     }
 
     // Fire completeReferral via internal service call
-    const result = await base44.asServiceRole.functions.invoke('completeReferral', {
+    const referralResult = await base44.asServiceRole.functions.invoke('completeReferral', {
       referred_email: email
     });
 
-    console.log(`Profile completion referral triggered for ${email}:`, result);
+    console.log(`Profile completion referral triggered for ${email}:`, referralResult);
 
-    return Response.json({ success: true, email, result });
+    // If founding member, trigger founding member benefit notification
+    let notifyResult = null;
+    if (data.is_founding_member === true) {
+      try {
+        notifyResult = await base44.asServiceRole.functions.invoke('notifyFoundingMemberBenefit', {
+          contractor_email: email,
+          contractor_name: data.name
+        });
+        console.log(`Founding member benefit notification sent for ${email}:`, notifyResult);
+      } catch (notifyErr) {
+        console.error(`Failed to notify founding member ${email}:`, notifyErr.message);
+      }
+    }
+
+    return Response.json({ success: true, email, referral: referralResult, foundingMemberNotified: !!notifyResult });
 
   } catch (error) {
     console.error('onProfileCompleted error:', error.message);
