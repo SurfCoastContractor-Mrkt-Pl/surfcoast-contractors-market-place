@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PLAYLIST = [
-  { id: 'dQw4w9WgXcQ', title: 'Welcome to SurfCoast' },
+  { id: 'I-kuZgh5lMQ', title: 'SurfCoast Overview' },
   { id: '9bZkp7q19f0', title: 'Platform Features' },
   { id: 'jNQXAC9IVRw', title: 'Getting Started' },
 ];
