@@ -60,6 +60,7 @@ SurfCoast Contractors Marketplace`,
         )
       ]);
       
+      setLoading(false);
       setSuccess(true);
       setTimeout(() => {
         onSuccess?.(result);
