@@ -28,11 +28,14 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
     if (!emailSubject.trim() || !emailBody.trim()) return;
     setSending(true);
 
+    // Add contact footer to email
+    const emailWithFooter = `${emailBody}\n\n---\nIf you need to reach out, please contact us at: adminnavarreteh@surfcoastcmp.com`;
+
     // Send to recipient
     await base44.integrations.Core.SendEmail({
       to: user.email,
       subject: emailSubject,
-      body: emailBody,
+      body: emailWithFooter,
     });
 
     // BCC admins
@@ -40,7 +43,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
       base44.integrations.Core.SendEmail({
         to: adminEmail,
         subject: `[BCC] ${emailSubject}`,
-        body: `This is a BCC copy of an email sent to ${user.full_name || user.email} (${user.email}).\n\n---\n\n${emailBody}`,
+        body: `This is a BCC copy of an email sent to ${user.full_name || user.email} (${user.email}).\n\n---\n\n${emailWithFooter}`,
       })
     ));
 
@@ -50,7 +53,7 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
       to_email: user.email,
       to_name: user.full_name || '',
       subject: emailSubject,
-      body: emailBody,
+      body: emailWithFooter,
       sent_by: currentUser?.email || 'admin@surfcoastcmp.com',
       sent_at: new Date().toISOString(),
     });
