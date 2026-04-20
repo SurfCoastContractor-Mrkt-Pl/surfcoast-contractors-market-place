@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PLAYLIST = [
-  { id: 'UqXIA3Mymp4', title: 'SurfCoast Overview' },
-  { id: 'ZFHHOBiUrkg', title: 'SurfCoast Video 2' },
-  { id: 'I-kuZgh5lMQ', title: 'SurfCoast Video 3' },
+  { id: 'dQw4w9WgXcQ', title: 'Welcome to SurfCoast' },
+  { id: '9bZkp7q19f0', title: 'Platform Features' },
+  { id: 'jNQXAC9IVRw', title: 'Getting Started' },
 ];
 
 export default function HomeVideoSection() {
@@ -46,13 +46,12 @@ export default function HomeVideoSection() {
         ) : (
           <div style={{ position: 'relative', aspectRatio: '16/9' }}>
             <iframe
-              src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&fs=1`}
+              key={video.id}
+              src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&fs=1&cc_load_policy=0`}
               title={video.title}
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-              loading="lazy"
-              style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+              style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, border: 'none' }}
             />
             <button
               onClick={() => setPlaying(false)}
