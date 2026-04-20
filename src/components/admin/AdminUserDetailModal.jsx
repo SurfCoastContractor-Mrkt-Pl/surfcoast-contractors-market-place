@@ -45,11 +45,13 @@ export default function AdminUserDetailModal({ user, contractors, onClose }) {
     ));
 
     // Log to database
+    const currentUser = await base44.auth.me();
     await base44.entities.SentEmail.create({
       to_email: user.email,
       to_name: user.full_name || '',
       subject: emailSubject,
       body: emailBody,
+      sent_by: currentUser?.email || 'admin@surfcoastcmp.com',
       sent_at: new Date().toISOString(),
     });
 
