@@ -5,13 +5,14 @@ import { base44 } from '@/api/base44Client';
  */
 
 // CORS headers for Deno functions
-export const getCORSHeaders = () => ({
-  'Access-Control-Allow-Origin': '*',
+export const getCORSHeaders = (origin = 'https://surfcoastcmp.com') => ({
+  'Access-Control-Allow-Origin': origin,
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
 });
 
 // Rate limiting cache (in-memory, use Redis for production)
@@ -70,9 +71,12 @@ export const validateInput = {
 
   // XSS prevention - sanitize HTML
   sanitizeHtml: (html) => {
-    const div = document.createElement('div');
-    div.textContent = html;
-    return div.innerHTML;
+    return html
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   },
 
   // SQL-like injection prevention

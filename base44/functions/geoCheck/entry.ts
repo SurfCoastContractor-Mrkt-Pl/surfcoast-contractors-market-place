@@ -222,7 +222,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ allowed, country, countryName });
   } catch (error) {
-  logSecurityAlert(base44, 'suspicious_activity', clientIp, {
+    logSecurityAlert(base44, 'suspicious_activity', clientIp, {
     severity: 'high',
     method: req.method,
     userAgent,
