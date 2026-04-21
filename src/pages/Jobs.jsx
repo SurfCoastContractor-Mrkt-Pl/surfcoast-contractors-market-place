@@ -161,10 +161,35 @@ export default function Jobs() {
   };
 
   const applyFilters = () => {
+    const hasAny = searchQuery || typeFilter || tradeFilter || urgencyFilter;
+    if (!hasAny && !userLocation) {
+      showToast('No filters selected — showing all available jobs.', 'info');
+      setActiveSearchQuery('');
+      setActiveTypeFilter('');
+      setActiveTradeFilter('');
+      setActiveUrgencyFilter('');
+      return;
+    }
     setActiveSearchQuery(searchQuery);
     setActiveTypeFilter(typeFilter);
     setActiveTradeFilter(tradeFilter);
     setActiveUrgencyFilter(urgencyFilter);
+
+    // Compute preview count to show in toast
+    const total = jobs?.length ?? 0;
+    if (total === 0) {
+      showToast('No jobs are currently posted. Check back soon!', 'warn');
+      return;
+    }
+    // Defer toast until after state update settles
+    setTimeout(() => {
+      // Can't access updated filteredJobs here, so give a helpful hint based on inputs
+      if (userLocation) {
+        showToast(`Filters applied — showing jobs within ${searchRadius} mi of your location.`, 'success');
+      } else {
+        showToast('Filters applied — scroll down to see results.', 'success');
+      }
+    }, 50);
   };
 
   const clearFilters = () => {
@@ -179,6 +204,12 @@ export default function Jobs() {
   };
 
   const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeUrgencyFilter;
+  const [filterToast, setFilterToast] = useState(null);
+
+  const showToast = (msg, type = 'info') => {
+    setFilterToast({ msg, type });
+    setTimeout(() => setFilterToast(null), 4000);
+  };
 
   const clearOneFilter = (type) => {
     if (type === 'search') { setSearchQuery(''); setActiveSearchQuery(''); }
@@ -345,6 +376,32 @@ export default function Jobs() {
             </div>
           )}
         </div>
+
+        {/* Filter Toast Notification */}
+        {filterToast && (
+          <div style={{
+            marginBottom: 12,
+            padding: "12px 18px",
+            borderRadius: 8,
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            fontSize: 13,
+            fontWeight: 700,
+            fontStyle: "italic",
+            fontFamily: "monospace",
+            background: filterToast.type === 'success' ? '#f0fdf4' : filterToast.type === 'warn' ? '#fff7ed' : '#eff6ff',
+            border: `1px solid ${filterToast.type === 'success' ? '#86efac' : filterToast.type === 'warn' ? '#fdba74' : '#93c5fd'}`,
+            color: filterToast.type === 'success' ? '#166534' : filterToast.type === 'warn' ? '#9a3412' : '#1e40af',
+            animation: "fadeIn 0.2s ease",
+          }}>
+            <span style={{ fontSize: 16 }}>
+              {filterToast.type === 'success' ? '✓' : filterToast.type === 'warn' ? '⚠️' : 'ℹ️'}
+            </span>
+            {filterToast.msg}
+            <button onClick={() => setFilterToast(null)} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "inherit", padding: 0, lineHeight: 1 }}>×</button>
+          </div>
+        )}
 
         {/* Apply Filters Button */}
         <div style={{ marginBottom: 24 }}>
