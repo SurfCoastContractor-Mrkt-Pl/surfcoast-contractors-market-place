@@ -24,10 +24,14 @@ Deno.serve(async (req) => {
       // Called from entity automation (e.g. Review create/update)
       // body.data may be null if payload_too_large
       const { event, data } = body;
+      if (!data) {
+        return Response.json({ error: 'Review data not available in automation payload' }, { status: 400 });
+      }
       activity_type = `review_${event.type || 'event'}`;
-      related_email = data?.reviewer_email || data?.contractor_email || data?.client_email || '';
-      contractor_email = data?.contractor_email || '';
-      activity_body = `Review ${event.type || 'event'}: ${data?.comment || ''} (Rating: ${data?.overall_rating || 'N/A'}) — Contractor: ${data?.contractor_name || contractor_email || 'N/A'}`;
+      // Review entity stores: reviewer_email (author), contractor_email (subject)
+      related_email = data.reviewer_email || data.contractor_email || data.email || '';
+      contractor_email = data.contractor_email || '';
+      activity_body = `Review ${event.type || 'event'}: ${data.comment || ''} (Rating: ${data.overall_rating || data.rating || 'N/A'}) — Contractor: ${data.contractor_name || contractor_email || 'N/A'}`;
     } else {
       ({ activity_type, related_email, activity_body, contractor_email } = body);
     }
