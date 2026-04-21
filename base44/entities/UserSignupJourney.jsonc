@@ -1,0 +1,202 @@
+{
+  "name": "UserSignupJourney",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email of the user"
+    },
+    "signup_type": {
+      "type": "string",
+      "enum": [
+        "entrepreneur",
+        "client",
+        "farmers_market_vendor",
+        "swap_meet_vendor"
+      ],
+      "description": "What type of account they signed up for"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "started",
+        "in_progress",
+        "abandoned",
+        "completed"
+      ],
+      "default": "started",
+      "description": "Overall journey status"
+    },
+    "current_step": {
+      "type": "number",
+      "description": "Step number they are currently on (for multi-step flows)"
+    },
+    "total_steps": {
+      "type": "number",
+      "description": "Total number of steps in the flow"
+    },
+    "last_step_name": {
+      "type": "string",
+      "description": "Human-readable name of the last step reached"
+    },
+    "completion_percent": {
+      "type": "number",
+      "description": "Estimated % of profile/form completed (0-100)"
+    },
+    "fields_completed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of field names that were filled in"
+    },
+    "fields_missing": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of required field names that were NOT filled in"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO timestamp when signup was started"
+    },
+    "last_activity_at": {
+      "type": "string",
+      "description": "ISO timestamp of last recorded activity"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when signup was fully completed"
+    },
+    "abandoned_at": {
+      "type": "string",
+      "description": "ISO timestamp when signup was abandoned (if applicable)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name entered (if any)"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone entered (if any)"
+    },
+    "location": {
+      "type": "string",
+      "description": "Location entered (if any)"
+    },
+    "line_of_work": {
+      "type": "string",
+      "description": "Line of work selected (entrepreneurs)"
+    },
+    "contractor_type": {
+      "type": "string",
+      "description": "Contractor type selected (entrepreneurs)"
+    },
+    "shop_name": {
+      "type": "string",
+      "description": "Shop/booth name (market vendors)"
+    },
+    "shop_type": {
+      "type": "string",
+      "description": "farmers_market or swap_meet (market vendors)"
+    },
+    "has_id_document": {
+      "type": "boolean",
+      "description": "Whether ID was uploaded"
+    },
+    "has_face_photo": {
+      "type": "boolean",
+      "description": "Whether face photo was uploaded"
+    },
+    "has_credentials": {
+      "type": "boolean",
+      "description": "Whether any credential documents were uploaded"
+    },
+    "compliance_acknowledged": {
+      "type": "boolean",
+      "description": "Whether compliance was acknowledged"
+    },
+    "is_minor": {
+      "type": "boolean",
+      "description": "Whether user is a minor"
+    },
+    "profile_created": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a profile record was successfully created in the DB"
+    },
+    "drop_off_reason": {
+      "type": "string",
+      "description": "Reason for drop-off if known (validation error, etc.)"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string"
+          },
+          "step": {
+            "type": "number"
+          },
+          "step_name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "description": "Ordered list of all signup events/steps"
+    }
+  },
+  "required": [
+    "email",
+    "signup_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -24,6 +24,17 @@ export default function CustomerSignup() {
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setError('');
+    // Track when email is first entered — that's the journey start trigger
+    if (field === 'email' && value.includes('@')) {
+      base44.functions.invoke('trackSignupJourney', {
+        email: value,
+        signup_type: 'client',
+        event: 'started',
+        step: 1,
+        step_name: 'Registration Form',
+        extra_data: { total_steps: 1 },
+      }).catch(() => {});
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -32,6 +43,26 @@ export default function CustomerSignup() {
     setLoading(true);
 
     base44.analytics.track({ eventName: 'customer_signup_submitted' });
+
+    // Track fields filled/missing for journey
+    const allFields = ['full_name', 'email', 'phone', 'location'];
+    const filled = allFields.filter(f => !!formData[f]?.trim());
+    const missing = allFields.filter(f => !formData[f]?.trim());
+    base44.functions.invoke('trackSignupJourney', {
+      email: formData.email,
+      signup_type: 'client',
+      event: 'step_advanced',
+      step: 1,
+      step_name: 'Form Submitted',
+      fields_completed: filled,
+      fields_missing: missing,
+      extra_data: {
+        total_steps: 1,
+        name: formData.full_name,
+        phone: formData.phone,
+        location: formData.location,
+      },
+    }).catch(() => {});
 
     try {
       // Validate required fields
@@ -70,10 +101,33 @@ export default function CustomerSignup() {
         },
       });
 
+      // Track journey completion
+      base44.functions.invoke('trackSignupJourney', {
+        email: formData.email,
+        signup_type: 'client',
+        event: 'profile_created',
+        step: 1,
+        step_name: 'Completed',
+        extra_data: {
+          total_steps: 1,
+          name: formData.full_name,
+          phone: formData.phone,
+          location: formData.location,
+        },
+      }).catch(() => {});
+
       // Redirect to customer dashboard
       navigate(createPageUrl('CustomerAccount'));
     } catch (err) {
       base44.analytics.track({ eventName: 'customer_signup_failed', properties: { reason: err.message } });
+      base44.functions.invoke('trackSignupJourney', {
+        email: formData.email,
+        signup_type: 'client',
+        event: 'abandoned',
+        step: 1,
+        step_name: 'Registration Form',
+        extra_data: { drop_off_reason: err.message, total_steps: 1 },
+      }).catch(() => {});
       setError(err.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);

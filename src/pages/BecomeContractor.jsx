@@ -60,6 +60,7 @@ export default function BecomeContractor() {
   const [authChecked, setAuthChecked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [journeyStarted, setJourneyStarted] = useState(false);
   const [createdContractor, setCreatedContractor] = useState(null);
   const [showStripeConnect, setShowStripeConnect] = useState(false);
   const [detectionLoading, setDetectionLoading] = useState(false);
@@ -126,6 +127,23 @@ export default function BecomeContractor() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  // Track journey start once auth is confirmed and email known
+  useEffect(() => {
+    if (!authChecked || journeyStarted || isPreview) return;
+    base44.auth.me().then(user => {
+      if (!user?.email) return;
+      setJourneyStarted(true);
+      base44.functions.invoke('trackSignupJourney', {
+        email: user.email,
+        signup_type: 'entrepreneur',
+        event: 'started',
+        step: 1,
+        step_name: 'Basic Info',
+        extra_data: { total_steps: 5 },
+      }).catch(() => {});
+    }).catch(() => {});
+  }, [authChecked, journeyStarted, isPreview]);
+
   const getAge = (dob) => {
     if (!dob) return null;
     const today = new Date();
@@ -160,6 +178,30 @@ export default function BecomeContractor() {
     onSuccess: (data) => {
       setCreatedContractor(data);
       localStorage.removeItem(STORAGE_KEY);
+
+      // Track journey completion
+      if (!isPreview && data?.email) {
+        base44.functions.invoke('trackSignupJourney', {
+          email: data.email,
+          signup_type: 'entrepreneur',
+          event: 'profile_created',
+          step: 5,
+          step_name: 'Completed',
+          extra_data: {
+            total_steps: 5,
+            name: data.name,
+            phone: data.phone,
+            location: data.location,
+            line_of_work: data.line_of_work,
+            contractor_type: data.contractor_type,
+            has_id_document: !!data.id_document_url,
+            has_face_photo: !!data.face_photo_url,
+            has_credentials: (data.credential_documents?.length ?? 0) > 0,
+            compliance_acknowledged: !!data.compliance_acknowledged,
+            is_minor: data.is_minor ?? false,
+          },
+        }).catch(() => {});
+      }
 
       base44.analytics.track({
         eventName: 'contractor_profile_created',
@@ -203,8 +245,36 @@ export default function BecomeContractor() {
         methods.setError('date_of_birth', { message: 'You must be at least 13 years old' });
         return;
       }
-      setCurrentStep(currentStep + 1);
+      const nextStep = currentStep + 1;
+      const stepNames = ['Basic Info', 'Professional', 'Identity', 'Credentials', 'Policies'];
+      setCurrentStep(nextStep);
       window.scrollTo(0, 0);
+
+      // Track step advancement
+      if (!isPreview) {
+        base44.auth.me().then(user => {
+          if (!user?.email) return;
+          const data = methods.getValues();
+          base44.functions.invoke('trackSignupJourney', {
+            email: user.email,
+            signup_type: 'entrepreneur',
+            event: 'step_advanced',
+            step: nextStep,
+            step_name: stepNames[nextStep - 1] ?? `Step ${nextStep}`,
+            extra_data: {
+              total_steps: 5,
+              name: data.name,
+              phone: data.phone,
+              location: data.location,
+              line_of_work: data.line_of_work,
+              contractor_type: data.contractor_type,
+              has_id_document: !!data.id_document_url,
+              has_face_photo: !!data.face_photo_url,
+              is_minor: isMinor,
+            },
+          }).catch(() => {});
+        }).catch(() => {});
+      }
     }
   };
 
@@ -241,6 +311,37 @@ export default function BecomeContractor() {
         certs_count: data.certifications.length,
       },
     });
+
+    // Track all filled vs missing fields for journey
+    if (!isPreview) {
+      const requiredFields = ['name', 'email', 'phone', 'date_of_birth', 'location', 'contractor_type', 'line_of_work', 'id_document_url', 'face_photo_url'];
+      const optionalFields = ['bio', 'hourly_rate', 'fixed_rate', 'years_experience'];
+      const allFields = [...requiredFields, ...optionalFields];
+      const filled = allFields.filter(f => !!(data[f]));
+      const missing = requiredFields.filter(f => !data[f]);
+      base44.functions.invoke('trackSignupJourney', {
+        email: data.email,
+        signup_type: 'entrepreneur',
+        event: 'step_advanced',
+        step: 5,
+        step_name: 'Policies',
+        fields_completed: filled,
+        fields_missing: missing,
+        extra_data: {
+          total_steps: 5,
+          name: data.name,
+          phone: data.phone,
+          location: data.location,
+          line_of_work: data.line_of_work,
+          contractor_type: data.contractor_type,
+          has_id_document: !!data.id_document_url,
+          has_face_photo: !!data.face_photo_url,
+          has_credentials: (data.credential_documents?.length ?? 0) > 0,
+          compliance_acknowledged: !!data.compliance_acknowledged,
+          is_minor: isMinor,
+        },
+      }).catch(() => {});
+    }
 
     const submitData = {
       ...data,

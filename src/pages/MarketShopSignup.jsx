@@ -195,6 +195,18 @@ export default function MarketShopSignup() {
       }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
+      // Track journey start when email is entered
+      if (name === 'email' && value.includes('@')) {
+        const shopType = type === 'swap_meet' ? 'swap_meet_vendor' : 'farmers_market_vendor';
+        base44.functions.invoke('trackSignupJourney', {
+          email: value,
+          signup_type: shopType,
+          event: 'started',
+          step: 1,
+          step_name: 'Booth Registration Form',
+          extra_data: { total_steps: 1, shop_type: type },
+        }).catch(() => {});
+      }
     }
     // Mark field as touched when user changes it
     if (requiredFields.includes(name)) {
@@ -304,6 +316,28 @@ export default function MarketShopSignup() {
       setCreatedShop(newShop);
       setShowPaymentSelector(true);
       setSubmitLoading(false);
+
+      // Track journey completion
+      const shopSignupType = type === 'swap_meet' ? 'swap_meet_vendor' : 'farmers_market_vendor';
+      const allFields = ['shop_name', 'owner_name', 'email', 'phone', 'city', 'state', 'zip', 'description'];
+      const filled = allFields.filter(f => !!formData[f]?.trim());
+      base44.functions.invoke('trackSignupJourney', {
+        email: formData.email,
+        signup_type: shopSignupType,
+        event: 'profile_created',
+        step: 1,
+        step_name: 'Completed',
+        fields_completed: filled,
+        fields_missing: [],
+        extra_data: {
+          total_steps: 1,
+          name: formData.owner_name,
+          phone: formData.phone,
+          location: `${formData.city}, ${formData.state}`,
+          shop_name: formData.shop_name,
+          shop_type: type,
+        },
+      }).catch(() => {});
     } catch (err) {
       console.error('Submission error:', err);
       alert('Error setting up your listing. Please try again.');
