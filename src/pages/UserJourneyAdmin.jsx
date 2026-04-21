@@ -262,7 +262,7 @@ function UserJourneyAdminContent() {
             />
           </div>
           <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger style={{ width: 210 }}><SelectValue placeholder="All Account Types" /></SelectTrigger>
+            <SelectTrigger style={{ width: 210, color: '#111827', background: '#fff' }}><SelectValue placeholder="All Account Types" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Account Types</SelectItem>
               <SelectItem value="entrepreneur">Entrepreneur</SelectItem>
@@ -272,7 +272,7 @@ function UserJourneyAdminContent() {
             </SelectContent>
           </Select>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger style={{ width: 150 }}><SelectValue placeholder="All Statuses" /></SelectTrigger>
+            <SelectTrigger style={{ width: 150, color: '#111827', background: '#fff' }}><SelectValue placeholder="All Statuses" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="started">Started</SelectItem>
