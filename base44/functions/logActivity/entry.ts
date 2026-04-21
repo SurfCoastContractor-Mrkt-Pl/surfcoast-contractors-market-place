@@ -13,20 +13,25 @@ Deno.serve(async (req) => {
 
     let activityData;
 
-    // Support automation entity event payloads ({ event, data })
-    // Check for body.event alone — body.data may be null if payload_too_large
-    if (body.event) {
-      const { event, data } = body;
+    // Support automation entity event payloads ({ event, data, automation })
+    const isAutomation = !!(body.event || body.automation);
+
+    if (isAutomation) {
+      const event = body.event || {};
+      const data = body.data || {};
+      // Map entity event type to a valid ActivityLog action_type enum value
+      const eventTypeMap = { create: 'create', update: 'update', delete: 'delete' };
+      const mappedAction = eventTypeMap[event.type] || 'create';
       activityData = {
-        action_type: `${event.entity_name || 'entity'}_${event.type || 'event'}`,
-        entity_type: event.entity_name || 'unknown',
-        entity_id: event.entity_id,
-        entity_name: data?.job_title || data?.contractor_name || event.entity_name || '',
-        user_email: data?.reviewer_email || data?.contractor_email || data?.created_by || '',
-        description: `${event.entity_name || 'entity'} ${event.type || 'event'}: ${data?.comment || data?.job_title || event.entity_id || ''}`,
+        action_type: mappedAction,
+        entity_type: (event.entity_name || 'system').toLowerCase(),
+        entity_id: event.entity_id || '',
+        entity_name: data?.job_title || data?.contractor_name || data?.title || event.entity_name || '',
+        user_email: data?.reviewer_email || data?.contractor_email || data?.created_by || data?.email || '',
+        description: `${event.entity_name || 'Entity'} ${event.type || 'event'}: ${data?.comment || data?.job_title || data?.title || event.entity_id || ''}`,
         severity: 'low',
         status: 'success',
-        metadata: JSON.stringify({ entity: event.entity_name, id: event.entity_id })
+        metadata: JSON.stringify({ entity: event.entity_name, id: event.entity_id, automation: body.automation?.name })
       };
     } else {
       // Direct call — require auth
@@ -38,7 +43,7 @@ Deno.serve(async (req) => {
     }
 
     // Validate required fields — only for direct (non-automation) calls
-    if (!body.event && (!activityData.action_type || !activityData.entity_type)) {
+    if (!isAutomation && (!activityData.action_type || !activityData.entity_type)) {
       return Response.json({ error: 'Missing required activity fields' }, { status: 400 });
     }
 
@@ -81,7 +86,7 @@ Deno.serve(async (req) => {
       const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL');
       if (adminEmail) {
         try {
-          await base44.integrations.Core.SendEmail({
+          await base44.asServiceRole.integrations.Core.SendEmail({
             to: adminEmail,
             subject: `[CRITICAL AUDIT] ${activityData.action_type.toUpperCase()}: ${activityData.entity_type}`,
             body: `
