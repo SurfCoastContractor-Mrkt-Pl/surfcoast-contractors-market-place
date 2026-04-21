@@ -38,7 +38,7 @@ function TickerBar() {
     {
       label: 'Market Shop Vendors',
       to: '/MarketShopSignup',
-      tip: 'For booth operators, farmers market sellers, and swap meet vendors. Set up your shop, manage listings, and connect with local buyers.',
+      tip: 'For booth operators, farmers market sellers, swap meet vendors, and flea market vendors. Set up your shop, manage listings, and connect with local buyers.',
     },
   ];
 

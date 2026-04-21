@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronLeft, X, Loader2, Leaf, Tag, CheckCircle } from 'lucide-react';
+import { ChevronLeft, X, Loader2, Leaf, Tag, ShoppingBag, CheckCircle } from 'lucide-react';
 import PhotoGalleryUpload from '@/components/marketshop/PhotoGalleryUpload';
 import MarketShopPaymentModelSelector from '@/components/marketshop/MarketShopPaymentModelSelector';
 import { useRequiredFieldValidation } from '@/hooks/useRequiredFieldValidation';
@@ -17,6 +17,11 @@ const CATEGORIES_FARMERS_MARKET = [
 const CATEGORIES_SWAP_MEET = [
   'Electronics', 'Tools', 'Sports Equipment', 'Books & Media', 'Home Decor',
   'Clothing & Accessories', 'Collectibles', 'Handmade Crafts', 'Vintage & Antiques', 'Jewelry', 'Misc', 'Other'
+];
+
+const CATEGORIES_FLEA_MARKET = [
+  'Clothing & Accessories', 'Electronics', 'Furniture', 'Vintage & Antiques', 'Collectibles',
+  'Toys & Games', 'Books & Media', 'Tools & Hardware', 'Jewelry', 'Home Decor', 'Handmade Crafts', 'Other'
 ];
 
 const THEME_CONFIG = {
@@ -37,6 +42,15 @@ const THEME_CONFIG = {
     subtitle: 'List your goods and build your buyer following at local swap meets',
     buttonColor: 'bg-amber-600 hover:bg-amber-700',
     themeClass: 'from-amber-50 to-amber-100'
+  },
+  flea_market: {
+    color: '#7c3aed',
+    bgLight: '#ede9fe',
+    icon: ShoppingBag,
+    title: 'Set Up Your Flea Market Booth',
+    subtitle: 'Connect with bargain hunters and resale shoppers at local flea markets',
+    buttonColor: 'bg-violet-600 hover:bg-violet-700',
+    themeClass: 'from-violet-50 to-violet-100'
   }
 };
 
@@ -141,7 +155,7 @@ export default function MarketShopSignup() {
           <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, color: T.dark, marginBottom: 10, lineHeight: 1.1 }}>Open Your Market Booth</h1>
           <p style={{ fontSize: 15, color: T.muted, marginBottom: 40, fontStyle: "italic" }}>Select the type of marketplace that fits your business.</p>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, maxWidth: 700 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
             <button
               onClick={() => navigate('/MarketShopSignup?type=farmers_market')}
               style={{ background: T.card, border: `0.5px solid ${T.border}`, borderTop: `3px solid #16a34a`, borderRadius: 10, boxShadow: T.shadow, padding: 28, textAlign: "left", cursor: "pointer", transition: "box-shadow 0.2s ease" }}
@@ -175,6 +189,23 @@ export default function MarketShopSignup() {
               </p>
               <span style={{ ...mono, fontSize: 11, color: T.amber }}>Get Started →</span>
             </button>
+
+            <button
+              onClick={() => navigate('/MarketShopSignup?type=flea_market')}
+              style={{ background: T.card, border: `0.5px solid ${T.border}`, borderTop: `3px solid #7c3aed`, borderRadius: 10, boxShadow: T.shadow, padding: 28, textAlign: "left", cursor: "pointer", transition: "box-shadow 0.2s ease" }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow = `3px 3px 0px #5C3500, 0 0 18px 4px rgba(255,180,0,0.25)`}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = T.shadow}
+            >
+              <div style={{ width: 44, height: 44, borderRadius: 8, background: "#ede9fe", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                <ShoppingBag style={{ width: 22, height: 22, color: "#7c3aed" }} strokeWidth={1.5} />
+              </div>
+              <div style={{ ...mono, fontSize: 10, color: T.muted, marginBottom: 8, letterSpacing: "0.06em" }}>// FLEA MARKET</div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: T.dark, marginBottom: 8 }}>Flea Market Vendor</h2>
+              <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.65, fontStyle: "italic", marginBottom: 16 }}>
+                Set up your flea market booth and connect with bargain hunters and resale shoppers.
+              </p>
+              <span style={{ ...mono, fontSize: 11, color: T.amber }}>Get Started →</span>
+            </button>
           </div>
         </div>
       </div>
@@ -182,7 +213,7 @@ export default function MarketShopSignup() {
   }
 
   const theme = THEME_CONFIG[type];
-  const CATEGORIES = type === 'swap_meet' ? CATEGORIES_SWAP_MEET : CATEGORIES_FARMERS_MARKET;
+  const CATEGORIES = type === 'swap_meet' ? CATEGORIES_SWAP_MEET : type === 'flea_market' ? CATEGORIES_FLEA_MARKET : CATEGORIES_FARMERS_MARKET;
 
   const handleFormChange = (e) => {
     const { name, value, type: inputType, checked } = e.target;
@@ -349,7 +380,7 @@ export default function MarketShopSignup() {
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: "#EBEBEC" }}>
       {/* Ticker */}
       <div style={{ background: "#1A1A1B", padding: "6px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// MARKET SHOP · {type === 'swap_meet' ? 'SWAP MEET' : 'FARMERS MARKET'} SIGNUP</span>
+        <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#e0e0e0" }}>// MARKET SHOP · {type === 'swap_meet' ? 'SWAP MEET' : type === 'flea_market' ? 'FLEA MARKET' : 'FARMERS MARKET'} SIGNUP</span>
         <span style={{ fontFamily: "monospace", fontWeight: 700, fontStyle: "italic", fontSize: 11, color: "#ffffff" }}>California · Nationwide</span>
       </div>
     <div style={{ padding: "16px 0 32px" }}>
