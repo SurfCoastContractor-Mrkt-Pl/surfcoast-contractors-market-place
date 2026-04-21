@@ -230,7 +230,7 @@ export default function FindContractors() {
                   )}
                   <div className="absolute top-3 left-3 z-10 flex gap-2">
                     {contractor.identity_verified && (
-                      <div className="bg-dcfce7 text-166534 border-radius-6 px-2 py-1 text-xs font-bold bg-emerald-100 text-emerald-800 rounded-md">
+                      <div className={`border-radius-6 px-2 py-1 text-xs font-bold rounded-md ${contractor.license_status === 'inactive' ? 'bg-yellow-100 text-yellow-800' : 'bg-emerald-100 text-emerald-800'}`}>
                         ✅ Verified
                       </div>
                     )}
@@ -286,7 +286,7 @@ export default function FindContractors() {
                   )}
                   <div className="absolute top-3 left-3 z-10 flex gap-2">
                     {contractor.identity_verified && (
-                      <div className="bg-emerald-100 text-emerald-800 rounded-md px-2 py-1 text-xs font-bold">
+                      <div className={`rounded-md px-2 py-1 text-xs font-bold ${contractor.license_status === 'inactive' ? 'bg-yellow-100 text-yellow-800' : 'bg-emerald-100 text-emerald-800'}`}>
                         ✅ Verified
                       </div>
                     )}
