@@ -6,11 +6,15 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
 
     // Support entity automations or direct API calls
-    let review_id = body.review_id;
+    const isAutomation = !!body.event;
+    let review_id;
 
-    if (body.event) {
-      // Called from entity automation
-      review_id = body.event.entity_id;
+    if (isAutomation) {
+      // Called from entity automation: extract ID from event
+      review_id = body.event?.entity_id;
+    } else {
+      // Direct API call
+      review_id = body.review_id;
     }
 
     if (!review_id) {
@@ -18,7 +22,6 @@ Deno.serve(async (req) => {
     }
 
     // Only require auth for direct (non-automation) calls
-    const isAutomation = !!body.event;
     if (!isAutomation) {
       const user = await base44.auth.me();
       if (!user) {
