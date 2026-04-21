@@ -4,25 +4,40 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     
-    // Allow unauthenticated error logging for public app, but validate internal key
+    // SECURITY: Validate authentication/authorization BEFORE parsing body
     const internalKey = req.headers.get('x-internal-service-key');
-    const hasValidKey = internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const hasValidKey = expectedKey && internalKey === expectedKey;
     
     let user = null;
-    const isAuthenticated = await base44.auth.isAuthenticated();
-    if (isAuthenticated) {
-      try {
+    let isAuthenticated = false;
+    
+    try {
+      isAuthenticated = await base44.auth.isAuthenticated();
+      if (isAuthenticated) {
         user = await base44.auth.me();
-      } catch {
-        // User not found, continue with anonymous
       }
+    } catch {
+      // Auth check failed
+    }
+
+    // SECURITY: Reject unauthenticated requests early (before processing body)
+    if (!hasValidKey && !isAuthenticated) {
+      return Response.json({ error: 'Unauthorized to log errors' }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const { error_type, severity, user_email, user_type, action, error_message, context } = body;
+
+    if (!action || !error_message) {
+      return Response.json({ error: 'action and error_message are required' }, { status: 400 });
     }
 
     // SECURITY: Database-backed rate limiting (not in-memory)
     // In-memory rate limiting is ineffective in serverless environments
     const now = new Date().toISOString();
     const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
-    const userKey = user?.email || req.headers.get('x-forwarded-for') || 'anonymous';
+    const userKey = user?.email || user_email || 'internal';
     
     try {
       const recentErrors = await base44.asServiceRole.entities.ErrorLog.filter({
@@ -35,19 +50,6 @@ Deno.serve(async (req) => {
       }
     } catch (limitError) {
       console.warn('Rate limit check failed, proceeding:', limitError.message);
-    }
-
-    const body = await req.json();
-
-    const { error_type, severity, user_email, user_type, action, error_message, context } = body;
-
-    if (!action || !error_message) {
-      return Response.json({ error: 'action and error_message are required' }, { status: 400 });
-    }
-
-    // Only service role can log errors
-    if (!hasValidKey && !isAuthenticated) {
-      return Response.json({ error: 'Unauthorized to log errors' }, { status: 403 });
     }
 
     let log;

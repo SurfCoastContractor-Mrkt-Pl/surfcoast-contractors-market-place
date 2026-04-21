@@ -84,13 +84,7 @@ Deno.serve(async (req) => {
       // Fall through to IP-based rate limiting
     }
 
-    // Grant instant access to authenticated admins (no password needed)
-    if (isAdmin) {
-      console.log(`[${requestId}] Admin dashboard access granted for ${rateLimitKey} (authenticated admin)`);
-      return Response.json({ success: true });
-    }
-
-    // Check rate limit (max 5 attempts per hour)
+    // Check rate limit BEFORE anything else (max 5 attempts per hour)
     const now = new Date();
     const windowStart = new Date(now.getTime() - 3600000); // 1 hour ago
 
@@ -125,7 +119,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verify password against hash
+    // Grant instant access to authenticated admins (no password needed)
+    if (isAdmin) {
+      console.log(`[${requestId}] Admin dashboard access granted for ${rateLimitKey} (authenticated admin)`);
+      return Response.json({ success: true });
+    }
+
+    // Verify password against hash (after rate limit check)
     const passwordMatch = providedPassword && await verifyPasswordHash(providedPassword, passwordHash);
     
     if (!passwordMatch) {
