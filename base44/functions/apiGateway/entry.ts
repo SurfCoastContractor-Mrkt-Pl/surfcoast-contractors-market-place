@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
     const path = url.pathname;
 
     if (path === '/api/v1/jobs' && req.method === 'GET') {
-      if (!record.scopes.includes('read:jobs')) {
+      if (!record.scopes || !Array.isArray(record.scopes) || !record.scopes.includes('read:jobs')) {
         return Response.json({ error: 'Insufficient permissions' }, { status: 403 });
       }
       const jobs = await base44.asServiceRole.entities.Job.list();
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
     }
 
     if (path === '/api/v1/contractors' && req.method === 'GET') {
-      if (!record.scopes.includes('read:contractors')) {
+      if (!record.scopes || !Array.isArray(record.scopes) || !record.scopes.includes('read:contractors')) {
         return Response.json({ error: 'Insufficient permissions' }, { status: 403 });
       }
       const contractors = await base44.asServiceRole.entities.Contractor.list();

@@ -81,11 +81,11 @@ Deno.serve(async (req) => {
       } catch (emailError) {
         console.error('Failed to send admin alert');
       }
-      }
+    }
 
-      return Response.json({ success: true, id: log.id });
-      } catch (error) {
-      console.error('Error in logError function');
-      return Response.json({ error: 'Failed to log error' }, { status: 500 });
-      }
+    return Response.json({ success: true, id: log.id });
+  } catch (error) {
+    console.error('Error in logError function');
+    return Response.json({ error: 'Failed to log error' }, { status: 500 });
+  }
 });

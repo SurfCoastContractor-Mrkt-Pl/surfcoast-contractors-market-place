@@ -223,19 +223,19 @@ Deno.serve(async (req) => {
     return Response.json({ allowed, country, countryName });
   } catch (error) {
     logSecurityAlert(base44, 'suspicious_activity', clientIp, {
-    severity: 'high',
-    method: req.method,
-    userAgent,
-    path,
-    notes: `Geo-check error: ${error.message}`
-  });
-  console.error(`[GEO-ERROR] Unexpected error from IP: ${clientIp}`, error);
-  // SECURITY: Fail closed — block access if geo check fails (don't allow errors to bypass)
-  return Response.json({ 
-    allowed: false, 
-    country: 'ERROR', 
-    countryName: 'System Error',
-    reason: 'Geo-check failed' 
-  });
+      severity: 'high',
+      method: req.method,
+      userAgent,
+      path,
+      notes: `Geo-check error: ${error.message}`
+    });
+    console.error(`[GEO-ERROR] Unexpected error from IP: ${clientIp}`, error);
+    // SECURITY: Fail closed — block access if geo check fails (don't allow errors to bypass)
+    return Response.json({ 
+      allowed: false, 
+      country: 'ERROR', 
+      countryName: 'System Error',
+      reason: 'Geo-check failed' 
+    });
   }
 });

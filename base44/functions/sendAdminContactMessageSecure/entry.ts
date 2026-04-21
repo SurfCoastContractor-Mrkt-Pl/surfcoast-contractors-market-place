@@ -41,13 +41,13 @@ async function isRateLimited(base44, ip) {
 }
 
 Deno.serve(async (req) => {
-  const clientIp = req.headers.get('cf-connecting-ip') || 
-                   req.headers.get('x-forwarded-for') || 
-                   'unknown';
-
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
+
+  const clientIp = req.headers.get('cf-connecting-ip') || 
+                   req.headers.get('x-forwarded-for') || 
+                   'unknown';
 
   try {
     const base44 = createClientFromRequest(req);
