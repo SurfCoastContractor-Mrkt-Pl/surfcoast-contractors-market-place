@@ -29,10 +29,14 @@ Deno.serve(async (req) => {
     }
 
     // Normalize to UUID format — strips any non-hex prefix (e.g. "Finalized-Docs-")
-    const hexOnly = rawParentPageId.replace(/-/g, '').match(/[0-9a-f]{32}$/i)?.[0];
+    // Extract the last 32 hex characters (the actual Notion ID)
+    const cleanedId = rawParentPageId.toLowerCase();
+    const hexMatch = cleanedId.match(/([0-9a-f]{32})$/);
+    const hexOnly = hexMatch?.[1];
     if (!hexOnly) {
       return Response.json({ error: `NOTION_PROJECT_PARENT_PAGE_ID is not a valid Notion page ID: ${rawParentPageId}` }, { status: 500 });
     }
+    // Format as proper UUID: 8-4-4-4-12
     const PARENT_PAGE_ID = `${hexOnly.slice(0,8)}-${hexOnly.slice(8,12)}-${hexOnly.slice(12,16)}-${hexOnly.slice(16,20)}-${hexOnly.slice(20)}`;
     console.log(`[notionAutoSync] Using parent page ID: ${PARENT_PAGE_ID}`);
 
