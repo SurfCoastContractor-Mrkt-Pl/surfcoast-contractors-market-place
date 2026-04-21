@@ -57,6 +57,28 @@ Deno.serve(async (req) => {
     const serviceKey = body?.service_key;
     const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
 
+    // Pre-flight validation: Check if request has any valid auth mechanism before accessing sensitive secrets
+    let isAuthenticatedUser = false;
+    let isAdmin = false;
+    const isAuth = await base44.auth.isAuthenticated();
+    if (isAuth) {
+      try {
+        const user = await base44.auth.me();
+        if (user?.email) {
+          isAuthenticatedUser = true;
+          isAdmin = user.role === 'admin';
+        }
+      } catch {
+        // Fall through
+      }
+    }
+
+    // If not authenticated and no service key provided, reject early before accessing secrets
+    if (!isAuthenticatedUser && !serviceKey) {
+      console.warn(`[${requestId}] Unauthorized admin dashboard access attempt from ${clientIP} (no auth)`);
+      return Response.json({ success: false, error: 'Unauthorized.' }, { status: 401 });
+    }
+
     const passwordHash = Deno.env.get('ADMIN_PASSWORD_HASH');
     const expectedServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY');
 
@@ -67,22 +89,7 @@ Deno.serve(async (req) => {
     }
 
     // Rate limiting key (prioritize authenticated user, fall back to IP)
-    let rateLimitKey = clientIP;
-    let isAuthenticatedUser = false;
-    let isAdmin = false;
-    try {
-      const isAuth = await base44.auth.isAuthenticated();
-      if (isAuth) {
-        const user = await base44.auth.me();
-        if (user?.email) {
-          rateLimitKey = user.email;
-          isAuthenticatedUser = true;
-          isAdmin = user.role === 'admin';
-        }
-      }
-    } catch {
-      // Fall through to IP-based rate limiting
-    }
+    let rateLimitKey = isAuthenticatedUser ? (await base44.auth.me()).email : clientIP;
 
     // Check rate limit BEFORE anything else (max 5 attempts per hour)
     const now = new Date();
