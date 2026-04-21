@@ -3,19 +3,30 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const body = await req.json().catch(() => ({}));
 
-    if (!user) {
-      return Response.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
+    // Support entity automations or direct API calls
+    let review_id = body.review_id;
+
+    if (body.event) {
+      // Called from entity automation
+      review_id = body.event.entity_id;
     }
-
-    const { review_id } = await req.json();
 
     if (!review_id) {
       return Response.json({ error: 'review_id required' }, { status: 400 });
+    }
+
+    // Only require auth for direct (non-automation) calls
+    const isAutomation = !!body.event;
+    if (!isAutomation) {
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json(
+          { error: 'Authentication required' },
+          { status: 401 }
+        );
+      }
     }
 
     // Get the review
@@ -26,12 +37,15 @@ Deno.serve(async (req) => {
 
     const review = reviews[0];
 
-    // Verify user is the review author
-    if (review.reviewer_email !== user.email) {
-      return Response.json(
-        { error: 'Unauthorized - only review author can convert to testimonial' },
-        { status: 403 }
-      );
+    // Verify user is the review author (skip for automations)
+    if (!isAutomation) {
+      const user = await base44.auth.me();
+      if (review.reviewer_email !== user.email) {
+        return Response.json(
+          { error: 'Unauthorized - only review author can convert to testimonial' },
+          { status: 403 }
+        );
+      }
     }
 
     // Check if already a testimony
