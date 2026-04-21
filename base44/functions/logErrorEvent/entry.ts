@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     // Support both direct calls ({ message, level, category })
     // and entity automation payloads ({ event, data: { message, level, category } })
     const isAutomation = !!(body.event || body.automation);
-    const errorData = isAutomation ? (body.data ?? {}) : body;
+    const errorData = isAutomation ? (body.data || body.event || {}) : body;
 
     console.log('logErrorEvent called, isAutomation:', isAutomation, 'body keys:', Object.keys(body));
 
@@ -50,7 +50,7 @@ Deno.serve(async (req) => {
       const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL');
       if (adminEmail) {
         try {
-          await base44.integrations.Core.SendEmail({
+          await base44.asServiceRole.integrations.Core.SendEmail({
             to: adminEmail,
             subject: `[CRITICAL] ${errorData.category}: ${errorData.message}`,
             body: `
