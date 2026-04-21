@@ -32,6 +32,7 @@ const DASHBOARD_SECTIONS = [
       { label: 'API Usage Analytics', path: '/api-usage-analytics', icon: BarChart3, color: 'text-indigo-600', desc: 'API calls & usage trends' },
       { label: 'Advanced Analytics', path: '/advanced-analytics', icon: BarChart3, color: 'text-violet-600', desc: 'Predictive & deep insights' },
       { label: 'Platform Activity', path: '/platform-activity', icon: Activity, color: 'text-sky-600', desc: 'Real-time platform events' },
+      { label: 'User Journey Tracker', path: '/user-journey-admin', icon: Users, color: 'text-emerald-600', desc: 'Signup funnel & onboarding tracking' },
     ]
   },
   {
