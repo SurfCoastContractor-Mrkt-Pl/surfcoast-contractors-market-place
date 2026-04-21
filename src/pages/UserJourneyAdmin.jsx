@@ -4,10 +4,11 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from '@/components/ui/select';
-import { ChevronDown, ChevronRight, Search, Users, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, ChevronLeft, Search, Users, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const TYPE_LABELS = {
   entrepreneur: 'Entrepreneur',
@@ -198,7 +199,7 @@ function UserJourneyAdminContent() {
 
   const { data: journeys = [], isLoading } = useQuery({
     queryKey: ['signup-journeys'],
-    queryFn: () => base44.asServiceRole.entities.UserSignupJourney.list('-last_activity_at', 200),
+    queryFn: () => base44.entities.UserSignupJourney.list('-last_activity_at', 200),
   });
 
   const filtered = journeys.filter(j => {
@@ -222,6 +223,9 @@ function UserJourneyAdminContent() {
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         <div style={{ marginBottom: 24 }}>
+          <Link to="/admin-control-hub" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#6b7280', fontWeight: 600, textDecoration: 'none', marginBottom: 12 }}>
+            <ChevronLeft style={{ width: 14 }} /> Admin Control Hub
+          </Link>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: '#111827', margin: 0 }}>User Onboarding Journey Tracker</h1>
           <p style={{ color: '#6b7280', marginTop: 4, fontSize: 14 }}>
             Track every user's registration progress — what they entered, where they stopped, and whether they completed.
