@@ -98,9 +98,14 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Vendor not ready for payouts' }, { status: 400 });
           }
 
-          // Initialize Stripe client
+          // Initialize Stripe client with secret validation
+          const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+          if (!secretKey) {
+            console.error('STRIPE_SECRET_KEY not configured for vendor payout');
+            throw new Error('Stripe secret not configured');
+          }
           const stripeModule = await import('npm:stripe@14.21.0');
-          const stripe = new stripeModule.default(Deno.env.get('STRIPE_SECRET_KEY'));
+          const stripe = new stripeModule.default(secretKey);
 
           // Create transfer to vendor's connected account
           const transfer = await stripe.transfers.create({
