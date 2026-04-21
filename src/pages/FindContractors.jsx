@@ -228,18 +228,18 @@ export default function FindContractors() {
                       {contractorDistances[contractor.id].toFixed(1)} mi
                     </div>
                   )}
-                  <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
-                     {contractor.identity_verified && (
-                       <div className="bg-emerald-100 text-emerald-800 rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap">
-                         ✅ Verified
-                       </div>
-                     )}
-                     {contractor.is_featured && (
-                       <div className="bg-amber-100 text-amber-900 rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap">
-                         ⭐ Featured
-                       </div>
-                     )}
-                   </div>
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {contractor.identity_verified && (
+                      <div className="bg-dcfce7 text-166534 border-radius-6 px-2 py-1 text-xs font-bold bg-emerald-100 text-emerald-800 rounded-md">
+                        ✅ Verified
+                      </div>
+                    )}
+                    {contractor.is_featured && (
+                      <div className="bg-fef3c7 text-92400e border-radius-6 px-2 py-1 text-xs font-bold bg-amber-100 text-amber-900 rounded-md">
+                        ⭐ Featured
+                      </div>
+                    )}
+                  </div>
                   <ContractorCard contractor={contractor} featured />
                 </div>
               ))}
@@ -284,18 +284,18 @@ export default function FindContractors() {
                       {contractorDistances[contractor.id].toFixed(1)} mi
                     </div>
                   )}
-                  <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
-                     {contractor.identity_verified && (
-                       <div className="bg-emerald-100 text-emerald-800 rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap">
-                         ✅ Verified
-                       </div>
-                     )}
-                     {contractor.is_featured && (
-                       <div className="rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap" style={{ background: "#F0E0C0", color: "#5C3500" }}>
-                         ⭐ Featured
-                       </div>
-                     )}
-                   </div>
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {contractor.identity_verified && (
+                      <div className="bg-emerald-100 text-emerald-800 rounded-md px-2 py-1 text-xs font-bold">
+                        ✅ Verified
+                      </div>
+                    )}
+                    {contractor.is_featured && (
+                      <div className="rounded-md px-2 py-1 text-xs font-bold" style={{ background: "#F0E0C0", color: "#5C3500" }}>
+                        ⭐ Featured
+                      </div>
+                    )}
+                  </div>
                   <ContractorCard contractor={contractor} />
                 </div>
               ))}
