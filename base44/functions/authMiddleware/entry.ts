@@ -1,7 +1,7 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
 /**
  * Authentication and authorization helpers for backend functions
+ * IMPORTANT: This is a library file with exported helper functions only.
+ * It does not serve as an API endpoint and should not be called directly.
  */
 
 /**
@@ -43,23 +43,7 @@ export function validateInput(data, schema) {
   return Object.keys(errors).length > 0 ? errors : null;
 }
 
-// Simple test endpoint
-Deno.serve(async (req) => {
-  if (req.method !== 'POST') {
-    return Response.json({ error: 'Method not allowed' }, { status: 405 });
-  }
-  
-  try {
-    const base44 = createClientFromRequest(req);
-    const user = await requireAuth(base44);
-    return Response.json({ success: true, user });
-  } catch (error) {
-    if (error.message.includes('Unauthorized')) {
-      return Response.json({ error: error.message }, { status: 401 });
-    }
-    if (error.message.includes('Forbidden')) {
-      return Response.json({ error: error.message }, { status: 403 });
-    }
-    return Response.json({ error: error.message }, { status: 500 });
-  }
+// Serve fallback for invalid requests
+Deno.serve(async () => {
+  return Response.json({ error: 'This is a library module. Do not call directly.' }, { status: 400 });
 });

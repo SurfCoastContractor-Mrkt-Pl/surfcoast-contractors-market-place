@@ -2,6 +2,33 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Rate limiting: max 20 requests per hour per user
+    const now = new Date();
+    const oneHourAgo = new Date(now.getTime() - 3600000);
+    
+    const rateLimitRecords = await base44.asServiceRole.entities.RateLimitTracker.filter({
+      key: user.email,
+      limit_type: 'search_nearby_markets',
+      created_date: { $gte: oneHourAgo.toISOString() }
+    });
+    
+    if (rateLimitRecords?.length >= 20) {
+      return Response.json({ error: 'Rate limit exceeded. Max 20 searches per hour.' }, { status: 429 });
+    }
+    
+    await base44.asServiceRole.entities.RateLimitTracker.create({
+      key: user.email,
+      limit_type: 'search_nearby_markets',
+      request_count: 1
+    });
+
     const { location, radiusMiles = 15, marketType = 'all', thisWeekendOnly = false } = await req.json();
 
     if (!location) {
