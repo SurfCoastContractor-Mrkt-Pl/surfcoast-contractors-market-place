@@ -308,11 +308,11 @@ export default function Jobs() {
               onChange={(e) => setTypeFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
             >
-              <option value="">Contractor Type</option>
-              <option value="all">All Types</option>
-              <option value="trade_specific">Trade Specific</option>
-              <option value="general">General Contractor</option>
-              <option value="either">Either</option>
+              <option value="">Job Type</option>
+              <option value="all">All Job Types</option>
+              <option value="trade_specific">Trade Specialist Needed</option>
+              <option value="general">General Contractor Needed</option>
+              <option value="either">Any Contractor</option>
             </select>
             
             {/* Trade Filter */}
@@ -322,7 +322,7 @@ export default function Jobs() {
               onChange={(e) => setTradeFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
             >
-              <option value="">Trade Specialty</option>
+              <option value="">Trade Required</option>
               <option value="all">All Trades</option>
               {trades.map(trade => (
                 <option key={trade.id} value={trade.id}>{trade.name}</option>
@@ -336,7 +336,7 @@ export default function Jobs() {
               onChange={(e) => setUrgencyFilter(e.target.value)}
               style={{ padding: "8px 10px", border: `0.5px solid ${T.border}`, borderRadius: 6, fontSize: 13, color: T.dark, background: "#fafafa", cursor: "pointer" }}
             >
-              <option value="">Urgency</option>
+              <option value="">Job Urgency</option>
               <option value="all">All Urgencies</option>
               <option value="urgent">🔥 Urgent</option>
               <option value="high">High</option>
