@@ -23,13 +23,13 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Admin or internal automation only
+    // Admin, service role, or internal key allowed
     const internalKey = req.headers.get('x-internal-service-key');
     const isValidInternalCall = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
 
     if (!isValidInternalCall) {
       const user = await base44.auth.me().catch(() => null);
-      if (!user || user.role !== 'admin') {
+      if (!user || (user.role !== 'admin' && user.role !== 'service_role')) {
         return Response.json({ error: 'Forbidden: admin or internal access only' }, { status: 403 });
       }
     }
