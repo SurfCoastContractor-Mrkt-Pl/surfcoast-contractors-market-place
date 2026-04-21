@@ -3,28 +3,49 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const body = await req.json().catch(() => ({}));
 
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    // Support entity automations or authenticated user calls
+    const isAutomation = !!body?.event;
+    if (!isAutomation) {
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
     }
 
-    const { entity_type, entity_id, contractor_email } = await req.json();
+    let entity_type = body.entity_type;
+    let entity_id = body.entity_id;
+    let contractor_email = body.contractor_email;
+
+    if (body.event) {
+      // Extract from automation event
+      entity_type = body.event.entity_name;
+      entity_id = body.event.entity_id;
+      // For automations, contractor_email comes from the data if available
+      if (body.data?.contractor_email) {
+        contractor_email = body.data.contractor_email;
+      }
+    }
 
     if (!entity_type || !entity_id) {
       return Response.json({ error: 'Missing entity_type or entity_id' }, { status: 400 });
     }
 
-    // Check if contractor has access to Deal Syncing (silver or gold tier)
-    const tierRecords = await base44.asServiceRole.entities.ContractorTier.filter({
-      contractor_email: contractor_email || user.email,
-    });
+    const user = isAutomation ? null : await base44.auth.me();
 
-    const tierLevel = tierRecords?.[0]?.current_tier || 'bronze';
-    const hasDealSyncAccess = ['silver', 'gold'].includes(tierLevel);
+    // Check if contractor has access to Deal Syncing (silver or gold tier) — skip for automations
+    if (!isAutomation) {
+      const tierRecords = await base44.asServiceRole.entities.ContractorTier.filter({
+        contractor_email: contractor_email || user.email,
+      });
 
-    if (!hasDealSyncAccess) {
-      return Response.json({ error: 'Deal syncing requires silver or gold tier' }, { status: 403 });
+      const tierLevel = tierRecords?.[0]?.current_tier || 'bronze';
+      const hasDealSyncAccess = ['silver', 'gold'].includes(tierLevel);
+
+      if (!hasDealSyncAccess) {
+        return Response.json({ error: 'Deal syncing requires silver or gold tier' }, { status: 403 });
+      }
     }
 
     // Fetch the entity (Job or QuoteRequest)
