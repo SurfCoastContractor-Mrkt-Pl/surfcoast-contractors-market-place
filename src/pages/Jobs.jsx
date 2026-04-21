@@ -180,6 +180,13 @@ export default function Jobs() {
 
   const hasActiveFilters = activeSearchQuery || activeTypeFilter || activeTradeFilter || activeUrgencyFilter;
 
+  const clearOneFilter = (type) => {
+    if (type === 'search') { setSearchQuery(''); setActiveSearchQuery(''); }
+    if (type === 'type') { setTypeFilter(''); setActiveTypeFilter(''); }
+    if (type === 'trade') { setTradeFilter(''); setActiveTradeFilter(''); }
+    if (type === 'urgency') { setUrgencyFilter(''); setActiveUrgencyFilter(''); }
+  };
+
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", minHeight: "100vh", background: T.bg }}>
       {/* Header */}
@@ -310,52 +317,28 @@ export default function Jobs() {
           {hasActiveFilters && (
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 12, color: T.muted, fontStyle: "italic" }}>Active filters:</span>
-              {searchQuery && (
+              {activeSearchQuery && (
                 <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {searchQuery}
-                  <button
-                    aria-label={`Remove search filter: ${searchQuery}`}
-                    onClick={() => setSearchQuery('')}
-                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
-                  >
-                    ×
-                  </button>
+                  {activeSearchQuery}
+                  <button aria-label={`Remove search filter`} onClick={() => clearOneFilter('search')} style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}>×</button>
                 </div>
               )}
-              {typeFilter && typeFilter !== 'all' && (
+              {activeTypeFilter && activeTypeFilter !== 'all' && (
                 <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {typeFilter}
-                  <button
-                    aria-label={`Remove contractor type filter: ${typeFilter}`}
-                    onClick={() => setTypeFilter('')}
-                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
-                  >
-                    ×
-                  </button>
+                  {activeTypeFilter}
+                  <button aria-label={`Remove type filter`} onClick={() => clearOneFilter('type')} style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}>×</button>
                 </div>
               )}
-              {tradeFilter && tradeFilter !== 'all' && (
+              {activeTradeFilter && activeTradeFilter !== 'all' && (
                 <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {trades.find(t => t.id === tradeFilter)?.name}
-                  <button
-                    aria-label={`Remove trade filter: ${trades.find(t => t.id === tradeFilter)?.name}`}
-                    onClick={() => setTradeFilter('')}
-                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
-                  >
-                    ×
-                  </button>
+                  {trades.find(t => t.id === activeTradeFilter)?.name}
+                  <button aria-label={`Remove trade filter`} onClick={() => clearOneFilter('trade')} style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}>×</button>
                 </div>
               )}
-              {urgencyFilter && urgencyFilter !== 'all' && (
+              {activeUrgencyFilter && activeUrgencyFilter !== 'all' && (
                 <div style={{ display: "inline-flex", alignItems: "center", ...mono, fontSize: 11, background: T.orangeTint, border: `0.5px solid ${T.orangeBorder}`, color: T.orange, borderRadius: 4, padding: "4px 8px" }}>
-                  {urgencyFilter}
-                  <button
-                    aria-label={`Remove urgency filter: ${urgencyFilter}`}
-                    onClick={() => setUrgencyFilter('')}
-                    style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}
-                  >
-                    ×
-                  </button>
+                  {activeUrgencyFilter}
+                  <button aria-label={`Remove urgency filter`} onClick={() => clearOneFilter('urgency')} style={{ background: "none", border: "none", color: T.orange, cursor: "pointer", fontSize: 16, lineHeight: 1, marginLeft: 6, padding: 0 }}>×</button>
                 </div>
               )}
               <button onClick={clearFilters} style={{ ...mono, fontSize: 11, background: "transparent", border: "none", color: T.amber, cursor: "pointer", marginLeft: 4 }}>Clear all →</button>
