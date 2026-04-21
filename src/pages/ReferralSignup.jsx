@@ -660,9 +660,7 @@ export default function ReferralSignup() {
                </button>
                <button
                  onClick={() => {
-                   const baseUrl = getAppBaseUrl();
-                   const fromUrl = encodeURIComponent(`${baseUrl}/Referrals`);
-                   window.location.href = `${baseUrl}/login?from_url=${fromUrl}&ref=${referralCode}`;
+                   window.location.href = `/RoleChoice?ref=${referralCode}`;
                  }}
                  style={{
                    flex: 1,

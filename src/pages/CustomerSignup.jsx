@@ -256,7 +256,7 @@ export default function CustomerSignup() {
               Already have an account?{" "}
               <button
                 type="button"
-                onClick={() => base44.auth.redirectToLogin()}
+                onClick={() => window.location.href = '/RoleChoice'}
                 style={{ fontFamily: "monospace", fontWeight: 700, color: "#5C3500", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontStyle: "italic" }}
               >
                 Login here

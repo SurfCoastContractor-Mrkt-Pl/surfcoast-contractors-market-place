@@ -125,8 +125,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Redirect to login with callback to return to home/dashboard
-    base44.auth.redirectToLogin('/');
+    window.location.href = '/RoleChoice';
   };
 
   return (

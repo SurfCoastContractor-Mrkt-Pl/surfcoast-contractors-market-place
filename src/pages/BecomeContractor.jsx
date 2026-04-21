@@ -110,12 +110,12 @@ export default function BecomeContractor() {
     if (isPreview) { setAuthChecked(true); return; }
     base44.auth.me().then(user => {
       if (!user) {
-        base44.auth.redirectToLogin(window.location.pathname);
+        window.location.href = '/RoleChoice';
       } else {
         setAuthChecked(true);
       }
     }).catch(() => {
-      base44.auth.redirectToLogin(window.location.pathname);
+      window.location.href = '/RoleChoice';
     });
   }, [isPreview]);
 
