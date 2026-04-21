@@ -71,7 +71,7 @@ export default function Jobs() {
   const navigate = useNavigate();
   const { user } = useUserData();
   const userEmail = user?.email || null;
-  const { isContractor } = useUserProfiles(userEmail);
+  const { isContractor, isLoading: profilesLoading } = useUserProfiles(userEmail);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
@@ -233,7 +233,7 @@ export default function Jobs() {
                 {isContractor ? 'Respond to jobs for free. Pay 18% only when the job closes.' : 'Post a job or browse available listings'}
               </p>
             </div>
-            {isContractor !== true && (
+            {!profilesLoading && isContractor !== true && (
               <Link to={createPageUrl('PostJob')} style={{ textDecoration: "none", display: "inline-block" }}>
                 <button aria-label="Post a new job" style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 6, background: T.orangeBg, border: `1px solid ${T.orangeBorder}`, color: T.orange, fontWeight: 700, fontSize: 13, whiteSpace: "nowrap", ...mono, cursor: "pointer" }}>
                   <Plus className="w-5 h-5" aria-hidden="true" />
