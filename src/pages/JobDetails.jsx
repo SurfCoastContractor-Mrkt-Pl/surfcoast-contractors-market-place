@@ -161,8 +161,31 @@ export default function JobDetails() {
     return `From $${job.budget_min.toLocaleString()}`;
   };
 
+  const isDemo = job?.poster_email?.endsWith('@demo.surfcoast.com');
+
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Demo Frame */}
+      {isDemo && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999, pointerEvents: 'none',
+          border: '3px dashed #3b82f6',
+          boxSizing: 'border-box',
+        }}>
+          <div style={{
+            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+            background: '#3b82f6', color: '#fff',
+            fontSize: 11, fontWeight: 800, letterSpacing: '0.12em',
+            padding: '4px 18px',
+            borderRadius: '0 0 8px 8px',
+            pointerEvents: 'auto',
+            userSelect: 'none',
+            boxShadow: '0 2px 8px rgba(59,130,246,0.4)',
+          }}>
+            DEMO JOB — NOT REAL
+          </div>
+        </div>
+      )}
       {/* Header */}
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
