@@ -65,7 +65,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Payment processing not configured' }, { status: 500 });
     }
 
-    const stripe = new Stripe(stripeKey);
+    function initializeStripe() {
+      if (!stripeKey) {
+        throw new Error('STRIPE_SECRET_KEY environment variable is not configured');
+      }
+      return new Stripe(stripeKey);
+    }
+
+    const stripe = initializeStripe();
 
     try {
       // Create transfer from platform account to contractor's connected account

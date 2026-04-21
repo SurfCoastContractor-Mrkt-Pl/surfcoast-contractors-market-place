@@ -1,7 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 import Stripe from 'npm:stripe@17.5.0';
 
-const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
+function initializeStripe() {
+  const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+  if (!secretKey) {
+    throw new Error('STRIPE_SECRET_KEY environment variable is not configured');
+  }
+  return new Stripe(secretKey);
+}
+
 // Use STRIPE_WEBHOOK_SECRET (live key, not test or duplicate)
 const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
@@ -35,6 +42,17 @@ async function markEventProcessed(base44, eventId, eventType) {
 Deno.serve(async (req) => {
   const requestId = crypto.randomUUID();
   try {
+    let stripe;
+    try {
+      stripe = initializeStripe();
+    } catch (initErr) {
+      console.error('Stripe initialization failed:', initErr.message);
+      return Response.json({
+        error: 'Payment service unavailable',
+        code: 'SERVICE_UNAVAILABLE'
+      }, { status: 503 });
+    }
+
     const signature = req.headers.get('stripe-signature');
     const body = await req.text();
 

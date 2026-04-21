@@ -1,10 +1,27 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import Stripe from 'npm:stripe@17.5.0';
 
-const stripeClient = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+function initializeStripe() {
+  const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+  if (!secretKey) {
+    throw new Error('STRIPE_SECRET_KEY environment variable is not configured');
+  }
+  return new Stripe(secretKey);
+}
 
 Deno.serve(async (req) => {
   try {
+    let stripeClient;
+    try {
+      stripeClient = initializeStripe();
+    } catch (initErr) {
+      console.error('Stripe initialization failed:', initErr.message);
+      return Response.json({
+        error: 'Payment service unavailable',
+        code: 'SERVICE_UNAVAILABLE'
+      }, { status: 503 });
+    }
+
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
     if (!user || user.role !== 'admin') {

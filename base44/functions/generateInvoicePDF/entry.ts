@@ -179,7 +179,14 @@ Deno.serve(async (req) => {
     // Create Stripe checkout session for invoice payment
     let paymentLink = null;
     try {
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
+      function initializeStripe() {
+        const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
+        if (!secretKey) {
+          throw new Error('STRIPE_SECRET_KEY environment variable is not configured');
+        }
+        return new Stripe(secretKey);
+      }
+      const stripe = initializeStripe();
       const amountInCents = Math.round(totalAmount * 100);
       
       const session = await stripe.checkout.sessions.create({
