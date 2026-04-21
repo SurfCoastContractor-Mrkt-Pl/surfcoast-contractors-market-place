@@ -174,18 +174,16 @@ export default function LayoutMobileMenu({
 
               {/* CTA buttons */}
               <div className="mt-4 flex flex-col gap-2 px-2">
-                <button
-                  onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
-                  className="w-full py-3 rounded-xl border border-blue-200 text-blue-700 font-semibold text-sm hover:bg-blue-50 transition-colors"
-                >
-                  Log in
-                </button>
-                <button
-                  onClick={() => { handleNavClick(); base44.auth.redirectToLogin(); }}
-                  className="w-full py-3 rounded-xl gradient-brand text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-                >
-                  Get Started
-                </button>
+                <Link to="/RoleChoice" onClick={handleNavClick}>
+                  <div className="w-full py-3 rounded-xl border border-blue-200 text-blue-700 font-semibold text-sm hover:bg-blue-50 transition-colors text-center">
+                    Log in
+                  </div>
+                </Link>
+                <Link to="/RoleChoice" onClick={handleNavClick}>
+                  <div className="w-full py-3 rounded-xl gradient-brand text-white font-semibold text-sm hover:opacity-90 transition-opacity text-center">
+                    Get Started
+                  </div>
+                </Link>
               </div>
             </div>
           )}

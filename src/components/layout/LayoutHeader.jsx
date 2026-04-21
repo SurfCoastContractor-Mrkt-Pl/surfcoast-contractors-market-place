@@ -128,13 +128,13 @@ export default function LayoutHeader({
               </div>
               <div className="w-px h-5 bg-slate-200 mx-1"></div>
               <button
-                onClick={() => base44.auth.redirectToLogin()}
+                onClick={() => navigate('/RoleChoice')}
                 className="text-sm font-semibold text-slate-800 hover:text-blue-700 px-4 py-2 rounded-full border border-slate-300 hover:border-blue-300 transition-colors duration-150"
               >
                 Log in
               </button>
               <button
-                onClick={() => base44.auth.redirectToLogin()}
+                onClick={() => navigate('/RoleChoice')}
                 className="text-sm font-semibold text-white px-4 py-2 rounded-full gradient-brand hover:opacity-90 transition-opacity duration-150 shadow-sm"
               >
                 Get Started
@@ -210,7 +210,7 @@ export default function LayoutHeader({
         {/* Mobile: Get Started button (logged-out only) */}
         {!isLoggedIn && (
           <button
-            onClick={() => base44.auth.redirectToLogin()}
+            onClick={() => navigate('/RoleChoice')}
             className="lg:hidden ml-auto mr-2 text-xs font-semibold text-white px-3 py-1.5 rounded-full gradient-brand hover:opacity-90 transition-opacity flex-shrink-0"
           >
             Get Started

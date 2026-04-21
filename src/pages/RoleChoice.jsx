@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Briefcase, Hammer, ArrowRight } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 
 const T = {
   bg: "#EBEBEC",
@@ -149,7 +148,7 @@ export default function RoleChoice() {
         {/* Footer */}
         <div style={{ marginTop: 64, textAlign: "center", paddingTop: 32, borderTop: `1px solid ${T.border}` }}>
           <p style={{ fontSize: 13, color: T.muted, fontStyle: "italic", marginBottom: 16 }}>
-            Already signed up? <button onClick={() => base44.auth.redirectToLogin('/')} style={{ ...mono, fontSize: 13, background: "none", border: "none", color: T.orange, cursor: "pointer", textDecoration: "underline" }}>Log in here</button>
+            Already signed up? <button onClick={() => navigate('/')} style={{ ...mono, fontSize: 13, background: "none", border: "none", color: T.orange, cursor: "pointer", textDecoration: "underline" }}>Log in here</button>
           </p>
         </div>
       </div>
