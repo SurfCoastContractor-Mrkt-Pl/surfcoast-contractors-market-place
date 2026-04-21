@@ -19,6 +19,23 @@ const CATEGORIES_SWAP_MEET = [
   'Clothing & Accessories', 'Collectibles', 'Handmade Crafts', 'Vintage & Antiques', 'Jewelry', 'Misc', 'Other'
 ];
 
+const FLEA_MARKET_GOODS = [
+  // Antiques & Collectibles
+  'Antique Furniture', 'Vintage Clocks & Watches', 'Antique China & Porcelain', 'Vintage Glassware', 'Coins & Currency',
+  'Stamps & Postcards', 'Sports Memorabilia', 'Comic Books', 'Vintage Magazines', 'Trading Cards',
+  'Vinyl Records', 'Vintage Cameras', 'Military Memorabilia', 'Pottery & Ceramics', 'Vintage Toys',
+  // Clothing & Accessories
+  'Vintage Clothing', 'Used Clothing', 'Shoes & Boots', 'Handbags & Purses', 'Hats & Caps',
+  'Belts & Wallets', 'Sunglasses', 'Scarves & Wraps', 'Jewelry & Accessories',
+  // Electronics & Tech
+  'Electronics', 'Vintage Electronics', 'Tools & Power Tools', 'Video Games & Consoles',
+  // Home & Garden
+  'Furniture', 'Home Decor', 'Kitchenware', 'Art & Paintings', 'Rugs & Tapestries',
+  'Books & Media', 'DVDs & VHS', 'Candles & Soaps',
+  // Misc
+  'Handmade Crafts', 'Toys & Games', 'Sporting Goods', 'Musical Instruments', 'Other',
+];
+
 const CATEGORIES_FLEA_MARKET = [
   'Clothing & Accessories', 'Electronics', 'Furniture', 'Vintage & Antiques', 'Collectibles',
   'Toys & Games', 'Books & Media', 'Tools & Hardware', 'Jewelry', 'Home Decor', 'Handmade Crafts', 'Other'
@@ -86,6 +103,8 @@ export default function MarketShopSignup() {
   });
   const [createdShop, setCreatedShop] = useState(null);
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
+  const [fleaCustomItem, setFleaCustomItem] = useState('');
+  const [fleaDropdownOpen, setFleaDropdownOpen] = useState(false);
 
   const requiredFields = ['shop_name', 'owner_name', 'email', 'phone', 'city', 'state', 'zip', 'description'];
   const { isFieldInvalid, markFieldTouched, touched } = useRequiredFieldValidation(formData, requiredFields);
@@ -628,23 +647,127 @@ export default function MarketShopSignup() {
             </FormFieldWrapper>
 
             {/* Categories */}
-            <div>
-              <label className="block text-xs sm:text-sm font-semibold text-slate-900 mb-2 sm:mb-3">Categories</label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                {CATEGORIES.map(cat => (
-                  <label key={cat} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value={cat}
-                      checked={formData.categories.includes(cat)}
-                      onChange={handleFormChange}
-                      className="rounded border-slate-300"
-                    />
-                    <span className="text-sm text-slate-700">{cat}</span>
-                  </label>
-                ))}
+            {type === 'flea_market' ? (
+              <div>
+                <label className="block text-xs sm:text-sm font-semibold text-slate-900 mb-1">What goods will you be selling?</label>
+                <p className="text-xs text-slate-500 mb-3">Select all that apply. Add your own at the bottom.</p>
+
+                {/* Selected tags */}
+                {formData.categories.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {formData.categories.map(cat => (
+                      <span
+                        key={cat}
+                        style={{ background: '#ede9fe', color: '#7c3aed', border: '1px solid #c4b5fd', borderRadius: 999, padding: '3px 10px', fontSize: 12, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}
+                      >
+                        {cat}
+                        <button
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, categories: prev.categories.filter(c => c !== cat) }))}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7c3aed', fontSize: 14, lineHeight: 1, padding: 0 }}
+                        >×</button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Dropdown */}
+                <div style={{ position: 'relative' }}>
+                  <button
+                    type="button"
+                    onClick={() => setFleaDropdownOpen(v => !v)}
+                    style={{ width: '100%', textAlign: 'left', padding: '9px 12px', border: '1px solid #d1d5db', borderRadius: 8, background: '#fff', fontSize: 14, color: '#374151', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  >
+                    <span style={{ color: formData.categories.length ? '#374151' : '#9ca3af' }}>
+                      {formData.categories.length ? `${formData.categories.length} item${formData.categories.length > 1 ? 's' : ''} selected` : 'Select items from the list...'}
+                    </span>
+                    <span style={{ fontSize: 10, color: '#9ca3af' }}>{fleaDropdownOpen ? '▲' : '▼'}</span>
+                  </button>
+
+                  {fleaDropdownOpen && (
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50, background: '#fff', border: '1px solid #d1d5db', borderRadius: 8, boxShadow: '0 8px 24px rgba(0,0,0,0.12)', maxHeight: 280, overflowY: 'auto', marginTop: 4 }}>
+                      {FLEA_MARKET_GOODS.filter(g => g !== 'Other').map(item => (
+                        <label
+                          key={item}
+                          style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', background: formData.categories.includes(item) ? '#f5f3ff' : 'transparent', borderBottom: '1px solid #f3f4f6' }}
+                          onMouseEnter={e => { if (!formData.categories.includes(item)) e.currentTarget.style.background = '#fafafa'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = formData.categories.includes(item) ? '#f5f3ff' : 'transparent'; }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.categories.includes(item)}
+                            onChange={e => {
+                              setFormData(prev => ({
+                                ...prev,
+                                categories: e.target.checked
+                                  ? [...prev.categories, item]
+                                  : prev.categories.filter(c => c !== item)
+                              }));
+                            }}
+                            style={{ accentColor: '#7c3aed', width: 15, height: 15, flexShrink: 0 }}
+                          />
+                          <span style={{ fontSize: 13, color: '#1f2937' }}>{item}</span>
+                        </label>
+                      ))}
+                      {/* Other — custom entry at bottom */}
+                      <div style={{ padding: '10px 14px', borderTop: '2px solid #ede9fe', background: '#faf5ff' }}>
+                        <p style={{ fontSize: 12, fontWeight: 600, color: '#7c3aed', marginBottom: 6 }}>Other — add your own item</p>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <input
+                            type="text"
+                            value={fleaCustomItem}
+                            onChange={e => setFleaCustomItem(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const val = fleaCustomItem.trim();
+                                if (val && !formData.categories.includes(val)) {
+                                  setFormData(prev => ({ ...prev, categories: [...prev.categories, val] }));
+                                }
+                                setFleaCustomItem('');
+                              }
+                            }}
+                            placeholder="e.g. Vintage Lamps"
+                            style={{ flex: 1, padding: '6px 10px', border: '1px solid #c4b5fd', borderRadius: 6, fontSize: 13, outline: 'none' }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const val = fleaCustomItem.trim();
+                              if (val && !formData.categories.includes(val)) {
+                                setFormData(prev => ({ ...prev, categories: [...prev.categories, val] }));
+                              }
+                              setFleaCustomItem('');
+                            }}
+                            style={{ padding: '6px 14px', background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <label className="block text-xs sm:text-sm font-semibold text-slate-900 mb-2 sm:mb-3">Categories</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                  {CATEGORIES.map(cat => (
+                    <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        value={cat}
+                        checked={formData.categories.includes(cat)}
+                        onChange={handleFormChange}
+                        className="rounded border-slate-300"
+                      />
+                      <span className="text-sm text-slate-700">{cat}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Photo Gallery Upload */}
             <div>
