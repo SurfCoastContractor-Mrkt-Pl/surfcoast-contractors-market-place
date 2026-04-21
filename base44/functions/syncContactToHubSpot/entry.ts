@@ -20,7 +20,8 @@ Deno.serve(async (req) => {
     let entity_type = body.entity_type;
     let entity_id = body.entity_id;
 
-    if (!entity_type && body.event?.entity_name) {
+    if (body.event) {
+      // Extract from automation event
       entity_type = body.event.entity_name;
       entity_id = body.event.entity_id;
     }
