@@ -54,10 +54,10 @@ function HeroPlatformCard() {
   const block = (borderColor, labelColor, labelText, tiles) => (
     <div style={{ borderLeft: `3px solid ${borderColor}`, paddingLeft: 12, marginBottom: 14 }}>
       <div style={{ ...mono, fontSize: 10, color: labelColor, marginBottom: 8, letterSpacing: "0.06em" }}>{labelText}</div>
-      {tiles.map(({ text, tinted }) => (
-        <div key={text} style={{ background: tinted ? T.amberTint : T.bg, border: `0.5px solid ${tinted ? "#D9B88A" : T.border}`, borderRadius: 6, padding: "6px 10px", fontSize: 12, color: tinted ? T.amber : T.sub, marginBottom: 5, ...mono, transition: "box-shadow 0.2s ease", cursor: "default" }} {...hoverGlowSm}>
+      {tiles.map(({ text, tinted, to }) => (
+        <Link key={text} to={to} style={{ display: "block", textDecoration: "none", background: tinted ? T.amberTint : T.bg, border: `0.5px solid ${tinted ? "#D9B88A" : T.border}`, borderRadius: 6, padding: "6px 10px", fontSize: 12, color: tinted ? T.amber : T.sub, marginBottom: 5, ...mono, transition: "box-shadow 0.2s ease", cursor: "pointer" }} {...hoverGlowSm}>
           {text}
-        </div>
+        </Link>
       ))}
     </div>
   );
@@ -69,12 +69,12 @@ function HeroPlatformCard() {
         <span style={{ ...mono, fontSize: 11, color: T.amber, flexShrink: 0, marginLeft: 8 }}>● live</span>
       </div>
       {block(T.border, T.muted, "SURFCOAST MARKETPLACE", [
-        { text: "Service Side — Clients · Entrepreneurs", tinted: false },
-        { text: "Market Shop — Vendors · Consumers", tinted: false },
+        { text: "Service Side — Clients · Entrepreneurs", tinted: false, to: "/SearchContractors" },
+        { text: "Market Shop — Vendors · Consumers", tinted: false, to: "/ConsumerHub" },
       ])}
       {block(T.amber, T.amber, "WAVE OS — STANDALONE SOFTWARE BRAND", [
-        { text: "WAVE TIERS, WAVEshop OS", tinted: true },
-        { text: "What is WAVE OS?", tinted: true },
+        { text: "WAVE TIERS, WAVEshop OS", tinted: true, to: "/Pricing" },
+        { text: "What is WAVE OS?", tinted: true, to: "/wave-os-details" },
       ])}
       <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono, transition: "box-shadow 0.2s ease", wordBreak: "break-word" }} {...hoverGlowSm}>
         Logic gate: consumers cannot access service side
