@@ -69,16 +69,19 @@ Deno.serve(async (req) => {
     doc.text(`Invoice ID: ${scope_id.substring(0, 8).toUpperCase()}`, margin, yPos);
     yPos += 12;
 
+    // Safe text helper — jsPDF throws if value is null/undefined
+    const safeText = (val) => (val != null && val !== '') ? String(val) : 'N/A';
+
     // Customer section
     doc.setFontSize(11);
     doc.setTextColor(51, 51, 51);
     doc.text('BILL TO:', margin, yPos);
     yPos += 7;
     doc.setFontSize(10);
-    doc.text(scopeData.customer_name, margin, yPos);
+    doc.text(safeText(scopeData.client_name || scopeData.customer_name), margin, yPos);
     yPos += 5;
     doc.setTextColor(100, 100, 100);
-    doc.text(scopeData.customer_email, margin, yPos);
+    doc.text(safeText(scopeData.client_email || scopeData.customer_email), margin, yPos);
     yPos += 12;
 
     // Contractor section
@@ -87,10 +90,10 @@ Deno.serve(async (req) => {
     doc.text('FROM:', margin, yPos);
     yPos += 7;
     doc.setFontSize(10);
-    doc.text(scopeData.contractor_name, margin, yPos);
+    doc.text(safeText(scopeData.contractor_name), margin, yPos);
     yPos += 5;
     doc.setTextColor(100, 100, 100);
-    doc.text(scopeData.contractor_email, margin, yPos);
+    doc.text(safeText(scopeData.contractor_email), margin, yPos);
     yPos += 15;
 
     // Job details
@@ -101,7 +104,7 @@ Deno.serve(async (req) => {
     
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.text(`Job: ${scopeData.job_title}`, margin, yPos);
+    doc.text(`Job: ${safeText(scopeData.job_title)}`, margin, yPos);
     yPos += 5;
     
     if (scopeData.agreed_work_date) {
@@ -109,7 +112,7 @@ Deno.serve(async (req) => {
       yPos += 5;
     }
 
-    doc.text(`Description: ${scopeData.scope_summary || 'N/A'}`, margin, yPos, { maxWidth: pageWidth - 2 * margin });
+    doc.text(`Description: ${safeText(scopeData.scope_summary)}`, margin, yPos, { maxWidth: pageWidth - 2 * margin });
     yPos += 20;
 
     // Line items table
@@ -216,23 +219,32 @@ Deno.serve(async (req) => {
       // Continue with email even if Stripe fails
     }
 
+    const clientName = scopeData.client_name || scopeData.customer_name || 'Client';
+    const clientEmail = scopeData.client_email || scopeData.customer_email;
+    const contractorName = scopeData.contractor_name || 'Contractor';
+    const jobTitle = scopeData.job_title || 'Completed Job';
+
     // Send email to client with payment link
     const paymentSection = paymentLink 
       ? `\n\nPay your invoice now: ${paymentLink}\n\nYour payment is secured by Stripe.`
       : '';
     
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: scopeData.customer_email,
-      subject: `Invoice for ${scopeData.job_title} - ${invoiceDate}`,
-      body: `Hello ${scopeData.customer_name},\n\nThank you for using SurfCoast! Your job with ${scopeData.contractor_name} is now complete.\n\nYour invoice is attached. Please review it and ensure all work meets your expectations.${paymentSection}\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
-    });
+    if (clientEmail) {
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: clientEmail,
+        subject: `Invoice for ${jobTitle} - ${invoiceDate}`,
+        body: `Hello ${clientName},\n\nThank you for using SurfCoast! Your job with ${contractorName} is now complete.\n\nYour invoice is attached. Please review it and ensure all work meets your expectations.${paymentSection}\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
+      });
+    }
 
     // Send email to contractor
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: scopeData.contractor_email,
-      subject: `Invoice Generated for ${scopeData.job_title} - ${invoiceDate}`,
-      body: `Hello ${scopeData.contractor_name},\n\nYour job "${scopeData.job_title}" has been marked as complete. Your invoice has been generated and sent to the client.\n\nInvoice Details:\n- Client: ${scopeData.customer_name}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
-    });
+    if (scopeData.contractor_email) {
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: scopeData.contractor_email,
+        subject: `Invoice Generated for ${jobTitle} - ${invoiceDate}`,
+        body: `Hello ${contractorName},\n\nYour job "${jobTitle}" has been marked as complete. Your invoice has been generated and sent to the client.\n\nInvoice Details:\n- Client: ${clientName}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
+      });
+    }
 
     console.log(`Invoice generated and sent for scope: ${scope_id}`);
 
