@@ -8,13 +8,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
  */
 Deno.serve(async (req) => {
   try {
-    // Validate internal service key — entity automations must originate from the platform
-    const internalKey = req.headers.get('x-internal-key');
-    if (!internalKey || internalKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
-      console.warn('[AUTO_UNLOCK] Rejected request with invalid or missing internal key');
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const base44 = createClientFromRequest(req);
     const body = await req.json();
     const { data, event } = body;
