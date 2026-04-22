@@ -137,13 +137,14 @@ Deno.serve(async (req) => {
     yPos += 2;
 
     // Table row
+    const costAmount = scopeData.cost_amount || 0;
     const description = scopeData.cost_type === 'hourly'
-      ? `Labor (${scopeData.estimated_hours} hours @ $${scopeData.cost_amount.toFixed(2)}/hr)`
+      ? `Labor (${scopeData.estimated_hours || 0} hours @ $${costAmount.toFixed(2)}/hr)`
       : 'Scope of Work';
 
     doc.setTextColor(100, 100, 100);
     doc.text(description, margin + 2, yPos + 6);
-    doc.text(`$${scopeData.cost_amount.toFixed(2)}`, margin + colWidth + 2, yPos + 6);
+    doc.text(`$${costAmount.toFixed(2)}`, margin + colWidth + 2, yPos + 6);
     doc.text(`$${totalAmount.toFixed(2)}`, margin + 2 * colWidth + 2, yPos + 6);
     
     yPos += rowHeight;
@@ -167,10 +168,22 @@ Deno.serve(async (req) => {
 
     // Save PDF
     const pdfBytes = doc.output('arraybuffer');
-    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const pdfFile = new File([pdfBytes], `invoice-${scope_id.substring(0, 8)}.pdf`, { type: 'application/pdf' });
 
-    // Upload PDF
-    const uploadResult = await base44.asServiceRole.integrations.Core.UploadFile({ file: pdfBlob });
+    // Upload PDF via FormData (SDK UploadFile doesn't handle Blob/File in Deno correctly)
+    const appId = Deno.env.get('BASE44_APP_ID');
+    const formData = new FormData();
+    formData.append('file', pdfFile);
+    const uploadResponse = await fetch(`https://api.base44.com/api/apps/${appId}/integrations/Core/UploadFile`, {
+      method: 'POST',
+      headers: { 'x-api-key': req.headers.get('x-api-key') || '' },
+      body: formData,
+    });
+    if (!uploadResponse.ok) {
+      const errText = await uploadResponse.text();
+      throw new Error(`PDF upload failed: ${errText}`);
+    }
+    const uploadResult = await uploadResponse.json();
     const pdfUrl = uploadResult.file_url;
 
     // Create Stripe checkout session for invoice payment
