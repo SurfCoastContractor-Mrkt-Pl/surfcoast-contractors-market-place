@@ -18,6 +18,40 @@ Deno.serve(async (req) => {
     // Detect entity automation payload: { event, data, automation }
     const isAutomation = !!(body.event && body.event.type);
 
+    // For direct (non-automation) calls, require either an internal service key OR
+    // an authenticated user. This prevents unauthenticated flood/spam attacks on the
+    // error log entity while keeping the function usable from the app's own frontend.
+    if (!isAutomation) {
+      const internalKey = req.headers.get('x-internal-service-key') || body.internal_service_key;
+      const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+      const hasValidServiceKey = validInternalKey && internalKey === validInternalKey;
+
+      if (!hasValidServiceKey) {
+        const user = await base44.auth.me().catch(() => null);
+        if (!user) {
+          // Rate-limit anonymous callers: accept but truncate message to prevent data bloat
+          // and do NOT send admin alert emails for unauthenticated submissions
+          if (!body.message || !body.level || !body.category) {
+            return Response.json({ error: 'Missing required error fields' }, { status: 400 });
+          }
+          // Only allow debug/info/warning from anonymous — block critical spam
+          const safeLevel = ['debug', 'info', 'warning'].includes(body.level) ? body.level : 'info';
+          await base44.asServiceRole.entities.ErrorLog.create({
+            message: String(body.message).slice(0, 500),
+            level: safeLevel,
+            category: VALID_CATEGORIES.includes(body.category) ? body.category : 'unknown',
+            stack: '',
+            context: {},
+            user_id: 'anonymous',
+            url: String(body.url || '').slice(0, 200),
+            user_agent: String(body.userAgent || body.user_agent || '').slice(0, 200),
+            resolved: false
+          });
+          return Response.json({ success: true, logged: true });
+        }
+      }
+    }
+
     let errorData;
     if (isAutomation) {
       // For entity automations, build a synthetic log entry from the event

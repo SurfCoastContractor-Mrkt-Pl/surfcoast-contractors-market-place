@@ -3,10 +3,23 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-
-    // This function is called by scheduled automations and internal services — no auth required.
-
     const body = await req.json().catch(() => ({}));
+
+    // Allow: (1) automation event payload, (2) internal service key, (3) admin user
+    const isAutomation = !!(body.event && body.event.type);
+    const internalKey = req.headers.get('x-internal-service-key') || body.internal_service_key;
+    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+    const hasValidServiceKey = validInternalKey && internalKey === validInternalKey;
+
+    if (!isAutomation && !hasValidServiceKey) {
+      // Fall back to checking for an authenticated admin user
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        console.warn('[updateLeaderboards] Unauthorized access attempt blocked');
+        return Response.json({ error: 'Forbidden: Admin access or internal service key required' }, { status: 403 });
+      }
+    }
+
     const { gameId } = body;
 
     // If a specific gameId is provided, process just that game; otherwise process all games
