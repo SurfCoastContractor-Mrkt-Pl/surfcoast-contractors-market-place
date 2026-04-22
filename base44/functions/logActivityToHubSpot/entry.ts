@@ -103,7 +103,7 @@ Deno.serve(async (req) => {
     const notePayload = {
       properties: {
         hs_note_body: activityBody,
-        hs_note_type: activity_type,
+        hs_timestamp: new Date().toISOString(),
       },
     };
 
