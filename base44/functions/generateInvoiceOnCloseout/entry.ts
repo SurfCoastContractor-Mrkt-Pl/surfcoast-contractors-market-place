@@ -8,13 +8,18 @@ Deno.serve(async (req) => {
 
     const { event, data } = body;
 
-    // Authorization: internal automation only. Require valid internal service key.
-    const internalKey = req.headers.get('x-internal-service-key');
-    const expectedKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    
-    if (!expectedKey || !internalKey || internalKey !== expectedKey) {
-      console.warn('Unauthorized invoice generation attempt - invalid or missing service key');
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    // Authorization: allow entity automations or admin users
+    const isAutomation = !!event;
+    if (!isAutomation) {
+      const internalKey = req.headers.get('x-internal-key');
+      const validServiceKey = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+      if (!validServiceKey) {
+        const user = await base44.auth.me();
+        if (!user || user.role !== 'admin') {
+          console.warn('Unauthorized invoice generation attempt');
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      }
     }
 
     // Validate this is a proper automation payload
