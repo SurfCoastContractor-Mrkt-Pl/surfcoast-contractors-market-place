@@ -24,42 +24,40 @@ Deno.serve(async (req) => {
       // Extract from automation event
       entity_type = body.event.entity_name;
       entity_id = body.event.entity_id;
+      console.log('[syncContactToHubSpot] Automation payload:', JSON.stringify({ entity_type, entity_id, event_type: body.event.type }));
     }
 
     if (!entity_type || !entity_id) {
-      return Response.json({ error: 'Missing entity_type or entity_id' }, { status: 400 });
+      console.error('[syncContactToHubSpot] Missing entity_type or entity_id. Full body:', JSON.stringify(body));
+      return Response.json({ error: 'Missing entity_type or entity_id', received: { entity_type, entity_id } }, { status: 400 });
     }
 
     // Fetch the entity (Contractor or CustomerProfile)
     let contactData = null;
 
     if (entity_type === 'Contractor') {
-      const contractors = await base44.asServiceRole.entities.Contractor.filter({ id: entity_id });
-      if (contractors?.length) {
-        const contractor = contractors[0];
+      // Use data from automation payload if available, otherwise fetch
+      const contractor = body.data || (await base44.asServiceRole.entities.Contractor.get(entity_id));
+      if (contractor) {
         contactData = {
           firstname: contractor.name?.split(' ')[0] || '',
           lastname: contractor.name?.split(' ').slice(1).join(' ') || '',
           email: contractor.email,
-          phone: contractor.phone,
+          phone: contractor.phone || '',
           hs_lead_status: 'contractor',
-          custom_contractor_type: contractor.contractor_type,
-          custom_location: contractor.location,
-          custom_years_experience: contractor.years_experience,
+          custom_location: contractor.location || '',
         };
       }
     } else if (entity_type === 'CustomerProfile') {
-      const customers = await base44.asServiceRole.entities.CustomerProfile.filter({ id: entity_id });
-      if (customers?.length) {
-        const customer = customers[0];
+      const customer = body.data || (await base44.asServiceRole.entities.CustomerProfile.get(entity_id));
+      if (customer) {
         contactData = {
           firstname: customer.full_name?.split(' ')[0] || '',
           lastname: customer.full_name?.split(' ').slice(1).join(' ') || '',
           email: customer.email,
-          phone: customer.phone,
+          phone: customer.phone || '',
           hs_lead_status: 'customer',
-          custom_property_type: customer.property_type,
-          custom_location: customer.location,
+          custom_location: customer.location || '',
         };
       }
     }
@@ -71,28 +69,33 @@ Deno.serve(async (req) => {
     // Get HubSpot access token
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('hubspot');
 
-    // Create or update contact in HubSpot
-    const response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
+    // Upsert contact in HubSpot by email (creates or updates)
+    const response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/upsert`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        properties: contactData,
+        inputs: [{
+          idProperty: 'email',
+          properties: contactData,
+        }],
       }),
     });
 
     if (!response.ok) {
       const error = await response.text();
       console.error('HubSpot API Error:', error);
-      return Response.json({ error: 'Failed to sync contact to HubSpot' }, { status: 500 });
+      return Response.json({ error: 'Failed to sync contact to HubSpot', details: error }, { status: 500 });
     }
 
     const result = await response.json();
+    const contact = result.results?.[0];
     return Response.json({
       success: true,
-      hubspot_contact_id: result.id,
+      hubspot_contact_id: contact?.id,
+      status: contact?.status,
       message: 'Contact synced to HubSpot',
     });
   } catch (error) {
