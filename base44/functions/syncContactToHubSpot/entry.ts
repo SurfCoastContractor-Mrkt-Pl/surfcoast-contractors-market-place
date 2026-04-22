@@ -69,33 +69,54 @@ Deno.serve(async (req) => {
     // Get HubSpot access token
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('hubspot');
 
-    // Upsert contact in HubSpot by email (creates or updates)
-    const response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/batch/upsert`, {
+    // Try to create contact; if it already exists (409), update it instead
+    const createResponse = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        inputs: [{
-          idProperty: 'email',
-          properties: contactData,
-        }],
-      }),
+      body: JSON.stringify({ properties: contactData }),
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('HubSpot API Error:', error);
-      return Response.json({ error: 'Failed to sync contact to HubSpot', details: error }, { status: 500 });
+    let result;
+    if (createResponse.status === 409) {
+      // Contact already exists — fetch their ID then patch
+      const searchResponse = await fetch(
+        `https://api.hubapi.com/crm/v3/objects/contacts/${encodeURIComponent(contactData.email)}?idProperty=email`,
+        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+      );
+      if (!searchResponse.ok) {
+        const err = await searchResponse.text();
+        console.error('HubSpot lookup error:', err);
+        return Response.json({ error: 'Failed to look up existing HubSpot contact', details: err }, { status: 500 });
+      }
+      const existing = await searchResponse.json();
+      const patchResponse = await fetch(
+        `https://api.hubapi.com/crm/v3/objects/contacts/${existing.id}`,
+        {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ properties: contactData }),
+        }
+      );
+      if (!patchResponse.ok) {
+        const err = await patchResponse.text();
+        console.error('HubSpot patch error:', err);
+        return Response.json({ error: 'Failed to update HubSpot contact', details: err }, { status: 500 });
+      }
+      result = await patchResponse.json();
+    } else if (!createResponse.ok) {
+      const err = await createResponse.text();
+      console.error('HubSpot API Error:', err);
+      return Response.json({ error: 'Failed to sync contact to HubSpot', details: err }, { status: 500 });
+    } else {
+      result = await createResponse.json();
     }
 
-    const result = await response.json();
-    const contact = result.results?.[0];
     return Response.json({
       success: true,
-      hubspot_contact_id: contact?.id,
-      status: contact?.status,
+      hubspot_contact_id: result.id,
       message: 'Contact synced to HubSpot',
     });
   } catch (error) {
