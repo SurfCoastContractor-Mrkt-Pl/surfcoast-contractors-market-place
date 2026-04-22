@@ -1,126 +1,93 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json().catch(() => ({}));
 
-    // Support entity automations or authenticated user calls
+    // Allow entity automations, INTERNAL_SERVICE_KEY, or admin users
     const isAutomation = !!body?.event;
-    if (!isAutomation) {
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!isAutomation && !validServiceKey) {
       const user = await base44.auth.me();
-      if (!user) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
 
     let entity_type = body.entity_type;
     let entity_id = body.entity_id;
-    let contractor_email = body.contractor_email;
 
     if (body.event) {
-      // Extract from automation event
       entity_type = body.event.entity_name;
       entity_id = body.event.entity_id;
-      // For automations, contractor_email comes from the data if available
-      if (body.data?.contractor_email) {
-        contractor_email = body.data.contractor_email;
-      }
+      console.log('[syncDealToHubSpot] Automation payload:', JSON.stringify({ entity_type, entity_id, event_type: body.event.type }));
     }
 
     if (!entity_type || !entity_id) {
-      return Response.json({ error: 'Missing entity_type or entity_id' }, { status: 400 });
+      console.error('[syncDealToHubSpot] Missing entity_type or entity_id. Full body:', JSON.stringify(body));
+      return Response.json({ error: 'Missing entity_type or entity_id', received: { entity_type, entity_id } }, { status: 400 });
     }
 
-    const user = isAutomation ? null : await base44.auth.me();
-
-    // Check if contractor has access to Deal Syncing (silver or gold tier) — skip for automations
-    if (!isAutomation) {
-      const tierRecords = await base44.asServiceRole.entities.ContractorTier.filter({
-        contractor_email: contractor_email || user.email,
-      });
-
-      const tierLevel = tierRecords?.[0]?.current_tier || 'bronze';
-      const hasDealSyncAccess = ['silver', 'gold'].includes(tierLevel);
-
-      if (!hasDealSyncAccess) {
-        return Response.json({ error: 'Deal syncing requires silver or gold tier' }, { status: 403 });
-      }
-    }
-
-    // Fetch the entity (Job or QuoteRequest)
+    // Fetch the entity using service role (no user session in automations)
     let dealData = null;
     let contactEmail = null;
 
     if (entity_type === 'Job') {
-      const jobs = await base44.entities.Job.filter({ id: entity_id });
-      if (jobs?.length) {
-        const job = jobs[0];
+      const job = body.data || (await base44.asServiceRole.entities.Job.get(entity_id));
+      if (job) {
         contactEmail = job.poster_email;
         dealData = {
-          dealname: job.title,
+          dealname: job.title || 'Untitled Job',
           amount: ((job.budget_min || 0) + (job.budget_max || 0)) / 2,
           dealstage: 'qualifiedtobuy',
-          custom_job_description: job.description,
-          custom_location: job.location,
-          custom_budget_min: job.budget_min,
-          custom_budget_max: job.budget_max,
-          custom_urgency: job.urgency,
+          description: job.description || '',
         };
       }
     } else if (entity_type === 'QuoteRequest') {
-      const quotes = await base44.asServiceRole.entities.QuoteRequest.filter({ id: entity_id });
-      if (quotes?.length) {
-        const quote = quotes[0];
-        contactEmail = quote.customer_email;
+      const quote = body.data || (await base44.asServiceRole.entities.QuoteRequest.get(entity_id));
+      if (quote) {
+        contactEmail = quote.client_email || quote.customer_email;
         dealData = {
-          dealname: quote.job_title,
+          dealname: quote.job_title || 'Untitled Quote',
           amount: quote.contractor_estimate || 0,
-          dealstage: 'negotiation/review',
-          custom_quote_description: quote.work_description,
-          custom_contractor_estimate: quote.contractor_estimate,
-          custom_quote_status: quote.status,
+          dealstage: 'presentationscheduled',
+          description: quote.work_description || '',
         };
       }
     }
 
-    if (!dealData || !contactEmail) {
-      return Response.json({ error: 'Entity or contact email not found' }, { status: 404 });
+    if (!dealData) {
+      return Response.json({ error: 'Entity not found or unsupported entity type' }, { status: 404 });
     }
 
     // Get HubSpot access token
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('hubspot');
 
-    // First, find the associated contact in HubSpot by email
-    const contactResponse = await fetch(
-      `https://api.hubapi.com/crm/v3/objects/contacts?limit=1&after=0&property=email&filterGroups=%5B%7B%22filters%22:%5B%7B%22propertyName%22:%22email%22,%22operator%22:%22EQ%22,%22value%22:%22${encodeURIComponent(contactEmail)}%22%7D%5D%7D%5D`,
-      {
-        headers: { 'Authorization': `Bearer ${accessToken}` },
-      }
-    );
-
+    // Try to find associated HubSpot contact by email
     let contactId = null;
-    if (contactResponse.ok) {
-      const contactResult = await contactResponse.json();
-      if (contactResult.results?.length) {
-        contactId = contactResult.results[0].id;
+    if (contactEmail) {
+      const contactResponse = await fetch(
+        `https://api.hubapi.com/crm/v3/objects/contacts/${encodeURIComponent(contactEmail)}?idProperty=email`,
+        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+      );
+      if (contactResponse.ok) {
+        const contact = await contactResponse.json();
+        contactId = contact.id;
       }
+    }
+
+    // Build deal payload
+    const dealPayload = { properties: dealData };
+    if (contactId) {
+      dealPayload.associations = [{
+        to: { id: contactId },
+        types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 3 }],
+      }];
     }
 
     // Create deal in HubSpot
-    const dealPayload = {
-      properties: dealData,
-    };
-
-    if (contactId) {
-      dealPayload.associations = [
-        {
-          types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 3 }],
-          id: contactId,
-        },
-      ];
-    }
-
     const dealResponse = await fetch('https://api.hubapi.com/crm/v3/objects/deals', {
       method: 'POST',
       headers: {
@@ -133,7 +100,7 @@ Deno.serve(async (req) => {
     if (!dealResponse.ok) {
       const error = await dealResponse.text();
       console.error('HubSpot API Error:', error);
-      return Response.json({ error: 'Failed to sync deal to HubSpot' }, { status: 500 });
+      return Response.json({ error: 'Failed to sync deal to HubSpot', details: error }, { status: 500 });
     }
 
     const result = await dealResponse.json();
