@@ -1,80 +1,55 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// Scheduled automation — runs nightly at 2 AM without user context.
 Deno.serve(async (req) => {
-  if (req.method !== 'POST') {
-    return Response.json({ error: 'Method not allowed' }, { status: 405 });
-  }
-
   try {
     const base44 = createClientFromRequest(req);
 
-    // Scheduled automation — runs without user context. Uses asServiceRole for all DB ops.
+    // Fetch all Equipment records using service role (no user auth needed)
+    const equipment = await base44.asServiceRole.entities.Equipment.list('', 1000);
 
-    // Get all listings with stock at or below threshold
-    const listings = await base44.asServiceRole.entities.MarketListing.filter({});
-
-    if (!listings || listings.length === 0) {
-      return Response.json({
-        success: true,
-        message: 'No listings found',
-        checked: 0,
-        alerted: 0,
-      });
+    if (!equipment || equipment.length === 0) {
+      return Response.json({ success: true, alertsCreated: 0, message: 'No equipment found' });
     }
 
-    let alerted = 0;
+    let alertsCreated = 0;
 
-    // Check each listing
-    for (const listing of listings) {
-      const isLow = listing.stock_level <= listing.low_stock_threshold;
-      const lastAlertSent = listing.last_low_stock_alert_sent
-        ? new Date(listing.last_low_stock_alert_sent)
-        : null;
-      const now = new Date();
-      const hoursSinceLastAlert = lastAlertSent ? (now - lastAlertSent) / (1000 * 60 * 60) : 24;
+    for (const item of equipment) {
+      // Only check items with a reorder_level set and quantity below it
+      if (item.reorder_level && item.quantity != null && item.quantity < item.reorder_level) {
+        // Avoid duplicate notifications — skip if one already exists (unread)
+        const existing = await base44.asServiceRole.entities.LowStockNotification.filter({
+          inventory_item_id: item.id,
+          read: false
+        });
 
-      if (isLow && hoursSinceLastAlert >= 24) {
-        try {
-          // Send email alert
-          await base44.asServiceRole.integrations.Core.SendEmail({
-            to: listing.shop_email,
-            subject: `Low Stock Alert: ${listing.product_name}`,
-            body: `
-Your product "${listing.product_name}" is running low on stock.
-
-Current Stock: ${listing.stock_level} ${listing.unit || 'units'}
-Low Stock Threshold: ${listing.low_stock_threshold}
-
-Please restock soon to avoid losing sales.
-
-Product: ${listing.product_name}
-Price: $${listing.price}
-Category: ${listing.category || 'N/A'}
-
-Manage your inventory: https://app.surfcoast.com/market-shop-inventory
-            `.trim(),
+        if (!existing || existing.length === 0) {
+          await base44.asServiceRole.entities.LowStockNotification.create({
+            contractor_id: item.contractor_id,
+            contractor_email: item.contractor_email,
+            inventory_item_id: item.id,
+            material_name: item.name,
+            current_quantity: item.quantity,
+            low_stock_threshold: item.reorder_level,
+            triggered_by: 'scheduled_check'
           });
 
-          // Update last alert timestamp
-          await base44.asServiceRole.entities.MarketListing.update(listing.id, {
-            last_low_stock_alert_sent: now.toISOString(),
-          });
-
-          alerted++;
-        } catch (error) {
-          console.error(`Failed to alert for listing ${listing.id}:`, error.message);
+          alertsCreated++;
+          console.log(`[LOW_STOCK] Alert created for ${item.name} (qty: ${item.quantity}, threshold: ${item.reorder_level})`);
         }
       }
     }
 
+    console.log(`[LOW_STOCK] Check complete. Checked: ${equipment.length}, Alerts created: ${alertsCreated}`);
+
     return Response.json({
       success: true,
-      message: 'Low stock check completed',
-      checked: listings.length,
-      alerted,
+      checked: equipment.length,
+      alertsCreated,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error in scheduled low stock check:', error.message);
+    console.error('[LOW_STOCK_ERROR]', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
