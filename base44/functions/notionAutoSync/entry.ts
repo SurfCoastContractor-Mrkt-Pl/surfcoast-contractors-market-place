@@ -102,8 +102,12 @@ Deno.serve(async (req) => {
 
         const pageData = await res.json();
         if (!res.ok) {
+          const isArchived = pageData.message?.includes('archived');
+          const errMsg = isArchived
+            ? `The Notion parent page (${PARENT_PAGE_ID}) is archived. Please unarchive it in Notion or update NOTION_PROJECT_PARENT_PAGE_ID to an active page.`
+            : (pageData.message || 'Failed to create page');
           console.error('[notionAutoSync] Create page error:', JSON.stringify(pageData));
-          return Response.json({ error: pageData.message || 'Failed to create page' }, { status: res.status });
+          return Response.json({ error: errMsg }, { status: res.status });
         }
 
         await base44.asServiceRole.entities.ScopeOfWork.update(scope.id, {
