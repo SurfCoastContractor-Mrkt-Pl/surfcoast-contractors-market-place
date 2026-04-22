@@ -70,7 +70,7 @@ Deno.serve(async (req) => {
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('hubspot');
 
     // Upsert contact in HubSpot by email (creates or updates)
-    const response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/upsert`, {
+    const response = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/batch/upsert`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
