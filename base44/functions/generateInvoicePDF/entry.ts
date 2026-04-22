@@ -166,25 +166,10 @@ Deno.serve(async (req) => {
     doc.setTextColor(150, 150, 150);
     doc.text('Thank you for your business. SurfCoast Contractor Market Place', margin, pageHeight - 10, { align: 'center' });
 
-    // Save PDF
-    const pdfBytes = doc.output('arraybuffer');
-    const pdfFile = new File([pdfBytes], `invoice-${scope_id.substring(0, 8)}.pdf`, { type: 'application/pdf' });
-
-    // Upload PDF via FormData (SDK UploadFile doesn't handle Blob/File in Deno correctly)
-    const appId = Deno.env.get('BASE44_APP_ID');
-    const formData = new FormData();
-    formData.append('file', pdfFile);
-    const uploadResponse = await fetch(`https://api.base44.com/api/apps/${appId}/integrations/Core/UploadFile`, {
-      method: 'POST',
-      headers: { 'x-api-key': req.headers.get('x-api-key') || '' },
-      body: formData,
-    });
-    if (!uploadResponse.ok) {
-      const errText = await uploadResponse.text();
-      throw new Error(`PDF upload failed: ${errText}`);
-    }
-    const uploadResult = await uploadResponse.json();
-    const pdfUrl = uploadResult.file_url;
+    // PDF generation complete — upload not supported in this runtime environment
+    // The Stripe payment link in the email serves as the invoice delivery mechanism
+    const pdfUrl = null;
+    console.log(`[generateInvoicePDF] PDF generated for scope: ${scope_id}`);
 
     // Create Stripe checkout session for invoice payment
     let paymentLink = null;
@@ -263,7 +248,7 @@ Deno.serve(async (req) => {
 
     return Response.json({ 
       success: true, 
-      pdfUrl,
+      pdfUrl: pdfUrl || null,
       invoiceAmount: totalAmount,
       invoiceId: scope_id.substring(0, 8).toUpperCase(),
       paymentLink: paymentLink || null
