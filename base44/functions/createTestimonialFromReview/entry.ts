@@ -1,54 +1,39 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json().catch(() => ({}));
 
-    // Support entity automations or direct API calls
     const isAutomation = !!body.event;
     let review_id;
+    let review = null;
 
     if (isAutomation) {
-      // Called from entity automation: extract ID from event
+      // Extract from automation event; prefer inline data to avoid extra fetch
       review_id = body.event?.entity_id;
+      if (body.data) review = body.data;
     } else {
-      // Direct API call
+      // Direct API call — require admin or review author
       review_id = body.review_id;
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Authentication required' }, { status: 401 });
+      }
     }
 
     if (!review_id) {
+      console.error('[createTestimonialFromReview] Missing review_id. body.event:', JSON.stringify(body.event));
       return Response.json({ error: 'review_id required' }, { status: 400 });
     }
 
-    // Only require auth for direct (non-automation) calls
-    if (!isAutomation) {
-      const user = await base44.auth.me();
-      if (!user) {
-        return Response.json(
-          { error: 'Authentication required' },
-          { status: 401 }
-        );
-      }
+    // Fetch review if not already in payload (use service role for automations)
+    if (!review) {
+      review = await base44.asServiceRole.entities.Review.get(review_id);
     }
 
-    // Get the review
-    const reviews = await base44.entities.Review.filter({ id: review_id });
-    if (!reviews || reviews.length === 0) {
+    if (!review) {
       return Response.json({ error: 'Review not found' }, { status: 404 });
-    }
-
-    const review = reviews[0];
-
-    // Verify user is the review author (skip for automations)
-    if (!isAutomation) {
-      const user = await base44.auth.me();
-      if (review.reviewer_email !== user.email) {
-        return Response.json(
-          { error: 'Unauthorized - only review author can convert to testimonial' },
-          { status: 403 }
-        );
-      }
     }
 
     // Check if already a testimony
@@ -56,24 +41,19 @@ Deno.serve(async (req) => {
       return Response.json({ already_testimony: true });
     }
 
-    // Update review to mark as testimony (public testimonial)
+    // Convert if eligible: 4+ stars with substantive comment
     if (review.overall_rating >= 4 && review.comment && review.comment.length > 30) {
-      await base44.entities.Review.update(review_id, {
+      await base44.asServiceRole.entities.Review.update(review_id, {
         is_testimony: true
       });
 
-      return Response.json({ 
-        success: true, 
-        message: 'Review converted to testimonial' 
-      });
+      console.log(`[createTestimonialFromReview] Converted review ${review_id} to testimonial`);
+      return Response.json({ success: true, message: 'Review converted to testimonial' });
     } else {
-      return Response.json({ 
-        not_eligible: true,
-        reason: 'Review must be 4+ stars with substantive comment' 
-      });
+      return Response.json({ not_eligible: true, reason: 'Review must be 4+ stars with substantive comment' });
     }
   } catch (error) {
-    console.error('Create testimonial error:', error);
+    console.error('[createTestimonialFromReview] Error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
