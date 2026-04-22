@@ -4,17 +4,19 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Validate internal service key OR authenticated user
-    const internalKey = req.headers.get('x-internal-key');
-    const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
-    if (!internalKey || internalKey !== validInternalKey) {
-      const user = await base44.auth.me();
-      if (!user || user.role !== 'admin') {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    const body = await req.json();
+
+    // For direct (non-automation) calls, validate internal service key or admin user
+    if (!body.event) {
+      const internalKey = req.headers.get('x-internal-key');
+      const validInternalKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+      if (!internalKey || internalKey !== validInternalKey) {
+        const user = await base44.auth.me();
+        if (!user || user.role !== 'admin') {
+          return Response.json({ error: 'Unauthorized' }, { status: 401 });
+        }
       }
     }
-
-    const body = await req.json();
 
     // Support both direct calls ({ activity_type, related_email, ... })
     // and automation entity event calls ({ event, data })
@@ -37,6 +39,11 @@ Deno.serve(async (req) => {
     }
 
     if (!activity_type || !related_email) {
+      // For automation calls, skip gracefully if email is not available
+      if (body.event) {
+        console.warn('[logActivityToHubSpot] Skipping — no email found in automation payload');
+        return Response.json({ skipped: true, reason: 'No email available in review payload' });
+      }
       return Response.json({ error: 'Missing activity_type or related_email' }, { status: 400 });
     }
 
