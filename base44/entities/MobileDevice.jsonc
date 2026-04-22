@@ -1,0 +1,82 @@
+{
+  "name": "MobileDevice",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who owns this device"
+    },
+    "device_token": {
+      "type": "string",
+      "description": "Push notification token for this device"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "ios",
+        "android",
+        "web"
+      ],
+      "description": "Device platform"
+    },
+    "device_name": {
+      "type": "string",
+      "description": "Human-readable device name"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this device is active for push notifications"
+    },
+    "last_seen_at": {
+      "type": "string",
+      "description": "ISO timestamp of last activity"
+    }
+  },
+  "required": [
+    "user_email",
+    "device_token",
+    "platform"
+  ],
+  "rls": {
+    "create": {
+      "data.user_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
