@@ -10,13 +10,14 @@ import SavedVendors from '@/components/consumer/SavedVendors';
 import Wishlist from '@/components/consumer/Wishlist';
 import PaymentMethods from '@/components/consumer/PaymentMethods';
 import EmptyStateIllustration from '@/components/consumer/EmptyStateIllustration';
-import { ShoppingBag, Award, ClipboardList, Heart, CreditCard, Leaf, Tag } from 'lucide-react';
+import { ShoppingBag, Award, ClipboardList, Heart, CreditCard, Leaf, Tag, Store } from 'lucide-react';
 
 export default function ConsumerHub() {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [activeTab, setActiveTab] = useState('badges');
 
   useEffect(() => {
     const getUserEmail = async () => {
@@ -106,12 +107,13 @@ export default function ConsumerHub() {
               { value: 'badges', label: 'Badges', icon: Award },
               { value: 'farmers', label: 'Farmers Market', icon: Leaf },
               { value: 'swapmeet', label: 'Swap Meet', icon: Tag },
+              { value: 'fleamarket', label: 'Flea Market', icon: Store },
               { value: 'saved', label: 'Saved', icon: Heart },
               { value: 'wishlist', label: 'Wishlist', icon: ShoppingBag },
               { value: 'orders', label: 'Orders', icon: ClipboardList },
               { value: 'payment', label: 'Payment', icon: CreditCard },
             ].map(tab => (
-              <button key={tab.value} style={{ padding: "8px 16px", background: "#fff", border: "0.5px solid #D0D0D2", borderRadius: 6, fontSize: 12, fontWeight: 600, color: "#1A1A1B", cursor: "pointer", whiteSpace: "nowrap" }}>
+              <button key={tab.value} onClick={() => setActiveTab(tab.value)} style={{ padding: "8px 16px", background: activeTab === tab.value ? "#1A1A1B" : "#fff", border: `0.5px solid ${activeTab === tab.value ? "#1A1A1B" : "#D0D0D2"}`, borderRadius: 6, fontSize: 12, fontWeight: 600, color: activeTab === tab.value ? "#fff" : "#1A1A1B", cursor: "pointer", whiteSpace: "nowrap" }}>
                 {tab.label}
               </button>
             ))}
@@ -121,62 +123,90 @@ export default function ConsumerHub() {
         {/* Tab Content */}
         <div>
           {/* Badges Tab */}
-          <div className="space-y-6">
-            {consumerTier ? (
-              <CartTierDisplay consumerTier={consumerTier} />
-            ) : (
-              <EmptyStateIllustration 
-                icon={Award}
-                title="No Badges Yet"
-                description="Start shopping to begin earning badges! Every $150 spent unlocks a new tier."
-                actionLabel="Browse Vendors"
-              />
-            )}
-          </div>
+          {activeTab === 'badges' && (
+            <div className="space-y-6">
+              {consumerTier ? (
+                <CartTierDisplay consumerTier={consumerTier} />
+              ) : (
+                <EmptyStateIllustration 
+                  icon={Award}
+                  title="No Badges Yet"
+                  description="Start shopping to begin earning badges! Every $150 spent unlocks a new tier."
+                  actionLabel="Browse Vendors"
+                />
+              )}
+            </div>
+          )}
 
           {/* Farmers Market Tab */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🌽</div>
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">Farmers Market</h2>
-                <p className="text-sm text-slate-500">Fresh produce, dairy, baked goods & more from local farms</p>
+          {activeTab === 'farmers' && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🌽</div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Farmers Market</h2>
+                  <p className="text-sm text-slate-500">Fresh produce, dairy, baked goods & more from local farms</p>
+                </div>
               </div>
+              <MarketShopBrowser lockedType="farmers_market" />
             </div>
-            <MarketShopBrowser lockedType="farmers_market" />
-          </div>
+          )}
 
           {/* Swap Meet Tab */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-xl">🏷️</div>
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">Swap Meet</h2>
-                <p className="text-sm text-slate-500">Crafts, collectibles, clothing, tools & unique finds</p>
+          {activeTab === 'swapmeet' && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-xl">🏷️</div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Swap Meet</h2>
+                  <p className="text-sm text-slate-500">Crafts, collectibles, clothing, tools & unique finds</p>
+                </div>
               </div>
+              <MarketShopBrowser lockedType="swap_meet" />
             </div>
-            <MarketShopBrowser lockedType="swap_meet" />
-          </div>
+          )}
+
+          {/* Flea Market Tab */}
+          {activeTab === 'fleamarket' && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-xl">🛒</div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Flea Market</h2>
+                  <p className="text-sm text-slate-500">Vintage finds, second-hand goods, antiques & bargains</p>
+                </div>
+              </div>
+              <MarketShopBrowser lockedType="flea_market" />
+            </div>
+          )}
 
           {/* Saved Vendors Tab */}
-          <div className="space-y-6">
-            <SavedVendors userEmail={userEmail} />
-          </div>
+          {activeTab === 'saved' && (
+            <div className="space-y-6">
+              <SavedVendors userEmail={userEmail} />
+            </div>
+          )}
 
           {/* Wishlist Tab */}
-          <div className="space-y-6">
-            <Wishlist />
-          </div>
+          {activeTab === 'wishlist' && (
+            <div className="space-y-6">
+              <Wishlist />
+            </div>
+          )}
 
           {/* Orders Tab */}
-          <div className="space-y-6">
-            <MyOrders userEmail={userEmail} />
-          </div>
+          {activeTab === 'orders' && (
+            <div className="space-y-6">
+              <MyOrders userEmail={userEmail} />
+            </div>
+          )}
 
           {/* Payment Methods Tab */}
-          <div className="space-y-6">
-            <PaymentMethods userEmail={userEmail} />
-          </div>
+          {activeTab === 'payment' && (
+            <div className="space-y-6">
+              <PaymentMethods userEmail={userEmail} />
+            </div>
+          )}
         </div>
       </div>
     </div>
