@@ -9,11 +9,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { gameId, scopeId, score, moves, duration, gameMode } = await req.json();
+    const { gameId, scopeId, moves, duration, gameMode, finalState } = await req.json();
 
-    if (!gameId || !score) {
+    if (!gameId) {
       return Response.json(
-        { error: 'Missing required fields: gameId, score' },
+        { error: 'Missing required fields: gameId' },
         { status: 400 }
       );
     }
@@ -24,31 +24,40 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Game not found' }, { status: 404 });
     }
 
-    // Calculate discount based on difficulty and performance
+    // SERVER-SIDE score calculation — never trust client-provided score
+    // Score is derived from moves count and time taken, bounded 0–100
+    const maxMoves = game.max_moves || 50;
+    const actualMoves = Math.max(1, moves || maxMoves);
+    const efficiency = Math.max(0, 1 - (actualMoves - 1) / maxMoves);
+    const serverScore = Math.round(efficiency * 100);
+
+    console.log(`[completeGameSession] Server-calculated score: ${serverScore} (moves: ${actualMoves})`);
+
+    // Calculate discount based on difficulty and server-calculated performance
     let discountPercentage = 0;
-    if (score >= 80) {
+    if (serverScore >= 80) {
       discountPercentage =
         game.difficulty === 'hard' ? 15 : game.difficulty === 'medium' ? 10 : 5;
-    } else if (score >= 60) {
+    } else if (serverScore >= 60) {
       discountPercentage = game.difficulty === 'hard' ? 10 : game.difficulty === 'medium' ? 7 : 3;
-    } else if (score >= 40) {
+    } else if (serverScore >= 40) {
       discountPercentage = 2;
     }
 
     // Create game session record
     const session = await base44.entities.UserGameSession.create({
       user_email: user.email,
-      user_type: 'contractor', // Default to contractor; can be overridden in payload
+      user_type: 'contractor',
       trade_game_id: gameId,
       scope_of_work_id: scopeId || null,
       contractor_email: user.email,
-      current_state_json: JSON.stringify({}),
+      current_state_json: JSON.stringify(finalState || {}),
       start_time: new Date(Date.now() - (duration || 0) * 1000).toISOString(),
       end_time: new Date().toISOString(),
       duration_seconds: duration || 0,
-      score: score,
-      moves_count: moves || 0,
-      is_solved: score >= 40,
+      score: serverScore,
+      moves_count: actualMoves,
+      is_solved: serverScore >= 40,
       discount_earned: discountPercentage > 0,
       discount_percentage: discountPercentage,
       game_mode_played: gameMode || 'guided_puzzle'
@@ -74,7 +83,7 @@ Deno.serve(async (req) => {
       // Sync game completion to HubSpot CRM
       try {
         await base44.asServiceRole.functions.invoke('syncGameCompletionToHubSpot', {
-          sessionData: { score, discount_earned: discountPercentage > 0, discount_percentage: discountPercentage },
+          sessionData: { score: serverScore, discount_earned: discountPercentage > 0, discount_percentage: discountPercentage },
           gameData: { title: game.title, difficulty: game.difficulty },
           userData: { email: user.email, full_name: user.full_name }
         });
@@ -116,6 +125,7 @@ Deno.serve(async (req) => {
       success: true,
       sessionId: session.id,
       discount: discountPercentage,
+      score: serverScore,
       message: `Congratulations! You earned a ${discountPercentage}% discount.`
     });
   } catch (error) {

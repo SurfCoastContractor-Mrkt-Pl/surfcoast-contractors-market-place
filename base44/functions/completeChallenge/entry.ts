@@ -3,7 +3,9 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { challenge_token, score } = await req.json();
+    // NOTE: client-provided score is intentionally ignored — discount comes from
+    // the challenge record itself which was set server-side when the challenge was created.
+    const { challenge_token } = await req.json();
 
     if (!challenge_token) {
       return Response.json({ error: 'Challenge token required' }, { status: 400 });
@@ -39,8 +41,7 @@ Deno.serve(async (req) => {
     await base44.asServiceRole.entities.GameChallenge.update(challenge.id, {
       status: 'completed',
       completed_by_email: userEmail,
-      completed_at: new Date().toISOString(),
-      final_score: score
+      completed_at: new Date().toISOString()
     });
 
     // Apply discount to ScopeOfWork if linked
@@ -66,7 +67,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    console.info(`[completeChallenge] Challenge ${challenge_token} completed by ${userEmail} with score ${score}`);
+    console.info(`[completeChallenge] Challenge ${challenge_token} completed by ${userEmail}`);
 
     return Response.json({
       success: true,

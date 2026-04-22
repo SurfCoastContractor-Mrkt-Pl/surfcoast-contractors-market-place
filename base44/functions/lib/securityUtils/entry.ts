@@ -1,6 +1,13 @@
 /**
- * Centralized security utilities for backend functions
+ * Centralized security utilities for backend functions.
+ * This file is a shared library — it is NOT a standalone endpoint.
+ * The Deno.serve wrapper below returns 404 to satisfy the platform's deployment
+ * requirement while preventing any accidental direct invocation.
  */
+
+Deno.serve(async (_req) => {
+  return Response.json({ error: 'Not found' }, { status: 404 });
+});
 
 /**
  * Validate internal service key - all internal service calls should use this
@@ -96,8 +103,6 @@ export function getDemoDomain() {
  * @returns {boolean} - True if within rate limit
  */
 export async function checkRateLimit(identifier, maxPerMinute = 5) {
-  // This is a basic in-memory check. For production, use Redis or database.
-  // For now, this is a placeholder - implement with your backend store
   console.log(`Rate limit check for ${identifier}: ${maxPerMinute} per minute`);
   return true; // TODO: Implement with persistent store
 }

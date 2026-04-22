@@ -66,10 +66,10 @@ Deno.serve(async (req) => {
         }
       }
 
+      // email intentionally omitted — exposing it bypasses the $1.50/session communication fee
       results.results = filtered.slice(0, limit).map(c => ({
         id: c.id,
         name: c.name,
-        email: c.email,
         trade: c.trade_specialty,
         location: c.location,
         rating: c.rating,

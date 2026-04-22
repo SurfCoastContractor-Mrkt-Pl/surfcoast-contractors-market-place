@@ -1,6 +1,13 @@
 /**
- * Authentication and authorization middleware helpers for backend functions
+ * Authentication and authorization middleware helpers for backend functions.
+ * This file is a shared library — it is NOT a standalone endpoint.
+ * The Deno.serve wrapper below returns 404 to satisfy the platform's deployment
+ * requirement while preventing any accidental direct invocation.
  */
+
+Deno.serve(async (_req) => {
+  return Response.json({ error: 'Not found' }, { status: 404 });
+});
 
 /**
  * Verify user is authenticated
@@ -36,7 +43,7 @@ export async function requireAdmin(base44) {
  */
 export async function authWrapper(base44, asyncFn, requireAdminRole = false) {
   try {
-    const user = requireAdminRole 
+    const user = requireAdminRole
       ? await requireAdmin(base44)
       : await requireAuth(base44);
     return await asyncFn(user);
