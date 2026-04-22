@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 /**
  * Automation trigger — called when a Contractor, CustomerProfile, or MarketShop is updated.
- * Checks if the profile is now fully complete and fires completeReferral if so.
- * 
+ * Checks if the profile is now fully complete and fires referral reward if so.
+ *
  * Wire this up as an entity automation on:
  *   - Contractor (update)
  *   - CustomerProfile (update)
@@ -60,28 +60,76 @@ Deno.serve(async (req) => {
       return Response.json({ skipped: true, reason: 'No pending referral found for this user' });
     }
 
-    // Fire completeReferral via internal service call
-    const referralResult = await base44.asServiceRole.functions.invoke('completeReferral', {
-      referred_email: email
+    const referral = referrals[0];
+
+    // Mark referral as profile_completed
+    await base44.asServiceRole.entities.Referral.update(referral.id, {
+      status: 'profile_completed',
+      completed_at: new Date().toISOString()
     });
 
-    console.log(`Profile completion referral triggered for ${email}:`, referralResult);
+    console.log(`Referral ${referral.id} marked profile_completed for ${email}`);
 
-    // If founding member, trigger founding member benefit notification
-    let notifyResult = null;
+    // Extend referrer trial by 1 day
+    const referrerEmail = referral.referrer_email;
+    let trialExtended = false;
+
+    if (referrerEmail) {
+      const [referrerContractors, referrerClients, referrerVendors] = await Promise.all([
+        base44.asServiceRole.entities.Contractor.filter({ email: referrerEmail }),
+        base44.asServiceRole.entities.CustomerProfile.filter({ email: referrerEmail }),
+        base44.asServiceRole.entities.MarketShop.filter({ email: referrerEmail }),
+      ]);
+
+      const tryExtendTrial = async (entityName, records) => {
+        if (trialExtended || !records?.length) return;
+        const record = records[0];
+        if (record.trial_active && record.trial_ends_at) {
+          const newEnd = new Date(new Date(record.trial_ends_at).getTime() + 24 * 60 * 60 * 1000);
+          await base44.asServiceRole.entities[entityName].update(record.id, {
+            trial_ends_at: newEnd.toISOString()
+          });
+          console.log(`Trial extended for ${referrerEmail} (${entityName}) to ${newEnd.toISOString()}`);
+          trialExtended = true;
+        }
+      };
+
+      await tryExtendTrial('Contractor', referrerContractors);
+      await tryExtendTrial('CustomerProfile', referrerClients);
+      await tryExtendTrial('MarketShop', referrerVendors);
+    }
+
+    // Increment active referral campaign counter
+    try {
+      const activeCampaigns = await base44.asServiceRole.entities.Campaign.filter({ status: 'active', type: 'referral' });
+      if (activeCampaigns?.length > 0) {
+        await base44.asServiceRole.entities.Campaign.update(activeCampaigns[0].id, {
+          current_signups: (activeCampaigns[0].current_signups || 0) + 1
+        });
+      }
+    } catch (e) {
+      console.warn('Campaign counter update failed:', e.message);
+    }
+
+    // Notify founding member if applicable
     if (data.is_founding_member === true) {
       try {
-        notifyResult = await base44.asServiceRole.functions.invoke('notifyFoundingMemberBenefit', {
+        await base44.asServiceRole.functions.invoke('notifyFoundingMemberBenefit', {
           contractor_email: email,
-          contractor_name: data.name
+          contractor_name: data.name || data.owner_name || data.full_name
         });
-        console.log(`Founding member benefit notification sent for ${email}:`, notifyResult);
+        console.log(`Founding member benefit notification sent for ${email}`);
       } catch (notifyErr) {
         console.error(`Failed to notify founding member ${email}:`, notifyErr.message);
       }
     }
 
-    return Response.json({ success: true, email, referral: referralResult, foundingMemberNotified: !!notifyResult });
+    return Response.json({
+      success: true,
+      email,
+      referrer_email: referrerEmail,
+      trial_extended: trialExtended
+    });
 
   } catch (error) {
     console.error('onProfileCompleted error:', error.message);
