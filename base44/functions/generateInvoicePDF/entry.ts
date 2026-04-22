@@ -1,47 +1,41 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { jsPDF } from 'npm:jspdf@4.0.0';
 import Stripe from 'npm:stripe@16.0.0';
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { scope_id } = await req.json();
+    const body = await req.json().catch(() => ({}));
+
+    const isAutomation = !!body.event;
+    let scope_id = body.scope_id;
+
+    if (isAutomation) {
+      // Extract from automation event payload
+      scope_id = body.event?.entity_id;
+      console.log('[generateInvoicePDF] Automation payload:', JSON.stringify({ scope_id, event_type: body.event?.type }));
+    } else {
+      // Direct call — require admin or authenticated user
+      const user = await base44.auth.me();
+      if (!user) {
+        return Response.json({ error: 'Authentication required' }, { status: 401 });
+      }
+    }
 
     if (!scope_id) {
+      console.error('[generateInvoicePDF] Missing scope_id. body.event:', JSON.stringify(body.event));
       return Response.json({ error: 'scope_id is required' }, { status: 400 });
     }
 
-    // Require authentication
-    const isAuthenticated = await base44.auth.isAuthenticated();
-    if (!isAuthenticated) {
-      return Response.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
-    // Fetch scope of work details
-    const scope = await base44.entities.ScopeOfWork.filter({ id: scope_id });
-    const scopeData = scope && scope.length > 0 ? scope[0] : null;
+    // Fetch scope using service role (works in automations without user session)
+    const scopeData = body.data || await base44.asServiceRole.entities.ScopeOfWork.get(scope_id);
 
     if (!scopeData) {
       return Response.json({ error: 'Scope of work not found' }, { status: 404 });
     }
 
-    // Authorize: only contractor, customer, or admin can generate invoice
-    const isAuthorized = 
-      user.email.toLowerCase() === scopeData.contractor_email?.toLowerCase() ||
-      user.email.toLowerCase() === scopeData.customer_email?.toLowerCase() ||
-      user.role === 'admin';
-
-    if (!isAuthorized) {
-      return Response.json({ error: 'Unauthorized: you do not have access to this scope' }, { status: 403 });
-    }
-
     if (scopeData.status !== 'closed') {
-      return Response.json({ error: 'Job must be closed to generate invoice' }, { status: 400 });
+      return Response.json({ success: true, message: 'Job not yet closed, skipping invoice generation' });
     }
 
     // Calculate total amount
