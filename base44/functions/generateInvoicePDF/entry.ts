@@ -206,8 +206,8 @@ Deno.serve(async (req) => {
           scope_id: scope_id,
           contractor_email: scopeData.contractor_email,
         },
-        success_url: `${Deno.env.get('APP_URL')}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${Deno.env.get('APP_URL')}/cancel`,
+        success_url: `https://surfcoast.base44.app/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `https://surfcoast.base44.app/cancel`,
       });
       
       paymentLink = session.url;
@@ -228,20 +228,30 @@ Deno.serve(async (req) => {
       : '';
     
     if (clientEmail) {
-      await base44.asServiceRole.integrations.Core.SendEmail({
-        to: clientEmail,
-        subject: `Invoice for ${jobTitle} - ${invoiceDate}`,
-        body: `Hello ${clientName},\n\nThank you for using SurfCoast! Your job with ${contractorName} is now complete.\n\nYour invoice is attached. Please review it and ensure all work meets your expectations.${paymentSection}\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
-      });
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: clientEmail,
+          subject: `Invoice for ${jobTitle} - ${invoiceDate}`,
+          body: `Hello ${clientName},\n\nThank you for using SurfCoast! Your job with ${contractorName} is now complete.\n\nPlease review your invoice and ensure all work meets your expectations.${paymentSection}\n\nIf you have any questions, please contact us.\n\nBest regards,\nSurfCoast Contractor Market Place`,
+        });
+        console.log(`[generateInvoicePDF] Client email sent to: ${clientEmail}`);
+      } catch (emailErr) {
+        console.error(`[generateInvoicePDF] Client email failed (non-fatal): ${emailErr.message}`);
+      }
     }
 
     // Send email to contractor
     if (scopeData.contractor_email) {
-      await base44.asServiceRole.integrations.Core.SendEmail({
-        to: scopeData.contractor_email,
-        subject: `Invoice Generated for ${jobTitle} - ${invoiceDate}`,
-        body: `Hello ${contractorName},\n\nYour job "${jobTitle}" has been marked as complete. Your invoice has been generated and sent to the client.\n\nInvoice Details:\n- Client: ${clientName}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
-      });
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: scopeData.contractor_email,
+          subject: `Invoice Generated for ${jobTitle} - ${invoiceDate}`,
+          body: `Hello ${contractorName},\n\nYour job "${jobTitle}" has been marked as complete. Your invoice has been generated and sent to the client.\n\nInvoice Details:\n- Client: ${clientName}\n- Total Amount: $${totalAmount.toFixed(2)}\n- Date: ${invoiceDate}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
+        });
+        console.log(`[generateInvoicePDF] Contractor email sent to: ${scopeData.contractor_email}`);
+      } catch (emailErr) {
+        console.error(`[generateInvoicePDF] Contractor email failed (non-fatal): ${emailErr.message}`);
+      }
     }
 
     console.log(`Invoice generated and sent for scope: ${scope_id}`);
