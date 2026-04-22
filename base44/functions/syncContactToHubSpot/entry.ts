@@ -44,8 +44,8 @@ Deno.serve(async (req) => {
           lastname: contractor.name?.split(' ').slice(1).join(' ') || '',
           email: contractor.email,
           phone: contractor.phone || '',
-          hs_lead_status: 'contractor',
-          custom_location: contractor.location || '',
+          city: contractor.location || '',
+          jobtitle: 'Contractor',
         };
       }
     } else if (entity_type === 'CustomerProfile') {
@@ -56,8 +56,8 @@ Deno.serve(async (req) => {
           lastname: customer.full_name?.split(' ').slice(1).join(' ') || '',
           email: customer.email,
           phone: customer.phone || '',
-          hs_lead_status: 'customer',
-          custom_location: customer.location || '',
+          city: customer.location || '',
+          jobtitle: 'Customer',
         };
       }
     }
