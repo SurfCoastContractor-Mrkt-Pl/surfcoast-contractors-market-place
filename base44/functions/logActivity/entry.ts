@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
     let activityData;
 
     // Support automation entity event payloads ({ event, data, automation })
-    const isAutomation = !!(body.event || body.automation);
+    const isAutomation = !!(body.event?.type || body.automation);
 
     if (isAutomation) {
       const event = body.event || {};
