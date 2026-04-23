@@ -87,7 +87,8 @@ export default function Jobs() {
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['jobs', 'open'],
     queryFn: () => base44.entities.Job.filter({ status: 'open' }, '-created_date'),
-    staleTime: 3 * 60 * 1000, // 3 min — jobs are more dynamic but don't need instant refresh
+    staleTime: 3 * 60 * 1000,
+    placeholderData: (prev) => prev, // keep previous data visible during refetch — prevents flash
   });
 
 
@@ -120,9 +121,11 @@ export default function Jobs() {
         activeUrgencyFilter === 'all' ||
         job.urgency === activeUrgencyFilter;
 
-      // Show jobs with calculated distance OR those still being calculated
+      // Show jobs with calculated distance — hide only if distance is known AND exceeds radius
+      // While distances are still being calculated (undefined), keep jobs visible
       const distance = jobDistances[job.id];
-      const matchesRadius = !userLocation || (distance !== undefined && distance <= searchRadius);
+      const distancesBeingCalculated = userLocation && Object.keys(jobDistances).length === 0;
+      const matchesRadius = !userLocation || distancesBeingCalculated || distance === undefined || distance <= searchRadius;
       
       return matchesSearch && matchesType && matchesTrade && matchesUrgency && matchesRadius;
     });
