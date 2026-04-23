@@ -116,10 +116,10 @@ export default function HeroSection() {
         <div style={{ flex: "1 1 300px", minWidth: 0 }}>
           <HeroPlatformCard />
           <div style={{ marginTop: 14, textAlign: "center", background: "rgba(72, 0, 130, 0.08)", border: "1px solid rgba(120, 40, 200, 0.18)", borderRadius: 8, padding: "10px 14px", boxShadow: "0 0 18px 4px rgba(100, 20, 180, 0.18)" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#FFD700", lineHeight: 1.6, margin: "0 0 4px 0", textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 12px rgba(120, 40, 200, 0.5)" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#D4A017", lineHeight: 1.6, margin: "0 0 4px 0", textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 12px rgba(120, 40, 200, 0.5)" }}>
               "Reality is wrong. Dreams are for real."
             </p>
-            <span style={{ ...mono, fontSize: 13, color: "#FFD700", letterSpacing: "0.08em", fontWeight: 800, textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px rgba(120, 40, 200, 0.5)" }}>— Tupac Shakur</span>
+            <span style={{ ...mono, fontSize: 13, color: "#D4A017", letterSpacing: "0.08em", fontWeight: 800, textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 10px rgba(120, 40, 200, 0.5)" }}>— Tupac Shakur</span>
           </div>
         </div>
       </div>
