@@ -79,12 +79,6 @@ function HeroPlatformCard() {
       <div style={{ background: T.amberTint, border: `0.5px solid #D9B88A`, borderRadius: 6, padding: "7px 10px", fontSize: 11, color: T.amber, ...mono, transition: "box-shadow 0.2s ease", wordBreak: "break-word" }} {...hoverGlowSm}>
         Logic gate: consumers cannot access service side
       </div>
-      <div style={{ marginTop: 16, paddingTop: 14, borderTop: `1px solid ${T.border}`, textAlign: "center" }}>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: T.sub, lineHeight: 1.5, margin: "0 0 6px 0" }}>
-          "Reality is wrong. Dreams are for real."
-        </p>
-        <span style={{ ...mono, fontSize: 10, color: T.amber, letterSpacing: "0.08em" }}>— Tupac Shakur</span>
-      </div>
     </div>
   );
 }
@@ -121,6 +115,12 @@ export default function HeroSection() {
         </div>
         <div style={{ flex: "1 1 300px", minWidth: 0 }}>
           <HeroPlatformCard />
+          <div style={{ marginTop: 14, textAlign: "center" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: T.muted, lineHeight: 1.6, margin: "0 0 4px 0" }}>
+              "Reality is wrong. Dreams are for real."
+            </p>
+            <span style={{ ...mono, fontSize: 10, color: T.amber, letterSpacing: "0.08em" }}>— Tupac Shakur</span>
+          </div>
         </div>
       </div>
     </section>
