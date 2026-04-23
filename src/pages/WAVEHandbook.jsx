@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight, BookOpen } from 'lucide-react';
 import AboutWAVEOS from '@/components/WAVEHandbook/AboutWAVEOS';
 import WAVEOSEcosystemOverview from '@/components/WAVEHandbook/WAVEOSEcosystemOverview';
 import { chapters22to29 } from '@/components/WAVEHandbook/HandbookChapters22to29';
+// Note: chapter 31 (Security & Backend Architecture) is defined inline in chapters22to29
 
 export default function WAVEHandbook() {
   const [expandedChapter, setExpandedChapter] = useState(0);

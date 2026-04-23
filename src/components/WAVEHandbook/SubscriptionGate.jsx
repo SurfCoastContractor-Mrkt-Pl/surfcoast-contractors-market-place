@@ -31,7 +31,7 @@ export default function SubscriptionGate({ onSubscribe }) {
               <ul className="text-sm text-slate-700 space-y-2 mb-6">
                 <li className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-blue-500" />
-                  <span>5 subscription tiers ($19–$125/month)</span>
+                  <span>4 subscription tiers ($19–$100/month)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-blue-500" />

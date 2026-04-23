@@ -556,4 +556,208 @@ export const chapters22to29 = [
       },
     ],
   },
+  {
+    id: 31,
+    title: 'Platform Security & Backend Architecture — April 23, 2026',
+    sections: [
+      {
+        id: '31.1',
+        title: 'Authentication & Authorization Model',
+        content: (
+          <div className="space-y-4">
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+              📅 Updated April 23, 2026 — Security hardening deployed across all backend automation functions.
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Authentication Provider</h4>
+              <p className="text-slate-600">SurfCoast uses the Base44 platform authentication system. All login, session management, token issuance, and email verification are handled at the platform level — no custom auth backend is implemented. Users authenticate once; tokens are automatically attached to all SDK requests.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Three Access Levels</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>User (default):</strong> Authenticated platform user — can read/write only their own data per RLS rules.</li>
+                <li><strong>Admin:</strong> Elevated role — bypasses most RLS restrictions. Required for all admin dashboards and enforcement functions.</li>
+                <li><strong>Service Role:</strong> Internal backend identity — used by automated functions running without a user session (scheduled tasks, entity automations). Never exposed to the frontend.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">INTERNAL_SERVICE_KEY</h4>
+              <p className="text-slate-600">Scheduled and internal-only backend functions are protected by an <code className="bg-slate-100 px-1 rounded">INTERNAL_SERVICE_KEY</code> secret. Callers must include this in the <code className="bg-slate-100 px-1 rounded">x-internal-key</code> request header. Functions without user sessions (e.g., nightly cleanup tasks) check for either the platform automation header (<code className="bg-slate-100 px-1 rounded">x-automation-id</code>) or this key.</p>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: '31.2',
+        title: 'Row-Level Security (RLS) — Entity Access Control',
+        content: (
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">What RLS Does</h4>
+              <p className="text-slate-600">Every entity on the platform has Row-Level Security rules that control who can create, read, update, or delete each record. RLS is enforced at the database query level — it is not possible to bypass with a frontend trick or API call.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Key RLS Patterns Used</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>Email-scoped:</strong> Records where <code className="bg-slate-100 px-1 rounded">data.poster_email === user.email</code> — only the record owner can access it.</li>
+                <li><strong>Dual-party access:</strong> ScopeOfWork records are readable by both <code className="bg-slate-100 px-1 rounded">contractor_email</code> and <code className="bg-slate-100 px-1 rounded">client_email</code> — both parties see the same record.</li>
+                <li><strong>Public read with demo exclusion:</strong> Jobs and Reviews use <code className="bg-slate-100 px-1 rounded">$and [status: open, is_demo: false]</code> to show only real live records to anonymous users.</li>
+                <li><strong>Admin override:</strong> Every entity has an admin bypass — <code className="bg-slate-100 px-1 rounded">user_condition: role: admin</code> grants full access for platform administrators.</li>
+                <li><strong>Service role pass-through:</strong> Backend automation functions use <code className="bg-slate-100 px-1 rounded">base44.asServiceRole</code> which bypasses RLS entirely — used only for trusted server-side operations.</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+              <strong>Demo Data Isolation (April 23, 2026):</strong> All seed/demo records (using <code className="bg-white px-1 rounded">@demo.surfcoast.com</code> emails) are tagged with <code className="bg-white px-1 rounded">is_demo: true</code>. The RLS read rule on Job and Review entities explicitly excludes <code className="bg-white px-1 rounded">is_demo: true</code> records from public queries, ensuring test data never surfaces in the live site.
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: '31.3',
+        title: 'Backend Functions & Automation Security',
+        content: (
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Function Types</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-2">
+                <li><strong>User-invoked functions:</strong> Called from the frontend via the SDK. Require <code className="bg-slate-100 px-1 rounded">base44.auth.me()</code> authentication. Return 401 if unauthenticated.</li>
+                <li><strong>Admin-only functions:</strong> Require <code className="bg-slate-100 px-1 rounded">user.role === 'admin'</code> after authenticating. Return 403 if not admin.</li>
+                <li><strong>Entity automation functions:</strong> Triggered by database events (create/update/delete). No user session — validated via structural payload check: must contain <code className="bg-slate-100 px-1 rounded">event.type + event.entity_name + event.entity_id</code>.</li>
+                <li><strong>Scheduled automation functions:</strong> Triggered by platform cron. Validated via <code className="bg-slate-100 px-1 rounded">x-automation-id</code> header or <code className="bg-slate-100 px-1 rounded">INTERNAL_SERVICE_KEY</code>.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Security Fix — April 23, 2026</h4>
+              <p className="text-slate-600">13 backend functions had a shared vulnerability: they used <code className="bg-slate-100 px-1 rounded">!!body.event</code> to detect automation payloads and skip authentication — meaning any caller who sent a JSON body containing an <code className="bg-slate-100 px-1 rounded">event</code> key could bypass access controls entirely. All 13 functions were patched to require structural validation of the automation payload before skipping auth:</p>
+              <div className="bg-slate-900 text-green-400 rounded-lg p-3 text-xs font-mono mt-2">
+                {`// BEFORE (vulnerable)\nconst isAutomation = !!body.event;\n\n// AFTER (secure)\nconst isValidAutomation =\n  body?.event?.type &&\n  body?.event?.entity_name &&\n  body?.event?.entity_id;`}
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Functions Patched</h4>
+              <p className="text-slate-600 text-sm">onReviewCreated, onProfileCompleted, notifyNewProjectMessage, notifyFoundingMemberBenefit, scheduledLeaderboardUpdate, scheduledLowStockCheck, notionAutoSync, autoUnlockOnJobClose, generateInvoiceOnCloseout, syncContactToHubSpot, syncDealToHubSpot, processToolSuggestion, checkMinorHoursLimit.</p>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: '31.4',
+        title: 'Entity Automations — How They Work',
+        content: (
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">What Entity Automations Are</h4>
+              <p className="text-slate-600">Entity automations are server-side triggers that fire a backend function automatically when a database record is created, updated, or deleted. They are configured in the platform automation panel and run without any user interaction.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Automation Payload Structure</h4>
+              <div className="bg-slate-900 text-green-400 rounded-lg p-3 text-xs font-mono">
+                {`{\n  "event": {\n    "type": "update",           // create | update | delete\n    "entity_name": "ScopeOfWork",\n    "entity_id": "abc123"\n  },\n  "data": { ...current entity fields },\n  "old_data": { ...previous fields (update only) },\n  "changed_fields": ["status", "after_photo_urls"]\n}`}
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Active Automations on the Platform</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>onReviewCreated:</strong> Recalculates contractor average rating and review count when a new review is created.</li>
+                <li><strong>onProfileCompleted:</strong> Fires referral rewards and extends trial days when a contractor/customer profile update completes all required fields.</li>
+                <li><strong>notifyNewProjectMessage:</strong> Sends in-app notification + email when a ProjectMessage is created on an active scope.</li>
+                <li><strong>notionAutoSync:</strong> Creates/updates Notion project pages when a ScopeOfWork is created or updated, or when a milestone is completed.</li>
+                <li><strong>autoUnlockOnJobClose:</strong> Unlocks both contractor and client accounts automatically when a scope status changes to "closed."</li>
+                <li><strong>generateInvoiceOnCloseout:</strong> Generates PDF invoice and emails both parties when a scope is closed out.</li>
+                <li><strong>syncContactToHubSpot / syncDealToHubSpot:</strong> Syncs contractor/customer profiles and job deals to HubSpot CRM on record changes.</li>
+                <li><strong>processToolSuggestion:</strong> AI-processes tool suggestions submitted during entrepreneur onboarding and updates the aggregate mention count.</li>
+              </ul>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: '31.5',
+        title: 'Data Architecture — Key Entities',
+        content: (
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Core Service-Side Entities</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse border border-slate-300">
+                  <thead>
+                    <tr className="bg-slate-50">
+                      <th className="border border-slate-300 px-3 py-2 text-left">Entity</th>
+                      <th className="border border-slate-300 px-3 py-2 text-left">Purpose</th>
+                      <th className="border border-slate-300 px-3 py-2 text-left">Key Fields</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td className="border border-slate-300 px-3 py-2 font-semibold">Contractor</td><td className="border border-slate-300 px-3 py-2">Entrepreneur profile</td><td className="border border-slate-300 px-3 py-2">email, trade, location, identity_verified, stripe_connected_account_id, account_locked, trial_active</td></tr>
+                    <tr className="bg-slate-50"><td className="border border-slate-300 px-3 py-2 font-semibold">CustomerProfile</td><td className="border border-slate-300 px-3 py-2">Client profile</td><td className="border border-slate-300 px-3 py-2">email, full_name, property_address, pending_rating_scope_id, rating_block_active</td></tr>
+                    <tr><td className="border border-slate-300 px-3 py-2 font-semibold">Job</td><td className="border border-slate-300 px-3 py-2">Client job postings</td><td className="border border-slate-300 px-3 py-2">title, location, lat/lng, status, poster_email, is_demo</td></tr>
+                    <tr className="bg-slate-50"><td className="border border-slate-300 px-3 py-2 font-semibold">ScopeOfWork</td><td className="border border-slate-300 px-3 py-2">Project agreement</td><td className="border border-slate-300 px-3 py-2">contractor_email, client_email, status, cost_amount, expected_completion_date, after_photo_urls</td></tr>
+                    <tr><td className="border border-slate-300 px-3 py-2 font-semibold">Review</td><td className="border border-slate-300 px-3 py-2">Job ratings</td><td className="border border-slate-300 px-3 py-2">reviewer_email, contractor_email, overall_rating, verified, is_demo</td></tr>
+                    <tr className="bg-slate-50"><td className="border border-slate-300 px-3 py-2 font-semibold">Payment</td><td className="border border-slate-300 px-3 py-2">Stripe session tracking</td><td className="border border-slate-300 px-3 py-2">payer_email, amount, stripe_session_id, status, session_expires_at</td></tr>
+                    <tr><td className="border border-slate-300 px-3 py-2 font-semibold">Message</td><td className="border border-slate-300 px-3 py-2">Marketplace inbox</td><td className="border border-slate-300 px-3 py-2">sender_email, recipient_email, payment_id, read, parent_message_id</td></tr>
+                    <tr className="bg-slate-50"><td className="border border-slate-300 px-3 py-2 font-semibold">ProjectMessage</td><td className="border border-slate-300 px-3 py-2">Scope-scoped real-time chat</td><td className="border border-slate-300 px-3 py-2">scope_id, sender_email, sender_type, message, read</td></tr>
+                    <tr><td className="border border-slate-300 px-3 py-2 font-semibold">Notification</td><td className="border border-slate-300 px-3 py-2">In-app alerts</td><td className="border border-slate-300 px-3 py-2">user_email, title, action_url, read, category</td></tr>
+                    <tr className="bg-slate-50"><td className="border border-slate-300 px-3 py-2 font-semibold">ErrorLog</td><td className="border border-slate-300 px-3 py-2">Platform error tracking</td><td className="border border-slate-300 px-3 py-2">level, category, message, context, user_email</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700">
+              <strong>Built-in Fields (all entities):</strong> Every record automatically includes <code className="bg-white px-1 rounded">id</code>, <code className="bg-white px-1 rounded">created_date</code>, <code className="bg-white px-1 rounded">updated_date</code>, and <code className="bg-white px-1 rounded">created_by</code> (email of creating user).
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: '31.6',
+        title: 'Frontend Architecture & Routing',
+        content: (
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Tech Stack</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Framework:</strong> React 18 with Vite build tooling</li>
+                <li><strong>Styling:</strong> Tailwind CSS with a centralized design token system (<code className="bg-slate-100 px-1 rounded">index.css</code> → <code className="bg-slate-100 px-1 rounded">tailwind.config.js</code>)</li>
+                <li><strong>Routing:</strong> React Router v6 — all routes defined in <code className="bg-slate-100 px-1 rounded">App.jsx</code></li>
+                <li><strong>State & Data Fetching:</strong> TanStack Query (React Query v5) for server state management</li>
+                <li><strong>UI Components:</strong> shadcn/ui component library</li>
+                <li><strong>Icons:</strong> Lucide React</li>
+                <li><strong>Backend SDK:</strong> Base44 SDK (<code className="bg-slate-100 px-1 rounded">@/api/base44Client</code>) for entities, integrations, functions, and auth</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Color System (Design Tokens)</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Deep Slate:</strong> <code className="bg-slate-100 px-1 rounded">#555556</code> — Mid-gray base background</li>
+                <li><strong>Safety Orange:</strong> <code className="bg-slate-100 px-1 rounded">#FF8C00</code> — Primary actions, CTAs, brand accent</li>
+                <li><strong>Electric Cobalt:</strong> <code className="bg-slate-100 px-1 rounded">#2E5BFF</code> — WAVE OS brand color, secondary actions</li>
+                <li><strong>Gunmetal Steel:</strong> <code className="bg-slate-100 px-1 rounded">#404040</code> — Accent borders</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Key Architecture Patterns</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>AuthProvider + useAuth:</strong> Global auth context wraps the entire app — provides user, isLoadingAuth, and authError states.</li>
+                <li><strong>ConsumerModeContext:</strong> Global context enforcing the logic gate between service side and consumer/market side.</li>
+                <li><strong>AdminGuard:</strong> Component wrapper that redirects non-admin users away from admin routes.</li>
+                <li><strong>AccountStatusGate:</strong> Global wrapper rendering a blocking overlay when accounts are locked — covers all protected routes.</li>
+                <li><strong>Lazy loading:</strong> All pages loaded via React lazy() + Suspense for performance.</li>
+                <li><strong>Real-time subscriptions:</strong> Entity subscriptions via <code className="bg-slate-100 px-1 rounded">base44.entities.EntityName.subscribe()</code> for live updates without polling.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-2">Integrations Active on the Platform</h4>
+              <ul className="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Stripe:</strong> Live mode — contractor payouts (Connect), client payments, subscription billing, escrow management.</li>
+                <li><strong>Notion:</strong> Project page auto-sync via entity automation on ScopeOfWork create/update.</li>
+                <li><strong>HubSpot:</strong> CRM sync — contractor and customer contacts + job deals synced on record changes.</li>
+                <li><strong>Google Search Console:</strong> Analytics dashboard for search performance tracking.</li>
+                <li><strong>Google Maps API:</strong> Geocoding, reverse geocoding, route optimization, supply house finder.</li>
+              </ul>
+            </div>
+          </div>
+        ),
+      },
+    ],
+  },
 ];

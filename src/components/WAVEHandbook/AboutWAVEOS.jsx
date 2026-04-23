@@ -50,7 +50,7 @@ export default function AboutWAVEOS() {
       </div>
 
       <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed pt-4">
-        WAVE OS is more than just software — it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace. Every job processed through the platform is subject to an <strong>18% facilitation fee</strong>, collected automatically via Stripe. You receive 82% directly to your connected bank account.
+        WAVE OS is more than just software — it's your dedicated partner, built to streamline your operations, ensure compliance, and help you thrive in the modern marketplace. Every job processed through the platform is subject to an <strong>18% Project Completion Fee</strong>, collected automatically via Stripe. You receive 82% directly to your connected bank account.
       </p>
     </div>
   );
