@@ -115,7 +115,7 @@ export default function HeroSection() {
         </div>
         <div style={{ flex: "1 1 300px", minWidth: 0 }}>
           <HeroPlatformCard />
-          <div style={{ marginTop: 14, textAlign: "center", background: T.amberTint, border: `0.5px solid ${T.border}`, borderRadius: 8, padding: "10px 14px" }}>
+          <div style={{ marginTop: 14, textAlign: "center" }}>
             <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#444", lineHeight: 1.6, margin: "0 0 4px 0" }}>
               "Reality is wrong. Dreams are for real."
             </p>
