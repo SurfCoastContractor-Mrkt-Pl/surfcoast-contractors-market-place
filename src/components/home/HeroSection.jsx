@@ -115,11 +115,11 @@ export default function HeroSection() {
         </div>
         <div style={{ flex: "1 1 300px", minWidth: 0 }}>
           <HeroPlatformCard />
-          <div style={{ marginTop: 14, textAlign: "center" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#B8860B", lineHeight: 1.6, margin: "0 0 4px 0" }}>
+          <div style={{ marginTop: 14, textAlign: "center", background: "rgba(72, 0, 130, 0.08)", border: "1px solid rgba(120, 40, 200, 0.18)", borderRadius: 8, padding: "10px 14px", boxShadow: "0 0 18px 4px rgba(100, 20, 180, 0.18)" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#B8860B", lineHeight: 1.6, margin: "0 0 4px 0", textShadow: "0 0 12px rgba(120, 40, 200, 0.35)" }}>
               "Reality is wrong. Dreams are for real."
             </p>
-            <span style={{ ...mono, fontSize: 13, color: "#B8860B", letterSpacing: "0.08em", fontWeight: 800 }}>— Tupac Shakur</span>
+            <span style={{ ...mono, fontSize: 13, color: "#B8860B", letterSpacing: "0.08em", fontWeight: 800, textShadow: "0 0 10px rgba(120, 40, 200, 0.4)" }}>— Tupac Shakur</span>
           </div>
         </div>
       </div>
