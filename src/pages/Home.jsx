@@ -84,16 +84,6 @@ export default function Home() {
           Connection platform only. SurfCoast does not employ, endorse, or guarantee any entrepreneur, vendor, or service. Every user on this platform is a fully independent individual solely responsible for their own work, taxes, licensing, and legal compliance. All users participate at their own risk.
         </p>
       </div>
-      <div style={{ background: "#111", borderTop: "1px solid #2a2a2b", padding: "40px 24px", textAlign: "center" }}>
-        <blockquote style={{ margin: "0 auto", maxWidth: 600 }}>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(18px, 3vw, 26px)", color: "#fff", fontStyle: "italic", lineHeight: 1.5, margin: "0 0 12px 0" }}>
-            "Reality is wrong. Dreams are for real."
-          </p>
-          <cite style={{ fontFamily: "monospace", fontSize: 12, color: "#FF8C00", letterSpacing: "0.1em", fontStyle: "normal" }}>
-            — Tupac Shakur
-          </cite>
-        </blockquote>
-      </div>
       <CTABar />
     </div>
   );
