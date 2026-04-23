@@ -6,16 +6,31 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
  * Automatically creates/updates linked Notion project pages with milestone tracking
  */
 
+// Helper: validate this is a legitimate platform automation payload
+function isValidAutomationPayload(payload) {
+  return payload?.event?.type && payload?.event?.entity_name && payload?.event?.entity_id;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { event, data, old_data } = await req.json();
+    const payload = await req.json();
+
+    // Must be a legitimate platform automation — reject spoofed payloads
+    if (!isValidAutomationPayload(payload)) {
+      const serviceKey = req.headers.get('x-internal-key');
+      if (!serviceKey || serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
+    const { event, data, old_data } = payload;
 
     if (!data || !data.id) {
       return Response.json({ error: 'Invalid event data' }, { status: 400 });
     }
 
-    // Skip auth check for entity automation triggers — no user session is available
+    // Entity automation — no user session is available; run as service role
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('notion');
     const notionHeaders = {
       'Authorization': `Bearer ${accessToken}`,

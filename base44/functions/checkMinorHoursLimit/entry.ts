@@ -17,20 +17,27 @@ Deno.serve(async (req) => {
       contractorId = null;
     }
 
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // If no contractorId, this is a bulk check - admin only
+    // If no contractorId, this is a scheduled bulk check — allow via INTERNAL_SERVICE_KEY or platform automation
     const isAutomation = !contractorId;
+    const serviceKey = req.headers.get('x-internal-key');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    const isPlatformAutomation = !!req.headers.get('x-automation-id');
+
     if (isAutomation) {
-      if (user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden: Admin access required for bulk checks' }, { status: 403 });
+      // Bulk/scheduled check: require service key, platform automation header, or admin user
+      if (!validServiceKey && !isPlatformAutomation) {
+        const user = await base44.auth.me().catch(() => null);
+        if (!user || user.role !== 'admin') {
+          return Response.json({ error: 'Forbidden: Admin access required for bulk checks' }, { status: 403 });
+        }
       }
       console.log('Running minor hours automation check');
     } else {
-      // For single contractor checks, only admins or the contractor themselves
+      // Single contractor check: require authenticated user (admin or self)
+      const user = await base44.auth.me().catch(() => null);
+      if (!user) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
       const contractor = await base44.asServiceRole.entities.Contractor.filter({ id: contractorId });
       if (contractor && contractor.length > 0) {
         if (user.role !== 'admin' && user.email !== contractor[0].email) {

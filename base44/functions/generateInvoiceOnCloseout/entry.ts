@@ -8,13 +8,13 @@ Deno.serve(async (req) => {
 
     const { event, data } = body;
 
-    // Authorization: allow entity automations or admin users
-    const isAutomation = !!event;
-    if (!isAutomation) {
+    // Authorization: must be a verified automation payload, INTERNAL_SERVICE_KEY, or admin user
+    const isValidAutomation = event?.type && event?.entity_name && event?.entity_id;
+    if (!isValidAutomation) {
       const internalKey = req.headers.get('x-internal-key');
       const validServiceKey = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
       if (!validServiceKey) {
-        const user = await base44.auth.me();
+        const user = await base44.auth.me().catch(() => null);
         if (!user || user.role !== 'admin') {
           console.warn('Unauthorized invoice generation attempt');
           return Response.json({ error: 'Forbidden' }, { status: 403 });

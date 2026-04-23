@@ -7,8 +7,18 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const payload = await req.json();
 
+    // Only callable from trusted internal sources (automation chain)
+    const serviceKey = req.headers.get('x-internal-key');
+    if (!serviceKey || serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+      // Also allow admin users as a fallback
+      const user = await base44.auth.me().catch(() => null);
+      if (!user || user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
+    const payload = await req.json();
     const { contractor_email, contractor_name } = payload;
 
     if (!contractor_email) {

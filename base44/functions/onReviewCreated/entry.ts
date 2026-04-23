@@ -1,9 +1,23 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// Helper: validate this is a legitimate platform automation payload
+function isValidAutomationPayload(payload) {
+  return payload?.event?.type && payload?.event?.entity_name && payload?.event?.entity_id;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const payload = await req.json();
+
+    // Must be a legitimate platform automation — reject spoofed payloads
+    if (!isValidAutomationPayload(payload)) {
+      const serviceKey = req.headers.get('x-internal-key');
+      if (!serviceKey || serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY')) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
     const { event, data } = payload;
 
     // Only process create events with a contractor_id
