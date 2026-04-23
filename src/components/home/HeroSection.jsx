@@ -119,7 +119,7 @@ export default function HeroSection() {
             <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: T.muted, lineHeight: 1.6, margin: "0 0 4px 0" }}>
               "Reality is wrong. Dreams are for real."
             </p>
-            <span style={{ ...mono, fontSize: 10, color: T.amber, letterSpacing: "0.08em" }}>— Tupac Shakur</span>
+            <span style={{ ...mono, fontSize: 13, color: T.amber, letterSpacing: "0.08em", fontWeight: 800 }}>— Tupac Shakur</span>
           </div>
         </div>
       </div>
