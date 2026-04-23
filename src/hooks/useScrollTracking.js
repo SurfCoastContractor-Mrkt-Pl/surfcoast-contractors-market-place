@@ -1,37 +1,39 @@
 import { useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 
-/**
- * Tracks when a named section scrolls into view.
- * Previously the IntersectionObserver fired but never recorded anything —
- * the sectionName was unused and no analytics call was made. Fixed to
- * actually track the engagement event so visit duration is measured correctly.
- */
+// Global set to deduplicate section_viewed events across the entire page session.
+// This prevents multiple components calling useScrollTracking from hammering the
+// analytics batch endpoint simultaneously, which was causing 429 rate-limit errors.
+const _trackedSections = new Set();
+
 export default function useScrollTracking(sectionName) {
   const ref = useRef(null);
-  const tracked = useRef(false); // prevent duplicate events on re-renders
 
   useEffect(() => {
-    tracked.current = false; // reset when sectionName changes
+    // If this section was already tracked in this page session, skip entirely
+    if (_trackedSections.has(sectionName)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !tracked.current) {
-          tracked.current = true;
+        if (entry.isIntersecting && !_trackedSections.has(sectionName)) {
+          _trackedSections.add(sectionName);
           observer.unobserve(entry.target);
 
-          // Actually record the engagement — previously this was silently dropped
-          try {
-            base44.analytics.track({
-              eventName: 'section_viewed',
-              properties: {
-                section: sectionName,
-                page: window.location.pathname,
-              },
-            });
-          } catch (_) {
-            // non-fatal — don't let analytics errors affect UI
-          }
+          // Stagger the analytics call slightly so multiple sections entering view
+          // at the same time don't all fire simultaneously into the batch endpoint
+          setTimeout(() => {
+            try {
+              base44.analytics.track({
+                eventName: 'section_viewed',
+                properties: {
+                  section: sectionName,
+                  page: window.location.pathname,
+                },
+              });
+            } catch (_) {
+              // non-fatal
+            }
+          }, Math.random() * 800); // spread up to 800ms
         }
       },
       { threshold: 0.25 }

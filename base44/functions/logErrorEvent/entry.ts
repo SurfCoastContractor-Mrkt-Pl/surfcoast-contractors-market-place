@@ -6,6 +6,20 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 const VALID_LEVELS = ['debug', 'info', 'warning', 'error', 'critical'];
 const VALID_CATEGORIES = ['javascript', 'network', 'api', 'auth', 'payment', 'unknown'];
 
+// In-memory rate limiter: max 5 calls per IP per minute for anonymous callers
+const _anonRateMap = new Map(); // ip -> { count, resetAt }
+function isAnonymousRateLimited(ip) {
+  const now = Date.now();
+  const entry = _anonRateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    _anonRateMap.set(ip, { count: 1, resetAt: now + 60_000 });
+    return false;
+  }
+  entry.count++;
+  if (entry.count > 5) return true;
+  return false;
+}
+
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
@@ -29,8 +43,10 @@ Deno.serve(async (req) => {
       if (!hasValidServiceKey) {
         const user = await base44.auth.me().catch(() => null);
         if (!user) {
-          // Rate-limit anonymous callers: accept but truncate message to prevent data bloat
-          // and do NOT send admin alert emails for unauthenticated submissions
+          const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+          if (isAnonymousRateLimited(ip)) {
+            return Response.json({ error: 'Rate limit exceeded' }, { status: 429 });
+          }
           if (!body.message || !body.level || !body.category) {
             return Response.json({ error: 'Missing required error fields' }, { status: 400 });
           }
