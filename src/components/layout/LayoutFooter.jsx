@@ -103,6 +103,9 @@ export default function LayoutFooter({
             <p className="text-xs mt-1 leading-relaxed" style={{color:'#64748b'}}>
               Connection platform only. Does not employ, endorse, or guarantee any contractor, vendor, or service. All users participate at their own risk.
             </p>
+            <a href="https://one-great-work-movement.base44.app" target="_blank" rel="noopener noreferrer" className="text-xs mt-1 inline-block hover:text-amber-400 transition-colors" style={{color:'#93c5fd'}}>
+              One Great Work Movement
+            </a>
           </div>
           <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
             <Link to="/Terms" className="text-sm font-bold hover:text-amber-400 transition-colors" style={{color: WHITE}}>Terms</Link>
