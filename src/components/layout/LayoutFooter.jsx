@@ -34,6 +34,9 @@ export default function LayoutFooter({
             <a href="https://one-great-work-movement.base44.app" target="_blank" rel="noopener noreferrer" className="text-xs mt-2 inline-block hover:text-amber-400 transition-colors" style={{color:'#93c5fd'}}>
               One Great Work Movement
             </a>
+            <a href="https://www.chicanomusicfestival.com/" target="_blank" rel="noopener noreferrer" className="text-xs mt-1 inline-block hover:text-amber-400 transition-colors" style={{color:'#93c5fd'}}>
+              Chicano Music Festival
+            </a>
           </div>
 
           {/* For Contractors */}
