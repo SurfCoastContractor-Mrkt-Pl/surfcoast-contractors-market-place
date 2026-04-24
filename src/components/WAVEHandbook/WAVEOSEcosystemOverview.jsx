@@ -20,7 +20,7 @@ export default function WAVEOSEcosystemOverview() {
       <div>
         <h4 className="text-xl font-bold text-slate-900 mb-4">WAVE OS (For Independent Entrepreneurs)</h4>
         <p className="text-slate-700 mb-4">
-          This system is for independent entrepreneurs and tradespeople who source projects from <code className="bg-slate-100 px-2 py-1 rounded">SurfCoastcmp.com</code> client postings. All jobs are subject to an <strong>18% facilitation fee</strong> — you receive 82% to your connected bank account.
+          This system is for independent entrepreneurs and tradespeople who source projects from <code className="bg-slate-100 px-2 py-1 rounded">SurfCoastcmp.com</code> client postings. All jobs are subject to an <strong>18% Project Completion Fee</strong> — you receive 82% to your connected bank account.
         </p>
 
         <div className="overflow-x-auto">
@@ -85,7 +85,7 @@ export default function WAVEOSEcosystemOverview() {
         <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
           <h5 className="font-semibold text-slate-900 mb-2">WAVE OS Summary</h5>
           <p className="text-slate-700 text-sm">
-            WAVE OS is an integrated operating platform for independent contractors. It provides a structured environment to accept and manage field-based jobs from the SurfCoastcmp.com platform. Its tiered subscription model offers a progressive suite of features that evolve with contractor experience. All jobs processed through WAVE OS are subject to an <strong>18% facilitation fee</strong>. The Residential Bundle tier has been discontinued — residential features (invoicing, document templates, lead management) are now included in <strong>WAVE Premium</strong>.
+            WAVE OS is an integrated operating platform for independent contractors. It provides a structured environment to accept and manage field-based jobs from the SurfCoastcmp.com platform. Its tiered subscription model offers a progressive suite of features that evolve with contractor experience. All jobs processed through WAVE OS are subject to an <strong>18% Project Completion Fee</strong>. The Residential Bundle tier has been discontinued — residential features (invoicing, document templates, lead management) are now included in <strong>WAVE Premium</strong>.
           </p>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function WAVEOSEcosystemOverview() {
         <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
           <h5 className="font-semibold text-slate-900 mb-2">WAVEshop OS Summary</h5>
           <p className="text-slate-700 text-sm">
-            This system is tailored for market shop vendors to optimize their operations during physical, in-person sales events. Vendors can choose between a 5% facilitation fee per sale or a $20/month subscription that waives the fee entirely. WAVEshop OS is a premium $35/month add-on with advanced booth management features. Sales made directly in-person are <strong>exempt from facilitation fees</strong>; the 5% fee only applies to sales through their online MarketShop profile.
+            This system is tailored for market shop vendors to optimize their operations during physical, in-person sales events. Vendors can choose between a 5% online sale fee per sale or a $20/month subscription that waives the fee entirely. WAVEshop OS is a premium $35/month add-on with advanced booth management features. Sales made directly in-person are <strong>exempt from facilitation fees</strong>; the 5% fee only applies to sales through their online MarketShop profile.
           </p>
         </div>
       </div>
@@ -146,7 +146,7 @@ export default function WAVEOSEcosystemOverview() {
               <li>Sources jobs from SurfCoastcmp.com</li>
               <li>Online job discovery &amp; management</li>
               <li>In-person fieldwork execution</li>
-              <li>18% facilitation fee on all jobs</li>
+              <li>18% Project Completion Fee on all jobs</li>
               <li>4 subscription tiers (Starter, Pro, Max, Premium)</li>
               <li>Max: free messaging with past clients</li>
               <li>Premium: free messaging with all clients</li>

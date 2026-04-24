@@ -66,6 +66,9 @@ Deno.serve(async (req) => {
   // Initialize base44 outside try/catch so it's always in scope
   const base44 = createClientFromRequest(req);
 
+  // Skip user auth entirely — geoCheck is a public endpoint, no user session needed.
+  // The 401 error was caused by attempting base44.auth.me() on an unauthenticated request.
+
   try {
     // Allow GET and POST requests (some clients may use POST)
     if (req.method !== 'GET' && req.method !== 'POST') {

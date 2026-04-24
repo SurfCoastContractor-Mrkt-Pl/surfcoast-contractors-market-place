@@ -35,7 +35,7 @@ export default function SubscriptionGate({ onSubscribe }) {
                 </li>
                 <li className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-blue-500" />
-                  <span>18% facilitation fee</span>
+                  <span>18% Project Completion Fee</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-blue-500" />
