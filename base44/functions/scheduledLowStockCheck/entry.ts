@@ -10,7 +10,13 @@ Deno.serve(async (req) => {
     const serviceKey = req.headers.get('x-internal-key');
     const isPlatformAutomation = !!req.headers.get('x-automation-id');
     const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
-    if (!isPlatformAutomation && !validServiceKey) {
+
+    // Also accept platform scheduled automation payloads (body contains automation metadata)
+    let body = {};
+    try { body = await req.json(); } catch (_) { /* no body is fine */ }
+    const isScheduledAutomation = !!body?.automation?.id;
+
+    if (!isPlatformAutomation && !validServiceKey && !isScheduledAutomation) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
