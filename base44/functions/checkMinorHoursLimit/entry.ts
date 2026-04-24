@@ -24,12 +24,10 @@ Deno.serve(async (req) => {
     const isPlatformAutomation = !!req.headers.get('x-automation-id');
 
     if (isAutomation) {
-      // Bulk/scheduled check: require service key, platform automation header, or admin user
+      // Bulk/scheduled check: require service key or platform automation header ONLY.
+      // Do NOT attempt base44.auth.me() — scheduled tasks have no user session.
       if (!validServiceKey && !isPlatformAutomation) {
-        const user = await base44.auth.me().catch(() => null);
-        if (!user || user.role !== 'admin') {
-          return Response.json({ error: 'Forbidden: Admin access required for bulk checks' }, { status: 403 });
-        }
+        return Response.json({ error: 'Forbidden: Internal service key or platform automation required for bulk checks' }, { status: 403 });
       }
       console.log('Running minor hours automation check');
     } else {

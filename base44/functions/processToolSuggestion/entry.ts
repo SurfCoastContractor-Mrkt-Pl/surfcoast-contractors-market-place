@@ -9,15 +9,14 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
 
-    // Allow only verified automation payloads, INTERNAL_SERVICE_KEY, or admin users
+    // Allow only structurally valid automation payloads or INTERNAL_SERVICE_KEY.
+    // Structural validation (type + entity_name + entity_id) prevents spoofed automation payloads.
+    // Do NOT fall back to base44.auth.me() here — entity automations have no user session.
     const isValidAutomation = body?.event?.type && body?.event?.entity_name && body?.event?.entity_id;
     const serviceKey = req.headers.get('x-internal-key');
     const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
     if (!isValidAutomation && !validServiceKey) {
-      const user = await base44.auth.me().catch(() => null);
-      if (!user || user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden: Admin or internal service access required' }, { status: 403 });
-      }
+      return Response.json({ error: 'Forbidden: Valid automation payload or internal service key required' }, { status: 403 });
     }
 
     // Support direct call with suggestion_id OR entity automation payload

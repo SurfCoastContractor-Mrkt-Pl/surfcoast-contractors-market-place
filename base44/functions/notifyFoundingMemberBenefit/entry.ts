@@ -50,8 +50,8 @@ Deno.serve(async (req) => {
       created_at: new Date().toISOString()
     }).catch(() => null);
 
-    // Send welcome email
-    const emailResult = await base44.integrations.Core.SendEmail({
+    // Send welcome email — must use asServiceRole (no user session in automation chain)
+    const emailResult = await base44.asServiceRole.integrations.Core.SendEmail({
       to: contractor_email,
       subject: '🎉 Welcome to SurfCoast Founding Member Circle!',
       body: `

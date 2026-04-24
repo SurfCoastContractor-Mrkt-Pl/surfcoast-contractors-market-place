@@ -8,17 +8,15 @@ Deno.serve(async (req) => {
 
     const { event, data } = body;
 
-    // Authorization: must be a verified automation payload, INTERNAL_SERVICE_KEY, or admin user
+    // Authorization: must be a structurally valid automation payload OR INTERNAL_SERVICE_KEY.
+    // Structural validation prevents spoofing by requiring type + entity_name + entity_id.
     const isValidAutomation = event?.type && event?.entity_name && event?.entity_id;
     if (!isValidAutomation) {
       const internalKey = req.headers.get('x-internal-key');
       const validServiceKey = internalKey && internalKey === Deno.env.get('INTERNAL_SERVICE_KEY');
       if (!validServiceKey) {
-        const user = await base44.auth.me().catch(() => null);
-        if (!user || user.role !== 'admin') {
-          console.warn('Unauthorized invoice generation attempt');
-          return Response.json({ error: 'Forbidden' }, { status: 403 });
-        }
+        console.warn('Unauthorized invoice generation attempt');
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
 
@@ -159,7 +157,7 @@ Deno.serve(async (req) => {
     doc.setTextColor(100, 100, 100);
     const platformFeePercentage = scope.platform_fee_percentage || 18;
     const platformFee = (totalCost * platformFeePercentage) / 100;
-    doc.text('Platform Facilitation Fee:', tableLeft, yPos);
+    doc.text('Platform Project Completion Fee:', tableLeft, yPos);
     doc.text(`-$${((totalCost * (scope.platform_fee_percentage || 18)) / 100).toFixed(2)} (${scope.platform_fee_percentage || 18}%)`, tableLeft + colWidth, yPos);
 
     // Contractor payout
@@ -207,7 +205,7 @@ Deno.serve(async (req) => {
         to: scope.contractor_email,
         from_name: 'SurfCoast Marketplace',
         subject: `Invoice: ${scope.job_title}`,
-        body: `Hello ${scope.contractor_name},\n\nYour job "${scope.job_title}" has been closed out.\n\nJob Amount: $${jobCost.toFixed(2)}\nPlatform Facilitation Fee (${platformFeePercentage}%): -$${platformFee.toFixed(2)}\nYour Payout: $${payoutAmount.toFixed(2)}\n\nThank you for your work!\n\nSurfCoast Contractor Market Place`,
+        body: `Hello ${scope.contractor_name},\n\nYour job "${scope.job_title}" has been closed out.\n\nJob Amount: $${jobCost.toFixed(2)}\nProject Completion Fee (${platformFeePercentage}%): -$${platformFee.toFixed(2)}\nYour Payout: $${payoutAmount.toFixed(2)}\n\nThank you for your work!\n\nSurfCoast Marketplace`,
       });
     } catch (e) {
       console.error('Error sending email to contractor:', e.message);

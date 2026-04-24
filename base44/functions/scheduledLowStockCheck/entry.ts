@@ -5,14 +5,13 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Scheduled automation — must be triggered by platform or internal service key
+    // Scheduled automation — must be triggered by platform or INTERNAL_SERVICE_KEY only.
+    // Do NOT attempt base44.auth.me() here — scheduled tasks have no user session.
     const serviceKey = req.headers.get('x-internal-key');
-    const isAutomation = req.headers.get('x-automation-id'); // set by platform automations
-    if (!isAutomation && (!serviceKey || serviceKey !== Deno.env.get('INTERNAL_SERVICE_KEY'))) {
-      const user = await base44.auth.me().catch(() => null);
-      if (!user || user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
+    const isPlatformAutomation = !!req.headers.get('x-automation-id');
+    const validServiceKey = serviceKey && serviceKey === Deno.env.get('INTERNAL_SERVICE_KEY');
+    if (!isPlatformAutomation && !validServiceKey) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Fetch all Equipment records using service role (no user auth needed)
