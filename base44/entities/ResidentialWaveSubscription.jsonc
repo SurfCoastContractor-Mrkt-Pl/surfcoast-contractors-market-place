@@ -1,0 +1,115 @@
+{
+  "name": "ResidentialWaveSubscription",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "description": "Stripe subscription ID"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "description": "Stripe customer ID"
+    },
+    "plan_name": {
+      "type": "string",
+      "enum": [
+        "professional",
+        "enterprise"
+      ],
+      "description": "Subscription plan name"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "cancelled",
+        "past_due",
+        "incomplete"
+      ],
+      "default": "active",
+      "description": "Subscription status"
+    },
+    "monthly_price": {
+      "type": "number",
+      "description": "Monthly subscription cost in dollars"
+    },
+    "billing_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Monthly billing date"
+    },
+    "next_billing_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Next billing date"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Subscription start date"
+    },
+    "cancellation_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date subscription was cancelled"
+    },
+    "access_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether contractor has active access to Residential Wave"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "stripe_subscription_id",
+    "plan_name",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

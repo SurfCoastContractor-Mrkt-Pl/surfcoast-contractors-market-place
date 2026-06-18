@@ -155,6 +155,11 @@
       "type": "boolean",
       "default": false,
       "description": "Whether a 2-star penalty rating was applied due to inappropriate content"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo record \u2014 hidden from public live site"
     }
   },
   "required": [
@@ -185,9 +190,6 @@
     "read": {
       "$or": [
         {
-          "data.verified": true
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
@@ -197,6 +199,16 @@
         },
         {
           "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "$and": [
+            {
+              "data.verified": true
+            },
+            {
+              "data.is_demo": false
+            }
+          ]
         }
       ]
     },

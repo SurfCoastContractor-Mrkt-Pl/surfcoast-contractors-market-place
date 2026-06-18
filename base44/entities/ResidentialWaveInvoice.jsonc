@@ -1,0 +1,128 @@
+{
+  "name": "ResidentialWaveInvoice",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Associated ResidentialWaveJob ID"
+    },
+    "invoice_number": {
+      "type": "string",
+      "description": "Unique invoice number"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Customer name"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Customer email"
+    },
+    "service_description": {
+      "type": "string",
+      "description": "Description of services rendered"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Total invoice amount in dollars"
+    },
+    "tax_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Tax amount"
+    },
+    "total_amount": {
+      "type": "number",
+      "description": "Total including tax"
+    },
+    "issue_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date invoice was issued"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "sent",
+        "paid",
+        "overdue",
+        "cancelled"
+      ],
+      "default": "draft",
+      "description": "Invoice status"
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date payment was received"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Internal notes"
+    },
+    "pdf_url": {
+      "type": "string",
+      "description": "URL to generated PDF invoice"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "invoice_number",
+    "customer_name",
+    "customer_email",
+    "amount",
+    "total_amount"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

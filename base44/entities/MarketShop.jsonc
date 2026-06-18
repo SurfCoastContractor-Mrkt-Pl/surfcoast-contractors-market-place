@@ -405,21 +405,7 @@
     "create": {
       "data.email": "{{user.email}}"
     },
-    "read": {
-      "$or": [
-        {
-          "data.email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        },
-        {
-          "data.is_active": true
-        }
-      ]
-    },
+    "read": {},
     "update": {
       "$or": [
         {

@@ -1,0 +1,98 @@
+{
+  "name": "PhoneVerification",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email address associated with the phone verification"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Normalized phone number (digits only)"
+    },
+    "code": {
+      "type": "string",
+      "description": "6-digit verification code"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when the code expires"
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the code has been verified"
+    }
+  },
+  "required": [
+    "email",
+    "phone",
+    "code",
+    "expires_at"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    }
+  }
+}

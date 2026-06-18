@@ -703,16 +703,7 @@
   ],
   "rls": {
     "create": {
-      "$or": [
-        {
-          "data.email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "data.email": "{{user.email}}"
     },
     "read": {
       "$or": [
@@ -725,7 +716,7 @@
           }
         },
         {
-          "data.available": true
+          "data.account_locked": false
         }
       ]
     },
@@ -742,16 +733,9 @@
       ]
     },
     "delete": {
-      "$or": [
-        {
-          "data.email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     }
   }
 }

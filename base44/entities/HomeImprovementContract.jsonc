@@ -1,0 +1,102 @@
+{
+  "name": "HomeImprovementContract",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who uploaded this contract"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "contract_name": {
+      "type": "string",
+      "description": "Name of the contract (e.g., 'Three Day Right to Cancel', 'Home Improvement Contract')"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description of what this contract covers"
+    },
+    "document_url": {
+      "type": "string",
+      "description": "URL of the uploaded PDF contract"
+    },
+    "license_state": {
+      "type": "string",
+      "description": "State where contractor's license is valid for this contract"
+    },
+    "license_county": {
+      "type": "string",
+      "description": "County where contractor's license is valid (optional, if county-specific)"
+    },
+    "contract_type": {
+      "type": "string",
+      "enum": [
+        "home_improvement",
+        "three_day_cancel",
+        "three_day_waiver",
+        "other"
+      ],
+      "description": "Type of contract"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this contract is available for use"
+    },
+    "uploaded_at": {
+      "type": "string",
+      "description": "ISO timestamp when contract was uploaded"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "contract_name",
+    "document_url",
+    "license_state",
+    "contract_type"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

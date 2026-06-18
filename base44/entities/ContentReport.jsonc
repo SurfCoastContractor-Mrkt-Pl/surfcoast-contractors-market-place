@@ -1,0 +1,168 @@
+{
+  "name": "ContentReport",
+  "type": "object",
+  "properties": {
+    "reporter_email": {
+      "type": "string",
+      "description": "Email of the user reporting the content"
+    },
+    "reporter_name": {
+      "type": "string",
+      "description": "Name of the reporter"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "profile",
+        "message",
+        "job_posting",
+        "job_description",
+        "review",
+        "comment",
+        "other"
+      ],
+      "description": "Type of content being reported"
+    },
+    "violation_category": {
+      "type": "string",
+      "enum": [
+        "illegal_activity",
+        "harassment",
+        "hate_speech",
+        "scam_fraud",
+        "unsafe_services",
+        "inappropriate_content",
+        "discrimination",
+        "spam",
+        "other"
+      ],
+      "description": "Category of violation"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium",
+      "description": "Severity level of the report"
+    },
+    "target_user_email": {
+      "type": "string",
+      "description": "Email of the user/content owner being reported"
+    },
+    "target_user_name": {
+      "type": "string",
+      "description": "Name of the user being reported"
+    },
+    "content_id": {
+      "type": "string",
+      "description": "ID of the specific content (message ID, job ID, etc.)"
+    },
+    "content_preview": {
+      "type": "string",
+      "description": "Preview or excerpt of the flagged content"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Detailed reason for the report from the user"
+    },
+    "ai_flagged": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this was flagged by automated AI scanning"
+    },
+    "ai_risk_score": {
+      "type": "number",
+      "description": "AI risk score (0-100) if auto-flagged"
+    },
+    "ai_violations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of policy violations detected by AI"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "under_review",
+        "escalated",
+        "resolved",
+        "dismissed",
+        "actioned"
+      ],
+      "default": "new",
+      "description": "Status of the report"
+    },
+    "admin_assigned_to": {
+      "type": "string",
+      "description": "Email of admin handling the report"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Admin investigation notes"
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": [
+        "none",
+        "warning_issued",
+        "content_removed",
+        "account_suspended",
+        "account_banned",
+        "referred_to_authorities"
+      ],
+      "description": "Action taken in response to the report"
+    },
+    "action_date": {
+      "type": "string",
+      "description": "ISO timestamp when action was taken"
+    },
+    "evidence_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of screenshots or evidence"
+    }
+  },
+  "required": [
+    "reporter_email",
+    "reporter_name",
+    "content_type",
+    "violation_category",
+    "target_user_email",
+    "target_user_name"
+  ],
+  "rls": {
+    "create": {
+      "data.reporter_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.reporter_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

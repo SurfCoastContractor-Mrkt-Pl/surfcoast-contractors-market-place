@@ -1,0 +1,67 @@
+{
+  "name": "VendorInquiry",
+  "type": "object",
+  "properties": {
+    "shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop"
+    },
+    "shop_name": {
+      "type": "string",
+      "description": "Name of the shop"
+    },
+    "visitor_name": {
+      "type": "string",
+      "description": "Name of the person sending inquiry"
+    },
+    "visitor_email": {
+      "type": "string",
+      "description": "Email of the person sending inquiry"
+    },
+    "message": {
+      "type": "string",
+      "description": "Inquiry message"
+    },
+    "shop_email": {
+      "type": "string",
+      "description": "Email of the shop owner (for routing)"
+    }
+  },
+  "required": [
+    "shop_id",
+    "shop_name",
+    "visitor_name",
+    "visitor_email",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "data.visitor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.shop_email": "{{user.email}}"
+        },
+        {
+          "data.visitor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

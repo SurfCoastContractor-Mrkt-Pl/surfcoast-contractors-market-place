@@ -144,16 +144,7 @@
   ],
   "rls": {
     "create": {
-      "$or": [
-        {
-          "data.user_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "service_role"
-          }
-        }
-      ]
+      "data.user_email": "{{user.email}}"
     },
     "read": {
       "$or": [
@@ -171,11 +162,6 @@
       "$or": [
         {
           "data.user_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "service_role"
-          }
         },
         {
           "user_condition": {

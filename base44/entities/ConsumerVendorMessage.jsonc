@@ -1,0 +1,115 @@
+{
+  "name": "ConsumerVendorMessage",
+  "type": "object",
+  "properties": {
+    "shop_id": {
+      "type": "string",
+      "description": "ID of the MarketShop (vendor)"
+    },
+    "shop_name": {
+      "type": "string",
+      "description": "Name of the vendor shop"
+    },
+    "consumer_email": {
+      "type": "string",
+      "description": "Email of the consumer sending the message"
+    },
+    "consumer_name": {
+      "type": "string",
+      "description": "Name of the consumer"
+    },
+    "vendor_email": {
+      "type": "string",
+      "description": "Email of the vendor/shop owner"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Subject of the inquiry (e.g., 'Product Availability', 'Custom Order', 'Event Details')"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message content from consumer"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "availability",
+        "custom_order",
+        "event_details",
+        "other"
+      ],
+      "description": "Type of inquiry"
+    },
+    "conversation_id": {
+      "type": "string",
+      "description": "Unique conversation ID to group related messages"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "unread",
+        "read",
+        "replied"
+      ],
+      "default": "unread",
+      "description": "Message status"
+    },
+    "vendor_reply": {
+      "type": "string",
+      "description": "Reply from vendor"
+    },
+    "vendor_replied_at": {
+      "type": "string",
+      "description": "ISO timestamp when vendor replied"
+    },
+    "read_by_vendor_at": {
+      "type": "string",
+      "description": "ISO timestamp when vendor read the message"
+    }
+  },
+  "required": [
+    "shop_id",
+    "shop_name",
+    "consumer_email",
+    "consumer_name",
+    "vendor_email",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "data.consumer_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.consumer_email": "{{user.email}}"
+        },
+        {
+          "data.vendor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.vendor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

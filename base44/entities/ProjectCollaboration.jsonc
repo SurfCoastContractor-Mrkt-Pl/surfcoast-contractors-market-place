@@ -1,0 +1,134 @@
+{
+  "name": "ProjectCollaboration",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the associated Job"
+    },
+    "project_name": {
+      "type": "string",
+      "description": "Name/title of the project"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer/project owner"
+    },
+    "collaborators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contractor_id": {
+            "type": "string"
+          },
+          "contractor_email": {
+            "type": "string"
+          },
+          "contractor_name": {
+            "type": "string"
+          },
+          "scope_id": {
+            "type": "string",
+            "description": "Their individual ScopeOfWork ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "invited",
+              "accepted",
+              "declined",
+              "active",
+              "completed"
+            ],
+            "default": "invited"
+          },
+          "joined_at": {
+            "type": "string",
+            "description": "ISO timestamp when they accepted"
+          },
+          "agreement_signed_at": {
+            "type": "string",
+            "description": "ISO timestamp when peer agreement signed"
+          }
+        }
+      },
+      "description": "All contractors on this project"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "forming",
+        "active",
+        "paused",
+        "completed"
+      ],
+      "default": "forming",
+      "description": "Overall collaboration status"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO timestamp when all parties accepted"
+    },
+    "completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when project completed"
+    },
+    "peer_agreement_version": {
+      "type": "string",
+      "description": "Version of peer collaboration agreement used"
+    },
+    "all_scopes_approved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether customer approved all individual scopes"
+    }
+  },
+  "required": [
+    "job_id",
+    "project_name",
+    "customer_email",
+    "collaborators"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "data.collaborators.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

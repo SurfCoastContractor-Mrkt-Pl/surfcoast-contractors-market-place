@@ -1,0 +1,104 @@
+{
+  "name": "PortfolioProject",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor who completed the project"
+    },
+    "project_title": {
+      "type": "string",
+      "description": "Title of the portfolio project"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the project, challenges solved, and results"
+    },
+    "trade_category": {
+      "type": "string",
+      "enum": [
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "mason",
+        "roofer",
+        "painter",
+        "welder",
+        "tiler",
+        "landscaper",
+        "other"
+      ],
+      "description": "Trade category of the project"
+    },
+    "completion_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the project was completed"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Image URL"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Caption for the image"
+          },
+          "is_before": {
+            "type": "boolean",
+            "description": "Whether this is a before photo"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "description": "Before/after project images"
+    },
+    "scope_id": {
+      "type": "string",
+      "description": "Associated ScopeOfWork ID if linked to a completed project"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "project_title",
+    "description",
+    "completion_date"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": true,
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

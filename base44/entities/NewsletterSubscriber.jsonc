@@ -1,0 +1,81 @@
+{
+  "name": "NewsletterSubscriber",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Subscriber email address"
+    },
+    "name": {
+      "type": "string",
+      "description": "Subscriber name (optional)"
+    },
+    "subscriber_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer",
+        "general"
+      ],
+      "default": "general",
+      "description": "Type of subscriber"
+    },
+    "location": {
+      "type": "string",
+      "description": "Subscriber location/region"
+    },
+    "subscribed": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether actively subscribed"
+    },
+    "unsubscribed_at": {
+      "type": "string",
+      "description": "ISO timestamp when unsubscribed"
+    }
+  },
+  "required": [
+    "email"
+  ],
+  "rls": {
+    "create": {
+      "data.email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

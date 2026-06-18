@@ -32,7 +32,11 @@
     "page_url"
   ],
   "rls": {
-    "create": true,
+    "create": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
     "read": {
       "user_condition": {
         "role": "admin"

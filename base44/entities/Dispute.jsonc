@@ -1,0 +1,191 @@
+{
+  "name": "Dispute",
+  "type": "object",
+  "properties": {
+    "dispute_number": {
+      "type": "string",
+      "description": "Auto-generated unique dispute ID (e.g., DSP-2026-001)"
+    },
+    "initiator_email": {
+      "type": "string",
+      "description": "Email of the person filing the dispute"
+    },
+    "initiator_name": {
+      "type": "string",
+      "description": "Name of the person filing the dispute"
+    },
+    "initiator_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Type of user initiating the dispute"
+    },
+    "respondent_email": {
+      "type": "string",
+      "description": "Email of the other party involved"
+    },
+    "respondent_name": {
+      "type": "string",
+      "description": "Name of the other party involved"
+    },
+    "respondent_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Type of respondent"
+    },
+    "scope_id": {
+      "type": "string",
+      "description": "Associated ScopeOfWork ID if applicable"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Associated Job ID if applicable"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the related job"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "payment_issue",
+        "work_quality",
+        "timeline_delay",
+        "communication_problem",
+        "contract_breach",
+        "safety_concern",
+        "other"
+      ],
+      "description": "Category of the dispute"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium",
+      "description": "Severity level of the dispute"
+    },
+    "title": {
+      "type": "string",
+      "description": "Brief title of the dispute"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the issue"
+    },
+    "evidence_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of supporting evidence (photos, documents, etc.)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_review",
+        "under_mediation",
+        "resolved",
+        "closed",
+        "escalated"
+      ],
+      "default": "open",
+      "description": "Current status of the dispute"
+    },
+    "resolution_type": {
+      "type": "string",
+      "enum": [
+        "mutual_agreement",
+        "admin_decision",
+        "refund_issued",
+        "work_remedied",
+        "none"
+      ],
+      "description": "How the dispute was resolved"
+    },
+    "resolution_details": {
+      "type": "string",
+      "description": "Details about the resolution"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Internal admin notes on the dispute"
+    },
+    "assigned_to_admin": {
+      "type": "string",
+      "description": "Email of admin handling the dispute"
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp when dispute was submitted"
+    },
+    "last_updated_at": {
+      "type": "string",
+      "description": "ISO timestamp of last update"
+    },
+    "resolved_at": {
+      "type": "string",
+      "description": "ISO timestamp when dispute was resolved"
+    }
+  },
+  "required": [
+    "initiator_email",
+    "initiator_name",
+    "initiator_type",
+    "respondent_email",
+    "respondent_name",
+    "respondent_type",
+    "category",
+    "title",
+    "description"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.initiator_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.initiator_email": "{{user.email}}"
+        },
+        {
+          "data.respondent_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

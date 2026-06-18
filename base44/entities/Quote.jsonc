@@ -1,0 +1,117 @@
+{
+  "name": "Quote",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the Job this quote is for"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job"
+    },
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor submitting the quote"
+    },
+    "contractor_name": {
+      "type": "string",
+      "description": "Name of the contractor"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "price": {
+      "type": "number",
+      "description": "Quoted price in dollars"
+    },
+    "price_type": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "hourly",
+        "estimated"
+      ],
+      "default": "fixed",
+      "description": "Type of pricing"
+    },
+    "message": {
+      "type": "string",
+      "description": "Contractor's message and pitch to the customer"
+    },
+    "availability_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Earliest date contractor is available"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "viewed",
+        "accepted",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Status of the quote"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the job poster (customer)"
+    }
+  },
+  "required": [
+    "job_id",
+    "job_title",
+    "contractor_id",
+    "contractor_name",
+    "contractor_email",
+    "price",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

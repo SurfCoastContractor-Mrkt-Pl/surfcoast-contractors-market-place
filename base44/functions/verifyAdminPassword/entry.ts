@@ -42,7 +42,12 @@ async function verifyPassword(password, hash) {
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
 
-    return derivedHash === storedHash;
+    // Constant-time comparison to prevent timing attacks
+    let result = 0;
+    for (let i = 0; i < Math.max(derivedHash.length, storedHash.length); i++) {
+      result |= (derivedHash.charCodeAt(i) || 0) ^ (storedHash.charCodeAt(i) || 0);
+    }
+    return result === 0;
   } catch (error) {
     console.error('Password verification error:', error);
     return false;

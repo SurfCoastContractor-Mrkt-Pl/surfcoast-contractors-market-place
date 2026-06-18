@@ -1,0 +1,101 @@
+{
+  "name": "SavedPaymentMethod",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who saved this payment method"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "description": "Stripe Customer ID associated with this user"
+    },
+    "stripe_payment_method_id": {
+      "type": "string",
+      "description": "Stripe payment method ID"
+    },
+    "card_name": {
+      "type": "string",
+      "description": "User-friendly name for the card"
+    },
+    "card_brand": {
+      "type": "string",
+      "description": "Card brand (visa, mastercard, amex, etc.)"
+    },
+    "card_last4": {
+      "type": "string",
+      "description": "Last 4 digits of the card"
+    },
+    "card_exp_month": {
+      "type": "number",
+      "description": "Card expiration month"
+    },
+    "card_exp_year": {
+      "type": "number",
+      "description": "Card expiration year"
+    }
+  },
+  "required": [
+    "user_email",
+    "stripe_payment_method_id",
+    "card_brand",
+    "card_last4",
+    "card_exp_month",
+    "card_exp_year"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

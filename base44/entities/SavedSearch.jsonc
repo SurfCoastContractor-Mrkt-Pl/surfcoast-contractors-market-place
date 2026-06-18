@@ -1,0 +1,97 @@
+{
+  "name": "SavedSearch",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who saved the search"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether user is contractor or customer"
+    },
+    "search_name": {
+      "type": "string",
+      "description": "Custom name for the saved search"
+    },
+    "search_type": {
+      "type": "string",
+      "enum": [
+        "contractors",
+        "jobs"
+      ],
+      "description": "What type of search this is"
+    },
+    "query": {
+      "type": "string",
+      "description": "Search keyword/query"
+    },
+    "filters": {
+      "type": "object",
+      "description": "Applied filters as JSON object",
+      "properties": {
+        "trades": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minRating": {
+          "type": "number"
+        },
+        "maxPrice": {
+          "type": "number"
+        },
+        "minPrice": {
+          "type": "number"
+        },
+        "location": {
+          "type": "string"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "urgency": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is the user's default saved search"
+    },
+    "notification_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Send email when new matches found"
+    }
+  },
+  "required": [
+    "user_email",
+    "user_type",
+    "search_name",
+    "search_type"
+  ],
+  "rls": {
+    "create": {
+      "data.user_email": "{{user.email}}"
+    },
+    "read": {
+      "data.user_email": "{{user.email}}"
+    },
+    "update": {
+      "data.user_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.user_email": "{{user.email}}"
+    }
+  }
+}

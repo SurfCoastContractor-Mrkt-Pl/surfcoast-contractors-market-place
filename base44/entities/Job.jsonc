@@ -112,6 +112,11 @@
         "type": "string"
       },
       "description": "URLs of before photos uploaded by client (minimum 5 required)"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo record \u2014 hidden from public live site"
     }
   },
   "required": [
@@ -125,58 +130,53 @@
     "create": {
       "$or": [
         {
-          "data.poster_email": "{{user.email}}"
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
         },
         {
-          "user_condition": {
-            "role": "service_role"
-          }
+          "data.poster_email": "{{user.email}}"
         }
       ]
     },
     "read": {
       "$or": [
         {
-          "data.poster_email": "{{user.email}}"
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
         },
         {
-          "data.status": "open"
+          "data.poster_email": "{{user.email}}"
+        },
+        {
+          "$and": [
+            {
+              "data.status": "open"
+            },
+            {
+              "data.is_demo": false
+            }
+          ]
         }
       ]
     },
     "update": {
       "$or": [
         {
-          "data.poster_email": "{{user.email}}"
-        },
-        {
           "user_condition": {
             "role": "admin"
           }
+        },
+        {
+          "data.poster_email": "{{user.email}}"
         }
       ]
     },
     "delete": {
-      "$or": [
-        {
-          "data.poster_email": "{{user.email}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     }
   }
 }

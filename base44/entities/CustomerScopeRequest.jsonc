@@ -1,0 +1,103 @@
+{
+  "name": "CustomerScopeRequest",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the associated Job"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email of the customer"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Title of the job"
+    },
+    "scope_details": {
+      "type": "string",
+      "description": "Customer's detailed description of what needs to be done"
+    },
+    "scope_photo_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of photos uploaded by customer describing the scope"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft",
+      "description": "Status of the scope request"
+    }
+  },
+  "required": [
+    "job_id",
+    "customer_email",
+    "customer_name",
+    "job_title",
+    "scope_details"
+  ],
+  "rls": {
+    "create": {
+      "data.customer_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "id": {
+            "$in": {
+              "entity": "ContractorScopeProposal",
+              "query": {
+                "data.contractor_email": "{{user.email}}",
+                "data.job_id": "$$this.job_id"
+              },
+              "field": "scope_request_id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.customer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

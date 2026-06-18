@@ -1,63 +1,70 @@
 {
-  "name": "ProposalOption",
+  "name": "ResidentialWaveDocument",
   "type": "object",
   "properties": {
-    "quote_request_id": {
-      "type": "string",
-      "description": "ID of the associated QuoteRequest"
-    },
     "contractor_id": {
       "type": "string",
-      "description": "ID of the contractor"
+      "description": "ID of the contractor who owns this document"
     },
     "contractor_email": {
       "type": "string",
       "description": "Email of the contractor"
     },
-    "option_number": {
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "cslb_contractor_license",
+        "his_license",
+        "bond",
+        "insurance",
+        "other"
+      ],
+      "description": "Type of document"
+    },
+    "document_name": {
+      "type": "string",
+      "description": "Custom name for the document"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL of the uploaded document"
+    },
+    "file_size": {
       "type": "number",
-      "description": "Option order (1, 2, 3, etc.)"
+      "description": "File size in bytes"
     },
-    "option_name": {
+    "upload_date": {
       "type": "string",
-      "description": "Name of this option (e.g., 'Basic', 'Standard', 'Premium')"
+      "format": "date",
+      "description": "Date document was uploaded"
     },
-    "description": {
+    "expiration_date": {
       "type": "string",
-      "description": "Detailed description of this option"
+      "format": "date",
+      "description": "Document expiration date (if applicable)"
     },
-    "price": {
-      "type": "number",
-      "description": "Price for this option"
+    "is_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether document has been verified by admin"
     },
-    "timeline": {
+    "notes": {
       "type": "string",
-      "description": "Estimated timeline for completion"
+      "description": "Internal notes about the document"
     },
-    "includes": {
+    "tags": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "Features/deliverables included"
-    },
-    "notes": {
-      "type": "string",
-      "description": "Additional notes or terms"
-    },
-    "selected": {
-      "type": "boolean",
-      "default": false,
-      "description": "Whether client selected this option"
+      "description": "Tags for categorization"
     }
   },
   "required": [
-    "quote_request_id",
     "contractor_id",
     "contractor_email",
-    "option_number",
-    "option_name",
-    "price"
+    "document_type",
+    "file_url"
   ],
   "rls": {
     "create": {

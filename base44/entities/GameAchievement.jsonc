@@ -82,11 +82,13 @@
     "create": {
       "$or": [
         {
-          "data.user_email": "{{user.email}}"
+          "user_condition": {
+            "role": "service_role"
+          }
         },
         {
           "user_condition": {
-            "role": "service_role"
+            "role": "admin"
           }
         }
       ]
@@ -106,11 +108,13 @@
     "update": {
       "$or": [
         {
-          "data.user_email": "{{user.email}}"
+          "user_condition": {
+            "role": "service_role"
+          }
         },
         {
           "user_condition": {
-            "role": "service_role"
+            "role": "admin"
           }
         }
       ]

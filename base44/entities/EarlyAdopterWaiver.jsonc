@@ -1,0 +1,113 @@
+{
+  "name": "EarlyAdopterWaiver",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user claiming the early adopter waiver"
+    },
+    "user_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Whether the user is a contractor or customer"
+    },
+    "profile_completed_at": {
+      "type": "string",
+      "description": "ISO timestamp when the user completed their profile"
+    },
+    "claimed_at": {
+      "type": "string",
+      "description": "ISO timestamp when the user claimed the waiver"
+    },
+    "claim_order": {
+      "type": "number",
+      "description": "Sequential order of claim (1-100 for eligible users)"
+    },
+    "is_eligible": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user is within the first 100 and eligible for the free year"
+    },
+    "waiver_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "expired",
+        "ineligible"
+      ],
+      "default": "pending",
+      "description": "Current status of the waiver claim"
+    },
+    "free_year_starts_at": {
+      "type": "string",
+      "description": "ISO timestamp when the free year started"
+    },
+    "free_year_expires_at": {
+      "type": "string",
+      "description": "ISO timestamp when the free year expires and charges begin"
+    },
+    "contractor_lifetime_fee_rate": {
+      "type": "number",
+      "default": 8,
+      "description": "For contractors: 8% facilitation fee applies indefinitely after free year"
+    },
+    "customer_reverts_to_standard": {
+      "type": "boolean",
+      "default": true,
+      "description": "For customers: after free year, all standard pricing applies with no exceptions"
+    }
+  },
+  "required": [
+    "user_email",
+    "user_type"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "service_role"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

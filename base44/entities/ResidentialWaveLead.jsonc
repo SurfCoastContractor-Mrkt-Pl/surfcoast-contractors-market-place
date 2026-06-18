@@ -1,0 +1,129 @@
+{
+  "name": "ResidentialWaveLead",
+  "type": "object",
+  "properties": {
+    "contractor_id": {
+      "type": "string",
+      "description": "ID of the contractor managing this lead"
+    },
+    "contractor_email": {
+      "type": "string",
+      "description": "Email of the contractor"
+    },
+    "lead_name": {
+      "type": "string",
+      "description": "Lead/prospect name"
+    },
+    "lead_email": {
+      "type": "string",
+      "description": "Lead email"
+    },
+    "lead_phone": {
+      "type": "string",
+      "description": "Lead phone"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "electrician",
+        "plumber",
+        "carpenter",
+        "hvac",
+        "mason",
+        "roofer",
+        "painter",
+        "welder",
+        "tiler",
+        "landscaper",
+        "other"
+      ],
+      "description": "Type of service lead is interested in"
+    },
+    "property_address": {
+      "type": "string",
+      "description": "Property address for the work"
+    },
+    "project_description": {
+      "type": "string",
+      "description": "Description of the project"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "contacted",
+        "qualified",
+        "quoted",
+        "won",
+        "lost"
+      ],
+      "default": "new",
+      "description": "Lead status in the sales pipeline"
+    },
+    "estimated_value": {
+      "type": "number",
+      "description": "Estimated project value"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Follow-up notes"
+    },
+    "contact_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date lead was first contacted"
+    },
+    "next_follow_up": {
+      "type": "string",
+      "format": "date",
+      "description": "Scheduled follow-up date"
+    }
+  },
+  "required": [
+    "contractor_id",
+    "contractor_email",
+    "lead_name",
+    "service_type"
+  ],
+  "rls": {
+    "create": {
+      "data.contractor_email": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.contractor_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

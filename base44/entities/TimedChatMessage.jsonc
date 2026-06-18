@@ -1,0 +1,87 @@
+{
+  "name": "TimedChatMessage",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "ID of the TimedChatSession"
+    },
+    "sender_type": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "contractor"
+      ],
+      "description": "Whether the sender is customer or contractor"
+    },
+    "sender_name": {
+      "type": "string",
+      "description": "Display name of the sender"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message text (redacted if applicable)"
+    },
+    "sent_at": {
+      "type": "string",
+      "description": "ISO timestamp when message was sent"
+    },
+    "was_redacted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether personal info was removed from message"
+    }
+  },
+  "required": [
+    "session_id",
+    "sender_type",
+    "sender_name",
+    "message",
+    "sent_at"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.session_id": {
+            "$in": {
+              "entity": "TimedChatSession",
+              "query": {
+                "$or": [
+                  {
+                    "data.customer_email": "{{user.email}}"
+                  },
+                  {
+                    "data.contractor_email": "{{user.email}}"
+                  }
+                ]
+              },
+              "field": "id"
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

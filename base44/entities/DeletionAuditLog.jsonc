@@ -1,0 +1,77 @@
+{
+  "name": "DeletionAuditLog",
+  "type": "object",
+  "properties": {
+    "deleted_by_email": {
+      "type": "string",
+      "description": "Email of user who performed the deletion"
+    },
+    "deleted_by_role": {
+      "type": "string",
+      "enum": [
+        "user",
+        "admin"
+      ],
+      "description": "Role of user who performed deletion"
+    },
+    "account_type": {
+      "type": "string",
+      "enum": [
+        "contractor",
+        "customer"
+      ],
+      "description": "Type of account deleted"
+    },
+    "account_email": {
+      "type": "string",
+      "description": "Email of deleted account"
+    },
+    "entity_name": {
+      "type": "string",
+      "description": "Name of entity deleted"
+    },
+    "entity_id": {
+      "type": "string",
+      "description": "ID of entity deleted"
+    },
+    "deletion_reason": {
+      "type": "string",
+      "description": "Reason for deletion (account_deletion, cascade, etc.)"
+    },
+    "deleted_at": {
+      "type": "string",
+      "description": "ISO timestamp of deletion"
+    }
+  },
+  "required": [
+    "deleted_by_email",
+    "deleted_by_role",
+    "account_type",
+    "account_email",
+    "entity_name",
+    "entity_id",
+    "deleted_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "service_role"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
