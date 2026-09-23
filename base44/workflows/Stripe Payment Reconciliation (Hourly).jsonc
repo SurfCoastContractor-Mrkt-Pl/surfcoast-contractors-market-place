@@ -1,0 +1,46 @@
+{
+  "name": "Stripe Payment Reconciliation (Hourly)",
+  "description": "Hourly reconciliation of database payments with Stripe charges and cleanup of orphaned/stale records",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "interval",
+      "cron_expression": null,
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": 1,
+      "interval_unit": "hours",
+      "interval_anchor": "2026-03-11T17:19:26.303000",
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "stripe_payment_reconciliation_hourly",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "stripePaymentReconciliation",
+            "args": {
+              "internal_service_key": "will_use_env"
+            }
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "stripePaymentReconciliation"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "Minor Hours Check on Scope Approval",
+  "description": "Checks and enforces minor work hour limits when a scope is approved, locking account if 20-hour weekly limit is reached",
+  "trigger": {
+    "condition": "${ ((.trigger.changed_fields | index(\"status\") != null) and (.trigger.data.status == \"approved\")) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "ScopeOfWork"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "minor_hours_check_on_scope_approval",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkMinorHoursOnScope",
+            "args": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "checkMinorHoursOnScope"
+  }
+}

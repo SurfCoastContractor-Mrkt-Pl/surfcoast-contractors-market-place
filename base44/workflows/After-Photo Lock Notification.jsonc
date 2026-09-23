@@ -1,0 +1,39 @@
+{
+  "name": "After-Photo Lock Notification",
+  "description": "Sends email notification when contractor account is locked for missing after photos",
+  "trigger": {
+    "condition": "${ ((.trigger.changed_fields | index(\"account_locked\") != null) and (.trigger.data.account_locked == true)) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "Contractor"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "after_photo_lock_notification",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sendComplianceNotification",
+            "args": {
+              "violation_type": "after_photo"
+            }
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "sendComplianceNotification"
+  }
+}

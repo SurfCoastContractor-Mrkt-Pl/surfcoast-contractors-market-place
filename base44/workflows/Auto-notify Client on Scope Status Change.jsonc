@@ -1,0 +1,41 @@
+{
+  "name": "Auto-notify Client on Scope Status Change",
+  "description": "",
+  "trigger": {
+    "condition": "${ (.trigger.changed_fields | index(\"status\") != null) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "ScopeOfWork"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "auto_notify_client_on_scope_status_change",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sendClientStatusUpdate",
+            "args": {
+              "scope_id": "{{event.entity_id}}",
+              "new_status": "{{data.status}}",
+              "notes": "{{data.client_notes}}"
+            }
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "sendClientStatusUpdate"
+  }
+}

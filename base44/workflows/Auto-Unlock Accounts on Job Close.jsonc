@@ -1,0 +1,37 @@
+{
+  "name": "Auto-Unlock Accounts on Job Close",
+  "description": "When a ScopeOfWork is updated to 'closed', automatically unlocks both the contractor and client accounts that were locked for the overdue job.",
+  "trigger": {
+    "condition": "${ (.trigger.data.status == \"closed\") }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "ScopeOfWork"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "auto_unlock_accounts_on_job_close",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "autoUnlockOnJobClose",
+            "args": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "autoUnlockOnJobClose"
+  }
+}
